@@ -14,6 +14,7 @@ namespace {
 using Rect=sf::FloatRect;
 const sf::Color ink{231,229,213}, muted{139,162,177}, gold{171,131,69}, mint{103,220,196}, panel{18,30,41};
 const Rect handArea{{260,862},{1080,134}}, handoffButton{{580,910},{440,54}}, phaseButton{{1360,889},{215,54}};
+const Rect analysisArea{{260,560},{540,272}},castingArea{{260,487},{1080,65}},wordsArea{{809,560},{531,106}},actionZone{{809,674},{531,101}},ashArea{{809,783},{531,49}};
 const Rect sortType{{25,865},{100,34}},sortCost{{135,865},{100,34}};
 const Rect detailPanel{{1360,330},{215,354}},detailClose{{1542,340},{25,27}};
 const Rect saveButton{{1278,24},{90,34}},logButton{{1380,24},{90,34}},surrenderButton{{1484,24},{90,34}},cancelButton{{1100,26},{120,34}};
@@ -33,10 +34,10 @@ public:
         }
         newLog();refresh(true);
     }
-    void run(const std::string& screenshot,bool showcase,const Json& smoke,const std::string& inspect,int captureStep,bool dragSmoke,bool previewDrag) {
+    void run(const std::string& screenshot,bool showcase,const Json& smoke,const std::string& inspect,int captureStep,bool dragSmoke,bool previewDrag,bool previewDropChoice) {
         smokeDragging_=dragSmoke;
         if(!smoke.is_null())(void)replay(content_,smoke);
-        sf::RenderWindow window(sf::VideoMode({1600,1000}),utf8("巫师牌 · 奥术对决"));window.setFramerateLimit(60);
+        sf::RenderWindow window(sf::VideoMode({1600,1000}),utf8("巫师牌 · Alpha v0.5"));window.setFramerateLimit(60);
         sf::View logical(Rect({0,0},{1600,1000}));window.setView(logical);sf::Clock clock;
         if(showcase)scene_=Scene::Match;
         std::size_t smokeStep=0;int frames=0;bool exercised=false;
@@ -66,10 +67,11 @@ public:
             if(capture) {
                 if(showcase)scene_=view_.result==-1?Scene::Match:Scene::Result;
                 if(scene_==Scene::Match && !inspect.empty())for(const auto& c:view_.cards)if(c.definition.id==inspect){interaction_.select(c.instance.id);break;}
-                if(previewDrag && scene_==Scene::Match && interaction_.selected()) {
+                if((previewDrag || previewDropChoice) && scene_==Scene::Match && interaction_.selected()) {
                     auto id=interaction_.selected();auto origin=pointFor(window,id);sf::Vector2f destination{789,817};
                     for(const auto& a:view_.actions)if(a.source==id && ui::Interaction::target(a.command)){destination=pointFor(window,ui::Interaction::target(a.command));break;}
-                    press(origin);movePointer(destination);
+                    if(previewDropChoice)destination={789,817};
+                    press(origin);movePointer(destination);if(previewDropChoice)releasePointer(destination);
                 }
                 draw(window);sf::Texture texture;
                 if(!texture.resize(window.getSize()))throw std::runtime_error("capture resize failed");texture.update(window);
@@ -91,7 +93,7 @@ private:
     GameView view_;ui::Interaction interaction_;PlayerId viewer_{};Scene scene_{Scene::Handoff};
     std::map<std::string,std::filesystem::path> art_;std::map<int,int> offsets_;std::filesystem::path logPath_;
     std::string status_;bool smokeDragging_{};int dragCount_{};bool showLog_{};int groupOffset_{};Rect actionArea_,confirm_,cancelAction_;
-    std::vector<std::pair<Rect,CardId>> cardHits_;std::vector<std::pair<Rect,std::size_t>> groupHits_;
+    std::vector<std::pair<Rect,CardId>> cardHits_,formationHits_;std::vector<std::pair<Rect,std::size_t>> groupHits_;
     std::vector<std::pair<Rect,LegalAction>> decisionHits_;std::vector<ScrollArea> scrollAreas_;
     void refresh(bool initial=false) {
         const auto& s=session_.engine().state();int next=s.decision?s.decision->player:s.active;
@@ -143,7 +145,10 @@ private:
         const auto& d=c.definition;const auto& i=c.instance;
         std::string size=r.size.y<80?"strip":i.zone==Zone::Hand?"hand":"portrait";
         paint(t,"frame_"+typeKey(d.type)+"_"+size,r);
-        if(r.size.y<80) {
+        if(r.size.y<34) {
+            illustration(t,c,{r.position+sf::Vector2f{3,2},{14,14}});
+            label(t,d.name,r.position.x+22,r.position.y+1,11);
+        } else if(r.size.y<80) {
             illustration(t,c,{r.position+sf::Vector2f{3,7},{26,r.size.y-13}});
             label(t,d.name,r.position.x+34,r.position.y+4,r.size.x<110?11:12);
             std::string sub=d.type==CardType::Formation?std::to_string(c.occupiedRings)+"/"+std::to_string(c.effectiveRings)+" 环":spellName(i.spell);
@@ -169,7 +174,7 @@ private:
         if(i.spell!=SpellState::None) {
             std::string state=std::array<const char*,5>{"","state_analyzing","state_analyzed","state_prepared","state_active"}.at(static_cast<std::size_t>(i.spell));
             if(i.canceledTurn==view_.players[i.owner].ownTurn)state="state_cancelled";
-            paint(t,state,{{r.position.x+r.size.x-16,r.position.y+(r.size.y<80?23.f:4.f)},{13,13}});
+            paint(t,state,{{r.position.x+r.size.x-16,r.position.y+(r.size.y<34?2.f:r.size.y<80?23.f:4.f)},{13,13}});
         }
         if(i.base)paint(t,"state_protected",{{r.position.x+r.size.x-16,r.position.y+4},{13,13}});
         if(registerHit)cardHits_.push_back({r,i.id});
@@ -192,10 +197,10 @@ private:
         strip(t,{r.position+sf::Vector2f{9,24},{r.size.x-18,h}},list,p*20+static_cast<int>(z),w,h-3);
     }
     void board(sf::RenderTarget& t,PlayerId p,bool enemy) {
-        region(t,p,Zone::Casting,side({{260,487},{1080,65}},enemy),"施 法 区");
-        region(t,p,Zone::Words,side({{809,560},{531,106}},enemy),"言 灵 区");
-        region(t,p,Zone::Action,side({{809,674},{531,49}},enemy),"行 动 区");
-        region(t,p,Zone::Ash,side({{809,731},{531,101}},enemy),"灰 烬 区");
+        region(t,p,Zone::Casting,side(castingArea,enemy),"施 法 区");
+        region(t,p,Zone::Words,side(wordsArea,enemy),"言 灵 区");
+        region(t,p,Zone::Action,side(actionZone,enemy),"行 动 区");
+        region(t,p,Zone::Ash,side(ashArea,enemy),"灰 烬 区");
         for(int row=0;row<5;++row) {
             float y=560+55.f*static_cast<float>(row);Rect slot=side({{260,y},{106,52}},enemy),analysis=side({{373,y},{427,52}},enemy);
             paint(t,"slot_empty",slot,140);label(t,"阵法槽 "+std::to_string(row+1),slot.position.x+15,slot.position.y+16,13,muted);
@@ -255,11 +260,23 @@ private:
             label(t,"本次魔素 "+std::to_string(cost)+" / 荷载 +"+std::to_string(load),1372,658,13,mint);
         } else if(interaction_.step()==ui::Step::Inspect && interaction_.groups().empty())label(t,"当前没有可执行操作",1372,658,13,muted);
     }
+    void formationChooser(sf::RenderTarget& t) {
+        auto ids=interaction_.candidates();
+        paint(t,"decision",{{520,240},{560,100+64.f*static_cast<float>(ids.size())}});
+        label(t,"选择承载阵法",544,255,24,mint);
+        label(t,"仅显示可承载此法术的阵法 · Esc 取消",544,288,14,muted);
+        for(std::size_t n=0;n<ids.size();++n)if(const auto* c=find(ids[n])) {
+            Rect row{{544,318+64.f*static_cast<float>(n)},{512,54}};
+            button(t,row,c->definition.name+" #"+std::to_string(ids[n]),true);
+            label(t,"空余环位 "+std::to_string(c->effectiveRings-c->occupiedRings)+" / "+std::to_string(c->effectiveRings),row.position.x+12,row.position.y+31,13,muted);
+            formationHits_.push_back({row,ids[n]});
+        }
+    }
     void context(sf::RenderTarget& t) {
         actionArea_={};confirm_={};cancelAction_={};
         if(!interaction_.selected() && !interaction_.pending())return;
         const auto* c=inspectedCard();if(c)details(t,*c);
-        if(interaction_.step()==ui::Step::Target || interaction_.step()==ui::Step::Cost){button(t,cancelButton,"取消选择");return;}
+        if(interaction_.step()==ui::Step::Target || interaction_.step()==ui::Step::Cost){if(interaction_.choosingFormation())formationChooser(t);button(t,cancelButton,"取消选择");return;}
         // The action row follows the visible card; the fixed sidebar is read-only.
         Rect anchor=phaseButton;bool visible=!c;
         if(c)for(const auto& h:cardHits_)if(h.second==c->instance.id){anchor=h.first;visible=true;break;}
@@ -285,11 +302,11 @@ private:
         }
     }
     void draw(sf::RenderWindow& t) {
-        t.clear({10,17,25});cardHits_.clear();groupHits_.clear();decisionHits_.clear();scrollAreas_.clear();
+        t.clear({10,17,25});cardHits_.clear();formationHits_.clear();groupHits_.clear();decisionHits_.clear();scrollAreas_.clear();
         backdrop(t);
-        label(t,"巫 师 牌",25,16,31,gold);label(t,"ARCANE DUEL",27,55,12,muted);
+        label(t,"巫 师 牌",56,35,28,gold);label(t,"ALPHA v0.5",58,78,12,muted);
         std::string prompt="第 "+std::to_string(view_.players[view_.active].ownTurn)+" 回合  /  "+phaseName(view_.phase)+"阶段";
-        if(interaction_.step()==ui::Step::Target)prompt="选择高亮的目标卡牌";
+        if(interaction_.step()==ui::Step::Target)prompt=interaction_.choosingFormation()?"请选择承载阵法":"选择高亮的目标卡牌";
         else if(interaction_.step()==ui::Step::Cost)prompt="选择高亮手牌，支付弃牌成本";
         else if(view_.decision)prompt+=std::string("  ·  ")+std::array<const char*,6>{"选择言灵，或跳过响应","选择待释放法术","选择触发顺序","选择要弃置的手牌","选择要移除的临时荷载","选择要移除的多余法术"}.at(static_cast<std::size_t>(view_.decision->kind));
         label(t,prompt,320,29,19,mint);
@@ -341,11 +358,11 @@ private:
     }
     Zone zoneAt(sf::Vector2f p)const {
         if(hit(p,handArea))return Zone::Hand;
-        if(hit(p,{{260,487},{1080,65}}))return Zone::Casting;
-        if(hit(p,{{260,560},{540,272}}))return Zone::Analysis;
-        if(hit(p,{{809,560},{531,106}}))return Zone::Words;
-        if(hit(p,{{809,674},{531,49}}))return Zone::Action;
-        if(hit(p,{{809,731},{531,101}}))return Zone::Ash;
+        if(hit(p,castingArea))return Zone::Casting;
+        if(hit(p,analysisArea))return Zone::Analysis;
+        if(hit(p,wordsArea))return Zone::Words;
+        if(hit(p,actionZone))return Zone::Action;
+        if(hit(p,ashArea))return Zone::Ash;
         return Zone::Deck; // Outside a playable destination.
     }
     bool targetsEnemy(CardId source)const {
@@ -360,7 +377,7 @@ private:
     void resetPointer(){mouseDown_=false;dragging_=false;pressedCard_=0;edgeScroll_=0;}
     void press(sf::Vector2f p) {
         resetPointer();pointer_=pressPoint_=p;mouseDown_=true;
-        if(scene_!=Scene::Match || showLog_ || hit(p,detailPanel) || hit(p,actionArea_))return;
+        if(scene_!=Scene::Match || showLog_ || interaction_.choosingFormation() || hit(p,detailPanel) || hit(p,actionArea_))return;
         auto id=cardAt(p);const auto* c=find(id);if(!c || c->instance.owner!=viewer_)return;
         if(interaction_.step()==ui::Step::Confirm)return;
         if(interaction_.step()==ui::Step::Target && interaction_.selected()!=id)return;
@@ -401,7 +418,7 @@ private:
     void drawDrag(sf::RenderTarget& t) {
         if(!dragging_ || scene_!=Scene::Match || showLog_)return;
         const auto* c=find(pressedCard_);if(!c)return;
-        const std::array<std::pair<Zone,Rect>,5> zones{{{Zone::Analysis,{{260,560},{540,272}}},{Zone::Words,{{809,560},{531,106}}},{Zone::Casting,{{260,487},{1080,65}}},{Zone::Action,{{809,674},{531,49}}},{Zone::Ash,{{809,731},{531,101}}}}};
+        const std::array<std::pair<Zone,Rect>,5> zones{{{Zone::Analysis,analysisArea},{Zone::Words,wordsArea},{Zone::Casting,castingArea},{Zone::Action,actionZone},{Zone::Ash,ashArea}}};
         for(const auto& z:zones){auto trial=interaction_;if(trial.drop(pressedCard_,0,z.first))box(t,z.second,{45,110,104,24},mint);}
         bool reorder=c->instance.zone==Zone::Hand && hit(pointer_,handArea);auto trial=interaction_;bool valid=reorder || previewDrop(trial,pressedCard_,pointer_);
         sf::Color tint=valid?mint:sf::Color{224,136,112};
@@ -424,6 +441,11 @@ private:
     void click(sf::Vector2f p) {
         if(scene_==Scene::Handoff){if(hit(p,handoffButton))scene_=Scene::Match;return;}
         if(scene_==Scene::Result){if(hit(p,{{558,553},{484,48}})){save();session_=MatchSession(content_,static_cast<std::uint32_t>(std::chrono::steady_clock::now().time_since_epoch().count()));handOrder_={};newLog();refresh(true);}return;}
+        if(interaction_.choosingFormation()) {
+            if(hit(p,cancelButton) || hit(p,detailClose)){interaction_.cancel();return;}
+            for(const auto& h:formationHits_)if(hit(p,h.first)){interaction_.pick(h.second);return;}
+            return;
+        }
         if(hit(p,saveButton)){save();return;}if(hit(p,logButton)){showLog_=!showLog_;return;}if(showLog_)return;
         if(hit(p,sortType) || hit(p,sortCost)){handOrder_.sort(view_,hit(p,sortCost));offsets_[-1]=0;status_="手牌已整理";return;}
         if(inspectedCard()) {
@@ -447,7 +469,7 @@ private:
         for(auto it=cardHits_.rbegin();it!=cardHits_.rend();++it)if(hit(p,it->first)){interaction_.select(it->second);groupOffset_=0;return;}
     }
     void scroll(sf::Vector2f p,int delta) {
-        if(scene_!=Scene::Match || showLog_)return;
+        if(scene_!=Scene::Match || showLog_ || interaction_.choosingFormation())return;
         if(interaction_.selected() && interaction_.step()==ui::Step::Inspect && hit(p,actionArea_)){groupOffset_=std::max(0,groupOffset_+delta);return;}
         if(!decisionHits_.empty() && hit(p,{{550,180},{500,420}})){offsets_[-2]=std::max(0,offsets_[-2]+delta);return;}
         for(const auto& a:scrollAreas_)if(hit(p,a.rect)){offsets_[a.key]=std::clamp(offsets_[a.key]+delta,0,std::max(0,static_cast<int>(a.ids.size())-a.page));return;}
@@ -460,7 +482,10 @@ private:
         draw(w);for(const auto& h:cardHits_)if(h.second==id){return h.first.position+sf::Vector2f{6,6};}
         throw std::runtime_error("UI card not visible: "+std::to_string(id));
     }
-    void clickCard(sf::RenderWindow& w,CardId id){auto p=pointFor(w,id);press(p);releasePointer(p);}
+    void clickCard(sf::RenderWindow& w,CardId id){
+        if(interaction_.choosingFormation()){draw(w);for(const auto& h:formationHits_)if(h.second==id){auto p=h.first.position+sf::Vector2f{6,6};press(p);releasePointer(p);return;}throw std::runtime_error("formation option missing");}
+        auto p=pointFor(w,id);press(p);releasePointer(p);
+    }
     void gesture(sf::RenderWindow& w,CardId source,sf::Vector2f target) {
         auto origin=pointFor(w,source);press(origin);movePointer(origin+sf::Vector2f{12,-12});draw(w);movePointer(target);draw(w);releasePointer(target);++dragCount_;
     }
@@ -482,8 +507,9 @@ private:
         else if(std::holds_alternative<Choose>(action.command) && view_.decision)destination=(view_.decision->kind==DecisionKind::Discard || view_.decision->kind==DecisionKind::Overflow)?Zone::Ash:Zone::Casting;
         if(destination==Zone::Deck)return false;
         sf::Vector2f drop=destination==Zone::Analysis?sf::Vector2f{789,817}:destination==Zone::Words?sf::Vector2f{1320,646}:destination==Zone::Action?sf::Vector2f{1300,700}:destination==Zone::Ash?sf::Vector2f{1320,814}:sf::Vector2f{1300,540};
-        if(target)drop=pointFor(w,target);
+        if(target && !std::holds_alternative<StartAnalysis>(action.command))drop=pointFor(w,target);
         auto before=session_.engine().digest();gesture(w,action.source,drop);
+        if(interaction_.choosingFormation())clickCard(w,target);
         if(interaction_.step()==ui::Step::Cost)gesture(w,ui::Interaction::costCard(action.command),{1320,814});
         if(before!=session_.engine().digest())throw std::runtime_error("drag paid before confirmation");
         return true;
@@ -517,8 +543,8 @@ private:
 }
 int main(int argc,char** argv) {
     try {
-        auto assets=std::filesystem::absolute(argv[0]).parent_path()/"assets";std::string screenshot,inspect;bool showcase=false,dragSmoke=false,previewDrag=false;std::uint32_t seed=42;Json smoke;int captureStep=3;
-        for(int i=1;i<argc;++i){std::string arg=argv[i];if(arg=="--assets" && i+1<argc)assets=argv[++i];else if(arg=="--screenshot" && i+1<argc)screenshot=argv[++i];else if(arg=="--showcase")showcase=true;else if(arg=="--preview-drag")previewDrag=true;else if(arg=="--inspect-card" && i+1<argc)inspect=argv[++i];else if(arg=="--capture-step" && i+1<argc)captureStep=std::stoi(argv[++i]);else if(arg=="--seed" && i+1<argc)seed=static_cast<std::uint32_t>(std::stoul(argv[++i]));else if((arg=="--ui-smoke" || arg=="--drag-smoke") && i+1<argc){dragSmoke=arg=="--drag-smoke";smoke=readJson(argv[++i]);seed=smoke.at("seed").get<std::uint32_t>();}}
-        Client client(assets,seed);client.run(screenshot,showcase,smoke,inspect,captureStep,dragSmoke,previewDrag);return 0;
+        auto assets=std::filesystem::absolute(argv[0]).parent_path()/"assets";std::string screenshot,inspect;bool showcase=false,dragSmoke=false,previewDrag=false,previewDropChoice=false;std::uint32_t seed=42;Json smoke;int captureStep=3;
+        for(int i=1;i<argc;++i){std::string arg=argv[i];if(arg=="--assets" && i+1<argc)assets=argv[++i];else if(arg=="--screenshot" && i+1<argc)screenshot=argv[++i];else if(arg=="--showcase")showcase=true;else if(arg=="--preview-drop")previewDropChoice=true;else if(arg=="--preview-drag")previewDrag=true;else if(arg=="--inspect-card" && i+1<argc)inspect=argv[++i];else if(arg=="--capture-step" && i+1<argc)captureStep=std::stoi(argv[++i]);else if(arg=="--seed" && i+1<argc)seed=static_cast<std::uint32_t>(std::stoul(argv[++i]));else if((arg=="--ui-smoke" || arg=="--drag-smoke") && i+1<argc){dragSmoke=arg=="--drag-smoke";smoke=readJson(argv[++i]);seed=smoke.at("seed").get<std::uint32_t>();}}
+        Client client(assets,seed);client.run(screenshot,showcase,smoke,inspect,captureStep,dragSmoke,previewDrag,previewDropChoice);return 0;
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
 }

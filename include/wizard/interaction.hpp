@@ -20,6 +20,7 @@ public:
     bool select(CardId card);
     bool activate(std::size_t group);
     bool pick(CardId card);
+    bool choosingFormation() const;
     void offer(const LegalAction& action);
     void cancel();
     bool drop(CardId source, CardId target, Zone destination); // Select intent only; never submit.

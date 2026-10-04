@@ -57,7 +57,7 @@ ctest --preset headless
 
 main 保持可构建，功能分支使用 `codex/`。规则变更同步修改文档、JSON 和回归测试；数值调整独立 `balance:` 提交。CI 在 Windows 测试并打包，在 Linux 构建纯规则核心并重放 Windows 生成的记录。
 
-当前版本名为 `0.4.2-dev`，不代表完成全部里程碑验收。真人探索按 [docs/playtesting.md](docs/playtesting.md) 记录；通过自动化测试不等于已完成平衡。尚未完成验收的版本不创建发布标签。
+当前版本为 **Alpha v0.5**（程序 `0.5.0-alpha`，规则 `0.2.3`，卡池 `0.1.0`），标签 `v0.5.0-alpha`。这是测试版；v1.0 的目标是交付首个可玩的 Demo。详见[进度报告](docs/reports/alpha-v0.5-progress.md)与[下一期计划](docs/plans/alpha-v0.6.md)。约20局真人探索和平衡验收仍待完成，Alpha 标签不代表这些工作已经通过。
 
 字体采用 Noto Sans CJK SC / SIL OFL，许可随资源发布；其他依赖许可证见 `assets/licenses/`。
 
@@ -76,3 +76,5 @@ main 保持可构建，功能分支使用 `codex/`。规则变更同步修改文
 - 拖至手牌边缘会自动滚动。Esc、右键或鼠标离开窗口可取消拖动；无效落点返回原处。
 
 `--drag-smoke <复盘>` 使用按下/移动/松手入口重放并验证最终状态，包含手牌重排和无效拖放检查。`--showcase --inspect-card spark --preview-drag --screenshot <PNG>` 输出拖动中的预览图。
+
+Alpha v0.5：初始生命20，恢复上限30。解析法术拖到解析区任意位置即可选择操作：只有一个合法阵法时自动匹配，有多个时弹窗选择；最后确认才会支付费用。行动区扩大、灰烬区缩小，双方镜像同步。

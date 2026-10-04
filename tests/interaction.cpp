@@ -28,7 +28,7 @@ TEST_CASE("drag selects a legal intent but invalid drops preserve the current ch
     GameView v;v.viewer=0;
     for(CardId id:{1u,2u,3u}){CardView c;c.instance.id=id;v.cards.push_back(c);}
     v.actions={{"parse",1,2,StartAnalysis{1,2}},{"set",3,0,SetFormation{3,0}},{"replace",3,2,SetFormation{3,2}}};
-    Interaction ui;ui.update(v);REQUIRE_FALSE(ui.drop(1,3,Zone::Analysis));REQUIRE(ui.selected()==0);
+    Interaction ui;ui.update(v);REQUIRE_FALSE(ui.drop(1,3,Zone::Words));REQUIRE(ui.selected()==0);
     REQUIRE(ui.drop(1,2,Zone::Analysis));REQUIRE(ui.step()==Step::Confirm);
     REQUIRE(encodeCommand(ui.pending()->command)==encodeCommand(StartAnalysis{1,2}));
     REQUIRE_FALSE(ui.drop(3,0,Zone::Analysis));REQUIRE(ui.selected()==1);
@@ -73,4 +73,32 @@ TEST_CASE("hand order is private presentation state and synchronizes draws and d
     v.cards[0].instance.zone=Zone::Ash;c.instance.id=4;c.instance.owner=0;v.cards.push_back(c);hand.sync(v);
     REQUIRE((hand.cards(0)==std::vector<CardId>{3,2,4}));hand.sort(v,true);REQUIRE((hand.cards(0)==std::vector<CardId>{4,3,2}));
     REQUIRE(v.cards[1].instance.id==2); // Sorting never reorders authoritative/projection data.
+}
+
+TEST_CASE("analysis area auto matches one legal formation and prompts for multiple") {
+    GameView v;CardView c;c.instance.id=1;v.cards.push_back(c);Interaction ui;
+    ui.update(v);REQUIRE_FALSE(ui.drop(1,0,Zone::Analysis));
+    v.actions={{"a",1,2,StartAnalysis{1,2}}};ui.update(v);
+    REQUIRE(ui.drop(1,0,Zone::Analysis));REQUIRE(ui.pending());
+    REQUIRE(std::get<StartAnalysis>(ui.pending()->command).formation==2);
+    ui.cancel();REQUIRE(ui.drop(1,99,Zone::Analysis));REQUIRE(ui.pending());
+    v.actions.push_back({"b",1,3,StartAnalysis{1,3}});ui.update(v);
+    REQUIRE(ui.drop(1,0,Zone::Analysis));REQUIRE(ui.choosingFormation());REQUIRE_FALSE(ui.pending());
+    REQUIRE_FALSE(ui.pick(99));REQUIRE(ui.pick(3));REQUIRE(ui.pending());
+    REQUIRE(std::get<StartAnalysis>(ui.pending()->command).formation==3);
+    ui.cancel();REQUIRE(ui.drop(1,2,Zone::Analysis));REQUIRE(ui.pending());
+    REQUIRE(std::get<StartAnalysis>(ui.pending()->command).formation==2);
+    ui.cancel();REQUIRE(ui.drop(1,99,Zone::Analysis));REQUIRE(ui.choosingFormation());
+    ui.update(v);REQUIRE_FALSE(ui.choosingFormation());REQUIRE_FALSE(ui.pending());
+}
+TEST_CASE("starting life is twenty with the existing thirty life ceiling") {
+    auto content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");
+    MatchSession session(content,42);
+    REQUIRE(session.engine().state().players[0].life==20);
+    REQUIRE(session.engine().state().players[1].life==20);
+    GameState state=session.engine().state();
+    EffectResolver::apply(state,content.catalog,Trigger{},Effect{EffectKind::Heal,4});
+    REQUIRE(state.players[0].life==24);
+    EffectResolver::apply(state,content.catalog,Trigger{},Effect{EffectKind::Heal,20});
+    REQUIRE(state.players[0].life==30);
 }

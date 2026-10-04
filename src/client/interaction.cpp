@@ -63,7 +63,11 @@ bool Interaction::activate(std::size_t index) {
     options_=available[index].options; pending_.reset();
     if(std::any_of(options_.begin(),options_.end(),[](const LegalAction& a){return target(a.command)!=0;}))step_=Step::Target;
     else advance();
+    if(choosingFormation() && candidates().size()==1)pick(candidates().front());
     return true;
+}
+bool Interaction::choosingFormation() const {
+    return step_==Step::Target && !options_.empty() && std::holds_alternative<StartAnalysis>(options_.front().command);
 }
 std::vector<CardId> Interaction::candidates() const {
     std::vector<CardId> ids;
@@ -126,7 +130,7 @@ bool Interaction::drop(CardId source,CardId targetCard,Zone destination) {
         for(const auto& a:available[n].options) {
             matches=std::visit([&](const auto& cmd){
                 using T=std::decay_t<decltype(cmd)>;
-                if constexpr(std::is_same_v<T,StartAnalysis>)return destination==Zone::Analysis && (!targetCard || cmd.formation==targetCard);
+                if constexpr(std::is_same_v<T,StartAnalysis>)return destination==Zone::Analysis;
                 else if constexpr(std::is_same_v<T,SetFormation>)return destination==Zone::Analysis && cmd.replace==targetCard;
                 else if constexpr(std::is_same_v<T,AttachSeal>)return targetCard && cmd.host==targetCard;
                 else if constexpr(std::is_same_v<T,PreloadWord>)return destination==Zone::Words;
@@ -142,7 +146,10 @@ bool Interaction::drop(CardId source,CardId targetCard,Zone destination) {
         // Dropping a ready spell anywhere in the casting area starts preparation;
         // existing spells there are not effect targets.
         bool castingArea=destination==Zone::Casting && std::holds_alternative<PrepareCast>(available[n].options.front().command);
-        if(targetCard && !castingArea && next.step()==Step::Target && !next.pick(targetCard))continue;
+        if(targetCard && !castingArea && next.step()==Step::Target) {
+            bool formationChoice=next.choosingFormation();
+            if(!next.pick(targetCard) && !formationChoice)continue;
+        }
         *this=std::move(next);return true;
     }
     return false;

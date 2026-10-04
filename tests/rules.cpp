@@ -71,13 +71,13 @@ TEST_CASE("prepared spell survives former formation destruction") {
 TEST_CASE("instant success refunds only cast payment before leaving") {
     Fixture f; f.ready(10); f.card(11,"ring",0,Zone::Attached).host=10; f.state.players[0].mana=4;
     auto e=f.engine();accept(e,0,PrepareCast{10,0,0});accept(e,0,Advance{});chooseFirst(e);
-    REQUIRE(e.state().players[0].mana==4);REQUIRE(e.state().players[1].life==24);REQUIRE(Rules::load(e.state(),0)==0);REQUIRE(e.state().cards.at(11).zone==Zone::Ash);
+    REQUIRE(e.state().players[0].mana==4);REQUIRE(e.state().players[1].life==startingLife-6);REQUIRE(Rules::load(e.state(),0)==0);REQUIRE(e.state().cards.at(11).zone==Zone::Ash);
 }
 TEST_CASE("duration two includes casting turn and periodic damage does not refund twice") {
     Fixture f;f.ready(10,"ward");f.card(11,"ring",0,Zone::Attached).host=10;f.state.players[0].mana=4;
     auto e=f.engine();accept(e,0,PrepareCast{10,0,0});accept(e,0,Advance{});chooseFirst(e);
-    REQUIRE(e.state().cards.at(10).remaining==1);REQUIRE(Rules::load(e.state(),0)==3);REQUIRE(e.state().players[1].life==28);
-    accept(e,1,Advance{});REQUIRE(e.state().players[1].life==26);REQUIRE(e.state().players[0].mana==6);
+    REQUIRE(e.state().cards.at(10).remaining==1);REQUIRE(Rules::load(e.state(),0)==3);REQUIRE(e.state().players[1].life==startingLife-2);
+    accept(e,1,Advance{});REQUIRE(e.state().players[1].life==startingLife-4);REQUIRE(e.state().players[0].mana==6);
     accept(e,0,Advance{});REQUIRE(e.state().cards.at(10).zone==Zone::Ash);REQUIRE(Rules::load(e.state(),0)==0);
 }
 TEST_CASE("invalidated target fizzles without reward or refund") {
@@ -135,7 +135,7 @@ TEST_CASE("hand overflow pauses end and requires owning player") {
 TEST_CASE("periodic triggers preserve chosen order and queued source snapshot") {
     Fixture f;for(CardId id:{10u,11u}) {auto& c=f.ready(id,"ward");c.zone=Zone::Casting;c.host=0;c.spell=SpellState::Active;c.remaining=2;c.targetPlayer=1;}
     f.state.active=1;auto e=f.engine();accept(e,1,Advance{});REQUIRE(e.state().decision->kind==DecisionKind::TriggerOrder);
-    auto d=*e.state().decision;accept(e,0,Choose{d.id,d.options.back()});REQUIRE(e.state().players[1].life==26);
+    auto d=*e.state().decision;accept(e,0,Choose{d.id,d.options.back()});REQUIRE(e.state().players[1].life==startingLife-4);
 }
 TEST_CASE("first player skips only first base draw and both get income") {
     auto c=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");GameEngine e(c.catalog,{c.deck,c.deck},42);int first=e.state().first;
@@ -172,7 +172,7 @@ TEST_CASE("same-event order is active owner then non-active owner and appended b
     Fixture f;f.state.queue.append({1,1,0,0,0,1,{{EffectKind::Damage,1}}});f.state.queue.append({2,1,0,0,0,1,{{EffectKind::Damage,2}}});
     f.state.queue.append({3,1,1,0,0,0,{{EffectKind::Damage,3}}});f.state.queue.append({4,2,0,0,0,1,{{EffectKind::Damage,4}}});
     f.state.decision=PendingDecision{1,0,DecisionKind::TriggerOrder,{1,2},false};auto e=f.engine();accept(e,0,Choose{1,2});
-    REQUIRE(e.state().players[0].life==27);REQUIRE(e.state().players[1].life==23);
+    REQUIRE(e.state().players[0].life==startingLife-3);REQUIRE(e.state().players[1].life==startingLife-7);
     std::vector<int> values;for(const auto& event:e.state().events)if(event.kind=="effect")values.push_back(event.amount);
     REQUIRE(values.size()==4);REQUIRE(values[0]==2);REQUIRE(values[1]==1);REQUIRE(values[2]==3);REQUIRE(values[3]==4);
 }

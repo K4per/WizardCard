@@ -96,7 +96,7 @@ void EffectResolver::apply(GameState& s,const CardCatalog&,const Trigger& t,cons
     int p=t.targetPlayer>=0?t.targetPlayer:t.owner;
     switch(e.kind) {
     case EffectKind::Damage: s.players[p].life-=e.amount; break;
-    case EffectKind::Heal: s.players[p].life=std::min(30,s.players[p].life+e.amount); break;
+    case EffectKind::Heal: s.players[p].life=std::min(maximumLife,s.players[p].life+e.amount); break;
     case EffectKind::GainMana: s.players[t.owner].mana=std::min(12,s.players[t.owner].mana+e.amount); break;
     case EffectKind::Draw:
         for(int k=0;k<e.amount;++k) {

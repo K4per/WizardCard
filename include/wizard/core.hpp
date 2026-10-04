@@ -12,7 +12,8 @@ namespace wizard {
 using PlayerId = int;
 using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
-inline constexpr const char* programVersion = "0.4.2-dev";
+inline constexpr const char* programVersion = "0.5.0-alpha";
+inline constexpr int startingLife=20, maximumLife=30;
 enum class CardType { Action, Analytic, Word, Formation, Seal };
 enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached };
 enum class SpellState { None, Analyzing, Ready, Pending, Active };
@@ -43,7 +44,7 @@ struct CardInstance {
 };
 struct TemporaryLoad { std::uint32_t id{}; PlayerId owner{}; CardId source{}; int amount{}, expiryTurn{}; };
 struct PlayerState {
-    int life{30}, mana{1}, ownTurn{}, actionsPlayed{}, formations{}, sealRemovals{};
+    int life{startingLife}, mana{1}, ownTurn{}, actionsPlayed{}, formations{}, sealRemovals{};
     bool drawFailed{}, surrendered{};
     std::vector<CardId> deck;
 };

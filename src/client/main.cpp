@@ -12,6 +12,7 @@ namespace {
 using Rect=sf::FloatRect;
 const sf::Color ink{231,229,213}, muted{139,162,177}, gold{171,131,69}, mint{103,220,196}, panel{18,30,41};
 const Rect handArea{{260,862},{1080,134}}, handoffButton{{580,910},{440,54}}, phaseButton{{1360,889},{215,54}};
+const Rect detailPanel{{1360,330},{215,354}},detailClose{{1542,340},{25,27}};
 const Rect saveButton{{1278,24},{90,34}},logButton{{1380,24},{90,34}},surrenderButton{{1484,24},{90,34}},cancelButton{{1100,26},{120,34}};
 std::string spellName(SpellState s) {return std::array<const char*,5>{"","解析中","解析完成","待施放","持续生效"}.at(static_cast<std::size_t>(s));}
 std::string kindName(CardType t) {return std::array<const char*,5>{"行动","解析法术","言灵","阵法","符文"}.at(static_cast<std::size_t>(t));}
@@ -65,7 +66,7 @@ private:
     std::filesystem::path assets_;Content content_;MatchSession session_;Resources resources_;Animation animation_;
     GameView view_;ui::Interaction interaction_;PlayerId viewer_{};Scene scene_{Scene::Handoff};
     std::map<std::string,std::filesystem::path> art_;std::map<int,int> offsets_;std::filesystem::path logPath_;
-    std::string status_;bool showLog_{};int groupOffset_{};Rect popup_,confirm_;
+    std::string status_;bool showLog_{};int groupOffset_{};Rect actionArea_,confirm_,cancelAction_;
     std::vector<std::pair<Rect,CardId>> cardHits_;std::vector<std::pair<Rect,std::size_t>> groupHits_;
     std::vector<std::pair<Rect,LegalAction>> decisionHits_;std::vector<ScrollArea> scrollAreas_;
     void refresh(bool initial=false) {
@@ -164,40 +165,63 @@ private:
         for(const auto& a:view_.actions)if(auto choice=std::get_if<Choose>(&a.command))if(!choice->option)return a;
         return {};
     }
-    void context(sf::RenderTarget& t) {
-        if(interaction_.step()==ui::Step::Target || interaction_.step()==ui::Step::Cost){button(t,cancelButton,"取消选择");return;}
-        if(!interaction_.selected() && !interaction_.pending())return;
-        float x=565,y=490;for(const auto& h:cardHits_)if(h.second==interaction_.selected()) {
-            x=h.first.position.x+h.first.size.x+12;if(x+450>1580)x=h.first.position.x-462;
-            y=h.first.position.y>850?490:h.first.position.y-60;
-        }
-        popup_={{std::clamp(x,20.f,1130.f),std::clamp(y,100.f,590.f)},{450,355}};frame(t,popup_,mint);x=popup_.position.x;y=popup_.position.y;
-        const auto* c=find(interaction_.selected());if(!c && interaction_.pending())c=find(interaction_.pending()->source);
-        label(t,c?c->definition.name:"确认操作",x+16,y+12,23,gold);button(t,{{x+342,y+12},{92,31}},"关闭 Esc");
-        if(c){illustration(t,*c,{{x+16,y+55},{126,150}});wrapped(t,resources_,c->definition.text,{x+16,y+228},15,ink,27);
-            std::string detail="绑定荷载 "+std::to_string(c->instance.analysisLoad+c->instance.castLoad);
-            if(c->instance.spell==SpellState::Analyzing)detail+=" · 解析剩余 "+std::to_string(c->turnsToReady)+" 回合";
-            if(c->instance.spell==SpellState::Active)detail+=" · 持续剩余 "+std::to_string(c->instance.remaining);
-            label(t,detail,x+16,y+324,13,muted);
-        }
+    const CardView* inspectedCard()const {
+        const auto* c=find(interaction_.selected());
+        return c?c:interaction_.pending()?find(interaction_.pending()->source):nullptr;
+    }
+    void details(sf::RenderTarget& t,const CardView& c) {
+        const auto& d=c.definition;const auto& i=c.instance;
+        frame(t,detailPanel,gold);label(t,d.name,1372,341,20,gold);
+        box(t,detailClose,panel,gold);label(t,"×",1547,342,17,ink);
+        label(t,kindName(d.type)+(i.base?" · 基础阵法":""),1372,371,13,muted);
+        illustration(t,c,{{1374,393},{187,83}});
+        std::string stats=d.type==CardType::Analytic?"解析 "+std::to_string(d.cost)+" / 施法 "+std::to_string(d.castCost):"费用 "+std::to_string(d.cost);
+        if(d.rank)stats+=" · 位阶 "+std::to_string(d.rank);
+        label(t,stats,1372,484,13,mint);
+        wrapped(t,resources_,d.text,{1372,512},14,ink,13);
+        label(t,"绑定荷载 "+std::to_string(i.analysisLoad+i.castLoad),1372,609,13,muted);
+        if(i.spell==SpellState::Analyzing)label(t,"解析剩余 "+std::to_string(c.turnsToReady)+" 回合",1372,628,13,muted);
+        else if(i.spell==SpellState::Active)label(t,"持续剩余 "+std::to_string(i.remaining)+" 回合",1372,628,13,muted);
+        else if(i.spell!=SpellState::None)label(t,spellName(i.spell),1372,628,13,muted);
+        else if(d.type==CardType::Formation && i.zone==Zone::Analysis)label(t,"环位 "+std::to_string(c.occupiedRings)+" / "+std::to_string(c.effectiveRings),1372,628,13,muted);
         if(interaction_.pending()) {
-            const auto& a=*interaction_.pending();wrapped(t,resources_,a.label,{x+158,y+57},17,ink,15);
-            if(c) {
-                int cost=0,load=0;
-                if(std::holds_alternative<PrepareCast>(a.command))cost=load=c->definition.castCost;
-                else if(std::holds_alternative<StartAnalysis>(a.command) || std::holds_alternative<PreloadWord>(a.command))cost=load=c->definition.cost;
-                else if(std::holds_alternative<PlayAction>(a.command)){cost=c->definition.cost;load=c->definition.burden;}
-                else if(std::holds_alternative<AttachSeal>(a.command))cost=c->definition.cost;
-                else if(std::holds_alternative<RemoveFormation>(a.command))cost=2;
-                else if(auto set=std::get_if<SetFormation>(&a.command))cost=set->replace?2:0;
-                label(t,"支付 "+std::to_string(cost)+" 魔素 · 新增荷载 "+std::to_string(load),x+158,y+147,14,muted);
-            }
-            confirm_={{x+158,y+184},{274,37}};button(t,confirm_,"确认操作",true);
+            const auto& command=interaction_.pending()->command;int cost=0,load=0;
+            if(std::holds_alternative<PrepareCast>(command))cost=load=d.castCost;
+            else if(std::holds_alternative<StartAnalysis>(command) || std::holds_alternative<PreloadWord>(command))cost=load=d.cost;
+            else if(std::holds_alternative<PlayAction>(command)){cost=d.cost;load=d.burden;}
+            else if(std::holds_alternative<AttachSeal>(command))cost=d.cost;
+            else if(std::holds_alternative<RemoveFormation>(command))cost=2;
+            else if(auto set=std::get_if<SetFormation>(&command))cost=set->replace?2:0;
+            label(t,"本次魔素 "+std::to_string(cost)+" / 荷载 +"+std::to_string(load),1372,658,13,mint);
+        } else if(interaction_.step()==ui::Step::Inspect && interaction_.groups().empty())label(t,"当前没有可执行操作",1372,658,13,muted);
+    }
+    void context(sf::RenderTarget& t) {
+        actionArea_={};confirm_={};cancelAction_={};
+        if(!interaction_.selected() && !interaction_.pending())return;
+        const auto* c=inspectedCard();if(c)details(t,*c);
+        if(interaction_.step()==ui::Step::Target || interaction_.step()==ui::Step::Cost){button(t,cancelButton,"取消选择");return;}
+        // The action row follows the visible card; the fixed sidebar is read-only.
+        Rect anchor=phaseButton;bool visible=!c;
+        if(c)for(const auto& h:cardHits_)if(h.second==c->instance.id){anchor=h.first;visible=true;break;}
+        if(!visible)return;
+        auto groups=interaction_.groups();
+        groupOffset_=std::clamp(groupOffset_,0,std::max(0,static_cast<int>(groups.size())-4));
+        int count=std::min(4,static_cast<int>(groups.size()));
+        float width=interaction_.pending()?244.f:168.f*static_cast<float>(count)-8.f;
+        if(!interaction_.pending() && !count)return;
+        float x=std::clamp(anchor.position.x+anchor.size.x/2-width/2,260.f,(c?1340.f:1580.f)-width);
+        float y=std::max(76.f,anchor.position.y-44.f);
+        actionArea_={{x,y},{width,36}};
+        if(interaction_.pending()) {
+            label(t,"确认："+interaction_.pending()->label,320,56,15,mint);
+            confirm_={{x,y},{148,36}};cancelAction_={{x+156,y},{88,36}};
+            button(t,confirm_,"确认操作",true);button(t,cancelAction_,"取消");
         } else {
-            auto groups=interaction_.groups();groupOffset_=std::clamp(groupOffset_,0,std::max(0,static_cast<int>(groups.size())-4));
-            if(groups.empty())wrapped(t,resources_,"当前没有可执行操作",{x+158,y+61},17,muted,15);
-            for(int n=0;n<4 && n+groupOffset_<static_cast<int>(groups.size());++n){std::size_t index=static_cast<std::size_t>(n+groupOffset_);Rect r{{x+158,y+55+40.f*static_cast<float>(n)},{274,34}};button(t,r,groups[index].title);groupHits_.push_back({r,index});}
-            if(groups.size()>4)label(t,"滚轮查看更多操作",x+158,y+213,12,muted);
+            for(int n=0;n<count;++n) {
+                auto index=static_cast<std::size_t>(groupOffset_+n);Rect r{{x+168.f*static_cast<float>(n),y},{160,36}};
+                button(t,r,groups[index].title,true);groupHits_.push_back({r,index});
+            }
+            if(groups.size()>4)label(t,"滚轮查看更多操作",x,y-19,12,muted);
         }
     }
     void draw(sf::RenderWindow& t) {
@@ -248,15 +272,19 @@ private:
         if(scene_==Scene::Handoff){if(hit(p,handoffButton))scene_=Scene::Match;return;}
         if(scene_==Scene::Result){if(hit(p,{{558,553},{484,48}})){save();session_=MatchSession(content_,static_cast<std::uint32_t>(std::chrono::steady_clock::now().time_since_epoch().count()));newLog();refresh(true);}return;}
         if(hit(p,saveButton)){save();return;}if(hit(p,logButton)){showLog_=!showLog_;return;}if(showLog_)return;
+        if(inspectedCard()) {
+            if(hit(p,detailClose)){interaction_.cancel();return;}
+            if(hit(p,detailPanel))return;
+        }
         if(interaction_.step()==ui::Step::Target || interaction_.step()==ui::Step::Cost) {
             if(hit(p,cancelButton)){interaction_.cancel();return;}
             for(auto it=cardHits_.rbegin();it!=cardHits_.rend();++it)if(hit(p,it->first)){if(!interaction_.pick(it->second))status_="请选择高亮卡牌";return;}return;
         }
         if(interaction_.pending() || interaction_.selected()) {
-            if(hit(p,{popup_.position+sf::Vector2f{342,12},{92,31}})){interaction_.cancel();return;}
+            if(interaction_.pending() && hit(p,cancelAction_)){interaction_.cancel();return;}
             if(interaction_.pending() && hit(p,confirm_)){submit();return;}
             for(const auto& h:groupHits_)if(hit(p,h.first)){interaction_.activate(h.second);return;}
-            if(hit(p,popup_))return;
+            if(hit(p,actionArea_))return;
             interaction_.cancel();
         }
         if(hit(p,phaseButton)){if(auto a=phaseAction())interaction_.offer(*a);return;}
@@ -266,7 +294,7 @@ private:
     }
     void scroll(sf::Vector2f p,int delta) {
         if(scene_!=Scene::Match || showLog_)return;
-        if(interaction_.selected() && interaction_.step()==ui::Step::Inspect && hit(p,popup_)){groupOffset_=std::max(0,groupOffset_+delta);return;}
+        if(interaction_.selected() && interaction_.step()==ui::Step::Inspect && hit(p,actionArea_)){groupOffset_=std::max(0,groupOffset_+delta);return;}
         if(!decisionHits_.empty() && hit(p,{{550,180},{500,420}})){offsets_[-2]=std::max(0,offsets_[-2]+delta);return;}
         for(const auto& a:scrollAreas_)if(hit(p,a.rect)){offsets_[a.key]=std::clamp(offsets_[a.key]+delta,0,std::max(0,static_cast<int>(a.ids.size())-a.page));return;}
     }

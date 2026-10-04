@@ -1,0 +1,8 @@
+/build/
+/.cache/
+/dist/
+/.vs/
+/CMakeUserPresets.json
+*.user
+/logs/
+__pycache__/

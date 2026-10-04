@@ -1,0 +1,2263 @@
+{
+  "date": "2026-10-04",
+  "scope": "Asset files and design sheets; UI skin is not integrated into the client.",
+  "cards": [
+    {
+      "id": "balance",
+      "file": "cards/balance.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "e7030ea10267d4ead61d4dda8248b35392588a4ea307241a370f4e2d3674d922",
+      "transparent_fraction": 0.75278,
+      "partial_alpha_fraction": 0.24674,
+      "alpha_bbox": [
+        41,
+        13,
+        1414,
+        1074
+      ],
+      "transparent_outer_edges": true,
+      "outer_edge_alpha_max": 0,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "fireball",
+      "file": "cards/fireball.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "17ce2e6248cb8caa16cbc1a585a0968da3f8fc1ed2b25357a2d075d4c4c8f356",
+      "transparent_fraction": 0.67933,
+      "partial_alpha_fraction": 0.3203,
+      "alpha_bbox": [
+        33,
+        21,
+        1414,
+        1086
+      ],
+      "transparent_outer_edges": false,
+      "outer_edge_alpha_max": 1,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "barbs",
+      "file": "cards/barbs.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "e4b384d3f6524584f26666ef4d9019313eb584d277521f3d6a6198160352f941",
+      "transparent_fraction": 0.85767,
+      "partial_alpha_fraction": 0.14161,
+      "alpha_bbox": [
+        57,
+        49,
+        1416,
+        1054
+      ],
+      "transparent_outer_edges": true,
+      "outer_edge_alpha_max": 0,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "recall",
+      "file": "cards/recall.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "1343187a17c79589fe6f83856d050489b62f169a59e3b320cb4067b037eebf6e",
+      "transparent_fraction": 0.56287,
+      "partial_alpha_fraction": 0.43669,
+      "alpha_bbox": [
+        31,
+        0,
+        1430,
+        1086
+      ],
+      "transparent_outer_edges": false,
+      "outer_edge_alpha_max": 1,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "ring",
+      "file": "cards/ring.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "2fbf807d92e1df81c8be056bf480583ea3ac4e32df81735366d8ba130d8c40fb",
+      "transparent_fraction": 0.77192,
+      "partial_alpha_fraction": 0.22762,
+      "alpha_bbox": [
+        33,
+        21,
+        1410,
+        1086
+      ],
+      "transparent_outer_edges": false,
+      "outer_edge_alpha_max": 1,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "spark",
+      "file": "cards/spark.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "29a6fe63b7b00046c1fe51aa4e047235574d40f63acc4c937dd75852d103248a",
+      "transparent_fraction": 0.92355,
+      "partial_alpha_fraction": 0.07568,
+      "alpha_bbox": [
+        89,
+        21,
+        1179,
+        1029
+      ],
+      "transparent_outer_edges": true,
+      "outer_edge_alpha_max": 0,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "mend",
+      "file": "cards/mend.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "335c7eb5b461c29f9cc167f191613b9505cabbc14b8f4f98185142d91a3af614",
+      "transparent_fraction": 0.66318,
+      "partial_alpha_fraction": 0.33642,
+      "alpha_bbox": [
+        33,
+        8,
+        1384,
+        1086
+      ],
+      "transparent_outer_edges": false,
+      "outer_edge_alpha_max": 1,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "unravel",
+      "file": "cards/unravel.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "8f4108da181b893637407aa8232922844bc76a3a7a992ca8f27fc266d36e7d06",
+      "transparent_fraction": 0.70703,
+      "partial_alpha_fraction": 0.29259,
+      "alpha_bbox": [
+        27,
+        13,
+        1428,
+        1086
+      ],
+      "transparent_outer_edges": false,
+      "outer_edge_alpha_max": 1,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "disrupt",
+      "file": "cards/disrupt.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "7999a07b83d160edbb5d66ef97165519851b5d480c0723c3d95b4c05fad1b505",
+      "transparent_fraction": 0.58332,
+      "partial_alpha_fraction": 0.41541,
+      "alpha_bbox": [
+        0,
+        21,
+        1434,
+        1086
+      ],
+      "transparent_outer_edges": false,
+      "outer_edge_alpha_max": 1,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "clarity",
+      "file": "cards/clarity.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "1d035193e1a27676239548d91111f3ea51caa36268c824c91791ae3e291ba136",
+      "transparent_fraction": 0.78414,
+      "partial_alpha_fraction": 0.21532,
+      "alpha_bbox": [
+        57,
+        0,
+        1414,
+        1086
+      ],
+      "transparent_outer_edges": false,
+      "outer_edge_alpha_max": 1,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "reservoir",
+      "file": "cards/reservoir.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "11ef7008b3be608d9042a7f24978955ef2cbe4ada7d4201c84bebd060b4d2d0e",
+      "transparent_fraction": 0.76708,
+      "partial_alpha_fraction": 0.23161,
+      "alpha_bbox": [
+        25,
+        9,
+        1414,
+        1070
+      ],
+      "transparent_outer_edges": true,
+      "outer_edge_alpha_max": 0,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "conduit",
+      "file": "cards/conduit.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "a79fbf4564b60bb9d02ddc30e3753b2b7fe94d08c34d3ac37bcf04e8941b1a65",
+      "transparent_fraction": 0.77879,
+      "partial_alpha_fraction": 0.22067,
+      "alpha_bbox": [
+        0,
+        14,
+        1447,
+        1086
+      ],
+      "transparent_outer_edges": false,
+      "outer_edge_alpha_max": 1,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    },
+    {
+      "id": "ward",
+      "file": "cards/ward.png",
+      "mode": "RGBA",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "e8354e351207c487312d669495d29747ea364dc49c1d2c649337c8fccbf6dc5a",
+      "transparent_fraction": 0.59096,
+      "partial_alpha_fraction": 0.40806,
+      "alpha_bbox": [
+        0,
+        32,
+        1434,
+        1086
+      ],
+      "transparent_outer_edges": false,
+      "outer_edge_alpha_max": 1,
+      "visible_subject_clear_of_edges": true,
+      "provenance_matches": true
+    }
+  ],
+  "ui": [
+    {
+      "id": "type_action",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "1a20ae199ad8626d1c8b7127f91fd18180ec32c2f0c8ec3b2f59f5205753c3db"
+    },
+    {
+      "id": "type_action_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "35774a80f31f6ca9ec53ced92a95e9cd3c7e2737a23322c47ca8a830432dbd31"
+    },
+    {
+      "id": "type_analytic",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "1adb0cce52b27f02c0bf66f31c412abe52fc967eef719b49b7484640b724a722"
+    },
+    {
+      "id": "type_analytic_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "03d35373ef1f08805744f551277a04aedd6656874d85ae4e83341e36a0312883"
+    },
+    {
+      "id": "type_word",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "36ef95d7281b945e6fb06194b30eca43964ae44e49905be41c1417fbf7a2b9d2"
+    },
+    {
+      "id": "type_word_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "4bf5b83c521142a2407ae2aef5a811150ebcc1f5ff787b2c999806e4c7b8cf83"
+    },
+    {
+      "id": "type_formation",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ab971230b5c3729600ecac5fd0f7fe05565ac91aa82135df1a24677d4d8bcc43"
+    },
+    {
+      "id": "type_formation_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "18d6fed2390f6d25cc656af6f80856fd357d028f182bde1dbf783ca0622e81c6"
+    },
+    {
+      "id": "type_seal",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "30714d252469cf918c62be1eb33d73a0246ccfaf7ccedbc4116c09e67babbd60"
+    },
+    {
+      "id": "type_seal_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "2d51204949fb4c7089e0b08ce93973f3456394175bf75e277a370e87f4cf8ba5"
+    },
+    {
+      "id": "rank",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "55d6c729e05cc1f7e4751f07e1e199985597bb32c8235f5ef0e117f4e3fa69e1"
+    },
+    {
+      "id": "rank_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "dfb7509230131083d620322a495ea32171fc4d58ff2361988b20c6c2273d9af4"
+    },
+    {
+      "id": "analysis_cost",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "2bd22b2a00a2633257c3168bfde385f29a4105885257a064e4af1aedc4984ef0"
+    },
+    {
+      "id": "analysis_cost_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "a79c892cff2b0ea5d0b026d720b873c0c5ae23bd9663eaeb9b3b3da661b58bd5"
+    },
+    {
+      "id": "cast_cost",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "642020fa8abc1d6f0b24a9ccaa26d0e713bac48f5060edb75344f7491e7cf262"
+    },
+    {
+      "id": "cast_cost_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "35be5facaf2a8bcd657fb6adedc2acea815c8bf750e6c276e6a0add8dd010422"
+    },
+    {
+      "id": "body",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "437f40b7dbab6b2ced9fe14c5474ab781888eb8354a3e001cf65a5ac081e5457"
+    },
+    {
+      "id": "body_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c4c552d0d3de1144f252e8b40b4a86d86b43d73d4abd65c4b54efdc44f712c56"
+    },
+    {
+      "id": "ring_slot",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c591c3e08fd3c2f013e2a0fe3396ae79cbd7bbece7f448f16451efcc6b522c17"
+    },
+    {
+      "id": "ring_slot_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "becca1c8c6956351e53ba6936b7cae5cb42584cb8a2ea269d241e2bf330e683b"
+    },
+    {
+      "id": "mana_income",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "03bf4a673116d83dd82ffc6d26bd8d2cfd245de9c0de34b4cbc77f9e89946d7a"
+    },
+    {
+      "id": "mana_income_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "1bca5e675fae24efcadf272cc1092a9fcee8abf8cec4057c2be894f9e2bd5754"
+    },
+    {
+      "id": "duration",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "a606511dde8c1aa5a424f3e160eaf04967598498478f21709fd3720bac4c4f41"
+    },
+    {
+      "id": "duration_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "cd73f051bf3e36dff056f9cf7914a35bd3d37d786b1a293a22e4129bb5678627"
+    },
+    {
+      "id": "state_analyzing",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "753f63fce9007ff6225fadfcd23c8b955bfc87a1ea28981d966b35e681dcaec1"
+    },
+    {
+      "id": "state_analyzing_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "5b780ce1defc4bc47cd1e26df192266aa643525bc56e361190cdf78b4f9f0e7f"
+    },
+    {
+      "id": "state_analyzed",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "7c88fd06453d4bc4258d867874899784bee82dc9da83508cf810f0fd6c300a6f"
+    },
+    {
+      "id": "state_analyzed_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "dec007a2d12d1f6da7fe01cc59d4de80d3ef62beddbf0e69870b2ebaa5a0e7ba"
+    },
+    {
+      "id": "state_prepared",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "e4ba7516e97195cc8d24bb2a940318a1aa8312d6c254e77216ed73e68b0e9d4d"
+    },
+    {
+      "id": "state_prepared_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "8d9acea17d430782dd4db057b5b4e5ad972489040ddc23eda9db652cd93cbc8f"
+    },
+    {
+      "id": "state_active",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "acf451a79a2fbdb6936f1e2401d49db577bf5bcefb10054b35214120e4d5cdf7"
+    },
+    {
+      "id": "state_active_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "f5b6c421f87f32035718c4870e957b38aa8598d6a8399c182bd2042c07f50ba0"
+    },
+    {
+      "id": "state_cancelled",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "729a8ec5a76671fff77e67ccd0605e9139620f824388f42fd8b62ab163585020"
+    },
+    {
+      "id": "state_cancelled_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "55d5db905602846b9d47997318a6905d15e3e336f500149b4e88ed0e55781150"
+    },
+    {
+      "id": "state_protected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "8ea740a8d1401be9191fe6967c5168ade8b47e0f9a9ae67811721def8307ed34"
+    },
+    {
+      "id": "state_protected_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "7e62d17b086ce32c86c5b0d5f36a1f55781ca4c2bb3328b8723919d02ee722c3"
+    },
+    {
+      "id": "state_attached",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "042368bdc2d2e792d91c1c48460e7019d5f75cb63a8c812d6d4b26d5163bc10b"
+    },
+    {
+      "id": "state_attached_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "1699f308d788c402f3e29e718fec3d6cfd704b19792e73aad54e7161f0b31010"
+    },
+    {
+      "id": "life",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "0f40bedf58eff8973fd8fe391819b4cc875fc7c5561442294790ecc032d6da07"
+    },
+    {
+      "id": "life_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ceac2f480908ee80b74c6fcfdd4ea9ee069cc4f65df5b60cc934451bcbe02a89"
+    },
+    {
+      "id": "mana",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c8947b965e7c90c8d5ff407169fd32021402094ae5e5499f8bedae30c94f34c5"
+    },
+    {
+      "id": "mana_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "0dc330862be5d4f10e6a7597f2ec5321e9f52ea5453a663ed7cdd56fdd0e8ede"
+    },
+    {
+      "id": "load",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b136dbcdc81e98dad88dbdb5d3f4e83fc4f798042f3771a4aef608b2b1de69d2"
+    },
+    {
+      "id": "load_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "6526c7446e976dfef88e4eae8fd0ad9339b48d9cca098bbdf6dd9ac6c82594a3"
+    },
+    {
+      "id": "capacity",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "d39dc57f85e31d219284787da775b9c238d79922dc41aafb1e09cac524469099"
+    },
+    {
+      "id": "capacity_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "034490be993bd04da7265a7759c797a6567f0086dc800fa3f078275877d56f90"
+    },
+    {
+      "id": "zone_formation",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ab971230b5c3729600ecac5fd0f7fe05565ac91aa82135df1a24677d4d8bcc43"
+    },
+    {
+      "id": "zone_formation_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "18d6fed2390f6d25cc656af6f80856fd357d028f182bde1dbf783ca0622e81c6"
+    },
+    {
+      "id": "zone_analysis",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "1adb0cce52b27f02c0bf66f31c412abe52fc967eef719b49b7484640b724a722"
+    },
+    {
+      "id": "zone_analysis_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "03d35373ef1f08805744f551277a04aedd6656874d85ae4e83341e36a0312883"
+    },
+    {
+      "id": "zone_casting",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "85a5a0a647f7cf219a571fc5a4e98d08e827d6ef625ec23545c884699bd12a2a"
+    },
+    {
+      "id": "zone_casting_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "98a09b917adfc67b8389e2c4f60def1bb272b4eb78119e415f38ded34bac0414"
+    },
+    {
+      "id": "zone_words",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "36ef95d7281b945e6fb06194b30eca43964ae44e49905be41c1417fbf7a2b9d2"
+    },
+    {
+      "id": "zone_words_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "4bf5b83c521142a2407ae2aef5a811150ebcc1f5ff787b2c999806e4c7b8cf83"
+    },
+    {
+      "id": "zone_action",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "1a20ae199ad8626d1c8b7127f91fd18180ec32c2f0c8ec3b2f59f5205753c3db"
+    },
+    {
+      "id": "zone_action_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "35774a80f31f6ca9ec53ced92a95e9cd3c7e2737a23322c47ca8a830432dbd31"
+    },
+    {
+      "id": "zone_ash",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "0448973f5376e9223decbd7f46ab4bc354841a8a7c294117ecccaf9c2bce4f5d"
+    },
+    {
+      "id": "zone_ash_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "d080ad26ea2fa656556848c513e91ee03a96de5cfb571f32afcb59b54ab2a3d2"
+    },
+    {
+      "id": "zone_hand",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "045d6518b265024459ecfa7b999348f037087912e0c54bbd60d8097e1017c3f3"
+    },
+    {
+      "id": "zone_hand_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "70d80f02b2c4e1bcd9e6dc5613a5aba3b63eb9f23254674475ee683234d395a1"
+    },
+    {
+      "id": "zone_deck",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "045d6518b265024459ecfa7b999348f037087912e0c54bbd60d8097e1017c3f3"
+    },
+    {
+      "id": "zone_deck_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "70d80f02b2c4e1bcd9e6dc5613a5aba3b63eb9f23254674475ee683234d395a1"
+    },
+    {
+      "id": "close",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "eabdcd3dbc51dc8a351bbb7999bb63d1338667227740cee719054706593ca7ed"
+    },
+    {
+      "id": "close_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "a647456556dca57049465eb00409159358ccdcc6aa0c1600ed22b1c8ce930633"
+    },
+    {
+      "id": "confirm",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "7c88fd06453d4bc4258d867874899784bee82dc9da83508cf810f0fd6c300a6f"
+    },
+    {
+      "id": "confirm_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "dec007a2d12d1f6da7fe01cc59d4de80d3ef62beddbf0e69870b2ebaa5a0e7ba"
+    },
+    {
+      "id": "cancel",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "eabdcd3dbc51dc8a351bbb7999bb63d1338667227740cee719054706593ca7ed"
+    },
+    {
+      "id": "cancel_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "a647456556dca57049465eb00409159358ccdcc6aa0c1600ed22b1c8ce930633"
+    },
+    {
+      "id": "left",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "dac3418e72f207e39ee2330b1f95881a349223f5cc56e9959046c9981dca16a6"
+    },
+    {
+      "id": "left_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c957945cf2d9bdb9759bef554518a20e8ff7b3b09cc9a8366c6d616dabb38985"
+    },
+    {
+      "id": "right",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "d58f5060abecbc7d3aa01048517a925b1dbfd249e27548c9371a1d51c75a1de0"
+    },
+    {
+      "id": "right_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "e38e4457b01f930ee2f2de0dcd88f9b1e3390cd133c7667fbf490ac30df6b24d"
+    },
+    {
+      "id": "up",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "e9fd3945e308389315e4f536bc0daa3c1e1c600698cfc239ba116960f95e075a"
+    },
+    {
+      "id": "up_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "24566ece3b1e62fbbbe98c9d02da353a5c9026389493dc839162507e7f861f41"
+    },
+    {
+      "id": "down",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ee5468e66856b3e7f18aa7e89d48315afe899b49a6493d08f5ab3064e81da113"
+    },
+    {
+      "id": "down_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "0bb389abc165b1d9708d30d92d5034e00d8304e25f25a3eabe351ab6f9c9e5a3"
+    },
+    {
+      "id": "save",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "bc221bebca1097b1e5989745cd9ea6f5a152a0569e3ab4e0eba069ea738f9af1"
+    },
+    {
+      "id": "save_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "4f6d34e0a338db412960c12ee31c7b81332a7054c98aa5a59ee10a1470623cfd"
+    },
+    {
+      "id": "log",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "1adb0cce52b27f02c0bf66f31c412abe52fc967eef719b49b7484640b724a722"
+    },
+    {
+      "id": "log_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "03d35373ef1f08805744f551277a04aedd6656874d85ae4e83341e36a0312883"
+    },
+    {
+      "id": "surrender",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "eee9a30a916e0302b8be5fc19cde732b07b0b4e675619fd939e1757858e7158d"
+    },
+    {
+      "id": "surrender_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "bdb5c37747bb8863beda658a6c87665eed2547bcadc2b17fc50e1d11e5f48b71"
+    },
+    {
+      "id": "success",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "7c88fd06453d4bc4258d867874899784bee82dc9da83508cf810f0fd6c300a6f"
+    },
+    {
+      "id": "success_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "dec007a2d12d1f6da7fe01cc59d4de80d3ef62beddbf0e69870b2ebaa5a0e7ba"
+    },
+    {
+      "id": "no_action",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "09a7788dc48662d37f48e7b7fc08314de8c8e15b18e5c0e34f493d038b2d473f"
+    },
+    {
+      "id": "no_action_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "9386e1dd5620c50951a1ffa199241d30ecaa977d659a737be069af94e9b31552"
+    },
+    {
+      "id": "wrong_target",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "e8c722c06f922d7ad033cc66ba99afb18641ddfe01368b77fcc2a31fb50b607a"
+    },
+    {
+      "id": "wrong_target_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "9d9c9e3837da24c7b747efb3464c86fe7ac07604c2bc509d1f8db0482905bd62"
+    },
+    {
+      "id": "rejected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c0dd9a12c2e9211eb1c00908e37303f288a6ee3d8089bd47698103d408d41112"
+    },
+    {
+      "id": "rejected_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b82b1e8e72255392b46d3cab7d102acc60bead810e7d3228b656248384fc333a"
+    },
+    {
+      "id": "eye",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "da244b68d5705d0689bb231af497961796a7574e73043762188ce388209feba4"
+    },
+    {
+      "id": "eye_64",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b6ea78c164d22980dda2cdc9acc9f9caf449ab27e59bb549d03bb80eca3cbb0f"
+    },
+    {
+      "id": "frame_action_hand",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "036bb5f7d2917d300333bc9a3422bfb453fff0706cdce28f5c806c18fc45b497"
+    },
+    {
+      "id": "frame_action_strip",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "f55a9648fa06efa173ff8a01d1fca2d38ae67955b241b45ab425846dee284803"
+    },
+    {
+      "id": "frame_action_portrait",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "290f70cc6f669ec87ec61335b65da6897e9c2340c2ae54e89c96f0f1fee07a37"
+    },
+    {
+      "id": "frame_action_detail",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "6a001ba13d541c02ed6b045e81bf4789cb1ed9efb3a2ea50b95a7b88e3a4249e"
+    },
+    {
+      "id": "frame_analytic_hand",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "890091b505663318e349ef7e9757dd3edae8ab566904aa353632613d1a1f4a3d"
+    },
+    {
+      "id": "frame_analytic_strip",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c48422c0e6d5f09fefb59a189073fcf810a62162ffeaa599f1e526716fd0e212"
+    },
+    {
+      "id": "frame_analytic_portrait",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "d0b06607285997f215afc815f7fd4e45398fe57ad742415a4ad43af7f88cfbce"
+    },
+    {
+      "id": "frame_analytic_detail",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c9b3da1fd48fbd9761aa37318a454fd4003845e4c552e407c00f58706c62ae17"
+    },
+    {
+      "id": "frame_word_hand",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "fd4b28bb4013430f18a323b575107e262b826938dd42f3b39d39a962b8c06a49"
+    },
+    {
+      "id": "frame_word_strip",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c88f5334ab57a8708fa2fca4c70fb9f0c7bcef8f522b19e21dcefca87bf7551b"
+    },
+    {
+      "id": "frame_word_portrait",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "e6a84f3b8986c50a2fc4e27f3ae7d9d8138890e199d89928edd7c07d0bead7f3"
+    },
+    {
+      "id": "frame_word_detail",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "6ae6b20c215ad56bdeb955349dd3622769c932c20ba1c3040759301501a6b1c7"
+    },
+    {
+      "id": "frame_formation_hand",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "4017dfe2e60680deb2af174279008998de118767470b2b33b1fc38b2d8008cce"
+    },
+    {
+      "id": "frame_formation_strip",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "4a4d9817352c4468ac6c065320c5fcea4357405616fc761a86259576d4553e4a"
+    },
+    {
+      "id": "frame_formation_portrait",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "0a282e2308864b3d361e5627082e2bd5cf3372ca85157d222a3a2c4761d5eeab"
+    },
+    {
+      "id": "frame_formation_detail",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "7567591d84db0abe78345a9852485720e0e5d7949edc05a67f57dbc969e3d217"
+    },
+    {
+      "id": "frame_seal_hand",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "562de63e61905e0435cd9882f7a7a997c71ecb5834ad36e90026085423601a44"
+    },
+    {
+      "id": "frame_seal_strip",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "3f02a4b7ee5cb0258f51f83753bbca8c05eb1626fe19de1d0f1dd03ff5cdb38d"
+    },
+    {
+      "id": "frame_seal_portrait",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "f8f7bf0d36c4bb866ef23fb45aded34726e58f78bafb17df228cd3e575125356"
+    },
+    {
+      "id": "frame_seal_detail",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "d5e97ddf6f8c673813fd025f130a986dea5495ca98924c794eb727250f31e290"
+    },
+    {
+      "id": "rarity_common",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "a2feab371f27a3315814d8a3b7615f78b0866dd102bed668e038bcf95ef1f0c8"
+    },
+    {
+      "id": "rarity_uncommon",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "6758bd336f3a12e5cd3857d02e71b35149e385c52f34962c32de5a1d81676263"
+    },
+    {
+      "id": "rarity_rare",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "94c3e147cc05fd97ab71681fd2196f7dd3e69dcea7e163607c94dd837b91d0f9"
+    },
+    {
+      "id": "rarity_epic",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "f371cee64cf4ca7baa85892a0cbf14e077fcb928e2a07f8ec7d9f301f8fec616"
+    },
+    {
+      "id": "rarity_legendary",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "57fe54c3d6374c37c2f300978a910189167aaad15463ae8c1ed9a9ccec1b93c7"
+    },
+    {
+      "id": "card_back_hand",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "0a9ad4f21ec6b615571ebb36073191eed2bb4e3cdd316253e95cea5b073efc85"
+    },
+    {
+      "id": "card_back_opponent",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "01b7f0dde7a34d88bb21fe6f0f3877b6b37e78c7a0a3b64d4712292f6089e2c3"
+    },
+    {
+      "id": "card_back_deck",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "96d1381ab8435a137c1a8be4cee8318609db6170def8474bd25c37a20b73b6f5"
+    },
+    {
+      "id": "missing_art",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c74f48f1c8e4cbfe6c726c9fdcd5b471aa0fa83cf9eab8c018d2d0e5f31ea0b0"
+    },
+    {
+      "id": "button_primary_normal",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b0b404d9cc9eba7ab5e5d47dd252913fc6269b65d35e98757ae3eb6a1ef690fb"
+    },
+    {
+      "id": "button_primary_hover",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b93463ff4378b7f713240610dcb6d1a295e33d81d4162d9d362788b66c38fd6b"
+    },
+    {
+      "id": "button_primary_pressed",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b01d1424d4ab1eefec4a8610a2a428ee79327b4deb199e4422720aa5fa3792db"
+    },
+    {
+      "id": "button_primary_disabled",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ccbda9c34f1cd071fba12e48645430ac102a2838af92693e3b9a855ea1623e5e"
+    },
+    {
+      "id": "button_secondary_normal",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "34bca932e54b51f04417a0fea3307229534f9a4265c91e9ed9b018f850de3587"
+    },
+    {
+      "id": "button_secondary_hover",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "053c4c4fd46e4a26b8104339581a067ada84001cce3c56f08f43d071de718f07"
+    },
+    {
+      "id": "button_secondary_pressed",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "87517b4474cb01db5a12c6226d84f63fbd7a44af454f3ccafddf54442b854fd5"
+    },
+    {
+      "id": "button_secondary_disabled",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ccbda9c34f1cd071fba12e48645430ac102a2838af92693e3b9a855ea1623e5e"
+    },
+    {
+      "id": "button_danger_normal",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "7aeccfd4db3ee27575e83129dd5143323bf47a0982c8c473e2e010dbd22d78c4"
+    },
+    {
+      "id": "button_danger_hover",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "9ccd1670844a1bf16e8eff1107874b78274d1c6e749060044b84785baf246e98"
+    },
+    {
+      "id": "button_danger_pressed",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "03ab17c0375fd8f561f4a748eb82957fa6a0a56c635d3db62f094191e4f6b337"
+    },
+    {
+      "id": "button_danger_disabled",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ccbda9c34f1cd071fba12e48645430ac102a2838af92693e3b9a855ea1623e5e"
+    },
+    {
+      "id": "overlay_hand_hover",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "00c05c47b5fc91a678604f7cbde4cc912c14d69d6221edf94ad965fdab3e72f5"
+    },
+    {
+      "id": "overlay_hand_selected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "8efb437ea9a285af3b68140fec2e85fb1e00e01b836ab18ff22376ab37e9277f"
+    },
+    {
+      "id": "overlay_hand_target_candidate",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "0be5982052fc6e4add9e379161db5b4b439147118c8b2f1816c2cb87e1960b72"
+    },
+    {
+      "id": "overlay_hand_target_selected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "51d555717c46468fd44b9da4eccb9bd82510c67a265090210bc0f0b838d4bc42"
+    },
+    {
+      "id": "overlay_hand_cost_candidate",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "236c1c18b2e506a1a9ba88d2c31fe1faa16db758943516a268aecbab6819ef64"
+    },
+    {
+      "id": "overlay_hand_cost_selected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b068b36f1a5803d2014ac67a3bfd4626c5252178da3e10f2683d810362f218ba"
+    },
+    {
+      "id": "overlay_strip_hover",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "085be032366502249b0363bd174694fa889cc3b440bb6e9b406639b5b909257d"
+    },
+    {
+      "id": "overlay_strip_selected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "6b81d738e0d0d3eabc09d2d24acdf1268bc475c2e4a15ad7372462f539bd22db"
+    },
+    {
+      "id": "overlay_strip_target_candidate",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "e9548b35f14e2a344c26a1429ed10a8cf28e4c2ce1a05ab3087190c52ea5fe41"
+    },
+    {
+      "id": "overlay_strip_target_selected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ad8772031083abae9389e25e00d97f9a3f4c8740ea68fa321be83592fee447a4"
+    },
+    {
+      "id": "overlay_strip_cost_candidate",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "a803c4d9078f397ca26263fcc13a85e3afc852231e685b0a1d0729eda01c4f9a"
+    },
+    {
+      "id": "overlay_strip_cost_selected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "d2bf2f8525a74adc0976665333c2e8caf21a103028d4e7b0058a63ea4d25055d"
+    },
+    {
+      "id": "overlay_portrait_hover",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "e6ef973222407273a764cf169d5878950178e0e6f032facb212e93a1cd5c5530"
+    },
+    {
+      "id": "overlay_portrait_selected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "99cc8314d1c47fc32e7e5ba41aec2f53ecdb38896cf745e41e4560342e96d4ff"
+    },
+    {
+      "id": "overlay_portrait_target_candidate",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b20c46d70fe464891d09fcd521ae02e9347242988317ddfc844f76d36cdd4b74"
+    },
+    {
+      "id": "overlay_portrait_target_selected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "e6cd5ffd4cc3ed3817d2fa13e8eb2706c7fcbddf962c4ccf7dce76b73ee71331"
+    },
+    {
+      "id": "overlay_portrait_cost_candidate",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "552aa33fbbe2d0ece96ba17707c8b2c58efbe95b24c478426967def763031568"
+    },
+    {
+      "id": "overlay_portrait_cost_selected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "e2013160a6a2c173db26518b03011ac6f2bac8ab0fc8356845dc15ed11743cfd"
+    },
+    {
+      "id": "region_formation",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "cb0f0ac48eb1e5a80e6b2e3a0a6fe54847b9003c5057de9268726ed660beabf7"
+    },
+    {
+      "id": "region_analysis",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "57a61c201c6e97b4a839e4a0aad38ab44d80c1e7cc4a88ecfce8dc05d6298640"
+    },
+    {
+      "id": "region_casting",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b176ff8e8058685e8aa6930f9749d2ac4ed942f6174cb3564d92c27a558f301f"
+    },
+    {
+      "id": "region_words",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "30b313765c2abdda95d27915a59ff4a75524cb77882c98a917411840a5a61924"
+    },
+    {
+      "id": "region_action",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "68c6932d6dfab53543ae1199e3515721122ca6526e93267fda94ba444be00795"
+    },
+    {
+      "id": "region_ash",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b2fd002d27136f5a14077cc26b4d4f869eee7bc2bc853b6501118413e845b3b9"
+    },
+    {
+      "id": "region_hand",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "3b9de25a644faf06b88e0cd9612e79c475fb5c76d6664e03bcbf17de0b7f634a"
+    },
+    {
+      "id": "region_deck",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ae388754404c7fa5c507ce45ec9d6f5774bc145f823b82b2dae9cf99b8a6f564"
+    },
+    {
+      "id": "slot_empty",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "957bc35ea910cff93fd37f6d1d2f7ccabf1bae536e97f414c37f31124060bd8e"
+    },
+    {
+      "id": "slot_occupied",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "4ed30559040b284309f941ef264525d8c022ad1685aa1c58e9e2ef42e9d4e9ee"
+    },
+    {
+      "id": "slot_span",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "d13de9e4ef113aabc74dca1e18f1d060bd44c0d5179b7e8701cabc851f9e1b73"
+    },
+    {
+      "id": "host_connector",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "f3c1bc8164c7958bc35fc5bdac9a78a69f7cae713d45b172a457c4257c451872"
+    },
+    {
+      "id": "hud",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "43c4cd471f48983a58d10fe6bb7623f0726e39b130264429893703d1e8d27afa"
+    },
+    {
+      "id": "phase_bar",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "1db58e9334137320cdd469bc3435fb7fce64d675e3bff3118888b6028f24890f"
+    },
+    {
+      "id": "task_hint",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "cfb31bcce91786207f768584c75e9a054bbc7e4f3213a8aaf0e89a2d98272806"
+    },
+    {
+      "id": "action_bar",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "c3b9ee7bcf6b0f76405cda4c749443d9029f31560f8d123266446a16626e9aae"
+    },
+    {
+      "id": "summary",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "f04fb7d6cfd2d221f5819e8529a35b0cefb75b952cabe49a168757c505f644ef"
+    },
+    {
+      "id": "decision",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "b90e3e83c6dd16fc942ec1d80044969f8194c3617022bc69f694d594d3d275f6"
+    },
+    {
+      "id": "log_window",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "8971bd8c9b095bb198b2797916408a2495e464c483ea6402e2c61845f78c68f1"
+    },
+    {
+      "id": "result_window",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ef7f0d7521af2df4c8ae3e4d92a1498de0099d8346e7343c51da9bf00e3bc4a9"
+    },
+    {
+      "id": "handoff",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "a7546d9d559a77958e5695aec00eab58ca36068b4c83e45dda59de311dd4a9fc"
+    },
+    {
+      "id": "phase_inactive",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "ad0991ee13357f69cf3d039bf239a23ab19b0b878d8d94a216054ef8791d5989"
+    },
+    {
+      "id": "phase_current",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "8801967b86256d3bce1b19a5cb1b95c46b8ea77d5bfafeb7504e4d1d4778aef1"
+    },
+    {
+      "id": "phase_complete",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "98b594c2ff2d0d84aca9d790fd8865c2f5039cb143cd5b1e023c97ac2bfa9f0b"
+    },
+    {
+      "id": "scroll_track",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "cb83e4ac2042e32f0d24f6ecfa6c56432986eb1cd6e7b6e51c65208c3d974b5d"
+    },
+    {
+      "id": "scroll_thumb",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "558ed41c7003d4e79d4d529c74dda080add1c47bd300d8eb8f0f0da20b2c1531"
+    },
+    {
+      "id": "result_victory",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "7ccd419d13e3543514e49a3cb3fbbad6f3a8008aacd22c8a799c23bbf227a2dc"
+    },
+    {
+      "id": "result_defeat",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "25218dccfa00da7b8fe7bfa04b73b212c7369595f879fa399cfad3a88fc462fd"
+    },
+    {
+      "id": "result_draw",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "6f44490f180c88325ee64fccf07d23b919c79617530b6f4d7023c3006e7a004c"
+    },
+    {
+      "id": "feedback_success",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "8a3d4104534b35eedb4c3650bc5fe65502407d4949e9caa3cec556ea0a41e3a5"
+    },
+    {
+      "id": "feedback_no_action",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "4d234350c232f13e098d42f087f55a6b828b9067f812d8aacbc3ad7bb7f56982"
+    },
+    {
+      "id": "feedback_wrong_target",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "eb5a2450467466f590fd4e2cd27f13a6fd352c80a371f55d3dab672920516622"
+    },
+    {
+      "id": "feedback_rejected",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "7448f19bc16a693a40a813493f0773d3cb753d97731011525eda9a09eb18ede2"
+    },
+    {
+      "id": "stepper_0",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "d9482fab5e50413fa57ff2e2d14edfe8010827e2be798ddd741889a58477d0d2"
+    },
+    {
+      "id": "stepper_1",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "268f9efc1830ab38d913916a75a7b0c03b2c5ef95759adb76c26c49a77047068"
+    },
+    {
+      "id": "stepper_2",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "37514dd5f3fbed6c28fbb29569fce439dd88b3d2fd19ce475cf4276a4729d782"
+    },
+    {
+      "id": "stepper_3",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "24c96b170672213a6344511e6386bd4a017c54de6084b451733c7ce6c132b32a"
+    },
+    {
+      "id": "match_background",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "1ba2c8bc8c69b0c3068ee68e490e55509f4c6f19b0b012daff3f9e82545c896f"
+    },
+    {
+      "id": "board_decoration",
+      "size_ok": true,
+      "binary_alpha": true,
+      "palette_ok": true,
+      "source_ok": true,
+      "no_baked_text": true,
+      "sha256": "d7d45620933431d31a09723019fe28bbea611610b58cf5336dc49b0889304a7b"
+    }
+  ],
+  "previews": [
+    {
+      "id": "cards_all_types",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "icons_catalog",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "interaction_catalog",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "card_backs_privacy",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "cards_full_details",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "card_state_examples",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "board_initial",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "board_complex",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_01_inspect_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_01_inspect_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_02_formation_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_02_formation_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_02_formation_03",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_03_analysis_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_03_analysis_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_03_analysis_03",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_04_prepare_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_04_prepare_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_04_prepare_03",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_04_prepare_04",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_04_prepare_05",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_05_action_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_05_action_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_06_words_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_06_words_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_06_words_03",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_06_words_04",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_07_seal_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_07_seal_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_07_seal_03",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_07_seal_04",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_08_casting_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_09_discard_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_09_discard_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_10_temporary_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_11_order_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_11_order_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_12_cancel_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_12_cancel_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_13_result_01",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_13_result_02",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_13_result_03",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "flow_13_result_04",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "edge_action_bar",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "log_window",
+      "size_ok": true,
+      "linked_assets_ok": true
+    },
+    {
+      "id": "surrender_confirm",
+      "size_ok": true,
+      "linked_assets_ok": true
+    }
+  ],
+  "errors": [],
+  "notes": [
+    "fireball: outer edge has alpha 1/255 residue; original AI output preserved, not strict binary-alpha pixel art.",
+    "recall: outer edge has alpha 1/255 residue; original AI output preserved, not strict binary-alpha pixel art.",
+    "ring: outer edge has alpha 1/255 residue; original AI output preserved, not strict binary-alpha pixel art.",
+    "mend: outer edge has alpha 1/255 residue; original AI output preserved, not strict binary-alpha pixel art.",
+    "unravel: outer edge has alpha 1/255 residue; original AI output preserved, not strict binary-alpha pixel art.",
+    "disrupt: outer edge has alpha 1/255 residue; original AI output preserved, not strict binary-alpha pixel art.",
+    "clarity: outer edge has alpha 1/255 residue; original AI output preserved, not strict binary-alpha pixel art.",
+    "conduit: outer edge has alpha 1/255 residue; original AI output preserved, not strict binary-alpha pixel art.",
+    "ward: outer edge has alpha 1/255 residue; original AI output preserved, not strict binary-alpha pixel art."
+  ],
+  "summary": {
+    "card_illustrations": 13,
+    "new_illustrations": 9,
+    "ui_pngs": 190,
+    "ui_categories": {
+      "icons": 92,
+      "cards": 29,
+      "interaction": 48,
+      "board": 21
+    },
+    "design_sheets": 46,
+    "flows": 13,
+    "preserved_original_four": true,
+    "errors": 0
+  }
+}

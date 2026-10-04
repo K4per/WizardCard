@@ -1,0 +1,18 @@
+{
+  "rulesVersion":"0.2.3", "cardSetVersion":"0.1.0",
+  "cards":[
+    {"id":"balance","name":"均衡","rarity":"common","type":"formation","body":2,"capacity":8,"income":1,"rings":3,"maxRank":2,"text":"阵体2；容量8；收入1；环位3；最高位阶2。作为基础阵法时受到保护。"},
+    {"id":"fireball","name":"火球术","rarity":"rare","type":"analytic","cost":3,"castCost":1,"rank":2,"target":"opponent","effects":[{"kind":"damage","amount":6}],"text":"解析3 / 施法1；对手受到6点火焰伤害。"},
+    {"id":"barbs","name":"银光锐语","rarity":"uncommon","type":"word","cost":4,"rank":1,"effects":[{"kind":"cancel"}],"text":"预置4；对手宣告准备施法时，可取消那次准备。"},
+    {"id":"recall","name":"奥术回想","rarity":"common","type":"action","cost":2,"burden":1,"effects":[{"kind":"draw","amount":2}],"text":"费用2；使用时获得1临时荷载，本回合结束移除；抽2张。"},
+    {"id":"ring","name":"奥术圆环","rarity":"common","type":"seal","cost":1,"ringBonus":1,"refundCast":1,"text":"阵法：环位+1。法术：成功释放后返还本次施法段实际费用。"},
+    {"id":"spark","name":"火花术","rarity":"common","type":"analytic","cost":1,"castCost":1,"rank":1,"target":"opponent","effects":[{"kind":"damage","amount":3}],"text":"解析1 / 施法1；对手受到3点火焰伤害。"},
+    {"id":"mend","name":"生命缝合","rarity":"common","type":"analytic","cost":1,"castCost":1,"rank":1,"target":"self","effects":[{"kind":"heal","amount":4}],"text":"解析1 / 施法1；恢复4生命，最多30。"},
+    {"id":"unravel","name":"结构瓦解","rarity":"rare","type":"analytic","cost":4,"castCost":2,"rank":2,"extraDiscard":1,"target":"empty_enemy_formation","effects":[{"kind":"destroy"}],"text":"解析4 / 施法2；准备额外弃一张手牌；销毁对手空闲扩展阵法。"},
+    {"id":"disrupt","name":"魔力扰动","rarity":"uncommon","type":"action","cost":2,"target":"opponent","effects":[{"kind":"temporary","amount":2}],"text":"对手获得2临时荷载，在对手下一个结束阶段移除。"},
+    {"id":"clarity","name":"清心","rarity":"common","type":"action","cost":1,"target":"self","effects":[{"kind":"clear_temporary","amount":2}],"text":"按自己选择的来源分配，移除最多2点临时荷载。"},
+    {"id":"reservoir","name":"蓄能阵","rarity":"common","type":"formation","body":1,"capacity":3,"income":0,"rings":1,"maxRank":1,"text":"阵体1；容量3；收入0；环位1；最高位阶1。"},
+    {"id":"conduit","name":"导流阵","rarity":"uncommon","type":"formation","body":2,"capacity":4,"income":2,"rings":1,"maxRank":1,"text":"阵体2；容量4；收入2；环位1；最高位阶1。"},
+    {"id":"ward","name":"炽燃结界","rarity":"uncommon","type":"analytic","cost":2,"castCost":1,"rank":2,"duration":2,"target":"opponent","effects":[{"kind":"damage","amount":2}],"onPrepare":[{"kind":"damage","amount":2}],"text":"解析2 / 施法1；持续2。释放及自己的准备阶段对对手造成2伤害。"}
+  ]
+}

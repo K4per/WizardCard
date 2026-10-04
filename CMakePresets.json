@@ -1,0 +1,15 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {"name":"windows","generator":"Visual Studio 17 2022","architecture":"x64","binaryDir":"${sourceDir}/build/windows","cacheVariables":{"WIZARD_BUILD_CLIENT":"ON"}},
+    {"name":"headless","generator":"Ninja","binaryDir":"${sourceDir}/build/headless","cacheVariables":{"CMAKE_BUILD_TYPE":"Debug","WIZARD_BUILD_CLIENT":"OFF"}}
+  ],
+  "buildPresets": [
+    {"name":"windows","configurePreset":"windows","configuration":"Release"},
+    {"name":"headless","configurePreset":"headless"}
+  ],
+  "testPresets": [
+    {"name":"windows","configurePreset":"windows","configuration":"Release","output":{"outputOnFailure":true}},
+    {"name":"headless","configurePreset":"headless","output":{"outputOnFailure":true}}
+  ]
+}

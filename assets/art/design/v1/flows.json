@@ -1,0 +1,441 @@
+{
+  "flows": [
+    {
+      "id": "01_inspect",
+      "title": "选中与查看",
+      "states": [
+        "flow_01_inspect_01",
+        "flow_01_inspect_02"
+      ]
+    },
+    {
+      "id": "02_formation",
+      "title": "设置与替换阵法",
+      "states": [
+        "flow_02_formation_01",
+        "flow_02_formation_02",
+        "flow_02_formation_03"
+      ]
+    },
+    {
+      "id": "03_analysis",
+      "title": "开始解析",
+      "states": [
+        "flow_03_analysis_01",
+        "flow_03_analysis_02",
+        "flow_03_analysis_03"
+      ]
+    },
+    {
+      "id": "04_prepare",
+      "title": "准备施法与额外成本",
+      "states": [
+        "flow_04_prepare_01",
+        "flow_04_prepare_02",
+        "flow_04_prepare_03",
+        "flow_04_prepare_04",
+        "flow_04_prepare_05"
+      ]
+    },
+    {
+      "id": "05_action",
+      "title": "使用行动",
+      "states": [
+        "flow_05_action_01",
+        "flow_05_action_02"
+      ]
+    },
+    {
+      "id": "06_words",
+      "title": "预置与触发言灵",
+      "states": [
+        "flow_06_words_01",
+        "flow_06_words_02",
+        "flow_06_words_03",
+        "flow_06_words_04"
+      ]
+    },
+    {
+      "id": "07_seal",
+      "title": "附加与拆除符文",
+      "states": [
+        "flow_07_seal_01",
+        "flow_07_seal_02",
+        "flow_07_seal_03",
+        "flow_07_seal_04"
+      ]
+    },
+    {
+      "id": "08_casting",
+      "title": "施法顺序选择",
+      "states": [
+        "flow_08_casting_01"
+      ]
+    },
+    {
+      "id": "09_discard",
+      "title": "结束阶段弃牌",
+      "states": [
+        "flow_09_discard_01",
+        "flow_09_discard_02"
+      ]
+    },
+    {
+      "id": "10_temporary",
+      "title": "移除临时荷载",
+      "states": [
+        "flow_10_temporary_01"
+      ]
+    },
+    {
+      "id": "11_order",
+      "title": "触发顺序与多余法术",
+      "states": [
+        "flow_11_order_01",
+        "flow_11_order_02"
+      ]
+    },
+    {
+      "id": "12_cancel",
+      "title": "取消与重新选择",
+      "states": [
+        "flow_12_cancel_01",
+        "flow_12_cancel_02"
+      ]
+    },
+    {
+      "id": "13_result",
+      "title": "终局与重开",
+      "states": [
+        "flow_13_result_01",
+        "flow_13_result_02",
+        "flow_13_result_03",
+        "flow_13_result_04"
+      ]
+    }
+  ],
+  "sheets": [
+    {
+      "id": "cards_all_types",
+      "title": "五类卡牌与三种展示规格",
+      "png": "previews/cards_all_types.png",
+      "source": "previews/cards_all_types.svg",
+      "annotation": ""
+    },
+    {
+      "id": "icons_catalog",
+      "title": "类型、属性、状态、资源与区域图标",
+      "png": "previews/icons_catalog.png",
+      "source": "previews/icons_catalog.svg",
+      "annotation": ""
+    },
+    {
+      "id": "interaction_catalog",
+      "title": "按钮、选择层级、结果和反馈样式",
+      "png": "previews/interaction_catalog.png",
+      "source": "previews/interaction_catalog.svg",
+      "annotation": ""
+    },
+    {
+      "id": "card_backs_privacy",
+      "title": "通用卡背、牌库和换手遮挡",
+      "png": "previews/card_backs_privacy.png",
+      "source": "previews/card_backs_privacy.svg",
+      "annotation": ""
+    },
+    {
+      "id": "cards_full_details",
+      "title": "全卡池规则、位阶、解析时间与目标",
+      "png": "previews/cards_full_details.png",
+      "source": "previews/cards_full_details.svg",
+      "annotation": "全部当前规则全文；后续更长文本使用详情内部滚动，执行按钮不进入详情。"
+    },
+    {
+      "id": "card_state_examples",
+      "title": "七类状态与关联标识组合",
+      "png": "previews/card_state_examples.png",
+      "source": "previews/card_state_examples.svg",
+      "annotation": ""
+    },
+    {
+      "id": "board_initial",
+      "title": "初始场地",
+      "png": "previews/board_initial.png",
+      "source": "previews/board_initial.svg",
+      "annotation": "双方按当前mirror公式布局；基础均衡占2槽，行动不限次数。"
+    },
+    {
+      "id": "board_complex",
+      "title": "复杂场地",
+      "png": "previews/board_complex.png",
+      "source": "previews/board_complex.svg",
+      "annotation": "阵体2跨槽、解析宿主、持续计数、附着角标、资源与滚动提示。手工设计状态，非规则重放存档。"
+    },
+    {
+      "id": "flow_01_inspect_01",
+      "title": "选中与查看 · 查看与合法操作",
+      "png": "previews/flow_01_inspect_01.png",
+      "source": "previews/flow_01_inspect_01.svg",
+      "annotation": "选中与查看：查看与合法操作。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_01_inspect_02",
+      "title": "选中与查看 · 无合法操作仍展示详情",
+      "png": "previews/flow_01_inspect_02.png",
+      "source": "previews/flow_01_inspect_02.svg",
+      "annotation": "选中与查看：无合法操作仍展示详情。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_02_formation_01",
+      "title": "设置与替换阵法 · 设置/替换菜单",
+      "png": "previews/flow_02_formation_01.png",
+      "source": "previews/flow_02_formation_01.svg",
+      "annotation": "设置与替换阵法：设置/替换菜单。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_02_formation_02",
+      "title": "设置与替换阵法 · 选择合法扩展阵法",
+      "png": "previews/flow_02_formation_02.png",
+      "source": "previews/flow_02_formation_02.svg",
+      "annotation": "设置与替换阵法：选择合法扩展阵法。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_02_formation_03",
+      "title": "设置与替换阵法 · 设置/替换确认",
+      "png": "previews/flow_02_formation_03.png",
+      "source": "previews/flow_02_formation_03.svg",
+      "annotation": "设置与替换阵法：设置/替换确认。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_03_analysis_01",
+      "title": "开始解析 · 开始解析",
+      "png": "previews/flow_03_analysis_01.png",
+      "source": "previews/flow_03_analysis_01.svg",
+      "annotation": "开始解析：开始解析。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_03_analysis_02",
+      "title": "开始解析 · 选择合法宿主",
+      "png": "previews/flow_03_analysis_02.png",
+      "source": "previews/flow_03_analysis_02.svg",
+      "annotation": "开始解析：选择合法宿主。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_03_analysis_03",
+      "title": "开始解析 · 确认解析支付",
+      "png": "previews/flow_03_analysis_03.png",
+      "source": "previews/flow_03_analysis_03.svg",
+      "annotation": "开始解析：确认解析支付。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_04_prepare_01",
+      "title": "准备施法与额外成本 · 查看法术",
+      "png": "previews/flow_04_prepare_01.png",
+      "source": "previews/flow_04_prepare_01.svg",
+      "annotation": "准备施法与额外成本：查看法术。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_04_prepare_02",
+      "title": "准备施法与额外成本 · 选择空闲扩展阵法",
+      "png": "previews/flow_04_prepare_02.png",
+      "source": "previews/flow_04_prepare_02.svg",
+      "annotation": "准备施法与额外成本：选择空闲扩展阵法。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_04_prepare_03",
+      "title": "准备施法与额外成本 · 选择额外弃牌成本",
+      "png": "previews/flow_04_prepare_03.png",
+      "source": "previews/flow_04_prepare_03.svg",
+      "annotation": "准备施法与额外成本：选择额外弃牌成本。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_04_prepare_04",
+      "title": "准备施法与额外成本 · 确认目标、成本与支付",
+      "png": "previews/flow_04_prepare_04.png",
+      "source": "previews/flow_04_prepare_04.svg",
+      "annotation": "准备施法与额外成本：确认目标、成本与支付。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_04_prepare_05",
+      "title": "准备施法与额外成本 · 被言灵取消后的法术保留",
+      "png": "previews/flow_04_prepare_05.png",
+      "source": "previews/flow_04_prepare_05.svg",
+      "annotation": "准备施法与额外成本：被言灵取消后的法术保留。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_05_action_01",
+      "title": "使用行动 · 使用行动菜单",
+      "png": "previews/flow_05_action_01.png",
+      "source": "previews/flow_05_action_01.svg",
+      "annotation": "使用行动：使用行动菜单。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_05_action_02",
+      "title": "使用行动 · 无卡牌目标时直接确认",
+      "png": "previews/flow_05_action_02.png",
+      "source": "previews/flow_05_action_02.svg",
+      "annotation": "使用行动：无卡牌目标时直接确认。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_06_words_01",
+      "title": "预置与触发言灵 · 预置言灵",
+      "png": "previews/flow_06_words_01.png",
+      "source": "previews/flow_06_words_01.svg",
+      "annotation": "预置与触发言灵：预置言灵。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_06_words_02",
+      "title": "预置与触发言灵 · 预置确认",
+      "png": "previews/flow_06_words_02.png",
+      "source": "previews/flow_06_words_02.svg",
+      "annotation": "预置与触发言灵：预置确认。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_06_words_03",
+      "title": "预置与触发言灵 · 响应换手",
+      "png": "previews/flow_06_words_03.png",
+      "source": "previews/flow_06_words_03.svg",
+      "annotation": "预置与触发言灵：响应换手。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_06_words_04",
+      "title": "预置与触发言灵 · response",
+      "png": "previews/flow_06_words_04.png",
+      "source": "previews/flow_06_words_04.svg",
+      "annotation": "预置与触发言灵：response。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_07_seal_01",
+      "title": "附加与拆除符文 · 附加符文",
+      "png": "previews/flow_07_seal_01.png",
+      "source": "previews/flow_07_seal_01.svg",
+      "annotation": "附加与拆除符文：附加符文。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_07_seal_02",
+      "title": "附加与拆除符文 · 选择合法宿主",
+      "png": "previews/flow_07_seal_02.png",
+      "source": "previews/flow_07_seal_02.svg",
+      "annotation": "附加与拆除符文：选择合法宿主。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_07_seal_03",
+      "title": "附加与拆除符文 · 附加确认",
+      "png": "previews/flow_07_seal_03.png",
+      "source": "previews/flow_07_seal_03.svg",
+      "annotation": "附加与拆除符文：附加确认。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_07_seal_04",
+      "title": "附加与拆除符文 · 独立角标查看与拆除",
+      "png": "previews/flow_07_seal_04.png",
+      "source": "previews/flow_07_seal_04.svg",
+      "annotation": "附加与拆除符文：独立角标查看与拆除。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_08_casting_01",
+      "title": "施法顺序选择 · casting",
+      "png": "previews/flow_08_casting_01.png",
+      "source": "previews/flow_08_casting_01.svg",
+      "annotation": "施法顺序选择：casting。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_09_discard_01",
+      "title": "结束阶段弃牌 · discard",
+      "png": "previews/flow_09_discard_01.png",
+      "source": "previews/flow_09_discard_01.svg",
+      "annotation": "结束阶段弃牌：discard。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_09_discard_02",
+      "title": "结束阶段弃牌 · 弃牌确认",
+      "png": "previews/flow_09_discard_02.png",
+      "source": "previews/flow_09_discard_02.svg",
+      "annotation": "结束阶段弃牌：弃牌确认。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_10_temporary_01",
+      "title": "移除临时荷载 · temporary",
+      "png": "previews/flow_10_temporary_01.png",
+      "source": "previews/flow_10_temporary_01.svg",
+      "annotation": "移除临时荷载：temporary。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_11_order_01",
+      "title": "触发顺序与多余法术 · trigger",
+      "png": "previews/flow_11_order_01.png",
+      "source": "previews/flow_11_order_01.svg",
+      "annotation": "触发顺序与多余法术：trigger。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_11_order_02",
+      "title": "触发顺序与多余法术 · overflow",
+      "png": "previews/flow_11_order_02.png",
+      "source": "previews/flow_11_order_02.svg",
+      "annotation": "触发顺序与多余法术：overflow。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_12_cancel_01",
+      "title": "取消与重新选择 · 尚未提交的成本选择",
+      "png": "previews/flow_12_cancel_01.png",
+      "source": "previews/flow_12_cancel_01.svg",
+      "annotation": "取消与重新选择：尚未提交的成本选择。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_12_cancel_02",
+      "title": "取消与重新选择 · Esc返回查看，资源不变",
+      "png": "previews/flow_12_cancel_02.png",
+      "source": "previews/flow_12_cancel_02.svg",
+      "annotation": "取消与重新选择：Esc返回查看，资源不变。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_13_result_01",
+      "title": "终局与重开 · 胜利",
+      "png": "previews/flow_13_result_01.png",
+      "source": "previews/flow_13_result_01.svg",
+      "annotation": "终局与重开：胜利。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_13_result_02",
+      "title": "终局与重开 · 失败",
+      "png": "previews/flow_13_result_02.png",
+      "source": "previews/flow_13_result_02.svg",
+      "annotation": "终局与重开：失败。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_13_result_03",
+      "title": "终局与重开 · 平局",
+      "png": "previews/flow_13_result_03.png",
+      "source": "previews/flow_13_result_03.svg",
+      "annotation": "终局与重开：平局。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "flow_13_result_04",
+      "title": "终局与重开 · 重开后换手",
+      "png": "previews/flow_13_result_04.png",
+      "source": "previews/flow_13_result_04.svg",
+      "annotation": "终局与重开：重开后换手。源卡、目标、额外成本与确认分层；仅确认提交后改变规则状态。"
+    },
+    {
+      "id": "edge_action_bar",
+      "title": "右侧边缘操作条避让",
+      "png": "previews/edge_action_bar.png",
+      "source": "previews/edge_action_bar.svg",
+      "annotation": "操作条右界不超过1340，避免与右侧只读详情面板重叠。"
+    },
+    {
+      "id": "log_window",
+      "title": "记录窗口",
+      "png": "previews/log_window.png",
+      "source": "previews/log_window.svg",
+      "annotation": "记录支持关闭；换手时不绘制。"
+    },
+    {
+      "id": "surrender_confirm",
+      "title": "投降确认",
+      "png": "previews/surrender_confirm.png",
+      "source": "previews/surrender_confirm.svg",
+      "annotation": "危险操作单独确认，取消不结束对局。"
+    }
+  ]
+}

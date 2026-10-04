@@ -64,7 +64,7 @@ GameView GameEngine::viewFor(PlayerId p) const {
     for(int i=0;i<2;++i) {
         const auto& pl=state_.players[i]; int hand=0;
         for(const auto& [id,c]:state_.cards) if(c.owner==i && c.zone==Zone::Hand) ++hand;
-        v.players[i]={pl.life,pl.mana,Rules::load(state_,i),Rules::capacity(state_,catalog_,i),hand,static_cast<int>(pl.deck.size()),pl.ownTurn,pl.actions};
+        v.players[i]={pl.life,pl.mana,Rules::load(state_,i),Rules::capacity(state_,catalog_,i),hand,static_cast<int>(pl.deck.size()),pl.ownTurn,pl.actionsPlayed};
     }
     for(const auto& [id,c]:state_.cards) if(c.zone!=Zone::Deck && (c.zone!=Zone::Hand || c.owner==p)) {
         const auto& def=catalog_.at(c.definition);CardView card{c,def};
@@ -79,7 +79,7 @@ GameView GameEngine::viewFor(PlayerId p) const {
 std::string GameEngine::canonicalState() const {
     const auto& s=state_; std::ostringstream o;
     o<<s.active<<','<<s.first<<','<<static_cast<int>(s.phase)<<','<<static_cast<int>(s.flow)<<','<<s.result<<','<<s.rng<<','<<s.nextLoad<<','<<s.nextTrigger<<','<<s.nextBatch<<','<<s.nextDecision<<';';
-    for(const auto& p:s.players) { o<<p.life<<','<<p.mana<<','<<p.ownTurn<<','<<p.actions<<','<<p.formations<<','<<p.sealRemovals<<','<<p.drawFailed<<','<<p.surrendered<<':'; for(auto id:p.deck) o<<id<<','; o<<';'; }
+    for(const auto& p:s.players) { o<<p.life<<','<<p.mana<<','<<p.ownTurn<<','<<p.actionsPlayed<<','<<p.formations<<','<<p.sealRemovals<<','<<p.drawFailed<<','<<p.surrendered<<':'; for(auto id:p.deck) o<<id<<','; o<<';'; }
     for(const auto& [id,c]:s.cards) {
         o<<id<<','<<std::quoted(c.definition)<<','<<c.owner<<','<<static_cast<int>(c.zone)<<','<<static_cast<int>(c.spell)<<','<<c.host<<','<<c.sourceFormation<<','<<c.targetCard<<','<<c.targetPlayer<<','<<c.base<<','<<c.analysisStarted<<','<<c.remaining<<','<<c.analysisLoad<<','<<c.castLoad<<','<<c.canceledTurn<<':';
         for(const auto& pay:c.payments) o<<pay.turn<<','<<pay.paid<<','<<pay.load<<','<<pay.canceled<<'/'; o<<';';

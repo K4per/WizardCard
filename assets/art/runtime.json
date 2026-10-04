@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "cards": {
+    "balance": "cards/balance.png",
+    "fireball": "cards/fireball.png",
+    "barbs": "cards/barbs.png",
+    "ring": "cards/ring.png"
+  },
+  "source": "provenance.json",
+  "sampling": "nearest",
+  "fallback": "procedural card-type emblem for the other nine illustrations"
+}

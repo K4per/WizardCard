@@ -89,6 +89,17 @@ TEST_CASE("action burden outlives card and expires at end") {
     Fixture f;f.card(10,"recall");auto e=f.engine();accept(e,0,PlayAction{10,0});
     REQUIRE(e.state().cards.at(10).zone==Zone::Ash);REQUIRE(Rules::load(e.state(),0)==1);accept(e,0,Advance{});REQUIRE(Rules::load(e.state(),0)==0);
 }
+TEST_CASE("fourth action is allowed and ordinary resource and timing rules remain") {
+    Fixture f;for(CardId id=10;id<13;++id)f.card(id,"clarity");f.card(13,"disrupt");f.card(14,"recall");
+    auto e=f.engine();for(CardId id=10;id<=13;++id)accept(e,0,PlayAction{id,0});
+    REQUIRE(e.state().players[0].actionsPlayed==4);REQUIRE(e.state().players[0].mana==7);
+    REQUIRE(Rules::load(e.state(),1)==2);
+    auto before=e.digest();REQUIRE_FALSE(e.submit(1,PlayAction{14,0}).accepted);REQUIRE(e.digest()==before);
+    auto s=e.state();s.players[0].mana=1;auto poor=GameEngine::scenario(f.content.catalog,s);before=poor.digest();
+    REQUIRE_FALSE(poor.submit(0,PlayAction{14,0}).accepted);REQUIRE(poor.digest()==before);
+    s.players[0].mana=12;s.temporary.push_back({20,0,0,8,2});auto full=GameEngine::scenario(f.content.catalog,s);before=full.digest();
+    REQUIRE_FALSE(full.submit(0,PlayAction{14,0}).accepted);REQUIRE(full.digest()==before);
+}
 TEST_CASE("clear temporary uses player allocation and leaves bound load") {
     Fixture f;f.card(10,"clarity");f.ready(11);f.state.temporary={{1,0,0,1,2},{2,0,0,2,2}};auto e=f.engine();accept(e,0,PlayAction{10,0});
     auto d=*e.state().decision;accept(e,0,Choose{d.id,2});chooseFirst(e);

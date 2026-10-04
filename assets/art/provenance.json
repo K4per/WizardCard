@@ -1,0 +1,38 @@
+[
+  {
+    "id": "barbs",
+    "file": "cards/barbs.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "pixel_fantasy_v2",
+    "originalGeneratedFilename": "exec-bd6cee44-eb1b-49de-8b35-5d1d8e33a9c1.png",
+    "sha256": "e4b384d3f6524584f26666ef4d9019313eb584d277521f3d6a6198160352f941",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "balance",
+    "file": "cards/balance.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "pixel_fantasy_v2",
+    "originalGeneratedFilename": "exec-5bc0039e-9494-4a78-b122-b2c1b7a022b3.png",
+    "sha256": "e7030ea10267d4ead61d4dda8248b35392588a4ea307241a370f4e2d3674d922",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "ring",
+    "file": "cards/ring.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "pixel_fantasy_v2",
+    "originalGeneratedFilename": "exec-b3ee2490-10cd-4033-8f41-7c875b236802.png",
+    "sha256": "2fbf807d92e1df81c8be056bf480583ea3ac4e32df81735366d8ba130d8c40fb",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "fireball",
+    "file": "cards/fireball.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "pixel_fantasy_v2",
+    "originalGeneratedFilename": "exec-507405f7-93f1-4060-b67e-03b3b7a1243a.png",
+    "sha256": "17ce2e6248cb8caa16cbc1a585a0968da3f8fc1ed2b25357a2d075d4c4c8f356",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  }
+]

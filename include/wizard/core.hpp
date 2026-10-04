@@ -12,7 +12,7 @@ namespace wizard {
 using PlayerId = int;
 using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
-inline constexpr const char* programVersion = "0.4.0-dev";
+inline constexpr const char* programVersion = "0.4.1-dev";
 enum class CardType { Action, Analytic, Word, Formation, Seal };
 enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached };
 enum class SpellState { None, Analyzing, Ready, Pending, Active };
@@ -43,7 +43,7 @@ struct CardInstance {
 };
 struct TemporaryLoad { std::uint32_t id{}; PlayerId owner{}; CardId source{}; int amount{}, expiryTurn{}; };
 struct PlayerState {
-    int life{30}, mana{1}, ownTurn{}, actions{}, formations{}, sealRemovals{};
+    int life{30}, mana{1}, ownTurn{}, actionsPlayed{}, formations{}, sealRemovals{};
     bool drawFailed{}, surrendered{};
     std::vector<CardId> deck;
 };
@@ -110,7 +110,7 @@ struct EffectResolver {
 };
 struct CommandResult { bool accepted{}; std::string error; std::vector<GameEvent> events; std::optional<PendingDecision> waiting; std::string errorCode; };
 struct LegalAction { std::string label; CardId source{}, target{}; Command command; };
-struct PlayerView { int life{}, mana{}, load{}, capacity{}, handCount{}, deckCount{}, ownTurn{}, actions{}; };
+struct PlayerView { int life{}, mana{}, load{}, capacity{}, handCount{}, deckCount{}, ownTurn{}, actionsPlayed{}; };
 struct CardView { CardInstance instance; CardDefinition definition; int effectiveRings{}, occupiedRings{}, turnsToReady{}; };
 struct GameView {
     PlayerId viewer{}, active{}; Phase phase{}; int result{};

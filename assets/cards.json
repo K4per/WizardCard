@@ -1,5 +1,5 @@
 {
-  "rulesVersion":"0.2.1", "cardSetVersion":"0.1.0",
+  "rulesVersion":"0.2.2", "cardSetVersion":"0.1.0",
   "cards":[
     {"id":"balance","name":"均衡","rarity":"common","type":"formation","body":2,"capacity":8,"income":1,"rings":3,"maxRank":2,"text":"阵体2；容量8；收入1；环位3；最高位阶2。作为基础阵法时受到保护。"},
     {"id":"fireball","name":"火球术","rarity":"rare","type":"analytic","cost":3,"castCost":1,"rank":2,"target":"opponent","effects":[{"kind":"damage","amount":6}],"text":"解析3 / 施法1；对手受到6点火焰伤害。"},

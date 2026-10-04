@@ -137,10 +137,10 @@ std::string GameEngine::execute(PlayerId actor,const Command& command) {
                 c.targetCard=cmd.target; c.targetPlayer=def.target==TargetKind::Opponent?1-actor:actor;
                 s.preparation=Preparation{cmd.card,0,false};
             } else if constexpr(std::is_same_v<T,PlayAction>) {
-                if(!owned(cmd.card,Zone::Hand) || def.type!=CardType::Action || pl.actions>=3) return "action_limit: 行动不可用";
+                if(!owned(cmd.card,Zone::Hand) || def.type!=CardType::Action) return "invalid_action: 行动不可用";
                 if(!Rules::targetValid(s,def,actor,cmd.target)) return "target: 无效目标";
                 if(!cost(def.cost,def.burden)) return "cost: 魔素或荷载空间不足";
-                pay(cmd.card,def.cost); ++pl.actions; c.zone=Zone::Action; c.targetCard=cmd.target; c.targetPlayer=def.target==TargetKind::Opponent?1-actor:actor;
+                pay(cmd.card,def.cost); ++pl.actionsPlayed; c.zone=Zone::Action; c.targetCard=cmd.target; c.targetPlayer=def.target==TargetKind::Opponent?1-actor:actor;
                 if(def.burden) s.temporary.push_back({s.nextLoad++,actor,cmd.card,def.burden,pl.ownTurn});
                 beginEffect(cmd.card,AfterEffect::Action);
             } else if constexpr(std::is_same_v<T,PreloadWord>) {
@@ -282,7 +282,7 @@ void GameEngine::pump() {
             if(hand.size()>8) { decision(s.active,DecisionKind::Discard,std::move(hand)); return; }
             s.flow=Flow::Finish; break; }
         case Flow::Finish:
-            pl.actions=0; pl.formations=0; pl.sealRemovals=0;
+            pl.actionsPlayed=0; pl.formations=0; pl.sealRemovals=0;
             for(auto& [id,c]:s.cards) if(c.owner==s.active) c.canceledTurn=-1;
             StateMaintenance::check(s,catalog_); if(s.result!=-1) return;
             s.active=1-s.active; ++s.players[s.active].ownTurn; s.flow=Flow::Draw; break;

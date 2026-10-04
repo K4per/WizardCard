@@ -1,0 +1,4524 @@
+{
+  "version": "ui_art_v1",
+  "logical_canvas": [
+    1600,
+    1000
+  ],
+  "sampling": "nearest",
+  "palette": {
+    "bg": "#0A1119",
+    "ink": "#101923",
+    "panel": "#122029",
+    "raised": "#192D38",
+    "fill": "#263E49",
+    "muted": "#364E59",
+    "bronze0": "#44352B",
+    "bronze1": "#6D5035",
+    "bronze2": "#9B7448",
+    "gold": "#C49A5A",
+    "lightgold": "#E0BE7C",
+    "cream": "#F2DBA0",
+    "teal0": "#174A4B",
+    "teal1": "#247475",
+    "teal2": "#3CA6A0",
+    "mint": "#72D7C5",
+    "pale": "#B6F0DD",
+    "gray": "#68778E",
+    "silver": "#A4B4CB",
+    "white": "#DCE6EB",
+    "text": "#E7E5D5",
+    "ruby": "#703244",
+    "red": "#B74C60",
+    "coral": "#ED8A78",
+    "fire0": "#B54E2A",
+    "orange": "#ED8E3E",
+    "yellow": "#FFD181",
+    "violet": "#AD91D8",
+    "blue": "#629ED2",
+    "green": "#78BE98"
+  },
+  "assets": [
+    {
+      "id": "type_action",
+      "category": "icons",
+      "file": "ui/icons/type_action.png",
+      "source": "design/v1/sources/icons/type_action.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "行动",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "1a20ae199ad8626d1c8b7127f91fd18180ec32c2f0c8ec3b2f59f5205753c3db",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "type_action_64",
+      "category": "icons",
+      "file": "ui/icons/type_action_64.png",
+      "source": "design/v1/sources/icons/type_action_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "行动 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "35774a80f31f6ca9ec53ced92a95e9cd3c7e2737a23322c47ca8a830432dbd31",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "type_analytic",
+      "category": "icons",
+      "file": "ui/icons/type_analytic.png",
+      "source": "design/v1/sources/icons/type_analytic.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析法术",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "1adb0cce52b27f02c0bf66f31c412abe52fc967eef719b49b7484640b724a722",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "type_analytic_64",
+      "category": "icons",
+      "file": "ui/icons/type_analytic_64.png",
+      "source": "design/v1/sources/icons/type_analytic_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析法术 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "03d35373ef1f08805744f551277a04aedd6656874d85ae4e83341e36a0312883",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "type_word",
+      "category": "icons",
+      "file": "ui/icons/type_word.png",
+      "source": "design/v1/sources/icons/type_word.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "言灵",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "36ef95d7281b945e6fb06194b30eca43964ae44e49905be41c1417fbf7a2b9d2",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "type_word_64",
+      "category": "icons",
+      "file": "ui/icons/type_word_64.png",
+      "source": "design/v1/sources/icons/type_word_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "言灵 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "4bf5b83c521142a2407ae2aef5a811150ebcc1f5ff787b2c999806e4c7b8cf83",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "type_formation",
+      "category": "icons",
+      "file": "ui/icons/type_formation.png",
+      "source": "design/v1/sources/icons/type_formation.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "阵法",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "ab971230b5c3729600ecac5fd0f7fe05565ac91aa82135df1a24677d4d8bcc43",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "type_formation_64",
+      "category": "icons",
+      "file": "ui/icons/type_formation_64.png",
+      "source": "design/v1/sources/icons/type_formation_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "阵法 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "18d6fed2390f6d25cc656af6f80856fd357d028f182bde1dbf783ca0622e81c6",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "type_seal",
+      "category": "icons",
+      "file": "ui/icons/type_seal.png",
+      "source": "design/v1/sources/icons/type_seal.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "符文",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "30714d252469cf918c62be1eb33d73a0246ccfaf7ccedbc4116c09e67babbd60",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "type_seal_64",
+      "category": "icons",
+      "file": "ui/icons/type_seal_64.png",
+      "source": "design/v1/sources/icons/type_seal_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "符文 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "2d51204949fb4c7089e0b08ce93973f3456394175bf75e277a370e87f4cf8ba5",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "rank",
+      "category": "icons",
+      "file": "ui/icons/rank.png",
+      "source": "design/v1/sources/icons/rank.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "位阶",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "55d6c729e05cc1f7e4751f07e1e199985597bb32c8235f5ef0e117f4e3fa69e1",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "rank_64",
+      "category": "icons",
+      "file": "ui/icons/rank_64.png",
+      "source": "design/v1/sources/icons/rank_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "位阶 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "dfb7509230131083d620322a495ea32171fc4d58ff2361988b20c6c2273d9af4",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "analysis_cost",
+      "category": "icons",
+      "file": "ui/icons/analysis_cost.png",
+      "source": "design/v1/sources/icons/analysis_cost.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析费用",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "2bd22b2a00a2633257c3168bfde385f29a4105885257a064e4af1aedc4984ef0",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "analysis_cost_64",
+      "category": "icons",
+      "file": "ui/icons/analysis_cost_64.png",
+      "source": "design/v1/sources/icons/analysis_cost_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析费用 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "a79c892cff2b0ea5d0b026d720b873c0c5ae23bd9663eaeb9b3b3da661b58bd5",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "cast_cost",
+      "category": "icons",
+      "file": "ui/icons/cast_cost.png",
+      "source": "design/v1/sources/icons/cast_cost.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "施法费用",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "642020fa8abc1d6f0b24a9ccaa26d0e713bac48f5060edb75344f7491e7cf262",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "cast_cost_64",
+      "category": "icons",
+      "file": "ui/icons/cast_cost_64.png",
+      "source": "design/v1/sources/icons/cast_cost_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "施法费用 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "35be5facaf2a8bcd657fb6adedc2acea815c8bf750e6c276e6a0add8dd010422",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "body",
+      "category": "icons",
+      "file": "ui/icons/body.png",
+      "source": "design/v1/sources/icons/body.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "阵体",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "437f40b7dbab6b2ced9fe14c5474ab781888eb8354a3e001cf65a5ac081e5457",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "body_64",
+      "category": "icons",
+      "file": "ui/icons/body_64.png",
+      "source": "design/v1/sources/icons/body_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "阵体 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "c4c552d0d3de1144f252e8b40b4a86d86b43d73d4abd65c4b54efdc44f712c56",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "ring_slot",
+      "category": "icons",
+      "file": "ui/icons/ring_slot.png",
+      "source": "design/v1/sources/icons/ring_slot.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "环位",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "c591c3e08fd3c2f013e2a0fe3396ae79cbd7bbece7f448f16451efcc6b522c17",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "ring_slot_64",
+      "category": "icons",
+      "file": "ui/icons/ring_slot_64.png",
+      "source": "design/v1/sources/icons/ring_slot_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "环位 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "becca1c8c6956351e53ba6936b7cae5cb42584cb8a2ea269d241e2bf330e683b",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "mana_income",
+      "category": "icons",
+      "file": "ui/icons/mana_income.png",
+      "source": "design/v1/sources/icons/mana_income.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "魔素收入",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "03bf4a673116d83dd82ffc6d26bd8d2cfd245de9c0de34b4cbc77f9e89946d7a",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "mana_income_64",
+      "category": "icons",
+      "file": "ui/icons/mana_income_64.png",
+      "source": "design/v1/sources/icons/mana_income_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "魔素收入 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "1bca5e675fae24efcadf272cc1092a9fcee8abf8cec4057c2be894f9e2bd5754",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "duration",
+      "category": "icons",
+      "file": "ui/icons/duration.png",
+      "source": "design/v1/sources/icons/duration.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "持续计数",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "a606511dde8c1aa5a424f3e160eaf04967598498478f21709fd3720bac4c4f41",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "duration_64",
+      "category": "icons",
+      "file": "ui/icons/duration_64.png",
+      "source": "design/v1/sources/icons/duration_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "持续计数 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "cd73f051bf3e36dff056f9cf7914a35bd3d37d786b1a293a22e4129bb5678627",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_analyzing",
+      "category": "icons",
+      "file": "ui/icons/state_analyzing.png",
+      "source": "design/v1/sources/icons/state_analyzing.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析中",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "753f63fce9007ff6225fadfcd23c8b955bfc87a1ea28981d966b35e681dcaec1",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_analyzing_64",
+      "category": "icons",
+      "file": "ui/icons/state_analyzing_64.png",
+      "source": "design/v1/sources/icons/state_analyzing_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析中 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "5b780ce1defc4bc47cd1e26df192266aa643525bc56e361190cdf78b4f9f0e7f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_analyzed",
+      "category": "icons",
+      "file": "ui/icons/state_analyzed.png",
+      "source": "design/v1/sources/icons/state_analyzed.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析完成",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "7c88fd06453d4bc4258d867874899784bee82dc9da83508cf810f0fd6c300a6f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_analyzed_64",
+      "category": "icons",
+      "file": "ui/icons/state_analyzed_64.png",
+      "source": "design/v1/sources/icons/state_analyzed_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析完成 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "dec007a2d12d1f6da7fe01cc59d4de80d3ef62beddbf0e69870b2ebaa5a0e7ba",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_prepared",
+      "category": "icons",
+      "file": "ui/icons/state_prepared.png",
+      "source": "design/v1/sources/icons/state_prepared.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "待施放",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "e4ba7516e97195cc8d24bb2a940318a1aa8312d6c254e77216ed73e68b0e9d4d",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_prepared_64",
+      "category": "icons",
+      "file": "ui/icons/state_prepared_64.png",
+      "source": "design/v1/sources/icons/state_prepared_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "待施放 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "8d9acea17d430782dd4db057b5b4e5ad972489040ddc23eda9db652cd93cbc8f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_active",
+      "category": "icons",
+      "file": "ui/icons/state_active.png",
+      "source": "design/v1/sources/icons/state_active.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "持续生效",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "acf451a79a2fbdb6936f1e2401d49db577bf5bcefb10054b35214120e4d5cdf7",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_active_64",
+      "category": "icons",
+      "file": "ui/icons/state_active_64.png",
+      "source": "design/v1/sources/icons/state_active_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "持续生效 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "f5b6c421f87f32035718c4870e957b38aa8598d6a8399c182bd2042c07f50ba0",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_cancelled",
+      "category": "icons",
+      "file": "ui/icons/state_cancelled.png",
+      "source": "design/v1/sources/icons/state_cancelled.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "准备被取消",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "729a8ec5a76671fff77e67ccd0605e9139620f824388f42fd8b62ab163585020",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_cancelled_64",
+      "category": "icons",
+      "file": "ui/icons/state_cancelled_64.png",
+      "source": "design/v1/sources/icons/state_cancelled_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "准备被取消 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "55d5db905602846b9d47997318a6905d15e3e336f500149b4e88ed0e55781150",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_protected",
+      "category": "icons",
+      "file": "ui/icons/state_protected.png",
+      "source": "design/v1/sources/icons/state_protected.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "基础阵法保护",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "8ea740a8d1401be9191fe6967c5168ade8b47e0f9a9ae67811721def8307ed34",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_protected_64",
+      "category": "icons",
+      "file": "ui/icons/state_protected_64.png",
+      "source": "design/v1/sources/icons/state_protected_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "基础阵法保护 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "7e62d17b086ce32c86c5b0d5f36a1f55781ca4c2bb3328b8723919d02ee722c3",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_attached",
+      "category": "icons",
+      "file": "ui/icons/state_attached.png",
+      "source": "design/v1/sources/icons/state_attached.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "符文附着",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "042368bdc2d2e792d91c1c48460e7019d5f75cb63a8c812d6d4b26d5163bc10b",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "state_attached_64",
+      "category": "icons",
+      "file": "ui/icons/state_attached_64.png",
+      "source": "design/v1/sources/icons/state_attached_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "符文附着 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "1699f308d788c402f3e29e718fec3d6cfd704b19792e73aad54e7161f0b31010",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "life",
+      "category": "icons",
+      "file": "ui/icons/life.png",
+      "source": "design/v1/sources/icons/life.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "生命",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "0f40bedf58eff8973fd8fe391819b4cc875fc7c5561442294790ecc032d6da07",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "life_64",
+      "category": "icons",
+      "file": "ui/icons/life_64.png",
+      "source": "design/v1/sources/icons/life_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "生命 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "ceac2f480908ee80b74c6fcfdd4ea9ee069cc4f65df5b60cc934451bcbe02a89",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "mana",
+      "category": "icons",
+      "file": "ui/icons/mana.png",
+      "source": "design/v1/sources/icons/mana.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "魔素",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "c8947b965e7c90c8d5ff407169fd32021402094ae5e5499f8bedae30c94f34c5",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "mana_64",
+      "category": "icons",
+      "file": "ui/icons/mana_64.png",
+      "source": "design/v1/sources/icons/mana_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "魔素 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "0dc330862be5d4f10e6a7597f2ec5321e9f52ea5453a663ed7cdd56fdd0e8ede",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "load",
+      "category": "icons",
+      "file": "ui/icons/load.png",
+      "source": "design/v1/sources/icons/load.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "当前荷载",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "b136dbcdc81e98dad88dbdb5d3f4e83fc4f798042f3771a4aef608b2b1de69d2",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "load_64",
+      "category": "icons",
+      "file": "ui/icons/load_64.png",
+      "source": "design/v1/sources/icons/load_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "当前荷载 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "6526c7446e976dfef88e4eae8fd0ad9339b48d9cca098bbdf6dd9ac6c82594a3",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "capacity",
+      "category": "icons",
+      "file": "ui/icons/capacity.png",
+      "source": "design/v1/sources/icons/capacity.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "荷载容量",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "d39dc57f85e31d219284787da775b9c238d79922dc41aafb1e09cac524469099",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "capacity_64",
+      "category": "icons",
+      "file": "ui/icons/capacity_64.png",
+      "source": "design/v1/sources/icons/capacity_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "荷载容量 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "034490be993bd04da7265a7759c797a6567f0086dc800fa3f078275877d56f90",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_formation",
+      "category": "icons",
+      "file": "ui/icons/zone_formation.png",
+      "source": "design/v1/sources/icons/zone_formation.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "阵法",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "ab971230b5c3729600ecac5fd0f7fe05565ac91aa82135df1a24677d4d8bcc43",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_formation_64",
+      "category": "icons",
+      "file": "ui/icons/zone_formation_64.png",
+      "source": "design/v1/sources/icons/zone_formation_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "阵法 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "18d6fed2390f6d25cc656af6f80856fd357d028f182bde1dbf783ca0622e81c6",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_analysis",
+      "category": "icons",
+      "file": "ui/icons/zone_analysis.png",
+      "source": "design/v1/sources/icons/zone_analysis.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "1adb0cce52b27f02c0bf66f31c412abe52fc967eef719b49b7484640b724a722",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_analysis_64",
+      "category": "icons",
+      "file": "ui/icons/zone_analysis_64.png",
+      "source": "design/v1/sources/icons/zone_analysis_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "03d35373ef1f08805744f551277a04aedd6656874d85ae4e83341e36a0312883",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_casting",
+      "category": "icons",
+      "file": "ui/icons/zone_casting.png",
+      "source": "design/v1/sources/icons/zone_casting.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "施法",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "85a5a0a647f7cf219a571fc5a4e98d08e827d6ef625ec23545c884699bd12a2a",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_casting_64",
+      "category": "icons",
+      "file": "ui/icons/zone_casting_64.png",
+      "source": "design/v1/sources/icons/zone_casting_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "施法 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "98a09b917adfc67b8389e2c4f60def1bb272b4eb78119e415f38ded34bac0414",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_words",
+      "category": "icons",
+      "file": "ui/icons/zone_words.png",
+      "source": "design/v1/sources/icons/zone_words.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "言灵",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "36ef95d7281b945e6fb06194b30eca43964ae44e49905be41c1417fbf7a2b9d2",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_words_64",
+      "category": "icons",
+      "file": "ui/icons/zone_words_64.png",
+      "source": "design/v1/sources/icons/zone_words_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "言灵 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "4bf5b83c521142a2407ae2aef5a811150ebcc1f5ff787b2c999806e4c7b8cf83",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_action",
+      "category": "icons",
+      "file": "ui/icons/zone_action.png",
+      "source": "design/v1/sources/icons/zone_action.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "行动",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "1a20ae199ad8626d1c8b7127f91fd18180ec32c2f0c8ec3b2f59f5205753c3db",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_action_64",
+      "category": "icons",
+      "file": "ui/icons/zone_action_64.png",
+      "source": "design/v1/sources/icons/zone_action_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "行动 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "35774a80f31f6ca9ec53ced92a95e9cd3c7e2737a23322c47ca8a830432dbd31",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_ash",
+      "category": "icons",
+      "file": "ui/icons/zone_ash.png",
+      "source": "design/v1/sources/icons/zone_ash.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "灰烬",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "0448973f5376e9223decbd7f46ab4bc354841a8a7c294117ecccaf9c2bce4f5d",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_ash_64",
+      "category": "icons",
+      "file": "ui/icons/zone_ash_64.png",
+      "source": "design/v1/sources/icons/zone_ash_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "灰烬 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "d080ad26ea2fa656556848c513e91ee03a96de5cfb571f32afcb59b54ab2a3d2",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_hand",
+      "category": "icons",
+      "file": "ui/icons/zone_hand.png",
+      "source": "design/v1/sources/icons/zone_hand.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "手牌",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "045d6518b265024459ecfa7b999348f037087912e0c54bbd60d8097e1017c3f3",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_hand_64",
+      "category": "icons",
+      "file": "ui/icons/zone_hand_64.png",
+      "source": "design/v1/sources/icons/zone_hand_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "手牌 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "70d80f02b2c4e1bcd9e6dc5613a5aba3b63eb9f23254674475ee683234d395a1",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_deck",
+      "category": "icons",
+      "file": "ui/icons/zone_deck.png",
+      "source": "design/v1/sources/icons/zone_deck.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "牌库",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "045d6518b265024459ecfa7b999348f037087912e0c54bbd60d8097e1017c3f3",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "zone_deck_64",
+      "category": "icons",
+      "file": "ui/icons/zone_deck_64.png",
+      "source": "design/v1/sources/icons/zone_deck_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "牌库 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "70d80f02b2c4e1bcd9e6dc5613a5aba3b63eb9f23254674475ee683234d395a1",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "close",
+      "category": "icons",
+      "file": "ui/icons/close.png",
+      "source": "design/v1/sources/icons/close.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "关闭",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "eabdcd3dbc51dc8a351bbb7999bb63d1338667227740cee719054706593ca7ed",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "close_64",
+      "category": "icons",
+      "file": "ui/icons/close_64.png",
+      "source": "design/v1/sources/icons/close_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "关闭 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "a647456556dca57049465eb00409159358ccdcc6aa0c1600ed22b1c8ce930633",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "confirm",
+      "category": "icons",
+      "file": "ui/icons/confirm.png",
+      "source": "design/v1/sources/icons/confirm.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "确认",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "7c88fd06453d4bc4258d867874899784bee82dc9da83508cf810f0fd6c300a6f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "confirm_64",
+      "category": "icons",
+      "file": "ui/icons/confirm_64.png",
+      "source": "design/v1/sources/icons/confirm_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "确认 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "dec007a2d12d1f6da7fe01cc59d4de80d3ef62beddbf0e69870b2ebaa5a0e7ba",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "cancel",
+      "category": "icons",
+      "file": "ui/icons/cancel.png",
+      "source": "design/v1/sources/icons/cancel.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "取消",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "eabdcd3dbc51dc8a351bbb7999bb63d1338667227740cee719054706593ca7ed",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "cancel_64",
+      "category": "icons",
+      "file": "ui/icons/cancel_64.png",
+      "source": "design/v1/sources/icons/cancel_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "取消 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "a647456556dca57049465eb00409159358ccdcc6aa0c1600ed22b1c8ce930633",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "left",
+      "category": "icons",
+      "file": "ui/icons/left.png",
+      "source": "design/v1/sources/icons/left.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "向前滚动",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "dac3418e72f207e39ee2330b1f95881a349223f5cc56e9959046c9981dca16a6",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "left_64",
+      "category": "icons",
+      "file": "ui/icons/left_64.png",
+      "source": "design/v1/sources/icons/left_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "向前滚动 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "c957945cf2d9bdb9759bef554518a20e8ff7b3b09cc9a8366c6d616dabb38985",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "right",
+      "category": "icons",
+      "file": "ui/icons/right.png",
+      "source": "design/v1/sources/icons/right.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "向后滚动",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "d58f5060abecbc7d3aa01048517a925b1dbfd249e27548c9371a1d51c75a1de0",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "right_64",
+      "category": "icons",
+      "file": "ui/icons/right_64.png",
+      "source": "design/v1/sources/icons/right_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "向后滚动 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "e38e4457b01f930ee2f2de0dcd88f9b1e3390cd133c7667fbf490ac30df6b24d",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "up",
+      "category": "icons",
+      "file": "ui/icons/up.png",
+      "source": "design/v1/sources/icons/up.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "向上",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "e9fd3945e308389315e4f536bc0daa3c1e1c600698cfc239ba116960f95e075a",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "up_64",
+      "category": "icons",
+      "file": "ui/icons/up_64.png",
+      "source": "design/v1/sources/icons/up_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "向上 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "24566ece3b1e62fbbbe98c9d02da353a5c9026389493dc839162507e7f861f41",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "down",
+      "category": "icons",
+      "file": "ui/icons/down.png",
+      "source": "design/v1/sources/icons/down.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "向下",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "ee5468e66856b3e7f18aa7e89d48315afe899b49a6493d08f5ab3064e81da113",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "down_64",
+      "category": "icons",
+      "file": "ui/icons/down_64.png",
+      "source": "design/v1/sources/icons/down_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "向下 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "0bb389abc165b1d9708d30d92d5034e00d8304e25f25a3eabe351ab6f9c9e5a3",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "save",
+      "category": "icons",
+      "file": "ui/icons/save.png",
+      "source": "design/v1/sources/icons/save.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "保存",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "bc221bebca1097b1e5989745cd9ea6f5a152a0569e3ab4e0eba069ea738f9af1",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "save_64",
+      "category": "icons",
+      "file": "ui/icons/save_64.png",
+      "source": "design/v1/sources/icons/save_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "保存 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "4f6d34e0a338db412960c12ee31c7b81332a7054c98aa5a59ee10a1470623cfd",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "log",
+      "category": "icons",
+      "file": "ui/icons/log.png",
+      "source": "design/v1/sources/icons/log.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "记录",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "1adb0cce52b27f02c0bf66f31c412abe52fc967eef719b49b7484640b724a722",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "log_64",
+      "category": "icons",
+      "file": "ui/icons/log_64.png",
+      "source": "design/v1/sources/icons/log_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "记录 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "03d35373ef1f08805744f551277a04aedd6656874d85ae4e83341e36a0312883",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "surrender",
+      "category": "icons",
+      "file": "ui/icons/surrender.png",
+      "source": "design/v1/sources/icons/surrender.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "投降",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "eee9a30a916e0302b8be5fc19cde732b07b0b4e675619fd939e1757858e7158d",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "surrender_64",
+      "category": "icons",
+      "file": "ui/icons/surrender_64.png",
+      "source": "design/v1/sources/icons/surrender_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "投降 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "bdb5c37747bb8863beda658a6c87665eed2547bcadc2b17fc50e1d11e5f48b71",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "success",
+      "category": "icons",
+      "file": "ui/icons/success.png",
+      "source": "design/v1/sources/icons/success.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "成功",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "7c88fd06453d4bc4258d867874899784bee82dc9da83508cf810f0fd6c300a6f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "success_64",
+      "category": "icons",
+      "file": "ui/icons/success_64.png",
+      "source": "design/v1/sources/icons/success_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "成功 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "dec007a2d12d1f6da7fe01cc59d4de80d3ef62beddbf0e69870b2ebaa5a0e7ba",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "no_action",
+      "category": "icons",
+      "file": "ui/icons/no_action.png",
+      "source": "design/v1/sources/icons/no_action.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "无操作",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "09a7788dc48662d37f48e7b7fc08314de8c8e15b18e5c0e34f493d038b2d473f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "no_action_64",
+      "category": "icons",
+      "file": "ui/icons/no_action_64.png",
+      "source": "design/v1/sources/icons/no_action_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "无操作 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "9386e1dd5620c50951a1ffa199241d30ecaa977d659a737be069af94e9b31552",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "wrong_target",
+      "category": "icons",
+      "file": "ui/icons/wrong_target.png",
+      "source": "design/v1/sources/icons/wrong_target.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "选错目标",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "e8c722c06f922d7ad033cc66ba99afb18641ddfe01368b77fcc2a31fb50b607a",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "wrong_target_64",
+      "category": "icons",
+      "file": "ui/icons/wrong_target_64.png",
+      "source": "design/v1/sources/icons/wrong_target_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "选错目标 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "9d9c9e3837da24c7b747efb3464c86fe7ac07604c2bc509d1f8db0482905bd62",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "rejected",
+      "category": "icons",
+      "file": "ui/icons/rejected.png",
+      "source": "design/v1/sources/icons/rejected.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "操作拒绝",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "c0dd9a12c2e9211eb1c00908e37303f288a6ee3d8089bd47698103d408d41112",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "rejected_64",
+      "category": "icons",
+      "file": "ui/icons/rejected_64.png",
+      "source": "design/v1/sources/icons/rejected_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "操作拒绝 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "b82b1e8e72255392b46d3cab7d102acc60bead810e7d3228b656248384fc333a",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "eye",
+      "category": "icons",
+      "file": "ui/icons/eye.png",
+      "source": "design/v1/sources/icons/eye.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "查看",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1,
+      "sha256": "da244b68d5705d0689bb231af497961796a7574e73043762188ce388209feba4",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "eye_64",
+      "category": "icons",
+      "file": "ui/icons/eye_64.png",
+      "source": "design/v1/sources/icons/eye_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "查看 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2,
+      "sha256": "b6ea78c164d22980dda2cdc9acc9f9caf449ab27e59bb549d03bb80eca3cbb0f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets"
+    },
+    {
+      "id": "frame_action_hand",
+      "category": "cards",
+      "file": "ui/cards/frame_action_hand.png",
+      "source": "design/v1/sources/cards/frame_action_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "行动 hand",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "036bb5f7d2917d300333bc9a3422bfb453fff0706cdce28f5c806c18fc45b497",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_action_strip",
+      "category": "cards",
+      "file": "ui/cards/frame_action_strip.png",
+      "source": "design/v1/sources/cards/frame_action_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "行动 strip",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "f55a9648fa06efa173ff8a01d1fca2d38ae67955b241b45ab425846dee284803",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_action_portrait",
+      "category": "cards",
+      "file": "ui/cards/frame_action_portrait.png",
+      "source": "design/v1/sources/cards/frame_action_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "行动 portrait",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "290f70cc6f669ec87ec61335b65da6897e9c2340c2ae54e89c96f0f1fee07a37",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_action_detail",
+      "category": "cards",
+      "file": "ui/cards/frame_action_detail.png",
+      "source": "design/v1/sources/cards/frame_action_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "行动 detail",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "6a001ba13d541c02ed6b045e81bf4789cb1ed9efb3a2ea50b95a7b88e3a4249e",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_analytic_hand",
+      "category": "cards",
+      "file": "ui/cards/frame_analytic_hand.png",
+      "source": "design/v1/sources/cards/frame_analytic_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "解析法术 hand",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "890091b505663318e349ef7e9757dd3edae8ab566904aa353632613d1a1f4a3d",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_analytic_strip",
+      "category": "cards",
+      "file": "ui/cards/frame_analytic_strip.png",
+      "source": "design/v1/sources/cards/frame_analytic_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "解析法术 strip",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "c48422c0e6d5f09fefb59a189073fcf810a62162ffeaa599f1e526716fd0e212",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_analytic_portrait",
+      "category": "cards",
+      "file": "ui/cards/frame_analytic_portrait.png",
+      "source": "design/v1/sources/cards/frame_analytic_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "解析法术 portrait",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "d0b06607285997f215afc815f7fd4e45398fe57ad742415a4ad43af7f88cfbce",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_analytic_detail",
+      "category": "cards",
+      "file": "ui/cards/frame_analytic_detail.png",
+      "source": "design/v1/sources/cards/frame_analytic_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "解析法术 detail",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "c9b3da1fd48fbd9761aa37318a454fd4003845e4c552e407c00f58706c62ae17",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_word_hand",
+      "category": "cards",
+      "file": "ui/cards/frame_word_hand.png",
+      "source": "design/v1/sources/cards/frame_word_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "言灵 hand",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "fd4b28bb4013430f18a323b575107e262b826938dd42f3b39d39a962b8c06a49",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_word_strip",
+      "category": "cards",
+      "file": "ui/cards/frame_word_strip.png",
+      "source": "design/v1/sources/cards/frame_word_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "言灵 strip",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "c88f5334ab57a8708fa2fca4c70fb9f0c7bcef8f522b19e21dcefca87bf7551b",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_word_portrait",
+      "category": "cards",
+      "file": "ui/cards/frame_word_portrait.png",
+      "source": "design/v1/sources/cards/frame_word_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "言灵 portrait",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "e6a84f3b8986c50a2fc4e27f3ae7d9d8138890e199d89928edd7c07d0bead7f3",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_word_detail",
+      "category": "cards",
+      "file": "ui/cards/frame_word_detail.png",
+      "source": "design/v1/sources/cards/frame_word_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "言灵 detail",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "6ae6b20c215ad56bdeb955349dd3622769c932c20ba1c3040759301501a6b1c7",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_formation_hand",
+      "category": "cards",
+      "file": "ui/cards/frame_formation_hand.png",
+      "source": "design/v1/sources/cards/frame_formation_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "阵法 hand",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "4017dfe2e60680deb2af174279008998de118767470b2b33b1fc38b2d8008cce",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_formation_strip",
+      "category": "cards",
+      "file": "ui/cards/frame_formation_strip.png",
+      "source": "design/v1/sources/cards/frame_formation_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "阵法 strip",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "4a4d9817352c4468ac6c065320c5fcea4357405616fc761a86259576d4553e4a",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_formation_portrait",
+      "category": "cards",
+      "file": "ui/cards/frame_formation_portrait.png",
+      "source": "design/v1/sources/cards/frame_formation_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "阵法 portrait",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "0a282e2308864b3d361e5627082e2bd5cf3372ca85157d222a3a2c4761d5eeab",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_formation_detail",
+      "category": "cards",
+      "file": "ui/cards/frame_formation_detail.png",
+      "source": "design/v1/sources/cards/frame_formation_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "阵法 detail",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "7567591d84db0abe78345a9852485720e0e5d7949edc05a67f57dbc969e3d217",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_seal_hand",
+      "category": "cards",
+      "file": "ui/cards/frame_seal_hand.png",
+      "source": "design/v1/sources/cards/frame_seal_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "符文 hand",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "562de63e61905e0435cd9882f7a7a997c71ecb5834ad36e90026085423601a44",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_seal_strip",
+      "category": "cards",
+      "file": "ui/cards/frame_seal_strip.png",
+      "source": "design/v1/sources/cards/frame_seal_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "符文 strip",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "3f02a4b7ee5cb0258f51f83753bbca8c05eb1626fe19de1d0f1dd03ff5cdb38d",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_seal_portrait",
+      "category": "cards",
+      "file": "ui/cards/frame_seal_portrait.png",
+      "source": "design/v1/sources/cards/frame_seal_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "符文 portrait",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "f8f7bf0d36c4bb866ef23fb45aded34726e58f78bafb17df228cd3e575125356",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "frame_seal_detail",
+      "category": "cards",
+      "file": "ui/cards/frame_seal_detail.png",
+      "source": "design/v1/sources/cards/frame_seal_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "符文 detail",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "sha256": "d5e97ddf6f8c673813fd025f130a986dea5495ca98924c794eb727250f31e290",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rarity_common",
+      "category": "cards",
+      "file": "ui/cards/rarity_common.png",
+      "source": "design/v1/sources/cards/rarity_common.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字",
+      "reserved": false,
+      "sha256": "a2feab371f27a3315814d8a3b7615f78b0866dd102bed668e038bcf95ef1f0c8",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rarity_uncommon",
+      "category": "cards",
+      "file": "ui/cards/rarity_uncommon.png",
+      "source": "design/v1/sources/cards/rarity_uncommon.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字",
+      "reserved": false,
+      "sha256": "6758bd336f3a12e5cd3857d02e71b35149e385c52f34962c32de5a1d81676263",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rarity_rare",
+      "category": "cards",
+      "file": "ui/cards/rarity_rare.png",
+      "source": "design/v1/sources/cards/rarity_rare.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字",
+      "reserved": false,
+      "sha256": "94c3e147cc05fd97ab71681fd2196f7dd3e69dcea7e163607c94dd837b91d0f9",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rarity_epic",
+      "category": "cards",
+      "file": "ui/cards/rarity_epic.png",
+      "source": "design/v1/sources/cards/rarity_epic.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字",
+      "reserved": true,
+      "sha256": "f371cee64cf4ca7baa85892a0cbf14e077fcb928e2a07f8ec7d9f301f8fec616",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rarity_legendary",
+      "category": "cards",
+      "file": "ui/cards/rarity_legendary.png",
+      "source": "design/v1/sources/cards/rarity_legendary.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字",
+      "reserved": true,
+      "sha256": "57fe54c3d6374c37c2f300978a910189167aaad15463ae8c1ed9a9ccec1b93c7",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "card_back_hand",
+      "category": "cards",
+      "file": "ui/cards/card_back_hand.png",
+      "source": "design/v1/sources/cards/card_back_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "对称通用卡背；不携带私有信息",
+      "sha256": "0a9ad4f21ec6b615571ebb36073191eed2bb4e3cdd316253e95cea5b073efc85",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "card_back_opponent",
+      "category": "cards",
+      "file": "ui/cards/card_back_opponent.png",
+      "source": "design/v1/sources/cards/card_back_opponent.svg",
+      "size": [
+        39,
+        41
+      ],
+      "purpose": "对称通用卡背；不携带私有信息",
+      "sha256": "01b7f0dde7a34d88bb21fe6f0f3877b6b37e78c7a0a3b64d4712292f6089e2c3",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "card_back_deck",
+      "category": "cards",
+      "file": "ui/cards/card_back_deck.png",
+      "source": "design/v1/sources/cards/card_back_deck.svg",
+      "size": [
+        100,
+        132
+      ],
+      "purpose": "对称通用卡背；不携带私有信息",
+      "sha256": "96d1381ab8435a137c1a8be4cee8318609db6170def8474bd25c37a20b73b6f5",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "missing_art",
+      "category": "cards",
+      "file": "ui/cards/missing_art.png",
+      "source": "design/v1/sources/cards/missing_art.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "缺图统一回退纹章",
+      "sha256": "c74f48f1c8e4cbfe6c726c9fdcd5b471aa0fa83cf9eab8c018d2d0e5f31ea0b0",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_primary_normal",
+      "category": "interaction",
+      "file": "ui/interaction/button_primary_normal.png",
+      "source": "design/v1/sources/interaction/button_primary_normal.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "primary / normal",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "b0b404d9cc9eba7ab5e5d47dd252913fc6269b65d35e98757ae3eb6a1ef690fb",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_primary_hover",
+      "category": "interaction",
+      "file": "ui/interaction/button_primary_hover.png",
+      "source": "design/v1/sources/interaction/button_primary_hover.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "primary / hover",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "b93463ff4378b7f713240610dcb6d1a295e33d81d4162d9d362788b66c38fd6b",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_primary_pressed",
+      "category": "interaction",
+      "file": "ui/interaction/button_primary_pressed.png",
+      "source": "design/v1/sources/interaction/button_primary_pressed.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "primary / pressed",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "b01d1424d4ab1eefec4a8610a2a428ee79327b4deb199e4422720aa5fa3792db",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_primary_disabled",
+      "category": "interaction",
+      "file": "ui/interaction/button_primary_disabled.png",
+      "source": "design/v1/sources/interaction/button_primary_disabled.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "primary / disabled",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "ccbda9c34f1cd071fba12e48645430ac102a2838af92693e3b9a855ea1623e5e",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_secondary_normal",
+      "category": "interaction",
+      "file": "ui/interaction/button_secondary_normal.png",
+      "source": "design/v1/sources/interaction/button_secondary_normal.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "secondary / normal",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "34bca932e54b51f04417a0fea3307229534f9a4265c91e9ed9b018f850de3587",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_secondary_hover",
+      "category": "interaction",
+      "file": "ui/interaction/button_secondary_hover.png",
+      "source": "design/v1/sources/interaction/button_secondary_hover.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "secondary / hover",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "053c4c4fd46e4a26b8104339581a067ada84001cce3c56f08f43d071de718f07",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_secondary_pressed",
+      "category": "interaction",
+      "file": "ui/interaction/button_secondary_pressed.png",
+      "source": "design/v1/sources/interaction/button_secondary_pressed.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "secondary / pressed",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "87517b4474cb01db5a12c6226d84f63fbd7a44af454f3ccafddf54442b854fd5",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_secondary_disabled",
+      "category": "interaction",
+      "file": "ui/interaction/button_secondary_disabled.png",
+      "source": "design/v1/sources/interaction/button_secondary_disabled.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "secondary / disabled",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "ccbda9c34f1cd071fba12e48645430ac102a2838af92693e3b9a855ea1623e5e",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_danger_normal",
+      "category": "interaction",
+      "file": "ui/interaction/button_danger_normal.png",
+      "source": "design/v1/sources/interaction/button_danger_normal.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "danger / normal",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "7aeccfd4db3ee27575e83129dd5143323bf47a0982c8c473e2e010dbd22d78c4",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_danger_hover",
+      "category": "interaction",
+      "file": "ui/interaction/button_danger_hover.png",
+      "source": "design/v1/sources/interaction/button_danger_hover.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "danger / hover",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "9ccd1670844a1bf16e8eff1107874b78274d1c6e749060044b84785baf246e98",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_danger_pressed",
+      "category": "interaction",
+      "file": "ui/interaction/button_danger_pressed.png",
+      "source": "design/v1/sources/interaction/button_danger_pressed.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "danger / pressed",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "03ab17c0375fd8f561f4a748eb82957fa6a0a56c635d3db62f094191e4f6b337",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "button_danger_disabled",
+      "category": "interaction",
+      "file": "ui/interaction/button_danger_disabled.png",
+      "source": "design/v1/sources/interaction/button_danger_disabled.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "danger / disabled",
+      "insets": [
+        12,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "text_insets": [
+        14,
+        7,
+        14,
+        7
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "sha256": "ccbda9c34f1cd071fba12e48645430ac102a2838af92693e3b9a855ea1623e5e",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_hand_hover",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_hand_hover.png",
+      "source": "design/v1/sources/interaction/overlay_hand_hover.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "hover",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "00c05c47b5fc91a678604f7cbde4cc912c14d69d6221edf94ad965fdab3e72f5",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_hand_selected",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_hand_selected.png",
+      "source": "design/v1/sources/interaction/overlay_hand_selected.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "selected",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "8efb437ea9a285af3b68140fec2e85fb1e00e01b836ab18ff22376ab37e9277f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_hand_target_candidate",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_hand_target_candidate.png",
+      "source": "design/v1/sources/interaction/overlay_hand_target_candidate.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "target_candidate",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "0be5982052fc6e4add9e379161db5b4b439147118c8b2f1816c2cb87e1960b72",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_hand_target_selected",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_hand_target_selected.png",
+      "source": "design/v1/sources/interaction/overlay_hand_target_selected.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "target_selected",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "51d555717c46468fd44b9da4eccb9bd82510c67a265090210bc0f0b838d4bc42",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_hand_cost_candidate",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_hand_cost_candidate.png",
+      "source": "design/v1/sources/interaction/overlay_hand_cost_candidate.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "cost_candidate",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "236c1c18b2e506a1a9ba88d2c31fe1faa16db758943516a268aecbab6819ef64",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_hand_cost_selected",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_hand_cost_selected.png",
+      "source": "design/v1/sources/interaction/overlay_hand_cost_selected.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "cost_selected",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "b068b36f1a5803d2014ac67a3bfd4626c5252178da3e10f2683d810362f218ba",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_strip_hover",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_strip_hover.png",
+      "source": "design/v1/sources/interaction/overlay_strip_hover.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "hover",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "085be032366502249b0363bd174694fa889cc3b440bb6e9b406639b5b909257d",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_strip_selected",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_strip_selected.png",
+      "source": "design/v1/sources/interaction/overlay_strip_selected.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "selected",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "6b81d738e0d0d3eabc09d2d24acdf1268bc475c2e4a15ad7372462f539bd22db",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_strip_target_candidate",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_strip_target_candidate.png",
+      "source": "design/v1/sources/interaction/overlay_strip_target_candidate.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "target_candidate",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "e9548b35f14e2a344c26a1429ed10a8cf28e4c2ce1a05ab3087190c52ea5fe41",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_strip_target_selected",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_strip_target_selected.png",
+      "source": "design/v1/sources/interaction/overlay_strip_target_selected.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "target_selected",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "ad8772031083abae9389e25e00d97f9a3f4c8740ea68fa321be83592fee447a4",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_strip_cost_candidate",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_strip_cost_candidate.png",
+      "source": "design/v1/sources/interaction/overlay_strip_cost_candidate.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "cost_candidate",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "a803c4d9078f397ca26263fcc13a85e3afc852231e685b0a1d0729eda01c4f9a",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_strip_cost_selected",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_strip_cost_selected.png",
+      "source": "design/v1/sources/interaction/overlay_strip_cost_selected.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "cost_selected",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "d2bf2f8525a74adc0976665333c2e8caf21a103028d4e7b0058a63ea4d25055d",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_portrait_hover",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_portrait_hover.png",
+      "source": "design/v1/sources/interaction/overlay_portrait_hover.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "hover",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "e6ef973222407273a764cf169d5878950178e0e6f032facb212e93a1cd5c5530",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_portrait_selected",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_portrait_selected.png",
+      "source": "design/v1/sources/interaction/overlay_portrait_selected.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "selected",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "99cc8314d1c47fc32e7e5ba41aec2f53ecdb38896cf745e41e4560342e96d4ff",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_portrait_target_candidate",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_portrait_target_candidate.png",
+      "source": "design/v1/sources/interaction/overlay_portrait_target_candidate.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "target_candidate",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "b20c46d70fe464891d09fcd521ae02e9347242988317ddfc844f76d36cdd4b74",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_portrait_target_selected",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_portrait_target_selected.png",
+      "source": "design/v1/sources/interaction/overlay_portrait_target_selected.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "target_selected",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "e6cd5ffd4cc3ed3817d2fa13e8eb2706c7fcbddf962c4ccf7dce76b73ee71331",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_portrait_cost_candidate",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_portrait_cost_candidate.png",
+      "source": "design/v1/sources/interaction/overlay_portrait_cost_candidate.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "cost_candidate",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "552aa33fbbe2d0ece96ba17707c8b2c58efbe95b24c478426967def763031568",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "overlay_portrait_cost_selected",
+      "category": "interaction",
+      "file": "ui/interaction/overlay_portrait_cost_selected.png",
+      "source": "design/v1/sources/interaction/overlay_portrait_cost_selected.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "cost_selected",
+      "pixel_unit": 1,
+      "overlay": true,
+      "sha256": "e2013160a6a2c173db26518b03011ac6f2bac8ab0fc8356845dc15ed11743cfd",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "region_formation",
+      "category": "board",
+      "file": "ui/board/region_formation.png",
+      "source": "design/v1/sources/board/region_formation.svg",
+      "size": [
+        106,
+        52
+      ],
+      "purpose": "区域框体：formation",
+      "insets": [
+        8,
+        22,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "cb0f0ac48eb1e5a80e6b2e3a0a6fe54847b9003c5057de9268726ed660beabf7",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "region_analysis",
+      "category": "board",
+      "file": "ui/board/region_analysis.png",
+      "source": "design/v1/sources/board/region_analysis.svg",
+      "size": [
+        427,
+        52
+      ],
+      "purpose": "区域框体：analysis",
+      "insets": [
+        8,
+        22,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "57a61c201c6e97b4a839e4a0aad38ab44d80c1e7cc4a88ecfce8dc05d6298640",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "region_casting",
+      "category": "board",
+      "file": "ui/board/region_casting.png",
+      "source": "design/v1/sources/board/region_casting.svg",
+      "size": [
+        1080,
+        65
+      ],
+      "purpose": "区域框体：casting",
+      "insets": [
+        8,
+        22,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "b176ff8e8058685e8aa6930f9749d2ac4ed942f6174cb3564d92c27a558f301f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "region_words",
+      "category": "board",
+      "file": "ui/board/region_words.png",
+      "source": "design/v1/sources/board/region_words.svg",
+      "size": [
+        531,
+        106
+      ],
+      "purpose": "区域框体：words",
+      "insets": [
+        8,
+        22,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "30b313765c2abdda95d27915a59ff4a75524cb77882c98a917411840a5a61924",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "region_action",
+      "category": "board",
+      "file": "ui/board/region_action.png",
+      "source": "design/v1/sources/board/region_action.svg",
+      "size": [
+        531,
+        49
+      ],
+      "purpose": "区域框体：action",
+      "insets": [
+        8,
+        22,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "68c6932d6dfab53543ae1199e3515721122ca6526e93267fda94ba444be00795",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "region_ash",
+      "category": "board",
+      "file": "ui/board/region_ash.png",
+      "source": "design/v1/sources/board/region_ash.svg",
+      "size": [
+        531,
+        101
+      ],
+      "purpose": "区域框体：ash",
+      "insets": [
+        8,
+        22,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "b2fd002d27136f5a14077cc26b4d4f869eee7bc2bc853b6501118413e845b3b9",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "region_hand",
+      "category": "board",
+      "file": "ui/board/region_hand.png",
+      "source": "design/v1/sources/board/region_hand.svg",
+      "size": [
+        1080,
+        134
+      ],
+      "purpose": "区域框体：hand",
+      "insets": [
+        8,
+        22,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "3b9de25a644faf06b88e0cd9612e79c475fb5c76d6664e03bcbf17de0b7f634a",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "region_deck",
+      "category": "board",
+      "file": "ui/board/region_deck.png",
+      "source": "design/v1/sources/board/region_deck.svg",
+      "size": [
+        100,
+        132
+      ],
+      "purpose": "区域框体：deck",
+      "insets": [
+        8,
+        22,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "ae388754404c7fa5c507ce45ec9d6f5774bc145f823b82b2dae9cf99b8a6f564",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "slot_empty",
+      "category": "board",
+      "file": "ui/board/slot_empty.png",
+      "source": "design/v1/sources/board/slot_empty.svg",
+      "size": [
+        106,
+        52
+      ],
+      "purpose": "阵法槽状态",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "957bc35ea910cff93fd37f6d1d2f7ccabf1bae536e97f414c37f31124060bd8e",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "slot_occupied",
+      "category": "board",
+      "file": "ui/board/slot_occupied.png",
+      "source": "design/v1/sources/board/slot_occupied.svg",
+      "size": [
+        106,
+        52
+      ],
+      "purpose": "阵法槽状态",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "4ed30559040b284309f941ef264525d8c022ad1685aa1c58e9e2ef42e9d4e9ee",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "slot_span",
+      "category": "board",
+      "file": "ui/board/slot_span.png",
+      "source": "design/v1/sources/board/slot_span.svg",
+      "size": [
+        106,
+        107
+      ],
+      "purpose": "阵法槽状态",
+      "insets": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "d13de9e4ef113aabc74dca1e18f1d060bd44c0d5179b7e8701cabc851f9e1b73",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "host_connector",
+      "category": "board",
+      "file": "ui/board/host_connector.png",
+      "source": "design/v1/sources/board/host_connector.svg",
+      "size": [
+        12,
+        52
+      ],
+      "purpose": "宿主到解析行关联",
+      "sha256": "f3c1bc8164c7958bc35fc5bdac9a78a69f7cae713d45b172a457c4257c451872",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "hud",
+      "category": "board",
+      "file": "ui/board/hud.png",
+      "source": "design/v1/sources/board/hud.svg",
+      "size": [
+        215,
+        190
+      ],
+      "purpose": "hud",
+      "insets": [
+        12,
+        40,
+        12,
+        12
+      ],
+      "stretch": "nine_slice",
+      "sha256": "43c4cd471f48983a58d10fe6bb7623f0726e39b130264429893703d1e8d27afa",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "phase_bar",
+      "category": "board",
+      "file": "ui/board/phase_bar.png",
+      "source": "design/v1/sources/board/phase_bar.svg",
+      "size": [
+        700,
+        42
+      ],
+      "purpose": "phase_bar",
+      "insets": [
+        12,
+        40,
+        12,
+        12
+      ],
+      "stretch": "nine_slice",
+      "sha256": "1db58e9334137320cdd469bc3435fb7fce64d675e3bff3118888b6028f24890f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "task_hint",
+      "category": "interaction",
+      "file": "ui/interaction/task_hint.png",
+      "source": "design/v1/sources/interaction/task_hint.svg",
+      "size": [
+        800,
+        36
+      ],
+      "purpose": "task_hint",
+      "insets": [
+        12,
+        40,
+        12,
+        12
+      ],
+      "stretch": "nine_slice",
+      "sha256": "cfb31bcce91786207f768584c75e9a054bbc7e4f3213a8aaf0e89a2d98272806",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "action_bar",
+      "category": "interaction",
+      "file": "ui/interaction/action_bar.png",
+      "source": "design/v1/sources/interaction/action_bar.svg",
+      "size": [
+        672,
+        44
+      ],
+      "purpose": "action_bar",
+      "insets": [
+        12,
+        40,
+        12,
+        12
+      ],
+      "stretch": "nine_slice",
+      "sha256": "c3b9ee7bcf6b0f76405cda4c749443d9029f31560f8d123266446a16626e9aae",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "summary",
+      "category": "interaction",
+      "file": "ui/interaction/summary.png",
+      "source": "design/v1/sources/interaction/summary.svg",
+      "size": [
+        215,
+        88
+      ],
+      "purpose": "summary",
+      "insets": [
+        12,
+        40,
+        12,
+        12
+      ],
+      "stretch": "nine_slice",
+      "sha256": "f04fb7d6cfd2d221f5819e8529a35b0cefb75b952cabe49a168757c505f644ef",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "decision",
+      "category": "interaction",
+      "file": "ui/interaction/decision.png",
+      "source": "design/v1/sources/interaction/decision.svg",
+      "size": [
+        540,
+        310
+      ],
+      "purpose": "decision",
+      "insets": [
+        12,
+        40,
+        12,
+        12
+      ],
+      "stretch": "nine_slice",
+      "sha256": "b90e3e83c6dd16fc942ec1d80044969f8194c3617022bc69f694d594d3d275f6",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "log_window",
+      "category": "interaction",
+      "file": "ui/interaction/log_window.png",
+      "source": "design/v1/sources/interaction/log_window.svg",
+      "size": [
+        620,
+        420
+      ],
+      "purpose": "log_window",
+      "insets": [
+        12,
+        40,
+        12,
+        12
+      ],
+      "stretch": "nine_slice",
+      "sha256": "8971bd8c9b095bb198b2797916408a2495e464c483ea6402e2c61845f78c68f1",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "result_window",
+      "category": "interaction",
+      "file": "ui/interaction/result_window.png",
+      "source": "design/v1/sources/interaction/result_window.svg",
+      "size": [
+        520,
+        340
+      ],
+      "purpose": "result_window",
+      "insets": [
+        12,
+        40,
+        12,
+        12
+      ],
+      "stretch": "nine_slice",
+      "sha256": "ef7f0d7521af2df4c8ae3e4d92a1498de0099d8346e7343c51da9bf00e3bc4a9",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "handoff",
+      "category": "interaction",
+      "file": "ui/interaction/handoff.png",
+      "source": "design/v1/sources/interaction/handoff.svg",
+      "size": [
+        1080,
+        134
+      ],
+      "purpose": "handoff",
+      "insets": [
+        12,
+        40,
+        12,
+        12
+      ],
+      "stretch": "nine_slice",
+      "sha256": "a7546d9d559a77958e5695aec00eab58ca36068b4c83e45dda59de311dd4a9fc",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "phase_inactive",
+      "category": "board",
+      "file": "ui/board/phase_inactive.png",
+      "source": "design/v1/sources/board/phase_inactive.svg",
+      "size": [
+        22,
+        22
+      ],
+      "purpose": "阶段指示 inactive",
+      "sha256": "ad0991ee13357f69cf3d039bf239a23ab19b0b878d8d94a216054ef8791d5989",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "phase_current",
+      "category": "board",
+      "file": "ui/board/phase_current.png",
+      "source": "design/v1/sources/board/phase_current.svg",
+      "size": [
+        22,
+        22
+      ],
+      "purpose": "阶段指示 current",
+      "sha256": "8801967b86256d3bce1b19a5cb1b95c46b8ea77d5bfafeb7504e4d1d4778aef1",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "phase_complete",
+      "category": "board",
+      "file": "ui/board/phase_complete.png",
+      "source": "design/v1/sources/board/phase_complete.svg",
+      "size": [
+        22,
+        22
+      ],
+      "purpose": "阶段指示 complete",
+      "sha256": "98b594c2ff2d0d84aca9d790fd8865c2f5039cb143cd5b1e023c97ac2bfa9f0b",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "scroll_track",
+      "category": "board",
+      "file": "ui/board/scroll_track.png",
+      "source": "design/v1/sources/board/scroll_track.svg",
+      "size": [
+        80,
+        6
+      ],
+      "purpose": "滚动位置提示",
+      "insets": [
+        2,
+        1,
+        2,
+        1
+      ],
+      "stretch": "horizontal",
+      "sha256": "cb83e4ac2042e32f0d24f6ecfa6c56432986eb1cd6e7b6e51c65208c3d974b5d",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "scroll_thumb",
+      "category": "board",
+      "file": "ui/board/scroll_thumb.png",
+      "source": "design/v1/sources/board/scroll_thumb.svg",
+      "size": [
+        80,
+        6
+      ],
+      "purpose": "滚动位置提示",
+      "insets": [
+        2,
+        1,
+        2,
+        1
+      ],
+      "stretch": "horizontal",
+      "sha256": "558ed41c7003d4e79d4d529c74dda080add1c47bd300d8eb8f0f0da20b2c1531",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "result_victory",
+      "category": "interaction",
+      "file": "ui/interaction/result_victory.png",
+      "source": "design/v1/sources/interaction/result_victory.svg",
+      "size": [
+        96,
+        64
+      ],
+      "purpose": "victory结果标识",
+      "sha256": "7ccd419d13e3543514e49a3cb3fbbad6f3a8008aacd22c8a799c23bbf227a2dc",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "result_defeat",
+      "category": "interaction",
+      "file": "ui/interaction/result_defeat.png",
+      "source": "design/v1/sources/interaction/result_defeat.svg",
+      "size": [
+        96,
+        64
+      ],
+      "purpose": "defeat结果标识",
+      "sha256": "25218dccfa00da7b8fe7bfa04b73b212c7369595f879fa399cfad3a88fc462fd",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "result_draw",
+      "category": "interaction",
+      "file": "ui/interaction/result_draw.png",
+      "source": "design/v1/sources/interaction/result_draw.svg",
+      "size": [
+        96,
+        64
+      ],
+      "purpose": "draw结果标识",
+      "sha256": "6f44490f180c88325ee64fccf07d23b919c79617530b6f4d7023c3006e7a004c",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "feedback_success",
+      "category": "interaction",
+      "file": "ui/interaction/feedback_success.png",
+      "source": "design/v1/sources/interaction/feedback_success.svg",
+      "size": [
+        360,
+        48
+      ],
+      "purpose": "success反馈",
+      "insets": [
+        44,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "8a3d4104534b35eedb4c3650bc5fe65502407d4949e9caa3cec556ea0a41e3a5",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "feedback_no_action",
+      "category": "interaction",
+      "file": "ui/interaction/feedback_no_action.png",
+      "source": "design/v1/sources/interaction/feedback_no_action.svg",
+      "size": [
+        360,
+        48
+      ],
+      "purpose": "no_action反馈",
+      "insets": [
+        44,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "4d234350c232f13e098d42f087f55a6b828b9067f812d8aacbc3ad7bb7f56982",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "feedback_wrong_target",
+      "category": "interaction",
+      "file": "ui/interaction/feedback_wrong_target.png",
+      "source": "design/v1/sources/interaction/feedback_wrong_target.svg",
+      "size": [
+        360,
+        48
+      ],
+      "purpose": "wrong_target反馈",
+      "insets": [
+        44,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "eb5a2450467466f590fd4e2cd27f13a6fd352c80a371f55d3dab672920516622",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "feedback_rejected",
+      "category": "interaction",
+      "file": "ui/interaction/feedback_rejected.png",
+      "source": "design/v1/sources/interaction/feedback_rejected.svg",
+      "size": [
+        360,
+        48
+      ],
+      "purpose": "rejected反馈",
+      "insets": [
+        44,
+        8,
+        12,
+        8
+      ],
+      "stretch": "nine_slice",
+      "sha256": "7448f19bc16a693a40a813493f0773d3cb753d97731011525eda9a09eb18ede2",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "stepper_0",
+      "category": "interaction",
+      "file": "ui/interaction/stepper_0.png",
+      "source": "design/v1/sources/interaction/stepper_0.svg",
+      "size": [
+        480,
+        32
+      ],
+      "purpose": "查看/目标/额外成本/确认步骤底板；文字动态绘制",
+      "step_positions": [
+        [
+          16,
+          16
+        ],
+        [
+          164,
+          16
+        ],
+        [
+          312,
+          16
+        ],
+        [
+          460,
+          16
+        ]
+      ],
+      "sha256": "d9482fab5e50413fa57ff2e2d14edfe8010827e2be798ddd741889a58477d0d2",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "stepper_1",
+      "category": "interaction",
+      "file": "ui/interaction/stepper_1.png",
+      "source": "design/v1/sources/interaction/stepper_1.svg",
+      "size": [
+        480,
+        32
+      ],
+      "purpose": "查看/目标/额外成本/确认步骤底板；文字动态绘制",
+      "step_positions": [
+        [
+          16,
+          16
+        ],
+        [
+          164,
+          16
+        ],
+        [
+          312,
+          16
+        ],
+        [
+          460,
+          16
+        ]
+      ],
+      "sha256": "268f9efc1830ab38d913916a75a7b0c03b2c5ef95759adb76c26c49a77047068",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "stepper_2",
+      "category": "interaction",
+      "file": "ui/interaction/stepper_2.png",
+      "source": "design/v1/sources/interaction/stepper_2.svg",
+      "size": [
+        480,
+        32
+      ],
+      "purpose": "查看/目标/额外成本/确认步骤底板；文字动态绘制",
+      "step_positions": [
+        [
+          16,
+          16
+        ],
+        [
+          164,
+          16
+        ],
+        [
+          312,
+          16
+        ],
+        [
+          460,
+          16
+        ]
+      ],
+      "sha256": "37514dd5f3fbed6c28fbb29569fce439dd88b3d2fd19ce475cf4276a4729d782",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "stepper_3",
+      "category": "interaction",
+      "file": "ui/interaction/stepper_3.png",
+      "source": "design/v1/sources/interaction/stepper_3.svg",
+      "size": [
+        480,
+        32
+      ],
+      "purpose": "查看/目标/额外成本/确认步骤底板；文字动态绘制",
+      "step_positions": [
+        [
+          16,
+          16
+        ],
+        [
+          164,
+          16
+        ],
+        [
+          312,
+          16
+        ],
+        [
+          460,
+          16
+        ]
+      ],
+      "sha256": "24c96b170672213a6344511e6386bd4a017c54de6084b451733c7ce6c132b32a",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "match_background",
+      "category": "board",
+      "file": "ui/board/match_background.png",
+      "source": "design/v1/sources/board/match_background.svg",
+      "size": [
+        1600,
+        1000
+      ],
+      "purpose": "低对比无文字场地底图",
+      "stretch": "none",
+      "logical_canvas": [
+        1600,
+        1000
+      ],
+      "sha256": "1ba2c8bc8c69b0c3068ee68e490e55509f4c6f19b0b012daff3f9e82545c896f",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "board_decoration",
+      "category": "board",
+      "file": "ui/board/board_decoration.png",
+      "source": "design/v1/sources/board/board_decoration.svg",
+      "size": [
+        1600,
+        1000
+      ],
+      "purpose": "独立中央装饰层；不定义槽位",
+      "sha256": "d7d45620933431d31a09723019fe28bbea611610b58cf5336dc49b0889304a7b",
+      "alpha": "binary 0/255",
+      "origin": "Original code-native project pixel UI",
+      "license": "Project artwork; no external stock assets",
+      "anchor": [
+        0,
+        0
+      ]
+    }
+  ],
+  "runtime_integrated": true,
+  "text_in_textures": false,
+  "runtime_integration": {
+    "programVersion": "0.4.2-dev",
+    "scope": [
+      "card frames and backs",
+      "rarity and spell-state markers",
+      "resource icons",
+      "region frames and empty slots",
+      "button normal/hover/pressed/disabled",
+      "card hover/selection/target/cost overlays",
+      "detail, decision, log, handoff and result panels",
+      "background and board decoration"
+    ],
+    "note": "Unused optional assets remain available; design previews are not used as textures."
+  }
+}

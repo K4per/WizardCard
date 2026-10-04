@@ -4,9 +4,18 @@
     "balance": "cards/balance.png",
     "fireball": "cards/fireball.png",
     "barbs": "cards/barbs.png",
-    "ring": "cards/ring.png"
+    "recall": "cards/recall.png",
+    "ring": "cards/ring.png",
+    "spark": "cards/spark.png",
+    "mend": "cards/mend.png",
+    "unravel": "cards/unravel.png",
+    "disrupt": "cards/disrupt.png",
+    "clarity": "cards/clarity.png",
+    "reservoir": "cards/reservoir.png",
+    "conduit": "cards/conduit.png",
+    "ward": "cards/ward.png"
   },
   "source": "provenance.json",
   "sampling": "nearest",
-  "fallback": "procedural card-type emblem for the other nine illustrations"
+  "fallback": "Existing procedural card-type emblem when an illustration is missing or unreadable."
 }

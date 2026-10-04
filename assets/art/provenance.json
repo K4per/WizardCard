@@ -34,5 +34,95 @@
     "originalGeneratedFilename": "exec-507405f7-93f1-4060-b67e-03b3b7a1243a.png",
     "sha256": "17ce2e6248cb8caa16cbc1a585a0968da3f8fc1ed2b25357a2d075d4c4c8f356",
     "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "recall",
+    "file": "cards/recall.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "art_production_v1",
+    "originalGeneratedFilename": "exec-b60acb9b-b9ea-403f-947f-a793efba5c17.png",
+    "promptFile": "design/v1/illustration_prompts.json",
+    "sha256": "1343187a17c79589fe6f83856d050489b62f169a59e3b320cb4067b037eebf6e",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "spark",
+    "file": "cards/spark.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "art_production_v1",
+    "originalGeneratedFilename": "exec-df4aa4bc-d408-46fb-b346-9f72fbf209f4.png",
+    "promptFile": "design/v1/illustration_prompts.json",
+    "sha256": "29a6fe63b7b00046c1fe51aa4e047235574d40f63acc4c937dd75852d103248a",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "mend",
+    "file": "cards/mend.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "art_production_v1",
+    "originalGeneratedFilename": "exec-d8cdfc18-8e7a-40a4-bcaa-4f5b07fd5e3c.png",
+    "promptFile": "design/v1/illustration_prompts.json",
+    "sha256": "335c7eb5b461c29f9cc167f191613b9505cabbc14b8f4f98185142d91a3af614",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "unravel",
+    "file": "cards/unravel.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "art_production_v1",
+    "originalGeneratedFilename": "exec-3f264e17-62cc-441b-aae3-2d22b602779e.png",
+    "promptFile": "design/v1/illustration_prompts.json",
+    "sha256": "8f4108da181b893637407aa8232922844bc76a3a7a992ca8f27fc266d36e7d06",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "disrupt",
+    "file": "cards/disrupt.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "art_production_v1",
+    "originalGeneratedFilename": "exec-237e9d3c-4631-440b-b11a-4ca6183979e0.png",
+    "promptFile": "design/v1/illustration_prompts.json",
+    "sha256": "7999a07b83d160edbb5d66ef97165519851b5d480c0723c3d95b4c05fad1b505",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "clarity",
+    "file": "cards/clarity.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "art_production_v1",
+    "originalGeneratedFilename": "exec-6032d04f-4c8f-4685-a37a-bd8478d69e1e.png",
+    "promptFile": "design/v1/illustration_prompts.json",
+    "sha256": "1d035193e1a27676239548d91111f3ea51caa36268c824c91791ae3e291ba136",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "reservoir",
+    "file": "cards/reservoir.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "art_production_v1",
+    "originalGeneratedFilename": "exec-e10f2797-867f-43b6-b6c8-d8287eff02c3.png",
+    "promptFile": "design/v1/illustration_prompts.json",
+    "sha256": "11ef7008b3be608d9042a7f24978955ef2cbe4ada7d4201c84bebd060b4d2d0e",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "conduit",
+    "file": "cards/conduit.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "art_production_v1",
+    "originalGeneratedFilename": "exec-3ca9f8b4-989d-467f-8c00-14c490f51284.png",
+    "promptFile": "design/v1/illustration_prompts.json",
+    "sha256": "a79fbf4564b60bb9d02ddc30e3753b2b7fe94d08c34d3ac37bcf04e8941b1a65",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "ward",
+    "file": "cards/ward.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "art_production_v1",
+    "originalGeneratedFilename": "exec-3a614a9a-8a98-44c9-bc6f-568b13ad5274.png",
+    "promptFile": "design/v1/illustration_prompts.json",
+    "sha256": "e8354e351207c487312d669495d29747ea364dc49c1d2c649337c8fccbf6dc5a",
+    "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
   }
 ]

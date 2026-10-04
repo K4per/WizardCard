@@ -92,4 +92,60 @@ void Interaction::offer(const LegalAction& action) {
     if(i==view_.actions.end())return;
     cancel();pending_=*i;step_=Step::Confirm;
 }
+void HandOrder::sync(const GameView& view) {
+    auto& ids=order_.at(view.viewer);std::vector<CardId> visible;
+    for(const auto& c:view.cards)if(c.instance.owner==view.viewer && c.instance.zone==Zone::Hand)visible.push_back(c.instance.id);
+    ids.erase(std::remove_if(ids.begin(),ids.end(),[&](CardId id){return std::find(visible.begin(),visible.end(),id)==visible.end();}),ids.end());
+    for(auto id:visible)if(std::find(ids.begin(),ids.end(),id)==ids.end())ids.push_back(id);
+}
+bool HandOrder::moveBefore(PlayerId p,CardId source,CardId before) {
+    auto& ids=order_.at(p);auto it=std::find(ids.begin(),ids.end(),source);
+    if(it==ids.end() || source==before || (before && std::find(ids.begin(),ids.end(),before)==ids.end()))return false;
+    ids.erase(it);ids.insert(before?std::find(ids.begin(),ids.end(),before):ids.end(),source);return true;
+}
+void HandOrder::sort(const GameView& view,bool byCost) {
+    sync(view);std::map<CardId,const CardDefinition*> definitions;
+    for(const auto& c:view.cards)if(c.instance.zone==Zone::Hand && c.instance.owner==view.viewer)definitions[c.instance.id]=&c.definition;
+    auto& ids=order_.at(view.viewer);
+    std::stable_sort(ids.begin(),ids.end(),[&](CardId a,CardId b){
+        const auto& x=*definitions.at(a);const auto& y=*definitions.at(b);
+        if(byCost && x.cost!=y.cost)return x.cost<y.cost;
+        if(x.type!=y.type)return x.type<y.type;
+        if(x.cost!=y.cost)return x.cost<y.cost;
+        return x.id<y.id;
+    });
+}
+bool Interaction::drop(CardId source,CardId targetCard,Zone destination) {
+    if(step_==Step::Confirm)return false;
+    if(step_==Step::Cost)return destination==Zone::Ash && pick(source);
+    if(step_==Step::Target)return source==selected_ && pick(targetCard);
+    Interaction next=*this;if(!next.select(source))return false;
+    auto available=next.groups();
+    for(std::size_t n=0;n<available.size();++n) {
+        bool matches=false;
+        for(const auto& a:available[n].options) {
+            matches=std::visit([&](const auto& cmd){
+                using T=std::decay_t<decltype(cmd)>;
+                if constexpr(std::is_same_v<T,StartAnalysis>)return destination==Zone::Analysis && (!targetCard || cmd.formation==targetCard);
+                else if constexpr(std::is_same_v<T,SetFormation>)return destination==Zone::Analysis && cmd.replace==targetCard;
+                else if constexpr(std::is_same_v<T,AttachSeal>)return targetCard && cmd.host==targetCard;
+                else if constexpr(std::is_same_v<T,PreloadWord>)return destination==Zone::Words;
+                else if constexpr(std::is_same_v<T,PlayAction>)return destination==Zone::Action;
+                else if constexpr(std::is_same_v<T,PrepareCast>)return destination==Zone::Casting || (targetCard && cmd.target==targetCard);
+                else if constexpr(std::is_same_v<T,Choose>)return view_.decision && ((destination==Zone::Casting && (view_.decision->kind==DecisionKind::CastOrder || view_.decision->kind==DecisionKind::Response)) || (destination==Zone::Ash && (view_.decision->kind==DecisionKind::Discard || view_.decision->kind==DecisionKind::Overflow)));
+                else return false; // Dragging never implicitly abandons or removes a card.
+            },a.command);
+            if(matches)break;
+        }
+        if(!matches)continue;
+        next.activate(n);
+        // Dropping a ready spell anywhere in the casting area starts preparation;
+        // existing spells there are not effect targets.
+        bool castingArea=destination==Zone::Casting && std::holds_alternative<PrepareCast>(available[n].options.front().command);
+        if(targetCard && !castingArea && next.step()==Step::Target && !next.pick(targetCard))continue;
+        *this=std::move(next);return true;
+    }
+    return false;
+}
+
 }

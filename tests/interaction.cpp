@@ -23,3 +23,54 @@ TEST_CASE("set and replace are separate contexts and hidden cards cannot be sele
     Interaction ui;ui.update(v);REQUIRE_FALSE(ui.select(99));REQUIRE(ui.select(1));REQUIRE(ui.groups().size()==2);
     ui.activate(0);REQUIRE(ui.step()==Step::Confirm);ui.cancel();ui.select(1);ui.activate(1);REQUIRE(ui.step()==Step::Target);
 }
+
+TEST_CASE("drag selects a legal intent but invalid drops preserve the current choice") {
+    GameView v;v.viewer=0;
+    for(CardId id:{1u,2u,3u}){CardView c;c.instance.id=id;v.cards.push_back(c);}
+    v.actions={{"parse",1,2,StartAnalysis{1,2}},{"set",3,0,SetFormation{3,0}},{"replace",3,2,SetFormation{3,2}}};
+    Interaction ui;ui.update(v);REQUIRE_FALSE(ui.drop(1,3,Zone::Analysis));REQUIRE(ui.selected()==0);
+    REQUIRE(ui.drop(1,2,Zone::Analysis));REQUIRE(ui.step()==Step::Confirm);
+    REQUIRE(encodeCommand(ui.pending()->command)==encodeCommand(StartAnalysis{1,2}));
+    REQUIRE_FALSE(ui.drop(3,0,Zone::Analysis));REQUIRE(ui.selected()==1);
+    ui.cancel();REQUIRE(ui.drop(3,2,Zone::Analysis));REQUIRE(std::get<SetFormation>(ui.pending()->command).replace==2);
+    ui.cancel();REQUIRE(ui.drop(3,0,Zone::Analysis));REQUIRE(std::get<SetFormation>(ui.pending()->command).replace==0);
+}
+TEST_CASE("drag targeting and discard cost still stop for confirmation") {
+    GameView v;v.viewer=0;for(CardId id:{1u,2u,3u,4u}){CardView c;c.instance.id=id;v.cards.push_back(c);}
+    v.actions={{"prepare",1,2,PrepareCast{1,2,3}}};Interaction ui;ui.update(v);
+    REQUIRE(ui.drop(1,4,Zone::Casting));REQUIRE(ui.step()==Step::Target);
+    REQUIRE_FALSE(ui.drop(4,2,Zone::Analysis));REQUIRE(ui.drop(1,2,Zone::Analysis));REQUIRE(ui.step()==Step::Cost);
+    REQUIRE_FALSE(ui.drop(3,0,Zone::Action));REQUIRE_FALSE(ui.drop(4,0,Zone::Ash));REQUIRE_FALSE(ui.pending());
+    REQUIRE(ui.drop(3,0,Zone::Ash));REQUIRE(ui.step()==Step::Confirm);
+    REQUIRE(encodeCommand(ui.pending()->command)==encodeCommand(PrepareCast{1,2,3}));
+}
+TEST_CASE("drag does not infer destructive removal and routes card-specific destinations") {
+    GameView v;CardView c;c.instance.id=1;v.cards.push_back(c);Interaction ui;
+    for(Command cmd:{Command{PlayAction{1,0}},Command{PreloadWord{1}},Command{AttachSeal{1,2}}}) {
+        v.actions={{"operation",1,0,cmd}};ui.update(v);REQUIRE_FALSE(ui.drop(1,0,Zone::Ash));
+        auto zone=std::holds_alternative<PlayAction>(cmd)?Zone::Action:std::holds_alternative<PreloadWord>(cmd)?Zone::Words:Zone::Analysis;
+        REQUIRE(ui.drop(1,std::holds_alternative<AttachSeal>(cmd)?2:0,zone));REQUIRE(ui.pending());
+    }
+    v.actions={{"abandon",1,0,Abandon{1}},{"remove",1,0,RemoveFormation{1}}};ui.update(v);
+    REQUIRE_FALSE(ui.drop(1,0,Zone::Ash));REQUIRE_FALSE(ui.pending());
+}
+TEST_CASE("forced drag choices retain their decision id and cannot use the wrong destination") {
+    GameView v;CardView c;c.instance.id=1;v.cards.push_back(c);Interaction ui;
+    for(auto kind:{DecisionKind::Discard,DecisionKind::Overflow,DecisionKind::Response,DecisionKind::CastOrder}) {
+        v.decision=PendingDecision{73,0,kind,{1},false};v.actions={{"choose",1,0,Choose{73,1}}};ui.update(v);
+        REQUIRE_FALSE(ui.drop(1,0,Zone::Action));
+        REQUIRE(ui.drop(1,0,(kind==DecisionKind::Discard || kind==DecisionKind::Overflow)?Zone::Ash:Zone::Casting));
+        REQUIRE(std::get<Choose>(ui.pending()->command).decision==73);
+    }
+    ui.update(v);REQUIRE_FALSE(ui.pending());REQUIRE(ui.selected()==0);
+}
+TEST_CASE("hand order is private presentation state and synchronizes draws and departures") {
+    GameView v;v.viewer=0;for(CardId id:{1u,2u,3u}){CardView c;c.instance.id=id;c.instance.zone=Zone::Hand;c.definition.cost=static_cast<int>(4-id);v.cards.push_back(c);}
+    HandOrder hand;hand.sync(v);REQUIRE(hand.moveBefore(0,3,1));REQUIRE((hand.cards(0)==std::vector<CardId>{3,1,2}));
+    REQUIRE_FALSE(hand.moveBefore(0,99,1));REQUIRE_FALSE(hand.moveBefore(0,1,99));
+    auto enemy=v;enemy.viewer=1;enemy.cards.clear();CardView c;c.instance.id=8;c.instance.owner=1;c.instance.zone=Zone::Hand;enemy.cards.push_back(c);hand.sync(enemy);
+    REQUIRE((hand.cards(1)==std::vector<CardId>{8}));REQUIRE((hand.cards(0)==std::vector<CardId>{3,1,2}));
+    v.cards[0].instance.zone=Zone::Ash;c.instance.id=4;c.instance.owner=0;v.cards.push_back(c);hand.sync(v);
+    REQUIRE((hand.cards(0)==std::vector<CardId>{3,2,4}));hand.sort(v,true);REQUIRE((hand.cards(0)==std::vector<CardId>{4,3,2}));
+    REQUIRE(v.cards[1].instance.id==2); // Sorting never reorders authoritative/projection data.
+}

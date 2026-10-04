@@ -3,6 +3,15 @@
 
 namespace wizard::ui {
 enum class Step { Inspect, Target, Cost, Confirm };
+class HandOrder {
+public:
+    void sync(const GameView&);
+    bool moveBefore(PlayerId, CardId source, CardId before); // before=0 appends
+    void sort(const GameView&, bool byCost);
+    const std::vector<CardId>& cards(PlayerId p) const { return order_.at(p); }
+private:
+    std::array<std::vector<CardId>,2> order_;
+};
 struct ActionGroup { std::string title; std::vector<LegalAction> options; };
 // Presentation-only selection state. Rules still validate every submitted command.
 class Interaction {
@@ -13,6 +22,7 @@ public:
     bool pick(CardId card);
     void offer(const LegalAction& action);
     void cancel();
+    bool drop(CardId source, CardId target, Zone destination); // Select intent only; never submit.
     CardId selected() const { return selected_; }
     Step step() const { return step_; }
     std::vector<ActionGroup> groups() const;

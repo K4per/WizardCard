@@ -1,5 +1,6 @@
 #include "wizard/runtime.hpp"
 #include <stdexcept>
+#include <cmath>
 
 namespace wizard::runtime {
 sf::String utf8(const std::string& s) { return sf::String::fromUtf8(s.begin(),s.end()); }
@@ -16,6 +17,21 @@ void Resources::play(const std::filesystem::path& path) {
     auto key=path.string();auto i=sounds_.find(key);
     if(i==sounds_.end()) {sf::SoundBuffer b;if(!b.loadFromFile(path)) return;i=sounds_.emplace(key,std::move(b)).first;}
     voice_=std::make_unique<sf::Sound>(i->second);voice_->play();
+}
+void texturePatch(sf::RenderTarget& target,const sf::Texture& texture,sf::FloatRect rect,const std::array<int,4>& insets,sf::Color tint) {
+    const auto size=texture.getSize();float sw=static_cast<float>(size.x),sh=static_cast<float>(size.y);
+    if(rect.size.x<=0 || rect.size.y<=0)return;
+    float l=static_cast<float>(insets[0]),u=static_cast<float>(insets[1]),r=static_cast<float>(insets[2]),b=static_cast<float>(insets[3]);
+    if(l+r>=sw){float scale=(sw-1)/(l+r);l=std::floor(l*scale);r=std::floor(r*scale);}
+    if(u+b>=sh){float scale=(sh-1)/(u+b);u=std::floor(u*scale);b=std::floor(b*scale);}
+    float sx[4]={0,l,sw-r,sw},sy[4]={0,u,sh-b,sh};
+    float kx=l+r>0?std::min(1.f,rect.size.x/(l+r)):1,ky=u+b>0?std::min(1.f,rect.size.y/(u+b)):1;
+    float dx[4]={0,l*kx,rect.size.x-r*kx,rect.size.x},dy[4]={0,u*ky,rect.size.y-b*ky,rect.size.y};
+    for(int y=0;y<3;++y)for(int x=0;x<3;++x) {
+        float w=sx[x+1]-sx[x],h=sy[y+1]-sy[y];if(w<=0 || h<=0)continue;
+        sf::Sprite sprite(texture,sf::IntRect({static_cast<int>(sx[x]),static_cast<int>(sy[y])},{static_cast<int>(w),static_cast<int>(h)}));
+        sprite.setPosition(rect.position+sf::Vector2f{dx[x],dy[y]});sprite.setScale({(dx[x+1]-dx[x])/w,(dy[y+1]-dy[y])/h});sprite.setColor(tint);target.draw(sprite);
+    }
 }
 void box(sf::RenderTarget& target,sf::FloatRect rect,sf::Color color,sf::Color border) {
     sf::RectangleShape shape(rect.size);shape.setPosition(rect.position);shape.setFillColor(color);shape.setOutlineThickness(1.f);shape.setOutlineColor(border);target.draw(shape);

@@ -12,7 +12,7 @@ namespace wizard {
 using PlayerId = int;
 using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
-inline constexpr const char* programVersion = "0.4.1-dev";
+inline constexpr const char* programVersion = "0.4.2-dev";
 enum class CardType { Action, Analytic, Word, Formation, Seal };
 enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached };
 enum class SpellState { None, Analyzing, Ready, Pending, Active };

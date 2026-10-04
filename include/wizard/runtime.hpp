@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <filesystem>
+#include <array>
 #include <algorithm>
 #include <map>
 #include <memory>
@@ -24,6 +25,7 @@ private:
 struct Theme {
     sf::Color background{14,19,31}, panel{25,33,49}, ink{227,233,240}, muted{147,165,183}, accent{101,217,192}, selected{53,88,102};
 };
+void texturePatch(sf::RenderTarget&,const sf::Texture&,sf::FloatRect,const std::array<int,4>& insets={},sf::Color tint=sf::Color::White);
 void box(sf::RenderTarget&,sf::FloatRect,sf::Color,sf::Color border=sf::Color::Transparent);
 void text(sf::RenderTarget&,const Resources&,const std::string&,sf::Vector2f,unsigned int,sf::Color);
 void wrapped(sf::RenderTarget&,const Resources&,const std::string&,sf::Vector2f,unsigned int,sf::Color,std::size_t columns);

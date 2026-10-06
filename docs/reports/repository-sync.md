@@ -21,10 +21,10 @@
 
 ## CI修复与结果
 
-首次同步触发的[远程运行](https://github.com/K4per/WizardCard/actions/runs/37509650085)在Windows配置步骤失败，Linux依赖此任务而跳过。json与Catch2原固定值不能从上游取得，本机FETCHCONTENT源码覆盖隐藏了问题。
+首次同步触发的[远程运行](https://github.com/K4per/WizardCard/actions/runs/37509650085)在Windows配置步骤失败，Linux依赖此任务而跳过。[诊断增强运行](https://github.com/K4per/WizardCard/actions/runs/37512387219)明确指出windows-latest没有Visual Studio 2022实例；现固定runner为windows-2022以匹配预设。另外核查发现json与Catch2原固定值不能从上游取得，本机FETCHCONTENT源码覆盖隐藏了这一独立问题。
 
 固定值已改为实际通过本机测试的nlohmann/json v3.12.0 `55f93686c01528224f448c19128836e7df245f72`、Catch2 v3.8.1 `2b60af89e23d28eefc081bc930831ee9d45ea58b`，均已从上游确认存在；SFML固定提交不变。没有更改卡牌、引擎规则或复盘内容哈希。
 
-最终远程Windows/Linux与跨平台复盘结果：**验证中，完成后在本节记录实际运行链接与结果**。本机此前Windows Release及无窗口Windows Release各179项通过，不替代Linux验收。另以全新无窗口构建目录验证无源码覆盖的依赖配置。
+最终远程Windows/Linux与跨平台复盘结果：**验证中，完成后在本节记录实际运行链接与结果**。本机此前Windows Release及无窗口Windows Release各179项通过，不替代Linux验收。另以全新无窗口构建目录验证无源码覆盖的依赖配置：成功取得固定源码、Release构建及179项回归通过，83.04秒；证据为 `build/sync-clean-configure.log`、`build/sync-clean-build.log`、`build/sync-clean-tests.log`。
 
 源码同步不是建立版本标签或托管发行下载；现有Alpha ZIP仍是本地交付。此次未向任何协作者发送消息或代授仓库写入权限。

@@ -17,7 +17,18 @@ jobs:
         run: |
           python tools/generate_card_catalog.py
           git diff --exit-code -- docs/card-catalog.md docs/card-catalog.html
-      - run: cmake --preset windows
+      - name: Configure Windows with failure diagnostics
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $output = & cmake --preset windows 2>&1
+          $configureExit = $LASTEXITCODE
+          $output | ForEach-Object { Write-Host $_ }
+          if ($configureExit -ne 0) {
+            $summary = ($output | Select-Object -Last 40 | Out-String).Replace('%', '%25').Replace("`r", '%0D').Replace("`n", '%0A')
+            Write-Host "::error title=CMake configuration failed::$summary"
+          }
+          exit $configureExit
       - run: cmake --build --preset windows --parallel 4
       - run: ctest --preset windows
       - run: build/windows/Release/wizard_cli.exe smoke assets build/windows/cross-platform.json 42
@@ -37,7 +48,6 @@ jobs:
             build/windows/tutorial-replay.json
   linux-core:
     runs-on: ubuntu-latest
-    needs: windows
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -47,10 +57,24 @@ jobs:
       - run: cmake --preset headless
       - run: cmake --build --preset headless --parallel 4
       - run: ctest --preset headless
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-core-cli
+          path: build/headless/wizard_cli
+  cross-platform-replay:
+    runs-on: ubuntu-latest
+    needs: [windows, linux-core]
+    steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: reference-replay
           path: build/reference
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-core-cli
+          path: build/headless
+      - run: chmod +x build/headless/wizard_cli
       - run: build/headless/wizard_cli replay assets build/reference/cross-platform.json
       - run: build/headless/wizard_cli replay assets build/reference/ai-replay.json
       - run: build/headless/wizard_cli replay assets build/reference/tutorial-replay.json

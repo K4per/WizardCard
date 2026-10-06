@@ -1107,4 +1107,4 @@
 
 [五阶段与连锁](alpha-v1.0-rules.md) · [速度/埋伏/防护规则](alpha-v1-cards.md) · [发布补充卡](alpha-release-cards.md) · [术语规范](terminology.md)
 
-卡池源文件 SHA256：`e8f4b683d8dc4fe670d9f65b5ca7987475632698d8b4c7b10185a2285e180a19`。
+卡池规范化JSON SHA256：`c81c5e7a05e4e2ea91ced28fd03658096054385759e8fcacedc5585d373ca293`（UTF-8、键排序、无多余空白，不受平台换行影响）。

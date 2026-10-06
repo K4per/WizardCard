@@ -4508,7 +4508,7 @@
   "runtime_integrated": true,
   "text_in_textures": false,
   "runtime_integration": {
-    "programVersion": "0.4.2-dev",
+    "programVersion": "1.0.0-alpha",
     "scope": [
       "card frames and backs",
       "rarity and spell-state markers",
@@ -4519,6 +4519,7 @@
       "detail, decision, log, handoff and result panels",
       "background and board decoration"
     ],
-    "note": "Unused optional assets remain available; design previews are not used as textures."
+    "note": "Unused optional assets remain available; design previews are not used as textures.",
+    "firstIntegratedProgramVersion": "0.4.2-dev"
   }
 }

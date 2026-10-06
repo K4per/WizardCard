@@ -2,7 +2,7 @@
 
 2026-10-07正式Alpha：程序1.0.0-alpha、规则/卡池1.0.0；Windows Release及无窗口Windows Release各179项通过，原生界面、音频与独立便携包验收见[发布报告](reports/alpha-v1.0-release.md)。用户已取消本次20局真人门槛；LinuxCI未执行。以下旧版本与待办均为历史记录。
 
-当前程序`0.10.0-dev` / 规则`0.4.0` / 卡池`0.3.0`的新卡、容量与176项回归见[接入报告](reports/alpha-v1-cards.md)。以下保留各批历史验收。程序`0.9.2-dev` / 规则`0.3.1` / 卡池`0.2.1`的149项回归、点选详情、P0音效解码/播放控制、AI和教学验收见[修订报告](reports/audio-and-design.md)。程序0.9.1-dev的143项回归、对局UI与动画、精简模式、隐私和时钟、真实交互及独立目录验收见[UI与动画报告](reports/match-ui-motion.md)。阶段5的136项回归、三档AI完整对局、固定教学、私有视角、设置暂停与跨配置复盘见[阶段五报告](reports/alpha-v1.0-stage5.md)。阶段4的120项回归及全窗口构筑交互见[构筑界面修订报告](reports/deck-ui-revision.md)；原阶段四验收见[阶段四报告](reports/alpha-v1.0-stage4.md)。阶段3的110项回归见[阶段三报告](reports/alpha-v1.0-stage3.md)，95项改卡回归见[初版卡牌适配验收](reports/alpha-card-updates.md)。下文保留历史各批次结果。
+历史批次程序`0.10.0-dev` / 规则`0.4.0` / 卡池`0.3.0`的新卡、容量与176项回归见[接入报告](reports/alpha-v1-cards.md)。以下保留各批历史验收。程序`0.9.2-dev` / 规则`0.3.1` / 卡池`0.2.1`的149项回归、点选详情、P0音效解码/播放控制、AI和教学验收见[修订报告](reports/audio-and-design.md)。程序0.9.1-dev的143项回归、对局UI与动画、精简模式、隐私和时钟、真实交互及独立目录验收见[UI与动画报告](reports/match-ui-motion.md)。阶段5的136项回归、三档AI完整对局、固定教学、私有视角、设置暂停与跨配置复盘见[阶段五报告](reports/alpha-v1.0-stage5.md)。阶段4的120项回归及全窗口构筑交互见[构筑界面修订报告](reports/deck-ui-revision.md)；原阶段四验收见[阶段四报告](reports/alpha-v1.0-stage4.md)。阶段3的110项回归见[阶段三报告](reports/alpha-v1.0-stage3.md)，95项改卡回归见[初版卡牌适配验收](reports/alpha-card-updates.md)。下文保留历史各批次结果。
 
 日期：2026-10-04。程序：0.4.2-dev；规则：0.2.2；卡池：0.1.0。
 

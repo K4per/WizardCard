@@ -125,7 +125,8 @@ def main():
         assert by_id[p['baseFormation']].get('baseEligible')
     counts=Counter(c['type'] for c in cards)
     ordered=[c for t in TYPES for c in cards if c['type']==t]
-    digest=hashlib.sha256((ROOT/'assets/cards.json').read_bytes()).hexdigest()
+    normalized=json.dumps(catalog,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf-8')
+    digest=hashlib.sha256(normalized).hexdigest()
     intro=f"版本：Alpha v1.0 · 程序1.0.0-alpha · 规则{catalog['rulesVersion']} · 卡池{catalog['cardSetVersion']}。共{len(cards)}种卡，九套合法预设。"
     md=['# 巫师牌 Alpha v1.0 卡池图鉴','',intro,'',
         '配图和卡面文字直接取自正式资源；数据来自 [cards.json](../assets/cards.json)。可用[图文浏览版](card-catalog.html)搜索和组合筛选，或按下文索引阅读。','',
@@ -166,7 +167,7 @@ def main():
     md += ['## 更新与依据','',
            '本图鉴由 `python tools/generate_card_catalog.py` 生成。效果、数值与插画随正式卡池更新；构筑要点需人工复核。', '',
            '[五阶段与连锁](alpha-v1.0-rules.md) · [速度/埋伏/防护规则](alpha-v1-cards.md) · [发布补充卡](alpha-release-cards.md) · [术语规范](terminology.md)', '',
-           f'卡池源文件 SHA256：`{digest}`。','']
+           f'卡池规范化JSON SHA256：`{digest}`（UTF-8、键排序、无多余空白，不受平台换行影响）。','']
     (ROOT/'docs/card-catalog.md').write_text('\n'.join(md),encoding='utf-8')
     payload=json.dumps(data,ensure_ascii=False).replace('<','\\u003c')
     page=HTML.replace('__INTRO__',html.escape(intro)).replace('__DATA__',payload).replace('__COUNT__',str(len(cards)))

@@ -84,7 +84,7 @@
 
 | 效果 `kind` | `amount` / 行为 |
 |---|---|
-| `damage`、`heal` | 指定玩家受到伤害 / 恢复生命；治疗受30生命上限约束 |
+| `damage`、`heal` | 指定玩家受到伤害 / 恢复生命；治疗受40生命上限约束，临时生命不计入此上限 |
 | `draw`、`mana` | 拥有者抽牌 / 获得魔素；魔素受12上限约束 |
 | `temporary`、`independent` | 指定玩家获得给定数量的临时 / 独立荷载 |
 | `clear_temporary` | 拥有者选择临时来源，最多清除给定数量，可停止 |
@@ -95,7 +95,7 @@
 | `optional_prepare` | 可额外准备一张自己的解析完成法术，遵守目标、支付及取消限制；当前连锁结束后再开准备响应 |
 | `cancel`、`negate_link` | 取消准备根节点 / 一个待结算链节；响应能力须声明对应目标类型 |
 
-每个效果形如 `{"kind":"draw","amount":1}`。没有数量含义的效果不要用 `amount` 暗示尚未实现的次数或范围。
+每个效果形如 `{"kind":"draw","amount":1}`。没有数量含义的效果可以省略 `amount`，也可以保留占位 `"amount":0`；解析器默认0，不能用非零值暗示尚未实现的次数或范围。`cancel`仅取消准备，`negate_link`取消合法待结算链节，`counter_spell`无效并销毁对方待释放法术、另产生实际施法费用等量的延迟临时荷载；三者不可互换，见[术语](terminology.md)与[对接核对](reports/content-handoff-review.md)。
 
 响应能力须写：唯一 `id`、可读 `name`、`sources`（预置言灵 `words`、就绪解析 `analysis`、埋伏 `ambush`）、`windows`、`eventOwner`、`target`、`effects`。正式卡池禁止手牌来源；预置发动附加费 `preloadedCost` 默认0；`burden` 是额外临时负担，`extraDiscard` 为0或1，`targetCount` 为1–5，`requiresSource` 表示结算仍依赖来源。
 

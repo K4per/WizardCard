@@ -53,6 +53,8 @@ Windows 用户数据默认在 `%LOCALAPPDATA%/WizardCard`，设置文件为 `set
 
 ## 卡组构筑
 
+本轮两份内容侧清单的逐项核对与待定决策见[对接报告](docs/reports/content-handoff-review.md)，远程分支约定见[master/dev说明](docs/branching.md)。
+
 全卡效果、费用、插画、使用要点与九套预设牌表见[卡池图鉴](docs/card-catalog.md)，可在[图文浏览版](docs/card-catalog.html)按卡名、类型、稀有度与学派组合筛选。
 
 从主菜单进入卡组列表，可新建空白草稿、从预设复制、点击自建卡组修改或确认删除。编辑器中点击名称输入中文/英文，支持Ctrl+A及Ctrl+V；列表与编辑器均为独立的全窗口页面。编辑器左侧显示详情，中间逐张展示主卡组，右侧为卡池。右键卡池卡牌加入一张，右键主卡组卡牌移除一张；拖动到另一栏同样增减一张。点击查看详情，拖动时按Esc或右键取消。

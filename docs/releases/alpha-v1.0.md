@@ -22,6 +22,6 @@
 
 ## 验收与后续
 
-本次按用户确认取消20局真人门槛，采用自动验收交付。Windows Release与无窗口Windows Release各179项回归通过，原生操作、三档AI、教学、音效、独立解压运行和同版本复盘均已检查；细节见[验收报告](../reports/alpha-v1.0-release.md)。自动跑局验证规则稳定性，不代表真人平衡结论。LinuxCI及异机跨平台复盘本机未执行。
+本次按用户确认取消20局真人门槛，采用自动验收交付。Windows Release与无窗口Windows Release各179项回归通过，原生操作、三档AI、教学、音效、独立解压运行和同版本复盘均已检查；细节见[验收报告](../reports/alpha-v1.0-release.md)。后续远程Windows/Linux完整测试及三份Windows记录在Linux重放已通过，见[同步验收](../reports/repository-sync.md)。自动跑局不代表真人平衡结论。
 
-Alpha仍可能存在策略平衡和设备兼容性问题。当前支持本地对战；局域网P2P、卡牌联动与动画升级安排见[v1.5开发计划](../plans/v1.5.md)。
+Alpha仍可能存在策略平衡和设备兼容性问题。当前支持本地对战；Godot图形界面重构、保留内核及局域网P2P、卡牌联动、动画升级安排见[v1.5开发计划](../plans/v1.5.md)。

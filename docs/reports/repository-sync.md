@@ -25,6 +25,12 @@
 
 固定值已改为实际通过本机测试的nlohmann/json v3.12.0 `55f93686c01528224f448c19128836e7df245f72`、Catch2 v3.8.1 `2b60af89e23d28eefc081bc930831ee9d45ea58b`，均已从上游确认存在；SFML固定提交不变。没有更改卡牌、引擎规则或复盘内容哈希。
 
-最终远程Windows/Linux与跨平台复盘结果：**验证中，完成后在本节记录实际运行链接与结果**。本机此前Windows Release及无窗口Windows Release各179项通过，不替代Linux验收。另以全新无窗口构建目录验证无源码覆盖的依赖配置：成功取得固定源码、Release构建及179项回归通过，83.04秒；证据为 `build/sync-clean-configure.log`、`build/sync-clean-build.log`、`build/sync-clean-tests.log`。
+最终[远程运行37512708820](https://github.com/K4per/WizardCard/actions/runs/37512708820)（提交`83167f7`）的三个任务均成功：Windows Release构建、完整测试与打包；Linux无窗口构建与完整测试；Linux重放Windows生成的普通、AI、教学三份记录。该提交的测试集合为179项；图鉴生成一致性检查同样通过。这是实际Linux与跨平台结果，不以本机Windows无窗口测试代替。
+
+本机全新无窗口构建未使用源码覆盖：成功取得固定源码、Release构建及179项回归通过，83.04秒；证据为 `build/sync-clean-configure.log`、`build/sync-clean-build.log`、`build/sync-clean-tests.log`。后续合入的Godot路线和报告更新为文档变更，未改变上述已验证的核心与卡池。
+
+## v1.5新增决定
+
+用户明确采用Godot重构图形界面并保留内核。[新版路线](../plans/v1.5.md)已补充GDExtension桥接、现有用户数据兼容、Godot本地功能迁移及分层验收；LAN传输改为Godot TCP适配，联动与动画目标继续保留。当前尚未实现Godot迁移，手机平台仍未承诺。
 
 源码同步不是建立版本标签或托管发行下载；现有Alpha ZIP仍是本地交付。此次未向任何协作者发送消息或代授仓库写入权限。

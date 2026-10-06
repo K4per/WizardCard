@@ -2,7 +2,7 @@
 
 C++17 专用卡牌规则引擎与 SFML 本地卡牌游戏，支持换手对战、三档AI及固定教学。当前规则见 [五阶段与轻量连锁](docs/alpha-v1.0-rules.md)，继承规则见 [原型规则](docs/design.md)，模块边界见 [架构](docs/architecture.md)。
 
-Alpha v1.0 已交付：程序 `1.0.0-alpha`、规则/卡池 `1.0.0`，30种卡、九套预设与五种代表性方向，初始/最大生命40。下载解压后运行 `wizard_client.exe`；详见[发布说明](docs/releases/alpha-v1.0.md)和[自动验收报告](docs/reports/alpha-v1.0-release.md)。后续方向见[v1.5局域网对抗计划](docs/plans/v1.5.md)。规则与内容设计入口：[新卡规则](docs/alpha-v1-cards.md)、[发布补充卡](docs/alpha-release-cards.md)、[设计指南](docs/card-design-guide.md)、[术语规范](docs/terminology.md)。
+Alpha v1.0 已交付：程序 `1.0.0-alpha`、规则/卡池 `1.0.0`，30种卡、九套预设与五种代表性方向，初始/最大生命40。下载解压后运行 `wizard_client.exe`；详见[发布说明](docs/releases/alpha-v1.0.md)和[自动验收报告](docs/reports/alpha-v1.0-release.md)。[v1.5计划](docs/plans/v1.5.md)新增Godot图形界面重构、保留C++内核，并继续推进局域网P2P、卡牌联动与动画。规则与内容设计入口：[新卡规则](docs/alpha-v1-cards.md)、[发布补充卡](docs/alpha-release-cards.md)、[设计指南](docs/card-design-guide.md)、[术语规范](docs/terminology.md)。
 
 ## 构建
 
@@ -91,7 +91,7 @@ Windows 用户数据默认在 `%LOCALAPPDATA%/WizardCard`，设置文件为 `set
 
 main 保持可构建，功能分支使用 `codex/`。规则变更同步修改文档、JSON 和回归测试；数值调整独立 `balance:` 提交。CI 在 Windows 测试并打包，在 Linux 构建纯规则核心并重放 Windows 生成的记录。
 
-当前发行版本为 `1.0.0-alpha`，规则/卡池 `1.0.0`；阶段1至7已完成Windows本地自动交付，九套预设覆盖五种代表性方向。用户取消本次20局真人门槛，按自动验收交付；LinuxCI本机未执行。发行说明与实际限制见[发布文档](docs/releases/alpha-v1.0.md)。历史 Alpha v0.5 标签保留为原测试基线；后续路线见[v1.5计划](docs/plans/v1.5.md)。
+当前发行版本为 `1.0.0-alpha`，规则/卡池 `1.0.0`；阶段1至7已完成Windows本地自动交付，九套预设覆盖五种代表性方向。用户取消本次20局真人门槛；远程Windows/Linux CI及跨平台复盘已通过，见[同步验收](docs/reports/repository-sync.md)。发行说明与实际限制见[发布文档](docs/releases/alpha-v1.0.md)。历史 Alpha v0.5 标签保留为原测试基线；后续路线见[v1.5计划](docs/plans/v1.5.md)。
 
 字体采用 Noto Sans CJK SC / SIL OFL，许可随资源发布；其他依赖许可证见 `assets/licenses/`。
 

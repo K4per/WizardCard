@@ -1,6 +1,6 @@
 # 架构
 
-当前发行：Alpha v1.0（程序1.0.0-alpha、规则/卡池1.0.0）。本版为本地游戏；后续局域网权威主机、裁剪视图与网络模块设计见[v1.5计划](plans/v1.5.md)，尚未实现联网。
+当前发行：Alpha v1.0（程序1.0.0-alpha、规则/卡池1.0.0），使用SFML本地客户端。用户已确定v1.5采用Godot重构图形界面，保留C++内核、内容、AI、CLI与复盘；通过可选GDExtension桥接复用应用/交互逻辑，核心不引入Godot依赖。Godot负责页面、输入、音频、动画与网络传输适配。迁移、局域网权威主机、裁剪视图和分阶段验收见[v1.5计划](plans/v1.5.md)，尚未实现Godot前端或联网。以下描述当前Alpha架构。
 
 `wizard_core` 为纯 C++17：GameState、Command、Rules、EffectQueue、EffectResolver、GameView，以及 GameEngine、PendingDecision、StateMaintenance、GameEvent。
 

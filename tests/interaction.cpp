@@ -3,6 +3,7 @@
 #include <catch2/catch_test_macros.hpp>
 using namespace wizard;
 using namespace wizard::ui;
+#include "phase2-interaction.inc"
 TEST_CASE("card context chooses a legal host then confirms the original command") {
     GameView v;CardView card;card.instance.id=10;v.cards.push_back(card);card.instance.id=20;v.cards.push_back(card);
     v.actions={{"解析A",10,20,StartAnalysis{10,20}},{"解析B",10,21,StartAnalysis{10,21}},{"结束",0,0,Advance{}}};
@@ -91,14 +92,15 @@ TEST_CASE("analysis area auto matches one legal formation and prompts for multip
     ui.cancel();REQUIRE(ui.drop(1,99,Zone::Analysis));REQUIRE(ui.choosingFormation());
     ui.update(v);REQUIRE_FALSE(ui.choosingFormation());REQUIRE_FALSE(ui.pending());
 }
-TEST_CASE("starting life is twenty with the existing thirty life ceiling") {
+TEST_CASE("release starts at forty life and healing cannot exceed forty") {
     auto content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");
     MatchSession session(content,42);
-    REQUIRE(session.engine().state().players[0].life==20);
-    REQUIRE(session.engine().state().players[1].life==20);
+    REQUIRE(session.engine().state().players[0].life==40);
+    REQUIRE(session.engine().state().players[1].life==40);
     GameState state=session.engine().state();
+    state.players[0].life=36;
     EffectResolver::apply(state,content.catalog,Trigger{},Effect{EffectKind::Heal,4});
-    REQUIRE(state.players[0].life==24);
+    REQUIRE(state.players[0].life==40);
     EffectResolver::apply(state,content.catalog,Trigger{},Effect{EffectKind::Heal,20});
-    REQUIRE(state.players[0].life==30);
+    REQUIRE(state.players[0].life==40);
 }

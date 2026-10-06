@@ -4,7 +4,7 @@
 using namespace wizard;
 TEST_CASE("content validation includes unknown effects duplicates references and counts") {
     const auto dir=std::filesystem::path(WIZARD_SOURCE_DIR)/"assets";auto j=readJson(dir/"cards.json");auto c=loadContent(dir);
-    REQUIRE(c.catalog.cards.size()==13);REQUIRE(c.deck.size()==30);
+    REQUIRE(c.catalog.cards.size()==30);REQUIRE(c.deck.size()==30);
     auto bad=j;bad["cards"][0]["body"]=-1;REQUIRE_THROWS_WITH(parseCatalog(bad),"cards.json/cards/0/body: expected integer in [0,1000]");
     bad=j;bad["cards"].push_back(bad["cards"][0]);REQUIRE_THROWS(parseCatalog(bad));
     bad=j;bad["cards"][1]["effects"][0]["kind"]="script";REQUIRE_THROWS(parseCatalog(bad));
@@ -19,7 +19,7 @@ TEST_CASE("every command variant round trips") {
 }
 TEST_CASE("replay detects incompatible content versions and tampering") {
     auto c=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");MatchSession session(c,42);auto p=session.engine().state().active;
-    REQUIRE(session.submit(p,Advance{}).accepted);REQUIRE(session.submit(1-p,Surrender{}).accepted);
+    REQUIRE(session.submit(p,AdvancePhase{session.engine().state().phaseGate}).accepted);REQUIRE(session.submit(1-p,Surrender{}).accepted);
     auto j=session.recording();REQUIRE(replay(c,j).digest()==session.engine().digest());
     j["contentHash"]="changed";REQUIRE_THROWS(replay(c,j));j=session.recording();j["commands"][0]["digest"]="wrong";REQUIRE_THROWS(replay(c,j));
 }

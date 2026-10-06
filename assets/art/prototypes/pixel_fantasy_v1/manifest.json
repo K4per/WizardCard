@@ -1,0 +1,310 @@
+{
+  "version": "pixel_fantasy_v1",
+  "date": "2026-10-04",
+  "generator": "OpenAI built-in imagegen",
+  "runtime_integration": false,
+  "production_validation_passed": false,
+  "palette_target": [
+    "#101320",
+    "#174A4B",
+    "#191D2B",
+    "#242B3D",
+    "#247475",
+    "#354057",
+    "#3CA6A0",
+    "#44352B",
+    "#68778E",
+    "#6D5035",
+    "#703244",
+    "#72D7C5",
+    "#9B7448",
+    "#A4B4CB",
+    "#B54E2A",
+    "#B6F0DD",
+    "#B74C60",
+    "#C49A5A",
+    "#DCE6EB",
+    "#E0BE7C",
+    "#ED8A78",
+    "#ED8E3E",
+    "#F2DBA0",
+    "#FFD181"
+  ],
+  "assets": [
+    {
+      "id": "match_ui_concept",
+      "name_zh": "对局 UI 风格稿",
+      "requirement_ids": [
+        "ART-01"
+      ],
+      "file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/ui/match_ui_concept.png",
+      "source_file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/ui/match_ui_concept.png",
+      "source_kind": "original generated PNG; no layered source",
+      "original_generated_filename": "exec-1065c3ab-bed3-450e-8efc-585615ee9bf7.png",
+      "requested_dimensions": [
+        1600,
+        1000
+      ],
+      "actual_dimensions": [
+        1586,
+        992
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "alpha_requested": false,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "transparent_pixels": 0,
+      "semi_transparent_pixels": 0,
+      "opaque_pixels": 1573312,
+      "unique_visible_rgb_colors": 213488,
+      "out_of_palette_visible_rgb_colors": 213483,
+      "exact_palette_pixel_percentage": 0.0007,
+      "sha256": "d67f7f74ee293bac4a6441fa1dc5573b0749ab75cad8abd4d8ea52ddfcc12ab8",
+      "byte_size": 1782214,
+      "author_source": "OpenAI built-in imagegen, directed by Codex for WizardCard",
+      "license_note": "AI-generated project artwork; no external stock assets; no additional third-party license or exclusivity claim.",
+      "version": "pixel_fantasy_v1",
+      "status": "prototype_unintegrated",
+      "production_ready": false,
+      "pending": [
+        "dimensions_differ_from_requested",
+        "exceeds_24_color_target",
+        "colors_outside_target_palette"
+      ],
+      "visual_review": "保留双人区域、五列公共区与横向卡条。内部卡牌与日志文字已移除；布局坐标、语义标记和中文需在真实客户端重新核对。"
+    },
+    {
+      "id": "fantasy_ui_kit",
+      "name_zh": "奇幻 UI 组件探索板",
+      "requirement_ids": [
+        "ART-02",
+        "ART-06",
+        "ART-09"
+      ],
+      "file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/ui/fantasy_ui_kit.png",
+      "source_file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/ui/fantasy_ui_kit.png",
+      "source_kind": "original generated PNG; no layered source",
+      "original_generated_filename": "exec-7047ca1a-25a9-4001-a4cd-323432b40e70.png",
+      "requested_dimensions": [
+        1536,
+        1024
+      ],
+      "actual_dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "format": "PNG",
+      "alpha_requested": true,
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "transparent_pixels": 589417,
+      "semi_transparent_pixels": 983447,
+      "opaque_pixels": 0,
+      "unique_visible_rgb_colors": 164016,
+      "out_of_palette_visible_rgb_colors": 164014,
+      "exact_palette_pixel_percentage": 0.00244,
+      "sha256": "fc5300fa763579c6f59ceee3202b735968c106a223b29ae59baaa9cffa7f5771",
+      "byte_size": 1669754,
+      "author_source": "OpenAI built-in imagegen, directed by Codex for WizardCard",
+      "license_note": "AI-generated project artwork; no external stock assets; no additional third-party license or exclusivity claim.",
+      "version": "pixel_fantasy_v1",
+      "status": "prototype_unintegrated",
+      "production_ready": false,
+      "pending": [
+        "exceeds_24_color_target",
+        "colors_outside_target_palette",
+        "partial_alpha",
+        "background_cleanup_required",
+        "atlas_slicing_required"
+      ],
+      "visual_review": "面板、详情框、四种按钮状态、两种卡条、四项资源符号与额度标记。整板未切分，仍有半透明背景，不能直接作为透明图集使用。"
+    },
+    {
+      "id": "balance",
+      "name_zh": "均衡",
+      "requirement_ids": [
+        "ART-08"
+      ],
+      "file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/items/balance.png",
+      "source_file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/items/balance.png",
+      "source_kind": "original generated PNG; no layered source",
+      "original_generated_filename": "exec-09a6122f-895b-4840-ba81-4843eae06fd5.png",
+      "requested_dimensions": [
+        1024,
+        768
+      ],
+      "actual_dimensions": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "alpha_requested": false,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "transparent_pixels": 0,
+      "semi_transparent_pixels": 0,
+      "opaque_pixels": 1572528,
+      "unique_visible_rgb_colors": 249975,
+      "out_of_palette_visible_rgb_colors": 249965,
+      "exact_palette_pixel_percentage": 0.01412,
+      "sha256": "9ab07418e0dcd26b924402c70bedbe48a268432312678b981840633c1275ef3c",
+      "byte_size": 2279911,
+      "author_source": "OpenAI built-in imagegen, directed by Codex for WizardCard",
+      "license_note": "AI-generated project artwork; no external stock assets; no additional third-party license or exclusivity claim.",
+      "version": "pixel_fantasy_v1",
+      "status": "prototype_unintegrated",
+      "production_ready": false,
+      "pending": [
+        "dimensions_differ_from_requested",
+        "exceeds_24_color_target",
+        "colors_outside_target_palette"
+      ],
+      "visual_review": "对称多环阵图、均匀锚点与稳定承载核心。无基础身份标记，后续由UI动态叠加。"
+    },
+    {
+      "id": "fireball",
+      "name_zh": "火球术",
+      "requirement_ids": [
+        "ART-08"
+      ],
+      "file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/items/fireball.png",
+      "source_file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/items/fireball.png",
+      "source_kind": "original generated PNG; no layered source",
+      "original_generated_filename": "exec-e59adab1-2905-48a3-9031-a55c3f51304a.png",
+      "requested_dimensions": [
+        1024,
+        768
+      ],
+      "actual_dimensions": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "alpha_requested": false,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "transparent_pixels": 0,
+      "semi_transparent_pixels": 0,
+      "opaque_pixels": 1572528,
+      "unique_visible_rgb_colors": 225807,
+      "out_of_palette_visible_rgb_colors": 225801,
+      "exact_palette_pixel_percentage": 0.02645,
+      "sha256": "29929efcc07241780261df050b1307c3b5350d7c37fd59e6db5a57437b85a562",
+      "byte_size": 1810982,
+      "author_source": "OpenAI built-in imagegen, directed by Codex for WizardCard",
+      "license_note": "AI-generated project artwork; no external stock assets; no additional third-party license or exclusivity claim.",
+      "version": "pixel_fantasy_v1",
+      "status": "prototype_unintegrated",
+      "production_ready": false,
+      "pending": [
+        "dimensions_differ_from_requested",
+        "exceeds_24_color_target",
+        "colors_outside_target_palette"
+      ],
+      "visual_review": "大型火焰核心与明确斜向尾焰，区别于后续小型火花术。"
+    },
+    {
+      "id": "barbs",
+      "name_zh": "银光锐语",
+      "requirement_ids": [
+        "ART-08"
+      ],
+      "file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/items/barbs.png",
+      "source_file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/items/barbs.png",
+      "source_kind": "original generated PNG; no layered source",
+      "original_generated_filename": "exec-cdbeebf4-5ded-4f3d-a344-b0ed514261c6.png",
+      "requested_dimensions": [
+        1024,
+        768
+      ],
+      "actual_dimensions": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "alpha_requested": false,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "transparent_pixels": 0,
+      "semi_transparent_pixels": 0,
+      "opaque_pixels": 1572528,
+      "unique_visible_rgb_colors": 191163,
+      "out_of_palette_visible_rgb_colors": 191154,
+      "exact_palette_pixel_percentage": 0.02747,
+      "sha256": "93426bda8e4ff60d6e92616bd8a28430d655e9d91d15cab3e713499d584320a9",
+      "byte_size": 2137488,
+      "author_source": "OpenAI built-in imagegen, directed by Codex for WizardCard",
+      "license_note": "AI-generated project artwork; no external stock assets; no additional third-party license or exclusivity claim.",
+      "version": "pixel_fantasy_v1",
+      "status": "prototype_unintegrated",
+      "production_ready": false,
+      "pending": [
+        "dimensions_differ_from_requested",
+        "exceeds_24_color_target",
+        "colors_outside_target_palette"
+      ],
+      "visual_review": "银色锐利咒文干扰准备连接，目标法术球仍完整。取消准备语义仍需真人辨识确认。"
+    },
+    {
+      "id": "ring",
+      "name_zh": "奥术圆环",
+      "requirement_ids": [
+        "ART-08"
+      ],
+      "file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/items/ring.png",
+      "source_file": "source/WizardCard_PixelFantasy_64x64_20261004/assets/items/ring.png",
+      "source_kind": "original generated PNG; no layered source",
+      "original_generated_filename": "exec-d1d2cc5f-aab6-439e-85c5-bea4983a2a67.png",
+      "requested_dimensions": [
+        1024,
+        768
+      ],
+      "actual_dimensions": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "format": "PNG",
+      "alpha_requested": false,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "transparent_pixels": 0,
+      "semi_transparent_pixels": 0,
+      "opaque_pixels": 1572528,
+      "unique_visible_rgb_colors": 223848,
+      "out_of_palette_visible_rgb_colors": 223843,
+      "exact_palette_pixel_percentage": 0.0585,
+      "sha256": "51ba8b1df2841580f77595bac959f1796628e3329b44e6215fd45a63dd78ff99",
+      "byte_size": 1728125,
+      "author_source": "OpenAI built-in imagegen, directed by Codex for WizardCard",
+      "license_note": "AI-generated project artwork; no external stock assets; no additional third-party license or exclusivity claim.",
+      "version": "pixel_fantasy_v1",
+      "status": "prototype_unintegrated",
+      "production_ready": false,
+      "pending": [
+        "dimensions_differ_from_requested",
+        "exceeds_24_color_target",
+        "colors_outside_target_palette"
+      ],
+      "visual_review": "单枚竖立开口圆环与顺向循环能量；未画固定宿主，保持阵法和法术附着通用。"
+    }
+  ],
+  "omitted_scope": "Remaining 9 card illustrations; standalone 21 semantic icons and 7 attribute icons; handoff, confirm and result UI states; production slicing and integration."
+}

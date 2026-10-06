@@ -1,0 +1,16 @@
+{
+  "prompt": "Use case: style-transfer. Asset type: WizardCard Windows executable application icon. The supplied image is a STYLE REFERENCE ONLY; preserve its antique gold/bronze and turquoise jewel pixel-art identity, do not reproduce the full wordmark. Create a new standalone centered compact icon: a thick antique gold six-point arcane star forming a solid heraldic magical medallion around ONE large glowing teal diamond crystal. Strong clear silhouette, very simple broad pixel clusters so it stays readable at 16x16 and 32x32. Front facing symmetrical, navy outline, restrained luminous cyan center, crisp stepped pixel shading. Square canvas, emblem fills 82%, transparent margins. No text, no letters, no tiny runes, no thin wire geometry, no surrounding scenery, no card frame, no watermark. True transparent alpha background. This is a new derivative project icon; original reference stays unchanged.",
+  "source": "OpenAI built-in imagegen",
+  "originalPNG": "wizardcard-app-v1.png",
+  "ico": "wizardcard-app-v1.ico",
+  "sizes": [
+    16,
+    24,
+    32,
+    48,
+    64,
+    128,
+    256
+  ],
+  "conversion": "ICO encoding only; original PNG unchanged"
+}

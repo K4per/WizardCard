@@ -2,7 +2,8 @@
 #include "wizard/core.hpp"
 
 namespace wizard::ui {
-enum class Step { Inspect, Target, Cost, Confirm };
+std::optional<AdvancePhase> automaticAdvance(const GameView&,bool enabled);
+enum class Step { Inspect, Target, Cost, Confirm, LinkTarget };
 class HandOrder {
 public:
     void sync(const GameView&);
@@ -20,6 +21,8 @@ public:
     bool select(CardId card);
     bool activate(std::size_t group);
     bool pick(CardId card);
+    bool pickLink(LinkId link);
+    std::vector<LinkId> linkCandidates() const;
     bool choosingFormation() const;
     void offer(const LegalAction& action);
     void cancel();
@@ -30,7 +33,7 @@ public:
     std::vector<CardId> candidates() const;
     const std::optional<LegalAction>& pending() const { return pending_; }
     const GameView& view() const { return view_; }
-    static std::string intent(const LegalAction&,const std::optional<PendingDecision>&);
+    static std::string intent(const LegalAction&,const std::optional<PendingDecision>&,const GameView* = nullptr);
     static CardId target(const Command&);
     static CardId costCard(const Command&);
 private:

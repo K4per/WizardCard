@@ -1,11 +1,14 @@
 #include "wizard/content.hpp"
+#include "wizard/application.hpp"
 #include <iostream>
 
 using namespace wizard;
+#include "ai.inc"
 int main(int argc,char** argv) {
     try {
-        if(argc<3) { std::cout<<"wizard_cli validate|play|smoke|replay|script ASSETS [FILE] [SEED]\n"; return 1; }
+        if(argc<3) { std::cout<<"wizard_cli validate|play|smoke|replay|script|ai-match|tutorial-smoke ASSETS [FILE] [SEED] [DIFFICULTY 0-2]\n"; return 1; }
         const std::string mode=argv[1]; auto content=loadContent(argv[2]);
+        if(mode=="ai-match" || mode=="tutorial-smoke") return runAi(content,argv[2],argc,argv);
         if(mode=="validate") { std::cout<<content.catalog.cards.size()<<" definitions; "<<content.deck.size()<<" cards; hash "<<content.catalog.contentHash<<'\n'; return 0; }
         if(mode=="replay") { if(argc<4) return 1; auto engine=replay(content,readJson(argv[3])); std::cout<<engine.digest()<<'\n'; return 0; }
         std::uint32_t seed=argc>4?static_cast<std::uint32_t>(std::stoul(argv[4])):42;
@@ -27,14 +30,14 @@ int main(int argc,char** argv) {
                     int best=-10000;
                     for(std::size_t i=0;i<view.actions.size();++i) {
                         const auto& a=view.actions[i]; int score=-1000;
-                        if(std::holds_alternative<Choose>(a.command)) score=100;
-                        else if(std::holds_alternative<PrepareCast>(a.command)) score=80;
+                        if(std::holds_alternative<Choose>(a.command) || std::holds_alternative<Respond>(a.command)) score=100;
+                        else if(std::holds_alternative<PrepareCast>(a.command)) score=s.decision && s.decision->kind==DecisionKind::EffectPrepare?110:80;
                         else if(std::holds_alternative<SetFormation>(a.command) && !std::get<SetFormation>(a.command).replace) score=75;
                         else if(std::holds_alternative<StartAnalysis>(a.command)) score=65;
                         else if(std::holds_alternative<PlayAction>(a.command)) score=55;
                         else if(std::holds_alternative<AttachSeal>(a.command)) score=45;
                         else if(std::holds_alternative<PreloadWord>(a.command)) score=35;
-                        else if(std::holds_alternative<Advance>(a.command)) score=0;
+                        else if(std::holds_alternative<Advance>(a.command) || std::holds_alternative<AdvancePhase>(a.command) || std::holds_alternative<PassResponse>(a.command)) score=0;
                         if(score>best) { best=score; selected=i; }
                     }
                 }

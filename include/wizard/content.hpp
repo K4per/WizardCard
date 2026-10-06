@@ -15,12 +15,13 @@ struct RecordedCommand { PlayerId actor{}; Command command; std::string digest; 
 class MatchSession {
 public:
     MatchSession(Content content,std::uint32_t seed);
+    MatchSession(Content content,MatchConfig config);
     CommandResult submit(PlayerId,const Command&);
     const GameEngine& engine() const { return engine_; }
     Json recording() const;
     void save(const std::filesystem::path&) const;
 private:
-    Content content_; std::uint32_t seed_; GameEngine engine_; std::vector<RecordedCommand> commands_;
+    Content content_; MatchConfig config_; GameEngine engine_; std::vector<RecordedCommand> commands_;
 };
 GameEngine replay(const Content&,const Json&);
 Json readJson(const std::filesystem::path&);

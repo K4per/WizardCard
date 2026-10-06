@@ -8,4 +8,4 @@
 
 旧版本复盘需使用旧版本程序；本版会拒绝不匹配的程序/规则/卡池。Alpha 不代表平衡完成：真人探索、更多设备适配和 Demo 教学仍在后续计划中。
 
-详见[进度报告](../reports/alpha-v0.5-progress.md)、[下一期计划](../plans/alpha-v0.6.md)。
+详见[进度报告](../reports/alpha-v0.5-progress.md)、[下一阶段计划](../plans/alpha-v1.0.md)。后续路线于2026-10-05更新，本页仍是Alpha v0.5的发布说明。

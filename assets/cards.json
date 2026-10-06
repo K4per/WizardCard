@@ -1,18 +1,736 @@
 {
-  "rulesVersion":"0.2.3", "cardSetVersion":"0.1.0",
-  "cards":[
-    {"id":"balance","name":"均衡","rarity":"common","type":"formation","body":2,"capacity":8,"income":1,"rings":3,"maxRank":2,"text":"阵体2；容量8；收入1；环位3；最高位阶2。作为基础阵法时受到保护。"},
-    {"id":"fireball","name":"火球术","rarity":"rare","type":"analytic","cost":3,"castCost":1,"rank":2,"target":"opponent","effects":[{"kind":"damage","amount":6}],"text":"解析3 / 施法1；对手受到6点火焰伤害。"},
-    {"id":"barbs","name":"银光锐语","rarity":"uncommon","type":"word","cost":4,"rank":1,"effects":[{"kind":"cancel"}],"text":"预置4；对手宣告准备施法时，可取消那次准备。"},
-    {"id":"recall","name":"奥术回想","rarity":"common","type":"action","cost":2,"burden":1,"effects":[{"kind":"draw","amount":2}],"text":"费用2；使用时获得1临时荷载，本回合结束移除；抽2张。"},
-    {"id":"ring","name":"奥术圆环","rarity":"common","type":"seal","cost":1,"ringBonus":1,"refundCast":1,"text":"阵法：环位+1。法术：成功释放后返还本次施法段实际费用。"},
-    {"id":"spark","name":"火花术","rarity":"common","type":"analytic","cost":1,"castCost":1,"rank":1,"target":"opponent","effects":[{"kind":"damage","amount":3}],"text":"解析1 / 施法1；对手受到3点火焰伤害。"},
-    {"id":"mend","name":"生命缝合","rarity":"common","type":"analytic","cost":1,"castCost":1,"rank":1,"target":"self","effects":[{"kind":"heal","amount":4}],"text":"解析1 / 施法1；恢复4生命，最多30。"},
-    {"id":"unravel","name":"结构瓦解","rarity":"rare","type":"analytic","cost":4,"castCost":2,"rank":2,"extraDiscard":1,"target":"empty_enemy_formation","effects":[{"kind":"destroy"}],"text":"解析4 / 施法2；准备额外弃一张手牌；销毁对手空闲扩展阵法。"},
-    {"id":"disrupt","name":"魔力扰动","rarity":"uncommon","type":"action","cost":2,"target":"opponent","effects":[{"kind":"temporary","amount":2}],"text":"对手获得2临时荷载，在对手下一个结束阶段移除。"},
-    {"id":"clarity","name":"清心","rarity":"common","type":"action","cost":1,"target":"self","effects":[{"kind":"clear_temporary","amount":2}],"text":"按自己选择的来源分配，移除最多2点临时荷载。"},
-    {"id":"reservoir","name":"蓄能阵","rarity":"common","type":"formation","body":1,"capacity":3,"income":0,"rings":1,"maxRank":1,"text":"阵体1；容量3；收入0；环位1；最高位阶1。"},
-    {"id":"conduit","name":"导流阵","rarity":"uncommon","type":"formation","body":2,"capacity":4,"income":2,"rings":1,"maxRank":1,"text":"阵体2；容量4；收入2；环位1；最高位阶1。"},
-    {"id":"ward","name":"炽燃结界","rarity":"uncommon","type":"analytic","cost":2,"castCost":1,"rank":2,"duration":2,"target":"opponent","effects":[{"kind":"damage","amount":2}],"onPrepare":[{"kind":"damage","amount":2}],"text":"解析2 / 施法1；持续2。释放及自己的准备阶段对对手造成2伤害。"}
-  ]
+  "rulesVersion": "1.0.0",
+  "cardSetVersion": "1.0.0",
+  "baseLoadCapacity": 2,
+  "cards": [
+    {
+      "id": "balance",
+      "name": "均衡之六芒星",
+      "rarity": "common",
+      "type": "formation",
+      "baseEligible": true,
+      "body": 2,
+      "capacity": 8,
+      "income": 1,
+      "rings": 3,
+      "maxRank": 2,
+      "text": "无特殊效果。",
+      "flavor": "魔法界最流行的一种法阵，你几乎可以在任何一种复杂术式中看到它的身影。六芒星诉说着它的信念：秩序不偏向任何一边。",
+      "speed": 1,
+      "cost": 0
+    },
+    {
+      "id": "fireball",
+      "name": "火球术",
+      "rarity": "rare",
+      "type": "analytic",
+      "cost": 3,
+      "castCost": 1,
+      "rank": 2,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 10,
+          "damageType": "fire"
+        },
+        {
+          "kind": "optional_destroy_own_formation"
+        }
+      ],
+      "text": "对对方玩家造成10点火焰伤害。那之后，可以销毁自己的一个空白阵法。",
+      "flavor": "没错，这确实是经典之选。“伟大的法师都精通了火球术使用！”阿克莉娅如是说，她本人是个术士。",
+      "speed": 1,
+      "school": "evocation"
+    },
+    {
+      "id": "barbs",
+      "name": "银光锐语",
+      "rarity": "epic",
+      "type": "word",
+      "cost": 5,
+      "rank": 1,
+      "effects": [
+        {
+          "kind": "cancel"
+        },
+        {
+          "kind": "optional_prepare"
+        }
+      ],
+      "responses": [
+        {
+          "id": "cancel_preparation",
+          "name": "反制并准备施法",
+          "sources": [
+            "words",
+            "ambush"
+          ],
+          "windows": [
+            "prepare"
+          ],
+          "eventOwner": "opponent",
+          "target": "preparation_root",
+          "effects": [
+            {
+              "kind": "cancel"
+            },
+            {
+              "kind": "optional_prepare"
+            }
+          ]
+        }
+      ],
+      "text": "当对方宣告一张解析法术准备施法时，可以响应并取消那次准备施法。那之后，可以将自己场上一张解析完成的解析法术准备施法。",
+      "flavor": "你神奇的话语将对手的失误转变为了自己的力量。",
+      "speed": 2,
+      "school": "enchantment",
+      "responseOnly": true
+    },
+    {
+      "id": "recall",
+      "name": "奥术回想",
+      "rarity": "common",
+      "type": "action",
+      "cost": 1,
+      "target": "self",
+      "effects": [
+        {
+          "kind": "draw",
+          "amount": 2
+        },
+        {
+          "kind": "temporary",
+          "amount": 1
+        }
+      ],
+      "text": "抽两张牌。那之后，获得1点临时荷载，在本回合结束阶段移除。",
+      "flavor": "尚未熄灭的记忆，也能成为下一道咒文。",
+      "speed": 1
+    },
+    {
+      "id": "ring",
+      "name": "奥术圆环",
+      "rarity": "common",
+      "type": "seal",
+      "cost": 1,
+      "ringBonus": 1,
+      "refundSetting": 1,
+      "text": "阵法附着效果：该阵法环位数+1。法术附着效果：宿主成功释放后，获得等于该法术设置时实际支付费用的魔素。",
+      "flavor": "闭合的圆，会把尚未散去的力量带回起点。",
+      "speed": 1
+    },
+    {
+      "id": "spark",
+      "name": "火花术",
+      "rarity": "common",
+      "type": "word",
+      "cost": 1,
+      "rank": 0,
+      "immediate": true,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 2,
+          "damageType": "fire"
+        }
+      ],
+      "text": "可单独设置，或设置并立即释放。释放时对对方造成2点火焰伤害。",
+      "flavor": "所有魔法学徒入门必学法术之一，告别火柴第一步！",
+      "speed": 1,
+      "school": "evocation"
+    },
+    {
+      "id": "mend",
+      "name": "生命缝合",
+      "rarity": "common",
+      "type": "analytic",
+      "cost": 1,
+      "castCost": 1,
+      "rank": 1,
+      "target": "self",
+      "effects": [
+        {
+          "kind": "heal",
+          "amount": 6
+        },
+        {
+          "kind": "independent",
+          "amount": 2
+        }
+      ],
+      "text": "恢复自身6点生命。那之后，获得2点独立荷载，保留至被效果清除。",
+      "flavor": "把你的心我的心串一串……",
+      "speed": 1,
+      "school": "necromancy"
+    },
+    {
+      "id": "unravel",
+      "name": "碎环术",
+      "rarity": "rare",
+      "type": "analytic",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "target": "empty_enemy_formation",
+      "effects": [
+        {
+          "kind": "discard_formation"
+        },
+        {
+          "kind": "destroy"
+        }
+      ],
+      "text": "指定对方场上一张空白阵法。弃置自己一张阵法卡，销毁目标阵法。",
+      "flavor": "碎碎平安！",
+      "speed": 1,
+      "school": "transmutation"
+    },
+    {
+      "id": "disrupt",
+      "name": "魔力扰动",
+      "rarity": "uncommon",
+      "type": "action",
+      "cost": 2,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "temporary",
+          "amount": 4
+        }
+      ],
+      "text": "对方玩家获得4点临时荷载。",
+      "flavor": "捣蛋鬼别捣蛋！",
+      "speed": 1
+    },
+    {
+      "id": "clarity",
+      "name": "心如止水",
+      "rarity": "common",
+      "type": "action",
+      "cost": 1,
+      "target": "self",
+      "effects": [
+        {
+          "kind": "discard_hand"
+        },
+        {
+          "kind": "clear_all_temporary"
+        }
+      ],
+      "text": "弃置一张手牌，移除自身所有的临时荷载。",
+      "flavor": "向月亮诉说吧。",
+      "speed": 1
+    },
+    {
+      "id": "reservoir",
+      "name": "阿克乌姆之弧",
+      "rarity": "common",
+      "type": "formation",
+      "body": 1,
+      "capacity": 5,
+      "income": 0,
+      "rings": 0,
+      "maxRank": 0,
+      "opponentDestroyProtected": true,
+      "text": "这张卡不会因对手的效果而销毁。",
+      "flavor": "莱德·阿克乌姆在进行生命力相关的研究时发明出了这个符文，他以缺失的圆环作为法阵的基底，发现这个简洁的阵法代表着空洞的虚无。",
+      "speed": 1,
+      "cost": 0
+    },
+    {
+      "id": "conduit",
+      "name": "逆三角星符",
+      "rarity": "common",
+      "type": "seal",
+      "cost": 1,
+      "incomeBonus": 2,
+      "text": "阵法附着效果：该阵法在自己的准备阶段提供的魔素收入+2。法术附着效果：无特殊效果。",
+      "flavor": "聚能并非环。",
+      "speed": 1
+    },
+    {
+      "id": "ward",
+      "name": "炽燃结界",
+      "rarity": "uncommon",
+      "type": "analytic",
+      "cost": 2,
+      "castCost": 1,
+      "rank": 2,
+      "concentration": true,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 2,
+          "damageType": "fire"
+        }
+      ],
+      "onCast": [
+        {
+          "kind": "damage",
+          "amount": 1,
+          "damageType": "fire"
+        }
+      ],
+      "text": "成功释放时对对方玩家造成2点火焰伤害。专注时，对对方玩家造成1点火焰伤害。",
+      "speed": 1,
+      "school": "evocation"
+    },
+    {
+      "id": "messy-wave",
+      "name": "紊乱波动",
+      "type": "analytic",
+      "rarity": "common",
+      "cost": 4,
+      "castCost": 4,
+      "rank": 2,
+      "speed": 1,
+      "analysisTurns": 1,
+      "duration": 3,
+      "school": "evocation",
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "source_temporary",
+          "amount": 5
+        }
+      ],
+      "onCast": [
+        {
+          "kind": "source_temporary",
+          "amount": 3
+        }
+      ],
+      "text": "持续3。首次释放时对方获得5点临时荷载；之后自己的施法阶段对方获得3点临时荷载。这些荷载在本法术销毁时清除。",
+      "flavor": "为什么要使用这么坏心眼的法术？"
+    },
+    {
+      "id": "instantly-sleep",
+      "name": "昏昏入睡",
+      "type": "analytic",
+      "rarity": "uncommon",
+      "cost": 3,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "school": "enchantment",
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "block_actions",
+          "amount": 0
+        }
+      ],
+      "text": "对方下一个自己的回合无法使用行动卡。",
+      "flavor": "巫师牌安眠药。"
+    },
+    {
+      "id": "magic-missile",
+      "name": "魔法飞弹",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 2,
+      "castCost": 2,
+      "rank": 1,
+      "speed": 2,
+      "school": "evocation",
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "force"
+        },
+        {
+          "kind": "destroy_ambush",
+          "amount": 0
+        }
+      ],
+      "responses": [
+        {
+          "id": "quick_cast",
+          "name": "快速释放",
+          "sources": [
+            "analysis"
+          ],
+          "windows": [
+            "phase_start",
+            "phase_end",
+            "action",
+            "prepare",
+            "cast",
+            "trigger"
+          ],
+          "target": "opponent",
+          "phases": [
+            "cast"
+          ],
+          "eventOwner": "opponent",
+          "requiresSource": true,
+          "effects": [
+            {
+              "kind": "damage",
+              "amount": 3,
+              "damageType": "force"
+            },
+            {
+              "kind": "destroy_ambush",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "text": "解析完成后，可在对方施法阶段的合法时点支付施法费用直接释放。对对方造成3点力场伤害；那之后，可以销毁对方一张埋伏卡。",
+      "flavor": "折磨你的对手。"
+    },
+    {
+      "id": "aid",
+      "name": "支援术",
+      "type": "analytic",
+      "rarity": "common",
+      "cost": 1,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "analysisTurns": 0,
+      "school": "abjuration",
+      "target": "self",
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 5
+        }
+      ],
+      "text": "立即完成解析。自身获得5点临时生命之核，取较高值，不叠加；受伤时优先扣除，无回合到期。",
+      "flavor": "你被增强了！"
+    },
+    {
+      "id": "counter-spell",
+      "name": "法术反制",
+      "type": "word",
+      "rarity": "legendary",
+      "cost": 4,
+      "rank": 3,
+      "speed": 4,
+      "school": "evocation",
+      "responseOnly": true,
+      "effects": [
+        {
+          "kind": "counter_spell",
+          "amount": 0
+        }
+      ],
+      "responses": [
+        {
+          "id": "counter_cast",
+          "name": "无效并销毁法术",
+          "sources": [
+            "words",
+            "ambush"
+          ],
+          "windows": [
+            "phase_start",
+            "phase_end",
+            "action",
+            "prepare",
+            "cast",
+            "trigger"
+          ],
+          "target": "enemy_spell_link",
+          "effects": [
+            {
+              "kind": "counter_spell",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "text": "对手释放法术时，可以无效并销毁该法术。自身获得等于其实际施法费用的临时荷载，在下一个自己的结束阶段清除。四速后不可响应。",
+      "flavor": "火球术！反制！反制你的反制！温馨提示，这种场景在奥术决斗中不会出现。"
+    },
+    {
+      "id": "true-strike",
+      "name": "克敌机先",
+      "type": "word",
+      "rarity": "uncommon",
+      "cost": 1,
+      "rank": 0,
+      "speed": 1,
+      "immediate": true,
+      "school": "divination",
+      "target": "self",
+      "effects": [
+        {
+          "kind": "search_action",
+          "amount": 0
+        }
+      ],
+      "text": "可单独设置，或设置并立即释放。释放时从牌库检索一张普通或罕见行动卡加入手牌，然后洗切牌库。",
+      "flavor": "魔法之洞见，它能指引你看到多远？"
+    },
+    {
+      "id": "protective-flame",
+      "name": "避火咒",
+      "type": "word",
+      "rarity": "common",
+      "cost": 2,
+      "rank": 1,
+      "speed": 2,
+      "concentration": true,
+      "school": "abjuration",
+      "target": "self",
+      "resistances": [
+        "fire"
+      ],
+      "effects": [
+        {
+          "kind": "grant_resistance",
+          "amount": 0
+        }
+      ],
+      "responses": [
+        {
+          "id": "protect",
+          "name": "获得火焰抗性",
+          "sources": [
+            "words",
+            "ambush"
+          ],
+          "windows": [
+            "phase_start",
+            "phase_end",
+            "action",
+            "prepare",
+            "cast",
+            "trigger"
+          ],
+          "target": "self",
+          "effects": [
+            {
+              "kind": "grant_resistance",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "text": "专注。自身获得火焰伤害抗性，伤害减半并向下取整；抗性不叠加，销毁本法术后失去此抗性。"
+    },
+    {
+      "id": "pentagram-of-life",
+      "name": "生命之五芒星",
+      "type": "formation",
+      "rarity": "common",
+      "cost": 1,
+      "body": 2,
+      "capacity": 5,
+      "income": 2,
+      "rings": 5,
+      "maxRank": 3,
+      "baseEligible": true,
+      "baseAnalysisDiscount": true,
+      "text": "作为基础阵法时，在本阵法上解析的塑能系或咒法系法术的解析费用减1，最低为0。",
+      "flavor": "生命之五芒星以魔素高活跃性和高控制性著称。"
+    },
+    {
+      "id": "engeas-four-point-star",
+      "name": "恩格亚斯四角星",
+      "type": "formation",
+      "rarity": "epic",
+      "cost": 0,
+      "body": 1,
+      "capacity": 2,
+      "income": 4,
+      "rings": 1,
+      "maxRank": 3,
+      "quickRankOne": true,
+      "text": "每个自己的回合一次：在本阵法上开始解析的第一张位阶不超过1、需要解析时间的法术，立即完成解析。",
+      "flavor": "贤者恩格亚斯发明的精简阵法，以快速聚能和快速释放闻名。"
+    },
+    {
+      "id": "uplift",
+      "name": "昂扬",
+      "type": "seal",
+      "rarity": "common",
+      "cost": 1,
+      "capacityBonus": 1,
+      "rankBonus": 1,
+      "incomeBonus": -1,
+      "castCostBonus": 1,
+      "damageBonus": 2,
+      "text": "阵法附着：荷载容量+1，最大位阶+1，准备阶段魔素收入-1。法术附着：实际施法费用+1，成功释放时额外对对方造成2点力场伤害。",
+      "flavor": "沸腾的魔素是一把双刃剑。"
+    },
+    {
+      "id": "instant-circuit-overload",
+      "name": "瞬发回路过载",
+      "type": "action",
+      "rarity": "uncommon",
+      "cost": 2,
+      "target": "own_analyzing_spell",
+      "effects": [
+        {
+          "kind": "accelerate_analysis",
+          "amount": 0
+        }
+      ],
+      "text": "立即完成自己场上一张解析法术的解析。那之后，自身获得等于该法术实际解析费用的临时荷载，在下一个自己的结束阶段清除。",
+      "flavor": "通过强行激发大量魔素流动，使法术的解析立即完成。铤而走险。"
+    },
+    {
+      "id": "ray-of-frost",
+      "name": "寒霜射线",
+      "type": "analytic",
+      "rarity": "common",
+      "cost": 1,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "school": "evocation",
+      "analysisTurns": 1,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "cold"
+        }
+      ],
+      "text": "对对方造成3点寒冷伤害。"
+    },
+    {
+      "id": "lightning-bolt",
+      "name": "闪电束",
+      "type": "analytic",
+      "rarity": "common",
+      "cost": 3,
+      "castCost": 2,
+      "rank": 2,
+      "speed": 1,
+      "school": "evocation",
+      "analysisTurns": 1,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 8,
+          "damageType": "lightning"
+        }
+      ],
+      "text": "对对方造成8点闪电伤害。"
+    },
+    {
+      "id": "lesser-restoration",
+      "name": "次级复原",
+      "type": "analytic",
+      "rarity": "common",
+      "cost": 2,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "school": "abjuration",
+      "analysisTurns": 0,
+      "target": "self",
+      "effects": [
+        {
+          "kind": "clear_all_temporary"
+        },
+        {
+          "kind": "heal",
+          "amount": 2
+        }
+      ],
+      "text": "立即解析。清除自身所有临时荷载，然后恢复2点生命。不能清除独立或绑定荷载。"
+    },
+    {
+      "id": "false-life",
+      "name": "虚假生命",
+      "type": "analytic",
+      "rarity": "common",
+      "cost": 2,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "school": "necromancy",
+      "analysisTurns": 0,
+      "target": "self",
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 8
+        },
+        {
+          "kind": "independent",
+          "amount": 2
+        }
+      ],
+      "text": "立即解析。获得8点临时生命（取较高值，不叠加），然后获得2点独立荷载。"
+    },
+    {
+      "id": "arcane-recovery",
+      "name": "奥术复苏",
+      "type": "action",
+      "rarity": "uncommon",
+      "cost": 0,
+      "speed": 1,
+      "target": "self",
+      "effects": [
+        {
+          "kind": "mana",
+          "amount": 3
+        },
+        {
+          "kind": "temporary",
+          "amount": 2
+        }
+      ],
+      "text": "获得3点魔素（不超过12），然后获得2点临时荷载，在本回合结束阶段清除。"
+    },
+    {
+      "id": "shield",
+      "name": "护盾术",
+      "type": "word",
+      "rarity": "common",
+      "cost": 2,
+      "rank": 1,
+      "speed": 2,
+      "concentration": false,
+      "school": "abjuration",
+      "target": "self",
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 6
+        }
+      ],
+      "responses": [
+        {
+          "id": "shield",
+          "name": "展开护盾",
+          "sources": [
+            "words",
+            "ambush"
+          ],
+          "windows": [
+            "phase_start",
+            "phase_end",
+            "action",
+            "prepare",
+            "cast",
+            "trigger"
+          ],
+          "target": "self",
+          "effects": [
+            {
+              "kind": "temporary_life",
+              "amount": 6
+            }
+          ]
+        }
+      ],
+      "text": "获得6点临时生命（取较高值，不叠加）。可以单独设置，在合法时点响应或主动释放。"
+    }
+  ],
+  "mechanicsRevision": 1
 }

@@ -6,3 +6,4 @@
 *.user
 /logs/
 __pycache__/
+/.agents/

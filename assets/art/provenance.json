@@ -124,5 +124,178 @@
     "promptFile": "design/v1/illustration_prompts.json",
     "sha256": "e8354e351207c487312d669495d29747ea364dc49c1d2c649337c8fccbf6dc5a",
     "licenseNote": "AI-generated project artwork; no external stock assets or additional third-party license claim."
+  },
+  {
+    "id": "messy-wave",
+    "file": "alpha-v1/messy-wave.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-30151bb2-e413-4263-a289-2ca6027b649c.png",
+    "sha256": "93e19cd54d8688321d618dbbf32d537ed07f8176c5e2616a5ea21e057922d746",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "instantly-sleep",
+    "file": "alpha-v1/instantly-sleep.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-862f28ad-8c63-451f-8574-028ab8b58a6f.png",
+    "sha256": "12a441754813f76fcc40e9ad54634b46f84c91747c245322764be184e8083002",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "magic-missile",
+    "file": "alpha-v1/magic-missile.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-84aafb5b-6fe2-4b40-8fc2-5d015e589bd2.png",
+    "sha256": "70218f5f4cc2a34a540c5086f070fde286f557d38216940f648d634c92a2475c",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "aid",
+    "file": "alpha-v1/aid.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-ffbe6f35-b50a-4952-8bd0-50dedba883bf.png",
+    "sha256": "5e2bf7e1c105084e4f09fe49f2577f138f912bbf8ac7d2e4437ca74744bea585",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "counter-spell",
+    "file": "alpha-v1/counter-spell.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-65cf520d-e3b0-4d2a-b918-2679540a7a0d.png",
+    "sha256": "d9934023300fcd1ddfc350c9086632d3513b21a40fff91d32bc6bc9923077937",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "true-strike",
+    "file": "alpha-v1/true-strike.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-0862e0dd-902b-42df-862b-732370da8e86.png",
+    "sha256": "ff359f2b5a84902352655f2b9a9f87c4acc52be834575e4f6878bb433a7f4953",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "protective-flame",
+    "file": "alpha-v1/protective-flame.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-3931cff8-9956-412f-911a-f0a5ac686da4.png",
+    "sha256": "10844cbe89afad254b1ccd946be88cace940d4ef6ba7dfa2aed7be3bd84c6282",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "pentagram-of-life",
+    "file": "alpha-v1/pentagram-of-life.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-5b58ffcd-c283-4fa3-b8ef-0b00691ede5b.png",
+    "sha256": "a62a70a02131145d233683fdcd0d908c68300b687e75b16b6769be2482f6d674",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "engeas-four-point-star",
+    "file": "alpha-v1/engeas-four-point-star.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-757cc801-6872-4230-a00c-357c47ac98b6.png",
+    "sha256": "160f0b0c332976753e446a3d63f7190d3d6a3be110c0cdd3850d451e4279dd62",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "uplift",
+    "file": "alpha-v1/uplift.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-ac7a540b-155c-479d-9099-04595112a2c9.png",
+    "sha256": "5b8b00e376be5680059acbb509826275f3e17e8410f20e67b128712ce1a76e00",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "instant-circuit-overload",
+    "file": "alpha-v1/instant-circuit-overload.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-illustrations-v1",
+    "originalGeneratedFilename": "exec-ba8874f7-cb72-43d9-acac-f3473c9a0f45.png",
+    "sha256": "d96e2ebcb7a0a582ea36e76c450917d455b23f7eefbcdc4039fc65f6181ad14a",
+    "originalBytesPreserved": true,
+    "licenseNote": "User-provided AI-generated project artwork; original asset bytes preserved."
+  },
+  {
+    "id": "ray-of-frost",
+    "file": "alpha-release/ray-of-frost.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-release-v1",
+    "sha256": "78689ea9ade3fb05ca3def89b56c8902216e2ea2aae3c81579b894e6683363c9",
+    "originalBytesPreserved": true,
+    "licenseNote": "AI-generated original project illustration; original generated bytes preserved."
+  },
+  {
+    "id": "lightning-bolt",
+    "file": "alpha-release/lightning-bolt.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-release-v1",
+    "sha256": "deabc4495bef0799371dcaa1b2cfb0fcfaecac5d19a72a61ba43c55c536f2dca",
+    "originalBytesPreserved": true,
+    "licenseNote": "AI-generated original project illustration; original generated bytes preserved."
+  },
+  {
+    "id": "shield",
+    "file": "alpha-release/shield.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-release-v1",
+    "sha256": "e0b8c5bcf9c4dacb8159b5420a2e6a8f561512009434e9b50ef0f93f58adca93",
+    "originalBytesPreserved": true,
+    "licenseNote": "AI-generated original project illustration; original generated bytes preserved."
+  },
+  {
+    "id": "lesser-restoration",
+    "file": "alpha-release/lesser-restoration.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-release-v1",
+    "sha256": "7e4ae91acb40afae4a65766aadd722424cb0e612ce5df1f2c379a55f68fbeb47",
+    "originalBytesPreserved": true,
+    "licenseNote": "AI-generated original project illustration; original generated bytes preserved."
+  },
+  {
+    "id": "false-life",
+    "file": "alpha-release/false-life.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-release-v1",
+    "sha256": "77ce8c29486e0b177fd7a2e518ed24fc456ce71095eee05dfc087092921476b0",
+    "originalBytesPreserved": true,
+    "licenseNote": "AI-generated original project illustration; original generated bytes preserved."
+  },
+  {
+    "id": "arcane-recovery",
+    "file": "alpha-release/arcane-recovery.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-release-v1",
+    "sha256": "fb0fb59d214899f5c27d16ff850de09217fa15e55237e846f51bdebc088f495d",
+    "originalBytesPreserved": true,
+    "licenseNote": "AI-generated original project illustration; original generated bytes preserved."
+  },
+  {
+    "id": "wizardcard-app-icon-v1",
+    "file": "branding/wizardcard-app-v1.png",
+    "source": "OpenAI built-in imagegen",
+    "sourceVersion": "alpha-release-v1",
+    "sha256": "a7f523a893477b28c1503980e4a24f932233717bfa06a8bc8b1468b09a3a7e4f",
+    "originalBytesPreserved": true,
+    "licenseNote": "AI-generated brand icon, original logo preserved."
   }
 ]

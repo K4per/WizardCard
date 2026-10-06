@@ -13,6 +13,8 @@ jobs:
       - run: cmake --build --preset windows --parallel 4
       - run: ctest --preset windows
       - run: build/windows/Release/wizard_cli.exe smoke assets build/windows/cross-platform.json 42
+      - run: build/windows/Release/wizard_cli.exe ai-match assets build/windows/ai-replay.json 42 2
+      - run: build/windows/Release/wizard_cli.exe tutorial-smoke assets build/windows/tutorial-replay.json
       - run: cmake --install build/windows --config Release --prefix dist/WizardCard
       - uses: actions/upload-artifact@v4
         with:
@@ -21,7 +23,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: reference-replay
-          path: build/windows/cross-platform.json
+          path: |
+            build/windows/cross-platform.json
+            build/windows/ai-replay.json
+            build/windows/tutorial-replay.json
   linux-core:
     runs-on: ubuntu-latest
     needs: windows
@@ -39,3 +44,5 @@ jobs:
           name: reference-replay
           path: build/reference
       - run: build/headless/wizard_cli replay assets build/reference/cross-platform.json
+      - run: build/headless/wizard_cli replay assets build/reference/ai-replay.json
+      - run: build/headless/wizard_cli replay assets build/reference/tutorial-replay.json

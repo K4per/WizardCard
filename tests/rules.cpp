@@ -5,7 +5,7 @@
 using namespace wizard;
 namespace {
 struct Fixture {
-    Content content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets"); GameState state;
+    Content content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"tests/fixtures/stage2"); GameState state;
     Fixture() {
         state.phase=Phase::Main; state.flow=Flow::Main; state.rng=7;
         for(int p=0;p<2;++p) {
@@ -22,7 +22,10 @@ struct Fixture {
     }
     GameEngine engine() { return GameEngine::scenario(content.catalog,state); }
 };
-void accept(GameEngine& e,PlayerId p,Command c) { auto r=e.submit(p,c); INFO(r.error); REQUIRE(r.accepted); }
+// Legacy regressions use a client driver to pass empty phases; the new phase
+// tests submit each gate explicitly and never use this helper.
+void emptyPhases(GameEngine& e) { for(int i=0;i<10 && e.state().result==-1 && !e.state().decision && e.state().phase!=Phase::Main;++i){auto r=e.submit(e.state().active,AdvancePhase{e.state().phaseGate});INFO(r.error);REQUIRE(r.accepted);} }
+void accept(GameEngine& e,PlayerId p,Command c) { auto r=e.submit(p,c); INFO(r.error); REQUIRE(r.accepted);if(std::holds_alternative<Advance>(c) || std::holds_alternative<Choose>(c))emptyPhases(e); }
 void chooseFirst(GameEngine& e) { auto d=*e.state().decision; accept(e,d.player,Choose{d.id,d.options.front()}); }
 }
 TEST_CASE("load boundary is inclusive and rejected commands are atomic") {
@@ -41,10 +44,11 @@ TEST_CASE("cancel keeps analysis and spent mana and prevents retry") {
     REQUIRE_FALSE(e.submit(0,PrepareCast{10,0,0}).accepted); REQUIRE(e.state().cards.at(11).zone==Zone::Ash);
     REQUIRE_FALSE(e.submit(1,Choose{decision,11}).accepted);
 }
-TEST_CASE("each responder gets at most one word and canceled window closes") {
+TEST_CASE("a responder may add multiple different words to one chain") {
     Fixture f; f.ready(10); for(auto id:{11u,12u}) { auto& c=f.card(id,"barbs",1,Zone::Words);c.analysisLoad=4; }
     auto e=f.engine(); accept(e,0,PrepareCast{10,0,0}); chooseFirst(e);
-    REQUIRE_FALSE(e.state().decision); REQUIRE(e.state().cards.at(12).zone==Zone::Words);
+    REQUIRE(e.state().decision);REQUIRE(e.state().decision->player==1);chooseFirst(e);
+    REQUIRE_FALSE(e.state().decision); REQUIRE(e.state().cards.at(12).zone==Zone::Ash);REQUIRE(e.state().cards.at(11).zone==Zone::Ash);
 }
 TEST_CASE("passing response completes preparation and releases original ring") {
     Fixture f; f.ready(10); f.card(11,"barbs",1,Zone::Words).analysisLoad=4;
@@ -139,6 +143,7 @@ TEST_CASE("periodic triggers preserve chosen order and queued source snapshot") 
 }
 TEST_CASE("first player skips only first base draw and both get income") {
     auto c=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");GameEngine e(c.catalog,{c.deck,c.deck},42);int first=e.state().first;
+    emptyPhases(e);
     REQUIRE(e.viewFor(first).players[first].handCount==5);REQUIRE(e.state().players[first].mana==3);
     accept(e,first,Advance{});REQUIRE(e.viewFor(1-first).players[1-first].handCount==6);REQUIRE(e.state().players[1-first].mana==3);
 }

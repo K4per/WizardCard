@@ -1,5 +1,7 @@
 # 巫师牌 / WizardCard
 
+当前开发分支为 **1.5.0-dev**：C++ 内核已接入 Godot **2.5D 对局场景**，采用古籍金饰 3D 牌桌、双方五区、前景扇形手牌及场景内详情／连锁／操作浮层。规则与卡池仍为 1.0.0，保留换手、三档 AI、教学和 Alpha 复盘兼容。见[2.5D 交付与待验收项](docs/reports/v1.5-25d-client.md)、[开发者文档](docs/developer-guide-v1.5.md)和[运行说明](godot/README.md)。阶段 2 真人输入与体验验收仍待完成；下文 Alpha 说明保留为已交付基线。
+
 C++17 专用卡牌规则引擎与 SFML 本地卡牌游戏，支持换手对战、三档AI及固定教学。当前规则见 [五阶段与轻量连锁](docs/alpha-v1.0-rules.md)，继承规则见 [原型规则](docs/design.md)，模块边界见 [架构](docs/architecture.md)。
 
 Alpha v1.0 已交付：程序 `1.0.0-alpha`、规则/卡池 `1.0.0`，30种卡、九套预设与五种代表性方向，初始/最大生命40。下载解压后运行 `wizard_client.exe`；详见[发布说明](docs/releases/alpha-v1.0.md)和[自动验收报告](docs/reports/alpha-v1.0-release.md)。[v1.5计划](docs/plans/v1.5.md)新增Godot图形界面重构、保留C++内核，并继续推进局域网P2P、卡牌联动与动画。规则与内容设计入口：[新卡规则](docs/alpha-v1-cards.md)、[发布补充卡](docs/alpha-release-cards.md)、[设计指南](docs/card-design-guide.md)、[术语规范](docs/terminology.md)。

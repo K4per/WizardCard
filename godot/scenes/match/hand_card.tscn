@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/match/wizard_hand_card.gd" id="1"]
+[node name="HandCard" type="Control"]
+custom_minimum_size = Vector2(108, 156)
+offset_right = 108.0
+offset_bottom = 156.0
+mouse_filter = 1
+script = ExtResource("1")

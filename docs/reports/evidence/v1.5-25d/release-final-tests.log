@@ -1,0 +1,425 @@
+Test project E:/Project/WizardCard/build/godot-release
+        Start   1: load boundary is inclusive and rejected commands are atomic
+  1/210 Test   #1: load boundary is inclusive and rejected commands are atomic .........................................................   Passed    0.09 sec
+        Start   2: cancel keeps analysis and spent mana and prevents retry
+  2/210 Test   #2: cancel keeps analysis and spent mana and prevents retry .............................................................   Passed    0.02 sec
+        Start   3: a responder may add multiple different words to one chain
+  3/210 Test   #3: a responder may add multiple different words to one chain ...........................................................   Passed    0.02 sec
+        Start   4: passing response completes preparation and releases original ring
+  4/210 Test   #4: passing response completes preparation and releases original ring ...................................................   Passed    0.02 sec
+        Start   5: formation and dependents leave before overload check
+  5/210 Test   #5: formation and dependents leave before overload check ................................................................   Passed    0.02 sec
+        Start   6: destroying empty formation can cause overload and base is protected
+  6/210 Test   #6: destroying empty formation can cause overload and base is protected .................................................   Passed    0.03 sec
+        Start   7: prepared spell survives former formation destruction
+  7/210 Test   #7: prepared spell survives former formation destruction ................................................................   Passed    0.02 sec
+        Start   8: instant success refunds only cast payment before leaving
+  8/210 Test   #8: instant success refunds only cast payment before leaving ............................................................   Passed    0.03 sec
+        Start   9: duration two includes casting turn and periodic damage does not refund twice
+  9/210 Test   #9: duration two includes casting turn and periodic damage does not refund twice ........................................   Passed    0.06 sec
+        Start  10: invalidated target fizzles without reward or refund
+ 10/210 Test  #10: invalidated target fizzles without reward or refund .................................................................   Passed    0.03 sec
+        Start  11: action burden outlives card and expires at end
+ 11/210 Test  #11: action burden outlives card and expires at end ......................................................................   Passed    0.04 sec
+        Start  12: fourth action is allowed and ordinary resource and timing rules remain
+ 12/210 Test  #12: fourth action is allowed and ordinary resource and timing rules remain ..............................................   Passed    0.02 sec
+        Start  13: clear temporary uses player allocation and leaves bound load
+ 13/210 Test  #13: clear temporary uses player allocation and leaves bound load ........................................................   Passed    0.02 sec
+        Start  14: draw failure persists until full effect completes and ends game
+ 14/210 Test  #14: draw failure persists until full effect completes and ends game .....................................................   Passed    0.02 sec
+        Start  15: simultaneous state failures draw
+ 15/210 Test  #15: simultaneous state failures draw ....................................................................................   Passed    0.02 sec
+        Start  16: replacement is atomic and charges one operation
+ 16/210 Test  #16: replacement is atomic and charges one operation .....................................................................   Passed    0.02 sec
+        Start  17: seal removal must not leave occupied rings over capacity
+ 17/210 Test  #17: seal removal must not leave occupied rings over capacity ............................................................   Passed    0.02 sec
+        Start  18: forced ring removal asks owner to clean up before checking
+ 18/210 Test  #18: forced ring removal asks owner to clean up before checking ..........................................................   Passed    0.02 sec
+        Start  19: hand overflow pauses end and requires owning player
+ 19/210 Test  #19: hand overflow pauses end and requires owning player .................................................................   Passed    0.03 sec
+        Start  20: periodic triggers preserve chosen order and queued source snapshot
+ 20/210 Test  #20: periodic triggers preserve chosen order and queued source snapshot ..................................................   Passed    0.03 sec
+        Start  21: first player skips only first base draw and both get income
+ 21/210 Test  #21: first player skips only first base draw and both get income .........................................................   Passed    0.05 sec
+        Start  22: views never expose enemy hand or deck identities
+ 22/210 Test  #22: views never expose enemy hand or deck identities ....................................................................   Passed    0.02 sec
+        Start  23: extra costs validate atomically and survive a canceled preparation
+ 23/210 Test  #23: extra costs validate atomically and survive a canceled preparation ..................................................   Passed    0.02 sec
+        Start  24: no state check between sentences of one effect
+ 24/210 Test  #24: no state check between sentences of one effect ......................................................................   Passed    0.03 sec
+        Start  25: draw failure is not undone by returning a card before the check
+ 25/210 Test  #25: draw failure is not undone by returning a card before the check .....................................................   Passed    0.02 sec
+        Start  26: queued effects remain after their source leaves and stop after defeat
+ 26/210 Test  #26: queued effects remain after their source leaves and stop after defeat ...............................................   Passed    0.02 sec
+        Start  27: same-event order is active owner then non-active owner and appended batches wait
+ 27/210 Test  #27: same-event order is active owner then non-active owner and appended batches wait ....................................   Passed    0.02 sec
+        Start  28: new formations do not grant immediate income and analysis completes next own turn
+ 28/210 Test  #28: new formations do not grant immediate income and analysis completes next own turn ...................................   Passed    0.05 sec
+        Start  29: end triggers resolve and check before expiring temporary load
+ 29/210 Test  #29: end triggers resolve and check before expiring temporary load .......................................................   Passed    0.02 sec
+        Start  30: long legal and illegal command sequences preserve state invariants
+ 30/210 Test  #30: long legal and illegal command sequences preserve state invariants ..................................................   Passed    2.92 sec
+        Start  31: content validation includes unknown effects duplicates references and counts
+ 31/210 Test  #31: content validation includes unknown effects duplicates references and counts ........................................   Passed    0.02 sec
+        Start  32: every command variant round trips
+ 32/210 Test  #32: every command variant round trips ...................................................................................   Passed    0.02 sec
+        Start  33: replay detects incompatible content versions and tampering
+ 33/210 Test  #33: replay detects incompatible content versions and tampering ..........................................................   Passed    0.04 sec
+        Start  34: IV-02 stale response and phase offers cannot adopt refreshed ids
+ 34/210 Test  #34: IV-02 stale response and phase offers cannot adopt refreshed ids ....................................................   Passed    0.02 sec
+        Start  35: response contexts distinguish earlier links and retain selected costs
+ 35/210 Test  #35: response contexts distinguish earlier links and retain selected costs ...............................................   Passed    0.02 sec
+        Start  36: multi target contexts keep complete selected target sets
+ 36/210 Test  #36: multi target contexts keep complete selected target sets ............................................................   Passed    0.02 sec
+        Start  37: card context chooses a legal host then confirms the original command
+ 37/210 Test  #37: card context chooses a legal host then confirms the original command ................................................   Passed    0.02 sec
+        Start  38: target selection retains only the matching extra cost candidates
+ 38/210 Test  #38: target selection retains only the matching extra cost candidates ....................................................   Passed    0.02 sec
+        Start  39: set and replace are separate contexts and hidden cards cannot be selected
+ 39/210 Test  #39: set and replace are separate contexts and hidden cards cannot be selected ...........................................   Passed    0.02 sec
+        Start  40: drag selects a legal intent but invalid drops preserve the current choice
+ 40/210 Test  #40: drag selects a legal intent but invalid drops preserve the current choice ...........................................   Passed    0.02 sec
+        Start  41: drag targeting and discard cost still stop for confirmation
+ 41/210 Test  #41: drag targeting and discard cost still stop for confirmation .........................................................   Passed    0.03 sec
+        Start  42: drag does not infer destructive removal and routes card-specific destinations
+ 42/210 Test  #42: drag does not infer destructive removal and routes card-specific destinations .......................................   Passed    0.02 sec
+        Start  43: forced drag choices retain their decision id and cannot use the wrong destination
+ 43/210 Test  #43: forced drag choices retain their decision id and cannot use the wrong destination ...................................   Passed    0.02 sec
+        Start  44: hand order is private presentation state and synchronizes draws and departures
+ 44/210 Test  #44: hand order is private presentation state and synchronizes draws and departures ......................................   Passed    0.02 sec
+        Start  45: analysis area auto matches one legal formation and prompts for multiple
+ 45/210 Test  #45: analysis area auto matches one legal formation and prompts for multiple .............................................   Passed    0.02 sec
+        Start  46: release starts at forty life and healing cannot exceed forty
+ 46/210 Test  #46: release starts at forty life and healing cannot exceed forty ........................................................   Passed    0.02 sec
+        Start  47: PH-01 PH-02 five distinct phase gates preserve draw and income
+ 47/210 Test  #47: PH-01 PH-02 five distinct phase gates preserve draw and income ......................................................   Passed    0.05 sec
+        Start  48: LC-01 S1 paid preparation and actual release are separate chains
+ 48/210 Test  #48: LC-01 S1 paid preparation and actual release are separate chains ....................................................   Passed    0.02 sec
+        Start  49: LC-01 S2 cancel preparation keeps costs until its own cleanup
+ 49/210 Test  #49: LC-01 S2 cancel preparation keeps costs until its own cleanup .......................................................   Passed    0.05 sec
+        Start  50: LC-01 S3 counter-counter resolves in reverse order
+ 50/210 Test  #50: LC-01 S3 counter-counter resolves in reverse order ..................................................................   Passed    0.03 sec
+        Start  51: LC-01 S4 upper overload stops lower clear and all later work
+ 51/210 Test  #51: LC-01 S4 upper overload stops lower clear and all later work ........................................................   Passed    0.02 sec
+        Start  52: CH-01 CH-03 CH-04 CH-05 CH-07 priority passes reset and old commands reject atomically
+ 52/210 Test  #52: CH-01 CH-03 CH-04 CH-05 CH-07 priority passes reset and old commands reject atomically ..............................   Passed    0.03 sec
+        Start  53: CH-02 LC-03 IV-01 implicit hand permissions and private response candidates stay hidden
+ 53/210 Test  #53: CH-02 LC-03 IV-01 implicit hand permissions and private response candidates stay hidden .............................   Passed    0.02 sec
+        Start  54: LC-02 LC-04 LC-05 hand word mode costs and temporary burden remain distinct
+ 54/210 Test  #54: LC-02 LC-04 LC-05 hand word mode costs and temporary burden remain distinct .........................................   Passed    0.02 sec
+        Start  55: LC-07 response snapshots survive source loss unless explicitly dependent
+ 55/210 Test  #55: LC-07 response snapshots survive source loss unless explicitly dependent ............................................   Passed    0.03 sec
+        Start  56: LC-08 source formation loss cleans dependents before preparation checks
+ 56/210 Test  #56: LC-08 source formation loss cleans dependents before preparation checks .............................................   Passed    0.02 sec
+        Start  57: LC-10 partial multi targets fizzle only the unavailable part
+ 57/210 Test  #57: LC-10 partial multi targets fizzle only the unavailable part ........................................................   Passed    0.03 sec
+        Start  58: LC-11 cancelling cast action and trigger gives each its own cleanup
+ 58/210 Test  #58: LC-11 cancelling cast action and trigger gives each its own cleanup .................................................   Passed    0.06 sec
+        Start  59: PH-06 PH-07 end response then cleanup triggers recheck hand but not duration
+ 59/210 Test  #59: PH-06 PH-07 end response then cleanup triggers recheck hand but not duration ........................................   Passed    0.04 sec
+        Start  60: ST-04 deferred captured triggers cannot interrupt a current chain
+ 60/210 Test  #60: ST-04 deferred captured triggers cannot interrupt a current chain ...................................................   Passed    0.04 sec
+        Start  61: ST-08 logical cycle key ignores allocations but waiting choices stop automation
+ 61/210 Test  #61: ST-08 logical cycle key ignores allocations but waiting choices stop automation .....................................   Passed    0.03 sec
+        Start  62: CF-01 CF-02 CF-03 CF-04 base qualification and two independent configurations
+ 62/210 Test  #62: CF-01 CF-02 CF-03 CF-04 base qualification and two independent configurations .......................................   Passed    0.03 sec
+        Start  63: RP-01 RP-02 RP-03 format two records configurations and detects protocol tampering
+ 63/210 Test  #63: RP-01 RP-02 RP-03 format two records configurations and detects protocol tampering ..................................   Passed   10.40 sec
+        Start  64: content response schema requires explicit source cost window and target
+ 64/210 Test  #64: content response schema requires explicit source cost window and target .............................................   Passed    0.03 sec
+        Start  65: RP-02 accepted commands replay active chains and mandatory effect decisions
+ 65/210 Test  #65: RP-02 accepted commands replay active chains and mandatory effect decisions .........................................   Passed    0.09 sec
+        Start  66: LC-04 cancelled hand word keeps mana and discard but releases bound load
+ 66/210 Test  #66: LC-04 cancelled hand word keeps mana and discard but releases bound load ............................................   Passed    0.02 sec
+        Start  67: PH-05 automatic phase driver respects disabled main and forced decisions
+ 67/210 Test  #67: PH-05 automatic phase driver respects disabled main and forced decisions ............................................   Passed    0.03 sec
+        Start  68: updated card identities artwork mappings and printed values stay aligned
+ 68/210 Test  #68: updated card identities artwork mappings and printed values stay aligned ............................................   Passed    0.03 sec
+        Start  69: rank zero word releases immediately without using a preloaded slot
+ 69/210 Test  #69: rank zero word releases immediately without using a preloaded slot ..................................................   Passed    0.02 sec
+        Start  70: instant word still has a cast response chain and cancellation keeps its paid cost
+ 70/210 Test  #70: instant word still has a cast response chain and cancellation keeps its paid cost ...................................   Passed    0.02 sec
+        Start  71: fireball resolves ten damage then optional empty own formation choice atomically
+ 71/210 Test  #71: fireball resolves ten damage then optional empty own formation choice atomically ....................................   Passed    0.02 sec
+        Start  72: fireball optional removal may be declined and victory waits for full link cleanup
+ 72/210 Test  #72: fireball optional removal may be declined and victory waits for full link cleanup ...................................   Passed    0.03 sec
+        Start  73: life stitch produces independent load that survives spell cleanup and end phases
+ 73/210 Test  #73: life stitch produces independent load that survives spell cleanup and end phases ....................................   Passed    0.05 sec
+        Start  74: shatter ring discards only a formation hand card during resolution
+ 74/210 Test  #74: shatter ring discards only a formation hand card during resolution ..................................................   Passed    0.03 sec
+        Start  75: shatter ring cannot destroy without its discard or an available target
+ 75/210 Test  #75: shatter ring cannot destroy without its discard or an available target ..............................................   Passed    0.03 sec
+        Start  76: arc formation prevents opponent destruction but permits owner destruction and gives no rings
+ 76/210 Test  #76: arc formation prevents opponent destruction but permits owner destruction and gives no rings ........................   Passed    0.02 sec
+        Start  77: inverted triangle income applies only when attached to a formation
+ 77/210 Test  #77: inverted triangle income applies only when attached to a formation ..................................................   Passed    0.06 sec
+        Start  78: ring refunds actual setting payment rather than preparation payment once
+ 78/210 Test  #78: ring refunds actual setting payment rather than preparation payment once ............................................   Passed    0.03 sec
+        Start  79: ring can attach to preloaded words and refunds their setting payment on successful response
+ 79/210 Test  #79: ring can attach to preloaded words and refunds their setting payment on successful response .........................   Passed    0.02 sec
+        Start  80: recall draws before its new load and checks overload after its full effect
+ 80/210 Test  #80: recall draws before its new load and checks overload after its full effect ..........................................   Passed    0.03 sec
+        Start  81: still mind discards at resolution and clears every temporary source but no independent or bound load
+ 81/210 Test  #81: still mind discards at resolution and clears every temporary source but no independent or bound load ................   Passed    0.02 sec
+        Start  82: still mind without another hand card cannot perform its dependent load removal
+ 82/210 Test  #82: still mind without another hand card cannot perform its dependent load removal ......................................   Passed    0.02 sec
+        Start  83: disruption gives four temporary load and expires at the target next end
+ 83/210 Test  #83: disruption gives four temporary load and expires at the target next end .............................................   Passed    0.04 sec
+        Start  84: concentration persists through end and requires payment before prepare income
+ 84/210 Test  #84: concentration persists through end and requires payment before prepare income .......................................   Passed    0.07 sec
+        Start  85: concentration cannot maintain with insufficient pre-income mana or losing load
+ 85/210 Test  #85: concentration cannot maintain with insufficient pre-income mana or losing load ......................................   Passed    0.03 sec
+        Start  86: concentration accepts exactly capacity and removes all its accumulated load on destruction
+ 86/210 Test  #86: concentration accepts exactly capacity and removes all its accumulated load on destruction ..........................   Passed    0.03 sec
+        Start  87: new successful concentration replaces old spell and its attached seal
+ 87/210 Test  #87: new successful concentration replaces old spell and its attached seal ...............................................   Passed    0.03 sec
+        Start  88: barbs grants optional paid preparation out of turn after the current chain
+ 88/210 Test  #88: barbs grants optional paid preparation out of turn after the current chain ..........................................   Passed    0.04 sec
+        Start  89: barbs optional preparation may be declined and obeys readiness and costs
+ 89/210 Test  #89: barbs optional preparation may be declined and obeys readiness and costs ............................................   Passed    0.03 sec
+        Start  90: barbs granted preparation opens an independent response window and can itself be canceled
+ 90/210 Test  #90: barbs granted preparation opens an independent response window and can itself be canceled ...........................   Passed    0.02 sec
+        Start  91: word concentration uses its actual setting cost and replaces analytic concentration
+ 91/210 Test  #91: word concentration uses its actual setting cost and replaces analytic concentration .................................   Passed    0.04 sec
+        Start  92: updated content rejects invalid immediate concentration and attachment declarations
+ 92/210 Test  #92: updated content rejects invalid immediate concentration and attachment declarations .................................   Passed    0.02 sec
+        Start  93: new resolution choices and preparation commands retain exact interface decision identities
+ 93/210 Test  #93: new resolution choices and preparation commands retain exact interface decision identities ..........................   Passed    0.02 sec
+        Start  94: settings serialize strictly and multiply master and sound volume
+ 94/210 Test  #94: settings serialize strictly and multiply master and sound volume ....................................................   Passed    0.02 sec
+        Start  95: menu starts without constructing a match and settings survive recreation
+ 95/210 Test  #95: menu starts without constructing a match and settings survive recreation ............................................   Passed    0.03 sec
+        Start  96: invalid settings preserve original file until explicit successful replacement
+ 96/210 Test  #96: invalid settings preserve original file until explicit successful replacement .......................................   Passed    0.03 sec
+        Start  97: failed atomic settings replacement keeps committed values and temporary files are cleaned
+ 97/210 Test  #97: failed atomic settings replacement keeps committed values and temporary files are cleaned ...........................   Passed    0.03 sec
+        Start  98: setup uses independent legal presets and records both actual configurations
+ 98/210 Test  #98: setup uses independent legal presets and records both actual configurations .........................................   Passed    0.03 sec
+        Start  99: illegal match configuration or unavailable replay directory never creates a session
+ 99/210 Test  #99: illegal match configuration or unavailable replay directory never creates a session .................................   Passed    0.02 sec
+        Start 100: match settings pause all submissions and retain decision gate and digest
+100/210 Test #100: match settings pause all submissions and retain decision gate and digest ............................................   Passed    0.04 sec
+        Start 101: return confirmation cancel preserves paused settings and active match
+101/210 Test #101: return confirmation cancel preserves paused settings and active match ...............................................   Passed    0.03 sec
+        Start 102: return to menu completes and saves a replay then invalidates old match actions
+102/210 Test #102: return to menu completes and saves a replay then invalidates old match actions ......................................   Passed    0.04 sec
+        Start 103: failed leave save preserves the live session and confirmation can be canceled
+103/210 Test #103: failed leave save preserves the live session and confirmation can be canceled .......................................   Passed    0.03 sec
+        Start 104: menu quit is immediate while in-match quit requires saved confirmation
+104/210 Test #104: menu quit is immediate while in-match quit requires saved confirmation ..............................................   Passed    0.04 sec
+        Start 105: surrender through settings yields a result and restart preserves both chosen decks
+105/210 Test #105: surrender through settings yields a result and restart preserves both chosen decks ..................................   Passed    0.04 sec
+        Start 106: saving while paused retains exact rule state and menu navigation cannot abandon a match
+106/210 Test #106: saving while paused retains exact rule state and menu navigation cannot abandon a match .............................   Passed    0.03 sec
+        Start 107: surrender save failure leaves the live session unmodified
+107/210 Test #107: surrender save failure leaves the live session unmodified ...........................................................   Passed    0.03 sec
+        Start 108: restart save failure retains result configuration and generation
+108/210 Test #108: restart save failure retains result configuration and generation ....................................................   Passed    0.03 sec
+        Start 109: rank and casting fee filters do not give unrelated card types artificial zero values
+109/210 Test #109: rank and casting fee filters do not give unrelated card types artificial zero values ................................   Passed    0.04 sec
+        Start 110: deck drafts preserve stable ids counts and bases across restart including incomplete drafts
+110/210 Test #110: deck drafts preserve stable ids counts and bases across restart including incomplete drafts .........................   Passed    0.02 sec
+        Start 111: draft validation covers quantity same name limit unknown cards and eligible base
+111/210 Test #111: draft validation covers quantity same name limit unknown cards and eligible base ....................................   Passed    0.02 sec
+        Start 112: card search combines Chinese partial name type rarity setting casting rank and all tags
+112/210 Test #112: card search combines Chinese partial name type rarity setting casting rank and all tags .............................   Passed    0.02 sec
+        Start 113: content upgrades retain removed cards and revalidate changed base eligibility
+113/210 Test #113: content upgrades retain removed cards and revalidate changed base eligibility .......................................   Passed    0.03 sec
+        Start 114: atomic deck save and delete failures retain committed library and original file
+114/210 Test #114: atomic deck save and delete failures retain committed library and original file .....................................   Passed    0.03 sec
+        Start 115: corrupted unsupported or duplicated draft storage cannot silently overwrite player data
+115/210 Test #115: corrupted unsupported or duplicated draft storage cannot silently overwrite player data .............................   Passed    0.02 sec
+        Start 116: draft encoding rejects invalid counts while preserving valid obsolete ids for repair
+116/210 Test #116: draft encoding rejects invalid counts while preserving valid obsolete ids for repair ................................   Passed    0.02 sec
+        Start 117: saved valid user decks join independent match choices while drafts stay excluded
+117/210 Test #117: saved valid user decks join independent match choices while drafts stay excluded ....................................   Passed    0.04 sec
+        Start 118: deleting one user deck preserves every other deck and persists after restart
+118/210 Test #118: deleting one user deck preserves every other deck and persists after restart ........................................   Passed    0.03 sec
+        Start 119: uncommon rarity uses the same Chinese label in details and filters
+119/210 Test #119: uncommon rarity uses the same Chinese label in details and filters ..................................................   Passed    0.02 sec
+        Start 120: normal AI takes immediate lethal damage instead of a future analysis
+120/210 Test #120: normal AI takes immediate lethal damage instead of a future analysis ................................................   Passed    0.02 sec
+        Start 121: hard AI orders a cheap preparation before a valuable spell against a public counter
+121/210 Test #121: hard AI orders a cheap preparation before a valuable spell against a public counter .................................   Passed    0.02 sec
+        Start 122: AI skips fatal self load and drawing beyond the remaining deck
+122/210 Test #122: AI skips fatal self load and drawing beyond the remaining deck ......................................................   Passed    0.02 sec
+        Start 123: AI discards inexpensive cards and can stop optional self destruction
+123/210 Test #123: AI discards inexpensive cards and can stop optional self destruction ................................................   Passed    0.02 sec
+        Start 124: AI clears available temporary load and declines unsafe concentration
+124/210 Test #124: AI clears available temporary load and declines unsafe concentration ................................................   Passed    0.02 sec
+        Start 125: hard AI can prioritize a mana trigger before damage without hidden queue access
+125/210 Test #125: hard AI can prioritize a mana trigger before damage without hidden queue access .....................................   Passed    0.02 sec
+        Start 126: AI counters a live enemy link and passes once that link is already cancelled
+126/210 Test #126: AI counters a live enemy link and passes once that link is already cancelled ........................................   Passed    0.02 sec
+        Start 127: AI budgets are finite preserve a pass and return no action on terminal or empty views
+127/210 Test #127: AI budgets are finite preserve a pass and return no action on terminal or empty views ...............................   Passed    0.02 sec
+        Start 128: every forced decision has a deterministic projected choice including effect preparation and overflow
+128/210 Test #128: every forced decision has a deterministic projected choice including effect preparation and overflow ................   Passed    0.03 sec
+        Start 129: AI choices cannot inspect a different enemy hand or shuffled deck with the same projection
+129/210 Test #129: AI choices cannot inspect a different enemy hand or shuffled deck with the same projection ..........................   Passed    0.03 sec
+        Start 130: trigger choices expose only the deciding player's visible source snapshots
+130/210 Test #130: trigger choices expose only the deciding player's visible source snapshots ..........................................   Passed    0.02 sec
+        Start 131: AI can pay a preloaded response discard and counter an opposing counter through the normal core
+131/210 Test #131: AI can pay a preloaded response discard and counter an opposing counter through the normal core .....................   Passed    0.02 sec
+        Start 132: all difficulties finish fixed seed games with representative decks and deterministic replay
+132/210 Test #132: all difficulties finish fixed seed games with representative decks and deterministic replay .........................   Passed   19.57 sec
+        Start 133: pending AI plans pause and reject duplicate revised or previous match submissions
+133/210 Test #133: pending AI plans pause and reject duplicate revised or previous match submissions ...................................   Passed    0.09 sec
+        Start 134: fixed tutorial uses normal shuffle rejects wrong moves and teaches real cancellation and release
+134/210 Test #134: fixed tutorial uses normal shuffle rejects wrong moves and teaches real cancellation and release ....................   Passed    2.87 sec
+        Start 135: presentation never copies an opponent hand or deck and uses anonymous draw counts
+135/210 Test #135: presentation never copies an opponent hand or deck and uses anonymous draw counts ...................................   Passed    0.02 sec
+        Start 136: presentation distinguishes discard from an action used before moving to ash
+136/210 Test #136: presentation distinguishes discard from an action used before moving to ash .........................................   Passed    0.02 sec
+        Start 137: ready preparation response cancellation and release reflect submitted public transitions
+137/210 Test #137: ready preparation response cancellation and release reflect submitted public transitions ............................   Passed    0.02 sec
+        Start 138: resource feedback uses actual projected deltas without inventing damage from event text
+138/210 Test #138: resource feedback uses actual projected deltas without inventing damage from event text .............................   Passed    0.02 sec
+        Start 139: handoff and new match histories clear private animation snapshots
+139/210 Test #139: handoff and new match histories clear private animation snapshots ...................................................   Passed    0.02 sec
+        Start 140: animation clocks are bounded deterministic and expire without changing match inputs
+140/210 Test #140: animation clocks are bounded deterministic and expire without changing match inputs .................................   Passed    0.02 sec
+        Start 141: reduced motion preserves numeric and phase feedback without card flights
+141/210 Test #141: reduced motion preserves numeric and phase feedback without card flights ............................................   Passed    0.02 sec
+        Start 142: sound consumption is structural incremental and private-view safe
+142/210 Test #142: sound consumption is structural incremental and private-view safe ...................................................   Passed    0.02 sec
+        Start 143: release success and actual impacts do not infer from cancellation or payment prose
+143/210 Test #143: release success and actual impacts do not infer from cancellation or payment prose ..................................   Passed    0.02 sec
+        Start 144: sound merging preserves damage and healing within the same net-zero transition
+144/210 Test #144: sound merging preserves damage and healing within the same net-zero transition ......................................   Passed    0.02 sec
+        Start 145: only human response decisions sound once and terminal outcome is exclusive
+145/210 Test #145: only human response decisions sound once and terminal outcome is exclusive ..........................................   Passed    0.01 sec
+        Start 146: draw discard and readiness distinguish real card transitions from played actions
+146/210 Test #146: draw discard and readiness distinguish real card transitions from played actions ....................................   Passed    0.02 sec
+        Start 147: real effect metadata captures capped healing and actual draw independently of text
+147/210 Test #147: real effect metadata captures capped healing and actual draw independently of text ..................................   Passed    0.02 sec
+        Start 148: cast phase can stop with prepared spells and retain payment until a later release
+148/210 Test #148: cast phase can stop with prepared spells and retain payment until a later release ...................................   Passed    0.05 sec
+        Start 149: zero rank words can be set alone while direct instant release remains explicit
+149/210 Test #149: zero rank words can be set alone while direct instant release remains explicit ......................................   Passed    0.02 sec
+        Start 150: release supplement damage protection restoration and recovery resolve real effects
+150/210 Test #150: release supplement damage protection restoration and recovery resolve real effects ..................................   Passed    0.03 sec
+        Start 151: v1 cards expose typed damage schools speeds and untouched artwork entries
+151/210 Test #151: v1 cards expose typed damage schools speeds and untouched artwork entries ...........................................   Passed    0.02 sec
+        Start 152: intrinsic load capacity persists independently and overload uses the combined limit
+152/210 Test #152: intrinsic load capacity persists independently and overload uses the combined limit .................................   Passed    0.02 sec
+        Start 153: shared drag destinations prefer analysis and preloading over ambush
+153/210 Test #153: shared drag destinations prefer analysis and preloading over ambush .................................................   Passed    0.02 sec
+        Start 154: temporary life is maximum rather than additive and absorbs typed resisted damage first
+154/210 Test #154: temporary life is maximum rather than additive and absorbs typed resisted damage first ..............................   Passed    0.02 sec
+        Start 155: aid instantly analyzes and releases temporary life without an extra turn
+155/210 Test #155: aid instantly analyzes and releases temporary life without an extra turn ............................................   Passed    0.04 sec
+        Start 156: pentagram discounts only eligible schools on its base instance and refunds actual setting payment
+156/210 Test #156: pentagram discounts only eligible schools on its base instance and refunds actual setting payment ...................   Passed    0.02 sec
+        Start 157: four point star accelerates rank one once per own turn and never consumes the use for immediate analysis
+157/210 Test #157: four point star accelerates rank one once per own turn and never consumes the use for immediate analysis ............   Passed    0.05 sec
+        Start 158: ambush uses shared back slots costs one hides enemy identity and cannot flip in the same global turn
+158/210 Test #158: ambush uses shared back slots costs one hides enemy identity and cannot flip in the same global turn ................   Passed    0.05 sec
+        Start 159: ambushed analytic reserves a ring never progresses and pays analysis cost on a later flip
+159/210 Test #159: ambushed analytic reserves a ring never progresses and pays analysis cost on a later flip ...........................   Passed    0.08 sec
+        Start 160: effect concealed ready spell loses analysis and cannot evade the ambush turn limit
+160/210 Test #160: effect concealed ready spell loses analysis and cannot evade the ambush turn limit ..................................   Passed    0.05 sec
+        Start 161: ready magic missile responds only in opponent cast phase paying real cast fee and optionally destroys hidden card
+161/210 Test #161: ready magic missile responds only in opponent cast phase paying real cast fee and optionally destroys hidden card ...   Passed    0.03 sec
+        Start 162: protective flame can resolve ahead of fireball in the same chain then maintain concentration
+162/210 Test #162: protective flame can resolve ahead of fireball in the same chain then maintain concentration ........................   Passed    0.03 sec
+        Start 163: counter spell closes four speed chain destroys target and keeps next own end load with no refund
+163/210 Test #163: counter spell closes four speed chain destroys target and keeps next own end load with no refund ....................   Passed    0.04 sec
+        Start 164: v1 explicitly rejects hand responses and speed one response abilities
+164/210 Test #164: v1 explicitly rejects hand responses and speed one response abilities ...............................................   Passed    0.02 sec
+        Start 165: sleep blocks exactly the next enemy own turn including flipping ambushed actions
+165/210 Test #165: sleep blocks exactly the next enemy own turn including flipping ambushed actions ....................................   Passed    0.08 sec
+        Start 166: instant circuit targets only analyzing own spells and burdens actual discounted analysis cost until next own end
+166/210 Test #166: instant circuit targets only analyzing own spells and burdens actual discounted analysis cost until next own end ....   Passed    0.05 sec
+        Start 167: true strike offers only eligible action cards searches privately and replay encodes new commands
+167/210 Test #167: true strike offers only eligible action cards searches privately and replay encodes new commands ....................   Passed    0.02 sec
+        Start 168: messy wave load survives end cleanup and is removed with source including finite duration
+168/210 Test #168: messy wave load survives end cleanup and is removed with source including finite duration ...........................   Passed    0.08 sec
+        Start 169: uplift raises formation capacity rank lowers income and adds paid force bonus to actual spell release
+169/210 Test #169: uplift raises formation capacity rank lowers income and adds paid force bonus to actual spell release ...............   Passed    0.05 sec
+        Start 170: new formation setting cost is paid separately from body and old actual zero setting costs remain
+170/210 Test #170: new formation setting cost is paid separately from body and old actual zero setting costs remain ....................   Passed    0.02 sec
+        Start 171: cancelled preparation cannot bypass its retry restriction via direct cast
+171/210 Test #171: cancelled preparation cannot bypass its retry restriction via direct cast ...........................................   Passed    0.04 sec
+        Start 172: new representative decks finish every AI difficulty and replay all accepted commands
+172/210 Test #172: new representative decks finish every AI difficulty and replay all accepted commands ................................   Passed   34.38 sec
+        Start 173: speed three responds across phases and speed two cannot follow a faster link
+173/210 Test #173: speed three responds across phases and speed two cannot follow a faster link ........................................   Passed    0.06 sec
+        Start 174: ambushed counter pays on reveal only after global turn passes and privately held counter cannot respond
+174/210 Test #174: ambushed counter pays on reveal only after global turn passes and privately held counter cannot respond .............   Passed    0.04 sec
+        Start 175: counter load snapshots real prepared payment even after casting cost rune was removed
+175/210 Test #175: counter load snapshots real prepared payment even after casting cost rune was removed ...............................   Passed    0.04 sec
+        Start 176: required multi target release skips its entire effect when one target leaves in response
+176/210 Test #176: required multi target release skips its entire effect when one target leaves in response ............................   Passed    0.04 sec
+        Start 177: full new card replay covers ambush flip search and direct release through legal projection
+177/210 Test #177: full new card replay covers ambush flip search and direct release through legal projection ..........................   Passed    2.20 sec
+        Start 178: bridge IDs preserve the complete unsigned 64 bit range without floating point
+178/210 Test #178: bridge IDs preserve the complete unsigned 64 bit range without floating point .......................................   Passed    0.04 sec
+        Start 179: bridge selection does not pay and duplicate confirmation cannot submit twice
+179/210 Test #179: bridge selection does not pay and duplicate confirmation cannot submit twice ........................................   Passed    0.09 sec
+        Start 180: bridge presentation batches contain only filtered references and never repeat on reads
+180/210 Test #180: bridge presentation batches contain only filtered references and never repeat on reads ..............................   Passed    0.29 sec
+        Start 181: bridge rejects invalid actors actions generations and malformed start options atomically
+181/210 Test #181: bridge rejects invalid actors actions generations and malformed start options atomically ............................   Passed    0.07 sec
+        Start 182: bridge pause preserves a selection but stops confirmations and AI
+182/210 Test #182: bridge pause preserves a selection but stops confirmations and AI ...................................................   Passed    0.06 sec
+        Start 183: bridge release reinitialize and restart invalidate old UI handles
+183/210 Test #183: bridge release reinitialize and restart invalidate old UI handles ...................................................   Passed    0.08 sec
+        Start 184: bridge whitelist excludes private cards hidden definitions seed and writable state
+184/210 Test #184: bridge whitelist excludes private cards hidden definitions seed and writable state ..................................   Passed    0.05 sec
+        Start 185: bridge AI exposes only human projection and rejects stale plans
+185/210 Test #185: bridge AI exposes only human projection and rejects stale plans .....................................................   Passed    0.07 sec
+        Start 186: bridge retains accepted state after replay save failure
+186/210 Test #186: bridge retains accepted state after replay save failure .............................................................   Passed    0.08 sec
+        Start 187: Alpha program whitelist retains every content and digest compatibility gate
+187/210 Test #187: Alpha program whitelist retains every content and digest compatibility gate .........................................   Passed    0.05 sec
+        Start 188: bridge local library preserves Chinese names and unknown IDs through atomic drafts
+188/210 Test #188: bridge local library preserves Chinese names and unknown IDs through atomic drafts ..................................   Passed    0.10 sec
+        Start 189: bridge interaction reuses target and confirmation without mutation or truncated IDs
+189/210 Test #189: bridge interaction reuses target and confirmation without mutation or truncated IDs .................................   Passed    0.08 sec
+        Start 190: bridge local settings and leave preserve match on persistence failure
+190/210 Test #190: bridge local settings and leave preserve match on persistence failure ...............................................   Passed    0.11 sec
+        Start 191: godot_import
+191/210 Test #191: godot_import ........................................................................................................   Passed    5.16 sec
+        Start 192: godot_bridge_boundary
+192/210 Test #192: godot_bridge_boundary ...............................................................................................   Passed    0.43 sec
+        Start 193: godot_local_ui
+193/210 Test #193: godot_local_ui ......................................................................................................   Passed    1.88 sec
+        Start 194: godot_match_scene
+194/210 Test #194: godot_match_scene ...................................................................................................   Passed    1.80 sec
+        Start 195: godot_bridge_alpha_replay
+195/210 Test #195: godot_bridge_alpha_replay ...........................................................................................   Passed    0.40 sec
+        Start 196: godot_reference_smoke
+196/210 Test #196: godot_reference_smoke ...............................................................................................   Passed    2.43 sec
+        Start 197: godot_bridge_smoke
+197/210 Test #197: godot_bridge_smoke ..................................................................................................   Passed   25.58 sec
+        Start 198: godot_local_smoke
+198/210 Test #198: godot_local_smoke ...................................................................................................   Passed   45.34 sec
+        Start 199: godot_reference_ai_match
+199/210 Test #199: godot_reference_ai_match ............................................................................................   Passed    2.27 sec
+        Start 200: godot_bridge_ai_match
+200/210 Test #200: godot_bridge_ai_match ...............................................................................................   Passed   20.11 sec
+        Start 201: godot_local_ai_match
+201/210 Test #201: godot_local_ai_match ................................................................................................   Passed   26.97 sec
+        Start 202: godot_reference_tutorial_smoke
+202/210 Test #202: godot_reference_tutorial_smoke ......................................................................................   Passed    0.34 sec
+        Start 203: godot_bridge_tutorial_smoke
+203/210 Test #203: godot_bridge_tutorial_smoke .........................................................................................   Passed    1.05 sec
+        Start 204: godot_local_tutorial_smoke
+204/210 Test #204: godot_local_tutorial_smoke ..........................................................................................   Passed    2.07 sec
+        Start 205: godot_reference_ai_0
+205/210 Test #205: godot_reference_ai_0 ................................................................................................   Passed    2.17 sec
+        Start 206: godot_local_ai_0
+206/210 Test #206: godot_local_ai_0 ....................................................................................................   Passed   50.66 sec
+        Start 207: godot_reference_ai_2
+207/210 Test #207: godot_reference_ai_2 ................................................................................................   Passed    2.41 sec
+        Start 208: godot_local_ai_2
+208/210 Test #208: godot_local_ai_2 ....................................................................................................   Passed   45.17 sec
+        Start 209: content_validate
+209/210 Test #209: content_validate ....................................................................................................   Passed    0.02 sec
+        Start 210: scripted_match
+210/210 Test #210: scripted_match ......................................................................................................   Passed    2.18 sec
+
+100% tests passed, 0 tests failed out of 210
+
+Total Test time (real) = 317.31 sec

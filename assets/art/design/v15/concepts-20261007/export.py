@@ -1,0 +1,20 @@
+from pathlib import Path
+from hashlib import sha256
+import json, shutil
+from PIL import Image
+
+root=Path(__file__).resolve().parent
+data=json.loads((root/'production.json').read_text(encoding='utf-8'))
+for a in data['assets']:
+    src=Path(a['sourcePath']);dst=root/a['file']
+    if dst.exists() and src.read_bytes()!=dst.read_bytes():raise RuntimeError('Preserve existing file: '+str(dst))
+    shutil.copy2(src,dst)
+    with Image.open(dst) as im:
+        im.load();a['actualSize']=list(im.size);a['mode']=im.mode
+    a['sha256']=sha256(dst.read_bytes()).hexdigest()
+    assert a['sha256']==sha256(src.read_bytes()).hexdigest()
+(root/'manifest.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+cards=''.join('<section id="'+a['id']+'"><h2>'+a['id']+' · '+a['name']+'</h2><p>'+a['layout']+'</p><p>'+a['tradeoff']+'</p><a href="'+a['file']+'" target="_blank"><img src="'+a['file']+'" alt="'+a['name']+'"></a><p><a href="'+a['file']+'" download>下载原图</a> · '+str(a['actualSize'][0])+'×'+str(a['actualSize'][1])+'</p></section>' for a in data['assets'])
+page='''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WizardCard · 三版 UI 结构样稿</title><style>body{margin:0;background:#0a1119;color:#e7e5d5;font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1800px;margin:auto;padding:28px}h1,h2{font-weight:500;color:#e0be7c}p{color:#a4b4cb}nav{display:flex;gap:22px;flex-wrap:wrap;position:sticky;top:0;background:#122029;padding:14px;z-index:1}a{color:#72d7c5}section{margin:38px 0;scroll-margin-top:80px}img{display:block;width:100%;height:auto;image-rendering:pixelated;border:1px solid #364e59}button{font:inherit;background:#192d38;color:#e7e5d5;border:1px solid #6d5035;padding:5px 12px;cursor:pointer}body.native section{overflow:auto}body.native img{width:auto;max-width:none}footer{border-top:1px solid #364e59;padding:20px 0}</style><main><h1>WizardCard · 三版 UI 结构样稿</h1><p>2026-10-07 · 根据“当前界面结构也需要重构”重新设计。三版展示阵法/宿主法术、连锁、施法队列、手牌、资源和详情，比较不同布局与美术方向。</p><nav><a href="#A">A 古铜仪式战场</a><a href="#B">B 秘银星图工作台</a><a href="#C">C 双页羊皮卷魔典</a><button onclick="document.body.classList.toggle('native')">原始尺寸 / 适应窗口</button></nav>'''+cards+'''<footer>imagegen 生成的视觉评审样稿。用于选择结构和风格，卡名、数值、类型、槽位与操作细节在选定方案后按正式卡池和交互模型校正；样稿不代表运行实现。<a href="production.json">完整生成提示词</a></footer></main></html>'''
+(root/'index.html').write_text(page,encoding='utf-8')
+print(json.dumps([{'id':a['id'],'file':a['file'],'size':a['actualSize'],'original_bytes_preserved':True} for a in data['assets']],ensure_ascii=False,indent=2))

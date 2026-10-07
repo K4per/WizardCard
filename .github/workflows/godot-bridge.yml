@@ -1,0 +1,72 @@
+name: godot-bridge
+on:
+  push:
+    branches: [master, dev]
+  pull_request:
+    branches: [master, dev]
+jobs:
+  windows-bridge:
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [template_debug, template_release]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install cmake==3.31.6 ninja==1.11.1.3
+      - name: Fetch and verify pinned Godot editor
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $lock = Get-Content godot/toolchain-lock.json -Raw | ConvertFrom-Json
+          $release = 'https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable'
+          $file = 'Godot_v4.7.2-stable_win64.exe.zip'
+          New-Item -ItemType Directory -Force build/tools | Out-Null
+          Invoke-WebRequest "$release/$file" -OutFile "build/tools/$file"
+          Invoke-WebRequest "$release/SHA256-SUMS.txt" -OutFile build/tools/SHA256-SUMS.txt
+          $pattern = '^([0-9a-fA-F]{64})\s+\*?' + [regex]::Escape($file) + '$'
+          $line = Get-Content build/tools/SHA256-SUMS.txt | Where-Object { $_ -match $pattern }
+          if (@($line).Count -ne 1 -or $line -notmatch $pattern) { throw 'Missing editor checksum' }
+          $expected = $Matches[1]
+          if ((Get-FileHash "build/tools/$file" -Algorithm SHA256).Hash -ne $expected) { throw 'Editor checksum mismatch' }
+          Expand-Archive "build/tools/$file" build/tools/godot
+          # Keep editor preferences and caches inside the disposable job workspace.
+          New-Item -ItemType File build/tools/godot/_sc_ | Out-Null
+          $engine = (Resolve-Path build/tools/godot/Godot_v4.7.2-stable_win64_console.exe).Path
+          if ((& $engine --version).Trim() -ne $lock.engine) { throw 'Godot version mismatch' }
+          "GODOT_BIN=$engine" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Build optional bridge without SFML
+        run: |
+          cmake -S . -B build/godot -G "Visual Studio 17 2022" -A x64 -DWIZARD_BUILD_CLIENT=OFF -DWIZARD_BUILD_GODOT=ON -DGODOTCPP_TARGET=${{ matrix.target }}
+          cmake --build build/godot --config Release --parallel 4
+      - name: Verify native bridge, real submissions and replay
+        run: ctest --test-dir build/godot -C Release --output-on-failure
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: godot-windows-${{ matrix.target }}-evidence
+          path: |
+            godot/bin/*
+            build/godot/godot_*.json
+            build/godot/godot_*.log
+            build/godot/local_*.json
+            build/godot/Testing/Temporary/LastTest.log
+  linux-pic-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install cmake==3.31.6 ninja==1.11.1.3
+      - name: Verify optional shared-library PIC linkage
+        run: |
+          cmake -S . -B build/godot-linux -G Ninja -DCMAKE_BUILD_TYPE=Release -DWIZARD_BUILD_CLIENT=OFF -DWIZARD_BUILD_GODOT=ON -DBUILD_TESTING=OFF -DGODOTCPP_TARGET=template_release
+          cmake --build build/godot-linux --parallel 4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: godot-linux-pic-library
+          path: godot/bin/*.so

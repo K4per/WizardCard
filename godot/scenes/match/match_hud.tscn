@@ -1,0 +1,123 @@
+[gd_scene load_steps=2 format=3]
+[sub_resource type="StyleBoxFlat" id="Overlay"]
+bg_color = Color(0.08, 0.085, 0.075, 0.93)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.61, 0.46, 0.23, 0.85)
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+[node name="MatchHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+[node name="Content" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+[node name="BoardSlot" type="Control" parent="Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+[node name="DetailsPanel" type="PanelContainer" parent="Content"]
+visible = false
+layout_mode = 1
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 92.0
+offset_right = 252.0
+offset_bottom = -168.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Overlay")
+[node name="Details" type="VBoxContainer" parent="Content/DetailsPanel"]
+layout_mode = 2
+[node name="LogPanel" type="PanelContainer" parent="Content"]
+visible = false
+layout_mode = 1
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -262.0
+offset_top = 92.0
+offset_right = -12.0
+offset_bottom = -200.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Overlay")
+[node name="Log" type="VBoxContainer" parent="Content/LogPanel"]
+layout_mode = 2
+[node name="Toolbar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = 44.0
+grow_horizontal = 2
+[node name="Stats" type="Label" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 52.0
+offset_right = -20.0
+offset_bottom = 82.0
+grow_horizontal = 2
+horizontal_alignment = 1
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.93, 0.74, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+[node name="HandHeader" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -42.0
+offset_right = 235.0
+offset_bottom = -6.0
+grow_vertical = 0
+[node name="HandSlot" type="Control" parent="."]
+layout_mode = 1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 255.0
+offset_top = -176.0
+offset_right = -300.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+[node name="ActionScroll" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -292.0
+offset_top = -170.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 0
+grow_vertical = 0
+horizontal_scroll_mode = 0
+theme_override_styles/panel = SubResource("Overlay")
+[node name="Actions" type="VBoxContainer" parent="ActionScroll"]
+layout_mode = 2
+size_flags_horizontal = 3

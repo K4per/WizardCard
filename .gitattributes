@@ -7,3 +7,13 @@
 *.otf binary
 *.png binary
 *.wav binary
+*.gd text eol=lf
+*.gdshader text eol=lf
+*.tres text eol=lf
+*.tscn text eol=lf
+*.svg text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+# Historical evidence is byte-preserved, including raw tool log whitespace.
+docs/reports/evidence/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof

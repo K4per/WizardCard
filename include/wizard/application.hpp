@@ -88,6 +88,9 @@ class Application {
     std::uint64_t generation() const {
         return generation_;
     }
+    std::uint64_t revision() const {
+        return revision_;
+    }
     const MatchSession &match() const;
     const MatchConfig &configuration() const {
         return configuration_;

@@ -1,0 +1,200 @@
+{
+  "date": "2026-10-07",
+  "programVersion": "1.5.0-dev",
+  "rulesVersion": "1.0.0",
+  "cardSetVersion": "1.0.0",
+  "contentHash": "733319e247ac38ff",
+  "branch": "dev",
+  "workingTree": "uncommitted; prior changes preserved",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "fullReleaseTests": 208,
+  "finalGodotTests": 17,
+  "flows": [
+    {
+      "digest": "78116a78d64b0d90",
+      "mode": "hotseat",
+      "ok": true,
+      "replay": "docs/reports/evidence/v1.5-local/hotseat-replay.json",
+      "steps": 289
+    },
+    {
+      "digest": "6062cfa9ed89b1c8",
+      "mode": "ai",
+      "ok": true,
+      "replay": "docs/reports/evidence/v1.5-local/ai-easy-replay.json",
+      "steps": 323
+    },
+    {
+      "digest": "a68e39c35218b106",
+      "mode": "ai",
+      "ok": true,
+      "replay": "docs/reports/evidence/v1.5-local/ai-normal-replay.json",
+      "steps": 308
+    },
+    {
+      "digest": "32bf3d92220e3507",
+      "mode": "ai",
+      "ok": true,
+      "replay": "docs/reports/evidence/v1.5-local/ai-hard-replay.json",
+      "steps": 318
+    },
+    {
+      "digest": "8f5a7c7abe95150e",
+      "mode": "tutorial",
+      "ok": true,
+      "replay": "docs/reports/evidence/v1.5-local/tutorial-replay.json",
+      "steps": 48
+    }
+  ],
+  "files": {
+    "ai-easy-cli-replay.log": {
+      "sha256": "3747e73dddbc2cc6fa663baa99d2e4f17328cd4e64ef93209f2c79de556340ef",
+      "bytes": 18
+    },
+    "ai-easy-replay.json": {
+      "sha256": "5d1a0794a0c031b8605a46d7c9122f67c78b97d4f3925a821b7417fdeddcc6b9",
+      "bytes": 1089390
+    },
+    "ai-easy-report.json": {
+      "sha256": "0a74d5387a583ab4facbc1613b9785a6f284fb8eea1b2d54ebb33662aca72f43",
+      "bytes": 156
+    },
+    "ai-hard-cli-replay.log": {
+      "sha256": "d1b2d2ec2798e8ad4e8676d9c7fd67523ddcbf2086a7b890c31de5c58139c2d2",
+      "bytes": 18
+    },
+    "ai-hard-replay.json": {
+      "sha256": "01f0502de6cb8538ad38f4c54ad372f39eb73751a86d27a367bd4df3837863eb",
+      "bytes": 1072699
+    },
+    "ai-hard-report.json": {
+      "sha256": "48cc4d7f956c9044509775d19113f59444ad38c69f10d058e56e15dbe9c6d87f",
+      "bytes": 156
+    },
+    "ai-normal-cli-replay.log": {
+      "sha256": "64429dd32f947c560cd560f839f76ce6a203c399bcadffb2275efeb5d9f1a8d9",
+      "bytes": 18
+    },
+    "ai-normal-replay.json": {
+      "sha256": "9a38a6d844fd307a7ab7a9da8a0e04ad6d517767e08c86d35f5adfe459c43b1b",
+      "bytes": 1066092
+    },
+    "ai-normal-report.json": {
+      "sha256": "612512abbe692556e6de852e944702b3ca8efcf00e8b5d289949dc7e66bdb18a",
+      "bytes": 158
+    },
+    "assets-check.json": {
+      "sha256": "186fb23a8963e2ad3649393bde4d9c07d1d280c5e76b1355d5bda5c6ef91be25",
+      "bytes": 286
+    },
+    "capture.log": {
+      "sha256": "51b45fb6823a3cd79322f608242b2d063b67a1dc77c78861e7d797a1d24c4ae9",
+      "bytes": 203
+    },
+    "debug-boundary-ui-tests.log": {
+      "sha256": "c7ceb7d295265a7dde1c662891d251bbeed9f520e875048ab5d9aebce2cabbab",
+      "bytes": 588
+    },
+    "editor-1280x720.png": {
+      "sha256": "90b4ef98ec6d84ca93fcdd54a22ec0f42cfdaf8f9aa4becdede06942d5ba73ec",
+      "bytes": 358140
+    },
+    "editor-1600x1000.png": {
+      "sha256": "a244677e277857b40164490dde8f2fdd0c04355d5a026c44123e0cc866d52093",
+      "bytes": 442634
+    },
+    "godot-final-17-tests.log": {
+      "sha256": "6f9d23dc5b7b00524f13886fb31c5ae328d069ce98c167ed734bfc51fbc0ef1d",
+      "bytes": 2092
+    },
+    "hotseat-cli-replay.log": {
+      "sha256": "a7d03823cb366f2c1cd159c1a0b0ec6644e922ca6dc6710cef8c0d0925332c96",
+      "bytes": 18
+    },
+    "hotseat-replay.json": {
+      "sha256": "50a6b88320ab34515b0e7475d5fc7f2340aa1cbc1e3f8952373f831b5c98dd23",
+      "bytes": 1002643
+    },
+    "hotseat-report.json": {
+      "sha256": "2497a84a6221fe4f979f5f9ed1735210ad51184a05e850fd2f343a55a4b61f4f",
+      "bytes": 161
+    },
+    "local-ui.log": {
+      "sha256": "9c57bad6ac4a3d7047f9ee565fb5b9fb186f5f3f24f32116254e43a93dcc77ce",
+      "bytes": 125
+    },
+    "match-1280x720.png": {
+      "sha256": "95012a51741b8416228c5235767d24d6476f672fddd93c8c38bdac69e73a81be",
+      "bytes": 320784
+    },
+    "match-1600x1000.png": {
+      "sha256": "91351f201e547b202a192c421d666ef89198e348dfb8e4d41540e8b272e48c6b",
+      "bytes": 401464
+    },
+    "match-1920x1080.png": {
+      "sha256": "2230868513e8919314e5d228ab77dcddc4dff54d081402ea039b22ac73938a51",
+      "bytes": 419840
+    },
+    "release-208-tests.log": {
+      "sha256": "c620099db9dbcfe12c3fee48afb261aa85713a1fdf6850f7359316a4e66e4310",
+      "bytes": 52101
+    },
+    "title-1600x1000.png": {
+      "sha256": "962016a806caf76126f5c2f12991239087f003544757c1f385695f1cad753993",
+      "bytes": 376113
+    },
+    "tutorial-cli-replay.log": {
+      "sha256": "dd0081090759cca6a0d0a104656f8e1c030a9d1c0343f17eb5d6e5d8a0f4e010",
+      "bytes": 18
+    },
+    "tutorial-replay.json": {
+      "sha256": "9646815f2bb083b555f2d30ee4e8c0cd2f08e5abf202f8950f5fcc3357d3d352",
+      "bytes": 181745
+    },
+    "tutorial-report.json": {
+      "sha256": "9ec756af5b32a74ab13141124d6be0680a1cf91410724cee5331ea33a82bf18f",
+      "bytes": 162
+    },
+    "ui-final-tests.log": {
+      "sha256": "37e627008e1c7ec20224cfa944be8385f69e0fea2378e233aec56770537bf25c",
+      "bytes": 366
+    }
+  },
+  "sources": {
+    "godot/scripts/bridge_lab.gd": "636176e3831fca1b97d8b22b9d87d2b322acd6e3f39a3a20818339ee3e37055c",
+    "godot/scripts/ui/card_view.gd": "97a0ae11cd146d4def0651faa682004f878ad942d9bf311bd78f52abe5849d2f",
+    "godot/scripts/ui/match_board.gd": "dcebbe59df1ec2406c249a4eaa5d24c98af3fe60b2264d5d81016b3927fda96f",
+    "godot/scripts/ui/widgets.gd": "84c955e7cfd1623b4018ac08de64295e4dc8f98aba9b76a77732e5e06ed0ef59",
+    "godot/scripts/ui/wizard_audio.gd": "d0b6b09c8f0d795e0739d35e4ada5057fe010ee5dd854002728da5e50dad5b8e",
+    "godot/scripts/ui/wizard_skin.gd": "ae097578a012212dcc4b4f5bea1238b5a9dc9da09bbe130cbdb6ebcb27d7bff8",
+    "godot/scripts/ui/zone_view.gd": "e5ca03a0fba0a1c829b9cda38bcbee33bfc3b5dd2bce067b699e587cbbac714c",
+    "godot/scripts/wizard_client.gd": "f45a94872f100b4f3117e4585667ffc5254fdcd07452b19bd6e9d8facc77b937",
+    "godot/tests/boundary_smoke.gd": "db4d1cd02d562d204dd675eb0d2363601399893ca902aad7007ae65fcf559b94",
+    "godot/tests/bridge_smoke.gd": "356ec49cb028517696b4317de6f1773b6ba4fabd25c0e4efeb62fc0ff988d02d",
+    "godot/tests/capture_local_client.gd": "5d29552e326bc428334cf287a005d92920d548f577afd7eeef2969de3962f833",
+    "godot/tests/local_ui_replay.gd": "01574cd8b8dacde19115e31eb6ceae8756ed8c0b911fe1f02fe817d164891619",
+    "godot/tests/local_ui_smoke.gd": "3370b6c6e02398df5bb5fe78637d60333722edb709c1a520ad0fa0ed9ae93f00",
+    "src/bridge/godot_bridge.cpp": "e42da15f28b469d8aa9c3e8708962bf0c0ea63a5dfa5d7a7517caa284c0d6336",
+    "src/bridge/local_ui.cpp": "070544e64f996fc7ea0a2876c028c468a8290ed7117ffe7b334a7f0b7c7142bc",
+    "src/bridge/session.cpp": "f500eb9e6eaa3b8462640bc3722fe57ce0e220dda0a1386868acca83f9f6c385",
+    "src/bridge/snapshot.cpp": "c4ad2cbd9c018d35d39feec968f980dcb77d2d91be48d351916f116aba5bd697",
+    "include/wizard/bridge.hpp": "8cbb4b3950fa81e5939c3b3a40079e88bde8444061b3434901d96effba3374fe",
+    "cmake/GodotBridge.cmake": "3f0e135cd2737686e7ec39fa1f0489baebd002b6dbf870a2c7ca69bb8a27f298",
+    "godot/project.godot": "d8b4bb223e222b8ebd8cfc0f49fa29ed1829119c7bbb87cc30fe97917cec6dbe",
+    "godot/toolchain-lock.json": "7808feb168aae8461db98c275e8208d0bf246396e0fc01f87ddac80ea0dec02d",
+    "godot/art-integration.json": "a4a4044107677583a7158013610aefb81ac5c2ca0a2129cf3dfce60ab028e4de",
+    "tools/check_godot_assets.py": "10d3840b1761ddf88d7ddd217f0d8f477f11a4337a101b1d933fab44d4d9c9c3"
+  },
+  "bridgeArtifacts": {
+    "wizard_godot_bridge.debug.dll": {
+      "sha256": "92e454638a94c49ee0c8de8e4dffdbace9d30eae9df599dfabf0170d6508425b",
+      "bytes": 4256768,
+      "includedInArchive": false
+    },
+    "wizard_godot_bridge.release.dll": {
+      "sha256": "e8bb23c9e3f8a9bab081bdddcef436b3beb758cb582c55a20d4dfdfa553ee605",
+      "bytes": 896512,
+      "includedInArchive": false
+    }
+  }
+}

@@ -1,0 +1,24 @@
+Internal ctest changing into directory: E:/Project/WizardCard/build/godot-debug
+Test project E:/Project/WizardCard/build/godot-debug
+    Start 178: bridge IDs preserve the complete unsigned 64 bit range without floating point
+1/9 Test #178: bridge IDs preserve the complete unsigned 64 bit range without floating point ..............   Passed    0.03 sec
+    Start 179: bridge selection does not pay and duplicate confirmation cannot submit twice
+2/9 Test #179: bridge selection does not pay and duplicate confirmation cannot submit twice ...............   Passed    0.13 sec
+    Start 180: bridge rejects invalid actors actions generations and malformed start options atomically
+3/9 Test #180: bridge rejects invalid actors actions generations and malformed start options atomically ...   Passed    0.08 sec
+    Start 181: bridge pause preserves a selection but stops confirmations and AI
+4/9 Test #181: bridge pause preserves a selection but stops confirmations and AI ..........................   Passed    0.11 sec
+    Start 182: bridge release reinitialize and restart invalidate old UI handles
+5/9 Test #182: bridge release reinitialize and restart invalidate old UI handles ..........................   Passed    0.16 sec
+    Start 183: bridge whitelist excludes private cards hidden definitions seed and writable state
+6/9 Test #183: bridge whitelist excludes private cards hidden definitions seed and writable state .........   Passed    0.08 sec
+    Start 184: bridge AI exposes only human projection and rejects stale plans
+7/9 Test #184: bridge AI exposes only human projection and rejects stale plans ............................   Passed    0.11 sec
+    Start 185: bridge retains accepted state after replay save failure
+8/9 Test #185: bridge retains accepted state after replay save failure ....................................   Passed    0.13 sec
+    Start 186: Alpha program whitelist retains every content and digest compatibility gate
+9/9 Test #186: Alpha program whitelist retains every content and digest compatibility gate ................   Passed    0.20 sec
+
+100% tests passed, 0 tests failed out of 9
+
+Total Test time (real) =   1.07 sec

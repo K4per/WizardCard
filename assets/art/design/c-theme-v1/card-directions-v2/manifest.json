@@ -1,0 +1,32 @@
+{
+  "kind": "style_concepts",
+  "generator": "built-in imagegen",
+  "runtime_integrated": false,
+  "reference_images": [
+    "../previews/card-types-and-rarities.png",
+    "../../v15/concepts-20261007/c-natural-battlefield-v2.png"
+  ],
+  "variants": [
+    {
+      "id": "A",
+      "name": "古籍金饰",
+      "file": "a-gilded-grimoire.png",
+      "prompt": "a-gilded-grimoire-prompt.txt",
+      "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-d4f5824c-3743-49a6-863b-f5fcf98c77a2.png"
+    },
+    {
+      "id": "B",
+      "name": "奥术珐琅",
+      "file": "b-arcane-enamel.png",
+      "prompt": "b-arcane-enamel-prompt.txt",
+      "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-2f3135ef-9e74-462e-9fdb-88b158bd2db9.png"
+    },
+    {
+      "id": "C",
+      "name": "蜡印锦缎",
+      "file": "c-wax-brocade.png",
+      "prompt": "c-wax-brocade-prompt.txt",
+      "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-4b57fea8-11bb-4450-b929-be59e54cd8c7.png"
+    }
+  ]
+}

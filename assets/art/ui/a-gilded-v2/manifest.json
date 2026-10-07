@@ -1,0 +1,6122 @@
+{
+  "version": "wizardcard_a_gilded_v2",
+  "runtime_integrated": false,
+  "text_in_textures": false,
+  "sampling": "nearest",
+  "palette": {
+    "bg": "#E7CF9F",
+    "ink": "#322324",
+    "panel": "#F5E4BF",
+    "raised": "#E8CF99",
+    "fill": "#CCAE75",
+    "muted": "#987C60",
+    "bronze0": "#321B20",
+    "bronze1": "#7A4227",
+    "bronze2": "#AD7933",
+    "gold": "#D3A64A",
+    "lightgold": "#F4D785",
+    "cream": "#FFF1CD",
+    "teal0": "#153F3B",
+    "teal1": "#196D63",
+    "teal2": "#2F9985",
+    "mint": "#70BDA0",
+    "pale": "#C0D9B1",
+    "gray": "#928575",
+    "silver": "#BFCBD0",
+    "white": "#E9EEF0",
+    "text": "#322324",
+    "ruby": "#632035",
+    "red": "#993249",
+    "coral": "#CF7361",
+    "fire0": "#9F4F35",
+    "orange": "#B76839",
+    "yellow": "#EBD18A",
+    "violet": "#9B68C2",
+    "blue": "#3A81B8",
+    "green": "#3A9576"
+  },
+  "card_types": [
+    "action",
+    "analytic",
+    "word",
+    "formation",
+    "seal"
+  ],
+  "rarities": [
+    "common",
+    "uncommon",
+    "rare",
+    "epic",
+    "legendary"
+  ],
+  "assets": [
+    {
+      "id": "type_action",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_action.png",
+      "source": "design/a-gilded-v2/sources/icons/type_action.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "行动",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "type_action_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_action_64.png",
+      "source": "design/a-gilded-v2/sources/icons/type_action_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "行动 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "type_analytic",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_analytic.png",
+      "source": "design/a-gilded-v2/sources/icons/type_analytic.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析法术",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "type_analytic_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_analytic_64.png",
+      "source": "design/a-gilded-v2/sources/icons/type_analytic_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析法术 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "type_word",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_word.png",
+      "source": "design/a-gilded-v2/sources/icons/type_word.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "言灵",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "type_word_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_word_64.png",
+      "source": "design/a-gilded-v2/sources/icons/type_word_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "言灵 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "type_formation",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_formation.png",
+      "source": "design/a-gilded-v2/sources/icons/type_formation.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "阵法",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "type_formation_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_formation_64.png",
+      "source": "design/a-gilded-v2/sources/icons/type_formation_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "阵法 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "type_seal",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_seal.png",
+      "source": "design/a-gilded-v2/sources/icons/type_seal.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "符文",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "type_seal_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/type_seal_64.png",
+      "source": "design/a-gilded-v2/sources/icons/type_seal_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "符文 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "rank",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/rank.png",
+      "source": "design/a-gilded-v2/sources/icons/rank.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "位阶",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "rank_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/rank_64.png",
+      "source": "design/a-gilded-v2/sources/icons/rank_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "位阶 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "analysis_cost",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/analysis_cost.png",
+      "source": "design/a-gilded-v2/sources/icons/analysis_cost.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析费用",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "analysis_cost_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/analysis_cost_64.png",
+      "source": "design/a-gilded-v2/sources/icons/analysis_cost_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析费用 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "cast_cost",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/cast_cost.png",
+      "source": "design/a-gilded-v2/sources/icons/cast_cost.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "施法费用",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "cast_cost_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/cast_cost_64.png",
+      "source": "design/a-gilded-v2/sources/icons/cast_cost_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "施法费用 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "body",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/body.png",
+      "source": "design/a-gilded-v2/sources/icons/body.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "阵体",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "body_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/body_64.png",
+      "source": "design/a-gilded-v2/sources/icons/body_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "阵体 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "ring_slot",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/ring_slot.png",
+      "source": "design/a-gilded-v2/sources/icons/ring_slot.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "环位",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "ring_slot_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/ring_slot_64.png",
+      "source": "design/a-gilded-v2/sources/icons/ring_slot_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "环位 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "mana_income",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/mana_income.png",
+      "source": "design/a-gilded-v2/sources/icons/mana_income.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "魔素收入",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "mana_income_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/mana_income_64.png",
+      "source": "design/a-gilded-v2/sources/icons/mana_income_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "魔素收入 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "duration",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/duration.png",
+      "source": "design/a-gilded-v2/sources/icons/duration.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "持续计数",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "duration_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/duration_64.png",
+      "source": "design/a-gilded-v2/sources/icons/duration_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "持续计数 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "state_analyzing",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_analyzing.png",
+      "source": "design/a-gilded-v2/sources/icons/state_analyzing.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析中",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "state_analyzing_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_analyzing_64.png",
+      "source": "design/a-gilded-v2/sources/icons/state_analyzing_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析中 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "state_analyzed",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_analyzed.png",
+      "source": "design/a-gilded-v2/sources/icons/state_analyzed.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析完成",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "state_analyzed_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_analyzed_64.png",
+      "source": "design/a-gilded-v2/sources/icons/state_analyzed_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析完成 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "state_prepared",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_prepared.png",
+      "source": "design/a-gilded-v2/sources/icons/state_prepared.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "待施放",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "state_prepared_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_prepared_64.png",
+      "source": "design/a-gilded-v2/sources/icons/state_prepared_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "待施放 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "state_active",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_active.png",
+      "source": "design/a-gilded-v2/sources/icons/state_active.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "持续生效",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "state_active_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_active_64.png",
+      "source": "design/a-gilded-v2/sources/icons/state_active_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "持续生效 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "state_cancelled",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_cancelled.png",
+      "source": "design/a-gilded-v2/sources/icons/state_cancelled.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "准备被取消",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "state_cancelled_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_cancelled_64.png",
+      "source": "design/a-gilded-v2/sources/icons/state_cancelled_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "准备被取消 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "state_protected",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_protected.png",
+      "source": "design/a-gilded-v2/sources/icons/state_protected.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "基础阵法保护",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "state_protected_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_protected_64.png",
+      "source": "design/a-gilded-v2/sources/icons/state_protected_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "基础阵法保护 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "state_attached",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_attached.png",
+      "source": "design/a-gilded-v2/sources/icons/state_attached.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "符文附着",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "state_attached_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/state_attached_64.png",
+      "source": "design/a-gilded-v2/sources/icons/state_attached_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "符文附着 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "life",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/life.png",
+      "source": "design/a-gilded-v2/sources/icons/life.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "生命",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "life_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/life_64.png",
+      "source": "design/a-gilded-v2/sources/icons/life_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "生命 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "mana",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/mana.png",
+      "source": "design/a-gilded-v2/sources/icons/mana.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "魔素",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "mana_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/mana_64.png",
+      "source": "design/a-gilded-v2/sources/icons/mana_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "魔素 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "load",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/load.png",
+      "source": "design/a-gilded-v2/sources/icons/load.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "当前荷载",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "load_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/load_64.png",
+      "source": "design/a-gilded-v2/sources/icons/load_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "当前荷载 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "capacity",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/capacity.png",
+      "source": "design/a-gilded-v2/sources/icons/capacity.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "荷载容量",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "capacity_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/capacity_64.png",
+      "source": "design/a-gilded-v2/sources/icons/capacity_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "荷载容量 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "zone_formation",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_formation.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_formation.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "阵法",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "zone_formation_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_formation_64.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_formation_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "阵法 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "zone_analysis",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_analysis.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_analysis.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "解析",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "zone_analysis_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_analysis_64.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_analysis_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "解析 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "zone_casting",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_casting.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_casting.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "施法",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "zone_casting_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_casting_64.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_casting_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "施法 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "zone_words",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_words.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_words.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "言灵",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "zone_words_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_words_64.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_words_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "言灵 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "zone_action",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_action.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_action.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "行动",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "zone_action_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_action_64.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_action_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "行动 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "zone_ash",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_ash.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_ash.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "灰烬",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "zone_ash_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_ash_64.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_ash_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "灰烬 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "zone_hand",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_hand.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_hand.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "手牌",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "zone_hand_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_hand_64.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_hand_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "手牌 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "zone_deck",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_deck.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_deck.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "牌库",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "zone_deck_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/zone_deck_64.png",
+      "source": "design/a-gilded-v2/sources/icons/zone_deck_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "牌库 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "close",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/close.png",
+      "source": "design/a-gilded-v2/sources/icons/close.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "关闭",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "close_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/close_64.png",
+      "source": "design/a-gilded-v2/sources/icons/close_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "关闭 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "confirm",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/confirm.png",
+      "source": "design/a-gilded-v2/sources/icons/confirm.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "确认",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "confirm_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/confirm_64.png",
+      "source": "design/a-gilded-v2/sources/icons/confirm_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "确认 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "cancel",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/cancel.png",
+      "source": "design/a-gilded-v2/sources/icons/cancel.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "取消",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "cancel_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/cancel_64.png",
+      "source": "design/a-gilded-v2/sources/icons/cancel_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "取消 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "left",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/left.png",
+      "source": "design/a-gilded-v2/sources/icons/left.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "向前滚动",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "left_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/left_64.png",
+      "source": "design/a-gilded-v2/sources/icons/left_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "向前滚动 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "right",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/right.png",
+      "source": "design/a-gilded-v2/sources/icons/right.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "向后滚动",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "right_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/right_64.png",
+      "source": "design/a-gilded-v2/sources/icons/right_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "向后滚动 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "up",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/up.png",
+      "source": "design/a-gilded-v2/sources/icons/up.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "向上",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "up_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/up_64.png",
+      "source": "design/a-gilded-v2/sources/icons/up_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "向上 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "down",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/down.png",
+      "source": "design/a-gilded-v2/sources/icons/down.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "向下",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "down_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/down_64.png",
+      "source": "design/a-gilded-v2/sources/icons/down_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "向下 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "save",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/save.png",
+      "source": "design/a-gilded-v2/sources/icons/save.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "保存",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "save_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/save_64.png",
+      "source": "design/a-gilded-v2/sources/icons/save_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "保存 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "log",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/log.png",
+      "source": "design/a-gilded-v2/sources/icons/log.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "记录",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "log_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/log_64.png",
+      "source": "design/a-gilded-v2/sources/icons/log_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "记录 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "surrender",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/surrender.png",
+      "source": "design/a-gilded-v2/sources/icons/surrender.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "投降",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "surrender_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/surrender_64.png",
+      "source": "design/a-gilded-v2/sources/icons/surrender_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "投降 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "success",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/success.png",
+      "source": "design/a-gilded-v2/sources/icons/success.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "成功",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "success_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/success_64.png",
+      "source": "design/a-gilded-v2/sources/icons/success_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "成功 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "no_action",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/no_action.png",
+      "source": "design/a-gilded-v2/sources/icons/no_action.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "无操作",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "no_action_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/no_action_64.png",
+      "source": "design/a-gilded-v2/sources/icons/no_action_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "无操作 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "wrong_target",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/wrong_target.png",
+      "source": "design/a-gilded-v2/sources/icons/wrong_target.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "选错目标",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "wrong_target_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/wrong_target_64.png",
+      "source": "design/a-gilded-v2/sources/icons/wrong_target_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "选错目标 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "rejected",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/rejected.png",
+      "source": "design/a-gilded-v2/sources/icons/rejected.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "操作拒绝",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "rejected_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/rejected_64.png",
+      "source": "design/a-gilded-v2/sources/icons/rejected_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "操作拒绝 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "eye",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/eye.png",
+      "source": "design/a-gilded-v2/sources/icons/eye.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "查看",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "eye_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/eye_64.png",
+      "source": "design/a-gilded-v2/sources/icons/eye_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "查看 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "speed",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/speed.png",
+      "source": "design/a-gilded-v2/sources/icons/speed.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "速度",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "speed_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/speed_64.png",
+      "source": "design/a-gilded-v2/sources/icons/speed_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "速度 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "temporary_load",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/temporary_load.png",
+      "source": "design/a-gilded-v2/sources/icons/temporary_load.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "临时荷载",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "temporary_load_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/temporary_load_64.png",
+      "source": "design/a-gilded-v2/sources/icons/temporary_load_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "临时荷载 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "bound_load",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/bound_load.png",
+      "source": "design/a-gilded-v2/sources/icons/bound_load.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "绑定荷载",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "bound_load_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/bound_load_64.png",
+      "source": "design/a-gilded-v2/sources/icons/bound_load_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "绑定荷载 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "independent_load",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/independent_load.png",
+      "source": "design/a-gilded-v2/sources/icons/independent_load.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "独立荷载",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "independent_load_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/independent_load_64.png",
+      "source": "design/a-gilded-v2/sources/icons/independent_load_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "独立荷载 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "response_only",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/response_only.png",
+      "source": "design/a-gilded-v2/sources/icons/response_only.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "仅响应",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "response_only_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/response_only_64.png",
+      "source": "design/a-gilded-v2/sources/icons/response_only_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "仅响应 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "ambush",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/ambush.png",
+      "source": "design/a-gilded-v2/sources/icons/ambush.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "伏击",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "ambush_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/ambush_64.png",
+      "source": "design/a-gilded-v2/sources/icons/ambush_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "伏击 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "concentration",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/concentration.png",
+      "source": "design/a-gilded-v2/sources/icons/concentration.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "专注",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "concentration_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/concentration_64.png",
+      "source": "design/a-gilded-v2/sources/icons/concentration_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "专注 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "school_evocation",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_evocation.png",
+      "source": "design/a-gilded-v2/sources/icons/school_evocation.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "塑能学派",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "school_evocation_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_evocation_64.png",
+      "source": "design/a-gilded-v2/sources/icons/school_evocation_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "塑能学派 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "school_abjuration",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_abjuration.png",
+      "source": "design/a-gilded-v2/sources/icons/school_abjuration.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "防护学派",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "school_abjuration_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_abjuration_64.png",
+      "source": "design/a-gilded-v2/sources/icons/school_abjuration_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "防护学派 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "school_necromancy",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_necromancy.png",
+      "source": "design/a-gilded-v2/sources/icons/school_necromancy.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "死灵学派",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "school_necromancy_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_necromancy_64.png",
+      "source": "design/a-gilded-v2/sources/icons/school_necromancy_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "死灵学派 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "school_transmutation",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_transmutation.png",
+      "source": "design/a-gilded-v2/sources/icons/school_transmutation.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "变化学派",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "school_transmutation_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_transmutation_64.png",
+      "source": "design/a-gilded-v2/sources/icons/school_transmutation_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "变化学派 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "school_enchantment",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_enchantment.png",
+      "source": "design/a-gilded-v2/sources/icons/school_enchantment.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "惑控学派",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "school_enchantment_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_enchantment_64.png",
+      "source": "design/a-gilded-v2/sources/icons/school_enchantment_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "惑控学派 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "school_divination",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_divination.png",
+      "source": "design/a-gilded-v2/sources/icons/school_divination.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "预言学派",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "school_divination_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_divination_64.png",
+      "source": "design/a-gilded-v2/sources/icons/school_divination_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "预言学派 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "school_illusion",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_illusion.png",
+      "source": "design/a-gilded-v2/sources/icons/school_illusion.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "幻术学派",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "school_illusion_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_illusion_64.png",
+      "source": "design/a-gilded-v2/sources/icons/school_illusion_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "幻术学派 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "school_conjuration",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_conjuration.png",
+      "source": "design/a-gilded-v2/sources/icons/school_conjuration.svg",
+      "size": [
+        32,
+        32
+      ],
+      "purpose": "咒法学派",
+      "anchor": [
+        16,
+        16
+      ],
+      "pixel_unit": 1
+    },
+    {
+      "id": "school_conjuration_64",
+      "category": "icons",
+      "file": "ui/a-gilded-v2/icons/school_conjuration_64.png",
+      "source": "design/a-gilded-v2/sources/icons/school_conjuration_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "咒法学派 2×",
+      "anchor": [
+        32,
+        32
+      ],
+      "pixel_unit": 2
+    },
+    {
+      "id": "frame_action_hand",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_action_hand.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_action_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "行动 hand",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_action_strip",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_action_strip.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_action_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "行动 strip",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_action_portrait",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_action_portrait.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_action_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "行动 portrait",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_action_detail",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_action_detail.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_action_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "行动 detail",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_analytic_hand",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_analytic_hand.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_analytic_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "解析法术 hand",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_analytic_strip",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_analytic_strip.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_analytic_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "解析法术 strip",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_analytic_portrait",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_analytic_portrait.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_analytic_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "解析法术 portrait",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_analytic_detail",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_analytic_detail.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_analytic_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "解析法术 detail",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_word_hand",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_word_hand.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_word_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "言灵 hand",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_word_strip",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_word_strip.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_word_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "言灵 strip",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_word_portrait",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_word_portrait.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_word_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "言灵 portrait",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_word_detail",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_word_detail.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_word_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "言灵 detail",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_formation_hand",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_formation_hand.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_formation_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "阵法 hand",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_formation_strip",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_formation_strip.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_formation_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "阵法 strip",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_formation_portrait",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_formation_portrait.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_formation_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "阵法 portrait",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_formation_detail",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_formation_detail.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_formation_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "阵法 detail",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_seal_hand",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_seal_hand.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_seal_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "符文 hand",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_seal_strip",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_seal_strip.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_seal_strip.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "符文 strip",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_seal_portrait",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_seal_portrait.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_seal_portrait.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "符文 portrait",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "frame_seal_detail",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_seal_detail.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_seal_detail.svg",
+      "size": [
+        215,
+        354
+      ],
+      "purpose": "符文 detail",
+      "stretch": "none",
+      "content_insets": [
+        8,
+        24,
+        8,
+        29
+      ],
+      "usage": "固定尺寸卡牌组件；按需制作额外尺寸，不整体拉伸内部结构"
+    },
+    {
+      "id": "rarity_common",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/rarity_common.png",
+      "source": "design/a-gilded-v2/sources/cards/rarity_common.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字"
+    },
+    {
+      "id": "rarity_uncommon",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/rarity_uncommon.png",
+      "source": "design/a-gilded-v2/sources/cards/rarity_uncommon.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字"
+    },
+    {
+      "id": "rarity_rare",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/rarity_rare.png",
+      "source": "design/a-gilded-v2/sources/cards/rarity_rare.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字"
+    },
+    {
+      "id": "rarity_epic",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/rarity_epic.png",
+      "source": "design/a-gilded-v2/sources/cards/rarity_epic.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字"
+    },
+    {
+      "id": "rarity_legendary",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/rarity_legendary.png",
+      "source": "design/a-gilded-v2/sources/cards/rarity_legendary.svg",
+      "size": [
+        42,
+        12
+      ],
+      "purpose": "稀有度独立标记；仍需动态文字"
+    },
+    {
+      "id": "card_back_hand",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/card_back_hand.png",
+      "source": "design/a-gilded-v2/sources/cards/card_back_hand.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "对称通用卡背；不携带私有信息"
+    },
+    {
+      "id": "card_back_opponent",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/card_back_opponent.png",
+      "source": "design/a-gilded-v2/sources/cards/card_back_opponent.svg",
+      "size": [
+        39,
+        41
+      ],
+      "purpose": "对称通用卡背；不携带私有信息"
+    },
+    {
+      "id": "card_back_deck",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/card_back_deck.png",
+      "source": "design/a-gilded-v2/sources/cards/card_back_deck.svg",
+      "size": [
+        100,
+        132
+      ],
+      "purpose": "对称通用卡背；不携带私有信息"
+    },
+    {
+      "id": "missing_art",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/missing_art.png",
+      "source": "design/a-gilded-v2/sources/cards/missing_art.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "缺图统一回退纹章"
+    },
+    {
+      "id": "button_primary_normal",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_primary_normal.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_primary_normal.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "primary / normal",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_primary_hover",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_primary_hover.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_primary_hover.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "primary / hover",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_primary_pressed",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_primary_pressed.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_primary_pressed.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "primary / pressed",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_primary_disabled",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_primary_disabled.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_primary_disabled.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "primary / disabled",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_secondary_normal",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_secondary_normal.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_secondary_normal.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "secondary / normal",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_secondary_hover",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_secondary_hover.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_secondary_hover.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "secondary / hover",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_secondary_pressed",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_secondary_pressed.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_secondary_pressed.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "secondary / pressed",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_secondary_disabled",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_secondary_disabled.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_secondary_disabled.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "secondary / disabled",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_danger_normal",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_danger_normal.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_danger_normal.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "danger / normal",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_danger_hover",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_danger_hover.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_danger_hover.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "danger / hover",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_danger_pressed",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_danger_pressed.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_danger_pressed.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "danger / pressed",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "button_danger_disabled",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/button_danger_disabled.png",
+      "source": "design/a-gilded-v2/sources/interaction/button_danger_disabled.svg",
+      "size": [
+        160,
+        36
+      ],
+      "purpose": "danger / disabled",
+      "insets": [
+        28,
+        0,
+        28,
+        0
+      ],
+      "stretch": "horizontal",
+      "text_insets": [
+        28,
+        9,
+        28,
+        9
+      ],
+      "pressed_text_offset": [
+        0,
+        1
+      ],
+      "fixed_height": 36
+    },
+    {
+      "id": "overlay_hand_hover",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_hand_hover.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_hand_hover.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "hover",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_hand_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_hand_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_hand_selected.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "selected",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_hand_target_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_hand_target_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_hand_target_candidate.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "target_candidate",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_hand_target_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_hand_target_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_hand_target_selected.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "target_selected",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_hand_cost_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_hand_cost_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_hand_cost_candidate.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "cost_candidate",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_hand_cost_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_hand_cost_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_hand_cost_selected.svg",
+      "size": [
+        101,
+        118
+      ],
+      "purpose": "cost_selected",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_strip_hover",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_strip_hover.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_strip_hover.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "hover",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_strip_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_strip_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_strip_selected.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "selected",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_strip_target_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_strip_target_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_strip_target_candidate.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "target_candidate",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_strip_target_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_strip_target_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_strip_target_selected.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "target_selected",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_strip_cost_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_strip_cost_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_strip_cost_candidate.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "cost_candidate",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_strip_cost_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_strip_cost_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_strip_cost_selected.svg",
+      "size": [
+        125,
+        44
+      ],
+      "purpose": "cost_selected",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_portrait_hover",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_portrait_hover.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_portrait_hover.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "hover",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_portrait_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_portrait_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_portrait_selected.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "selected",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_portrait_target_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_portrait_target_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_portrait_target_candidate.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "target_candidate",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_portrait_target_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_portrait_target_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_portrait_target_selected.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "target_selected",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_portrait_cost_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_portrait_cost_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_portrait_cost_candidate.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "cost_candidate",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "overlay_portrait_cost_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_portrait_cost_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_portrait_cost_selected.svg",
+      "size": [
+        90,
+        112
+      ],
+      "purpose": "cost_selected",
+      "pixel_unit": 1,
+      "overlay": true
+    },
+    {
+      "id": "region_formation",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/region_formation.png",
+      "source": "design/a-gilded-v2/sources/board/region_formation.svg",
+      "size": [
+        106,
+        52
+      ],
+      "purpose": "区域框体：formation",
+      "insets": [
+        35,
+        24,
+        35,
+        20
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "region_analysis",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/region_analysis.png",
+      "source": "design/a-gilded-v2/sources/board/region_analysis.svg",
+      "size": [
+        427,
+        52
+      ],
+      "purpose": "区域框体：analysis",
+      "insets": [
+        36,
+        24,
+        36,
+        20
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "region_casting",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/region_casting.png",
+      "source": "design/a-gilded-v2/sources/board/region_casting.svg",
+      "size": [
+        1080,
+        65
+      ],
+      "purpose": "区域框体：casting",
+      "insets": [
+        36,
+        24,
+        36,
+        33
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "region_words",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/region_words.png",
+      "source": "design/a-gilded-v2/sources/board/region_words.svg",
+      "size": [
+        531,
+        106
+      ],
+      "purpose": "区域框体：words",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "region_action",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/region_action.png",
+      "source": "design/a-gilded-v2/sources/board/region_action.svg",
+      "size": [
+        531,
+        49
+      ],
+      "purpose": "区域框体：action",
+      "insets": [
+        36,
+        24,
+        36,
+        17
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "region_ash",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/region_ash.png",
+      "source": "design/a-gilded-v2/sources/board/region_ash.svg",
+      "size": [
+        531,
+        101
+      ],
+      "purpose": "区域框体：ash",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "region_hand",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/region_hand.png",
+      "source": "design/a-gilded-v2/sources/board/region_hand.svg",
+      "size": [
+        1080,
+        134
+      ],
+      "purpose": "区域框体：hand",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "region_deck",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/region_deck.png",
+      "source": "design/a-gilded-v2/sources/board/region_deck.svg",
+      "size": [
+        100,
+        132
+      ],
+      "purpose": "区域框体：deck",
+      "insets": [
+        33,
+        46,
+        33,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "slot_empty",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/slot_empty.png",
+      "source": "design/a-gilded-v2/sources/board/slot_empty.svg",
+      "size": [
+        106,
+        52
+      ],
+      "purpose": "阵法槽状态",
+      "insets": [
+        35,
+        24,
+        35,
+        20
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "slot_occupied",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/slot_occupied.png",
+      "source": "design/a-gilded-v2/sources/board/slot_occupied.svg",
+      "size": [
+        106,
+        52
+      ],
+      "purpose": "阵法槽状态",
+      "insets": [
+        35,
+        24,
+        35,
+        20
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "slot_span",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/slot_span.png",
+      "source": "design/a-gilded-v2/sources/board/slot_span.svg",
+      "size": [
+        106,
+        107
+      ],
+      "purpose": "阵法槽状态",
+      "insets": [
+        35,
+        46,
+        35,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "host_connector",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/host_connector.png",
+      "source": "design/a-gilded-v2/sources/board/host_connector.svg",
+      "size": [
+        12,
+        52
+      ],
+      "purpose": "宿主到解析行关联"
+    },
+    {
+      "id": "hud",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/hud.png",
+      "source": "design/a-gilded-v2/sources/board/hud.svg",
+      "size": [
+        215,
+        190
+      ],
+      "purpose": "hud",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "phase_bar",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/phase_bar.png",
+      "source": "design/a-gilded-v2/sources/board/phase_bar.svg",
+      "size": [
+        700,
+        42
+      ],
+      "purpose": "phase_bar",
+      "insets": [
+        36,
+        24,
+        36,
+        10
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "task_hint",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/task_hint.png",
+      "source": "design/a-gilded-v2/sources/interaction/task_hint.svg",
+      "size": [
+        800,
+        36
+      ],
+      "purpose": "task_hint",
+      "insets": [
+        36,
+        24,
+        36,
+        4
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "action_bar",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/action_bar.png",
+      "source": "design/a-gilded-v2/sources/interaction/action_bar.svg",
+      "size": [
+        672,
+        44
+      ],
+      "purpose": "action_bar",
+      "insets": [
+        36,
+        24,
+        36,
+        12
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "summary",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/summary.png",
+      "source": "design/a-gilded-v2/sources/interaction/summary.svg",
+      "size": [
+        215,
+        88
+      ],
+      "purpose": "summary",
+      "insets": [
+        36,
+        46,
+        36,
+        34
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "decision",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/decision.png",
+      "source": "design/a-gilded-v2/sources/interaction/decision.svg",
+      "size": [
+        540,
+        310
+      ],
+      "purpose": "decision",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "log_window",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/log_window.png",
+      "source": "design/a-gilded-v2/sources/interaction/log_window.svg",
+      "size": [
+        620,
+        420
+      ],
+      "purpose": "log_window",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "result_window",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/result_window.png",
+      "source": "design/a-gilded-v2/sources/interaction/result_window.svg",
+      "size": [
+        520,
+        340
+      ],
+      "purpose": "result_window",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "handoff",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/handoff.png",
+      "source": "design/a-gilded-v2/sources/interaction/handoff.svg",
+      "size": [
+        1080,
+        134
+      ],
+      "purpose": "handoff",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "phase_inactive",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/phase_inactive.png",
+      "source": "design/a-gilded-v2/sources/board/phase_inactive.svg",
+      "size": [
+        22,
+        22
+      ],
+      "purpose": "阶段指示 inactive"
+    },
+    {
+      "id": "phase_current",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/phase_current.png",
+      "source": "design/a-gilded-v2/sources/board/phase_current.svg",
+      "size": [
+        22,
+        22
+      ],
+      "purpose": "阶段指示 current"
+    },
+    {
+      "id": "phase_complete",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/phase_complete.png",
+      "source": "design/a-gilded-v2/sources/board/phase_complete.svg",
+      "size": [
+        22,
+        22
+      ],
+      "purpose": "阶段指示 complete"
+    },
+    {
+      "id": "scroll_track",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/scroll_track.png",
+      "source": "design/a-gilded-v2/sources/board/scroll_track.svg",
+      "size": [
+        80,
+        6
+      ],
+      "purpose": "滚动位置提示",
+      "insets": [
+        2,
+        1,
+        2,
+        1
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "scroll_thumb",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/scroll_thumb.png",
+      "source": "design/a-gilded-v2/sources/board/scroll_thumb.svg",
+      "size": [
+        80,
+        6
+      ],
+      "purpose": "滚动位置提示",
+      "insets": [
+        2,
+        1,
+        2,
+        1
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "result_victory",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/result_victory.png",
+      "source": "design/a-gilded-v2/sources/interaction/result_victory.svg",
+      "size": [
+        96,
+        64
+      ],
+      "purpose": "victory结果标识"
+    },
+    {
+      "id": "result_defeat",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/result_defeat.png",
+      "source": "design/a-gilded-v2/sources/interaction/result_defeat.svg",
+      "size": [
+        96,
+        64
+      ],
+      "purpose": "defeat结果标识"
+    },
+    {
+      "id": "result_draw",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/result_draw.png",
+      "source": "design/a-gilded-v2/sources/interaction/result_draw.svg",
+      "size": [
+        96,
+        64
+      ],
+      "purpose": "draw结果标识"
+    },
+    {
+      "id": "feedback_success",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/feedback_success.png",
+      "source": "design/a-gilded-v2/sources/interaction/feedback_success.svg",
+      "size": [
+        360,
+        48
+      ],
+      "purpose": "success反馈",
+      "insets": [
+        36,
+        24,
+        36,
+        16
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "feedback_no_action",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/feedback_no_action.png",
+      "source": "design/a-gilded-v2/sources/interaction/feedback_no_action.svg",
+      "size": [
+        360,
+        48
+      ],
+      "purpose": "no_action反馈",
+      "insets": [
+        36,
+        24,
+        36,
+        16
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "feedback_wrong_target",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/feedback_wrong_target.png",
+      "source": "design/a-gilded-v2/sources/interaction/feedback_wrong_target.svg",
+      "size": [
+        360,
+        48
+      ],
+      "purpose": "wrong_target反馈",
+      "insets": [
+        36,
+        24,
+        36,
+        16
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "feedback_rejected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/feedback_rejected.png",
+      "source": "design/a-gilded-v2/sources/interaction/feedback_rejected.svg",
+      "size": [
+        360,
+        48
+      ],
+      "purpose": "rejected反馈",
+      "insets": [
+        36,
+        24,
+        36,
+        16
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "stepper_0",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/stepper_0.png",
+      "source": "design/a-gilded-v2/sources/interaction/stepper_0.svg",
+      "size": [
+        480,
+        32
+      ],
+      "purpose": "查看/目标/额外成本/确认步骤底板；文字动态绘制",
+      "step_positions": [
+        [
+          16,
+          16
+        ],
+        [
+          164,
+          16
+        ],
+        [
+          312,
+          16
+        ],
+        [
+          460,
+          16
+        ]
+      ]
+    },
+    {
+      "id": "stepper_1",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/stepper_1.png",
+      "source": "design/a-gilded-v2/sources/interaction/stepper_1.svg",
+      "size": [
+        480,
+        32
+      ],
+      "purpose": "查看/目标/额外成本/确认步骤底板；文字动态绘制",
+      "step_positions": [
+        [
+          16,
+          16
+        ],
+        [
+          164,
+          16
+        ],
+        [
+          312,
+          16
+        ],
+        [
+          460,
+          16
+        ]
+      ]
+    },
+    {
+      "id": "stepper_2",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/stepper_2.png",
+      "source": "design/a-gilded-v2/sources/interaction/stepper_2.svg",
+      "size": [
+        480,
+        32
+      ],
+      "purpose": "查看/目标/额外成本/确认步骤底板；文字动态绘制",
+      "step_positions": [
+        [
+          16,
+          16
+        ],
+        [
+          164,
+          16
+        ],
+        [
+          312,
+          16
+        ],
+        [
+          460,
+          16
+        ]
+      ]
+    },
+    {
+      "id": "stepper_3",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/stepper_3.png",
+      "source": "design/a-gilded-v2/sources/interaction/stepper_3.svg",
+      "size": [
+        480,
+        32
+      ],
+      "purpose": "查看/目标/额外成本/确认步骤底板；文字动态绘制",
+      "step_positions": [
+        [
+          16,
+          16
+        ],
+        [
+          164,
+          16
+        ],
+        [
+          312,
+          16
+        ],
+        [
+          460,
+          16
+        ]
+      ]
+    },
+    {
+      "id": "match_background",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/match_background.png",
+      "source": "design/a-gilded-v2/sources/board/match_background.svg",
+      "size": [
+        1600,
+        1000
+      ],
+      "purpose": "低对比无文字场地底图",
+      "stretch": "none",
+      "logical_canvas": [
+        1600,
+        1000
+      ]
+    },
+    {
+      "id": "board_decoration",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/board_decoration.png",
+      "source": "design/a-gilded-v2/sources/board/board_decoration.svg",
+      "size": [
+        1600,
+        1000
+      ],
+      "purpose": "独立中央装饰层；不定义槽位"
+    },
+    {
+      "id": "rarity_badge_common",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_common.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_common.svg",
+      "size": [
+        64,
+        40
+      ],
+      "purpose": "普通：独立轮廓＋颜色＋1枚刻度",
+      "rarity": "common",
+      "stretch": "none"
+    },
+    {
+      "id": "rarity_badge_uncommon",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_uncommon.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_uncommon.svg",
+      "size": [
+        64,
+        40
+      ],
+      "purpose": "罕见：独立轮廓＋颜色＋2枚刻度",
+      "rarity": "uncommon",
+      "stretch": "none"
+    },
+    {
+      "id": "rarity_badge_rare",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_rare.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_rare.svg",
+      "size": [
+        64,
+        40
+      ],
+      "purpose": "稀有：独立轮廓＋颜色＋3枚刻度",
+      "rarity": "rare",
+      "stretch": "none"
+    },
+    {
+      "id": "rarity_badge_epic",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_epic.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_epic.svg",
+      "size": [
+        64,
+        40
+      ],
+      "purpose": "史诗：独立轮廓＋颜色＋4枚刻度",
+      "rarity": "epic",
+      "stretch": "none"
+    },
+    {
+      "id": "rarity_badge_legendary",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_legendary.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_legendary.svg",
+      "size": [
+        64,
+        40
+      ],
+      "purpose": "传说：独立轮廓＋颜色＋5枚刻度",
+      "rarity": "legendary",
+      "stretch": "none"
+    },
+    {
+      "id": "frame_action_full",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_action_full.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_action_full.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "行动完整模板",
+      "stretch": "none",
+      "layout": {
+        "title": [
+          48,
+          20,
+          266,
+          28
+        ],
+        "school": [
+          18,
+          60,
+          324,
+          16
+        ],
+        "art": [
+          19,
+          85,
+          322,
+          192
+        ],
+        "stats": [
+          18,
+          289,
+          324,
+          66
+        ],
+        "rules": [
+          26,
+          372,
+          308,
+          124
+        ],
+        "type": [
+          24,
+          520,
+          176,
+          18
+        ],
+        "rarity_label": [
+          224,
+          520,
+          48,
+          18
+        ],
+        "rarity": [
+          279,
+          508,
+          64,
+          40
+        ]
+      },
+      "stats_schema": [
+        "cost",
+        "speed"
+      ]
+    },
+    {
+      "id": "frame_analytic_full",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_analytic_full.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_analytic_full.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "解析法术完整模板",
+      "stretch": "none",
+      "layout": {
+        "title": [
+          48,
+          20,
+          266,
+          28
+        ],
+        "school": [
+          18,
+          60,
+          324,
+          16
+        ],
+        "art": [
+          19,
+          85,
+          322,
+          192
+        ],
+        "stats": [
+          18,
+          289,
+          324,
+          66
+        ],
+        "rules": [
+          26,
+          372,
+          308,
+          124
+        ],
+        "type": [
+          24,
+          520,
+          176,
+          18
+        ],
+        "rarity_label": [
+          224,
+          520,
+          48,
+          18
+        ],
+        "rarity": [
+          279,
+          508,
+          64,
+          40
+        ]
+      },
+      "stats_schema": [
+        "cost",
+        "castCost",
+        "rank",
+        "analysisTurns",
+        "speed",
+        "duration"
+      ]
+    },
+    {
+      "id": "frame_word_full",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_word_full.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_word_full.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "言灵完整模板",
+      "stretch": "none",
+      "layout": {
+        "title": [
+          48,
+          20,
+          266,
+          28
+        ],
+        "school": [
+          18,
+          60,
+          324,
+          16
+        ],
+        "art": [
+          19,
+          85,
+          322,
+          192
+        ],
+        "stats": [
+          18,
+          289,
+          324,
+          66
+        ],
+        "rules": [
+          26,
+          372,
+          308,
+          124
+        ],
+        "type": [
+          24,
+          520,
+          176,
+          18
+        ],
+        "rarity_label": [
+          224,
+          520,
+          48,
+          18
+        ],
+        "rarity": [
+          279,
+          508,
+          64,
+          40
+        ]
+      },
+      "stats_schema": [
+        "cost",
+        "rank",
+        "speed",
+        "duration"
+      ]
+    },
+    {
+      "id": "frame_formation_full",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_formation_full.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_formation_full.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "阵法完整模板",
+      "stretch": "none",
+      "layout": {
+        "title": [
+          48,
+          20,
+          266,
+          28
+        ],
+        "school": [
+          18,
+          60,
+          324,
+          16
+        ],
+        "art": [
+          19,
+          85,
+          322,
+          192
+        ],
+        "stats": [
+          18,
+          289,
+          324,
+          66
+        ],
+        "rules": [
+          26,
+          372,
+          308,
+          124
+        ],
+        "type": [
+          24,
+          520,
+          176,
+          18
+        ],
+        "rarity_label": [
+          224,
+          520,
+          48,
+          18
+        ],
+        "rarity": [
+          279,
+          508,
+          64,
+          40
+        ]
+      },
+      "stats_schema": [
+        "body",
+        "capacity",
+        "income",
+        "rings",
+        "maxRank",
+        "speed"
+      ]
+    },
+    {
+      "id": "frame_seal_full",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/frame_seal_full.png",
+      "source": "design/a-gilded-v2/sources/cards/frame_seal_full.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "符文完整模板",
+      "stretch": "none",
+      "layout": {
+        "title": [
+          48,
+          20,
+          266,
+          28
+        ],
+        "school": [
+          18,
+          60,
+          324,
+          16
+        ],
+        "art": [
+          19,
+          85,
+          322,
+          192
+        ],
+        "stats": [
+          18,
+          289,
+          324,
+          66
+        ],
+        "rules": [
+          26,
+          372,
+          308,
+          124
+        ],
+        "type": [
+          24,
+          520,
+          176,
+          18
+        ],
+        "rarity_label": [
+          224,
+          520,
+          48,
+          18
+        ],
+        "rarity": [
+          279,
+          508,
+          64,
+          40
+        ]
+      },
+      "stats_schema": [
+        "cost",
+        "body",
+        "burden",
+        "speed",
+        "activationCost"
+      ]
+    },
+    {
+      "id": "type_header_action",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/type_header_action.png",
+      "source": "design/a-gilded-v2/sources/cards/type_header_action.svg",
+      "size": [
+        180,
+        34
+      ],
+      "purpose": "类型标题条；文字动态叠加",
+      "insets": [
+        38,
+        7,
+        12,
+        7
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "type_header_analytic",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/type_header_analytic.png",
+      "source": "design/a-gilded-v2/sources/cards/type_header_analytic.svg",
+      "size": [
+        180,
+        34
+      ],
+      "purpose": "类型标题条；文字动态叠加",
+      "insets": [
+        38,
+        7,
+        12,
+        7
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "type_header_word",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/type_header_word.png",
+      "source": "design/a-gilded-v2/sources/cards/type_header_word.svg",
+      "size": [
+        180,
+        34
+      ],
+      "purpose": "类型标题条；文字动态叠加",
+      "insets": [
+        38,
+        7,
+        12,
+        7
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "type_header_formation",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/type_header_formation.png",
+      "source": "design/a-gilded-v2/sources/cards/type_header_formation.svg",
+      "size": [
+        180,
+        34
+      ],
+      "purpose": "类型标题条；文字动态叠加",
+      "insets": [
+        38,
+        7,
+        12,
+        7
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "type_header_seal",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/type_header_seal.png",
+      "source": "design/a-gilded-v2/sources/cards/type_header_seal.svg",
+      "size": [
+        180,
+        34
+      ],
+      "purpose": "类型标题条；文字动态叠加",
+      "insets": [
+        38,
+        7,
+        12,
+        7
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "zone_header_casting",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/zone_header_casting.png",
+      "source": "design/a-gilded-v2/sources/board/zone_header_casting.svg",
+      "size": [
+        224,
+        40
+      ],
+      "purpose": "区域独立标题条：casting",
+      "text_rect": [
+        46,
+        10,
+        162,
+        20
+      ],
+      "insets": [
+        42,
+        8,
+        12,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "zone_header_words",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/zone_header_words.png",
+      "source": "design/a-gilded-v2/sources/board/zone_header_words.svg",
+      "size": [
+        224,
+        40
+      ],
+      "purpose": "区域独立标题条：words",
+      "text_rect": [
+        46,
+        10,
+        162,
+        20
+      ],
+      "insets": [
+        42,
+        8,
+        12,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "zone_header_analysis",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/zone_header_analysis.png",
+      "source": "design/a-gilded-v2/sources/board/zone_header_analysis.svg",
+      "size": [
+        224,
+        40
+      ],
+      "purpose": "区域独立标题条：analysis",
+      "text_rect": [
+        46,
+        10,
+        162,
+        20
+      ],
+      "insets": [
+        42,
+        8,
+        12,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "zone_header_action",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/zone_header_action.png",
+      "source": "design/a-gilded-v2/sources/board/zone_header_action.svg",
+      "size": [
+        224,
+        40
+      ],
+      "purpose": "区域独立标题条：action",
+      "text_rect": [
+        46,
+        10,
+        162,
+        20
+      ],
+      "insets": [
+        42,
+        8,
+        12,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "zone_header_ash",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/zone_header_ash.png",
+      "source": "design/a-gilded-v2/sources/board/zone_header_ash.svg",
+      "size": [
+        224,
+        40
+      ],
+      "purpose": "区域独立标题条：ash",
+      "text_rect": [
+        46,
+        10,
+        162,
+        20
+      ],
+      "insets": [
+        42,
+        8,
+        12,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "zone_header_formation",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/zone_header_formation.png",
+      "source": "design/a-gilded-v2/sources/board/zone_header_formation.svg",
+      "size": [
+        224,
+        40
+      ],
+      "purpose": "区域独立标题条：formation",
+      "text_rect": [
+        46,
+        10,
+        162,
+        20
+      ],
+      "insets": [
+        42,
+        8,
+        12,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "zone_header_hand",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/zone_header_hand.png",
+      "source": "design/a-gilded-v2/sources/board/zone_header_hand.svg",
+      "size": [
+        224,
+        40
+      ],
+      "purpose": "区域独立标题条：hand",
+      "text_rect": [
+        46,
+        10,
+        162,
+        20
+      ],
+      "insets": [
+        42,
+        8,
+        12,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "zone_header_deck",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/zone_header_deck.png",
+      "source": "design/a-gilded-v2/sources/board/zone_header_deck.svg",
+      "size": [
+        224,
+        40
+      ],
+      "purpose": "区域独立标题条：deck",
+      "text_rect": [
+        46,
+        10,
+        162,
+        20
+      ],
+      "insets": [
+        42,
+        8,
+        12,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "meter_life_track",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/meter_life_track.png",
+      "source": "design/a-gilded-v2/sources/board/meter_life_track.svg",
+      "size": [
+        192,
+        18
+      ],
+      "purpose": "life数值条底框",
+      "insets": [
+        8,
+        5,
+        8,
+        5
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "meter_life_fill",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/meter_life_fill.png",
+      "source": "design/a-gilded-v2/sources/board/meter_life_fill.svg",
+      "size": [
+        176,
+        8
+      ],
+      "purpose": "life数值条填充；按比例裁剪",
+      "stretch": "clip_horizontal"
+    },
+    {
+      "id": "meter_mana_track",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/meter_mana_track.png",
+      "source": "design/a-gilded-v2/sources/board/meter_mana_track.svg",
+      "size": [
+        192,
+        18
+      ],
+      "purpose": "mana数值条底框",
+      "insets": [
+        8,
+        5,
+        8,
+        5
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "meter_mana_fill",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/meter_mana_fill.png",
+      "source": "design/a-gilded-v2/sources/board/meter_mana_fill.svg",
+      "size": [
+        176,
+        8
+      ],
+      "purpose": "mana数值条填充；按比例裁剪",
+      "stretch": "clip_horizontal"
+    },
+    {
+      "id": "meter_load_track",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/meter_load_track.png",
+      "source": "design/a-gilded-v2/sources/board/meter_load_track.svg",
+      "size": [
+        192,
+        18
+      ],
+      "purpose": "load数值条底框",
+      "insets": [
+        8,
+        5,
+        8,
+        5
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "meter_load_fill",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/meter_load_fill.png",
+      "source": "design/a-gilded-v2/sources/board/meter_load_fill.svg",
+      "size": [
+        176,
+        8
+      ],
+      "purpose": "load数值条填充；按比例裁剪",
+      "stretch": "clip_horizontal"
+    },
+    {
+      "id": "meter_capacity_track",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/meter_capacity_track.png",
+      "source": "design/a-gilded-v2/sources/board/meter_capacity_track.svg",
+      "size": [
+        192,
+        18
+      ],
+      "purpose": "capacity数值条底框",
+      "insets": [
+        8,
+        5,
+        8,
+        5
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "meter_capacity_fill",
+      "category": "board",
+      "file": "ui/a-gilded-v2/board/meter_capacity_fill.png",
+      "source": "design/a-gilded-v2/sources/board/meter_capacity_fill.svg",
+      "size": [
+        176,
+        8
+      ],
+      "purpose": "capacity数值条填充；按比例裁剪",
+      "stretch": "clip_horizontal"
+    },
+    {
+      "id": "overlay_full_hover",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_full_hover.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_full_hover.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "完整卡牌 hover",
+      "overlay": true
+    },
+    {
+      "id": "overlay_full_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_full_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_full_selected.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "完整卡牌 selected",
+      "overlay": true
+    },
+    {
+      "id": "overlay_full_target_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_full_target_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_full_target_candidate.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "完整卡牌 target_candidate",
+      "overlay": true
+    },
+    {
+      "id": "overlay_full_target_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_full_target_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_full_target_selected.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "完整卡牌 target_selected",
+      "overlay": true
+    },
+    {
+      "id": "overlay_full_cost_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_full_cost_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_full_cost_candidate.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "完整卡牌 cost_candidate",
+      "overlay": true
+    },
+    {
+      "id": "overlay_full_cost_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_full_cost_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_full_cost_selected.svg",
+      "size": [
+        360,
+        560
+      ],
+      "purpose": "完整卡牌 cost_selected",
+      "overlay": true
+    },
+    {
+      "id": "card_detail",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/card_detail.png",
+      "source": "design/a-gilded-v2/sources/interaction/card_detail.svg",
+      "size": [
+        440,
+        600
+      ],
+      "purpose": "通用 card_detail窗体",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "stack",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/stack.png",
+      "source": "design/a-gilded-v2/sources/interaction/stack.svg",
+      "size": [
+        440,
+        260
+      ],
+      "purpose": "通用 stack窗体",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "settings",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/settings.png",
+      "source": "design/a-gilded-v2/sources/interaction/settings.svg",
+      "size": [
+        440,
+        260
+      ],
+      "purpose": "通用 settings窗体",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "tooltip",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/tooltip.png",
+      "source": "design/a-gilded-v2/sources/interaction/tooltip.svg",
+      "size": [
+        440,
+        260
+      ],
+      "purpose": "通用 tooltip窗体",
+      "insets": [
+        36,
+        46,
+        36,
+        36
+      ],
+      "stretch": "nine_slice"
+    },
+    {
+      "id": "parchment-backing",
+      "category": "materials",
+      "file": "ui/a-gilded-v2/materials/parchment-backing.png",
+      "size": [
+        1672,
+        941
+      ],
+      "purpose": "AI 生成的 C 风格羊皮纸底图；可选背景，不规定布局",
+      "stretch": "none",
+      "provenance": "imagegen / 原始输出完整复制，未修改",
+      "sha256": "92d7e49b5238da20bdd6b9112e58412e6b8a4baa45e8db7790bc76003a3ed71a"
+    },
+    {
+      "id": "crest_action_64",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_action_64.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_action_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "独立古金类型纹章 行动",
+      "stretch": "none"
+    },
+    {
+      "id": "crest_action_128",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_action_128.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_action_128.svg",
+      "size": [
+        128,
+        128
+      ],
+      "purpose": "独立古金类型纹章 行动",
+      "stretch": "none"
+    },
+    {
+      "id": "crest_analytic_64",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_analytic_64.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_analytic_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "独立古金类型纹章 解析法术",
+      "stretch": "none"
+    },
+    {
+      "id": "crest_analytic_128",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_analytic_128.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_analytic_128.svg",
+      "size": [
+        128,
+        128
+      ],
+      "purpose": "独立古金类型纹章 解析法术",
+      "stretch": "none"
+    },
+    {
+      "id": "crest_word_64",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_word_64.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_word_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "独立古金类型纹章 言灵",
+      "stretch": "none"
+    },
+    {
+      "id": "crest_word_128",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_word_128.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_word_128.svg",
+      "size": [
+        128,
+        128
+      ],
+      "purpose": "独立古金类型纹章 言灵",
+      "stretch": "none"
+    },
+    {
+      "id": "crest_formation_64",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_formation_64.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_formation_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "独立古金类型纹章 阵法",
+      "stretch": "none"
+    },
+    {
+      "id": "crest_formation_128",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_formation_128.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_formation_128.svg",
+      "size": [
+        128,
+        128
+      ],
+      "purpose": "独立古金类型纹章 阵法",
+      "stretch": "none"
+    },
+    {
+      "id": "crest_seal_64",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_seal_64.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_seal_64.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "独立古金类型纹章 符文",
+      "stretch": "none"
+    },
+    {
+      "id": "crest_seal_128",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/crest_seal_128.png",
+      "source": "design/a-gilded-v2/sources/cards/crest_seal_128.svg",
+      "size": [
+        128,
+        128
+      ],
+      "purpose": "独立古金类型纹章 符文",
+      "stretch": "none"
+    },
+    {
+      "id": "rarity_badge_common_128",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_common_128.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_common_128.svg",
+      "size": [
+        128,
+        80
+      ],
+      "purpose": "普通大型镶座与刻度",
+      "rarity": "common",
+      "pixel_unit": 2
+    },
+    {
+      "id": "rarity_cartouche_common",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_cartouche_common.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_cartouche_common.svg",
+      "size": [
+        148,
+        48
+      ],
+      "purpose": "普通名称与宝石组件",
+      "label_rect": [
+        70,
+        14,
+        66,
+        20
+      ],
+      "stretch": "none"
+    },
+    {
+      "id": "rarity_badge_uncommon_128",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_uncommon_128.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_uncommon_128.svg",
+      "size": [
+        128,
+        80
+      ],
+      "purpose": "罕见大型镶座与刻度",
+      "rarity": "uncommon",
+      "pixel_unit": 2
+    },
+    {
+      "id": "rarity_cartouche_uncommon",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_cartouche_uncommon.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_cartouche_uncommon.svg",
+      "size": [
+        148,
+        48
+      ],
+      "purpose": "罕见名称与宝石组件",
+      "label_rect": [
+        70,
+        14,
+        66,
+        20
+      ],
+      "stretch": "none"
+    },
+    {
+      "id": "rarity_badge_rare_128",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_rare_128.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_rare_128.svg",
+      "size": [
+        128,
+        80
+      ],
+      "purpose": "稀有大型镶座与刻度",
+      "rarity": "rare",
+      "pixel_unit": 2
+    },
+    {
+      "id": "rarity_cartouche_rare",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_cartouche_rare.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_cartouche_rare.svg",
+      "size": [
+        148,
+        48
+      ],
+      "purpose": "稀有名称与宝石组件",
+      "label_rect": [
+        70,
+        14,
+        66,
+        20
+      ],
+      "stretch": "none"
+    },
+    {
+      "id": "rarity_badge_epic_128",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_epic_128.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_epic_128.svg",
+      "size": [
+        128,
+        80
+      ],
+      "purpose": "史诗大型镶座与刻度",
+      "rarity": "epic",
+      "pixel_unit": 2
+    },
+    {
+      "id": "rarity_cartouche_epic",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_cartouche_epic.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_cartouche_epic.svg",
+      "size": [
+        148,
+        48
+      ],
+      "purpose": "史诗名称与宝石组件",
+      "label_rect": [
+        70,
+        14,
+        66,
+        20
+      ],
+      "stretch": "none"
+    },
+    {
+      "id": "rarity_badge_legendary_128",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_badge_legendary_128.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_badge_legendary_128.svg",
+      "size": [
+        128,
+        80
+      ],
+      "purpose": "传说大型镶座与刻度",
+      "rarity": "legendary",
+      "pixel_unit": 2
+    },
+    {
+      "id": "rarity_cartouche_legendary",
+      "category": "rarity",
+      "file": "ui/a-gilded-v2/rarity/rarity_cartouche_legendary.png",
+      "source": "design/a-gilded-v2/sources/rarity/rarity_cartouche_legendary.svg",
+      "size": [
+        148,
+        48
+      ],
+      "purpose": "传说名称与宝石组件",
+      "label_rect": [
+        70,
+        14,
+        66,
+        20
+      ],
+      "stretch": "none"
+    },
+    {
+      "id": "stat_receptacle_normal",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/stat_receptacle_normal.png",
+      "source": "design/a-gilded-v2/sources/cards/stat_receptacle_normal.svg",
+      "size": [
+        112,
+        36
+      ],
+      "purpose": "可选属性槽 normal",
+      "icon_rect": [
+        5,
+        8,
+        20,
+        20
+      ],
+      "label_rect": [
+        29,
+        10,
+        52,
+        16
+      ],
+      "value_rect": [
+        84,
+        7,
+        22,
+        20
+      ],
+      "insets": [
+        28,
+        10,
+        10,
+        10
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "stat_receptacle_hover",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/stat_receptacle_hover.png",
+      "source": "design/a-gilded-v2/sources/cards/stat_receptacle_hover.svg",
+      "size": [
+        112,
+        36
+      ],
+      "purpose": "可选属性槽 hover",
+      "icon_rect": [
+        5,
+        8,
+        20,
+        20
+      ],
+      "label_rect": [
+        29,
+        10,
+        52,
+        16
+      ],
+      "value_rect": [
+        84,
+        7,
+        22,
+        20
+      ],
+      "insets": [
+        28,
+        10,
+        10,
+        10
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "stat_receptacle_disabled",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/stat_receptacle_disabled.png",
+      "source": "design/a-gilded-v2/sources/cards/stat_receptacle_disabled.svg",
+      "size": [
+        112,
+        36
+      ],
+      "purpose": "可选属性槽 disabled",
+      "icon_rect": [
+        5,
+        8,
+        20,
+        20
+      ],
+      "label_rect": [
+        29,
+        10,
+        52,
+        16
+      ],
+      "value_rect": [
+        84,
+        7,
+        22,
+        20
+      ],
+      "insets": [
+        28,
+        10,
+        10,
+        10
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "tag_response_only",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/tag_response_only.png",
+      "source": "design/a-gilded-v2/sources/cards/tag_response_only.svg",
+      "size": [
+        132,
+        28
+      ],
+      "purpose": "条件/状态独立标签 response_only",
+      "label_rect": [
+        34,
+        6,
+        88,
+        16
+      ],
+      "insets": [
+        30,
+        8,
+        8,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "tag_ambush",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/tag_ambush.png",
+      "source": "design/a-gilded-v2/sources/cards/tag_ambush.svg",
+      "size": [
+        132,
+        28
+      ],
+      "purpose": "条件/状态独立标签 ambush",
+      "label_rect": [
+        34,
+        6,
+        88,
+        16
+      ],
+      "insets": [
+        30,
+        8,
+        8,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "tag_concentration",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/tag_concentration.png",
+      "source": "design/a-gilded-v2/sources/cards/tag_concentration.svg",
+      "size": [
+        132,
+        28
+      ],
+      "purpose": "条件/状态独立标签 concentration",
+      "label_rect": [
+        34,
+        6,
+        88,
+        16
+      ],
+      "insets": [
+        30,
+        8,
+        8,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "tag_base_protected",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/tag_base_protected.png",
+      "source": "design/a-gilded-v2/sources/cards/tag_base_protected.svg",
+      "size": [
+        132,
+        28
+      ],
+      "purpose": "条件/状态独立标签 base_protected",
+      "label_rect": [
+        34,
+        6,
+        88,
+        16
+      ],
+      "insets": [
+        30,
+        8,
+        8,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "tag_attached",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/tag_attached.png",
+      "source": "design/a-gilded-v2/sources/cards/tag_attached.svg",
+      "size": [
+        132,
+        28
+      ],
+      "purpose": "条件/状态独立标签 attached",
+      "label_rect": [
+        34,
+        6,
+        88,
+        16
+      ],
+      "insets": [
+        30,
+        8,
+        8,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "tag_duration",
+      "category": "cards",
+      "file": "ui/a-gilded-v2/cards/tag_duration.png",
+      "source": "design/a-gilded-v2/sources/cards/tag_duration.svg",
+      "size": [
+        132,
+        28
+      ],
+      "purpose": "条件/状态独立标签 duration",
+      "label_rect": [
+        34,
+        6,
+        88,
+        16
+      ],
+      "insets": [
+        30,
+        8,
+        8,
+        8
+      ],
+      "stretch": "horizontal"
+    },
+    {
+      "id": "corner_clasp_0",
+      "category": "ornaments",
+      "file": "ui/a-gilded-v2/ornaments/corner_clasp_0.png",
+      "source": "design/a-gilded-v2/sources/ornaments/corner_clasp_0.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "可组合卷饰角扣",
+      "stretch": "none"
+    },
+    {
+      "id": "corner_clasp_1",
+      "category": "ornaments",
+      "file": "ui/a-gilded-v2/ornaments/corner_clasp_1.png",
+      "source": "design/a-gilded-v2/sources/ornaments/corner_clasp_1.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "可组合卷饰角扣",
+      "stretch": "none"
+    },
+    {
+      "id": "corner_clasp_2",
+      "category": "ornaments",
+      "file": "ui/a-gilded-v2/ornaments/corner_clasp_2.png",
+      "source": "design/a-gilded-v2/sources/ornaments/corner_clasp_2.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "可组合卷饰角扣",
+      "stretch": "none"
+    },
+    {
+      "id": "corner_clasp_3",
+      "category": "ornaments",
+      "file": "ui/a-gilded-v2/ornaments/corner_clasp_3.png",
+      "source": "design/a-gilded-v2/sources/ornaments/corner_clasp_3.svg",
+      "size": [
+        64,
+        64
+      ],
+      "purpose": "可组合卷饰角扣",
+      "stretch": "none"
+    },
+    {
+      "id": "gold_divider",
+      "category": "ornaments",
+      "file": "ui/a-gilded-v2/ornaments/gold_divider.png",
+      "source": "design/a-gilded-v2/sources/ornaments/gold_divider.svg",
+      "size": [
+        320,
+        24
+      ],
+      "purpose": "独立横向分隔卷饰",
+      "stretch": "none"
+    },
+    {
+      "id": "overlay_master_hover",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_master_hover.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_master_hover.svg",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "精绘主卡框 hover",
+      "overlay": true,
+      "stretch": "none",
+      "logical_canvas": [
+        1024,
+        1536
+      ]
+    },
+    {
+      "id": "overlay_master_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_master_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_master_selected.svg",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "精绘主卡框 selected",
+      "overlay": true,
+      "stretch": "none",
+      "logical_canvas": [
+        1024,
+        1536
+      ]
+    },
+    {
+      "id": "overlay_master_target_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_master_target_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_master_target_candidate.svg",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "精绘主卡框 target_candidate",
+      "overlay": true,
+      "stretch": "none",
+      "logical_canvas": [
+        1024,
+        1536
+      ]
+    },
+    {
+      "id": "overlay_master_target_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_master_target_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_master_target_selected.svg",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "精绘主卡框 target_selected",
+      "overlay": true,
+      "stretch": "none",
+      "logical_canvas": [
+        1024,
+        1536
+      ]
+    },
+    {
+      "id": "overlay_master_cost_candidate",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_master_cost_candidate.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_master_cost_candidate.svg",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "精绘主卡框 cost_candidate",
+      "overlay": true,
+      "stretch": "none",
+      "logical_canvas": [
+        1024,
+        1536
+      ]
+    },
+    {
+      "id": "overlay_master_cost_selected",
+      "category": "interaction",
+      "file": "ui/a-gilded-v2/interaction/overlay_master_cost_selected.png",
+      "source": "design/a-gilded-v2/sources/interaction/overlay_master_cost_selected.svg",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "精绘主卡框 cost_selected",
+      "overlay": true,
+      "stretch": "none",
+      "logical_canvas": [
+        1024,
+        1536
+      ]
+    },
+    {
+      "id": "master_action",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/action.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "A 古籍金饰原始绘制：action",
+      "stretch": "none",
+      "provenance": {
+        "id": "action",
+        "file": "ui/a-gilded-v2/painted/action.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-200c49ec-42ed-47d2-9db1-a3401fe09180.png",
+        "prompt": "prompts/action.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "83d8079e952b128f77c5682a61655ef21dafee606eb83911777b9910208e9d64",
+      "raster_original_preserved": true,
+      "layout": {
+        "title": [
+          316,
+          119,
+          534,
+          70
+        ],
+        "school": [
+          320,
+          237,
+          310,
+          35
+        ],
+        "art": [
+          155,
+          308,
+          710,
+          445
+        ],
+        "stats_cells": [
+          [
+            126,
+            841,
+            225,
+            55
+          ],
+          [
+            396,
+            841,
+            225,
+            55
+          ],
+          [
+            666,
+            841,
+            225,
+            55
+          ],
+          [
+            126,
+            931,
+            225,
+            55
+          ],
+          [
+            396,
+            931,
+            225,
+            55
+          ],
+          [
+            666,
+            931,
+            225,
+            55
+          ]
+        ],
+        "rules": [
+          150,
+          1058,
+          720,
+          240
+        ],
+        "type": [
+          150,
+          1380,
+          330,
+          50
+        ],
+        "rarity_label": [
+          644,
+          1387,
+          110,
+          45
+        ],
+        "rarity_badge": [
+          761,
+          1338,
+          128,
+          128
+        ],
+        "rarity_pips": [
+          763,
+          1464,
+          126,
+          36
+        ]
+      },
+      "usage": "1024×1536 固定比例主卡框；透明插画窗；文字、数值、插画与稀有度独立叠加"
+    },
+    {
+      "id": "master_analytic",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/analytic.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "A 古籍金饰原始绘制：analytic",
+      "stretch": "none",
+      "provenance": {
+        "id": "analytic",
+        "file": "ui/a-gilded-v2/painted/analytic.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-bcf073e5-eb4f-4ebb-aa1e-40cea63d12d7.png",
+        "prompt": "prompts/analytic.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "1be671c7725ee8346e688d5ae1b43e058d88cbd41c83346ee88670f9c0b16ee6",
+      "raster_original_preserved": true,
+      "layout": {
+        "title": [
+          316,
+          119,
+          534,
+          70
+        ],
+        "school": [
+          320,
+          237,
+          310,
+          35
+        ],
+        "art": [
+          155,
+          308,
+          710,
+          445
+        ],
+        "stats_cells": [
+          [
+            126,
+            841,
+            225,
+            55
+          ],
+          [
+            396,
+            841,
+            225,
+            55
+          ],
+          [
+            666,
+            841,
+            225,
+            55
+          ],
+          [
+            126,
+            931,
+            225,
+            55
+          ],
+          [
+            396,
+            931,
+            225,
+            55
+          ],
+          [
+            666,
+            931,
+            225,
+            55
+          ]
+        ],
+        "rules": [
+          150,
+          1058,
+          720,
+          240
+        ],
+        "type": [
+          150,
+          1380,
+          330,
+          50
+        ],
+        "rarity_label": [
+          644,
+          1387,
+          110,
+          45
+        ],
+        "rarity_badge": [
+          761,
+          1338,
+          128,
+          128
+        ],
+        "rarity_pips": [
+          763,
+          1464,
+          126,
+          36
+        ]
+      },
+      "usage": "1024×1536 固定比例主卡框；透明插画窗；文字、数值、插画与稀有度独立叠加"
+    },
+    {
+      "id": "master_word",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/word.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "A 古籍金饰原始绘制：word",
+      "stretch": "none",
+      "provenance": {
+        "id": "word",
+        "file": "ui/a-gilded-v2/painted/word.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-8fac0611-796d-4477-9666-bbd7649d090b.png",
+        "prompt": "prompts/word.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "2d5ecfe4a2ea6f584c9436d118781201076fe369f1f8ab67cd337864517f05da",
+      "raster_original_preserved": true,
+      "layout": {
+        "title": [
+          316,
+          119,
+          534,
+          70
+        ],
+        "school": [
+          320,
+          237,
+          310,
+          35
+        ],
+        "art": [
+          155,
+          308,
+          710,
+          445
+        ],
+        "stats_cells": [
+          [
+            126,
+            841,
+            225,
+            55
+          ],
+          [
+            396,
+            841,
+            225,
+            55
+          ],
+          [
+            666,
+            841,
+            225,
+            55
+          ],
+          [
+            126,
+            931,
+            225,
+            55
+          ],
+          [
+            396,
+            931,
+            225,
+            55
+          ],
+          [
+            666,
+            931,
+            225,
+            55
+          ]
+        ],
+        "rules": [
+          150,
+          1058,
+          720,
+          240
+        ],
+        "type": [
+          150,
+          1380,
+          330,
+          50
+        ],
+        "rarity_label": [
+          644,
+          1387,
+          110,
+          45
+        ],
+        "rarity_badge": [
+          761,
+          1338,
+          128,
+          128
+        ],
+        "rarity_pips": [
+          763,
+          1464,
+          126,
+          36
+        ]
+      },
+      "usage": "1024×1536 固定比例主卡框；透明插画窗；文字、数值、插画与稀有度独立叠加"
+    },
+    {
+      "id": "master_formation",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/formation.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "A 古籍金饰原始绘制：formation",
+      "stretch": "none",
+      "provenance": {
+        "id": "formation",
+        "file": "ui/a-gilded-v2/painted/formation.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-d1672c0b-aa66-40e9-9e8f-ac58e1395cda.png",
+        "prompt": "prompts/formation.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "cb33f06dc80a14a467fc75f87b1227da4fc5affa4ac370146eb572326ffa2de8",
+      "raster_original_preserved": true,
+      "layout": {
+        "title": [
+          316,
+          119,
+          534,
+          70
+        ],
+        "school": [
+          320,
+          237,
+          310,
+          35
+        ],
+        "art": [
+          155,
+          308,
+          710,
+          445
+        ],
+        "stats_cells": [
+          [
+            126,
+            841,
+            225,
+            55
+          ],
+          [
+            396,
+            841,
+            225,
+            55
+          ],
+          [
+            666,
+            841,
+            225,
+            55
+          ],
+          [
+            126,
+            931,
+            225,
+            55
+          ],
+          [
+            396,
+            931,
+            225,
+            55
+          ],
+          [
+            666,
+            931,
+            225,
+            55
+          ]
+        ],
+        "rules": [
+          150,
+          1058,
+          720,
+          240
+        ],
+        "type": [
+          150,
+          1380,
+          330,
+          50
+        ],
+        "rarity_label": [
+          644,
+          1387,
+          110,
+          45
+        ],
+        "rarity_badge": [
+          761,
+          1338,
+          128,
+          128
+        ],
+        "rarity_pips": [
+          763,
+          1464,
+          126,
+          36
+        ]
+      },
+      "usage": "1024×1536 固定比例主卡框；透明插画窗；文字、数值、插画与稀有度独立叠加"
+    },
+    {
+      "id": "master_seal",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/seal.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "A 古籍金饰原始绘制：seal",
+      "stretch": "none",
+      "provenance": {
+        "id": "seal",
+        "file": "ui/a-gilded-v2/painted/seal.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-2b6bb090-ca7c-45b0-a989-60e959456a28.png",
+        "prompt": "prompts/seal.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "8c1befcee9833aa3e460f588e395cbdfea83c9c4cfdc2327496e448043b7e6db",
+      "raster_original_preserved": true,
+      "layout": {
+        "title": [
+          316,
+          119,
+          534,
+          70
+        ],
+        "school": [
+          320,
+          237,
+          310,
+          35
+        ],
+        "art": [
+          155,
+          308,
+          710,
+          445
+        ],
+        "stats_cells": [
+          [
+            126,
+            841,
+            225,
+            55
+          ],
+          [
+            396,
+            841,
+            225,
+            55
+          ],
+          [
+            666,
+            841,
+            225,
+            55
+          ],
+          [
+            126,
+            931,
+            225,
+            55
+          ],
+          [
+            396,
+            931,
+            225,
+            55
+          ],
+          [
+            666,
+            931,
+            225,
+            55
+          ]
+        ],
+        "rules": [
+          150,
+          1058,
+          720,
+          240
+        ],
+        "type": [
+          150,
+          1380,
+          330,
+          50
+        ],
+        "rarity_label": [
+          644,
+          1387,
+          110,
+          45
+        ],
+        "rarity_badge": [
+          761,
+          1338,
+          128,
+          128
+        ],
+        "rarity_pips": [
+          763,
+          1464,
+          126,
+          36
+        ]
+      },
+      "usage": "1024×1536 固定比例主卡框；透明插画窗；文字、数值、插画与稀有度独立叠加"
+    },
+    {
+      "id": "master_back",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/back.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "purpose": "A 古籍金饰原始绘制：back",
+      "stretch": "none",
+      "provenance": {
+        "id": "back",
+        "file": "ui/a-gilded-v2/painted/back.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-cde06666-4ddb-43e3-9dca-6da75d2cd460.png",
+        "prompt": "prompts/back.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "a2724bc6bf1cd48e3af9a61c5ec8068b034f3cdca8e2dd5502e2a234eb87daf1",
+      "raster_original_preserved": true
+    },
+    {
+      "id": "master_window",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/window.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "purpose": "A 古籍金饰原始绘制：window",
+      "stretch": "none",
+      "provenance": {
+        "id": "window",
+        "file": "ui/a-gilded-v2/painted/window.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-a52362f5-ada4-416f-92b4-b3eed04fbb38.png",
+        "prompt": "prompts/window.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "b35784ba195e391ec7c0ce5695c530fb186727125490030cb1d8b28800a8ced8",
+      "raster_original_preserved": true,
+      "layout": {
+        "title": [
+          320,
+          110,
+          880,
+          68
+        ],
+        "content": [
+          160,
+          280,
+          1216,
+          520
+        ]
+      }
+    },
+    {
+      "id": "master_gem_common",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/gem_common.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "purpose": "A 古籍金饰原始绘制：gem_common",
+      "stretch": "none",
+      "provenance": {
+        "id": "gem_common",
+        "file": "ui/a-gilded-v2/painted/gem_common.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-74f7266d-f262-48bb-b012-fe35f72ebaf7.png",
+        "prompt": "prompts/gem_common.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "7ed5e23d44a5f08c4edf505e195b9af56d4585065da468bc74295b55fe6726a4",
+      "raster_original_preserved": true,
+      "rarity": "common",
+      "usage": "精绘稀有度徽章；保持比例；与独立刻度及名称组合"
+    },
+    {
+      "id": "master_gem_uncommon",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/gem_uncommon.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "purpose": "A 古籍金饰原始绘制：gem_uncommon",
+      "stretch": "none",
+      "provenance": {
+        "id": "gem_uncommon",
+        "file": "ui/a-gilded-v2/painted/gem_uncommon.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-c406bb8d-1fdb-4c6a-ad93-2a4797879314.png",
+        "prompt": "prompts/gem_uncommon.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "0f183f4f7bf684e07caaada80045953e52fdcad8116b4961affee6965158916e",
+      "raster_original_preserved": true,
+      "rarity": "uncommon",
+      "usage": "精绘稀有度徽章；保持比例；与独立刻度及名称组合"
+    },
+    {
+      "id": "master_gem_rare",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/gem_rare.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "purpose": "A 古籍金饰原始绘制：gem_rare",
+      "stretch": "none",
+      "provenance": {
+        "id": "gem_rare",
+        "file": "ui/a-gilded-v2/painted/gem_rare.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-e81d922e-7192-41a0-ab4c-137d57fdc4e7.png",
+        "prompt": "prompts/gem_rare.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "b9077612ab23da65610952959c7eaec01869c21a16d7c8ea7b950da41e1f2a7e",
+      "raster_original_preserved": true,
+      "rarity": "rare",
+      "usage": "精绘稀有度徽章；保持比例；与独立刻度及名称组合"
+    },
+    {
+      "id": "master_gem_epic",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/gem_epic.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "purpose": "A 古籍金饰原始绘制：gem_epic",
+      "stretch": "none",
+      "provenance": {
+        "id": "gem_epic",
+        "file": "ui/a-gilded-v2/painted/gem_epic.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-2b192256-ef88-4c8e-ba6e-56194e14b1fa.png",
+        "prompt": "prompts/gem_epic.txt",
+        "generator": "built-in imagegen"
+      },
+      "sha256": "0be58079eea9231ed39c73c9fe41792929890e6b506bdbbe0abc6f62df19fc70",
+      "raster_original_preserved": true,
+      "rarity": "epic",
+      "usage": "精绘稀有度徽章；保持比例；与独立刻度及名称组合"
+    },
+    {
+      "id": "master_gem_legendary",
+      "category": "painted",
+      "file": "ui/a-gilded-v2/painted/gem_legendary.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "purpose": "A 古籍金饰原始绘制：gem_legendary",
+      "stretch": "none",
+      "provenance": {
+        "id": "gem_legendary",
+        "file": "ui/a-gilded-v2/painted/gem_legendary.png",
+        "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-a6ec36cf-a958-419f-b6c3-1c3acca7616e.png",
+        "prompt": "prompts/gem_legendary-golden-edit.txt",
+        "generator": "built-in imagegen",
+        "edit_target": "revisions/legendary-jade.png",
+        "gem_color": "golden yellow"
+      },
+      "sha256": "82dae794ebada5bd8d977bd8256245a9395ee5b060083c8cc7e0b08f5ab02adc",
+      "raster_original_preserved": true,
+      "rarity": "legendary",
+      "usage": "精绘稀有度徽章；保持比例；与独立刻度及名称组合"
+    }
+  ]
+}

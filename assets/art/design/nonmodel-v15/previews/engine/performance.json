@@ -1,0 +1,15 @@
+{
+	"adapter": "NVIDIA GeForce RTX 4070 Laptop GPU",
+	"cardTextures": 11,
+	"meanFrameMs": 1.5386,
+	"note": "GPU offscreen render including host window; static art review, 30 samples; not full gameplay or native DPI acceptance",
+	"p95FrameMs": 2.253,
+	"renderer": "gl_compatibility",
+	"resolution": [
+		1920,
+		1080
+	],
+	"samples": 30,
+	"sceneCards": 32,
+	"videoMemoryBytes": 375569687.0
+}

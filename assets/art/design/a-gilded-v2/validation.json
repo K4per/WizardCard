@@ -1,0 +1,17 @@
+{
+  "assets": 314,
+  "transparent_pngs": 308,
+  "native_svgs": 301,
+  "original_painted_assets": 12,
+  "painted_sources_unchanged": true,
+  "transparent_master_art_apertures": true,
+  "svg_refs_resolve": true,
+  "cards_previewed": 30,
+  "all_rule_text_fits": true,
+  "max_rule_lines": 3,
+  "rarity_pips_match_five_tiers": true,
+  "nine_slice_centers_positive": true,
+  "legendary_gem_color": "golden yellow",
+  "required_five_regions_present": true,
+  "runtime_integrated": false
+}

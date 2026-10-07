@@ -1,0 +1,13 @@
+{
+  "assets": 232,
+  "transparent_pngs": 226,
+  "svg_parsed": 231,
+  "cards_previewed": 30,
+  "max_rule_lines": 4,
+  "all_current_rule_text_fits": true,
+  "titles_fit": true,
+  "svg_image_links_resolve": true,
+  "native_components_binary_alpha": true,
+  "full_frame_art_windows_transparent": true,
+  "runtime_integrated": false
+}

@@ -1,0 +1,108 @@
+{
+  "rulesVersion": "1.0.0",
+  "cardSetVersion": "1.0.0",
+  "cardCount": 30,
+  "sourceReplay": "alpha-ai.json",
+  "sourceStep": 107,
+  "sourceDigest": "e29340b65f50cad7",
+  "outputs": [
+    {
+      "page": "title",
+      "label": "标题",
+      "width": 1920,
+      "height": 1080,
+      "file": "title-1920x1080.png"
+    },
+    {
+      "page": "match",
+      "label": "复杂对局场地",
+      "width": 1920,
+      "height": 1080,
+      "file": "match-1920x1080.png"
+    },
+    {
+      "page": "editor",
+      "label": "卡组编辑器",
+      "width": 1920,
+      "height": 1080,
+      "file": "editor-1920x1080.png"
+    },
+    {
+      "page": "states",
+      "label": "状态流程",
+      "width": 1920,
+      "height": 1080,
+      "file": "states-1920x1080.png"
+    },
+    {
+      "page": "title",
+      "label": "标题",
+      "width": 1280,
+      "height": 720,
+      "file": "title-1280x720.png"
+    },
+    {
+      "page": "match",
+      "label": "复杂对局场地",
+      "width": 1280,
+      "height": 720,
+      "file": "match-1280x720.png"
+    },
+    {
+      "page": "editor",
+      "label": "卡组编辑器",
+      "width": 1280,
+      "height": 720,
+      "file": "editor-1280x720.png"
+    },
+    {
+      "page": "states",
+      "label": "状态流程",
+      "width": 1280,
+      "height": 720,
+      "file": "states-1280x720.png"
+    },
+    {
+      "page": "title",
+      "label": "标题",
+      "width": 1600,
+      "height": 1000,
+      "file": "title-1600x1000.png"
+    },
+    {
+      "page": "match",
+      "label": "复杂对局场地",
+      "width": 1600,
+      "height": 1000,
+      "file": "match-1600x1000.png"
+    },
+    {
+      "page": "editor",
+      "label": "卡组编辑器",
+      "width": 1600,
+      "height": 1000,
+      "file": "editor-1600x1000.png"
+    },
+    {
+      "page": "states",
+      "label": "状态流程",
+      "width": 1600,
+      "height": 1000,
+      "file": "states-1600x1000.png"
+    }
+  ],
+  "palette": {
+    "bg": "#0A1119",
+    "surface": "#101923",
+    "raised": "#192D38",
+    "line": "#364E59",
+    "gold": "#C49A5A",
+    "bright": "#F2DBA0",
+    "teal": "#72D7C5",
+    "quiet": "#A4B4CB",
+    "text": "#E7E5D5",
+    "red": "#ED8A78",
+    "blue": "#629ED2",
+    "purple": "#AD91D8"
+  }
+}

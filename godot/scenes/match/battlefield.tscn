@@ -1,0 +1,130 @@
+[gd_scene load_steps=10 format=3]
+[ext_resource type="Script" path="res://scripts/match/wizard_battlefield.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/match/table_3d.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/match/zone_3d.tscn" id="3"]
+[ext_resource type="Script" path="res://scripts/match/wizard_table_surface.gd" id="4"]
+[ext_resource type="Environment" path="res://art/nonmodel/a-gilded-v15/lighting/environment.tres" id="env"]
+[ext_resource type="PackedScene" path="res://art/nonmodel/a-gilded-v15/effects/ambient_dust.tscn" id="dust"]
+[ext_resource type="PackedScene" path="res://art/nonmodel/a-gilded-v15/effects/ambient_runes.tscn" id="runes"]
+[sub_resource type="PlaneMesh" id="Slot"]
+size = Vector2(1.5, 2.4)
+
+[node name="Battlefield" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+[node name="ViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+[node name="Viewport" type="SubViewport" parent="ViewportContainer"]
+handle_input_locally = false
+size = Vector2i(900, 500)
+render_target_update_mode = 4
+own_world_3d = true
+[node name="World" type="Node3D" parent="ViewportContainer/Viewport"]
+[node name="Table" parent="ViewportContainer/Viewport/World" instance=ExtResource("2")]
+[node name="Environment" type="WorldEnvironment" parent="ViewportContainer/Viewport/World"]
+environment = ExtResource("env")
+[node name="Light" type="DirectionalLight3D" parent="ViewportContainer/Viewport/World"]
+rotation_degrees = Vector3(-65, -20, 0)
+light_color = Color(1, 0.9, 0.73, 1)
+light_energy = 1.1
+shadow_enabled = true
+[node name="Fill" type="OmniLight3D" parent="ViewportContainer/Viewport/World"]
+position = Vector3(8, 5, -5)
+light_color = Color(0.45, 0.75, 0.7, 1)
+light_energy = 0.35
+omni_range = 12.0
+[node name="Ambient" type="Node3D" parent="ViewportContainer/Viewport/World"]
+[node name="Dust" parent="ViewportContainer/Viewport/World/Ambient" instance=ExtResource("dust")]
+position = Vector3(-9.1, 0.4, 0)
+scale = Vector3(1.0, 1.0, 3.0)
+[node name="Runes" parent="ViewportContainer/Viewport/World/Ambient" instance=ExtResource("runes")]
+position = Vector3(9.0, 0.04, 0)
+scale = Vector3(0.45, 1.0, 0.45)
+[node name="Camera" type="Camera3D" parent="ViewportContainer/Viewport/World"]
+position = Vector3(0, 22, 16)
+rotation_degrees = Vector3(-54, 0, 0)
+current = true
+fov = 38.0
+[node name="Zones" type="Node3D" parent="ViewportContainer/Viewport/World"]
+[node name="OwnAnalysis" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(-2.8, 0, 3.4)
+dimensions = Vector2(8.7, 3.5)
+[node name="OwnCasting" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(0, 0, 0.85)
+zone = 5
+title_text = "施法区"
+dimensions = Vector2(14.3, 1.65)
+texture_key = "region_casting"
+[node name="OwnWords" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(4.6, 0, 2.65)
+zone = 4
+title_text = "言灵区"
+dimensions = Vector2(5.7, 1.65)
+texture_key = "region_words"
+[node name="OwnAction" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(4.6, 0, 4.4)
+zone = 2
+title_text = "行动区"
+dimensions = Vector2(5.7, 1.65)
+texture_key = "region_action"
+[node name="OwnAsh" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(4.6, 0, 6.1)
+zone = 6
+title_text = "灰烬区"
+dimensions = Vector2(5.7, 1.5)
+texture_key = "region_ash"
+[node name="OpponentAnalysis" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(2.8, 0, -3.4)
+player_side = 1
+dimensions = Vector2(8.7, 3.5)
+[node name="OpponentCasting" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(0, 0, -0.85)
+player_side = 1
+zone = 5
+title_text = "施法区"
+dimensions = Vector2(14.3, 1.65)
+texture_key = "region_casting"
+[node name="OpponentWords" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(-4.6, 0, -2.65)
+player_side = 1
+zone = 4
+title_text = "言灵区"
+dimensions = Vector2(5.7, 1.65)
+texture_key = "region_words"
+[node name="OpponentAction" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(-4.6, 0, -4.4)
+player_side = 1
+zone = 2
+title_text = "行动区"
+dimensions = Vector2(5.7, 1.65)
+texture_key = "region_action"
+[node name="OpponentAsh" parent="ViewportContainer/Viewport/World/Zones" instance=ExtResource("3")]
+position = Vector3(-4.6, 0, -6.1)
+player_side = 1
+zone = 6
+title_text = "灰烬区"
+dimensions = Vector2(5.7, 1.5)
+texture_key = "region_ash"
+[node name="Cards" type="Node3D" parent="ViewportContainer/Viewport/World"]
+[node name="Effects" type="Node3D" parent="ViewportContainer/Viewport/World"]
+[node name="Surface" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("4")

@@ -24,6 +24,7 @@ private:
     Content content_; MatchConfig config_; GameEngine engine_; std::vector<RecordedCommand> commands_;
 };
 GameEngine replay(const Content&,const Json&);
+bool compatibleReplayProgram(const std::string&);
 Json readJson(const std::filesystem::path&);
 void writeJson(const std::filesystem::path&,const Json&);
 }

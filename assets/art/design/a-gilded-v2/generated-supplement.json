@@ -1,0 +1,39 @@
+[
+  {
+    "id": "gem_common",
+    "file": "ui/a-gilded-v2/painted/gem_common.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-74f7266d-f262-48bb-b012-fe35f72ebaf7.png",
+    "prompt": "prompts/gem_common.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "gem_uncommon",
+    "file": "ui/a-gilded-v2/painted/gem_uncommon.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-c406bb8d-1fdb-4c6a-ad93-2a4797879314.png",
+    "prompt": "prompts/gem_uncommon.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "gem_rare",
+    "file": "ui/a-gilded-v2/painted/gem_rare.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-e81d922e-7192-41a0-ab4c-137d57fdc4e7.png",
+    "prompt": "prompts/gem_rare.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "gem_epic",
+    "file": "ui/a-gilded-v2/painted/gem_epic.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-2b192256-ef88-4c8e-ba6e-56194e14b1fa.png",
+    "prompt": "prompts/gem_epic.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "gem_legendary",
+    "file": "ui/a-gilded-v2/painted/gem_legendary.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-a6ec36cf-a958-419f-b6c3-1c3acca7616e.png",
+    "prompt": "prompts/gem_legendary-golden-edit.txt",
+    "generator": "built-in imagegen",
+    "edit_target": "revisions/legendary-jade.png",
+    "gem_color": "golden yellow"
+  }
+]

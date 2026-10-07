@@ -1,0 +1,51 @@
+[
+  {
+    "id": "action",
+    "file": "ui/a-gilded-v2/painted/action.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-200c49ec-42ed-47d2-9db1-a3401fe09180.png",
+    "prompt": "prompts/action.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "analytic",
+    "file": "ui/a-gilded-v2/painted/analytic.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-bcf073e5-eb4f-4ebb-aa1e-40cea63d12d7.png",
+    "prompt": "prompts/analytic.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "word",
+    "file": "ui/a-gilded-v2/painted/word.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-8fac0611-796d-4477-9666-bbd7649d090b.png",
+    "prompt": "prompts/word.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "formation",
+    "file": "ui/a-gilded-v2/painted/formation.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-d1672c0b-aa66-40e9-9e8f-ac58e1395cda.png",
+    "prompt": "prompts/formation.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "seal",
+    "file": "ui/a-gilded-v2/painted/seal.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-2b6bb090-ca7c-45b0-a989-60e959456a28.png",
+    "prompt": "prompts/seal.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "back",
+    "file": "ui/a-gilded-v2/painted/back.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-cde06666-4ddb-43e3-9dca-6da75d2cd460.png",
+    "prompt": "prompts/back.txt",
+    "generator": "built-in imagegen"
+  },
+  {
+    "id": "window",
+    "file": "ui/a-gilded-v2/painted/window.png",
+    "original_source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-a52362f5-ada4-416f-92b4-b3eed04fbb38.png",
+    "prompt": "prompts/window.txt",
+    "generator": "built-in imagegen"
+  }
+]

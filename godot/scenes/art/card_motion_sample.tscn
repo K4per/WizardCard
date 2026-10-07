@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="PackedScene" path="res://scenes/match/card_3d.tscn" id="card"]
+[ext_resource type="AnimationLibrary" path="res://art/nonmodel/a-gilded-v15/animations/card_and_match.tres" id="animations"]
+[node name="CardMotionSample" type="Node3D"]
+[node name="Visual" parent="." instance=ExtResource("card")]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {&"": ExtResource("animations")}

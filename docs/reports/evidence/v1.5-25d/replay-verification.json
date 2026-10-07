@@ -1,0 +1,47 @@
+[
+  {
+    "digest": "78116a78d64b0d90",
+    "mode": "hotseat",
+    "ok": true,
+    "replay": "E:/Project/WizardCard/build/godot-release/local_smoke_data\\replays\\match-17913802039022038-1.json",
+    "steps": 289,
+    "archivedReplay": "docs/reports/evidence/v1.5-25d/smoke-replay.json",
+    "cliVerification": "78116a78d64b0d90"
+  },
+  {
+    "digest": "a68e39c35218b106",
+    "mode": "ai",
+    "ok": true,
+    "replay": "E:/Project/WizardCard/build/godot-release/local_ai_match_data\\replays\\match-17913802713840958-1.json",
+    "steps": 308,
+    "archivedReplay": "docs/reports/evidence/v1.5-25d/ai_match-replay.json",
+    "cliVerification": "a68e39c35218b106"
+  },
+  {
+    "digest": "8f5a7c7abe95150e",
+    "mode": "tutorial",
+    "ok": true,
+    "replay": "E:/Project/WizardCard/build/godot-release/local_tutorial_smoke_data\\replays\\match-17913802988914641-1.json",
+    "steps": 48,
+    "archivedReplay": "docs/reports/evidence/v1.5-25d/tutorial_smoke-replay.json",
+    "cliVerification": "8f5a7c7abe95150e"
+  },
+  {
+    "digest": "6062cfa9ed89b1c8",
+    "mode": "ai",
+    "ok": true,
+    "replay": "E:/Project/WizardCard/build/godot-release/local_ai_0_data\\replays\\match-17913803039792967-1.json",
+    "steps": 323,
+    "archivedReplay": "docs/reports/evidence/v1.5-25d/ai_0-replay.json",
+    "cliVerification": "6062cfa9ed89b1c8"
+  },
+  {
+    "digest": "32bf3d92220e3507",
+    "mode": "ai",
+    "ok": true,
+    "replay": "E:/Project/WizardCard/build/godot-release/local_ai_2_data\\replays\\match-17913803571068084-1.json",
+    "steps": 318,
+    "archivedReplay": "docs/reports/evidence/v1.5-25d/ai_2-replay.json",
+    "cliVerification": "32bf3d92220e3507"
+  }
+]

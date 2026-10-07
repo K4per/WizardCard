@@ -1,0 +1,212 @@
+[
+  {
+    "id": "balance",
+    "rules_end_y": 1109,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 6
+  },
+  {
+    "id": "fireball",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "barbs",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 3
+  },
+  {
+    "id": "recall",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 2
+  },
+  {
+    "id": "ring",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 2
+  },
+  {
+    "id": "spark",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 3
+  },
+  {
+    "id": "mend",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "unravel",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "disrupt",
+    "rules_end_y": 1109,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 2
+  },
+  {
+    "id": "clarity",
+    "rules_end_y": 1109,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 2
+  },
+  {
+    "id": "reservoir",
+    "rules_end_y": 1109,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 6
+  },
+  {
+    "id": "conduit",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 2
+  },
+  {
+    "id": "ward",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "messy-wave",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 6
+  },
+  {
+    "id": "instantly-sleep",
+    "rules_end_y": 1109,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "magic-missile",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "aid",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "counter-spell",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 3
+  },
+  {
+    "id": "true-strike",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 3
+  },
+  {
+    "id": "protective-flame",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 3
+  },
+  {
+    "id": "pentagram-of-life",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "engeas-four-point-star",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "uplift",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 1
+  },
+  {
+    "id": "instant-circuit-overload",
+    "rules_end_y": 1211,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 1
+  },
+  {
+    "id": "ray-of-frost",
+    "rules_end_y": 1109,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "lightning-bolt",
+    "rules_end_y": 1109,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "lesser-restoration",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "false-life",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 5
+  },
+  {
+    "id": "arcane-recovery",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 2
+  },
+  {
+    "id": "shield",
+    "rules_end_y": 1160,
+    "rules_limit_y": 1298,
+    "title_size": 48,
+    "stat_count": 3
+  }
+]

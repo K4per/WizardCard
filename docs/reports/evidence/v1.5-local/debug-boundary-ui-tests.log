@@ -1,0 +1,15 @@
+[HANDLER_OUTPUT] 
+Test project E:/Project/WizardCard/build/godot-debug
+
+    Start 187: godot_import
+1/4 Test #187: godot_import .....................   Passed    3.01 sec
+    Start 188: godot_bridge_boundary
+2/4 Test #188: godot_bridge_boundary ............   Passed    0.40 sec
+    Start 189: godot_local_ui
+3/4 Test #189: godot_local_ui ...................   Passed    1.15 sec
+    Start 190: godot_bridge_alpha_replay
+4/4 Test #190: godot_bridge_alpha_replay ........   Passed    0.59 sec
+
+100% tests passed, 0 tests failed out of 4
+
+Total Test time (real) =   5.16 sec

@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "branch": "dev",
+  "baseCommit": "9b28172",
+  "worktree": "uncommitted",
+  "programVersion": "1.5.0-dev",
+  "rulesVersion": "1.0.0",
+  "cardSetVersion": "1.0.0",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "godotCppCommit": "507ed9d840c01a3c5b2a39af8bb4000bfac30bf5",
+  "results": {
+    "finalRelease": 197,
+    "templateDebugRelease": 9,
+    "msvcDebugBoundary": 3,
+    "nativeDebugBridge": 9
+  },
+  "dllFiles": [
+    {
+      "file": "wizard_godot_bridge.debug.dll",
+      "bytes": 3951104,
+      "sha256": "e18a0a356b1ddb936a7ceb86e54df625c509fb6d4ce58123f325146cd0f43103"
+    },
+    {
+      "file": "wizard_godot_bridge.release.dll",
+      "bytes": 795648,
+      "sha256": "85366af42a8c65080fb1f559facd2f361dd590808f7a1d20cc8418c0e04b4852"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "file": "bridge-model-debug-tests.log",
+      "bytes": 2189,
+      "sha256": "2ce6632cba71a0ac75738cf1429bb55583b5a40b7bff00614d4f77b057417a1c"
+    },
+    {
+      "file": "godot-ai_match-replay.json",
+      "bytes": 1066092,
+      "sha256": "9a38a6d844fd307a7ab7a9da8a0e04ad6d517767e08c86d35f5adfe459c43b1b"
+    },
+    {
+      "file": "godot-smoke-replay.json",
+      "bytes": 1002643,
+      "sha256": "50a6b88320ab34515b0e7475d5fc7f2340aa1cbc1e3f8952373f831b5c98dd23"
+    },
+    {
+      "file": "godot-tutorial_smoke-replay.json",
+      "bytes": 181745,
+      "sha256": "9646815f2bb083b555f2d30ee4e8c0cd2f08e5abf202f8950f5fcc3357d3d352"
+    },
+    {
+      "file": "lab-capture.log",
+      "bytes": 206,
+      "sha256": "cd71e77268bce8fbd3c335177b66582af66db0e3eb06e3c804ce66591fb82c7c"
+    },
+    {
+      "file": "lab-live.png",
+      "bytes": 127977,
+      "sha256": "0d4d0f12d655747fe9a9c3fc4a6dd17b64db6007594dfc85caccc6cdfd37c525"
+    },
+    {
+      "file": "msvc-debug-boundary.log",
+      "bytes": 579,
+      "sha256": "2f5f4739f06a41e4b781000a0bfc4caec0bfa6373768c00010c1b559155b73b5"
+    },
+    {
+      "file": "release-tests.log",
+      "bytes": 49834,
+      "sha256": "8616f9023633458e0d7797dd88ba7e63ef24c7459ccb6c0a1321511f04bbd33c"
+    },
+    {
+      "file": "template-debug-tests.log",
+      "bytes": 1254,
+      "sha256": "e2057752fce499d5a58c52239c5e5e631a551377b368ccce718d5fea0c2a2176"
+    }
+  ]
+}

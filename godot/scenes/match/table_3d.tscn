@@ -1,0 +1,23 @@
+[gd_scene load_steps=7 format=3]
+[ext_resource type="Material" path="res://art/nonmodel/a-gilded-v15/materials/dark_wood.tres" id="wood"]
+[ext_resource type="Material" path="res://art/nonmodel/a-gilded-v15/materials/antique_gold.tres" id="gold"]
+[ext_resource type="Material" path="res://art/nonmodel/a-gilded-v15/materials/leather.tres" id="leather"]
+[sub_resource type="BoxMesh" id="Table"]
+size = Vector3(19, 0.55, 14)
+[sub_resource type="BoxMesh" id="Rim"]
+size = Vector3(19.3, 0.2, 14.3)
+[sub_resource type="PlaneMesh" id="Cloth"]
+size = Vector2(18.7, 13.7)
+[node name="Table3D" type="Node3D"]
+[node name="Base" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.38, 0)
+mesh = SubResource("Table")
+material_override = ExtResource("wood")
+[node name="GoldRim" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.17, 0)
+mesh = SubResource("Rim")
+material_override = ExtResource("gold")
+[node name="Cloth" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.06, 0)
+mesh = SubResource("Cloth")
+material_override = ExtResource("leather")

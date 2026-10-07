@@ -1,0 +1,28 @@
+[OUTPUT] 
+Internal ctest changing into directory: E:/Project/WizardCard/build/godot-debug
+
+[HANDLER_OUTPUT] 
+Test project E:/Project/WizardCard/build/godot-debug
+
+    Start 187: godot_import
+1/9 Test #187: godot_import .....................   Passed    2.58 sec
+    Start 188: godot_bridge_boundary
+2/9 Test #188: godot_bridge_boundary ............   Passed    0.21 sec
+    Start 189: godot_bridge_alpha_replay
+3/9 Test #189: godot_bridge_alpha_replay ........   Passed    0.30 sec
+    Start 190: godot_reference_smoke
+4/9 Test #190: godot_reference_smoke ............   Passed    2.03 sec
+    Start 191: godot_bridge_smoke
+5/9 Test #191: godot_bridge_smoke ...............   Passed   13.81 sec
+    Start 192: godot_reference_ai_match
+6/9 Test #192: godot_reference_ai_match .........   Passed    2.34 sec
+    Start 193: godot_bridge_ai_match
+7/9 Test #193: godot_bridge_ai_match ............   Passed   13.82 sec
+    Start 194: godot_reference_tutorial_smoke
+8/9 Test #194: godot_reference_tutorial_smoke ...   Passed    0.37 sec
+    Start 195: godot_bridge_tutorial_smoke
+9/9 Test #195: godot_bridge_tutorial_smoke ......   Passed    1.24 sec
+
+100% tests passed, 0 tests failed out of 9
+
+Total Test time (real) =  36.72 sec

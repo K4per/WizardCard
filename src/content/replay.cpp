@@ -181,8 +181,12 @@ Json MatchSession::recording() const {
 void MatchSession::save(const std::filesystem::path &path) const {
     writeJson(path, recording());
 }
+bool compatibleReplayProgram(const std::string &version) {
+    // Only these builds are covered by cross-frontend replay regression tests.
+    return version == programVersion || version == "1.0.0-alpha";
+}
 GameEngine replay(const Content &c, const Json &j) {
-    if (j.at("format") != 2 || j.at("programVersion") != programVersion ||
+    if (j.at("format") != 2 || !compatibleReplayProgram(j.at("programVersion").get<std::string>()) ||
         j.at("rulesVersion") != c.catalog.rulesVersion ||
         j.at("cardSetVersion") != c.catalog.cardSetVersion || j.at("contentHash") != c.catalog.contentHash)
         throw std::runtime_error("incompatible replay version or content hash");

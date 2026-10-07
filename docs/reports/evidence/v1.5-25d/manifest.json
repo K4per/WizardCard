@@ -1,0 +1,565 @@
+{
+  "date": "2026-10-07",
+  "releaseTests": 210,
+  "releaseFailures": 0,
+  "debugFocusedTests": 5,
+  "sceneInputAssertions": 33,
+  "status": "Implemented; manual native DPI/input and sustained full-match performance acceptance pending",
+  "files": [
+    {
+      "path": "cmake/GodotBridge.cmake",
+      "bytes": 9926,
+      "sha256": "402d6fffa89a459cedec693a1083d9896e15aca86b6ca459bea1ff4d691002bb"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 5359,
+      "sha256": "8499d5dd68d3edc4da7a85b73c59f2478020dc94cd9d02cea632c8997956f2eb"
+    },
+    {
+      "path": "CMakePresets.json",
+      "bytes": 2268,
+      "sha256": "7b4e533afda8de6a9922433ea99f9ab9e9afb3e8ffeeab12ee67c31b20b5b935"
+    },
+    {
+      "path": "docs/architecture.md",
+      "bytes": 16745,
+      "sha256": "a72e20d4f891429f5a256e57587ad9c3440b80822774e8eeddb00282ead07a38"
+    },
+    {
+      "path": "docs/plans/v1.5-stages.md",
+      "bytes": 7020,
+      "sha256": "b433440e321f47a5f44e3c17d6b654cff0cb10d1f6c0b16a304f2a506c75383a"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/ai_0-replay.json",
+      "bytes": 1089390,
+      "sha256": "5d1a0794a0c031b8605a46d7c9122f67c78b97d4f3925a821b7417fdeddcc6b9"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/ai_2-replay.json",
+      "bytes": 1072699,
+      "sha256": "01f0502de6cb8538ad38f4c54ad372f39eb73751a86d27a367bd4df3837863eb"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/ai_match-replay.json",
+      "bytes": 1066092,
+      "sha256": "9a38a6d844fd307a7ab7a9da8a0e04ad6d517767e08c86d35f5adfe459c43b1b"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/assets-check.json",
+      "bytes": 286,
+      "sha256": "186fb23a8963e2ad3649393bde4d9c07d1d280c5e76b1355d5bda5c6ef91be25"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/card-detail.png",
+      "bytes": 669835,
+      "sha256": "966178e014ad7e728e215a7017b40db93cc9e37a9275fcc94f1fa5390d913a08"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/debug-final-tests.log",
+      "bytes": 673,
+      "sha256": "cb241da41f7bd7122246a9a7266627739741bcf84cba0c833cfaf89bbcf6a734"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/effect-layout-synthetic.png",
+      "bytes": 669835,
+      "sha256": "966178e014ad7e728e215a7017b40db93cc9e37a9275fcc94f1fa5390d913a08"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/gpu-capture.log",
+      "bytes": 555,
+      "sha256": "1842c0a66e8daa790d64d77439ae5a309eb6a2e53968926163410c0632697307"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/gpu-capture.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/handoff.png",
+      "bytes": 21867,
+      "sha256": "570d079007d84bb99af9d2f9a42ce2ef7aa6f596fcfb6cdc171835c35ad949c0"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/local-ui-tests.log",
+      "bytes": 125,
+      "sha256": "3d2923279454814e0cee112bd3b95ca487a127d2e047db8a24be1378891f0e6a"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/logical-scale-150-percent.png",
+      "bytes": 804297,
+      "sha256": "dea5e4ac0e131ad655ec8de2525e1237f322daf1735e3a38f9cef36609be3b73"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/match-1280x720.png",
+      "bytes": 258083,
+      "sha256": "0da504dbed6f67a2e641cacbc71afd71ffc47227e56fe3a7e6dd7aa5efa2df6a"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/match-1600x1000.png",
+      "bytes": 434191,
+      "sha256": "3d83d34ad6906b95723553c75c258d038950dc68d9f5705b444860a533967ce8"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/match-1920x1080.png",
+      "bytes": 503222,
+      "sha256": "26d21e9126ca75ede9fdcf9a45dfb22899c261683baae23db0cd7cdf99b5b333"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/opening-1280x720.png",
+      "bytes": 267954,
+      "sha256": "44b36aa3eff2b23cec1d9a4c8fb095fe0ff7eb51e58377b855cba8a1f8bb8ad0"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/performance.json",
+      "bytes": 391,
+      "sha256": "a1e274b5e5e364a40df4b6058a3108dd80951028a18c7d00485a1abd9244a550"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/release-final-tests.log",
+      "bytes": 52543,
+      "sha256": "76415d7caf705215bc19238bc2ca4c459dc2d4b317ff1b19eb516035ffbf8c47"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/replay-verification.json",
+      "bytes": 1720,
+      "sha256": "55ff0dab05ba43e1baffa6fcf93ebbe042538551bff20853d8122f636cc631af"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/scene-input-tests.log",
+      "bytes": 105,
+      "sha256": "a1cf045d523d5077f8104749107bb3a1f809514a179f35904b7cc8f85cbeef66"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/settings.png",
+      "bytes": 93304,
+      "sha256": "46b201b6d4ef1c1f30763b8a907885e01ed9a17f4cb58669d5a02893ce646e01"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/smoke-replay.json",
+      "bytes": 1002643,
+      "sha256": "50a6b88320ab34515b0e7475d5fc7f2340aa1cbc1e3f8952373f831b5c98dd23"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/source-import.log",
+      "bytes": 1448,
+      "sha256": "f1166e2f0d266b3580fdb2a4db6e70f97bd1b145efafc907aae5cf789c0d1e2a"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/tutorial_smoke-replay.json",
+      "bytes": 181745,
+      "sha256": "9646815f2bb083b555f2d30ee4e8c0cd2f08e5abf202f8950f5fcc3357d3d352"
+    },
+    {
+      "path": "docs/reports/evidence/v1.5-25d/zone-browser.png",
+      "bytes": 503222,
+      "sha256": "26d21e9126ca75ede9fdcf9a45dfb22899c261683baae23db0cd7cdf99b5b333"
+    },
+    {
+      "path": "docs/reports/v1.5-25d-client.md",
+      "bytes": 5491,
+      "sha256": "e425e947bd6f4a6675f8c94f127332e43daad1d586a7ed7d0021da56c5c1acea"
+    },
+    {
+      "path": "godot/bin/wizard_godot_bridge.debug.dll",
+      "bytes": 4317696,
+      "sha256": "ef43b085822f7b522f805bf29428a55793d09fc8ad571c21a8e5d07b2f574fb7"
+    },
+    {
+      "path": "godot/bin/wizard_godot_bridge.release.dll",
+      "bytes": 911360,
+      "sha256": "ed0e3da84b8acef39abfcb0b3f6ea56f7a1681e151772d314f1dfe33b9ba38ae"
+    },
+    {
+      "path": "godot/project.godot",
+      "bytes": 890,
+      "sha256": "d8b4bb223e222b8ebd8cfc0f49fa29ed1829119c7bbb87cc30fe97917cec6dbe"
+    },
+    {
+      "path": "godot/README.md",
+      "bytes": 6821,
+      "sha256": "89f8fb93f2b857a5c856ac1430f70b62589493f927951fc0dc2c79937160c87a"
+    },
+    {
+      "path": "godot/scenes/bridge_lab.tscn",
+      "bytes": 284,
+      "sha256": "0aff22672908a3a6d3b6d0592ceb14ee9293911a4ac6006887691ffa38418bb5"
+    },
+    {
+      "path": "godot/scenes/match/battlefield.tscn",
+      "bytes": 4557,
+      "sha256": "8102d7b9cdee9afcece841ed4466489bd9215fcec1fb3888bec97031abd26b92"
+    },
+    {
+      "path": "godot/scenes/match/card_3d.tscn",
+      "bytes": 1305,
+      "sha256": "b31b65438df1a174330717ab4b01789e2ea3e4d08320772231e45ae2fee5e327"
+    },
+    {
+      "path": "godot/scenes/match/hand_card.tscn",
+      "bytes": 280,
+      "sha256": "120aa1881bec84b6b3a86d2dc319211c6a268b0d9381e72a19faec0762cbdaac"
+    },
+    {
+      "path": "godot/scenes/match/hand_fan.tscn",
+      "bytes": 346,
+      "sha256": "7d8468f5e75f40b29b57bbbb1502755f4be3639c8e772fa6689443612d247fe1"
+    },
+    {
+      "path": "godot/scenes/match/match_hud.tscn",
+      "bytes": 3326,
+      "sha256": "83dcabd03968de905446531ba0f2299116874824c6c308cde3eb89d7c1e108c7"
+    },
+    {
+      "path": "godot/scenes/match/match_view.tscn",
+      "bytes": 1326,
+      "sha256": "fc36427f178793f7d86c1fae410d576d77e8ff9275104976c05f2e1b5b181e1c"
+    },
+    {
+      "path": "godot/scenes/match/table_3d.tscn",
+      "bytes": 974,
+      "sha256": "5ab7c94c3b699045848f10ed770b9ba300d0fcd163c69ed910069ef3bd6965bf"
+    },
+    {
+      "path": "godot/scenes/match/zone_3d.tscn",
+      "bytes": 1734,
+      "sha256": "0042ee3db69e2c932be982f70e63a8de0561f5ad8972bdade06c2c247130918a"
+    },
+    {
+      "path": "godot/scenes/wizard_client.tscn",
+      "bytes": 290,
+      "sha256": "1cfdbaf64b33a15e27fc63fb636e024e15e585ac2d8915b04531f23a7d7e0e50"
+    },
+    {
+      "path": "godot/scripts/bridge_lab.gd",
+      "bytes": 9185,
+      "sha256": "636176e3831fca1b97d8b22b9d87d2b322acd6e3f39a3a20818339ee3e37055c"
+    },
+    {
+      "path": "godot/scripts/match/wizard_battlefield.gd",
+      "bytes": 13887,
+      "sha256": "7a446d95bbfc6ecdc7778a31ddf602e7094fa9e6aa2dc06b32f88d89be6a7204"
+    },
+    {
+      "path": "godot/scripts/match/wizard_card_3d.gd",
+      "bytes": 3202,
+      "sha256": "83aebb893e67615f365d032be735df033329c710555268cea10265329864b582"
+    },
+    {
+      "path": "godot/scripts/match/wizard_hand_card.gd",
+      "bytes": 1161,
+      "sha256": "b8f5c9404fa1c1a64543a18c59190b254fcbd34a253baab636ffa64d8d97c50f"
+    },
+    {
+      "path": "godot/scripts/match/wizard_hand_fan.gd",
+      "bytes": 5888,
+      "sha256": "259661392eeb8cc7fefe5a4a8f598d626435e4088a9a5087f0110f1a24737a1d"
+    },
+    {
+      "path": "godot/scripts/match/wizard_match_view.gd",
+      "bytes": 9976,
+      "sha256": "8ed779edbab824cb68ee34b83e97c5e369cb199dd5c7881018f01e4daad746f1"
+    },
+    {
+      "path": "godot/scripts/match/wizard_table_surface.gd",
+      "bytes": 2038,
+      "sha256": "2ae94e3c9f7cd146fb60a41a3707fb4a9b5cee5c15185608e174f2fde30a4599"
+    },
+    {
+      "path": "godot/scripts/match/wizard_zone_3d.gd",
+      "bytes": 1097,
+      "sha256": "3a0e3dc7147e080c8de9e8361775aee8307baa4d1bcd8e8fac5850e97791ffb8"
+    },
+    {
+      "path": "godot/scripts/ui/card_view.gd",
+      "bytes": 9926,
+      "sha256": "5cf6322232ead03793aa8c8d46d186b5800d433269e4f604a24c6ade8665aff8"
+    },
+    {
+      "path": "godot/scripts/ui/match_board.gd",
+      "bytes": 8318,
+      "sha256": "3bf8532bcd9f6f7dbc2070cd3922da2a1412a61508c363a46d60d92b01f335b7"
+    },
+    {
+      "path": "godot/scripts/ui/widgets.gd",
+      "bytes": 4214,
+      "sha256": "1d55b500093582a39ef2e683899f4e4a5dc10ef8752b4ce1aafd06e1a30129d0"
+    },
+    {
+      "path": "godot/scripts/ui/wizard_audio.gd",
+      "bytes": 2490,
+      "sha256": "d0b6b09c8f0d795e0739d35e4ada5057fe010ee5dd854002728da5e50dad5b8e"
+    },
+    {
+      "path": "godot/scripts/ui/wizard_skin.gd",
+      "bytes": 5449,
+      "sha256": "6b234339f214259b0ce6ea58904d696fb3b7fc562cd6cc95dedbadb035a4f709"
+    },
+    {
+      "path": "godot/scripts/ui/zone_view.gd",
+      "bytes": 481,
+      "sha256": "e5ca03a0fba0a1c829b9cda38bcbee33bfc3b5dd2bce067b699e587cbbac714c"
+    },
+    {
+      "path": "godot/scripts/wizard_client.gd",
+      "bytes": 38718,
+      "sha256": "03e21504befe597958a0f519ac714f620783f0f7170cede4d087df1a89ca4a95"
+    },
+    {
+      "path": "godot/tests/boundary_smoke.gd",
+      "bytes": 2723,
+      "sha256": "db4d1cd02d562d204dd675eb0d2363601399893ca902aad7007ae65fcf559b94"
+    },
+    {
+      "path": "godot/tests/bridge_smoke.gd",
+      "bytes": 4811,
+      "sha256": "356ec49cb028517696b4317de6f1773b6ba4fabd25c0e4efeb62fc0ff988d02d"
+    },
+    {
+      "path": "godot/tests/capture_local_client.gd",
+      "bytes": 7162,
+      "sha256": "cea955b8a5301300350e533288f0085da556030eb9c15d846f835932abda5821"
+    },
+    {
+      "path": "godot/tests/capture_match_25d.gd",
+      "bytes": 4485,
+      "sha256": "534a34cf22afc7d6a78de3d2b396e66c899a7b50034f4d37cdca7a9c3a7853c4"
+    },
+    {
+      "path": "godot/tests/local_ui_replay.gd",
+      "bytes": 3412,
+      "sha256": "01b2fb9f3cc481111a91be43f896a349ae618dbdbf7c40c1ca29593c9d750f3c"
+    },
+    {
+      "path": "godot/tests/local_ui_smoke.gd",
+      "bytes": 7404,
+      "sha256": "23dee15e321eb42625e6e311d41c13d76a342d9363089433aa12d316f0c3c673"
+    },
+    {
+      "path": "godot/tests/match_scene_smoke.gd",
+      "bytes": 8639,
+      "sha256": "d368cc6cc266bc9156836aae63b005915da5e5bcc6ecf3ece3ef0aeb7ed60b97"
+    },
+    {
+      "path": "godot/toolchain-lock.json",
+      "bytes": 518,
+      "sha256": "7808feb168aae8461db98c275e8208d0bf246396e0fc01f87ddac80ea0dec02d"
+    },
+    {
+      "path": "include/wizard/ai.hpp",
+      "bytes": 474,
+      "sha256": "3101be1cd86dd37515bee8409b2363550d532f0f356c0a21b2d173db39460322"
+    },
+    {
+      "path": "include/wizard/application.hpp",
+      "bytes": 4220,
+      "sha256": "a1aa83694a8063d08a063a7138954cc8c8a5264a779a2cbb77b7b5769e8ae2dd"
+    },
+    {
+      "path": "include/wizard/bridge.hpp",
+      "bytes": 2532,
+      "sha256": "8cbb4b3950fa81e5939c3b3a40079e88bde8444061b3434901d96effba3374fe"
+    },
+    {
+      "path": "include/wizard/content.hpp",
+      "bytes": 1251,
+      "sha256": "9e9c0d76e57b3bb82d4d0a235ec6685395a3d45fed190b9918f777db39f50dbd"
+    },
+    {
+      "path": "include/wizard/core.hpp",
+      "bytes": 13760,
+      "sha256": "ca1aa9823041bc3b55e04768a7f9343bc18ab92f27650d9a18bc2eb60b64e43c"
+    },
+    {
+      "path": "include/wizard/decks.hpp",
+      "bytes": 1838,
+      "sha256": "f7975bfbef04bb8b0c325d292b195cde4dd90abe667721bf3ae996736c0e9127"
+    },
+    {
+      "path": "include/wizard/interaction.hpp",
+      "bytes": 1804,
+      "sha256": "e7074d1ad2676065ff9c5bf7b45c27dc90a49fa34bd2dd62b31b3fa5ad6715fa"
+    },
+    {
+      "path": "include/wizard/presentation.hpp",
+      "bytes": 1123,
+      "sha256": "cd91aa8cd8eb18edae29dda2efad35a2cec15985f24ee6cae12464024380e8de"
+    },
+    {
+      "path": "include/wizard/runtime.hpp",
+      "bytes": 2376,
+      "sha256": "ad155ca7cd352cd7486f37c7fd7f4c3ebfb40e0aa7f0086dc54aa0f87e17823d"
+    },
+    {
+      "path": "include/wizard/sound.hpp",
+      "bytes": 734,
+      "sha256": "264bcf8148059707871fe9d48a16af1a0ebbe17cd3b0c2e0f5ae265f9f670d88"
+    },
+    {
+      "path": "include/wizard/tutorial.hpp",
+      "bytes": 841,
+      "sha256": "ba406adf8fcd1938562eebd1de693f69f1123e28cc851cd3f0393e2bb6d9a8ba"
+    },
+    {
+      "path": "README.md",
+      "bytes": 14986,
+      "sha256": "b333e85e1f93b0801da2855221d6a6a8ac0a6acda852b57918160e938a7ee224"
+    },
+    {
+      "path": "src/ai/ai.cpp",
+      "bytes": 19087,
+      "sha256": "fb644337c5ef398582d077b0d50c439e4f92ce6f0b6b1275acbb58691dfceac0"
+    },
+    {
+      "path": "src/application/application.cpp",
+      "bytes": 14798,
+      "sha256": "66ac88fc871a27340eba135eb096dacee873b214c00551ef29814a134593811c"
+    },
+    {
+      "path": "src/application/decks.cpp",
+      "bytes": 12714,
+      "sha256": "9ac0df11ea4a614a5372a03d6f8cfa953f680dcc10e98f7312379a0d79f51184"
+    },
+    {
+      "path": "src/application/tutorial.cpp",
+      "bytes": 10391,
+      "sha256": "7a8b242b7790dee7236251f95ee84f7b71c010b98e68a0c1c78c3b5cf5c76306"
+    },
+    {
+      "path": "src/bridge/godot_bridge.cpp",
+      "bytes": 9897,
+      "sha256": "e42da15f28b469d8aa9c3e8708962bf0c0ea63a5dfa5d7a7517caa284c0d6336"
+    },
+    {
+      "path": "src/bridge/local_ui.cpp",
+      "bytes": 8495,
+      "sha256": "070544e64f996fc7ea0a2876c028c468a8290ed7117ffe7b334a7f0b7c7142bc"
+    },
+    {
+      "path": "src/bridge/session.cpp",
+      "bytes": 14089,
+      "sha256": "7f805cd3eb7b1ab5c4aab289c279648090b4ec325da51a698160ffb362c8dc6d"
+    },
+    {
+      "path": "src/bridge/snapshot.cpp",
+      "bytes": 5448,
+      "sha256": "c4ad2cbd9c018d35d39feec968f980dcb77d2d91be48d351916f116aba5bd697"
+    },
+    {
+      "path": "src/cli/main.cpp",
+      "bytes": 4055,
+      "sha256": "c04117d417ba1ceddebc040d9ab522ec678312671334212e35d6c412f3602a78"
+    },
+    {
+      "path": "src/client/interaction.cpp",
+      "bytes": 19152,
+      "sha256": "ee9ec005eca182f28db1b250e24fc9aea4c75a6b24d7df5b407cd3d359653110"
+    },
+    {
+      "path": "src/client/main.cpp",
+      "bytes": 66779,
+      "sha256": "f6a4ef74d7324a9c7ede1ea929eb140bdb60c134e163d24e82005d8e30f56930"
+    },
+    {
+      "path": "src/client/presentation.cpp",
+      "bytes": 7240,
+      "sha256": "2c0d31b07ed5d791b3f0a76541e4763fa28b8bd00060f628e65cc6eb0980ba86"
+    },
+    {
+      "path": "src/client/sound.cpp",
+      "bytes": 5366,
+      "sha256": "1d19a09e447e59788f734c18154822d926f0fa6600cf745f0cef78a83a0163c2"
+    },
+    {
+      "path": "src/content/content.cpp",
+      "bytes": 22002,
+      "sha256": "1e2a72d99297beb9d5c7b63b168ef81dc25d2bd1459b8840bd487179d873817f"
+    },
+    {
+      "path": "src/content/replay.cpp",
+      "bytes": 9508,
+      "sha256": "4b25cd9be9277779143cd8b403f176cb40fa8617ea77341d3437bce1015087b0"
+    },
+    {
+      "path": "src/core/engine.cpp",
+      "bytes": 69541,
+      "sha256": "0dddfe2d10f53fd40cc98a6c8edbf3327c0ffe2be18a5a2ffef6fe52c430abca"
+    },
+    {
+      "path": "src/core/state.cpp",
+      "bytes": 26033,
+      "sha256": "2828bef0af8634e3ce98c63bcfbcb022f2a776fbfb79c6b96f19af30f3503329"
+    },
+    {
+      "path": "src/core/view.cpp",
+      "bytes": 21011,
+      "sha256": "09d0db1147e5319a7a41286e662ceb23ae3384f80c12ce90840bf21971d9c101"
+    },
+    {
+      "path": "src/runtime/runtime.cpp",
+      "bytes": 9579,
+      "sha256": "b350d2e7ea2f468685c4a669a4589064306ebaab71669fef425cecf29ed1b492"
+    },
+    {
+      "path": "tests/ai.cpp",
+      "bytes": 21076,
+      "sha256": "adbb761f10cc7bd0cd4409f8c8273a2ab46c4cfffec036366034684f25bbfcd2"
+    },
+    {
+      "path": "tests/alpha_cards.cpp",
+      "bytes": 32619,
+      "sha256": "9570099e2d919062525dd3f2bee632634d273bfec931797b744a2e4064484719"
+    },
+    {
+      "path": "tests/application.cpp",
+      "bytes": 11835,
+      "sha256": "fcbe1972c161d6b09e0e98a52756dcdbb1fb87e86c7c6fae0efb0a18d6dfe502"
+    },
+    {
+      "path": "tests/bridge.cpp",
+      "bytes": 13801,
+      "sha256": "470c3620b50d5a60473e3174ad2ce7acbe871cce5c522e9532c85c4e2d93f66e"
+    },
+    {
+      "path": "tests/card_updates.cpp",
+      "bytes": 26231,
+      "sha256": "235e2b37dcddfbf482b9be17cd3b1b503842a090da7f5e4f7a99b19d3697f6b8"
+    },
+    {
+      "path": "tests/chain.cpp",
+      "bytes": 33308,
+      "sha256": "9f49f5a8bcaae2356670566d704676be9fe3d7a735b0ef83a3492269dc8c520b"
+    },
+    {
+      "path": "tests/content.cpp",
+      "bytes": 2061,
+      "sha256": "949df3a332e215eb461c06b95158ff6950bc2173b589743066eebce003e15499"
+    },
+    {
+      "path": "tests/decks.cpp",
+      "bytes": 9096,
+      "sha256": "982add62094bab59957dce37e9ffb070787af8d398c7cf3daa4cb1178685e36d"
+    },
+    {
+      "path": "tests/interaction.cpp",
+      "bytes": 7942,
+      "sha256": "e355d64da357cc44b3cf72692997e85db27241ce7134b9cb4d5039ddc920e571"
+    },
+    {
+      "path": "tests/presentation.cpp",
+      "bytes": 6781,
+      "sha256": "1e7b975b34757dc49356dacb7cd6ac390cc5881bbde50445efbb843ec69ebf6f"
+    },
+    {
+      "path": "tests/rules.cpp",
+      "bytes": 17165,
+      "sha256": "fb018a331c9fc7100b1852d71f4f605bc4246188008be2b7a1eb9d64a64901f1"
+    },
+    {
+      "path": "tests/sound.cpp",
+      "bytes": 4558,
+      "sha256": "da955175e51a7075ca7640e2e0c28c3490fda05963b8ad0c38058c2fb0cc60cb"
+    }
+  ]
+}

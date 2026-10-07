@@ -1,6 +1,10 @@
 # 架构
 
-当前发行：Alpha v1.0（程序1.0.0-alpha、规则/卡池1.0.0），使用SFML本地客户端。用户已确定v1.5采用Godot重构图形界面，保留C++内核、内容、AI、CLI与复盘；通过可选GDExtension桥接复用应用/交互逻辑，核心不引入Godot依赖。Godot负责页面、输入、音频、动画与网络传输适配。迁移、局域网权威主机、裁剪视图和分阶段验收见[v1.5计划](plans/v1.5.md)，尚未实现Godot前端或联网。以下描述当前Alpha架构。
+当前发行：Alpha v1.0（程序1.0.0-alpha、规则/卡池1.0.0），使用SFML本地客户端。当前开发标识1.5.0-dev已增加纯C++桥接模型与可选GDExtension小样；正式Godot页面和联网尚未实现。迁移、局域网权威主机、裁剪视图和分阶段验收见[v1.5计划](plans/v1.5.md)，实测证据见[阶段0/1报告](reports/v1.5-stage0-1.md)。以下Alpha架构继续作为迁移基线。
+
+`wizard_bridge_model`依赖纯C++应用/交互层，提供查看者白名单快照和绑定generation/revision的动作ID，选择不支付，确认经Application::submit复验。`wizard_godot_bridge`仅转换DTO与管理RefCounted会话，不暴露规则对象或指针。实例和决策等64位ID使用十进制字符串，Godot脚本只持有复制数据。AI/教学仅提供玩家0投影；离线换手可读取双方投影，实验台在切换前遮挡。桥接可选构建，关闭时CLI/核心测试无需Godot或SFML。
+
+格式2复盘增加明确程序版本兼容名单：1.5.0-dev、经验证的1.0.0-alpha；规则/卡池1.0.0、内容哈希和每一步摘要继续严格检查。`read_replay_plan/verify_replay`仅用于离线开发验证，完整本地记录不属于未来客机接口。
 
 `wizard_core` 为纯 C++17：GameState、Command、Rules、EffectQueue、EffectResolver、GameView，以及 GameEngine、PendingDecision、StateMaintenance、GameEvent。
 
@@ -84,3 +88,16 @@ SFML客户端match_effects.inc将提示映射到当前场地坐标；提交前�
 客户端refresh在换手前消费旧查看者的过滤投影，不传递未过滤CommandResult；提示使用通用功能音，不复制私有卡名。AI和教学走同一刷新入口。鼠标点选、拖放、拒绝、保存和取消另外绑定UI操作；悬停和重绘不发声。初始局、重开、换手及返回菜单清理旧声音，设置沿用总音量×音效音量；静音停止现有实例并丢弃静音期间的播放请求。
 
 `Resources`缓存解码后的SoundBuffer，维护最多6个Sound实例，优先级高的请求可替换低优先级实例；终局清理其他实例。播放使用单调时钟限频，资源缺失或损坏返回失败但不影响游戏；声音既不驱动规则，也不写入随机数或状态摘要。来源/CC0/SHA256/技术参数在assets/audio/manifest.json，映射、增益和优先级在sound.cpp。纯声音投影与原生播放回归见[接入报告](reports/audio-and-design.md)。
+
+## v1.5 Godot本地客户端
+
+真实Godot场景通过可选`wizard_godot_bridge`调用纯C++的`wizard_bridge_model`。LocalSession持有Application，快照白名单只包含查看者投影；点选、目标、额外成本与最终确认复用wizard_interaction。选择和拖动不写规则，确认时再次校验generation/revision；所有64位ID为十进制字符串。构筑、设置及离开保存继续使用既有应用层和原子持久化。
+
+WizardClient管理本地页面，WizardSkin按A古籍金饰manifest缓存素材，WizardCardView/WizardMatchBoard/WizardZoneView组合真实卡牌与五区容器；详情只读，执行操作独立。WizardAudio仅消费已接受动作的过滤音效提示，并复用原MP3、增益/优先级/限频配置。完整流程、构建命令和接手边界见[开发者文档](developer-guide-v1.5.md)，当前关卡及证据见[本地迁移报告](reports/v1.5-local-client.md)。网络会话尚未实现，不能把离线复盘开发接口用于未来客机。
+
+
+### 2.5D 对局呈现
+
+2026-10-07：正式对局由 WizardMatchView 组合场景内 HUD、WizardBattlefield 和 WizardHandFan。HUD 覆盖在完整牌桌上，开关详情和日志不改变镜头取景。WizardClient 保留应用控制，场景只发出查看／选择／拖放等信号；悬停查看不提交 Interaction。3D 节点按会话／查看者／卡牌 ID 复用，换手销毁旧私有显示，设置期间保留并暂停。
+
+桥接成功提交结果新增只读 cues，复用 MatchPresentation 的同查看者前后 GameView 比较；不增加规则命令或复盘字段。场景按 generation/revision 去重，连续提交结束旧表现，保存重试不重复播放。三维卡面按公开定义缓存，无逐卡实时视口。完整接口、验证边界与人工待验收项见[2.5D 报告](reports/v1.5-25d-client.md)。

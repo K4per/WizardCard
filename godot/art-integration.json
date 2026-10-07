@@ -1,0 +1,70 @@
+{
+  "kind": "WizardCard runtime art integration record",
+  "version": "1.5.0-dev",
+  "selectedTheme": "A 古籍金饰",
+  "artPack": "wizardcard_a_gilded_v2",
+  "manifest": "assets/art/ui/a-gilded-v2/manifest.json",
+  "sourceManifestPreserved": true,
+  "runtimeIntegrated": true,
+  "consumer": "godot/scripts/ui/wizard_skin.gd",
+  "cardIllustrations": "assets/art/runtime.json",
+  "layout": {
+    "match": "current 2.5D mirrored five zones; fixed slanted camera; left detail/right chain-log/bottom hand and independent action",
+    "deckEditor": "v1.0 detail/deck/pool columns; every copy rendered as a card"
+  },
+  "statIcons": [
+    "analysis_cost",
+    "cast_cost",
+    "rank",
+    "speed",
+    "state_analyzing",
+    "body",
+    "ring_slot",
+    "capacity",
+    "mana_income",
+    "life",
+    "mana",
+    "load"
+  ],
+  "scaling": "nearest; original painted frames keep aspect; native panel assets use declared nine-slice margins",
+  "audio": "assets/audio/manifest.json",
+  "independentExportVerified": false,
+  "evidence": "assets/art/design/nonmodel-v15/previews/engine",
+  "nonmodelPack": {
+    "manifest": "assets/art/nonmodel/a-gilded-v15/manifest.json",
+    "engineRoot": "res://art/nonmodel/a-gilded-v15",
+    "assetPngCount": 91,
+    "materialsIntegrated": [
+      "dark_wood",
+      "leather",
+      "antique_gold",
+      "paper_edge",
+      "card_face",
+      "card_back"
+    ],
+    "materialReadyForModels": [
+      "environment_stone"
+    ],
+    "effectCueMapping": {
+      "2": "analysis_complete",
+      "3": "prepare",
+      "4": "release",
+      "5": "prepare (response declaration)",
+      "6": "counter (cancel/invalid)",
+      "7": "damage",
+      "8": "heal",
+      "9": "mana",
+      "10": "load"
+    },
+    "standaloneEffects": [
+      "analysis_start",
+      "analysis_loop",
+      "attach",
+      "destroy",
+      "leave"
+    ],
+    "note": "Resources complete; standalone effects/AnimationLibrary ready for consumer hooks. No modeling delivered.",
+    "previewScene": "res://scenes/art/nonmodel_gallery.tscn",
+    "status": "docs/art-resource-status-v1.5.md"
+  }
+}

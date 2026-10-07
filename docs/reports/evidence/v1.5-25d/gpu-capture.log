@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 610.74 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 4070 Laptop GPU
+
+MATCH_25D_CAPTURE {"adapter":"NVIDIA GeForce RTX 4070 Laptop GPU","cardTextures":12,"meanFrameMs":1.68721111111111,"note":"GPU offscreen render including host window; static replay step 107, not full gameplay or native DPI acceptance","p95FrameMs":3.822,"renderer":"gl_compatibility","resolution":[1920,1080],"samples":180,"sceneCards":32,"videoMemoryBytes":237872975.0}

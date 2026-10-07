@@ -14,7 +14,7 @@ using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
 using ChainId = std::uint64_t;
 using LinkId = std::uint64_t;
-inline constexpr const char *programVersion = "1.0.0-alpha";
+inline constexpr const char *programVersion = "1.5.0-dev";
 inline constexpr int startingLife = 40, maximumLife = 40;
 enum class CardType { Action, Analytic, Word, Formation, Seal };
 enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached, Resolving };

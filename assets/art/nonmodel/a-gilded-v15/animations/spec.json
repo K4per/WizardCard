@@ -1,0 +1,102 @@
+[
+  {
+    "name": "draw",
+    "seconds": 0.28,
+    "reduced_seconds": 0.12,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "fixed"
+  },
+  {
+    "name": "place",
+    "seconds": 0.28,
+    "reduced_seconds": 0.12,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "fixed"
+  },
+  {
+    "name": "flip",
+    "seconds": 0.4,
+    "reduced_seconds": 0.12,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "fixed"
+  },
+  {
+    "name": "raise",
+    "seconds": 0.12,
+    "reduced_seconds": 0.08,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "fixed"
+  },
+  {
+    "name": "return",
+    "seconds": 0.18,
+    "reduced_seconds": 0.08,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "fixed"
+  },
+  {
+    "name": "intro",
+    "seconds": 0.55,
+    "reduced_seconds": 0.12,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "fixed"
+  },
+  {
+    "name": "win",
+    "seconds": 0.5,
+    "reduced_seconds": 0.12,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "fixed"
+  },
+  {
+    "name": "lose",
+    "seconds": 0.4,
+    "reduced_seconds": 0.12,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "fixed"
+  },
+  {
+    "name": "draw_result",
+    "seconds": 0.4,
+    "reduced_seconds": 0.12,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "fixed"
+  },
+  {
+    "name": "camera_response",
+    "seconds": 0.16,
+    "reduced_seconds": 0.0,
+    "curve": "cubic out (runtime Tween); linear library sample",
+    "anchor": "Visual child, never hit-test root",
+    "interrupt": "kill tween, restore committed destination",
+    "layer": "3D public card / foreground result; below HUD",
+    "camera_default": "disabled"
+  }
+]

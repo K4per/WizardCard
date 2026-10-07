@@ -1,15 +1,97 @@
 {
   "version": 6,
   "configurePresets": [
-    {"name":"windows","generator":"Visual Studio 17 2022","architecture":"x64","binaryDir":"${sourceDir}/build/windows","cacheVariables":{"WIZARD_BUILD_CLIENT":"ON"}},
-    {"name":"headless","generator":"Ninja","binaryDir":"${sourceDir}/build/headless","cacheVariables":{"CMAKE_BUILD_TYPE":"Debug","WIZARD_BUILD_CLIENT":"OFF"}}
+    {
+      "name": "windows",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/windows",
+      "cacheVariables": {
+        "WIZARD_BUILD_CLIENT": "ON"
+      }
+    },
+    {
+      "name": "headless",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/headless",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "WIZARD_BUILD_CLIENT": "OFF"
+      }
+    },
+    {
+      "name": "godot-debug",
+      "inherits": "windows",
+      "binaryDir": "${sourceDir}/build/godot-debug",
+      "cacheVariables": {
+        "WIZARD_BUILD_CLIENT": "OFF",
+        "WIZARD_BUILD_GODOT": "ON",
+        "GODOTCPP_TARGET": "template_debug"
+      }
+    },
+    {
+      "name": "godot-release",
+      "inherits": "windows",
+      "binaryDir": "${sourceDir}/build/godot-release",
+      "cacheVariables": {
+        "WIZARD_BUILD_CLIENT": "OFF",
+        "WIZARD_BUILD_GODOT": "ON",
+        "GODOTCPP_TARGET": "template_release"
+      }
+    }
   ],
   "buildPresets": [
-    {"name":"windows","configurePreset":"windows","configuration":"Release"},
-    {"name":"headless","configurePreset":"headless"}
+    {
+      "name": "windows",
+      "configurePreset": "windows",
+      "configuration": "Release"
+    },
+    {
+      "name": "headless",
+      "configurePreset": "headless"
+    },
+    {
+      "name": "godot-debug",
+      "configurePreset": "godot-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "godot-release",
+      "configurePreset": "godot-release",
+      "configuration": "Release"
+    }
   ],
   "testPresets": [
-    {"name":"windows","configurePreset":"windows","configuration":"Release","output":{"outputOnFailure":true}},
-    {"name":"headless","configurePreset":"headless","output":{"outputOnFailure":true}}
+    {
+      "name": "windows",
+      "configurePreset": "windows",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "headless",
+      "configurePreset": "headless",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "godot-debug",
+      "configurePreset": "godot-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "godot-release",
+      "configurePreset": "godot-release",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
   ]
 }

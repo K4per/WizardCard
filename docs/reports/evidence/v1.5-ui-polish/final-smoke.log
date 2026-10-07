@@ -1,0 +1,11 @@
+[HANDLER_OUTPUT] 
+Test project E:/Project/WizardCard/build/godot-release
+
+    Start 190: godot_import
+1/2 Test #190: godot_import .....................   Passed    2.98 sec
+    Start 192: godot_local_ui
+2/2 Test #192: godot_local_ui ...................   Passed    0.87 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =   3.86 sec

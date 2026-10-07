@@ -1,0 +1,208 @@
+{
+  "date": "2026-10-07",
+  "requirements": "docs/art-resource-requirements-godot-v1.5.md",
+  "theme": "A 古籍金饰; legendary gems golden yellow",
+  "cardIllustrations": {
+    "count": 30,
+    "mapping": "assets/art/runtime.json",
+    "files": [
+      {
+        "id": "balance",
+        "file": "cards/balance.png",
+        "sha256": "e7030ea10267d4ead61d4dda8248b35392588a4ea307241a370f4e2d3674d922"
+      },
+      {
+        "id": "fireball",
+        "file": "cards/fireball.png",
+        "sha256": "17ce2e6248cb8caa16cbc1a585a0968da3f8fc1ed2b25357a2d075d4c4c8f356"
+      },
+      {
+        "id": "barbs",
+        "file": "cards/barbs.png",
+        "sha256": "e4b384d3f6524584f26666ef4d9019313eb584d277521f3d6a6198160352f941"
+      },
+      {
+        "id": "recall",
+        "file": "cards/recall.png",
+        "sha256": "1343187a17c79589fe6f83856d050489b62f169a59e3b320cb4067b037eebf6e"
+      },
+      {
+        "id": "ring",
+        "file": "cards/ring.png",
+        "sha256": "2fbf807d92e1df81c8be056bf480583ea3ac4e32df81735366d8ba130d8c40fb"
+      },
+      {
+        "id": "spark",
+        "file": "cards/spark.png",
+        "sha256": "29a6fe63b7b00046c1fe51aa4e047235574d40f63acc4c937dd75852d103248a"
+      },
+      {
+        "id": "mend",
+        "file": "cards/mend.png",
+        "sha256": "335c7eb5b461c29f9cc167f191613b9505cabbc14b8f4f98185142d91a3af614"
+      },
+      {
+        "id": "unravel",
+        "file": "cards/unravel.png",
+        "sha256": "8f4108da181b893637407aa8232922844bc76a3a7a992ca8f27fc266d36e7d06"
+      },
+      {
+        "id": "disrupt",
+        "file": "cards/disrupt.png",
+        "sha256": "7999a07b83d160edbb5d66ef97165519851b5d480c0723c3d95b4c05fad1b505"
+      },
+      {
+        "id": "clarity",
+        "file": "cards/clarity.png",
+        "sha256": "1d035193e1a27676239548d91111f3ea51caa36268c824c91791ae3e291ba136"
+      },
+      {
+        "id": "reservoir",
+        "file": "cards/reservoir.png",
+        "sha256": "11ef7008b3be608d9042a7f24978955ef2cbe4ada7d4201c84bebd060b4d2d0e"
+      },
+      {
+        "id": "conduit",
+        "file": "cards/conduit.png",
+        "sha256": "a79fbf4564b60bb9d02ddc30e3753b2b7fe94d08c34d3ac37bcf04e8941b1a65"
+      },
+      {
+        "id": "ward",
+        "file": "cards/ward.png",
+        "sha256": "e8354e351207c487312d669495d29747ea364dc49c1d2c649337c8fccbf6dc5a"
+      },
+      {
+        "id": "messy-wave",
+        "file": "alpha-v1/messy-wave.png",
+        "sha256": "93e19cd54d8688321d618dbbf32d537ed07f8176c5e2616a5ea21e057922d746"
+      },
+      {
+        "id": "instantly-sleep",
+        "file": "alpha-v1/instantly-sleep.png",
+        "sha256": "12a441754813f76fcc40e9ad54634b46f84c91747c245322764be184e8083002"
+      },
+      {
+        "id": "magic-missile",
+        "file": "alpha-v1/magic-missile.png",
+        "sha256": "70218f5f4cc2a34a540c5086f070fde286f557d38216940f648d634c92a2475c"
+      },
+      {
+        "id": "aid",
+        "file": "alpha-v1/aid.png",
+        "sha256": "5e2bf7e1c105084e4f09fe49f2577f138f912bbf8ac7d2e4437ca74744bea585"
+      },
+      {
+        "id": "counter-spell",
+        "file": "alpha-v1/counter-spell.png",
+        "sha256": "d9934023300fcd1ddfc350c9086632d3513b21a40fff91d32bc6bc9923077937"
+      },
+      {
+        "id": "true-strike",
+        "file": "alpha-v1/true-strike.png",
+        "sha256": "ff359f2b5a84902352655f2b9a9f87c4acc52be834575e4f6878bb433a7f4953"
+      },
+      {
+        "id": "protective-flame",
+        "file": "alpha-v1/protective-flame.png",
+        "sha256": "10844cbe89afad254b1ccd946be88cace940d4ef6ba7dfa2aed7be3bd84c6282"
+      },
+      {
+        "id": "pentagram-of-life",
+        "file": "alpha-v1/pentagram-of-life.png",
+        "sha256": "a62a70a02131145d233683fdcd0d908c68300b687e75b16b6769be2482f6d674"
+      },
+      {
+        "id": "engeas-four-point-star",
+        "file": "alpha-v1/engeas-four-point-star.png",
+        "sha256": "160f0b0c332976753e446a3d63f7190d3d6a3be110c0cdd3850d451e4279dd62"
+      },
+      {
+        "id": "uplift",
+        "file": "alpha-v1/uplift.png",
+        "sha256": "5b8b00e376be5680059acbb509826275f3e17e8410f20e67b128712ce1a76e00"
+      },
+      {
+        "id": "instant-circuit-overload",
+        "file": "alpha-v1/instant-circuit-overload.png",
+        "sha256": "d96e2ebcb7a0a582ea36e76c450917d455b23f7eefbcdc4039fc65f6181ad14a"
+      },
+      {
+        "id": "ray-of-frost",
+        "file": "alpha-release/ray-of-frost.png",
+        "sha256": "78689ea9ade3fb05ca3def89b56c8902216e2ea2aae3c81579b894e6683363c9"
+      },
+      {
+        "id": "lightning-bolt",
+        "file": "alpha-release/lightning-bolt.png",
+        "sha256": "deabc4495bef0799371dcaa1b2cfb0fcfaecac5d19a72a61ba43c55c536f2dca"
+      },
+      {
+        "id": "shield",
+        "file": "alpha-release/shield.png",
+        "sha256": "e0b8c5bcf9c4dacb8159b5420a2e6a8f561512009434e9b50ef0f93f58adca93"
+      },
+      {
+        "id": "lesser-restoration",
+        "file": "alpha-release/lesser-restoration.png",
+        "sha256": "7e4ae91acb40afae4a65766aadd722424cb0e612ce5df1f2c379a55f68fbeb47"
+      },
+      {
+        "id": "false-life",
+        "file": "alpha-release/false-life.png",
+        "sha256": "77ce8c29486e0b177fd7a2e518ed24fc456ce71095eee05dfc087092921476b0"
+      },
+      {
+        "id": "arcane-recovery",
+        "file": "alpha-release/arcane-recovery.png",
+        "sha256": "fb0fb59d214899f5c27d16ff850de09217fa15e55237e846f51bdebc088f495d"
+      }
+    ]
+  },
+  "packs": [
+    {
+      "name": "A 古籍金饰 v2",
+      "status": "current card/UI base",
+      "manifest": "assets/art/ui/a-gilded-v2/manifest.json",
+      "assetCount": 314,
+      "sha256": "e9fcbc492672d34fc99e2c00797249c16bf84d8e97ed73edd7e5be9cc492543c",
+      "hashEncoding": "UTF-8 LF; Git text normalization"
+    },
+    {
+      "name": "v1.5 非建模增补",
+      "status": "current scene/material/effect supplement",
+      "manifest": "assets/art/nonmodel/a-gilded-v15/manifest.json",
+      "assetCount": 91,
+      "sha256": "1226d4896e807d502addf501b8a85424535af52b71190e3eee670090ecb3e53b",
+      "hashEncoding": "UTF-8 LF; Git text normalization"
+    },
+    {
+      "name": "C 版",
+      "status": "historical style draft",
+      "manifest": "assets/art/ui/c-theme-v1/manifest.json",
+      "assetCount": 232,
+      "sha256": "5d5aeab5d80ba1d64385f0577035f126db815a0a575d14afc67b250a61d00846",
+      "hashEncoding": "UTF-8 LF; Git text normalization"
+    },
+    {
+      "name": "早期像素 UI",
+      "status": "historical SDL client base",
+      "manifest": "assets/art/ui/manifest.json",
+      "assetCount": 190,
+      "sha256": "847e1ba2d89395efe41169172e5e12ea38445e81a6a8ce3f53f269d042b8f061",
+      "hashEncoding": "UTF-8 LF; Git text normalization"
+    }
+  ],
+  "branding": "assets/art/branding/icon-manifest.json",
+  "fonts": "assets/fonts/NotoSansCJKsc-Regular.otf",
+  "audio": "assets/audio/manifest.json",
+  "statuses": "docs/art-resource-status-v1.5.md",
+  "gallery": "assets/art/design/nonmodel-v15/gallery.html",
+  "organization": "index only; no loaded asset moved or deleted",
+  "modelRequirementsDeferred": [
+    "MOD-01",
+    "MOD-02",
+    "MOD-03",
+    "MOD-04",
+    "PRP-01"
+  ]
+}

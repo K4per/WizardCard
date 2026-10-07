@@ -1,0 +1,164 @@
+[gd_resource type="AnimationLibrary" load_steps=21 format=3]
+[sub_resource type="Animation" id="draw"]
+resource_name = "draw"
+length = 0.28
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.28), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 1.1, 0), Vector3(0, 0, 0)]}
+[sub_resource type="Animation" id="draw_reduced"]
+resource_name = "draw_reduced"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.12), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 1.1, 0), Vector3(0, 0, 0)]}
+[sub_resource type="Animation" id="place"]
+resource_name = "place"
+length = 0.28
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.28), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0.3, 0), Vector3(0, 0, 0)]}
+[sub_resource type="Animation" id="place_reduced"]
+resource_name = "place_reduced"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.12), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0.3, 0), Vector3(0, 0, 0)]}
+[sub_resource type="Animation" id="flip"]
+resource_name = "flip"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:rotation")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.4), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0, 3.141592653589793), Vector3(0, 0, 0)]}
+[sub_resource type="Animation" id="flip_reduced"]
+resource_name = "flip_reduced"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:rotation")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.12), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0, 3.141592653589793), Vector3(0, 0, 0)]}
+[sub_resource type="Animation" id="raise"]
+resource_name = "raise"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.12), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0, 0), Vector3(0, 0.18, 0)]}
+[sub_resource type="Animation" id="raise_reduced"]
+resource_name = "raise_reduced"
+length = 0.08
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.08), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0, 0), Vector3(0, 0.18, 0)]}
+[sub_resource type="Animation" id="return"]
+resource_name = "return"
+length = 0.18
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.18), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0.18, 0), Vector3(0, 0, 0)]}
+[sub_resource type="Animation" id="return_reduced"]
+resource_name = "return_reduced"
+length = 0.08
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.08), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0.18, 0), Vector3(0, 0, 0)]}
+[sub_resource type="Animation" id="intro"]
+resource_name = "intro"
+length = 0.55
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:scale")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.55), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0.97, 0.97, 0.97), Vector3(1, 1, 1)]}
+[sub_resource type="Animation" id="intro_reduced"]
+resource_name = "intro_reduced"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:scale")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.12), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0.97, 0.97, 0.97), Vector3(1, 1, 1)]}
+[sub_resource type="Animation" id="win"]
+resource_name = "win"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:scale")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.5), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0.96, 0.96, 0.96), Vector3(1, 1, 1)]}
+[sub_resource type="Animation" id="win_reduced"]
+resource_name = "win_reduced"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:scale")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.12), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0.96, 0.96, 0.96), Vector3(1, 1, 1)]}
+[sub_resource type="Animation" id="lose"]
+resource_name = "lose"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:scale")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.4), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(1.02, 1.02, 1.02), Vector3(1, 1, 1)]}
+[sub_resource type="Animation" id="lose_reduced"]
+resource_name = "lose_reduced"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:scale")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.12), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(1.02, 1.02, 1.02), Vector3(1, 1, 1)]}
+[sub_resource type="Animation" id="draw_result"]
+resource_name = "draw_result"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:scale")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.4), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(1, 1, 1), Vector3(1, 1, 1)]}
+[sub_resource type="Animation" id="draw_result_reduced"]
+resource_name = "draw_result_reduced"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:scale")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.12), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(1, 1, 1), Vector3(1, 1, 1)]}
+[sub_resource type="Animation" id="camera_response"]
+resource_name = "camera_response"
+length = 0.16
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.16), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0.015, 0), Vector3(0, 0, 0)]}
+[sub_resource type="Animation" id="camera_response_reduced"]
+resource_name = "camera_response_reduced"
+length = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.01), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]}
+[resource]
+_data = {
+&"draw": SubResource("draw"),
+&"draw_reduced": SubResource("draw_reduced"),
+&"place": SubResource("place"),
+&"place_reduced": SubResource("place_reduced"),
+&"flip": SubResource("flip"),
+&"flip_reduced": SubResource("flip_reduced"),
+&"raise": SubResource("raise"),
+&"raise_reduced": SubResource("raise_reduced"),
+&"return": SubResource("return"),
+&"return_reduced": SubResource("return_reduced"),
+&"intro": SubResource("intro"),
+&"intro_reduced": SubResource("intro_reduced"),
+&"win": SubResource("win"),
+&"win_reduced": SubResource("win_reduced"),
+&"lose": SubResource("lose"),
+&"lose_reduced": SubResource("lose_reduced"),
+&"draw_result": SubResource("draw_result"),
+&"draw_result_reduced": SubResource("draw_result_reduced"),
+&"camera_response": SubResource("camera_response"),
+&"camera_response_reduced": SubResource("camera_response_reduced")
+}

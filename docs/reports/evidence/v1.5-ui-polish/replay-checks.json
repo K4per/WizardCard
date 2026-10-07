@@ -1,0 +1,37 @@
+[
+  {
+    "name": "smoke",
+    "steps": 289,
+    "digest": "78116a78d64b0d90",
+    "replay": "smoke-replay.json",
+    "cli_verified": true
+  },
+  {
+    "name": "ai_0",
+    "steps": 323,
+    "digest": "6062cfa9ed89b1c8",
+    "replay": "ai_0-replay.json",
+    "cli_verified": true
+  },
+  {
+    "name": "ai_match",
+    "steps": 308,
+    "digest": "a68e39c35218b106",
+    "replay": "ai_match-replay.json",
+    "cli_verified": true
+  },
+  {
+    "name": "ai_2",
+    "steps": 318,
+    "digest": "32bf3d92220e3507",
+    "replay": "ai_2-replay.json",
+    "cli_verified": true
+  },
+  {
+    "name": "tutorial_smoke",
+    "steps": 48,
+    "digest": "8f5a7c7abe95150e",
+    "replay": "tutorial_smoke-replay.json",
+    "cli_verified": true
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "requirement": "LGT-01",
+  "renderer": "Compatibility",
+  "scene": "res://scenes/match/battlefield.tscn",
+  "key": {"type":"DirectionalLight3D", "rotationDegrees":[-65,-20,0], "color":[1,0.9,0.73], "energy":1.1, "shadows":true},
+  "fill": {"type":"OmniLight3D", "position":[8,5,-5], "color":[0.45,0.75,0.7], "energy":0.35, "range":12, "shadows":false},
+  "camera": {"fov":38, "pitchDegrees":53, "fit":"existing projected-corner fit; no layout changes", "shakeDefault":false},
+  "contact": "single directional shadow; no SSAO or renderer migration",
+  "limitations": "environment models/UV refinement deferred; static captures do not verify full-game 60fps"
+}

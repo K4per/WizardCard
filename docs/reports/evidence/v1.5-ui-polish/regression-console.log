@@ -1,0 +1,39 @@
+Test project E:/Project/WizardCard/build/godot-release
+      Start 205: godot_reference_ai_2
+      Start 203: godot_reference_ai_0
+      Start 197: godot_reference_ai_match
+      Start 194: godot_reference_smoke
+ 1/17 Test #194: godot_reference_smoke ............   Passed    2.33 sec
+      Start 200: godot_reference_tutorial_smoke
+ 2/17 Test #197: godot_reference_ai_match .........   Passed    2.48 sec
+ 3/17 Test #205: godot_reference_ai_2 .............   Passed    2.51 sec
+ 4/17 Test #203: godot_reference_ai_0 .............   Passed    2.54 sec
+ 5/17 Test #200: godot_reference_tutorial_smoke ...   Passed    0.38 sec
+      Start 190: godot_import
+ 6/17 Test #190: godot_import .....................   Passed    3.15 sec
+      Start 204: godot_local_ai_0
+      Start 196: godot_local_smoke
+      Start 206: godot_local_ai_2
+      Start 199: godot_local_ai_match
+ 7/17 Test #199: godot_local_ai_match .............   Passed   40.33 sec
+      Start 195: godot_bridge_smoke
+ 8/17 Test #206: godot_local_ai_2 .................   Passed   41.26 sec
+      Start 198: godot_bridge_ai_match
+ 9/17 Test #204: godot_local_ai_0 .................   Passed   41.83 sec
+      Start 202: godot_local_tutorial_smoke
+10/17 Test #196: godot_local_smoke ................   Passed   44.34 sec
+      Start 201: godot_bridge_tutorial_smoke
+11/17 Test #201: godot_bridge_tutorial_smoke ......   Passed    1.15 sec
+      Start 191: godot_bridge_boundary
+12/17 Test #202: godot_local_tutorial_smoke .......   Passed    3.77 sec
+      Start 193: godot_bridge_alpha_replay
+13/17 Test #191: godot_bridge_boundary ............   Passed    0.32 sec
+      Start 192: godot_local_ui
+14/17 Test #193: godot_bridge_alpha_replay ........   Passed    0.31 sec
+15/17 Test #192: godot_local_ui ...................   Passed    0.96 sec
+16/17 Test #198: godot_bridge_ai_match ............   Passed   14.57 sec
+17/17 Test #195: godot_bridge_smoke ...............   Passed   15.87 sec
+
+100% tests passed, 0 tests failed out of 17
+
+Total Test time (real) =  62.10 sec

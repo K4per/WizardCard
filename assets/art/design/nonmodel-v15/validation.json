@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "counts": {
+    "png": 91,
+    "scene_material_sets": 4,
+    "paper_edge_set": 1,
+    "effect_scenes": 15,
+    "svg_sources": 41,
+    "animation_clips": 20
+  },
+  "originalPackPng": 314,
+  "cardIllustrations": 30,
+  "sourceEngineCopies": "all PNG SHA256 identical",
+  "nativeSources": "procedural generator + SVG; AI original images not edited",
+  "logs": {
+    "art-nonmodel-import.log": {
+      "present": true,
+      "errors": false,
+      "sha256": "94f88d36c15c7e88f6525e0e2aedb4d8e485b593834d68892cd50e7fb5d3a468"
+    },
+    "art-nonmodel-headless-smoke.log": {
+      "present": true,
+      "errors": false,
+      "sha256": "0fa79be1c2119850235ed7d97adc2626839d706021d1120583263e40530697e2"
+    },
+    "art-nonmodel-effects-smoke.log": {
+      "present": true,
+      "errors": false,
+      "sha256": "39cf91022330d035db72db873d46e8ac7875f9f48e7579777261a0facfb59b3a"
+    },
+    "art-nonmodel-capture.log": {
+      "present": true,
+      "errors": false,
+      "sha256": "efea78518c36e9182b232affcd315ba755f15a6b99a8e7b47f58ea5e0edd1a62"
+    },
+    "art-nonmodel-effects-capture.log": {
+      "present": true,
+      "errors": false,
+      "sha256": "5daea362d58e4956f2060bc2f6c4404bf7b1cf409ffdea63ced022b746e68004"
+    }
+  },
+  "gpuInputSimulation": "failed in desktop window; headless input smoke passes; human GPU/DPI acceptance pending",
+  "fullGamePerformance": "not verified",
+  "errors": []
+}

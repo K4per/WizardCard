@@ -1,0 +1,1942 @@
+{
+  "version": "wizardcard_a_gilded_nonmodel_v15",
+  "date": "2026-10-07",
+  "requirements": "docs/art-resource-requirements-godot-v1.5.md",
+  "renderer": "Godot 4.7.2 Compatibility",
+  "assets": [
+    {
+      "id": "nm_dark_wood_basecolor",
+      "file": "nonmodel/a-gilded-v15/textures/dark_wood_basecolor.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/dark_wood_basecolor.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "df2115724cc3f155cc0b0807806d81bde204638c005553e09b5bfe3cd2f9325d",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "sRGB",
+      "channel": "RGB",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_dark_wood_normal",
+      "file": "nonmodel/a-gilded-v15/textures/dark_wood_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/dark_wood_normal.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "1cf69c456aa190d6fa2ae7da664e457e0cc4517b896d32a962ed0fc9452852d3",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "RGB",
+      "normal_convention": "OpenGL +Y",
+      "repeat": true
+    },
+    {
+      "id": "nm_dark_wood_roughness",
+      "file": "nonmodel/a-gilded-v15/textures/dark_wood_roughness.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/dark_wood_roughness.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "L",
+      "sha256": "d6b9c3688eebb17d2c530f446283cc196459ba254657ea4c68f64d5e342cbd5d",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_dark_wood_metallic",
+      "file": "nonmodel/a-gilded-v15/textures/dark_wood_metallic.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/dark_wood_metallic.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "L",
+      "sha256": "47409785b30cc38f1ec62f219ce1c46f885427442416c0768dc470497ef784cb",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_leather_basecolor",
+      "file": "nonmodel/a-gilded-v15/textures/leather_basecolor.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/leather_basecolor.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "1edc62d1971cf6f0ec446bf64707a658e4e3adb40b08995cf526f1244d35fc3e",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "sRGB",
+      "channel": "RGB",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_leather_normal",
+      "file": "nonmodel/a-gilded-v15/textures/leather_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/leather_normal.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "20171be943471784b8ac056a0ca16cd79881db7e51f97ac2ae0a994ef537d23e",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "RGB",
+      "normal_convention": "OpenGL +Y",
+      "repeat": true
+    },
+    {
+      "id": "nm_leather_roughness",
+      "file": "nonmodel/a-gilded-v15/textures/leather_roughness.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/leather_roughness.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "L",
+      "sha256": "087fbb8b7c24aa57707226d43b06b4456e5df629f46c4538707c3e37adb68b3f",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_leather_metallic",
+      "file": "nonmodel/a-gilded-v15/textures/leather_metallic.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/leather_metallic.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "L",
+      "sha256": "47409785b30cc38f1ec62f219ce1c46f885427442416c0768dc470497ef784cb",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_antique_gold_basecolor",
+      "file": "nonmodel/a-gilded-v15/textures/antique_gold_basecolor.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/antique_gold_basecolor.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "dd8bdf94670c09a41979c05f119af3461886660abb9e8a693de6a207a6284a52",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "sRGB",
+      "channel": "RGB",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_antique_gold_normal",
+      "file": "nonmodel/a-gilded-v15/textures/antique_gold_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/antique_gold_normal.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "4701cbff06dac43ec904b9d3353d072339efc7ffcae059d24477e3ec58971d96",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "RGB",
+      "normal_convention": "OpenGL +Y",
+      "repeat": true
+    },
+    {
+      "id": "nm_antique_gold_roughness",
+      "file": "nonmodel/a-gilded-v15/textures/antique_gold_roughness.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/antique_gold_roughness.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "L",
+      "sha256": "e9bb3732b9a8089a1be0d9b7d1179fd14ac0d60d4e074ca71db79fd49127d597",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_antique_gold_metallic",
+      "file": "nonmodel/a-gilded-v15/textures/antique_gold_metallic.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/antique_gold_metallic.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "L",
+      "sha256": "7368a2762f0210ba889788e2c23314e77fc184beecf5c6b5ffbe8279ed4f308a",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_environment_stone_basecolor",
+      "file": "nonmodel/a-gilded-v15/textures/environment_stone_basecolor.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/environment_stone_basecolor.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "bae86365b8cf524873d6d941bf7ad11931cae7fb8d188466ab5dbe6a2c70e1e5",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "sRGB",
+      "channel": "RGB",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_environment_stone_normal",
+      "file": "nonmodel/a-gilded-v15/textures/environment_stone_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/environment_stone_normal.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "sha256": "6113ec4ef49c8d5e0688f8e00896e6f4580d99cbe217dbb11b86f74e5ac869b9",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "RGB",
+      "normal_convention": "OpenGL +Y",
+      "repeat": true
+    },
+    {
+      "id": "nm_environment_stone_roughness",
+      "file": "nonmodel/a-gilded-v15/textures/environment_stone_roughness.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/environment_stone_roughness.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "L",
+      "sha256": "bc55122d01ce32ab8d19b4f58010b8d91ca58a8c0bfd99c7f6efde362c273ad0",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_environment_stone_metallic",
+      "file": "nonmodel/a-gilded-v15/textures/environment_stone_metallic.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/environment_stone_metallic.png",
+      "requirement": "MAT-01",
+      "size": [
+        2048,
+        2048
+      ],
+      "mode": "L",
+      "sha256": "47409785b30cc38f1ec62f219ce1c46f885427442416c0768dc470497ef784cb",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_paper_edge_basecolor",
+      "file": "nonmodel/a-gilded-v15/textures/paper_edge_basecolor.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/paper_edge_basecolor.png",
+      "requirement": "MAT-03",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "sha256": "9e66684f5ae0e4cda639830e789682a7ba73031ff34bc0c8f946a2fc478057a6",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "sRGB",
+      "channel": "RGB",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_paper_edge_normal",
+      "file": "nonmodel/a-gilded-v15/textures/paper_edge_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/paper_edge_normal.png",
+      "requirement": "MAT-03",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "sha256": "201e68002dfb8d9811248579979b8f3a083df6703cb0c76e756c619ae3612bc6",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "RGB",
+      "normal_convention": "OpenGL +Y",
+      "repeat": true
+    },
+    {
+      "id": "nm_paper_edge_roughness",
+      "file": "nonmodel/a-gilded-v15/textures/paper_edge_roughness.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/paper_edge_roughness.png",
+      "requirement": "MAT-03",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "L",
+      "sha256": "4e93c97f4428a2b864e8ba5b51cd80d4526e2ebec66f20419ed9a574020e1cc5",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_paper_edge_metallic",
+      "file": "nonmodel/a-gilded-v15/textures/paper_edge_metallic.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/textures/paper_edge_metallic.png",
+      "requirement": "MAT-03",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "L",
+      "sha256": "65795a5b91030a2a433dae510d1edf494082a9cfa1153cd94f3797759f68f257",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "color_space": "linear",
+      "channel": "R",
+      "normal_convention": null,
+      "repeat": true
+    },
+    {
+      "id": "nm_zone_analysis",
+      "file": "nonmodel/a-gilded-v15/zones/zone_analysis.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/zones/zone_analysis.png",
+      "requirement": "MAT-02",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "41c5f9948a122706d9bec9edfd820f61294804f646d8ba3e578707ac449bfbc5",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "opacity": 0.26,
+      "filter": "linear_mipmap",
+      "text": false
+    },
+    {
+      "id": "nm_zone_casting",
+      "file": "nonmodel/a-gilded-v15/zones/zone_casting.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/zones/zone_casting.png",
+      "requirement": "MAT-02",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "f10e0fee90635f820341883668a5079a225f228512f82abc1558a32d99b98c63",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "opacity": 0.26,
+      "filter": "linear_mipmap",
+      "text": false
+    },
+    {
+      "id": "nm_zone_words",
+      "file": "nonmodel/a-gilded-v15/zones/zone_words.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/zones/zone_words.png",
+      "requirement": "MAT-02",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "9e6d8ed197dc4d6ef2305f7205c519c88c2eb206f0d342c4d713b34a723c6180",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "opacity": 0.26,
+      "filter": "linear_mipmap",
+      "text": false
+    },
+    {
+      "id": "nm_zone_action",
+      "file": "nonmodel/a-gilded-v15/zones/zone_action.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/zones/zone_action.png",
+      "requirement": "MAT-02",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "1ff4c1a699cd217f45cb75bf9c46c900283e194d1c266f1cdfe462f7c9a84c1c",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "opacity": 0.26,
+      "filter": "linear_mipmap",
+      "text": false
+    },
+    {
+      "id": "nm_zone_ash",
+      "file": "nonmodel/a-gilded-v15/zones/zone_ash.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/zones/zone_ash.png",
+      "requirement": "MAT-02",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "926bb4515ed21fc3957e280d587e0cfd49d1e1deb91999f47811aa8ab3800279",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "opacity": 0.26,
+      "filter": "linear_mipmap",
+      "text": false
+    },
+    {
+      "id": "nm_zone_slot",
+      "file": "nonmodel/a-gilded-v15/zones/zone_slot.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/zones/zone_slot.png",
+      "requirement": "MAT-02",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "318127c80fec118a88a4a7d2a2ffb8347e1cfa8523df46b907140c860a0933a5",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "opacity": 0.26,
+      "filter": "linear_mipmap",
+      "text": false
+    },
+    {
+      "id": "nm_zone_host_link",
+      "file": "nonmodel/a-gilded-v15/zones/zone_host_link.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/zones/zone_host_link.png",
+      "requirement": "MAT-02",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "9e6d8ed197dc4d6ef2305f7205c519c88c2eb206f0d342c4d713b34a723c6180",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "opacity": 0.26,
+      "filter": "linear_mipmap",
+      "text": false
+    },
+    {
+      "id": "nm_fx_ambient_dust",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_ambient_dust.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_ambient_dust.png",
+      "requirement": "VFX-01",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "21f4a4e883bb332098b91b1cb02414f713773ddb5a5d7632593df89405ce3051",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": true,
+      "duration": 6.0
+    },
+    {
+      "id": "nm_ambient_dust_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/ambient_dust_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/ambient_dust_normal.png",
+      "requirement": "VFX-01",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "a26e61bdd9820ec36d3e81f589d24c1b4a9b02e15130dc78b25732bdc8b7141c",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_ambient_dust_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/ambient_dust_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/ambient_dust_reduced.png",
+      "requirement": "VFX-01",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "a5c86a068f630a415f0d90453daed48dc9b0fd750453beff4ae570f8acb4a45d",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_ambient_runes",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_ambient_runes.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_ambient_runes.png",
+      "requirement": "VFX-01",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "2b871d123ea77a7323267e5bebcbd6e95912272a2d44a2119cf290be64093761",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": true,
+      "duration": 4.0
+    },
+    {
+      "id": "nm_ambient_runes_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/ambient_runes_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/ambient_runes_normal.png",
+      "requirement": "VFX-01",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "91641dcfae4a57326b5e2266b006fde9d89445b9124dedbfbaccba10d33bb6fd",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_ambient_runes_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/ambient_runes_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/ambient_runes_reduced.png",
+      "requirement": "VFX-01",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "917ea20657a4efa1ff4ce065823ad346c08d386787ba4a769b2c053f4c10f413",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_analysis_start",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_analysis_start.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_analysis_start.png",
+      "requirement": "VFX-02",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "0a50acc533a4c289634989458481d9239f83bb05993c46073691ee152925e637",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.45
+    },
+    {
+      "id": "nm_analysis_start_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/analysis_start_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/analysis_start_normal.png",
+      "requirement": "VFX-02",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "c7cdfd976cc5d8052dd40f8c2aea9bc6eb63bbb8bc03094e33c00ad200c4ff68",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_analysis_start_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/analysis_start_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/analysis_start_reduced.png",
+      "requirement": "VFX-02",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "be4002dc9ee492040f3a0a09d7d8a5c9f5c14e16dcdde0283c4050846a587cb0",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_analysis_loop",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_analysis_loop.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_analysis_loop.png",
+      "requirement": "VFX-02",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "2b871d123ea77a7323267e5bebcbd6e95912272a2d44a2119cf290be64093761",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": true,
+      "duration": 2.0
+    },
+    {
+      "id": "nm_analysis_loop_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/analysis_loop_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/analysis_loop_normal.png",
+      "requirement": "VFX-02",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "91641dcfae4a57326b5e2266b006fde9d89445b9124dedbfbaccba10d33bb6fd",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_analysis_loop_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/analysis_loop_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/analysis_loop_reduced.png",
+      "requirement": "VFX-02",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "917ea20657a4efa1ff4ce065823ad346c08d386787ba4a769b2c053f4c10f413",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_analysis_complete",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_analysis_complete.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_analysis_complete.png",
+      "requirement": "VFX-02",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "1d045c90ca3da09c02146b810e6ab0df33f6df8067be6491a28bab0b6d9ff3aa",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.5
+    },
+    {
+      "id": "nm_analysis_complete_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/analysis_complete_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/analysis_complete_normal.png",
+      "requirement": "VFX-02",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "4887c745a41943e743530bb5ef6ace59b4a384abb9693fd6afe00939c8303501",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_analysis_complete_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/analysis_complete_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/analysis_complete_reduced.png",
+      "requirement": "VFX-02",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "14474b04de952c5edb0194e1bec56248c991e0e6c3ef9c608e11a3a7dd8c8f72",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_prepare",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_prepare.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_prepare.png",
+      "requirement": "VFX-03",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "1a9c6cc15ce2d13b644373da42e8bd32abd8433e6fda6cf1261ac1f205d8eb08",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.45
+    },
+    {
+      "id": "nm_prepare_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/prepare_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/prepare_normal.png",
+      "requirement": "VFX-03",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "a4f9fea6450e28b8010e818314337b62e842c4a99699b49dcd8bee44eaab0d01",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_prepare_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/prepare_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/prepare_reduced.png",
+      "requirement": "VFX-03",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "03b9341c4886581341f1379d88bf6f1bfa93f93a9e7df0c11797751c47af7c82",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_release",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_release.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_release.png",
+      "requirement": "VFX-03",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "755cf90737ff4ad0cf9e118964f0916a32101a49ca4a4e6bf08342b84b0d80b3",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.5
+    },
+    {
+      "id": "nm_release_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/release_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/release_normal.png",
+      "requirement": "VFX-03",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "243da06b2375f02e0575da1989c5bc34a5a6e65be92edc0e43f59ff25b2c0ef3",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_release_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/release_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/release_reduced.png",
+      "requirement": "VFX-03",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "d46dd1b222782a7d5fe8db7d9c0345ea7a318ad778fcbdc71ece66e57a42a7f0",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_counter",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_counter.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_counter.png",
+      "requirement": "VFX-03",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "1ead33e7d73976fae681e5cdbb4cbb55e26952bc1f61cf113001c339a3604821",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.45
+    },
+    {
+      "id": "nm_counter_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/counter_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/counter_normal.png",
+      "requirement": "VFX-03",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "760e5322f4ad17a761001edd46c77bd6f59d93b02a3321e089dce5033cd10737",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_counter_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/counter_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/counter_reduced.png",
+      "requirement": "VFX-03",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "bf1f7a9190d5027b1840239df58a37d7ca8b75d9e554e3763753aaba4b052f13",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_damage",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_damage.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_damage.png",
+      "requirement": "VFX-04",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "d03c01f6e9e022225e0390d15a24f29ff5c3e3912835f982394fd277e109a3dc",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.45
+    },
+    {
+      "id": "nm_damage_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/damage_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/damage_normal.png",
+      "requirement": "VFX-04",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "a2344670fb72886ee859b51bca136c7026fea2292720a36ba1ef2267dce62213",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_damage_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/damage_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/damage_reduced.png",
+      "requirement": "VFX-04",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "06769b96500fb2ec0fc11517eb85a1805944ea631a3592b9daf3e48f91e2e892",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_heal",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_heal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_heal.png",
+      "requirement": "VFX-04",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "c110ba10c806469e5e080512580749173541ef4c0f83ea5ffa0a7b5a12fce7a5",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.5
+    },
+    {
+      "id": "nm_heal_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/heal_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/heal_normal.png",
+      "requirement": "VFX-04",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "9bb60de1c2e311a19afee4cef2588b76cdf1ff6e73a3fac61750c79d1295bdcf",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_heal_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/heal_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/heal_reduced.png",
+      "requirement": "VFX-04",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "3869448fea795d9a2a1c5321a74e49de4732f1daedff196456456394bc5474f8",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_mana",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_mana.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_mana.png",
+      "requirement": "VFX-04",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "571eff6aad948d6f50e9e69232a08b0d80bd93332bbf7790680669459aebb38c",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.45
+    },
+    {
+      "id": "nm_mana_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/mana_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/mana_normal.png",
+      "requirement": "VFX-04",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "a1319f477548ea9f7f5c7b221f3b9690caf6723606cb905a77b2279d22c13c4a",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_mana_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/mana_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/mana_reduced.png",
+      "requirement": "VFX-04",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "00c8620400b37c65676600bb44cb937f4d67f26cc62a517d3c63e68cb2f26908",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_load",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_load.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_load.png",
+      "requirement": "VFX-04",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "507e90c9fa7d3be6ca6f55a56713bc731d8dc7aa3576e907929ab2ec7ee46e10",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.45
+    },
+    {
+      "id": "nm_load_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/load_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/load_normal.png",
+      "requirement": "VFX-04",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "58a1b38bd5646e869e4fb95e654c554de9e88c1047e2f048113b07da94072bee",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_load_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/load_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/load_reduced.png",
+      "requirement": "VFX-04",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "7e86f94972ad7b9a530af31fa57753fb68ef9c51e8cfc87a3d2e0e3978cbb61b",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_attach",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_attach.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_attach.png",
+      "requirement": "VFX-05",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "d553271aa92b15cfd6919407b960a195930483dc8396c1240858a4bddbd4c9cd",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.5
+    },
+    {
+      "id": "nm_attach_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/attach_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/attach_normal.png",
+      "requirement": "VFX-05",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "95643cdd96ffe3b3a5588338dd423f62e06924da256e27f9f8787bfc0aac44b7",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_attach_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/attach_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/attach_reduced.png",
+      "requirement": "VFX-05",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "c0823d7c6d28a48d2492d54bd3a7c96898ff57d98b2335ea3ef9d6883d33e627",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_destroy",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_destroy.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_destroy.png",
+      "requirement": "VFX-05",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "1feb411345b0c15332934d0b62fb66fb1ad637164c0e6895cde1834b5ed5c3d4",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.5
+    },
+    {
+      "id": "nm_destroy_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/destroy_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/destroy_normal.png",
+      "requirement": "VFX-05",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "754ad8c0db274ef6ccd3601497900847e1e3f32c80c85cc013e8c847ab88055d",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_destroy_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/destroy_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/destroy_reduced.png",
+      "requirement": "VFX-05",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "ab88c56cb9acc2943d4794c21139db16dc2d1eed50a3a0f0051321d4e3b20a91",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_fx_leave",
+      "file": "nonmodel/a-gilded-v15/vfx/fx_leave.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/fx_leave.png",
+      "requirement": "VFX-05",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "984b0b0b103bc069d04a04ce18a8396dab515218a2d5ace593b9947f15b987d2",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "filter": "nearest",
+      "loop": false,
+      "duration": 0.4
+    },
+    {
+      "id": "nm_leave_normal",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/leave_normal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/leave_normal.png",
+      "requirement": "VFX-05",
+      "size": [
+        2048,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "94a1d691ddbbd599d9ddb31a67d129a443707033a7c71f0d49fd1285693d7a22",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 8,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_leave_reduced",
+      "file": "nonmodel/a-gilded-v15/vfx/sheets/leave_reduced.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/vfx/sheets/leave_reduced.png",
+      "requirement": "VFX-05",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "fc48c92c091d065565367f9f6d65ec40c39673ed907ccea88ab3ffbb90b937fe",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "frames": 4,
+      "frame_size": [
+        256,
+        256
+      ],
+      "filter": "nearest",
+      "preview_only": true
+    },
+    {
+      "id": "nm_interaction_hover",
+      "file": "nonmodel/a-gilded-v15/ui/interaction_hover.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/interaction_hover.png",
+      "requirement": "UI-02",
+      "size": [
+        128,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "532c5e895aa693884506437b5c98d28118079ea6a2f69d7bab5e7bc9ce66bf0d",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "shape_state": "hover"
+    },
+    {
+      "id": "nm_interaction_selected",
+      "file": "nonmodel/a-gilded-v15/ui/interaction_selected.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/interaction_selected.png",
+      "requirement": "UI-02",
+      "size": [
+        128,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "be6466c4d90ef6d0fc0ee00fec26de4c6d40fcc3a29092318550dafe6b9b6737",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "shape_state": "selected"
+    },
+    {
+      "id": "nm_interaction_candidate",
+      "file": "nonmodel/a-gilded-v15/ui/interaction_candidate.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/interaction_candidate.png",
+      "requirement": "UI-02",
+      "size": [
+        128,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "498839164157fc83a649c75c093e2dfb468c70bb1815244c66fabeb56d887fae",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "shape_state": "candidate"
+    },
+    {
+      "id": "nm_interaction_target",
+      "file": "nonmodel/a-gilded-v15/ui/interaction_target.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/interaction_target.png",
+      "requirement": "UI-02",
+      "size": [
+        128,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "0e472535eea908c264a48ee46f0280d33f95b2d3dc0455b17f7a3544a19b60e6",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "shape_state": "target"
+    },
+    {
+      "id": "nm_interaction_cost",
+      "file": "nonmodel/a-gilded-v15/ui/interaction_cost.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/interaction_cost.png",
+      "requirement": "UI-02",
+      "size": [
+        128,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "3a96e133419f929abbbbc6d9a2d042d71d828660af723b16178b657411dfa7ee",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "shape_state": "cost"
+    },
+    {
+      "id": "nm_interaction_host",
+      "file": "nonmodel/a-gilded-v15/ui/interaction_host.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/interaction_host.png",
+      "requirement": "UI-02",
+      "size": [
+        128,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "1eb8448bbdee3ffa0953e825753de069146398bc1dd08c1c8fcae4ae9dfb2389",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "shape_state": "host"
+    },
+    {
+      "id": "nm_interaction_seal",
+      "file": "nonmodel/a-gilded-v15/ui/interaction_seal.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/interaction_seal.png",
+      "requirement": "UI-02",
+      "size": [
+        128,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "40801691a5571b89c67641f4832ec2acdd88d25b65d4830628facebdec7e8e7b",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "shape_state": "seal"
+    },
+    {
+      "id": "nm_chain_enter",
+      "file": "nonmodel/a-gilded-v15/ui/chain_enter.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/chain_enter.png",
+      "requirement": "UI-03",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "f8924246eab1eb9ed3edbafc646dc8fb6033d45597f90fad4824b10453f02a78",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false
+    },
+    {
+      "id": "nm_chain_priority",
+      "file": "nonmodel/a-gilded-v15/ui/chain_priority.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/chain_priority.png",
+      "requirement": "UI-03",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "7802b3dd9a5912ade63d4af15a482a4665f4e66d127e80f4db85b7ad17597e03",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false
+    },
+    {
+      "id": "nm_chain_resolve",
+      "file": "nonmodel/a-gilded-v15/ui/chain_resolve.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/chain_resolve.png",
+      "requirement": "UI-03",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "6c2d09e7ba91e608ce97f0bebb3592b346b82f8c28ecffdf7a2ab528bd541fee",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false
+    },
+    {
+      "id": "nm_chain_cancel",
+      "file": "nonmodel/a-gilded-v15/ui/chain_cancel.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/chain_cancel.png",
+      "requirement": "UI-03",
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "7dffd58ba26d2c1a5c01fdd08210fe880287f02d3605918e29ebf76ab458cde7",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false
+    },
+    {
+      "id": "nm_hud_phase",
+      "file": "nonmodel/a-gilded-v15/ui/hud_phase.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/hud_phase.png",
+      "requirement": "UI-01",
+      "size": [
+        256,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "c2225c93b13cf5e7942bbc5360420e5065ee6b60ea508989eca4bfff03edaac8",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "stretch": "nine_slice",
+      "insets": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "filter": "nearest"
+    },
+    {
+      "id": "nm_hud_resources",
+      "file": "nonmodel/a-gilded-v15/ui/hud_resources.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/hud_resources.png",
+      "requirement": "UI-01",
+      "size": [
+        256,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "c2225c93b13cf5e7942bbc5360420e5065ee6b60ea508989eca4bfff03edaac8",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "stretch": "nine_slice",
+      "insets": [
+        6,
+        6,
+        6,
+        6
+      ],
+      "filter": "nearest"
+    },
+    {
+      "id": "nm_hud_detail",
+      "file": "nonmodel/a-gilded-v15/ui/hud_detail.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/hud_detail.png",
+      "requirement": "UI-01",
+      "size": [
+        256,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "4e96b420acc202b979d862938ac3307438c839d7613aad21f5ca5c4cc89a9e49",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "stretch": "nine_slice",
+      "insets": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "filter": "nearest"
+    },
+    {
+      "id": "nm_hud_chain",
+      "file": "nonmodel/a-gilded-v15/ui/hud_chain.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/hud_chain.png",
+      "requirement": "UI-01",
+      "size": [
+        256,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "4e96b420acc202b979d862938ac3307438c839d7613aad21f5ca5c4cc89a9e49",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "stretch": "nine_slice",
+      "insets": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "filter": "nearest"
+    },
+    {
+      "id": "nm_hud_action",
+      "file": "nonmodel/a-gilded-v15/ui/hud_action.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/hud_action.png",
+      "requirement": "UI-01",
+      "size": [
+        256,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "4e96b420acc202b979d862938ac3307438c839d7613aad21f5ca5c4cc89a9e49",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "stretch": "nine_slice",
+      "insets": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "filter": "nearest"
+    },
+    {
+      "id": "nm_result_win",
+      "file": "nonmodel/a-gilded-v15/ui/result_win.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/result_win.png",
+      "requirement": "ANI-02",
+      "size": [
+        256,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "3874a90993168312e9101ea5ec782cef58e48acc736ebf5fbe350b1e1dd86471",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "filter": "nearest"
+    },
+    {
+      "id": "nm_result_lose",
+      "file": "nonmodel/a-gilded-v15/ui/result_lose.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/result_lose.png",
+      "requirement": "ANI-02",
+      "size": [
+        256,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "c2b75d6fded8991021c8c1d2f8938b4c10d712a7da1fe1142d1c5fab299eac55",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "filter": "nearest"
+    },
+    {
+      "id": "nm_result_draw",
+      "file": "nonmodel/a-gilded-v15/ui/result_draw.png",
+      "engine": "res://art/nonmodel/a-gilded-v15/ui/result_draw.png",
+      "requirement": "ANI-02",
+      "size": [
+        256,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "3af6c4611653356d509547169ca5d31faef4b6ae27816b4b0910d0794ac14c62",
+      "source": "project-native procedural/vector",
+      "license": "project license; no external imagery",
+      "text": false,
+      "filter": "nearest"
+    }
+  ],
+  "effects": [
+    {
+      "name": "ambient_dust",
+      "loop": true,
+      "seconds": 6.0
+    },
+    {
+      "name": "ambient_runes",
+      "loop": true,
+      "seconds": 4.0
+    },
+    {
+      "name": "analysis_start",
+      "loop": false,
+      "seconds": 0.45
+    },
+    {
+      "name": "analysis_loop",
+      "loop": true,
+      "seconds": 2.0
+    },
+    {
+      "name": "analysis_complete",
+      "loop": false,
+      "seconds": 0.5
+    },
+    {
+      "name": "prepare",
+      "loop": false,
+      "seconds": 0.45
+    },
+    {
+      "name": "release",
+      "loop": false,
+      "seconds": 0.5
+    },
+    {
+      "name": "counter",
+      "loop": false,
+      "seconds": 0.45
+    },
+    {
+      "name": "damage",
+      "loop": false,
+      "seconds": 0.45
+    },
+    {
+      "name": "heal",
+      "loop": false,
+      "seconds": 0.5
+    },
+    {
+      "name": "mana",
+      "loop": false,
+      "seconds": 0.45
+    },
+    {
+      "name": "load",
+      "loop": false,
+      "seconds": 0.45
+    },
+    {
+      "name": "attach",
+      "loop": false,
+      "seconds": 0.5
+    },
+    {
+      "name": "destroy",
+      "loop": false,
+      "seconds": 0.5
+    },
+    {
+      "name": "leave",
+      "loop": false,
+      "seconds": 0.4
+    }
+  ],
+  "source": "assets/art/design/nonmodel-v15/build_assets.py",
+  "preserves": [
+    "30 card illustrations",
+    "A v2 314 images",
+    "legendary golden-yellow gemstone"
+  ],
+  "model_delivery": false,
+  "integration_record": "godot/art-integration.json",
+  "artifacts": [
+    {
+      "file": "nonmodel/a-gilded-v15/animations/card_and_match.tres",
+      "engine": "res://art/nonmodel/a-gilded-v15/animations/card_and_match.tres",
+      "sha256": "47af41028da4261737977d89c45d3782d42c79562ca4ff44c12307effe5a2d49"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/animations/spec.json",
+      "engine": "res://art/nonmodel/a-gilded-v15/animations/spec.json",
+      "sha256": "fe1b14bed36aa3f81be5881165a01981b56a4bbc17e52e82763bf9af20f44ecf"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/ambient_dust.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/ambient_dust.tscn",
+      "sha256": "e30abc93ff90d6c7954f26f4cee28b49245bb7406d5ececf9df5fe14498f157c"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/ambient_runes.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/ambient_runes.tscn",
+      "sha256": "da1511ef8d65a3cb20f549a8989359117be3e63d3dcf0a36a352be50b38baf89"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/analysis_complete.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/analysis_complete.tscn",
+      "sha256": "a787dc34bcba8860654f36a841a9b68bd6dfe30c535517b0a663d3f8216f7739"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/analysis_loop.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/analysis_loop.tscn",
+      "sha256": "a2893f1288b225619ed3ca8996692ab2f9a683598143566d913c817d0d5a30f9"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/analysis_start.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/analysis_start.tscn",
+      "sha256": "22e4f0f3eab2789817afbe3df6a6c7ea5a23727e250d4b75709200a9645e5a97"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/attach.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/attach.tscn",
+      "sha256": "f560dc522c148ace3aa0813f4037e1b744f3b71a07ee2f89c757b16bc8636978"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/counter.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/counter.tscn",
+      "sha256": "6650cb01ddef05b7cdb2ab0be242b04066bc8b2c45583bfeed631e8c669f4d3d"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/damage.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/damage.tscn",
+      "sha256": "019a90b587d6ffbb0293fd39ba658c72b74c0bae6b4bc2a028bcf6330215f1d1"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/destroy.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/destroy.tscn",
+      "sha256": "b9e41f786f98214d9d570ad560213494f09707cf76b299d4a61fd7e419223004"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/heal.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/heal.tscn",
+      "sha256": "a59119b121c330caba3ae9c195dfac2afd3382bcde62ea621aef38f3675d89a8"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/leave.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/leave.tscn",
+      "sha256": "8ff7231a2046d4238ae414bb90e163ec2b0f6588a6dff98f710418a5a5435171"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/load.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/load.tscn",
+      "sha256": "c360bef53cb4308a77d3924c6d44a643262afd73f998070bf1f0cd2e834c0d8c"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/mana.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/mana.tscn",
+      "sha256": "cdaab114535c68f9ad72348c555a84772158baa4a898a2f84644aa91908c9bde"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/prepare.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/prepare.tscn",
+      "sha256": "a2b5aad0c52d0f70751351107aa586d3783712cd914f19cf56b4f8c1fc9166a5"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/effects/release.tscn",
+      "engine": "res://art/nonmodel/a-gilded-v15/effects/release.tscn",
+      "sha256": "0854606f689e9f356ccfadb4fa2821dae368db0211a8989ef93d6f243b5204d2"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/lighting/environment.tres",
+      "engine": "res://art/nonmodel/a-gilded-v15/lighting/environment.tres",
+      "sha256": "ade9a23c7cc1a9f6d4d54e7682583a965217df69f682ca6ff7a3b5404d50bf86"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/lighting/preset.json",
+      "engine": "res://art/nonmodel/a-gilded-v15/lighting/preset.json",
+      "sha256": "3d0605b8178b6a8ee6eff74a2dbb491637182b7306149835df6533d4b77703ff"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/materials/antique_gold.tres",
+      "engine": "res://art/nonmodel/a-gilded-v15/materials/antique_gold.tres",
+      "sha256": "c647786d26d15819e96b3393b4c77b9fe92c3b70b667c585f4ddd7d74115f308"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/materials/card_back.tres",
+      "engine": "res://art/nonmodel/a-gilded-v15/materials/card_back.tres",
+      "sha256": "74cee8be03c28a78420c795f9fc606eea4219a7e218453475f7a2a981b6db77a"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/materials/card_face.tres",
+      "engine": "res://art/nonmodel/a-gilded-v15/materials/card_face.tres",
+      "sha256": "c0e1eaf6180b8be511a175168cce49394c6ca77a098d23188ba7fcf16530f5db"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/materials/dark_wood.tres",
+      "engine": "res://art/nonmodel/a-gilded-v15/materials/dark_wood.tres",
+      "sha256": "96e301fee857b2edcf10b961bb60858b09ae193975686b46980e8103bfa0cb7e"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/materials/environment_stone.tres",
+      "engine": "res://art/nonmodel/a-gilded-v15/materials/environment_stone.tres",
+      "sha256": "f793066ca3353f151a0f5a41e4c693824ac4291208800861c74d143ecc48daf2"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/materials/leather.tres",
+      "engine": "res://art/nonmodel/a-gilded-v15/materials/leather.tres",
+      "sha256": "bf72fef67f7b678aa03c19eb646dfa4dc97452c4f5cfc1c321d2d42af8f4abb2"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/materials/paper_edge.tres",
+      "engine": "res://art/nonmodel/a-gilded-v15/materials/paper_edge.tres",
+      "sha256": "d2268a22322f8e75499174fb5f8ca3b61cc54b294cd6c4065dd9ee0d67a1feab"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/shaders/spatial_fx_rune.gdshader",
+      "engine": "res://art/nonmodel/a-gilded-v15/shaders/spatial_fx_rune.gdshader",
+      "sha256": "84b2de430b3a0f0036daf9e927952795037a2d26f93a9431ef96e6bfb501e106"
+    },
+    {
+      "file": "nonmodel/a-gilded-v15/shaders/spatial_zone_engraving.gdshader",
+      "engine": "res://art/nonmodel/a-gilded-v15/shaders/spatial_zone_engraving.gdshader",
+      "sha256": "13792c3c7ce3e87c0e192b6e2f7fd63b0bf40fc9a952b88f1bc0b786abec6969"
+    }
+  ],
+  "counts": {
+    "png": 91,
+    "scene_material_sets": 4,
+    "paper_edge_set": 1,
+    "effect_scenes": 15,
+    "svg_sources": 41,
+    "animation_clips": 20
+  }
+}

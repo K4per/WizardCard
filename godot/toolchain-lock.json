@@ -1,0 +1,11 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "api": "4.7",
+  "godotCppVersion": "10.0.0-stable",
+  "godotCppCommit": "507ed9d840c01a3c5b2a39af8bb4000bfac30bf5",
+  "exportTemplatesVersion": "4.7.2.stable",
+  "exportTemplatesUrl": "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz",
+  "firstTarget": "windows-x64",
+  "precision": "single",
+  "build": "CMake with MSVC dynamic runtime; separate template_debug/template_release build directories"
+}

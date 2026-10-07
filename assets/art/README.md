@@ -1,11 +1,18 @@
-# 运行时美术资源
+# WizardCard 美术资源总索引
 
-程序 0.4.2-dev 的运行映射现包含全部 13 张透明 PNG。2026-10-04 补齐奥术回想、火花术、生命缝合、结构瓦解、魔力扰动、清心、蓄能阵、导流阵、炽燃结界；原有 pixel_fantasy_v2 的均衡、火球术、银光锐语、奥术圆环逐字节保留。
+核对日期：2026-10-07。当前Godot程序1.5.0-dev，规则/卡池1.0.0，共30种卡牌。以 [Godot最新需求](../../docs/art-resource-requirements-godot-v1.5.md) 为准，制作/接入/验收分别见 [状态清单](../../docs/art-resource-status-v1.5.md)。机器索引：[catalog.json](catalog.json)。
 
-runtime.json 按稳定卡牌 ID 映射图片。provenance.json 保存来源版本、原始生成文件名、SHA-256 和许可说明，发布包无需原型目录即可追溯。原图来源为项目内 OpenAI imagegen 生成素材，不额外声明第三方图库授权，也不改变项目既有许可。
+| 分类 | 当前入口 | 状态 |
+|---|---|---|
+| 30张透明卡图 | [runtime.json](runtime.json)、cards/、[provenance.json](provenance.json) | 当前使用，原件保留 |
+| A古籍金饰卡框/UI | [314 PNG清单](ui/a-gilded-v2/manifest.json)、[源稿画廊](design/a-gilded-v2/gallery.html) | 当前基础组件；五类卡框、五档稀有度，传说为金黄色宝石 |
+| v1.5非建模增补 | [91 PNG及配置](nonmodel/a-gilded-v15/manifest.json)、[画廊](design/nonmodel-v15/gallery.html) | 四套场景PBR、纸边、区域、HUD、交互、连锁、15类特效和动作库 |
+| 品牌 | [Logo](branding/wizardcard-logo-v1.png)、[图标](branding/icon-manifest.json) | 当前使用 |
+| 字体 | ../fonts/NotoSansCJKsc-Regular.otf | 独立文字渲染，保留字体许可 |
+| 声音 | [音效清单](../audio/manifest.json) | 沿用17文件、18事件 |
 
-卡面、场内缩略图及卡牌详情使用同一透明插图，保持比例、最近邻采样。图片缺失或无法读取时沿用代码绘制的类别纹章回退。
+旧 `ui/manifest.json` 的190组件、C版提案、早期布局稿和 prototypes 保留为历史资料，不覆盖当前A版和2.5D布局。按索引整理，不搬迁或删除正在被引用的文件。原A版源清单的 `runtime_integrated:false` 是历史交付记录，实际Godot状态以 [art-integration.json](../../godot/art-integration.json) 为准。
 
-新增 [像素奇幻 UI 资源](design/v1/index.html)：190 个独立 PNG、对应 SVG 源稿、46 张设计稿及 13 组流程，详见 [交付说明](design/v1/README.md)、[接入规范](design/v1/integration.md) 和 [资源清单](ui/manifest.json)。客户端已通过 ui/manifest.json 接入卡框、牌背、区域、按钮各状态、图标、高亮和主要面板。九宫格保留边饰，插画保持比例；场地底图与装饰叠加程序绘制的低对比石纹，区域保持半透明。设计示例图不作为运行背景。
+新资源源稿位于 `design/nonmodel-v15/`，原件位于 `nonmodel/a-gilded-v15/`，Godot镜像位于 `godot/art/nonmodel/a-gilded-v15/`，逐文件SHA核对。像素插画/图标nearest，卡框/PBR使用线性或mipmap。运行组件不烘焙文字，预览图不用作背景。
 
-UI 使用固定色板和二值透明度；AI 插画保持原始像素风生成结果，未宣称严格限色或网格精修。安装脚本排除 `prototypes` 与 `design`，发布包保留13张插画、190张UI PNG、映射与来源记录；设计源稿留在仓库。
+本批为项目原生数学纹理与SVG制作，未修改AI卡图、卡框或金黄宝石，来源/许可沿用原记录。模型MOD-01～04与摆件PRP-01待制作。

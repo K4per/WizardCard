@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+[resource]
+resource_name = "CardFaceReadable"
+shading_mode = 0
+roughness = 0.9
+texture_filter = 3

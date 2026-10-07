@@ -85,7 +85,7 @@ void MatchPresentation::observe(const GameView &before, const GameView &after, b
                 cue.from = old ? old->instance.zone : Zone::Hand;
                 cue.to = c.instance.zone;
                 cue.host = c.instance.host ? c.instance.host : c.instance.sourceFormation;
-                for (std::size_t i = before.events.size(); i < after.events.size(); ++i)
+                for (std::size_t i = firstNewEvent(before, after); i < after.events.size(); ++i)
                     if (after.events[i].kind == "command" && after.events[i].card == c.instance.id &&
                         (after.events[i].audience == -1 || after.events[i].audience == after.viewer))
                         cue.used = true;
@@ -105,7 +105,7 @@ void MatchPresentation::observe(const GameView &before, const GameView &after, b
         }
     }
     CardId damageSource = 0;
-    for (std::size_t i = before.events.size(); i < after.events.size(); ++i) {
+    for (std::size_t i = firstNewEvent(before, after); i < after.events.size(); ++i) {
         const auto &e = after.events[i];
         if (e.audience != -1 && e.audience != after.viewer)
             continue;

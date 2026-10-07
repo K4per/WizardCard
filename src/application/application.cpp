@@ -76,35 +76,7 @@ std::filesystem::path userDataDirectory() {
 #endif
     throw std::runtime_error("无法定位用户数据目录，请使用 --user-data 指定目录");
 }
-void atomicWriteJson(const std::filesystem::path &path, const Json &j) {
-    std::filesystem::create_directories(path.parent_path());
-    auto temporary = path;
-    temporary += ".tmp-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
-    try {
-        {
-            std::ofstream file(temporary, std::ios::binary | std::ios::trunc);
-            if (!file)
-                throw std::runtime_error("无法写入用户数据文件");
-            file << j.dump(2) << '\n';
-            file.flush();
-            if (!file)
-                throw std::runtime_error("用户数据写入失败");
-            file.close();
-            if (file.fail())
-                throw std::runtime_error("用户数据保存失败");
-        }
-#ifdef _WIN32
-        if (!MoveFileExW(temporary.c_str(), path.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
-            throw std::runtime_error("无法替换用户数据文件");
-#else
-        std::filesystem::rename(temporary, path);
-#endif
-    } catch (...) {
-        std::error_code ignored;
-        std::filesystem::remove(temporary, ignored);
-        throw;
-    }
-}
+
 std::vector<DeckPreset> loadPresets(const Content &content, const std::filesystem::path &assets) {
     std::vector<DeckPreset> out{
         {"default",
@@ -167,10 +139,11 @@ const MatchSession &Application::match() const {
     return *match_;
 }
 void Application::navigate(Page page) {
-    if (match_)
+    if (hasMatch())
         return;
     if (page == Page::Menu || page == Page::HotseatSetup || page == Page::AiSetup || page == Page::Decks ||
-        page == Page::DeckEditor || page == Page::ConfirmDeckDelete || page == Page::ConfirmDeckDiscard)
+        page == Page::DeckEditor || page == Page::ConfirmDeckDelete || page == Page::ConfirmDeckDiscard ||
+        page == Page::NetworkSetup || page == Page::NetworkRoom)
         page_ = page;
 }
 void Application::openSettings() {
@@ -196,7 +169,7 @@ bool Application::applySettings(const Settings &s, std::string &error) {
     }
 }
 bool Application::start(const MatchConfig &config, std::string &error, SessionOptions options) {
-    if (match_) {
+    if (match_ || network_) {
         error = "请先结束当前对局";
         return false;
     }
@@ -251,6 +224,11 @@ CommandResult Application::submit(PlayerId actor, const Command &command, std::u
         return {false, "对局操作已过期", {}, {}, "stale_match"};
     if (paused())
         return {false, "对局已暂停", {}, {}, "match_paused"};
+    if (network_) {
+        if (actor != network_->view().viewer)
+            return {false, "无权操作对方席位", {}, {}, "wrong_player"};
+        return network_->submit(command);
+    }
     if (mode() == MatchMode::Tutorial && actor == 0 &&
         !tutorial_.allows(match_->engine().viewFor(0), command))
         return {false, tutorial_.hint(match_->engine().viewFor(0)), {}, {}, "tutorial_hint"};
@@ -263,7 +241,8 @@ CommandResult Application::submit(PlayerId actor, const Command &command, std::u
     return result;
 }
 bool Application::aiTurn() const {
-    if (paused() || mode() == MatchMode::Hotseat || match_->engine().state().result != -1)
+    if (paused() || mode() == MatchMode::Hotseat || mode() == MatchMode::Network ||
+        match_->engine().state().result != -1)
         return false;
     const auto &s = match_->engine().state();
     if ((s.decision ? s.decision->player : s.active) != 1)
@@ -301,6 +280,8 @@ void Application::continueTutorial() {
     ++revision_;
 }
 bool Application::saveReplay(std::string &error) const {
+    if (network_)
+        return network_->save(error);
     if (!match_) {
         error = "没有可保存的对局";
         return false;
@@ -314,6 +295,14 @@ bool Application::saveReplay(std::string &error) const {
     }
 }
 void Application::requestLeave(bool quit) {
+    if (network_) {
+        if (page_ == Page::ConfirmLeave || page_ == Page::ConfirmSurrender)
+            return;
+        confirmationReturn_ = page_;
+        leaveQuits_ = quit;
+        page_ = Page::ConfirmLeave;
+        return;
+    }
     if (!match_) {
         if (quit)
             quit_ = true;
@@ -332,6 +321,8 @@ void Application::cancelConfirmation() {
         page_ = confirmationReturn_;
 }
 bool Application::confirmLeave(PlayerId actor, std::string &error) {
+    if (network_)
+        return leaveNetwork(error);
     if (page_ != Page::ConfirmLeave || !match_) {
         error = "离开确认已失效";
         return false;
@@ -357,12 +348,26 @@ bool Application::confirmLeave(PlayerId actor, std::string &error) {
     }
 }
 void Application::requestSurrender() {
+    if (network_) {
+        if (hasMatch() && network_->view().result == -1) {
+            confirmationReturn_ = page_;
+            page_ = Page::ConfirmSurrender;
+        }
+        return;
+    }
     if (!match_ || match_->engine().state().result != -1 || (page_ != Page::Settings && page_ != Page::Match))
         return;
     confirmationReturn_ = page_;
     page_ = Page::ConfirmSurrender;
 }
 bool Application::confirmSurrender(PlayerId actor, std::string &error) {
+    if (network_) {
+        auto r = network_->submit(Surrender{});
+        error = r.error;
+        if (r.accepted)
+            page_ = Page::Match;
+        return r.accepted;
+    }
     if (page_ != Page::ConfirmSurrender || !match_) {
         error = "投降确认已失效";
         return false;
@@ -380,5 +385,86 @@ bool Application::confirmSurrender(PlayerId actor, std::string &error) {
         error = std::string("投降未完成：") + e.what();
         return false;
     }
+}
+GameView Application::viewFor(PlayerId player) const {
+    if (network_)
+        return network_->view();
+    return match().engine().viewFor(player);
+}
+PlayerId Application::actingPlayer() const {
+    if (network_)
+        return network_->view().viewer;
+    const auto &s = match().engine().state();
+    return s.decision ? s.decision->player : s.active;
+}
+bool Application::startNetwork(bool host, const std::string &address, unsigned short port,
+                               const PlayerDeck &d, std::string &error) {
+    if (hasMatch() || network_) {
+        error = "请先离开当前房间或对局";
+        return false;
+    }
+    try {
+        auto path = directory_ / "replays" / ("network-" + net::token() + ".json");
+        auto peer = std::make_unique<net::Peer>(content_, path);
+        if (host)
+            peer->host(port, d);
+        else
+            peer->join(address, port);
+        network_ = std::move(peer);
+        replayPath_ = path;
+        options_.mode = MatchMode::Network;
+        ++generation_;
+        page_ = Page::NetworkRoom;
+        revision_ = 0;
+        return true;
+    } catch (const std::exception &e) {
+        error = e.what();
+        return false;
+    }
+}
+bool Application::tickNetwork() {
+    if (!network_)
+        return false;
+    network_->tick();
+    if (!network_->closing() && !network_->ended())
+        leavePending_ = false;
+    if (network_->closing())
+        notice_ = "等待投降确认和复盘保存…";
+    else
+        notice_ = network_->notice();
+    if (network_->ended() && leavePending_) {
+        network_.reset();
+        options_ = {};
+        ++generation_;
+        page_ = Page::Menu;
+        quit_ = leaveQuits_;
+        leavePending_ = false;
+        return false;
+    }
+    if (!network_->started())
+        return false;
+    bool reset = network_->takeReset();
+    networkReset_ = reset;
+    if (page_ == Page::NetworkRoom)
+        page_ = Page::Match;
+    auto r = network_->revision();
+    bool changed = r != revision_ || reset;
+    revision_ = r;
+    return changed;
+}
+bool Application::leaveNetwork(std::string &error, bool force) {
+    if (!network_)
+        return true;
+    bool done = network_->leave(error, force);
+    if (done) {
+        network_.reset();
+        options_ = {};
+        ++generation_;
+        page_ = Page::Menu;
+        quit_ = leaveQuits_;
+        leavePending_ = false;
+    } else if (network_->closing())
+        leavePending_ = true;
+    return done;
 }
 } // namespace wizard::app

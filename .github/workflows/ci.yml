@@ -31,6 +31,7 @@ jobs:
           exit $configureExit
       - run: cmake --build --preset windows --parallel 4
       - run: ctest --preset windows
+      - run: python tools/network_smoke.py --exe build/windows/Release/wizard_network_probe.exe --output build/network-ci
       - run: build/windows/Release/wizard_cli.exe smoke assets build/windows/cross-platform.json 42
       - run: build/windows/Release/wizard_cli.exe ai-match assets build/windows/ai-replay.json 42 2
       - run: build/windows/Release/wizard_cli.exe tutorial-smoke assets build/windows/tutorial-replay.json
@@ -57,6 +58,7 @@ jobs:
       - run: cmake --preset headless
       - run: cmake --build --preset headless --parallel 4
       - run: ctest --preset headless
+      - run: python tools/network_smoke.py --exe build/headless/wizard_network_probe --output build/network-ci
       - uses: actions/upload-artifact@v4
         with:
           name: linux-core-cli

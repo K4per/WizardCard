@@ -93,6 +93,7 @@ void titleBackdrop(sf::RenderTarget &t) {
 }
 void drawPage(sf::RenderTarget &t) {
     const auto page = app_.page();
+    if(page==app::Page::NetworkSetup || page==app::Page::NetworkRoom){drawNetwork(t);return;}
     if (page == app::Page::Menu) {
         titleBackdrop(t);
         auto titleText = [&](const std::string &s, float y, unsigned size, sf::Color color) {
@@ -106,14 +107,14 @@ void drawPage(sf::RenderTarget &t) {
         }
         titleText("巫 师 牌 · 本 地 奥 术 对 决", 610, 23, ink);
         titleText("构筑法阵 · 编织言灵 · 掌控连锁", 673, 19, muted);
-        const std::array<std::string, 5> items{"单人测试对战（换手）", "单人AI对战", "卡组构筑", "游戏设置",
-                                               "退出游戏"};
-        for (int n = 0; n < 5; ++n)
+        const std::array<std::string, 6> items{"单人测试对战（换手）", "单人AI对战", "卡组构筑", "游戏设置",
+                                               "退出游戏", "真人联机"};
+        for (int n = 0; n < 6; ++n)
             button(t, menuRow(n), items[static_cast<std::size_t>(n)], n == 0, true, true);
-        label(t, "ALPHA-v1.0  /  " + std::string(programVersion), 115, 926, 14, muted);
+        label(t, "ALPHA-v1.1  /  " + std::string(programVersion), 115, 926, 14, muted);
         label(t, "本地对战", 1390, 926, 14, muted);
         if (!status_.empty())
-            wrapped(t, resources_, status_, {970, 793}, 14, muted, 34);
+            wrapped(t, resources_, status_, {970, 852}, 14, muted, 34);
         return;
     }
     if (page == app::Page::HotseatSetup || page == app::Page::AiSetup) {
@@ -158,7 +159,7 @@ void drawPage(sf::RenderTarget &t) {
         return;
     } else if (page == app::Page::Settings) {
         const bool inMatch = app_.hasMatch();
-        pageHeading(t, inMatch ? "对局设置 · 已暂停" : "游戏设置",
+        pageHeading(t, inMatch ? (app_.network()?"联机设置 · 对局继续进行":"对局设置 · 已暂停") : "游戏设置",
                     "点击应用保存修改；返回将放弃尚未应用的修改。");
         for (int n = 0; n < 2; ++n) {
             int value = n ? draftSettings_.soundVolume : draftSettings_.masterVolume;
@@ -178,7 +179,7 @@ void drawPage(sf::RenderTarget &t) {
                    (draftSettings_.windowMode == app::WindowMode::Borderless ? " · 跟随桌面" : "  ›"),
                false, draftSettings_.windowMode != app::WindowMode::Borderless);
         label(t, "空阶段自动通过", 385, 521, 20, gold);
-        button(t, settingValue(4), draftSettings_.automaticPhases ? "开启" : "关闭");
+        button(t, settingValue(4), draftSettings_.automaticPhases ? "开启" : "关闭",false,!app_.network());
         label(t, "对局动画", 385, 591, 20, gold);
         button(t, motionSettings_, draftSettings_.reducedMotion ? "精简反馈" : "完整动画");
         button(t, applySettings_, "应用并保存", true);
@@ -188,7 +189,7 @@ void drawPage(sf::RenderTarget &t) {
             button(t, replaySettings_, "保存复盘");
             button(t, surrenderSettings_, "投降", false, view_.result == -1);
             button(t, leaveSettings_, "返回主菜单");
-            label(t, "对局状态与换手遮挡将保留，继续后恢复当前选择。", 385, 707, 15, muted);
+            label(t, app_.network()?"设置期间仍接收对局更新；自动通过由房间设置控制。":"对局状态与换手遮挡将保留，继续后恢复当前选择。", 385, 707, 15, muted);
         }
     } else if (page == app::Page::ConfirmLeave || page == app::Page::ConfirmSurrender) {
         frame(t, {{440, 300}, {720, 360}});
@@ -199,6 +200,7 @@ void drawPage(sf::RenderTarget &t) {
                 {480, 405}, 20, ink, 30);
         button(t, confirmNo_, "取消并继续");
         button(t, confirmYes_, "确认并保存", true);
+        if(app_.network())button(t,{{480,670},{640,48}},"保存失败或等待中：明确退出",false,true,true);
     }
     if (!status_.empty())
         wrapped(t, resources_, status_, {385, 838}, 13, muted, 57);
@@ -231,7 +233,7 @@ void applyWindow(sf::RenderWindow &window) {
         if (!app_.applySettings(settings, error))
             status_ += " " + error;
     }
-    window.create(mode, utf8("巫师牌 · Alpha v1.0"),
+    window.create(mode, utf8("巫师牌 · Alpha v1.1"),
                   settings.windowMode == app::WindowMode::Borderless ? sf::Style::None : sf::Style::Default,
                   settings.windowMode == app::WindowMode::Fullscreen ? sf::State::Fullscreen
                                                                      : sf::State::Windowed);
@@ -347,6 +349,7 @@ void escaped() {
         app_.cancelConfirmation();
         return;
     }
+    if(page==app::Page::NetworkRoom){app_.requestLeave();return;}
     if (page != app::Page::Match) {
         app_.navigate(app::Page::Menu);
         seedFocused_ = false;
@@ -370,8 +373,9 @@ void seedInput(char32_t code) {
 }
 void clickPage(sf::Vector2f p) {
     const auto page = app_.page();
+    if(page==app::Page::NetworkSetup || page==app::Page::NetworkRoom){clickNetwork(p);return;}
     if (page == app::Page::Menu) {
-        for (int n = 0; n < 5; ++n)
+        for (int n = 0; n < 6; ++n)
             if (hit(p, menuRow(n))) {
                 status_.clear();
                 if (n == 0)
@@ -384,6 +388,7 @@ void clickPage(sf::Vector2f p) {
                     openSettings();
                 if (n == 4)
                     app_.requestLeave(true);
+                if(n==5){app_.navigate(app::Page::NetworkSetup);networkDeckSent_=false;status_.clear();}
                 return;
             }
     } else if (page == app::Page::HotseatSetup || page == app::Page::AiSetup) {
@@ -441,7 +446,7 @@ void clickPage(sf::Vector2f p) {
         }
         if (hit(p, settingValue(3)))
             cycleResolution();
-        if (hit(p, settingValue(4)))
+        if (hit(p, settingValue(4)) && !app_.network())
             draftSettings_.automaticPhases = !draftSettings_.automaticPhases;
         if (hit(p, motionSettings_))
             draftSettings_.reducedMotion = !draftSettings_.reducedMotion;
@@ -488,6 +493,7 @@ void clickPage(sf::Vector2f p) {
                 app_.requestLeave();
         }
     } else if (page == app::Page::ConfirmLeave || page == app::Page::ConfirmSurrender) {
+        if(app_.network() && hit(p,{{480,670},{640,48}})){std::string error;app_.leaveNetwork(error,true);interaction_.cancel();presentation_.clear();return;}
         if (hit(p, confirmNo_)) {
             app_.cancelConfirmation();
             return;

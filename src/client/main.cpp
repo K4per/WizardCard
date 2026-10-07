@@ -47,7 +47,8 @@ public:
         sf::RenderWindow window;applyWindow(window);sf::Clock clock;
         if(showcase && !app_.hasMatch()) {std::string error;auto config=configuration(content_,static_cast<std::uint32_t>(std::stoul(seedText_)),Json{});if(!app_.start(config,error))throw std::runtime_error(error);refresh(true);}
         if(showcase)scene_=Scene::Match;
-        if(capturePage=="settings")openSettings();
+        if(capturePage=="network")app_.navigate(app::Page::NetworkSetup);
+        else if(capturePage=="settings")openSettings();
         else if(capturePage=="setup")app_.navigate(app::Page::HotseatSetup);
         else if(capturePage=="ai")app_.navigate(app::Page::AiSetup);
         else if(capturePage=="decks")app_.navigate(app::Page::Decks);
@@ -57,10 +58,11 @@ public:
         bool menuExercised=false;
         std::size_t smokeStep=0;int frames=0;bool exercised=false;
         while(window.isOpen()) {
+            tickNetworkUi();
             while(const auto event=window.pollEvent()) {
                 if(event->is<sf::Event::Closed>()){resetPointer();if(app_.page()==app::Page::DeckEditor || app_.page()==app::Page::ConfirmDeckDiscard)requestDeckLeave(true);else app_.requestLeave(true);}
                 if(event->is<sf::Event::Resized>())viewport(window);
-                if(const auto* e=event->getIf<sf::Event::TextEntered>()){seedInput(e->unicode);deckTextInput(e->unicode);}
+                if(const auto* e=event->getIf<sf::Event::TextEntered>()){seedInput(e->unicode);deckTextInput(e->unicode);networkText(e->unicode);}
                 if(const auto* e=event->getIf<sf::Event::MouseButtonPressed>()) {
                     if(e->button==sf::Mouse::Button::Left)press(window.mapPixelToCoords(e->position));
                     if(e->button==sf::Mouse::Button::Right)rightClick(window.mapPixelToCoords(e->position));
@@ -79,12 +81,12 @@ public:
             if(windowChange_)applyWindow(window);
             if((menuSmoke || deckSmoke || aiSmoke) && !menuExercised){if(aiSmoke)exerciseAi(window);else if(deckSmoke)exerciseDecks(window);else exerciseMenu(window);menuExercised=true;if(screenshot.empty()){window.close();break;}}
             if(!window.isOpen())break;
-            if(smoke.is_null() && screenshot.empty() && !presentation_.busy() && !app_.paused() && scene_==Scene::Match && !showLog_ && !mouseDown_ && !interaction_.selected() && !interaction_.pending())if(auto advance=ui::automaticAdvance(view_,app_.settings().automaticPhases && !manualPhases && app_.mode()!=app::MatchMode::Tutorial)){
+            if(app_.mode()!=app::MatchMode::Network && smoke.is_null() && screenshot.empty() && !presentation_.busy() && !app_.paused() && scene_==Scene::Match && !showLog_ && !mouseDown_ && !interaction_.selected() && !interaction_.pending())if(auto advance=ui::automaticAdvance(view_,app_.settings().automaticPhases && !manualPhases && app_.mode()!=app::MatchMode::Tutorial)){
                 auto result=app_.submit(viewer_,*advance,app_.generation());if(!result.accepted)throw std::runtime_error(result.error);refresh();save();
             }
             float dt=std::min(.1f,clock.restart().asSeconds());
             updatePresentation(dt);
-            if(smoke.is_null() && screenshot.empty())tickAi(dt);updateDrag(dt);draw(window);window.display();
+            if(smoke.is_null() && screenshot.empty())tickAi(dt);updateDrag(dt);draw(window);window.display();tickNetworkSmoke(window);if(!window.isOpen())break;
             bool capture=!screenshot.empty() && (smoke.is_null()?++frames>=3:smokeStep>=static_cast<std::size_t>(captureStep));
             if(capture) {
                 if(animationTime>=0)presentation_.sampleLatest(animationTime);
@@ -120,6 +122,10 @@ public:
                 else {std::cout<<"UI replay passed: "<<smokeStep<<" contextual actions, "<<dragCount_<<" drag gestures, digest "<<app_.match().engine().digest()<<'\n';window.close();}
             }
         }
+    }
+    void networkSmoke(const std::string& role,const std::string& scenario,const std::string& port) {
+        if(role!="host" && role!="guest")throw std::runtime_error("network-smoke requires host or guest");
+        networkSmokeRole_=role;networkSmokeScenario_=scenario;networkPort_=port;
     }
     void audioSmoke() {
         std::set<std::string> files;Json audit=Json::array();
@@ -165,14 +171,15 @@ private:
     std::vector<std::pair<Rect,LinkId>> linkHits_;
     std::vector<std::pair<Rect,LegalAction>> decisionHits_;std::vector<ScrollArea> scrollAreas_;
 #include "pages.inc"
+#include "network_pages.inc"
 #include "match_effects.inc"
     void refresh(bool initial=false) {
-        const auto& s=app_.match().engine().state();int next=app_.mode()==app::MatchMode::Hotseat?(s.decision?s.decision->player:s.active):0;
-        bool handoff=initial || next!=viewer_;auto previous=view_;viewer_=next;view_=app_.match().engine().viewFor(viewer_);
+        int next=app_.mode()==app::MatchMode::Network?app_.network()->view().viewer:app_.mode()==app::MatchMode::Hotseat?app_.actingPlayer():0;
+        bool handoff=initial || next!=viewer_;auto previous=view_;viewer_=next;view_=app_.viewFor(viewer_);
         if(initial){resources_.stopSounds();if(app_.mode()!=app::MatchMode::Hotseat)cue(ui::SoundId::TurnReady);}
         else {
             // Consume the old viewer's filtered transition before switching a hot-seat screen.
-            auto audible=app_.match().engine().viewFor(previous.viewer);
+            auto audible=app_.viewFor(previous.viewer);
             if(handoff)resources_.stopSounds();
             if(app_.mode()==app::MatchMode::Hotseat && previous.result==-1 && view_.result!=-1)
                 cue(view_.result==2?ui::SoundId::DrawResult:view_.result==viewer_?ui::SoundId::Victory:ui::SoundId::Defeat);
@@ -181,7 +188,7 @@ private:
         if(handoff){presentation_.clear();motionOrigins_.clear();}
         else {presentation_.observe(previous,view_,app_.settings().reducedMotion);captureMotionOrigins(previous);}
         interaction_.update(view_);handOrder_.sync(view_);resetPointer();
-        scene_=s.result!=-1?Scene::Result:app_.mode()==app::MatchMode::Hotseat && handoff?Scene::Handoff:Scene::Match;showLog_=false;groupOffset_=0;
+        scene_=view_.result!=-1?Scene::Result:app_.mode()==app::MatchMode::Hotseat && handoff?Scene::Handoff:Scene::Match;showLog_=false;groupOffset_=0;
     }
     void save(){std::string error;if(app_.saveReplay(error))status_="复盘已保存到用户数据目录。";else status_=error;}
     const CardView* find(CardId id)const{for(const auto& c:view_.cards)if(c.instance.id==id)return &c;return nullptr;}
@@ -310,7 +317,8 @@ private:
     void hud(sf::RenderTarget& t,PlayerId p,bool enemy) {
         Rect r=enemy?Rect({1360,127},{215,190}):Rect({25,642},{215,190});paint(t,"hud",r);const auto& v=view_.players[p];
         std::string name=(enemy?"对手 · 玩家 ":"本方 · 玩家 ")+std::to_string(p+1);
-        if(app_.mode()!=app::MatchMode::Hotseat)name=enemy?(app_.mode()==app::MatchMode::Tutorial?"教学对手":"AI · "+ai::difficultyLabel(app_.difficulty())):"本方 · 你";
+        if(app_.mode()==app::MatchMode::Network)name=enemy?"对手 · 玩家 "+std::to_string(p+1):"本方 · 你";
+        else if(app_.mode()!=app::MatchMode::Hotseat)name=enemy?(app_.mode()==app::MatchMode::Tutorial?"教学对手":"AI · "+ai::difficultyLabel(app_.difficulty())):"本方 · 你";
         label(t,name,r.position.x+14,r.position.y+10,17,gold);
         label(t,std::to_string(v.life),r.position.x+52,r.position.y+39, 40,ink);paint(t,"life",{{r.position.x+12,r.position.y+51},{30,30}});
         label(t,"/"+std::to_string(maximumLife),r.position.x+94,r.position.y+63,12,muted);
@@ -480,7 +488,7 @@ private:
         if(scene_==Scene::Result) {
             paint(t,"result_window",{{520,327},{560,305}});label(t,view_.result==2?"对局结束 · 平局":"玩家 "+std::to_string(view_.result+1)+" 获胜",558,355,32,gold);
             std::string reasons;for(const auto& e:view_.events)if(e.kind=="defeat_reason")reasons+=e.text+"\n";
-            wrapped(t,resources_,reasons,{558,414},18,ink,25);button(t,resultRestart_,"再来一局",true);button(t,resultMenu_,"返回主菜单");
+            wrapped(t,resources_,reasons,{558,414},18,ink,25);button(t,resultRestart_,app_.network()?"结束联机":"再来一局",true);button(t,resultMenu_,"返回主菜单");
         }
     }
     CardId cardAt(sf::Vector2f p)const {
@@ -580,7 +588,7 @@ private:
         try{auto result=app_.submit(viewer_,command,app_.generation());if(result.accepted){
             const auto choice=std::get_if<Choose>(&command);
             if(!std::holds_alternative<AdvancePhase>(command) && !std::holds_alternative<PassResponse>(command) && !(choice && !choice->option))cue(ui::SoundId::Confirm);
-            refresh();status_="操作完成";std::string error;if(!app_.saveReplay(error)){status_=error;cue(ui::SoundId::Reject);}
+            refresh();status_=app_.mode()==app::MatchMode::Network?"操作已提交":"操作完成";std::string error;if(app_.mode()!=app::MatchMode::Network && !app_.saveReplay(error)){status_=error;cue(ui::SoundId::Reject);}
         }else{status_=result.error;cue(ui::SoundId::Reject);interaction_.cancel();}}
         catch(const std::exception& e){status_=e.what();cue(ui::SoundId::Reject);interaction_.cancel();}
     }
@@ -597,6 +605,7 @@ private:
         if(scene_==Scene::Handoff){if(hit(p,handoffButton)){scene_=Scene::Match;cue(ui::SoundId::TurnReady);if(view_.decision && view_.decision->kind==DecisionKind::Response)cue(ui::SoundId::ResponseOpen);}return;}
         if(scene_==Scene::Result){
             std::string error;
+            if(app_.network()){if(hit(p,resultRestart_) || hit(p,resultMenu_)){if(app_.leaveNetwork(error)){interaction_.cancel();presentation_.clear();status_.clear();}else status_=error;}return;}
             if(hit(p,resultRestart_)){if(app_.restart(static_cast<std::uint32_t>(std::chrono::steady_clock::now().time_since_epoch().count()),error))resetMatchUi();else status_=error;}
             if(hit(p,resultMenu_)){app_.requestLeave();if(app_.confirmLeave(viewer_,error)){resources_.stopSounds();interaction_.cancel();resetPointer();status_="对局记录已保存。";}else status_=error;}
             return;
@@ -687,7 +696,7 @@ private:
         if(row.at("actor").get<int>()!=viewer_)throw std::runtime_error("UI viewer mismatch");
         auto it=std::find_if(view_.actions.begin(),view_.actions.end(),[&](const LegalAction& a){return encodeCommand(a.command)==row.at("command");});
         if(it==view_.actions.end())throw std::runtime_error("UI operation unavailable");LegalAction a=*it;
-        if(view_.decision && exercisedPauseKinds_.insert(view_.decision->kind).second)pauseAtDecision(w,a.command);
+        if(app_.mode()!=app::MatchMode::Network && view_.decision && exercisedPauseKinds_.insert(view_.decision->kind).second)pauseAtDecision(w,a.command);
         if(a.source && smokeDragging_ && dragCommand(w,a)) {
             // Pointer press/move/release has selected the same command as the click path.
         } else if(a.source) {
@@ -707,9 +716,9 @@ private:
             if(!clicked)click((std::holds_alternative<Surrender>(a.command)?surrenderButton:phaseButton).position+sf::Vector2f{6,6});
         }
         if(!interaction_.pending() || encodeCommand(interaction_.pending()->command)!=row.at("command"))throw std::runtime_error("UI selection mismatch: "+a.label);
-        if(exercisedSelectionKinds_.insert(a.command.index()).second)pauseAtDecision(w,a.command);
+        if(app_.mode()!=app::MatchMode::Network && exercisedSelectionKinds_.insert(a.command.index()).second)pauseAtDecision(w,a.command);
         draw(w);click(confirm_.position+sf::Vector2f{6,6});
-        if(app_.match().engine().digest()!=row.at("digest").get<std::string>())throw std::runtime_error("UI state mismatch: "+a.label);
+        if(app_.mode()!=app::MatchMode::Network && app_.match().engine().digest()!=row.at("digest").get<std::string>())throw std::runtime_error("UI state mismatch: "+a.label);
     }
 };
 }
@@ -717,10 +726,12 @@ int main(int argc,char** argv) {
     try {
         auto assets=std::filesystem::absolute(argv[0]).parent_path()/"assets";std::string screenshot,inspect;bool showcase=false,dragSmoke=false,previewDrag=false,previewDropChoice=false,manualPhases=false,menuSmoke=false,deckSmoke=false,aiSmoke=false,audioSmoke=false;std::filesystem::path userDirectory;std::string capturePage;std::uint32_t seed=42;Json smoke;int captureStep=3;
         for(int i=1;i<argc;++i){std::string arg=argv[i];if(arg=="--assets" && i+1<argc)assets=argv[++i];else if(arg=="--screenshot" && i+1<argc)screenshot=argv[++i];else if(arg=="--showcase")showcase=true;else if(arg=="--preview-drop")previewDropChoice=true;else if(arg=="--preview-drag")previewDrag=true;else if(arg=="--inspect-card" && i+1<argc)inspect=argv[++i];else if(arg=="--capture-step" && i+1<argc)captureStep=std::stoi(argv[++i]);else if(arg=="--user-data" && i+1<argc)userDirectory=std::filesystem::u8path(argv[++i]);else if(arg=="--capture-page" && i+1<argc)capturePage=argv[++i];else if(arg=="--menu-smoke")menuSmoke=true;else if(arg=="--deck-smoke")deckSmoke=true;else if(arg=="--ai-smoke")aiSmoke=true;else if(arg=="--audio-smoke")audioSmoke=true;else if(arg=="--seed" && i+1<argc)seed=static_cast<std::uint32_t>(std::stoul(argv[++i]));else if((arg=="--ui-smoke" || arg=="--drag-smoke") && i+1<argc){dragSmoke=arg=="--drag-smoke";smoke=readJson(argv[++i]);seed=smoke.at("seed").get<std::uint32_t>();}}
+        std::string networkRole,networkScenario="normal",networkPort="27861";
+        for(int i=1;i<argc;++i){auto a=std::string(argv[i]);if(a=="--network-smoke" && i+1<argc)networkRole=argv[++i];else if(a=="--network-scenario" && i+1<argc)networkScenario=argv[++i];else if(a=="--network-port" && i+1<argc)networkPort=argv[++i];}
         float animationTime=-1;
         std::string animationFrames;
         for(int i=1;i<argc;++i){if(std::string(argv[i])=="--manual-phases")manualPhases=true;else if(std::string(argv[i])=="--animation-frames" && i+1<argc)animationFrames=argv[++i];else if(std::string(argv[i])=="--animation-time" && i+1<argc){animationTime=std::stof(argv[++i]);if(!std::isfinite(animationTime) || animationTime<0 || animationTime>3)throw std::runtime_error("animation-time must be between 0 and 3 seconds");}}
-        if(userDirectory.empty()){if(menuSmoke || deckSmoke || aiSmoke || audioSmoke)throw std::runtime_error("UI smoke requires an isolated --user-data directory");userDirectory=app::userDataDirectory();}
-        Client client(assets,seed,smoke,userDirectory,capturePage=="ai-replay");if(audioSmoke){client.audioSmoke();return 0;}client.run(screenshot,showcase,smoke,inspect,captureStep,dragSmoke,previewDrag,previewDropChoice,manualPhases,menuSmoke,deckSmoke,aiSmoke,capturePage,animationTime,animationFrames);return 0;
+        if(userDirectory.empty()){if(menuSmoke || deckSmoke || aiSmoke || audioSmoke || !networkRole.empty())throw std::runtime_error("UI smoke requires an isolated --user-data directory");userDirectory=app::userDataDirectory();}
+        Client client(assets,seed,smoke,userDirectory,capturePage=="ai-replay");if(audioSmoke){client.audioSmoke();return 0;}if(!networkRole.empty())client.networkSmoke(networkRole,networkScenario,networkPort);client.run(screenshot,showcase,smoke,inspect,captureStep,dragSmoke,previewDrag,previewDropChoice,manualPhases,menuSmoke,deckSmoke,aiSmoke,capturePage,animationTime,animationFrames);return 0;
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
 }

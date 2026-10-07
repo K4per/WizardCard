@@ -1,6 +1,7 @@
 #pragma once
 #include "wizard/content.hpp"
 #include "wizard/decks.hpp"
+#include "wizard/network.hpp"
 #include "wizard/tutorial.hpp"
 #include <memory>
 
@@ -16,7 +17,9 @@ enum class Page {
     ConfirmSurrender,
     DeckEditor,
     ConfirmDeckDelete,
-    ConfirmDeckDiscard
+    ConfirmDeckDiscard,
+    NetworkSetup,
+    NetworkRoom
 };
 enum class WindowMode { Windowed, Borderless, Fullscreen };
 struct Settings {
@@ -30,7 +33,9 @@ struct Settings {
 Json encodeSettings(const Settings &);
 Settings decodeSettings(const Json &);
 std::filesystem::path userDataDirectory();
-void atomicWriteJson(const std::filesystem::path &, const Json &);
+inline void atomicWriteJson(const std::filesystem::path &p, const Json &j) {
+    writeAtomicJson(p, j);
+}
 struct DeckPreset {
     std::string id, name;
     PlayerDeck deck;
@@ -38,7 +43,7 @@ struct DeckPreset {
 };
 std::vector<DeckPreset> loadPresets(const Content &, const std::filesystem::path &assets);
 
-enum class MatchMode { Hotseat, Ai, Tutorial };
+enum class MatchMode { Hotseat, Ai, Tutorial, Network };
 struct SessionOptions {
     MatchMode mode{MatchMode::Hotseat};
     ai::Difficulty difficulty{ai::Difficulty::Normal};
@@ -77,10 +82,10 @@ class Application {
     }
     std::vector<DeckPreset> playableDecks() const;
     bool hasMatch() const {
-        return bool(match_);
+        return bool(match_) || (network_ && network_->started());
     }
     bool paused() const {
-        return page_ != Page::Match || !match_;
+        return page_ != Page::Match || !hasMatch() || (network_ && network_->blocked());
     }
     bool quitRequested() const {
         return quit_;
@@ -89,6 +94,21 @@ class Application {
         return generation_;
     }
     const MatchSession &match() const;
+    GameView viewFor(PlayerId) const;
+    PlayerId actingPlayer() const;
+    net::Peer *network() {
+        return network_.get();
+    }
+    const net::Peer *network() const {
+        return network_.get();
+    }
+    bool startNetwork(bool host, const std::string &address, unsigned short port, const PlayerDeck &,
+                      std::string &);
+    bool tickNetwork();
+    bool networkReset() const {
+        return networkReset_;
+    }
+    bool leaveNetwork(std::string &, bool force = false);
     const MatchConfig &configuration() const {
         return configuration_;
     }
@@ -127,11 +147,12 @@ class Application {
     std::vector<DeckPreset> presets_;
     DeckLibrary decks_;
     std::unique_ptr<MatchSession> match_;
+    std::unique_ptr<net::Peer> network_;
     MatchConfig configuration_;
     Page page_{Page::Menu}, settingsReturn_{Page::Menu}, confirmationReturn_{Page::Menu};
     std::string notice_;
     std::uint64_t generation_{};
-    bool quit_{}, leaveQuits_{};
+    bool quit_{}, leaveQuits_{}, leavePending_{}, networkReset_{};
     SessionOptions options_;
     Tutorial tutorial_;
     std::uint64_t revision_{};

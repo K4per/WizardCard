@@ -44,12 +44,12 @@ std::vector<SoundId> matchSounds(const GameView &before, const GameView &after, 
             out.push_back(id);
     };
     // A release precedes impact sounds even when the whole link completes in one submit.
-    for (std::size_t n = before.events.size(); n < after.events.size(); ++n) {
+    for (std::size_t n = firstNewEvent(before, after); n < after.events.size(); ++n) {
         const auto &e = after.events[n];
         if ((e.audience < 0 || e.audience == after.viewer) && e.spellReleased)
             add(SoundId::SpellRelease);
     }
-    for (std::size_t n = before.events.size(); n < after.events.size(); ++n) {
+    for (std::size_t n = firstNewEvent(before, after); n < after.events.size(); ++n) {
         const auto &e = after.events[n];
         if (e.audience >= 0 && e.audience != after.viewer)
             continue;

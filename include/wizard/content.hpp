@@ -26,4 +26,5 @@ private:
 GameEngine replay(const Content&,const Json&);
 Json readJson(const std::filesystem::path&);
 void writeJson(const std::filesystem::path&,const Json&);
+void writeAtomicJson(const std::filesystem::path&,const Json&);
 }

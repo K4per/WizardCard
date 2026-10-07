@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <algorithm>
 #include <cstdint>
 #include <deque>
 #include <map>
@@ -14,7 +15,7 @@ using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
 using ChainId = std::uint64_t;
 using LinkId = std::uint64_t;
-inline constexpr const char *programVersion = "1.0.0-alpha";
+inline constexpr const char *programVersion = "1.1.0-alpha";
 inline constexpr int startingLife = 40, maximumLife = 40;
 enum class CardType { Action, Analytic, Word, Formation, Seal };
 enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached, Resolving };
@@ -382,6 +383,7 @@ struct CommandResult {
     std::vector<GameEvent> events;
     std::optional<PendingDecision> waiting;
     std::string errorCode;
+    bool pending{}; // frontend submission queued; authority has not acknowledged it yet
 };
 struct LegalAction {
     std::string label;
@@ -414,7 +416,12 @@ struct GameView {
     DecisionId phaseGate{};
     std::optional<ChainState> chain;
     std::vector<Trigger> triggers; // only visible choices of this viewer's trigger-order decision
+    std::uint64_t eventBase{}; // projection-only offset for bounded network event history
 };
+inline std::size_t firstNewEvent(const GameView& before,const GameView& after) {
+    auto end=before.eventBase+before.events.size();
+    return end<=after.eventBase?0:static_cast<std::size_t>(std::min<std::uint64_t>(after.events.size(),end-after.eventBase));
+}
 class GameEngine {
   public:
     GameEngine(CardCatalog catalog, std::array<std::vector<std::string>, 2> decks, std::uint32_t seed);

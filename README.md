@@ -1,5 +1,7 @@
 # 巫师牌 / WizardCard
 
+**1.1.0-alpha 联机候选版**：主菜单新增真人联机，现有SFML客户端支持局域网/虚拟局域网两人对战；网络会话可复用于未来Godot。使用方法、协议和验收命令见[真人联机](docs/network-play.md)。原1.0发行包保留；两台实体设备验收及Godot接入尚未完成。
+
 C++17 专用卡牌规则引擎与 SFML 本地卡牌游戏，支持换手对战、三档AI及固定教学。当前规则见 [五阶段与轻量连锁](docs/alpha-v1.0-rules.md)，继承规则见 [原型规则](docs/design.md)，模块边界见 [架构](docs/architecture.md)。
 
 Alpha v1.0 已交付：程序 `1.0.0-alpha`、规则/卡池 `1.0.0`，30种卡、九套预设与五种代表性方向，初始/最大生命40。下载解压后运行 `wizard_client.exe`；详见[发布说明](docs/releases/alpha-v1.0.md)和[自动验收报告](docs/reports/alpha-v1.0-release.md)。[v1.5计划](docs/plans/v1.5.md)新增Godot图形界面重构、保留C++内核，并继续推进局域网P2P、卡牌联动与动画。规则与内容设计入口：[新卡规则](docs/alpha-v1-cards.md)、[发布补充卡](docs/alpha-release-cards.md)、[设计指南](docs/card-design-guide.md)、[术语规范](docs/terminology.md)。

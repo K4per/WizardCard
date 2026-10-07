@@ -182,7 +182,7 @@ void MatchSession::save(const std::filesystem::path &path) const {
     writeJson(path, recording());
 }
 GameEngine replay(const Content &c, const Json &j) {
-    if (j.at("format") != 2 || j.at("programVersion") != programVersion ||
+    if (j.at("format") != 2 || (j.at("programVersion") != programVersion && j.at("programVersion") != "1.0.0-alpha") ||
         j.at("rulesVersion") != c.catalog.rulesVersion ||
         j.at("cardSetVersion") != c.catalog.cardSetVersion || j.at("contentHash") != c.catalog.contentHash)
         throw std::runtime_error("incompatible replay version or content hash");

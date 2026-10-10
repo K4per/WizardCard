@@ -8,6 +8,8 @@ using namespace detail;
 GameEngine::GameEngine(CardCatalog cat, std::array<std::vector<std::string>, 2> decks, std::uint32_t seed)
     : GameEngine(std::move(cat), shared(std::move(decks), seed)) {}
 GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) : catalog_(std::move(cat)) {
+    if (catalog_.alphaV2Draft)
+        throw std::invalid_argument("Alpha v2 draft requires the explicit offline scenario entry point");
     for (const auto &deck : config.players) {
         auto errors = Rules::deckErrors(catalog_, deck);
         if (!errors.empty())

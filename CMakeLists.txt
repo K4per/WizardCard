@@ -15,7 +15,7 @@ function(wizard_warnings target)
 endfunction()
 add_library(wizard_core
   src/core/state.cpp src/core/resources.cpp src/core/zones.cpp src/core/invariants.cpp
-  src/core/effects.cpp src/core/names.cpp src/core/engine.cpp src/core/engine_support.cpp
+  src/core/effects.cpp src/core/resource_events.cpp src/core/names.cpp src/core/engine.cpp src/core/engine_support.cpp
   src/core/commands.cpp src/core/chain.cpp src/core/phases.cpp
   src/core/legal_actions.cpp src/core/view.cpp src/core/serialization.cpp)
 target_include_directories(wizard_core PUBLIC include)
@@ -89,7 +89,7 @@ endif()
 if(BUILD_TESTING)
   FetchContent_Declare(Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git GIT_TAG 2b60af89e23d28eefc081bc930831ee9d45ea58b EXCLUDE_FROM_ALL)
   FetchContent_MakeAvailable(Catch2)
-  add_executable(wizard_tests tests/rules.cpp tests/content.cpp tests/interaction.cpp tests/chain.cpp tests/card_updates.cpp tests/application.cpp tests/decks.cpp tests/ai.cpp tests/presentation.cpp tests/sound.cpp tests/alpha_cards.cpp tests/network.cpp tests/bridge.cpp tests/session.cpp)
+  add_executable(wizard_tests tests/rules.cpp tests/content.cpp tests/interaction.cpp tests/chain.cpp tests/card_updates.cpp tests/application.cpp tests/decks.cpp tests/ai.cpp tests/presentation.cpp tests/sound.cpp tests/alpha_cards.cpp tests/network.cpp tests/bridge.cpp tests/session.cpp tests/alpha_v2_resources.cpp)
   target_link_libraries(wizard_tests PRIVATE wizard_bridge_model wizard_network Catch2::Catch2WithMain)
   wizard_warnings(wizard_tests)
   target_compile_definitions(wizard_tests PRIVATE WIZARD_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")

@@ -43,6 +43,9 @@ struct CardCatalog {
     std::string rulesVersion, cardSetVersion, contentHash;
     std::map<std::string, CardDefinition> cards;
     bool advancedRules{};
+    // Offline Alpha v2 rule fixtures only, until construction/phase gates are complete.
+    // The production JSON loader deliberately does not enable this draft mode.
+    bool alphaV2Draft{};
     int baseLoadCapacity{};
     const CardDefinition &at(const std::string &id) const;
 };

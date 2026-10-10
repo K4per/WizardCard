@@ -11,6 +11,7 @@ struct PlayerState {
     bool drawFailed{}, surrendered{};
     std::vector<CardId> deck;
     int temporaryLife{}, blockedActionTurn{-1};
+    int exhaustion{};
 };
 enum class Flow {
     Draw,

@@ -19,3 +19,7 @@ GitHub父任务：[Alpha v2.0 #2](https://github.com/K4per/WizardCard/issues/2)�
 | [A04 #15](https://github.com/K4per/WizardCard/issues/15) | 工程：独立导出、跨平台复盘、发布证据 | rc.1 | A03,F04,H01 | 独立包与远程CI通过，发布标识可追溯 | needs-triage |
 
 R01与H01是计划明确的人类关卡，不以自动测试替代；R01等待期间R02/R03可用独立夹具推进。所有任务正文引用规则和架构文件，列出本行验收及依赖；依赖和标签更新前查询当前状态；不得重复创建任务。
+
+## 实施状态（2026-10-10）
+
+A01/A02/A03已通过dev.2关卡并关闭，工程提交1050cb6的远程CI四项全部通过。R02与F01已解除依赖并改为ready-for-agent；R02的过载/枯竭/结束阈值首批离线夹具正在实施，任务保持开放。R01收到用户“需要调整，稍后提供修改意见”，继续ready-for-human，草案不进入正式卡池。其余依赖与验收门槛按表保留；完整证据见[实施记录](../reports/alpha-v2.0-progress.md)。

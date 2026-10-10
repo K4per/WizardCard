@@ -19,7 +19,15 @@ struct Rules {
 };
 struct StateMaintenance {
     static void leave(GameState &, CardId, const CardCatalog * = nullptr);
-    static void check(GameState &, const CardCatalog &);
+    static void check(GameState &, const CardCatalog &, bool endCleanup = false);
+};
+struct ResourceRules {
+    // Rules damage bypasses spell resistance, consumes temporary life first.
+    // EffectResolver checks terminal state before executing the next effect.
+    static void damage(GameState &, PlayerId, int amount, const std::string &reason);
+    // Call immediately after each individual positive mutation, with its gross increase.
+    static void increasedLoad(GameState &, const CardCatalog &, PlayerId, int increment);
+    static void drawOne(GameState &, const CardCatalog &, PlayerId);
 };
 struct EffectResolver {
     static void apply(GameState &, const CardCatalog &, const Trigger &, const Effect &);

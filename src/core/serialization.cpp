@@ -7,6 +7,8 @@ namespace wizard {
 std::string GameEngine::stateKey(bool logical) const {
     const auto &s = state_;
     std::ostringstream o;
+    if (catalog_.alphaV2Draft)
+        o << "alpha-v2-resource-draft:" << s.players[0].exhaustion << ',' << s.players[1].exhaustion << ';';
     o << s.active << ',' << s.first << ',' << static_cast<int>(s.phase) << ','
       << static_cast<int>(s.phaseStep) << ',' << static_cast<int>(s.flow) << ',' << s.result << ',' << s.rng
       << ',' << s.durationApplied << ',' << (logical ? s.globalTurn % 2 : s.globalTurn) << ';';

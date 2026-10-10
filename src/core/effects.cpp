@@ -8,6 +8,8 @@
 
 namespace wizard {
 void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &t, const Effect &e) {
+    if (cat.alphaV2Draft && s.result != -1)
+        return;
     int p = t.targetPlayer >= 0 ? t.targetPlayer : t.owner;
     if (e.recipient == EffectRecipient::Owner)
         p = t.owner;
@@ -34,12 +36,14 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         break; // Successful release installs the passive resistance on the active spell.
     case EffectKind::AddSourceTemporary:
         s.temporary.push_back({s.nextLoad++, p, t.source, e.amount, 0, false, true});
+        ResourceRules::increasedLoad(s, cat, p, e.amount);
         break;
     case EffectKind::AccelerateAnalysis: {
         auto &c = s.cards.at(t.targetCard);
         c.spell = SpellState::Ready;
         s.temporary.push_back(
             {s.nextLoad++, t.owner, t.source, c.settingPaid, s.players[t.owner].ownTurn + 1});
+        ResourceRules::increasedLoad(s, cat, t.owner, c.settingPaid);
         break;
     }
     case EffectKind::Conceal: {
@@ -63,6 +67,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
                     StateMaintenance::leave(s, source, &cat);
                     s.temporary.push_back(
                         {s.nextLoad++, t.owner, t.source, burden, s.players[t.owner].ownTurn + 1});
+                    ResourceRules::increasedLoad(s, cat, t.owner, burden);
                     break;
                 }
         break;
@@ -94,23 +99,19 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     }
     case EffectKind::Draw:
         for (int k = 0; k < e.amount; ++k) {
-            auto &pl = s.players[t.owner];
-            if (pl.deck.empty()) {
-                pl.drawFailed = true;
-                continue;
-            }
-            auto id = pl.deck.back();
-            pl.deck.pop_back();
-            s.cards.at(id).zone = Zone::Hand;
-            s.events.push_back({"draw", "抽取一张牌", t.owner, id});
+            ResourceRules::drawOne(s, cat, t.owner);
+            if (cat.alphaV2Draft && s.players[t.owner].life <= 0)
+                break;
         }
         break;
     case EffectKind::AddTemporary:
         s.temporary.push_back(
             {s.nextLoad++, p, t.source, e.amount, s.players[p].ownTurn + (p == s.active ? 0 : 1)});
+        ResourceRules::increasedLoad(s, cat, p, e.amount);
         break;
     case EffectKind::AddIndependent:
         s.temporary.push_back({s.nextLoad++, p, t.source, e.amount, 0, true});
+        ResourceRules::increasedLoad(s, cat, p, e.amount);
         break;
     case EffectKind::ClearIndependent:
         s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(),
@@ -242,5 +243,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         event.affectedPlayer = t.owner;
     }
     s.events.push_back(std::move(event));
+    if (cat.alphaV2Draft)
+        StateMaintenance::check(s, cat);
 }
 } // namespace wizard

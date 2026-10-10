@@ -71,13 +71,16 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
     for (auto &trigger : captured)
         s.queue.append(std::move(trigger));
 }
-void StateMaintenance::check(GameState &s, const CardCatalog &cat) {
+void StateMaintenance::check(GameState &s, const CardCatalog &cat, bool endCleanup) {
     if (s.result != -1)
         return;
     bool loses[2]{};
     for (int p = 0; p < 2; ++p)
-        loses[p] = s.players[p].life <= 0 || s.players[p].drawFailed || s.players[p].surrendered ||
-                   Rules::load(s, p) > Rules::capacity(s, cat, p);
+        loses[p] = s.players[p].life <= 0 || s.players[p].surrendered ||
+                   (cat.alphaV2Draft
+                        ? endCleanup && Rules::load(s, p) > 0 &&
+                            Rules::load(s, p) >= 2 * Rules::capacity(s, cat, p)
+                        : s.players[p].drawFailed || Rules::load(s, p) > Rules::capacity(s, cat, p));
     if (loses[0] || loses[1]) {
         s.result = loses[0] && loses[1] ? 2 : loses[0] ? 1 : 0;
         for (int p = 0; p < 2; ++p)

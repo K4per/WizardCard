@@ -140,6 +140,8 @@ void GameEngine::pump() {
                 break;
             }
             EffectResolver::apply(s, catalog_, f.item, e);
+            if (s.result != -1)
+                break; // Immediate rules damage can clear the effect frame and entire chain.
             ++f.cursor;
             continue;
         }
@@ -367,6 +369,11 @@ void GameEngine::pump() {
             s.phaseStep = PhaseStep::Finish;
             break;
         case PhaseStep::Finish:
+            if (catalog_.alphaV2Draft && s.phase == Phase::End) {
+                StateMaintenance::check(s, catalog_, true);
+                if (s.result != -1)
+                    break;
+            }
             s.events.push_back({"phase_end", phaseName(s.phase) + "阶段结束"});
             if (s.phase == Phase::End) {
                 pl.actionsPlayed = 0;

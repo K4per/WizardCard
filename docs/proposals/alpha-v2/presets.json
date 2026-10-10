@@ -1,0 +1,1040 @@
+{
+  "status": "review-only",
+  "format": 2,
+  "presets": [
+    {
+      "id": "analysis-practice",
+      "name": "解析练习",
+      "reviewStatus": "pending",
+      "initialFormation": "balance",
+      "main": [
+        {
+          "id": "fireball",
+          "count": 3
+        },
+        {
+          "id": "mend",
+          "count": 3
+        },
+        {
+          "id": "unravel",
+          "count": 3
+        },
+        {
+          "id": "ward",
+          "count": 3
+        },
+        {
+          "id": "spark",
+          "count": 3
+        },
+        {
+          "id": "recall",
+          "count": 3
+        },
+        {
+          "id": "conduit",
+          "count": 3
+        },
+        {
+          "id": "ring",
+          "count": 3
+        },
+        {
+          "id": "clarity",
+          "count": 3
+        },
+        {
+          "id": "arcane-recovery",
+          "count": 1
+        },
+        {
+          "id": "barbs",
+          "count": 1
+        },
+        {
+          "id": "disrupt",
+          "count": 1
+        },
+        {
+          "id": "messy-wave",
+          "count": 1
+        },
+        {
+          "id": "instantly-sleep",
+          "count": 1
+        },
+        {
+          "id": "magic-missile",
+          "count": 1
+        },
+        {
+          "id": "aid",
+          "count": 1
+        },
+        {
+          "id": "counter-spell",
+          "count": 1
+        },
+        {
+          "id": "true-strike",
+          "count": 1
+        },
+        {
+          "id": "protective-flame",
+          "count": 1
+        },
+        {
+          "id": "uplift",
+          "count": 1
+        },
+        {
+          "id": "instant-circuit-overload",
+          "count": 1
+        },
+        {
+          "id": "ray-of-frost",
+          "count": 1
+        }
+      ],
+      "side": [
+        {
+          "id": "balance",
+          "count": 3
+        },
+        {
+          "id": "pentagram-of-life",
+          "count": 3
+        },
+        {
+          "id": "reservoir",
+          "count": 2
+        },
+        {
+          "id": "engeas-four-point-star",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "counter-load",
+      "name": "言灵与荷载",
+      "reviewStatus": "pending",
+      "initialFormation": "balance",
+      "main": [
+        {
+          "id": "barbs",
+          "count": 3
+        },
+        {
+          "id": "disrupt",
+          "count": 3
+        },
+        {
+          "id": "ward",
+          "count": 3
+        },
+        {
+          "id": "spark",
+          "count": 3
+        },
+        {
+          "id": "mend",
+          "count": 3
+        },
+        {
+          "id": "clarity",
+          "count": 3
+        },
+        {
+          "id": "recall",
+          "count": 3
+        },
+        {
+          "id": "conduit",
+          "count": 3
+        },
+        {
+          "id": "ring",
+          "count": 3
+        },
+        {
+          "id": "arcane-recovery",
+          "count": 1
+        },
+        {
+          "id": "fireball",
+          "count": 1
+        },
+        {
+          "id": "unravel",
+          "count": 1
+        },
+        {
+          "id": "messy-wave",
+          "count": 1
+        },
+        {
+          "id": "instantly-sleep",
+          "count": 1
+        },
+        {
+          "id": "magic-missile",
+          "count": 1
+        },
+        {
+          "id": "aid",
+          "count": 1
+        },
+        {
+          "id": "counter-spell",
+          "count": 1
+        },
+        {
+          "id": "true-strike",
+          "count": 1
+        },
+        {
+          "id": "protective-flame",
+          "count": 1
+        },
+        {
+          "id": "uplift",
+          "count": 1
+        },
+        {
+          "id": "instant-circuit-overload",
+          "count": 1
+        },
+        {
+          "id": "ray-of-frost",
+          "count": 1
+        }
+      ],
+      "side": [
+        {
+          "id": "balance",
+          "count": 3
+        },
+        {
+          "id": "pentagram-of-life",
+          "count": 3
+        },
+        {
+          "id": "reservoir",
+          "count": 2
+        },
+        {
+          "id": "engeas-four-point-star",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "concentration-practice",
+      "name": "专注练习",
+      "reviewStatus": "pending",
+      "initialFormation": "balance",
+      "main": [
+        {
+          "id": "ward",
+          "count": 3
+        },
+        {
+          "id": "fireball",
+          "count": 3
+        },
+        {
+          "id": "mend",
+          "count": 3
+        },
+        {
+          "id": "barbs",
+          "count": 3
+        },
+        {
+          "id": "recall",
+          "count": 3
+        },
+        {
+          "id": "clarity",
+          "count": 3
+        },
+        {
+          "id": "conduit",
+          "count": 3
+        },
+        {
+          "id": "ring",
+          "count": 3
+        },
+        {
+          "id": "spark",
+          "count": 3
+        },
+        {
+          "id": "arcane-recovery",
+          "count": 1
+        },
+        {
+          "id": "unravel",
+          "count": 1
+        },
+        {
+          "id": "disrupt",
+          "count": 1
+        },
+        {
+          "id": "messy-wave",
+          "count": 1
+        },
+        {
+          "id": "instantly-sleep",
+          "count": 1
+        },
+        {
+          "id": "magic-missile",
+          "count": 1
+        },
+        {
+          "id": "aid",
+          "count": 1
+        },
+        {
+          "id": "counter-spell",
+          "count": 1
+        },
+        {
+          "id": "true-strike",
+          "count": 1
+        },
+        {
+          "id": "protective-flame",
+          "count": 1
+        },
+        {
+          "id": "uplift",
+          "count": 1
+        },
+        {
+          "id": "instant-circuit-overload",
+          "count": 1
+        },
+        {
+          "id": "ray-of-frost",
+          "count": 1
+        }
+      ],
+      "side": [
+        {
+          "id": "balance",
+          "count": 3
+        },
+        {
+          "id": "pentagram-of-life",
+          "count": 3
+        },
+        {
+          "id": "reservoir",
+          "count": 2
+        },
+        {
+          "id": "engeas-four-point-star",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "quick-circuit",
+      "name": "速解与支援",
+      "reviewStatus": "pending",
+      "initialFormation": "balance",
+      "main": [
+        {
+          "id": "magic-missile",
+          "count": 3
+        },
+        {
+          "id": "aid",
+          "count": 3
+        },
+        {
+          "id": "instantly-sleep",
+          "count": 3
+        },
+        {
+          "id": "true-strike",
+          "count": 3
+        },
+        {
+          "id": "instant-circuit-overload",
+          "count": 3
+        },
+        {
+          "id": "conduit",
+          "count": 3
+        },
+        {
+          "id": "spark",
+          "count": 3
+        },
+        {
+          "id": "arcane-recovery",
+          "count": 3
+        },
+        {
+          "id": "recall",
+          "count": 1
+        },
+        {
+          "id": "ring",
+          "count": 1
+        },
+        {
+          "id": "clarity",
+          "count": 1
+        },
+        {
+          "id": "fireball",
+          "count": 1
+        },
+        {
+          "id": "barbs",
+          "count": 1
+        },
+        {
+          "id": "mend",
+          "count": 1
+        },
+        {
+          "id": "unravel",
+          "count": 1
+        },
+        {
+          "id": "disrupt",
+          "count": 1
+        },
+        {
+          "id": "ward",
+          "count": 1
+        },
+        {
+          "id": "messy-wave",
+          "count": 1
+        },
+        {
+          "id": "counter-spell",
+          "count": 1
+        },
+        {
+          "id": "protective-flame",
+          "count": 1
+        },
+        {
+          "id": "uplift",
+          "count": 1
+        },
+        {
+          "id": "ray-of-frost",
+          "count": 1
+        },
+        {
+          "id": "lightning-bolt",
+          "count": 1
+        },
+        {
+          "id": "lesser-restoration",
+          "count": 1
+        }
+      ],
+      "side": [
+        {
+          "id": "balance",
+          "count": 3
+        },
+        {
+          "id": "pentagram-of-life",
+          "count": 3
+        },
+        {
+          "id": "reservoir",
+          "count": 2
+        },
+        {
+          "id": "engeas-four-point-star",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "source-load",
+      "name": "持续荷载与防护",
+      "reviewStatus": "pending",
+      "initialFormation": "balance",
+      "main": [
+        {
+          "id": "messy-wave",
+          "count": 3
+        },
+        {
+          "id": "disrupt",
+          "count": 3
+        },
+        {
+          "id": "counter-spell",
+          "count": 3
+        },
+        {
+          "id": "protective-flame",
+          "count": 3
+        },
+        {
+          "id": "uplift",
+          "count": 3
+        },
+        {
+          "id": "conduit",
+          "count": 3
+        },
+        {
+          "id": "clarity",
+          "count": 3
+        },
+        {
+          "id": "recall",
+          "count": 3
+        },
+        {
+          "id": "arcane-recovery",
+          "count": 1
+        },
+        {
+          "id": "ring",
+          "count": 1
+        },
+        {
+          "id": "fireball",
+          "count": 1
+        },
+        {
+          "id": "barbs",
+          "count": 1
+        },
+        {
+          "id": "spark",
+          "count": 1
+        },
+        {
+          "id": "mend",
+          "count": 1
+        },
+        {
+          "id": "unravel",
+          "count": 1
+        },
+        {
+          "id": "ward",
+          "count": 1
+        },
+        {
+          "id": "instantly-sleep",
+          "count": 1
+        },
+        {
+          "id": "magic-missile",
+          "count": 1
+        },
+        {
+          "id": "aid",
+          "count": 1
+        },
+        {
+          "id": "true-strike",
+          "count": 1
+        },
+        {
+          "id": "instant-circuit-overload",
+          "count": 1
+        },
+        {
+          "id": "ray-of-frost",
+          "count": 1
+        },
+        {
+          "id": "lightning-bolt",
+          "count": 1
+        },
+        {
+          "id": "lesser-restoration",
+          "count": 1
+        }
+      ],
+      "side": [
+        {
+          "id": "balance",
+          "count": 3
+        },
+        {
+          "id": "pentagram-of-life",
+          "count": 3
+        },
+        {
+          "id": "reservoir",
+          "count": 2
+        },
+        {
+          "id": "engeas-four-point-star",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "pentagram-evocation",
+      "name": "五芒星塑能",
+      "reviewStatus": "pending",
+      "initialFormation": "pentagram-of-life",
+      "main": [
+        {
+          "id": "fireball",
+          "count": 3
+        },
+        {
+          "id": "spark",
+          "count": 3
+        },
+        {
+          "id": "ray-of-frost",
+          "count": 3
+        },
+        {
+          "id": "recall",
+          "count": 3
+        },
+        {
+          "id": "clarity",
+          "count": 3
+        },
+        {
+          "id": "lightning-bolt",
+          "count": 3
+        },
+        {
+          "id": "uplift",
+          "count": 3
+        },
+        {
+          "id": "magic-missile",
+          "count": 3
+        },
+        {
+          "id": "arcane-recovery",
+          "count": 1
+        },
+        {
+          "id": "ring",
+          "count": 1
+        },
+        {
+          "id": "conduit",
+          "count": 1
+        },
+        {
+          "id": "barbs",
+          "count": 1
+        },
+        {
+          "id": "mend",
+          "count": 1
+        },
+        {
+          "id": "unravel",
+          "count": 1
+        },
+        {
+          "id": "disrupt",
+          "count": 1
+        },
+        {
+          "id": "ward",
+          "count": 1
+        },
+        {
+          "id": "messy-wave",
+          "count": 1
+        },
+        {
+          "id": "instantly-sleep",
+          "count": 1
+        },
+        {
+          "id": "aid",
+          "count": 1
+        },
+        {
+          "id": "counter-spell",
+          "count": 1
+        },
+        {
+          "id": "true-strike",
+          "count": 1
+        },
+        {
+          "id": "protective-flame",
+          "count": 1
+        },
+        {
+          "id": "instant-circuit-overload",
+          "count": 1
+        },
+        {
+          "id": "lesser-restoration",
+          "count": 1
+        }
+      ],
+      "side": [
+        {
+          "id": "balance",
+          "count": 3
+        },
+        {
+          "id": "pentagram-of-life",
+          "count": 3
+        },
+        {
+          "id": "reservoir",
+          "count": 2
+        },
+        {
+          "id": "engeas-four-point-star",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "fortress-sustain",
+      "name": "防护与续航",
+      "reviewStatus": "pending",
+      "initialFormation": "balance",
+      "main": [
+        {
+          "id": "shield",
+          "count": 3
+        },
+        {
+          "id": "protective-flame",
+          "count": 3
+        },
+        {
+          "id": "false-life",
+          "count": 3
+        },
+        {
+          "id": "lesser-restoration",
+          "count": 3
+        },
+        {
+          "id": "ward",
+          "count": 3
+        },
+        {
+          "id": "ray-of-frost",
+          "count": 3
+        },
+        {
+          "id": "mend",
+          "count": 3
+        },
+        {
+          "id": "recall",
+          "count": 3
+        },
+        {
+          "id": "conduit",
+          "count": 3
+        },
+        {
+          "id": "arcane-recovery",
+          "count": 1
+        },
+        {
+          "id": "ring",
+          "count": 1
+        },
+        {
+          "id": "clarity",
+          "count": 1
+        },
+        {
+          "id": "fireball",
+          "count": 1
+        },
+        {
+          "id": "barbs",
+          "count": 1
+        },
+        {
+          "id": "spark",
+          "count": 1
+        },
+        {
+          "id": "unravel",
+          "count": 1
+        },
+        {
+          "id": "disrupt",
+          "count": 1
+        },
+        {
+          "id": "messy-wave",
+          "count": 1
+        },
+        {
+          "id": "instantly-sleep",
+          "count": 1
+        },
+        {
+          "id": "magic-missile",
+          "count": 1
+        },
+        {
+          "id": "aid",
+          "count": 1
+        },
+        {
+          "id": "counter-spell",
+          "count": 1
+        }
+      ],
+      "side": [
+        {
+          "id": "balance",
+          "count": 3
+        },
+        {
+          "id": "pentagram-of-life",
+          "count": 3
+        },
+        {
+          "id": "reservoir",
+          "count": 2
+        },
+        {
+          "id": "engeas-four-point-star",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "word-tempo",
+      "name": "言灵与节奏",
+      "reviewStatus": "pending",
+      "initialFormation": "balance",
+      "main": [
+        {
+          "id": "spark",
+          "count": 3
+        },
+        {
+          "id": "shield",
+          "count": 3
+        },
+        {
+          "id": "true-strike",
+          "count": 3
+        },
+        {
+          "id": "barbs",
+          "count": 3
+        },
+        {
+          "id": "magic-missile",
+          "count": 3
+        },
+        {
+          "id": "fireball",
+          "count": 3
+        },
+        {
+          "id": "aid",
+          "count": 3
+        },
+        {
+          "id": "arcane-recovery",
+          "count": 3
+        },
+        {
+          "id": "recall",
+          "count": 3
+        },
+        {
+          "id": "ring",
+          "count": 1
+        },
+        {
+          "id": "conduit",
+          "count": 1
+        },
+        {
+          "id": "clarity",
+          "count": 1
+        },
+        {
+          "id": "mend",
+          "count": 1
+        },
+        {
+          "id": "unravel",
+          "count": 1
+        },
+        {
+          "id": "disrupt",
+          "count": 1
+        },
+        {
+          "id": "ward",
+          "count": 1
+        },
+        {
+          "id": "messy-wave",
+          "count": 1
+        },
+        {
+          "id": "instantly-sleep",
+          "count": 1
+        },
+        {
+          "id": "counter-spell",
+          "count": 1
+        },
+        {
+          "id": "protective-flame",
+          "count": 1
+        },
+        {
+          "id": "uplift",
+          "count": 1
+        },
+        {
+          "id": "instant-circuit-overload",
+          "count": 1
+        }
+      ],
+      "side": [
+        {
+          "id": "balance",
+          "count": 3
+        },
+        {
+          "id": "pentagram-of-life",
+          "count": 3
+        },
+        {
+          "id": "reservoir",
+          "count": 2
+        },
+        {
+          "id": "engeas-four-point-star",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "default",
+      "name": "默认预设",
+      "reviewStatus": "pending",
+      "initialFormation": "balance",
+      "main": [
+        {
+          "id": "fireball",
+          "count": 3
+        },
+        {
+          "id": "spark",
+          "count": 3
+        },
+        {
+          "id": "mend",
+          "count": 3
+        },
+        {
+          "id": "recall",
+          "count": 3
+        },
+        {
+          "id": "ring",
+          "count": 3
+        },
+        {
+          "id": "ward",
+          "count": 3
+        },
+        {
+          "id": "barbs",
+          "count": 3
+        },
+        {
+          "id": "disrupt",
+          "count": 3
+        },
+        {
+          "id": "clarity",
+          "count": 3
+        },
+        {
+          "id": "conduit",
+          "count": 3
+        },
+        {
+          "id": "unravel",
+          "count": 3
+        },
+        {
+          "id": "arcane-recovery",
+          "count": 1
+        },
+        {
+          "id": "messy-wave",
+          "count": 1
+        },
+        {
+          "id": "instantly-sleep",
+          "count": 1
+        },
+        {
+          "id": "magic-missile",
+          "count": 1
+        },
+        {
+          "id": "aid",
+          "count": 1
+        },
+        {
+          "id": "counter-spell",
+          "count": 1
+        },
+        {
+          "id": "true-strike",
+          "count": 1
+        }
+      ],
+      "side": [
+        {
+          "id": "balance",
+          "count": 3
+        },
+        {
+          "id": "pentagram-of-life",
+          "count": 3
+        },
+        {
+          "id": "reservoir",
+          "count": 2
+        },
+        {
+          "id": "engeas-four-point-star",
+          "count": 2
+        }
+      ]
+    }
+  ]
+}

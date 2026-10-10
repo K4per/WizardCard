@@ -1,0 +1,443 @@
+{
+  "status": "review-only",
+  "sourceRules": "1.0.0",
+  "cards": [
+    {
+      "id": "balance",
+      "name": "均衡之六芒星",
+      "oldType": "formation",
+      "proposedType": "formation",
+      "reviewStatus": "pending",
+      "cost": 0,
+      "castCost": 0,
+      "rank": null,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "承载上限由旧2阶改为等级1；免费初始设置，后续按配方。",
+      "level": 1,
+      "recipe": [
+        {
+          "kind": "mana",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "fireball",
+      "name": "火球术",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 3,
+      "castCost": 1,
+      "rank": 2,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。"
+    },
+    {
+      "id": "barbs",
+      "name": "银光锐语",
+      "oldType": "word",
+      "proposedType": "talisman",
+      "reviewStatus": "pending",
+      "cost": 5,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 2,
+      "durationMode": "instant",
+      "notes": "草案迁为咒符；保留准备宣告取消及可选额外准备，后续准备仍受己方主要阶段限制，冲突时不授予阶段外准备。"
+    },
+    {
+      "id": "recall",
+      "name": "奥术回想",
+      "oldType": "action",
+      "proposedType": "word",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "tags": [
+        "former-action"
+      ]
+    },
+    {
+      "id": "ring",
+      "name": "奥术圆环",
+      "oldType": "seal",
+      "proposedType": "seal",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。"
+    },
+    {
+      "id": "spark",
+      "name": "火花术",
+      "oldType": "word",
+      "proposedType": "word",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "由0阶改为1阶；移除设置即释放的旧复合操作，改为进入施法区后发动。"
+    },
+    {
+      "id": "mend",
+      "name": "生命缝合",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。"
+    },
+    {
+      "id": "unravel",
+      "name": "碎环术",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "改为销毁对手空白阵法；额外弃置从手牌阵法改为副卡组阵法实体进入灰烬。可选择初始阵法，仍遵守卡面保护。"
+    },
+    {
+      "id": "disrupt",
+      "name": "魔力扰动",
+      "oldType": "action",
+      "proposedType": "word",
+      "reviewStatus": "pending",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "tags": [
+        "former-action"
+      ]
+    },
+    {
+      "id": "clarity",
+      "name": "心如止水",
+      "oldType": "action",
+      "proposedType": "word",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "tags": [
+        "former-action"
+      ]
+    },
+    {
+      "id": "reservoir",
+      "name": "阿克乌姆之弧",
+      "oldType": "formation",
+      "proposedType": "formation",
+      "reviewStatus": "pending",
+      "cost": 0,
+      "castCost": 0,
+      "rank": null,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留对手销毁保护及无环位；2级阵法不能作为初始阵法。配方要求一张已解析完成的己方法术进入灰烬。",
+      "level": 2,
+      "recipe": [
+        {
+          "kind": "ready_spell",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "conduit",
+      "name": "逆三角星符",
+      "oldType": "seal",
+      "proposedType": "seal",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "阵法收入+2移至抽牌阶段，符文自身不另外触发重复收入。"
+    },
+    {
+      "id": "ward",
+      "name": "炽燃结界",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 2,
+      "castCost": 1,
+      "rank": 2,
+      "speed": 1,
+      "durationMode": "concentration",
+      "notes": "专注维持在准备阶段收入之后；施法阶段结束前重新选择环位回位。"
+    },
+    {
+      "id": "messy-wave",
+      "name": "紊乱波动",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 4,
+      "castCost": 4,
+      "rank": 2,
+      "speed": 1,
+      "durationMode": "timer",
+      "notes": "计时3在每个全局结束阶段递减，回位不预留旧环位；来源离场清除关联荷载。"
+    },
+    {
+      "id": "instantly-sleep",
+      "name": "昏昏入睡",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 3,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "旧行动封锁改为禁止对方下一己方回合主动发动言灵；是否同时封锁咒符须审定，草案不封锁咒符响应。"
+    },
+    {
+      "id": "magic-missile",
+      "name": "魔法飞弹",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 2,
+      "castCost": 2,
+      "rank": 1,
+      "speed": 2,
+      "durationMode": "instant",
+      "notes": "保留对方施法阶段从已解析完成解析区响应的特例；需明确卡面授予快速进入施法区且支付施法费用，普通解析不继承特例。"
+    },
+    {
+      "id": "aid",
+      "name": "支援术",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "临时生命取较高值，下一己方结束清除；立即解析仍需支付并占环位。"
+    },
+    {
+      "id": "counter-spell",
+      "name": "法术反制",
+      "oldType": "word",
+      "proposedType": "talisman",
+      "reviewStatus": "pending",
+      "cost": 4,
+      "castCost": 0,
+      "rank": 3,
+      "speed": 4,
+      "durationMode": "instant",
+      "notes": "草案迁为咒符；保留4速及取消敌方法术链节，临时荷载取目标链节实际施法费用。"
+    },
+    {
+      "id": "true-strike",
+      "name": "克敌机先",
+      "oldType": "word",
+      "proposedType": "word",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "由0阶改为1阶；检索普通/罕见且带 former-action 标签的言灵，避免把检索范围扩大到全部言灵。"
+    },
+    {
+      "id": "protective-flame",
+      "name": "避火咒",
+      "oldType": "word",
+      "proposedType": "word",
+      "reviewStatus": "pending",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 2,
+      "durationMode": "concentration",
+      "notes": "专注言灵同样在施法阶段结束前回位，维持在己方准备处理；离场失去抗性。"
+    },
+    {
+      "id": "pentagram-of-life",
+      "name": "生命之五芒星",
+      "oldType": "formation",
+      "proposedType": "formation",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 0,
+      "rank": null,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "初始等级1；原基础塑能/咒法减费改为本阵法承载时生效，避免新规则无基础保护标志后语义漂移。",
+      "level": 1,
+      "recipe": [
+        {
+          "kind": "mana",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "engeas-four-point-star",
+      "name": "恩格亚斯四角星",
+      "oldType": "formation",
+      "proposedType": "formation",
+      "reviewStatus": "pending",
+      "cost": 0,
+      "castCost": 0,
+      "rank": null,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留每己方回合第一张1阶解析加速；设置配方含已解析完成法术，取消原免费设置。",
+      "level": 3,
+      "recipe": [
+        {
+          "kind": "mana",
+          "amount": 3
+        },
+        {
+          "kind": "ready_spell",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "uplift",
+      "name": "昂扬",
+      "oldType": "seal",
+      "proposedType": "seal",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "阵法承载修正改为等级导出的上限+1，允许至7阶；收入最低0。"
+    },
+    {
+      "id": "instant-circuit-overload",
+      "name": "瞬发回路过载",
+      "oldType": "action",
+      "proposedType": "word",
+      "reviewStatus": "pending",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "tags": [
+        "former-action"
+      ]
+    },
+    {
+      "id": "ray-of-frost",
+      "name": "寒霜射线",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 1,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。"
+    },
+    {
+      "id": "lightning-bolt",
+      "name": "闪电束",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 3,
+      "castCost": 2,
+      "rank": 2,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。"
+    },
+    {
+      "id": "lesser-restoration",
+      "name": "次级复原",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 2,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。"
+    },
+    {
+      "id": "false-life",
+      "name": "虚假生命",
+      "oldType": "analytic",
+      "proposedType": "analytic",
+      "reviewStatus": "pending",
+      "cost": 2,
+      "castCost": 1,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "临时生命改为下一己方结束清除，保留独立荷载2。"
+    },
+    {
+      "id": "arcane-recovery",
+      "name": "奥术复苏",
+      "oldType": "action",
+      "proposedType": "word",
+      "reviewStatus": "pending",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 1,
+      "durationMode": "instant",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "tags": [
+        "former-action"
+      ]
+    },
+    {
+      "id": "shield",
+      "name": "护盾术",
+      "oldType": "word",
+      "proposedType": "talisman",
+      "reviewStatus": "pending",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "speed": 2,
+      "durationMode": "instant",
+      "notes": "草案迁为咒符；主动发动权限需卡面明确，临时生命改为下一己方结束清除。"
+    }
+  ]
+}

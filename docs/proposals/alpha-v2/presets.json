@@ -1,6 +1,7 @@
 {
   "status": "review-only",
   "format": 2,
+  "ruleSpec": "alpha-v2-final-2026-10-10",
   "presets": [
     {
       "id": "analysis-practice",

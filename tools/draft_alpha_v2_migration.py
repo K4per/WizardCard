@@ -5,6 +5,8 @@ import json
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'docs' / 'proposals' / 'alpha-v2'
+RULE_SPEC = 'alpha-v2-final-2026-10-10'
+FINAL_REPORT_SHA256 = 'f3c38d92d594c7556190a6369a755931cb3498bac8950daa0022e6d9ad37e1fe'
 FORMATION = {
     'balance': (1, [{'kind': 'mana', 'amount': 2}]),
     'pentagram-of-life': (1, [{'kind': 'mana', 'amount': 2}]),
@@ -20,14 +22,14 @@ NOTES = {
     'instantly-sleep': '旧行动封锁改为禁止对方下一己方回合主动发动言灵；是否同时封锁咒符须审定，草案不封锁咒符响应。',
     'magic-missile': '保留对方施法阶段从已解析完成解析区响应的特例；需明确卡面授予快速进入施法区且支付施法费用，普通解析不继承特例。',
     'true-strike': '由0阶改为1阶；检索普通/罕见且带 former-action 标签的言灵，避免把检索范围扩大到全部言灵。',
-    'spark': '由0阶改为1阶；移除设置即释放的旧复合操作，改为进入施法区后发动。',
+    'spark': '由0阶改为1阶；按言灵流程立即解析、准备至施法区并发动，普通法术结算后留施法区至结束。',
     'counter-spell': '草案迁为咒符；保留4速及取消敌方法术链节，临时荷载取目标链节实际施法费用。',
-    'barbs': '草案迁为咒符；保留准备宣告取消及可选额外准备，后续准备仍受己方主要阶段限制，冲突时不授予阶段外准备。',
-    'shield': '草案迁为咒符；主动发动权限需卡面明确，临时生命改为下一己方结束清除。',
-    'aid': '临时生命取较高值，下一己方结束清除；立即解析仍需支付并占环位。',
-    'false-life': '临时生命改为下一己方结束清除，保留独立荷载2。',
+    'barbs': '草案迁为咒符；保留准备宣告取消及可选额外准备的提案，额外准备依被准备卡的速度、类型、来源和阶段共同校验，不能无条件授予阶段外权限。',
+    'shield': '草案迁为咒符；主动发动权限需卡面明确，临时生命在己方准备阶段第2步清除。',
+    'aid': '临时生命取较高值，在己方准备阶段第2步清除；立即解析仍需支付并占环位。',
+    'false-life': '临时生命在己方准备阶段第2步清除，保留独立荷载2。',
     'conduit': '阵法收入+2移至抽牌阶段，符文自身不另外触发重复收入。',
-    'ward': '专注维持在准备阶段收入之后；施法阶段结束前重新选择环位回位。',
+    'ward': '收入在抽牌阶段；准备阶段先清临时荷载和临时生命，再依次处理阵法、永续、专注维持；施法阶段结束前重新选择环位回位。',
     'messy-wave': '计时3在每个全局结束阶段递减，回位不预留旧环位；来源离场清除关联荷载。',
     'protective-flame': '专注言灵同样在施法阶段结束前回位，维持在己方准备处理；离场失去抗性。',
     'uplift': '阵法承载修正改为等级导出的上限+1，允许至7阶；收入最低0。',
@@ -45,10 +47,13 @@ def main():
             'proposedType': kind, 'reviewStatus': 'pending',
             'cost': card.get('cost', 0), 'castCost': card.get('castCost', 0),
             'rank': max(1, card.get('rank', 1)) if kind != 'formation' else None,
-            'speed': card.get('speed', 1),
+            'speed': max(2, card.get('speed', 1)) if kind in ('word', 'talisman') else card.get('speed', 1),
             'durationMode': 'concentration' if card.get('concentration') else 'timer' if card.get('duration') else 'instant',
             'notes': NOTES.get(card['id'], '保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。'),
         }
+        if row['speed'] != card.get('speed', 1):
+            row['previousSpeed'] = card.get('speed', 1)
+            row['notes'] += ' 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。'
         if kind == 'formation':
             row['level'], row['recipe'] = FORMATION[card['id']]
         if card['type'] == 'action':
@@ -77,17 +82,20 @@ def main():
                         'side': [{'id': 'balance', 'count': 3}, {'id': 'pentagram-of-life', 'count': 3},
                                  {'id': 'reservoir', 'count': 2}, {'id': 'engeas-four-point-star', 'count': 2}]})
     OUT.mkdir(parents=True, exist_ok=True)
-    for name, payload in [('migration.json', {'status': 'review-only', 'sourceRules': source['rulesVersion'], 'cards': proposals}),
-                          ('presets.json', {'status': 'review-only', 'format': 2, 'presets': presets})]:
+    for name, payload in [('migration.json', {'status': 'review-only', 'sourceRules': source['rulesVersion'],
+                                             'ruleSpec': RULE_SPEC, 'finalReportSha256': FINAL_REPORT_SHA256, 'cards': proposals}),
+                          ('presets.json', {'status': 'review-only', 'format': 2, 'ruleSpec': RULE_SPEC, 'presets': presets})]:
         (OUT / name).write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     lines = ['# Alpha v2.0 卡牌迁移审定草案', '',
              '以下是具体提案，全部等待组内审定，不进入正式卡池。费用与能力未列出的部分沿用原数值。阵法配方中的 ready_spell 表示将己方解析区已完成解析的法术实体移入灰烬；支付失败或取消必须原子回滚。', '',
+             f'依据最终规则规格 `{RULE_SPEC}`。本轮只同步规则确认导致的速度/到期/阶段说明，不代表30卡或9份预设已批准。言灵和咒符默认至少2速；7张原1速言灵候选调整为2速，原值记在 previousSpeed。临时生命改在己方准备第2步清除；持续法术保留回位例外。', '',
              '主要审定点：言灵/咒符边界、阵法等级和配方、基础减费迁移、魔法飞弹阶段外快速施法、银光锐语阶段外准备限制、睡眠封锁范围。预设只是构筑候选，尚未做新规则平衡验证。', '',
-             '| 稳定ID / 卡名 | 类型迁移 | 等级/阶 | 配方或费用 | 持续 | 能力处理 |',
-             '|---|---|---|---|---|---|']
+             '| 稳定ID / 卡名 | 类型迁移 | 等级/阶 | 速度 | 配方或费用 | 持续 | 能力处理 |',
+             '|---|---|---|---|---|---|---|']
     for row in proposals:
         recipe = json.dumps(row['recipe'], ensure_ascii=False) if 'recipe' in row else f"{row['cost']} / 施法{row['castCost']}"
-        lines.append(f"| {row['id']} / {row['name']} | {row['oldType']} → {row['proposedType']} | {row.get('level', row['rank'])} | {recipe} | {row['durationMode']} | {row['notes']} |")
+        speed = f"{row['previousSpeed']}→{row['speed']}（候选）" if 'previousSpeed' in row else str(row['speed'])
+        lines.append(f"| {row['id']} / {row['name']} | {row['oldType']} → {row['proposedType']} | {row.get('level', row['rank'])} | {speed} | {recipe} | {row['durationMode']} | {row['notes']} |")
     lines += ['', '## 40+10 候选预设', '', '副卡组统一：均衡×3、生命×3、阿克乌姆×2、恩格亚斯×2；每份均含合法的1级初始选择。同名限制分别检查主副卡组。']
     for preset in presets:
         lines += ['', f"### {preset['name']}（{preset['id']}）", '',

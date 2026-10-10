@@ -1,6 +1,8 @@
 {
   "status": "review-only",
   "sourceRules": "1.0.0",
+  "ruleSpec": "alpha-v2-final-2026-10-10",
+  "finalReportSha256": "f3c38d92d594c7556190a6369a755931cb3498bac8950daa0022e6d9ad37e1fe",
   "cards": [
     {
       "id": "balance",
@@ -46,7 +48,7 @@
       "rank": 1,
       "speed": 2,
       "durationMode": "instant",
-      "notes": "草案迁为咒符；保留准备宣告取消及可选额外准备，后续准备仍受己方主要阶段限制，冲突时不授予阶段外准备。"
+      "notes": "草案迁为咒符；保留准备宣告取消及可选额外准备的提案，额外准备依被准备卡的速度、类型、来源和阶段共同校验，不能无条件授予阶段外权限。"
     },
     {
       "id": "recall",
@@ -57,9 +59,10 @@
       "cost": 1,
       "castCost": 0,
       "rank": 1,
-      "speed": 1,
+      "speed": 2,
       "durationMode": "instant",
-      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。",
+      "previousSpeed": 1,
       "tags": [
         "former-action"
       ]
@@ -86,9 +89,10 @@
       "cost": 1,
       "castCost": 0,
       "rank": 1,
-      "speed": 1,
+      "speed": 2,
       "durationMode": "instant",
-      "notes": "由0阶改为1阶；移除设置即释放的旧复合操作，改为进入施法区后发动。"
+      "notes": "由0阶改为1阶；按言灵流程立即解析、准备至施法区并发动，普通法术结算后留施法区至结束。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。",
+      "previousSpeed": 1
     },
     {
       "id": "mend",
@@ -125,9 +129,10 @@
       "cost": 2,
       "castCost": 0,
       "rank": 1,
-      "speed": 1,
+      "speed": 2,
       "durationMode": "instant",
-      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。",
+      "previousSpeed": 1,
       "tags": [
         "former-action"
       ]
@@ -141,9 +146,10 @@
       "cost": 1,
       "castCost": 0,
       "rank": 1,
-      "speed": 1,
+      "speed": 2,
       "durationMode": "instant",
-      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。",
+      "previousSpeed": 1,
       "tags": [
         "former-action"
       ]
@@ -192,7 +198,7 @@
       "rank": 2,
       "speed": 1,
       "durationMode": "concentration",
-      "notes": "专注维持在准备阶段收入之后；施法阶段结束前重新选择环位回位。"
+      "notes": "收入在抽牌阶段；准备阶段先清临时荷载和临时生命，再依次处理阵法、永续、专注维持；施法阶段结束前重新选择环位回位。"
     },
     {
       "id": "messy-wave",
@@ -244,7 +250,7 @@
       "rank": 1,
       "speed": 1,
       "durationMode": "instant",
-      "notes": "临时生命取较高值，下一己方结束清除；立即解析仍需支付并占环位。"
+      "notes": "临时生命取较高值，在己方准备阶段第2步清除；立即解析仍需支付并占环位。"
     },
     {
       "id": "counter-spell",
@@ -268,9 +274,10 @@
       "cost": 1,
       "castCost": 0,
       "rank": 1,
-      "speed": 1,
+      "speed": 2,
       "durationMode": "instant",
-      "notes": "由0阶改为1阶；检索普通/罕见且带 former-action 标签的言灵，避免把检索范围扩大到全部言灵。"
+      "notes": "由0阶改为1阶；检索普通/罕见且带 former-action 标签的言灵，避免把检索范围扩大到全部言灵。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。",
+      "previousSpeed": 1
     },
     {
       "id": "protective-flame",
@@ -351,9 +358,10 @@
       "cost": 2,
       "castCost": 0,
       "rank": 1,
-      "speed": 1,
+      "speed": 2,
       "durationMode": "instant",
-      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。",
+      "previousSpeed": 1,
       "tags": [
         "former-action"
       ]
@@ -408,7 +416,7 @@
       "rank": 1,
       "speed": 1,
       "durationMode": "instant",
-      "notes": "临时生命改为下一己方结束清除，保留独立荷载2。"
+      "notes": "临时生命在己方准备阶段第2步清除，保留独立荷载2。"
     },
     {
       "id": "arcane-recovery",
@@ -419,9 +427,10 @@
       "cost": 0,
       "castCost": 0,
       "rank": 1,
-      "speed": 1,
+      "speed": 2,
       "durationMode": "instant",
-      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。",
+      "notes": "保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。",
+      "previousSpeed": 1,
       "tags": [
         "former-action"
       ]
@@ -437,7 +446,7 @@
       "rank": 1,
       "speed": 2,
       "durationMode": "instant",
-      "notes": "草案迁为咒符；主动发动权限需卡面明确，临时生命改为下一己方结束清除。"
+      "notes": "草案迁为咒符；主动发动权限需卡面明确，临时生命在己方准备阶段第2步清除。"
     }
   ]
 }

@@ -2,40 +2,42 @@
 
 以下是具体提案，全部等待组内审定，不进入正式卡池。费用与能力未列出的部分沿用原数值。阵法配方中的 ready_spell 表示将己方解析区已完成解析的法术实体移入灰烬；支付失败或取消必须原子回滚。
 
+依据最终规则规格 `alpha-v2-final-2026-10-10`。本轮只同步规则确认导致的速度/到期/阶段说明，不代表30卡或9份预设已批准。言灵和咒符默认至少2速；7张原1速言灵候选调整为2速，原值记在 previousSpeed。临时生命改在己方准备第2步清除；持续法术保留回位例外。
+
 主要审定点：言灵/咒符边界、阵法等级和配方、基础减费迁移、魔法飞弹阶段外快速施法、银光锐语阶段外准备限制、睡眠封锁范围。预设只是构筑候选，尚未做新规则平衡验证。
 
-| 稳定ID / 卡名 | 类型迁移 | 等级/阶 | 配方或费用 | 持续 | 能力处理 |
-|---|---|---|---|---|---|
-| balance / 均衡之六芒星 | formation → formation | 1 | [{"kind": "mana", "amount": 2}] | instant | 承载上限由旧2阶改为等级1；免费初始设置，后续按配方。 |
-| fireball / 火球术 | analytic → analytic | 2 | 3 / 施法1 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| barbs / 银光锐语 | word → talisman | 1 | 5 / 施法0 | instant | 草案迁为咒符；保留准备宣告取消及可选额外准备，后续准备仍受己方主要阶段限制，冲突时不授予阶段外准备。 |
-| recall / 奥术回想 | action → word | 1 | 1 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| ring / 奥术圆环 | seal → seal | 1 | 1 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| spark / 火花术 | word → word | 1 | 1 / 施法0 | instant | 由0阶改为1阶；移除设置即释放的旧复合操作，改为进入施法区后发动。 |
-| mend / 生命缝合 | analytic → analytic | 1 | 1 / 施法1 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| unravel / 碎环术 | analytic → analytic | 1 | 2 / 施法0 | instant | 改为销毁对手空白阵法；额外弃置从手牌阵法改为副卡组阵法实体进入灰烬。可选择初始阵法，仍遵守卡面保护。 |
-| disrupt / 魔力扰动 | action → word | 1 | 2 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| clarity / 心如止水 | action → word | 1 | 1 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| reservoir / 阿克乌姆之弧 | formation → formation | 2 | [{"kind": "ready_spell", "count": 1}] | instant | 保留对手销毁保护及无环位；2级阵法不能作为初始阵法。配方要求一张已解析完成的己方法术进入灰烬。 |
-| conduit / 逆三角星符 | seal → seal | 1 | 1 / 施法0 | instant | 阵法收入+2移至抽牌阶段，符文自身不另外触发重复收入。 |
-| ward / 炽燃结界 | analytic → analytic | 2 | 2 / 施法1 | concentration | 专注维持在准备阶段收入之后；施法阶段结束前重新选择环位回位。 |
-| messy-wave / 紊乱波动 | analytic → analytic | 2 | 4 / 施法4 | timer | 计时3在每个全局结束阶段递减，回位不预留旧环位；来源离场清除关联荷载。 |
-| instantly-sleep / 昏昏入睡 | analytic → analytic | 1 | 3 / 施法1 | instant | 旧行动封锁改为禁止对方下一己方回合主动发动言灵；是否同时封锁咒符须审定，草案不封锁咒符响应。 |
-| magic-missile / 魔法飞弹 | analytic → analytic | 1 | 2 / 施法2 | instant | 保留对方施法阶段从已解析完成解析区响应的特例；需明确卡面授予快速进入施法区且支付施法费用，普通解析不继承特例。 |
-| aid / 支援术 | analytic → analytic | 1 | 1 / 施法1 | instant | 临时生命取较高值，下一己方结束清除；立即解析仍需支付并占环位。 |
-| counter-spell / 法术反制 | word → talisman | 3 | 4 / 施法0 | instant | 草案迁为咒符；保留4速及取消敌方法术链节，临时荷载取目标链节实际施法费用。 |
-| true-strike / 克敌机先 | word → word | 1 | 1 / 施法0 | instant | 由0阶改为1阶；检索普通/罕见且带 former-action 标签的言灵，避免把检索范围扩大到全部言灵。 |
-| protective-flame / 避火咒 | word → word | 1 | 2 / 施法0 | concentration | 专注言灵同样在施法阶段结束前回位，维持在己方准备处理；离场失去抗性。 |
-| pentagram-of-life / 生命之五芒星 | formation → formation | 1 | [{"kind": "mana", "amount": 2}] | instant | 初始等级1；原基础塑能/咒法减费改为本阵法承载时生效，避免新规则无基础保护标志后语义漂移。 |
-| engeas-four-point-star / 恩格亚斯四角星 | formation → formation | 3 | [{"kind": "mana", "amount": 3}, {"kind": "ready_spell", "count": 1}] | instant | 保留每己方回合第一张1阶解析加速；设置配方含已解析完成法术，取消原免费设置。 |
-| uplift / 昂扬 | seal → seal | 1 | 1 / 施法0 | instant | 阵法承载修正改为等级导出的上限+1，允许至7阶；收入最低0。 |
-| instant-circuit-overload / 瞬发回路过载 | action → word | 1 | 2 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| ray-of-frost / 寒霜射线 | analytic → analytic | 1 | 1 / 施法1 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| lightning-bolt / 闪电束 | analytic → analytic | 2 | 3 / 施法2 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| lesser-restoration / 次级复原 | analytic → analytic | 1 | 2 / 施法1 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| false-life / 虚假生命 | analytic → analytic | 1 | 2 / 施法1 | instant | 临时生命改为下一己方结束清除，保留独立荷载2。 |
-| arcane-recovery / 奥术复苏 | action → word | 1 | 0 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
-| shield / 护盾术 | word → talisman | 1 | 2 / 施法0 | instant | 草案迁为咒符；主动发动权限需卡面明确，临时生命改为下一己方结束清除。 |
+| 稳定ID / 卡名 | 类型迁移 | 等级/阶 | 速度 | 配方或费用 | 持续 | 能力处理 |
+|---|---|---|---|---|---|---|
+| balance / 均衡之六芒星 | formation → formation | 1 | 1 | [{"kind": "mana", "amount": 2}] | instant | 承载上限由旧2阶改为等级1；免费初始设置，后续按配方。 |
+| fireball / 火球术 | analytic → analytic | 2 | 1 | 3 / 施法1 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
+| barbs / 银光锐语 | word → talisman | 1 | 2 | 5 / 施法0 | instant | 草案迁为咒符；保留准备宣告取消及可选额外准备的提案，额外准备依被准备卡的速度、类型、来源和阶段共同校验，不能无条件授予阶段外权限。 |
+| recall / 奥术回想 | action → word | 1 | 1→2（候选） | 1 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。 |
+| ring / 奥术圆环 | seal → seal | 1 | 1 | 1 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
+| spark / 火花术 | word → word | 1 | 1→2（候选） | 1 / 施法0 | instant | 由0阶改为1阶；按言灵流程立即解析、准备至施法区并发动，普通法术结算后留施法区至结束。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。 |
+| mend / 生命缝合 | analytic → analytic | 1 | 1 | 1 / 施法1 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
+| unravel / 碎环术 | analytic → analytic | 1 | 1 | 2 / 施法0 | instant | 改为销毁对手空白阵法；额外弃置从手牌阵法改为副卡组阵法实体进入灰烬。可选择初始阵法，仍遵守卡面保护。 |
+| disrupt / 魔力扰动 | action → word | 1 | 1→2（候选） | 2 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。 |
+| clarity / 心如止水 | action → word | 1 | 1→2（候选） | 1 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。 |
+| reservoir / 阿克乌姆之弧 | formation → formation | 2 | 1 | [{"kind": "ready_spell", "count": 1}] | instant | 保留对手销毁保护及无环位；2级阵法不能作为初始阵法。配方要求一张已解析完成的己方法术进入灰烬。 |
+| conduit / 逆三角星符 | seal → seal | 1 | 1 | 1 / 施法0 | instant | 阵法收入+2移至抽牌阶段，符文自身不另外触发重复收入。 |
+| ward / 炽燃结界 | analytic → analytic | 2 | 1 | 2 / 施法1 | concentration | 收入在抽牌阶段；准备阶段先清临时荷载和临时生命，再依次处理阵法、永续、专注维持；施法阶段结束前重新选择环位回位。 |
+| messy-wave / 紊乱波动 | analytic → analytic | 2 | 1 | 4 / 施法4 | timer | 计时3在每个全局结束阶段递减，回位不预留旧环位；来源离场清除关联荷载。 |
+| instantly-sleep / 昏昏入睡 | analytic → analytic | 1 | 1 | 3 / 施法1 | instant | 旧行动封锁改为禁止对方下一己方回合主动发动言灵；是否同时封锁咒符须审定，草案不封锁咒符响应。 |
+| magic-missile / 魔法飞弹 | analytic → analytic | 1 | 2 | 2 / 施法2 | instant | 保留对方施法阶段从已解析完成解析区响应的特例；需明确卡面授予快速进入施法区且支付施法费用，普通解析不继承特例。 |
+| aid / 支援术 | analytic → analytic | 1 | 1 | 1 / 施法1 | instant | 临时生命取较高值，在己方准备阶段第2步清除；立即解析仍需支付并占环位。 |
+| counter-spell / 法术反制 | word → talisman | 3 | 4 | 4 / 施法0 | instant | 草案迁为咒符；保留4速及取消敌方法术链节，临时荷载取目标链节实际施法费用。 |
+| true-strike / 克敌机先 | word → word | 1 | 1→2（候选） | 1 / 施法0 | instant | 由0阶改为1阶；检索普通/罕见且带 former-action 标签的言灵，避免把检索范围扩大到全部言灵。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。 |
+| protective-flame / 避火咒 | word → word | 1 | 2 | 2 / 施法0 | concentration | 专注言灵同样在施法阶段结束前回位，维持在己方准备处理；离场失去抗性。 |
+| pentagram-of-life / 生命之五芒星 | formation → formation | 1 | 1 | [{"kind": "mana", "amount": 2}] | instant | 初始等级1；原基础塑能/咒法减费改为本阵法承载时生效，避免新规则无基础保护标志后语义漂移。 |
+| engeas-four-point-star / 恩格亚斯四角星 | formation → formation | 3 | 1 | [{"kind": "mana", "amount": 3}, {"kind": "ready_spell", "count": 1}] | instant | 保留每己方回合第一张1阶解析加速；设置配方含已解析完成法术，取消原免费设置。 |
+| uplift / 昂扬 | seal → seal | 1 | 1 | 1 / 施法0 | instant | 阵法承载修正改为等级导出的上限+1，允许至7阶；收入最低0。 |
+| instant-circuit-overload / 瞬发回路过载 | action → word | 1 | 1→2（候选） | 2 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。 |
+| ray-of-frost / 寒霜射线 | analytic → analytic | 1 | 1 | 1 / 施法1 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
+| lightning-bolt / 闪电束 | analytic → analytic | 2 | 1 | 3 / 施法2 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
+| lesser-restoration / 次级复原 | analytic → analytic | 1 | 1 | 2 / 施法1 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 |
+| false-life / 虚假生命 | analytic → analytic | 1 | 1 | 2 / 施法1 | instant | 临时生命在己方准备阶段第2步清除，保留独立荷载2。 |
+| arcane-recovery / 奥术复苏 | action → word | 1 | 1→2（候选） | 0 / 施法0 | instant | 保留原效果数值；应用新版区域、荷载计伤、发动时点及清理规则。 最终规则默认言灵/咒符至少2速，本候选由1速调整为2速，仍待逐卡审定。 |
+| shield / 护盾术 | word → talisman | 1 | 2 | 2 / 施法0 | instant | 草案迁为咒符；主动发动权限需卡面明确，临时生命在己方准备阶段第2步清除。 |
 
 ## 40+10 候选预设
 

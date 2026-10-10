@@ -58,6 +58,7 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install cmake==3.31.6 ninja==1.11.1.3
       - run: python tools/catalog_source.py --check
+      - run: python tools/prepare_godot_frontend_assets.py --check
       - run: python tools/check_module_dependencies.py
       - run: cmake -S . -B build/core-only -G Ninja -DWIZARD_CORE_ONLY=ON -DCMAKE_BUILD_TYPE=Release
       - run: cmake --build build/core-only --parallel 4
@@ -77,6 +78,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install cmake==3.31.6
+      - name: Verify frontend runtime art
+        run: python tools/prepare_godot_frontend_assets.py --check
       - name: Download pinned editor
         shell: pwsh
         run: |
@@ -96,6 +99,7 @@ jobs:
           path: |
             build/godot-debug/Testing/Temporary/
             build/godot-debug/godot-replay-report.json
+            build/godot-debug/frontend-report.json
             godot/bin/wizard_godot_bridge.debug.dll
   cross-platform-replay:
     runs-on: ubuntu-latest

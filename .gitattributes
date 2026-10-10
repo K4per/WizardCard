@@ -7,3 +7,11 @@
 *.otf binary
 *.png binary
 *.wav binary
+*.gd text eol=lf
+*.tscn text eol=lf
+*.tres text eol=lf
+*.gdextension text eol=lf
+*.godot text eol=lf
+*.uid text eol=lf
+# Preserve the copied license bytes covered by the runtime art manifest.
+godot/art/fonts/OFL.txt -text whitespace=cr-at-eol

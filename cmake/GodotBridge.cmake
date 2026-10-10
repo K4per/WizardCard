@@ -77,6 +77,17 @@ if(BUILD_TESTING AND GODOT_BIN)
     --user-data ${CMAKE_CURRENT_BINARY_DIR}/replay-data --reference ${CMAKE_CURRENT_BINARY_DIR}/godot-reference.json
     --report ${CMAKE_CURRENT_BINARY_DIR}/godot-replay-report.json)
   set_tests_properties(godot_bridge_replay PROPERTIES FIXTURES_REQUIRED "godot_import;godot_reference" TIMEOUT 120)
+  add_test(NAME godot_frontend_import COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --import --frame-delay 1000)
+  set_tests_properties(godot_frontend_import PROPERTIES FIXTURES_SETUP frontend_import
+    RUN_SERIAL TRUE TIMEOUT 180 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_frontend_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/frontend_smoke.gd --
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    --user-data ${CMAKE_CURRENT_BINARY_DIR}/frontend-smoke-data
+    --report ${CMAKE_CURRENT_BINARY_DIR}/frontend-report.json)
+  set_tests_properties(godot_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   foreach(test godot_import godot_bridge_boundary godot_bridge_replay)
     set_tests_properties(${test} PROPERTIES FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   endforeach()

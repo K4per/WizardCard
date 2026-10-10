@@ -1,0 +1,5058 @@
+{
+  "format": 1,
+  "collection": "WizardCard C pixel fantasy frontend foundation",
+  "sourceManifest": "assets/art/godot-2d-v1/manifests/c-pixel-v1/manifest.json",
+  "sourceManifestSha256": "76e56e4cc82764d3521336105b0226e9928678d56f57d5025d31828f0f1d151c",
+  "palette": {
+    "ink": "#08131f",
+    "navy": "#101f2d",
+    "slate": "#172f3d",
+    "teal": "#214957",
+    "teal2": "#2e606a",
+    "teal3": "#477b80",
+    "muted": "#7ba2a0",
+    "pale": "#b6d0c1",
+    "brown0": "#2c211d",
+    "brown1": "#493324",
+    "bronze0": "#715033",
+    "bronze1": "#9e7040",
+    "gold0": "#c49855",
+    "gold1": "#e6bd70",
+    "gold2": "#f5db91",
+    "gold3": "#fff0bc",
+    "paper0": "#524b3b",
+    "paper1": "#81765a",
+    "paper2": "#b6a37d",
+    "paper3": "#d8c6a0",
+    "paper4": "#eddfbc",
+    "paper5": "#f6eed8",
+    "white": "#ffffff",
+    "gray": "#8995a2",
+    "green0": "#246943",
+    "green1": "#3da965",
+    "green2": "#75d69a",
+    "cyan0": "#318ba4",
+    "cyan1": "#64cfe6",
+    "purple0": "#74528f",
+    "purple1": "#b183d9",
+    "red": "#bd534d"
+  },
+  "assets": [
+    {
+      "size": [
+        1672,
+        941
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unmodified raster",
+      "license": "AI-generated project artwork; no third-party stock claim",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/raster/c2d_background_realm.png",
+      "id": "c2d.background.realm",
+      "file": "res://art/background/c2d_background_realm.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/background/c2d_background_realm.png",
+      "sha256": "05286571d161e51c6568e5220a9410a4ec7bd9a82e482a0322269ba024bf2516"
+    },
+    {
+      "size": [
+        1920,
+        1080
+      ],
+      "layer": 0,
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_board_background.svg",
+      "id": "c2d.board.background",
+      "file": "res://art/board/c2d_board_background.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_board_background.png",
+      "sha256": "970f98268dd3d2961c224341c541ef758f8f6191005d911decdb4c5b393c3eb5"
+    },
+    {
+      "size": [
+        1920,
+        1080
+      ],
+      "layer": 2,
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_board_edge-overlay.svg",
+      "id": "c2d.board.edge-overlay",
+      "file": "res://art/board/c2d_board_edge-overlay.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_board_edge-overlay.png",
+      "sha256": "ec949cb25b2883119b93dbd51c479afbe4f74d2bb6d43db81cf3666ff98c8ee6"
+    },
+    {
+      "size": [
+        128,
+        32
+      ],
+      "nineSlice": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_board_host-link.svg",
+      "id": "c2d.board.host-link",
+      "file": "res://art/board/c2d_board_host-link.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_board_host-link.png",
+      "sha256": "b43c1bc14eca8fad1eab8f2973ccb30a27426317837b88036f923dc7b377543c"
+    },
+    {
+      "size": [
+        1920,
+        1080
+      ],
+      "safeRect": [
+        310,
+        170,
+        1300,
+        740
+      ],
+      "layer": 1,
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_board_main-surface.svg",
+      "id": "c2d.board.main-surface",
+      "file": "res://art/board/c2d_board_main-surface.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_board_main-surface.png",
+      "sha256": "92bbd6cec94ede32189eb921da8519c6da001df3c3ef2ffa5c54389e93732146"
+    },
+    {
+      "size": [
+        2172,
+        724
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unmodified raster",
+      "license": "AI-generated project artwork; no third-party stock claim",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/raster/c2d_brand_logo.png",
+      "id": "c2d.brand.logo",
+      "file": "res://art/brand/c2d_brand_logo.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/brand/c2d_brand_logo.png",
+      "sha256": "4608b07536b0b1389af991d4430a1a8c63087486c61a5da630f31d02f98667e2"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_danger_disabled.svg",
+      "id": "c2d.button.danger.disabled",
+      "file": "res://art/ui/c2d_button_danger_disabled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_danger_disabled.png",
+      "sha256": "82a53e567caba4de9d965c3d777e6eefd8bb61f896849071c83a851abbea7281"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_danger_focus.svg",
+      "id": "c2d.button.danger.focus",
+      "file": "res://art/ui/c2d_button_danger_focus.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_danger_focus.png",
+      "sha256": "0d48df1bc9bc5b990697a2e6bfb28fc12e966450d69b721003d145e3ea417b01"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_danger_hover.svg",
+      "id": "c2d.button.danger.hover",
+      "file": "res://art/ui/c2d_button_danger_hover.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_danger_hover.png",
+      "sha256": "4d16650c861bc59100a748f3cd4cc8fc0ced398b442fc218e53d42636c0b8e2c"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_danger_normal.svg",
+      "id": "c2d.button.danger.normal",
+      "file": "res://art/ui/c2d_button_danger_normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_danger_normal.png",
+      "sha256": "4d16650c861bc59100a748f3cd4cc8fc0ced398b442fc218e53d42636c0b8e2c"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_danger_pressed.svg",
+      "id": "c2d.button.danger.pressed",
+      "file": "res://art/ui/c2d_button_danger_pressed.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_danger_pressed.png",
+      "sha256": "764f13319a8c8efa1a1ef9ce48e6f317da61c365ca0523e26aa7756574c4fdcb"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_primary_disabled.svg",
+      "id": "c2d.button.primary.disabled",
+      "file": "res://art/ui/c2d_button_primary_disabled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_primary_disabled.png",
+      "sha256": "82a53e567caba4de9d965c3d777e6eefd8bb61f896849071c83a851abbea7281"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_primary_focus.svg",
+      "id": "c2d.button.primary.focus",
+      "file": "res://art/ui/c2d_button_primary_focus.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_primary_focus.png",
+      "sha256": "e3490994e45056289bebfda422d2aeb49939ce2dc18035a264b466402f855934"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_primary_hover.svg",
+      "id": "c2d.button.primary.hover",
+      "file": "res://art/ui/c2d_button_primary_hover.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_primary_hover.png",
+      "sha256": "8573772298d60675ca283230f651542514534f77f924c068fa29e727659316ba"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_primary_normal.svg",
+      "id": "c2d.button.primary.normal",
+      "file": "res://art/ui/c2d_button_primary_normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_primary_normal.png",
+      "sha256": "476c77caf3e478d6cfa4a016beb1af792d66baddff90a99054d393240e320e75"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_primary_pressed.svg",
+      "id": "c2d.button.primary.pressed",
+      "file": "res://art/ui/c2d_button_primary_pressed.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_primary_pressed.png",
+      "sha256": "528f0c906f79afc829ae47071faa384b97729296ad144d0546cf0948022314c3"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_secondary_disabled.svg",
+      "id": "c2d.button.secondary.disabled",
+      "file": "res://art/ui/c2d_button_secondary_disabled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_secondary_disabled.png",
+      "sha256": "82a53e567caba4de9d965c3d777e6eefd8bb61f896849071c83a851abbea7281"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_secondary_focus.svg",
+      "id": "c2d.button.secondary.focus",
+      "file": "res://art/ui/c2d_button_secondary_focus.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_secondary_focus.png",
+      "sha256": "42e666c86d884983c66fb4f5de1179c6e805d34d8143dbe7d09b59c54ce26d69"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_secondary_hover.svg",
+      "id": "c2d.button.secondary.hover",
+      "file": "res://art/ui/c2d_button_secondary_hover.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_secondary_hover.png",
+      "sha256": "a3a74458f8f488556380d871e5270512e3d9b47255cccfdb5b0508a99e50cf1d"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_secondary_normal.svg",
+      "id": "c2d.button.secondary.normal",
+      "file": "res://art/ui/c2d_button_secondary_normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_secondary_normal.png",
+      "sha256": "cbffe9a09932b8830fb71a33fa11bc1a5650443633d60e2292ab247a6b77a40f"
+    },
+    {
+      "size": [
+        192,
+        48
+      ],
+      "nineSlice": [
+        14,
+        12,
+        14,
+        12
+      ],
+      "safeRect": [
+        20,
+        10,
+        152,
+        28
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_button_secondary_pressed.svg",
+      "id": "c2d.button.secondary.pressed",
+      "file": "res://art/ui/c2d_button_secondary_pressed.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_secondary_pressed.png",
+      "sha256": "87ea47a647a49cecf72243bc090f2c6e4016550356137edeecdae4648f57f943"
+    },
+    {
+      "size": [
+        160,
+        224
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_back_compact.svg",
+      "id": "c2d.card.back.compact",
+      "file": "res://art/cards/c2d_card_back_compact.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_back_compact.png",
+      "sha256": "682fe1388d3149792b2d2ade88c8ae1331504b2f38356ea1aae6c5fae94124c0"
+    },
+    {
+      "size": [
+        224,
+        304
+      ],
+      "artRect": [
+        9,
+        45,
+        206,
+        124
+      ],
+      "nameRect": [
+        10,
+        8,
+        174,
+        30
+      ],
+      "effectRect": [
+        12,
+        209,
+        200,
+        60
+      ],
+      "rarityAnchor": [
+        190,
+        188
+      ],
+      "valueAnchors": [
+        [
+          200,
+          24
+        ],
+        [
+          24,
+          286
+        ]
+      ],
+      "cardType": "analysis",
+      "view": "builder",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_builder_analysis.svg",
+      "id": "c2d.card.builder.analysis",
+      "file": "res://art/cards/c2d_card_builder_analysis.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_builder_analysis.png",
+      "sha256": "8eefe976561b38414bbad2f92c59411311ff5ac52a9f037e8af52beaab32528a"
+    },
+    {
+      "size": [
+        224,
+        304
+      ],
+      "artRect": [
+        9,
+        45,
+        206,
+        124
+      ],
+      "nameRect": [
+        10,
+        8,
+        174,
+        30
+      ],
+      "effectRect": [
+        12,
+        209,
+        200,
+        60
+      ],
+      "rarityAnchor": [
+        190,
+        188
+      ],
+      "valueAnchors": [
+        [
+          200,
+          24
+        ],
+        [
+          24,
+          286
+        ]
+      ],
+      "cardType": "formation",
+      "view": "builder",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_builder_formation.svg",
+      "id": "c2d.card.builder.formation",
+      "file": "res://art/cards/c2d_card_builder_formation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_builder_formation.png",
+      "sha256": "3abb49d009fde76c2bdc43dacfdfd06526a27ea62150b456d6e5ac9f62700d96"
+    },
+    {
+      "size": [
+        224,
+        304
+      ],
+      "artRect": [
+        9,
+        45,
+        206,
+        124
+      ],
+      "nameRect": [
+        10,
+        8,
+        174,
+        30
+      ],
+      "effectRect": [
+        12,
+        209,
+        200,
+        60
+      ],
+      "rarityAnchor": [
+        190,
+        188
+      ],
+      "valueAnchors": [
+        [
+          200,
+          24
+        ],
+        [
+          24,
+          286
+        ]
+      ],
+      "cardType": "incantation",
+      "view": "builder",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_builder_incantation.svg",
+      "id": "c2d.card.builder.incantation",
+      "file": "res://art/cards/c2d_card_builder_incantation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_builder_incantation.png",
+      "sha256": "738f0883240f2aed57bcebef384f5c6dedd2a6301c2484c87a0f36e490570b48"
+    },
+    {
+      "size": [
+        224,
+        304
+      ],
+      "artRect": [
+        9,
+        45,
+        206,
+        124
+      ],
+      "nameRect": [
+        10,
+        8,
+        174,
+        30
+      ],
+      "effectRect": [
+        12,
+        209,
+        200,
+        60
+      ],
+      "rarityAnchor": [
+        190,
+        188
+      ],
+      "valueAnchors": [
+        [
+          200,
+          24
+        ],
+        [
+          24,
+          286
+        ]
+      ],
+      "cardType": "rune",
+      "view": "builder",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_builder_rune.svg",
+      "id": "c2d.card.builder.rune",
+      "file": "res://art/cards/c2d_card_builder_rune.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_builder_rune.png",
+      "sha256": "6fe8d66d2aa718b6d13a89aedf2d4cab158b7d9f9b40de581516258f747c6105"
+    },
+    {
+      "size": [
+        224,
+        304
+      ],
+      "artRect": [
+        9,
+        45,
+        206,
+        124
+      ],
+      "nameRect": [
+        10,
+        8,
+        174,
+        30
+      ],
+      "effectRect": [
+        12,
+        209,
+        200,
+        60
+      ],
+      "rarityAnchor": [
+        190,
+        188
+      ],
+      "valueAnchors": [
+        [
+          200,
+          24
+        ],
+        [
+          24,
+          286
+        ]
+      ],
+      "cardType": "talisman",
+      "view": "builder",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_builder_talisman.svg",
+      "id": "c2d.card.builder.talisman",
+      "file": "res://art/cards/c2d_card_builder_talisman.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_builder_talisman.png",
+      "sha256": "7b6605971d49b32457df77a7d69cd5ff8b481844fab96a7fe3933417561f0c33"
+    },
+    {
+      "size": [
+        384,
+        512
+      ],
+      "artRect": [
+        16,
+        76,
+        352,
+        209
+      ],
+      "nameRect": [
+        10,
+        8,
+        334,
+        51
+      ],
+      "effectRect": [
+        12,
+        353,
+        360,
+        102
+      ],
+      "rarityAnchor": [
+        326,
+        317
+      ],
+      "valueAnchors": [
+        [
+          360,
+          24
+        ],
+        [
+          24,
+          494
+        ]
+      ],
+      "cardType": "analysis",
+      "view": "detail",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_detail_analysis.svg",
+      "id": "c2d.card.detail.analysis",
+      "file": "res://art/cards/c2d_card_detail_analysis.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_detail_analysis.png",
+      "sha256": "9b8764d5d1a2ab4282b49d354e50466c02e808c1028fea2c4ee8e6d75f86d651"
+    },
+    {
+      "size": [
+        384,
+        512
+      ],
+      "artRect": [
+        16,
+        76,
+        352,
+        209
+      ],
+      "nameRect": [
+        10,
+        8,
+        334,
+        51
+      ],
+      "effectRect": [
+        12,
+        353,
+        360,
+        102
+      ],
+      "rarityAnchor": [
+        326,
+        317
+      ],
+      "valueAnchors": [
+        [
+          360,
+          24
+        ],
+        [
+          24,
+          494
+        ]
+      ],
+      "cardType": "formation",
+      "view": "detail",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_detail_formation.svg",
+      "id": "c2d.card.detail.formation",
+      "file": "res://art/cards/c2d_card_detail_formation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_detail_formation.png",
+      "sha256": "14aab5e2f880d98f2a7a9e44f38a502cab459cb0c3fd719dfb02be6b2ca53016"
+    },
+    {
+      "size": [
+        384,
+        512
+      ],
+      "artRect": [
+        16,
+        76,
+        352,
+        209
+      ],
+      "nameRect": [
+        10,
+        8,
+        334,
+        51
+      ],
+      "effectRect": [
+        12,
+        353,
+        360,
+        102
+      ],
+      "rarityAnchor": [
+        326,
+        317
+      ],
+      "valueAnchors": [
+        [
+          360,
+          24
+        ],
+        [
+          24,
+          494
+        ]
+      ],
+      "cardType": "incantation",
+      "view": "detail",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_detail_incantation.svg",
+      "id": "c2d.card.detail.incantation",
+      "file": "res://art/cards/c2d_card_detail_incantation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_detail_incantation.png",
+      "sha256": "c4c0a34d0d3a7b7d27df3969a77daabdbafd3928c8970dbbc87e5f42931341a5"
+    },
+    {
+      "size": [
+        384,
+        512
+      ],
+      "artRect": [
+        16,
+        76,
+        352,
+        209
+      ],
+      "nameRect": [
+        10,
+        8,
+        334,
+        51
+      ],
+      "effectRect": [
+        12,
+        353,
+        360,
+        102
+      ],
+      "rarityAnchor": [
+        326,
+        317
+      ],
+      "valueAnchors": [
+        [
+          360,
+          24
+        ],
+        [
+          24,
+          494
+        ]
+      ],
+      "cardType": "rune",
+      "view": "detail",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_detail_rune.svg",
+      "id": "c2d.card.detail.rune",
+      "file": "res://art/cards/c2d_card_detail_rune.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_detail_rune.png",
+      "sha256": "80af86d9fd3f8b62482c8181b0149b5252b4e9ff00a95616762ecefdefed7988"
+    },
+    {
+      "size": [
+        384,
+        512
+      ],
+      "artRect": [
+        16,
+        76,
+        352,
+        209
+      ],
+      "nameRect": [
+        10,
+        8,
+        334,
+        51
+      ],
+      "effectRect": [
+        12,
+        353,
+        360,
+        102
+      ],
+      "rarityAnchor": [
+        326,
+        317
+      ],
+      "valueAnchors": [
+        [
+          360,
+          24
+        ],
+        [
+          24,
+          494
+        ]
+      ],
+      "cardType": "talisman",
+      "view": "detail",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_detail_talisman.svg",
+      "id": "c2d.card.detail.talisman",
+      "file": "res://art/cards/c2d_card_detail_talisman.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_detail_talisman.png",
+      "sha256": "c3b81b6ae52f165ecc95f676b0ff0bf8433eea582db05e179b4cc483399cc082"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "artRect": [
+        8,
+        29,
+        112,
+        72
+      ],
+      "nameRect": [
+        10,
+        8,
+        78,
+        17
+      ],
+      "effectRect": [
+        12,
+        121,
+        104,
+        35
+      ],
+      "rarityAnchor": [
+        108,
+        109
+      ],
+      "valueAnchors": [
+        [
+          104,
+          24
+        ],
+        [
+          24,
+          158
+        ]
+      ],
+      "cardType": "analysis",
+      "view": "field",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_field_analysis.svg",
+      "id": "c2d.card.field.analysis",
+      "file": "res://art/cards/c2d_card_field_analysis.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_field_analysis.png",
+      "sha256": "8224111f8615aea80227692a8f17ef7735da486c9427b091d6685f9d65ca1332"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "artRect": [
+        8,
+        29,
+        112,
+        72
+      ],
+      "nameRect": [
+        10,
+        8,
+        78,
+        17
+      ],
+      "effectRect": [
+        12,
+        121,
+        104,
+        35
+      ],
+      "rarityAnchor": [
+        108,
+        109
+      ],
+      "valueAnchors": [
+        [
+          104,
+          24
+        ],
+        [
+          24,
+          158
+        ]
+      ],
+      "cardType": "formation",
+      "view": "field",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_field_formation.svg",
+      "id": "c2d.card.field.formation",
+      "file": "res://art/cards/c2d_card_field_formation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_field_formation.png",
+      "sha256": "e648bd58e5a9c8c80f74223cc1d79f181722a9fbe89d834366e0d09c3deedb3b"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "artRect": [
+        8,
+        29,
+        112,
+        72
+      ],
+      "nameRect": [
+        10,
+        8,
+        78,
+        17
+      ],
+      "effectRect": [
+        12,
+        121,
+        104,
+        35
+      ],
+      "rarityAnchor": [
+        108,
+        109
+      ],
+      "valueAnchors": [
+        [
+          104,
+          24
+        ],
+        [
+          24,
+          158
+        ]
+      ],
+      "cardType": "incantation",
+      "view": "field",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_field_incantation.svg",
+      "id": "c2d.card.field.incantation",
+      "file": "res://art/cards/c2d_card_field_incantation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_field_incantation.png",
+      "sha256": "32d3a701bcf11ad7aca3e45b3853ba684f8aff76945614145050a8b5e4bedbfa"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "artRect": [
+        8,
+        29,
+        112,
+        72
+      ],
+      "nameRect": [
+        10,
+        8,
+        78,
+        17
+      ],
+      "effectRect": [
+        12,
+        121,
+        104,
+        35
+      ],
+      "rarityAnchor": [
+        108,
+        109
+      ],
+      "valueAnchors": [
+        [
+          104,
+          24
+        ],
+        [
+          24,
+          158
+        ]
+      ],
+      "cardType": "rune",
+      "view": "field",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_field_rune.svg",
+      "id": "c2d.card.field.rune",
+      "file": "res://art/cards/c2d_card_field_rune.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_field_rune.png",
+      "sha256": "28c46908cc2586eb861f4cea0f1d43617e1ef97cf2177c0a06a91949ed8607ab"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "artRect": [
+        8,
+        29,
+        112,
+        72
+      ],
+      "nameRect": [
+        10,
+        8,
+        78,
+        17
+      ],
+      "effectRect": [
+        12,
+        121,
+        104,
+        35
+      ],
+      "rarityAnchor": [
+        108,
+        109
+      ],
+      "valueAnchors": [
+        [
+          104,
+          24
+        ],
+        [
+          24,
+          158
+        ]
+      ],
+      "cardType": "talisman",
+      "view": "field",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_field_talisman.svg",
+      "id": "c2d.card.field.talisman",
+      "file": "res://art/cards/c2d_card_field_talisman.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_field_talisman.png",
+      "sha256": "54200a0d204d9829e23c02bbfb8d2a1367147af3421e77c41c1036a2ea8a319e"
+    },
+    {
+      "size": [
+        160,
+        224
+      ],
+      "artRect": [
+        8,
+        34,
+        144,
+        91
+      ],
+      "nameRect": [
+        10,
+        8,
+        110,
+        22
+      ],
+      "effectRect": [
+        12,
+        154,
+        136,
+        44
+      ],
+      "rarityAnchor": [
+        136,
+        138
+      ],
+      "valueAnchors": [
+        [
+          136,
+          24
+        ],
+        [
+          24,
+          206
+        ]
+      ],
+      "cardType": "analysis",
+      "view": "hand",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_hand_analysis.svg",
+      "id": "c2d.card.hand.analysis",
+      "file": "res://art/cards/c2d_card_hand_analysis.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_hand_analysis.png",
+      "sha256": "488557a00720d811751e8df024e3e420717809720dae588e4f3096193222dd7f"
+    },
+    {
+      "size": [
+        160,
+        224
+      ],
+      "artRect": [
+        8,
+        34,
+        144,
+        91
+      ],
+      "nameRect": [
+        10,
+        8,
+        110,
+        22
+      ],
+      "effectRect": [
+        12,
+        154,
+        136,
+        44
+      ],
+      "rarityAnchor": [
+        136,
+        138
+      ],
+      "valueAnchors": [
+        [
+          136,
+          24
+        ],
+        [
+          24,
+          206
+        ]
+      ],
+      "cardType": "formation",
+      "view": "hand",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_hand_formation.svg",
+      "id": "c2d.card.hand.formation",
+      "file": "res://art/cards/c2d_card_hand_formation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_hand_formation.png",
+      "sha256": "4358d8e9d86f94c517ea323022ff60babe1202eb72b151838644d6912d2f2cfc"
+    },
+    {
+      "size": [
+        160,
+        224
+      ],
+      "artRect": [
+        8,
+        34,
+        144,
+        91
+      ],
+      "nameRect": [
+        10,
+        8,
+        110,
+        22
+      ],
+      "effectRect": [
+        12,
+        154,
+        136,
+        44
+      ],
+      "rarityAnchor": [
+        136,
+        138
+      ],
+      "valueAnchors": [
+        [
+          136,
+          24
+        ],
+        [
+          24,
+          206
+        ]
+      ],
+      "cardType": "incantation",
+      "view": "hand",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_hand_incantation.svg",
+      "id": "c2d.card.hand.incantation",
+      "file": "res://art/cards/c2d_card_hand_incantation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_hand_incantation.png",
+      "sha256": "c5bcbe6d3c4c6667991f394363714c6aadde49646963be030c0e8de7d631ee3a"
+    },
+    {
+      "size": [
+        160,
+        224
+      ],
+      "artRect": [
+        8,
+        34,
+        144,
+        91
+      ],
+      "nameRect": [
+        10,
+        8,
+        110,
+        22
+      ],
+      "effectRect": [
+        12,
+        154,
+        136,
+        44
+      ],
+      "rarityAnchor": [
+        136,
+        138
+      ],
+      "valueAnchors": [
+        [
+          136,
+          24
+        ],
+        [
+          24,
+          206
+        ]
+      ],
+      "cardType": "rune",
+      "view": "hand",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_hand_rune.svg",
+      "id": "c2d.card.hand.rune",
+      "file": "res://art/cards/c2d_card_hand_rune.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_hand_rune.png",
+      "sha256": "3fea6553d942c48ffdfbfb5152978a3987274de38adaaca9e96e0b7e9875cb5c"
+    },
+    {
+      "size": [
+        160,
+        224
+      ],
+      "artRect": [
+        8,
+        34,
+        144,
+        91
+      ],
+      "nameRect": [
+        10,
+        8,
+        110,
+        22
+      ],
+      "effectRect": [
+        12,
+        154,
+        136,
+        44
+      ],
+      "rarityAnchor": [
+        136,
+        138
+      ],
+      "valueAnchors": [
+        [
+          136,
+          24
+        ],
+        [
+          24,
+          206
+        ]
+      ],
+      "cardType": "talisman",
+      "view": "hand",
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_hand_talisman.svg",
+      "id": "c2d.card.hand.talisman",
+      "file": "res://art/cards/c2d_card_hand_talisman.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_hand_talisman.png",
+      "sha256": "d5a4ef30139b44d33018eba5d9ab37e1a91b53399e897f52117a137e023c295e"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_card_missing-art.svg",
+      "id": "c2d.card.missing-art",
+      "file": "res://art/cards/c2d_card_missing-art.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_missing-art.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_checkbox_disabled.svg",
+      "id": "c2d.control.checkbox.disabled",
+      "file": "res://art/ui/c2d_control_checkbox_disabled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_checkbox_disabled.png",
+      "sha256": "66b00369aeaf04d4bef33e755dad1c1746f5db345d4e2b54be4b73db968d1b46"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_checkbox_focus.svg",
+      "id": "c2d.control.checkbox.focus",
+      "file": "res://art/ui/c2d_control_checkbox_focus.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_checkbox_focus.png",
+      "sha256": "af03c5a8bf2e3e044b3d5dfcfa1a2db8619f2675914c6852c53370c1b0c90f01"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_checkbox_hover.svg",
+      "id": "c2d.control.checkbox.hover",
+      "file": "res://art/ui/c2d_control_checkbox_hover.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_checkbox_hover.png",
+      "sha256": "9ae7c6a36e3ca3cfcb7b1471f614c86cf48f034ee92d6c76078a43a4bdabad0b"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_checkbox_normal.svg",
+      "id": "c2d.control.checkbox.normal",
+      "file": "res://art/ui/c2d_control_checkbox_normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_checkbox_normal.png",
+      "sha256": "1d4a595b72b0075e367aac12839bff68edaa97454a1cab8ca6fc52d11de54d69"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_checkbox_pressed.svg",
+      "id": "c2d.control.checkbox.pressed",
+      "file": "res://art/ui/c2d_control_checkbox_pressed.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_checkbox_pressed.png",
+      "sha256": "efd6959b87e9d475585970d57691b0edbe8e9790c00f0309cffc33ab9b2b650a"
+    },
+    {
+      "size": [
+        48,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_checked.svg",
+      "id": "c2d.control.checked",
+      "file": "res://art/ui/c2d_control_checked.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_checked.png",
+      "sha256": "a644ac005924e8e15e25f4b7e30568629198c3633a13d19894040eb969ab19df"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_dropdown_disabled.svg",
+      "id": "c2d.control.dropdown.disabled",
+      "file": "res://art/ui/c2d_control_dropdown_disabled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_dropdown_disabled.png",
+      "sha256": "dd604e1375e80ee14ec156070ccc9a564c68520fba578d4a0e21d9db609c88bd"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_dropdown_focus.svg",
+      "id": "c2d.control.dropdown.focus",
+      "file": "res://art/ui/c2d_control_dropdown_focus.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_dropdown_focus.png",
+      "sha256": "2038f5554e7c584ce3354fcdf1e4c4e92293f055cbaab2bf89df959a0bd74cc9"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_dropdown_hover.svg",
+      "id": "c2d.control.dropdown.hover",
+      "file": "res://art/ui/c2d_control_dropdown_hover.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_dropdown_hover.png",
+      "sha256": "8316ff34c9c6b48560deeeebe93562490ae67572f24be91298376c978053f48f"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_dropdown_normal.svg",
+      "id": "c2d.control.dropdown.normal",
+      "file": "res://art/ui/c2d_control_dropdown_normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_dropdown_normal.png",
+      "sha256": "b8e135c6bf0dc37113f21795089ebb4c84c08b755ea14b3101e0a63d9dff926e"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_dropdown_pressed.svg",
+      "id": "c2d.control.dropdown.pressed",
+      "file": "res://art/ui/c2d_control_dropdown_pressed.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_dropdown_pressed.png",
+      "sha256": "8316ff34c9c6b48560deeeebe93562490ae67572f24be91298376c978053f48f"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_input_disabled.svg",
+      "id": "c2d.control.input.disabled",
+      "file": "res://art/ui/c2d_control_input_disabled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_input_disabled.png",
+      "sha256": "410f181d55c47b0caa9d40f6d4b9747bbb03f35b1134ddd0d16e201e516e685c"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_input_focus.svg",
+      "id": "c2d.control.input.focus",
+      "file": "res://art/ui/c2d_control_input_focus.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_input_focus.png",
+      "sha256": "3e5cc11025b43c3fb54f279bd3ac9284e5fa2fafa2a0801c725e9a72d75f94a5"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_input_hover.svg",
+      "id": "c2d.control.input.hover",
+      "file": "res://art/ui/c2d_control_input_hover.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_input_hover.png",
+      "sha256": "e96e1e95cb3a3827f28a4895ab70c424a2276dde388ce7f4b448a963f9678d63"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_input_normal.svg",
+      "id": "c2d.control.input.normal",
+      "file": "res://art/ui/c2d_control_input_normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_input_normal.png",
+      "sha256": "4a4d7dc15d0e9665218d38cbd39a789d29a9f57c565db15f5017b4111f131906"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_input_pressed.svg",
+      "id": "c2d.control.input.pressed",
+      "file": "res://art/ui/c2d_control_input_pressed.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_input_pressed.png",
+      "sha256": "e96e1e95cb3a3827f28a4895ab70c424a2276dde388ce7f4b448a963f9678d63"
+    },
+    {
+      "size": [
+        48,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_off.svg",
+      "id": "c2d.control.off",
+      "file": "res://art/ui/c2d_control_off.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_off.png",
+      "sha256": "7f52386b8ae127cf16d4f9e24d029c7d1cbf9b002d9c46013d82e961c857d740"
+    },
+    {
+      "size": [
+        48,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_on.svg",
+      "id": "c2d.control.on",
+      "file": "res://art/ui/c2d_control_on.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_on.png",
+      "sha256": "080e2580f73ccdd32a0777c92c919b3c1ab0ae3f39d8ec642531692e6c810e60"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_switch_disabled.svg",
+      "id": "c2d.control.switch.disabled",
+      "file": "res://art/ui/c2d_control_switch_disabled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_switch_disabled.png",
+      "sha256": "5c6a2b0b97d4d5fe065d52a39aa302cd30a38bc132f5f48c6aa77c48dd190f6a"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_switch_focus.svg",
+      "id": "c2d.control.switch.focus",
+      "file": "res://art/ui/c2d_control_switch_focus.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_switch_focus.png",
+      "sha256": "1fab440bec988223245508c7b4bc68408eeb3dd91727e64c13ea51b313d3bf5f"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_switch_hover.svg",
+      "id": "c2d.control.switch.hover",
+      "file": "res://art/ui/c2d_control_switch_hover.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_switch_hover.png",
+      "sha256": "189a160d5382299bd5049bdbfba2581de9c300bf22b8c74c4605bc104150c682"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_switch_normal.svg",
+      "id": "c2d.control.switch.normal",
+      "file": "res://art/ui/c2d_control_switch_normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_switch_normal.png",
+      "sha256": "41d1c3f7bf6ce825fe756b4f11877fef8392e4d2d2d1e2317073370ee24237b0"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_switch_pressed.svg",
+      "id": "c2d.control.switch.pressed",
+      "file": "res://art/ui/c2d_control_switch_pressed.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_switch_pressed.png",
+      "sha256": "4a6025ab168aac63a008e5c452c5fccf015b18ee5b165b2cb00dfaf1a86e8864"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_tab_disabled.svg",
+      "id": "c2d.control.tab.disabled",
+      "file": "res://art/ui/c2d_control_tab_disabled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_tab_disabled.png",
+      "sha256": "410f181d55c47b0caa9d40f6d4b9747bbb03f35b1134ddd0d16e201e516e685c"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_tab_focus.svg",
+      "id": "c2d.control.tab.focus",
+      "file": "res://art/ui/c2d_control_tab_focus.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_tab_focus.png",
+      "sha256": "3e5cc11025b43c3fb54f279bd3ac9284e5fa2fafa2a0801c725e9a72d75f94a5"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_tab_hover.svg",
+      "id": "c2d.control.tab.hover",
+      "file": "res://art/ui/c2d_control_tab_hover.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_tab_hover.png",
+      "sha256": "e96e1e95cb3a3827f28a4895ab70c424a2276dde388ce7f4b448a963f9678d63"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_tab_normal.svg",
+      "id": "c2d.control.tab.normal",
+      "file": "res://art/ui/c2d_control_tab_normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_tab_normal.png",
+      "sha256": "4a4d7dc15d0e9665218d38cbd39a789d29a9f57c565db15f5017b4111f131906"
+    },
+    {
+      "size": [
+        128,
+        48
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_tab_pressed.svg",
+      "id": "c2d.control.tab.pressed",
+      "file": "res://art/ui/c2d_control_tab_pressed.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_tab_pressed.png",
+      "sha256": "e96e1e95cb3a3827f28a4895ab70c424a2276dde388ce7f4b448a963f9678d63"
+    },
+    {
+      "size": [
+        48,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_unchecked.svg",
+      "id": "c2d.control.unchecked",
+      "file": "res://art/ui/c2d_control_unchecked.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_unchecked.png",
+      "sha256": "54e2f1162ef1e9754991acbf3efb4f2b7c080b827cfb0d1b6fd37f947d828fb6"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_drag_invalid-drop.svg",
+      "id": "c2d.drag.invalid-drop",
+      "file": "res://art/board/c2d_drag_invalid-drop.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_drag_invalid-drop.png",
+      "sha256": "ffdf0cf635e1bffafcaa323364c99997a342edec29d5a307c626905ae348cfaf"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_drag_legal-drop.svg",
+      "id": "c2d.drag.legal-drop",
+      "file": "res://art/board/c2d_drag_legal-drop.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_drag_legal-drop.png",
+      "sha256": "2541cdc2d0ef52f1ed7e744f6294c2e62e9bedff70a137ea92077a48928518c6"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_drag_preview.svg",
+      "id": "c2d.drag.preview",
+      "file": "res://art/board/c2d_drag_preview.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_drag_preview.png",
+      "sha256": "593df44142ee48eef556699eb8ea13a3c76beaf96ffb42744b75dbe101e654a0"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_drag_return.svg",
+      "id": "c2d.drag.return",
+      "file": "res://art/board/c2d_drag_return.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_drag_return.png",
+      "sha256": "add9f52b4fc0a3cc21d9b3d4d4e6d5aa60f29b68fab0b5dfca115bb85b1f1051"
+    },
+    {
+      "size": [
+        128,
+        24
+      ],
+      "nineSlice": [
+        8,
+        6,
+        8,
+        6
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_hud_load_danger.svg",
+      "id": "c2d.hud.load.danger",
+      "file": "res://art/board/c2d_hud_load_danger.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_hud_load_danger.png",
+      "sha256": "075d1f82720c5ac536d67483e3c620b2bf3100cfb97d8a030e6aafdb98b21fe3"
+    },
+    {
+      "size": [
+        128,
+        24
+      ],
+      "nineSlice": [
+        8,
+        6,
+        8,
+        6
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_hud_load_normal.svg",
+      "id": "c2d.hud.load.normal",
+      "file": "res://art/board/c2d_hud_load_normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_hud_load_normal.png",
+      "sha256": "5b5ce13dce9a28669055234a92079b626410d1fbb6b8bc3470adf30c0c5a7f5d"
+    },
+    {
+      "size": [
+        128,
+        24
+      ],
+      "nineSlice": [
+        8,
+        6,
+        8,
+        6
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_hud_load_overload.svg",
+      "id": "c2d.hud.load.overload",
+      "file": "res://art/board/c2d_hud_load_overload.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_hud_load_overload.png",
+      "sha256": "d6e08d35518c0a9c497f77d62d03596579910eefd13ea9e2add21aa73a763e68"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_analysis-cost.svg",
+      "id": "c2d.icon.attribute.analysis-cost",
+      "file": "res://art/icons/c2d_icon_attribute_analysis-cost.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_analysis-cost.png",
+      "sha256": "263ef62e679bad0e5a4eab364ff166aae531946e68a25e28d83020a4844c9a7b"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_body.svg",
+      "id": "c2d.icon.attribute.body",
+      "file": "res://art/icons/c2d_icon_attribute_body.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_body.png",
+      "sha256": "cced8142600e2f3a563c5a97afd4f1d2b4415729c83f098625fcd5a404d49a72"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_capacity.svg",
+      "id": "c2d.icon.attribute.capacity",
+      "file": "res://art/icons/c2d_icon_attribute_capacity.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_capacity.png",
+      "sha256": "4d9efd66250dd39d2a8336c2f12d2152cec87a6942596b64f672186bea86c9db"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_cast-cost.svg",
+      "id": "c2d.icon.attribute.cast-cost",
+      "file": "res://art/icons/c2d_icon_attribute_cast-cost.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_cast-cost.png",
+      "sha256": "1cad609538708d263b668f3938356022ea1431ec453a20b9155cdc581a4e7354"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_income.svg",
+      "id": "c2d.icon.attribute.income",
+      "file": "res://art/icons/c2d_icon_attribute_income.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_income.png",
+      "sha256": "1cad609538708d263b668f3938356022ea1431ec453a20b9155cdc581a4e7354"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_mana.svg",
+      "id": "c2d.icon.attribute.mana",
+      "file": "res://art/icons/c2d_icon_attribute_mana.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_mana.png",
+      "sha256": "1cad609538708d263b668f3938356022ea1431ec453a20b9155cdc581a4e7354"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_recipe-ash.svg",
+      "id": "c2d.icon.attribute.recipe-ash",
+      "file": "res://art/icons/c2d_icon_attribute_recipe-ash.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_recipe-ash.png",
+      "sha256": "a5ed6e85806ca95c2ac7c58dd719252bcc8270d1f024f31a7dacc63d06dd5a7d"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_recipe-mana.svg",
+      "id": "c2d.icon.attribute.recipe-mana",
+      "file": "res://art/icons/c2d_icon_attribute_recipe-mana.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_recipe-mana.png",
+      "sha256": "1cad609538708d263b668f3938356022ea1431ec453a20b9155cdc581a4e7354"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_recipe-material.svg",
+      "id": "c2d.icon.attribute.recipe-material",
+      "file": "res://art/icons/c2d_icon_attribute_recipe-material.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_recipe-material.png",
+      "sha256": "4d9efd66250dd39d2a8336c2f12d2152cec87a6942596b64f672186bea86c9db"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_attribute_ring-slot.svg",
+      "id": "c2d.icon.attribute.ring-slot",
+      "file": "res://art/icons/c2d_icon_attribute_ring-slot.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_ring-slot.png",
+      "sha256": "1cad609538708d263b668f3938356022ea1431ec453a20b9155cdc581a4e7354"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_chain_cancelled.svg",
+      "id": "c2d.icon.chain.cancelled",
+      "file": "res://art/icons/c2d_icon_chain_cancelled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_chain_cancelled.png",
+      "sha256": "2f4fdffdf9566761788aa182c89280a7396305b7a34e3d22785d4a6dea7cd2d1"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_chain_no-response.svg",
+      "id": "c2d.icon.chain.no-response",
+      "file": "res://art/icons/c2d_icon_chain_no-response.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_chain_no-response.png",
+      "sha256": "3a2b4cc84c326f278823cd75e9874363d695f0b29f1fdae30c355e56bb20f6ac"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_chain_pass.svg",
+      "id": "c2d.icon.chain.pass",
+      "file": "res://art/icons/c2d_icon_chain_pass.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_chain_pass.png",
+      "sha256": "cdcce0a8f64d6856eaff0ffbc5d4c6fd7e959a9ed330633ae7db8c0be8ac73c8"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_chain_pending.svg",
+      "id": "c2d.icon.chain.pending",
+      "file": "res://art/icons/c2d_icon_chain_pending.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_chain_pending.png",
+      "sha256": "263ef62e679bad0e5a4eab364ff166aae531946e68a25e28d83020a4844c9a7b"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_chain_priority.svg",
+      "id": "c2d.icon.chain.priority",
+      "file": "res://art/icons/c2d_icon_chain_priority.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_chain_priority.png",
+      "sha256": "cdcce0a8f64d6856eaff0ffbc5d4c6fd7e959a9ed330633ae7db8c0be8ac73c8"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_chain_resolving.svg",
+      "id": "c2d.icon.chain.resolving",
+      "file": "res://art/icons/c2d_icon_chain_resolving.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_chain_resolving.png",
+      "sha256": "8ecfc2c1ae6f5bf7d62e65714b9017821a378bb6b1afc76cc41888c594564751"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_control_empty.svg",
+      "id": "c2d.icon.control.empty",
+      "file": "res://art/icons/c2d_icon_control_empty.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_control_empty.png",
+      "sha256": "9d4be44f6ad2bfb3cc195f685b0a4c0748e1b20037345d788b91e8373a7e28a0"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_control_focus.svg",
+      "id": "c2d.icon.control.focus",
+      "file": "res://art/icons/c2d_icon_control_focus.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_control_focus.png",
+      "sha256": "773257b8979ed9931c786ea897a25ee276175bdf821acd3e7c35a2d45b38f8ef"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_control_pagination-next.svg",
+      "id": "c2d.icon.control.pagination-next",
+      "file": "res://art/icons/c2d_icon_control_pagination-next.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_control_pagination-next.png",
+      "sha256": "cdcce0a8f64d6856eaff0ffbc5d4c6fd7e959a9ed330633ae7db8c0be8ac73c8"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_control_pagination-prev.svg",
+      "id": "c2d.icon.control.pagination-prev",
+      "file": "res://art/icons/c2d_icon_control_pagination-prev.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_control_pagination-prev.png",
+      "sha256": "cdcce0a8f64d6856eaff0ffbc5d4c6fd7e959a9ed330633ae7db8c0be8ac73c8"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_control_scroll-thumb.svg",
+      "id": "c2d.icon.control.scroll-thumb",
+      "file": "res://art/icons/c2d_icon_control_scroll-thumb.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_control_scroll-thumb.png",
+      "sha256": "71293e5819d14de47f409df76f1fe3cd97e63caa2f8012c4c885150c4b95b478"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_control_slider-thumb.svg",
+      "id": "c2d.icon.control.slider-thumb",
+      "file": "res://art/icons/c2d_icon_control_slider-thumb.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_control_slider-thumb.png",
+      "sha256": "3f09338bf282af4b479182c7056cfbfc1978f9643ec1163172f860de2ee37b6e"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_control_spinner.svg",
+      "id": "c2d.icon.control.spinner",
+      "file": "res://art/icons/c2d_icon_control_spinner.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_control_spinner.png",
+      "sha256": "526bd534e591b8b70b5a47ba6250cbf032e4a4482539fb17f8b351e279cb8672"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_decision_cannot-cast.svg",
+      "id": "c2d.icon.decision.cannot-cast",
+      "file": "res://art/icons/c2d_icon_decision_cannot-cast.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_decision_cannot-cast.png",
+      "sha256": "7695e9146349e432418d9849fce0ecd2def4b192511c7d29c551e1203b115857"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_decision_condition-met.svg",
+      "id": "c2d.icon.decision.condition-met",
+      "file": "res://art/icons/c2d_icon_decision_condition-met.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_decision_condition-met.png",
+      "sha256": "bd492de55f5b7998441e244c5579f07ed34972a9117078fd0bd412e7ac6ecdb9"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_decision_condition-unmet.svg",
+      "id": "c2d.icon.decision.condition-unmet",
+      "file": "res://art/icons/c2d_icon_decision_condition-unmet.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_decision_condition-unmet.png",
+      "sha256": "8d73ccaed43efb1970d3b32d315f4a8a761b49467185cae3bea0c784fa62d1a3"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_decision_flip-cost.svg",
+      "id": "c2d.icon.decision.flip-cost",
+      "file": "res://art/icons/c2d_icon_decision_flip-cost.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_decision_flip-cost.png",
+      "sha256": "2fc103372822c048bce1e27a22c296c25f8999722ca3047b201b606f2e12dd17"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_decision_quota-available.svg",
+      "id": "c2d.icon.decision.quota-available",
+      "file": "res://art/icons/c2d_icon_decision_quota-available.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_decision_quota-available.png",
+      "sha256": "bd492de55f5b7998441e244c5579f07ed34972a9117078fd0bd412e7ac6ecdb9"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_decision_quota-used.svg",
+      "id": "c2d.icon.decision.quota-used",
+      "file": "res://art/icons/c2d_icon_decision_quota-used.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_decision_quota-used.png",
+      "sha256": "e12880f4457b0c6689cc4b3d48fa029411e1c0f8354c9e6f0bad523cb596a293"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_decision_wait-turn.svg",
+      "id": "c2d.icon.decision.wait-turn",
+      "file": "res://art/icons/c2d_icon_decision_wait-turn.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_decision_wait-turn.png",
+      "sha256": "8d3c014713556151128d3d519d7d3dd38f1cc48e6eb18ea614bca3cd23d404b4"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_decision_zero-cost.svg",
+      "id": "c2d.icon.decision.zero-cost",
+      "file": "res://art/icons/c2d_icon_decision_zero-cost.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_decision_zero-cost.png",
+      "sha256": "261edb04e92fb7810d7e1b0d121d9875533fd4cb145e60a0a9ec279722d93577"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_hud_cap.svg",
+      "id": "c2d.icon.hud.cap",
+      "file": "res://art/icons/c2d_icon_hud_cap.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_hud_cap.png",
+      "sha256": "cfa44907c11c0eef08c53979064f665cd7f24d488136f7a94c2aabd18724b4d6"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_hud_life.svg",
+      "id": "c2d.icon.hud.life",
+      "file": "res://art/icons/c2d_icon_hud_life.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_hud_life.png",
+      "sha256": "ad915f52e2a57c56d0d2bbf44ea5330ac152523c8ae2247cd4f2b9d68221e59e"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_hud_load.svg",
+      "id": "c2d.icon.hud.load",
+      "file": "res://art/icons/c2d_icon_hud_load.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_hud_load.png",
+      "sha256": "cb92849aaf57ae90318f89b1a917620349e5db6bd84fc292cbccdccae71d1342"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_hud_load-danger.svg",
+      "id": "c2d.icon.hud.load-danger",
+      "file": "res://art/icons/c2d_icon_hud_load-danger.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_hud_load-danger.png",
+      "sha256": "79dc74fce3d21dcb74d32d58c02dcb9a15a3cea91b805be15bd9fddb48862059"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_hud_load-normal.svg",
+      "id": "c2d.icon.hud.load-normal",
+      "file": "res://art/icons/c2d_icon_hud_load-normal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_hud_load-normal.png",
+      "sha256": "5062c5465b055033d31e735288bb7fdcc8ca1c2dddcd7aa646ad26b87372453f"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_hud_load-overload.svg",
+      "id": "c2d.icon.hud.load-overload",
+      "file": "res://art/icons/c2d_icon_hud_load-overload.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_hud_load-overload.png",
+      "sha256": "8d3c014713556151128d3d519d7d3dd38f1cc48e6eb18ea614bca3cd23d404b4"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_hud_mana.svg",
+      "id": "c2d.icon.hud.mana",
+      "file": "res://art/icons/c2d_icon_hud_mana.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_hud_mana.png",
+      "sha256": "fd76fda63fd3ca5580a221aa353a32f5a683689d89c0b8c03a9cb0f4ad78107d"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_hud_temp-life.svg",
+      "id": "c2d.icon.hud.temp-life",
+      "file": "res://art/icons/c2d_icon_hud_temp-life.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_hud_temp-life.png",
+      "sha256": "cce2c1fff871af8e9684254a025d2e84fd9d4962e32c09100642be83fd2c774b"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_level_1.svg",
+      "id": "c2d.icon.level.1",
+      "file": "res://art/icons/c2d_icon_level_1.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_1.png",
+      "sha256": "e01230553fda262119bb90c2d3d10445c8d123d1fee634ed62e37d685c4f0cbf"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_level_2.svg",
+      "id": "c2d.icon.level.2",
+      "file": "res://art/icons/c2d_icon_level_2.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_2.png",
+      "sha256": "0c019d244af65214cd7273f2e9fc8add9a9b4d8548ee5449858d68267a55c074"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_level_3.svg",
+      "id": "c2d.icon.level.3",
+      "file": "res://art/icons/c2d_icon_level_3.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_3.png",
+      "sha256": "a061b8799b8fcf08ece0d711d4a8dca26633a477838386408b2e3f91e0893a39"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_level_4.svg",
+      "id": "c2d.icon.level.4",
+      "file": "res://art/icons/c2d_icon_level_4.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_4.png",
+      "sha256": "578816256e7042948eac520c635c849d9d7f8ba700f381918be2c071455ff572"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_level_5.svg",
+      "id": "c2d.icon.level.5",
+      "file": "res://art/icons/c2d_icon_level_5.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_5.png",
+      "sha256": "fc07120f07013b2a8ac623cb135e4a2ec2ff5afadb74da1567a984e77f236b47"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_level_6.svg",
+      "id": "c2d.icon.level.6",
+      "file": "res://art/icons/c2d_icon_level_6.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_6.png",
+      "sha256": "b49e75b9b30258c9fd0e1553085dc9d66b1173b234f7ca680364f2e703240004"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_level_7.svg",
+      "id": "c2d.icon.level.7",
+      "file": "res://art/icons/c2d_icon_level_7.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_7.png",
+      "sha256": "d0031132c07124961efb001b331481843331bc5e755550af260e5720cde0042d"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_missing-art.svg",
+      "id": "c2d.icon.missing-art",
+      "file": "res://art/icons/c2d_icon_missing-art.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_missing-art.png",
+      "sha256": "2fc103372822c048bce1e27a22c296c25f8999722ca3047b201b606f2e12dd17"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_phase_cast.svg",
+      "id": "c2d.icon.phase.cast",
+      "file": "res://art/icons/c2d_icon_phase_cast.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_phase_cast.png",
+      "sha256": "1cad609538708d263b668f3938356022ea1431ec453a20b9155cdc581a4e7354"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_phase_draw.svg",
+      "id": "c2d.icon.phase.draw",
+      "file": "res://art/icons/c2d_icon_phase_draw.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_phase_draw.png",
+      "sha256": "2fc103372822c048bce1e27a22c296c25f8999722ca3047b201b606f2e12dd17"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_phase_end.svg",
+      "id": "c2d.icon.phase.end",
+      "file": "res://art/icons/c2d_icon_phase_end.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_phase_end.png",
+      "sha256": "a5ed6e85806ca95c2ac7c58dd719252bcc8270d1f024f31a7dacc63d06dd5a7d"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_phase_main.svg",
+      "id": "c2d.icon.phase.main",
+      "file": "res://art/icons/c2d_icon_phase_main.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_phase_main.png",
+      "sha256": "1f95d2be35b9bc30724e346a5cd8930b74f1b973ade66bd0ba4b450b48ce702e"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_phase_prepare.svg",
+      "id": "c2d.icon.phase.prepare",
+      "file": "res://art/icons/c2d_icon_phase_prepare.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_phase_prepare.png",
+      "sha256": "263ef62e679bad0e5a4eab364ff166aae531946e68a25e28d83020a4844c9a7b"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_rank_1.svg",
+      "id": "c2d.icon.rank.1",
+      "file": "res://art/icons/c2d_icon_rank_1.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_rank_1.png",
+      "sha256": "cab11b7e3d520e8089f5cfbce9357911909c07cca98f59bf5da11e6f23f9237c"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_rank_2.svg",
+      "id": "c2d.icon.rank.2",
+      "file": "res://art/icons/c2d_icon_rank_2.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_rank_2.png",
+      "sha256": "d5b723169e7a2a7f08083aaf082f304b2d321cd6f64a320e617bbae94b8e717e"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_rank_3.svg",
+      "id": "c2d.icon.rank.3",
+      "file": "res://art/icons/c2d_icon_rank_3.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_rank_3.png",
+      "sha256": "93c3778e60d5ce1e26727ed69f0280d30c5d0dbd18a54ef1b34bc3a4e8d09305"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_rank_4.svg",
+      "id": "c2d.icon.rank.4",
+      "file": "res://art/icons/c2d_icon_rank_4.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_rank_4.png",
+      "sha256": "fb3fca70b68d07a8b1485f7c845ce8533bcb2651fdfbb90d8ac80ce4251f617a"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_rank_5.svg",
+      "id": "c2d.icon.rank.5",
+      "file": "res://art/icons/c2d_icon_rank_5.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_rank_5.png",
+      "sha256": "7634f2868c62ebeb396d1b0e1a1fda576ade76463a5c74f3edb0a7135194713f"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_rank_6.svg",
+      "id": "c2d.icon.rank.6",
+      "file": "res://art/icons/c2d_icon_rank_6.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_rank_6.png",
+      "sha256": "ae0231f0ffe0b73f8a95501c702f589e3b65bba63a311ab9bd9638b1e4d07d8e"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_rank_7.svg",
+      "id": "c2d.icon.rank.7",
+      "file": "res://art/icons/c2d_icon_rank_7.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_rank_7.png",
+      "sha256": "7c21f68d2d48c87ec1a252acc325e79f5100943b05787064922435e8fcf7f856"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_speed_1.svg",
+      "id": "c2d.icon.speed.1",
+      "file": "res://art/icons/c2d_icon_speed_1.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_speed_1.png",
+      "sha256": "d31deafa6068c59997b7fbea7e7bdffb9f72289ae4d59743fcfbfcf38191ca6d"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_speed_2.svg",
+      "id": "c2d.icon.speed.2",
+      "file": "res://art/icons/c2d_icon_speed_2.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_speed_2.png",
+      "sha256": "7aab6bf0a385fde043d06f02301fb2a11e44992f7e02d0885bd29b207da4b316"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_speed_3.svg",
+      "id": "c2d.icon.speed.3",
+      "file": "res://art/icons/c2d_icon_speed_3.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_speed_3.png",
+      "sha256": "6ec133b50094a7cc5de100fab020138532c4621ba002548a93c96963645390c6"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_speed_4.svg",
+      "id": "c2d.icon.speed.4",
+      "file": "res://art/icons/c2d_icon_speed_4.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_speed_4.png",
+      "sha256": "8b2f5bd2e041c9f68b667771520d6dac08dfb752cab7f339720d63fb17618bfd"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_analysis-complete.svg",
+      "id": "c2d.icon.state.analysis-complete",
+      "file": "res://art/icons/c2d_icon_state_analysis-complete.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_analysis-complete.png",
+      "sha256": "efa489e33d0124f624cf745721bcd913997a38e0093f31067531c2f404cd165a"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_analysis-ongoing.svg",
+      "id": "c2d.icon.state.analysis-ongoing",
+      "file": "res://art/icons/c2d_icon_state_analysis-ongoing.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_analysis-ongoing.png",
+      "sha256": "526bd534e591b8b70b5a47ba6250cbf032e4a4482539fb17f8b351e279cb8672"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_analysis-start.svg",
+      "id": "c2d.icon.state.analysis-start",
+      "file": "res://art/icons/c2d_icon_state_analysis-start.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_analysis-start.png",
+      "sha256": "526bd534e591b8b70b5a47ba6250cbf032e4a4482539fb17f8b351e279cb8672"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_attached.svg",
+      "id": "c2d.icon.state.attached",
+      "file": "res://art/icons/c2d_icon_state_attached.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_attached.png",
+      "sha256": "dd194cdec4f8e17b8a6404e75d762e7c4f77d43b269fbd684613d89eaef94f92"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_cancelled.svg",
+      "id": "c2d.icon.state.cancelled",
+      "file": "res://art/icons/c2d_icon_state_cancelled.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_cancelled.png",
+      "sha256": "fdbabe8b58cd682e4c340e359470fee35bf2ba8303b417c9ba4e8c9740da5228"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_facedown.svg",
+      "id": "c2d.icon.state.facedown",
+      "file": "res://art/icons/c2d_icon_state_facedown.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_facedown.png",
+      "sha256": "191022c0734a00a1029a757651e9971ccba6a0d837641378c8584621b5c3ef32"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_flip.svg",
+      "id": "c2d.icon.state.flip",
+      "file": "res://art/icons/c2d_icon_state_flip.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_flip.png",
+      "sha256": "191022c0734a00a1029a757651e9971ccba6a0d837641378c8584621b5c3ef32"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_focused.svg",
+      "id": "c2d.icon.state.focused",
+      "file": "res://art/icons/c2d_icon_state_focused.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_focused.png",
+      "sha256": "773257b8979ed9931c786ea897a25ee276175bdf821acd3e7c35a2d45b38f8ef"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_invalid-id.svg",
+      "id": "c2d.icon.state.invalid-id",
+      "file": "res://art/icons/c2d_icon_state_invalid-id.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_invalid-id.png",
+      "sha256": "8d73ccaed43efb1970d3b32d315f4a8a761b49467185cae3bea0c784fa62d1a3"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_missing.svg",
+      "id": "c2d.icon.state.missing",
+      "file": "res://art/icons/c2d_icon_state_missing.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_missing.png",
+      "sha256": "191022c0734a00a1029a757651e9971ccba6a0d837641378c8584621b5c3ef32"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_ready.svg",
+      "id": "c2d.icon.state.ready",
+      "file": "res://art/icons/c2d_icon_state_ready.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_ready.png",
+      "sha256": "fd76fda63fd3ca5580a221aa353a32f5a683689d89c0b8c03a9cb0f4ad78107d"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_sustained.svg",
+      "id": "c2d.icon.state.sustained",
+      "file": "res://art/icons/c2d_icon_state_sustained.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_sustained.png",
+      "sha256": "306ce3aa36bf44a67e0bbd0b6a4d441a4aab571c9151a22b15be12cce68dceed"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_state_talisman-wait.svg",
+      "id": "c2d.icon.state.talisman-wait",
+      "file": "res://art/icons/c2d_icon_state_talisman-wait.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_talisman-wait.png",
+      "sha256": "d0e4c243ffaa65f9f84892e7bff5c8fb2d7b0bd48867451fd3895e9c6dbb65a7"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_type_analysis.svg",
+      "id": "c2d.icon.type.analysis",
+      "file": "res://art/icons/c2d_icon_type_analysis.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_type_analysis.png",
+      "sha256": "97f5e63453f2303b7889d23f8433d5c6a1464d9f1aa813f17eb4d8131bacba91"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_type_formation.svg",
+      "id": "c2d.icon.type.formation",
+      "file": "res://art/icons/c2d_icon_type_formation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_type_formation.png",
+      "sha256": "02e783270972d01fe480172caf372f4e26579dcc8f3ca1ce9ae68483fa73fc7c"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_type_incantation.svg",
+      "id": "c2d.icon.type.incantation",
+      "file": "res://art/icons/c2d_icon_type_incantation.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_type_incantation.png",
+      "sha256": "0a8e42fe7c4eda753630d84e68faf21cfd26432ace6e5fb3d0c86eacbadd8d72"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_type_rune.svg",
+      "id": "c2d.icon.type.rune",
+      "file": "res://art/icons/c2d_icon_type_rune.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_type_rune.png",
+      "sha256": "b8992e03277d28f909cec37fed754daaeb5a6bcf46859e378394b9566ece920e"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_type_talisman.svg",
+      "id": "c2d.icon.type.talisman",
+      "file": "res://art/icons/c2d_icon_type_talisman.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_type_talisman.png",
+      "sha256": "e560e093ca30de75281b3975fdaf8898e49ba1ba00795964298bc83b737c819e"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_zone_ash.svg",
+      "id": "c2d.icon.zone.ash",
+      "file": "res://art/icons/c2d_icon_zone_ash.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_zone_ash.png",
+      "sha256": "5e816b5a07b8813df869b8960a5943d8537f70432cdebc46dc5a7edddcd93568"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_zone_empty-deck.svg",
+      "id": "c2d.icon.zone.empty-deck",
+      "file": "res://art/icons/c2d_icon_zone_empty-deck.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_zone_empty-deck.png",
+      "sha256": "79dc74fce3d21dcb74d32d58c02dcb9a15a3cea91b805be15bd9fddb48862059"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_zone_host.svg",
+      "id": "c2d.icon.zone.host",
+      "file": "res://art/icons/c2d_icon_zone_host.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_zone_host.png",
+      "sha256": "dd194cdec4f8e17b8a6404e75d762e7c4f77d43b269fbd684613d89eaef94f92"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_zone_main-deck.svg",
+      "id": "c2d.icon.zone.main-deck",
+      "file": "res://art/icons/c2d_icon_zone_main-deck.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_zone_main-deck.png",
+      "sha256": "2fc103372822c048bce1e27a22c296c25f8999722ca3047b201b606f2e12dd17"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_zone_side-deck.svg",
+      "id": "c2d.icon.zone.side-deck",
+      "file": "res://art/icons/c2d_icon_zone_side-deck.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_zone_side-deck.png",
+      "sha256": "5e3b261d0b6b4400bba0313b6096cf6e6db3358ceca905552e96d1c242aed3ba"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "nineSlice": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "overlay": true,
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_overlay_cost-candidate.svg",
+      "id": "c2d.overlay.cost-candidate",
+      "file": "res://art/board/c2d_overlay_cost-candidate.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_overlay_cost-candidate.png",
+      "sha256": "670983907f39da5c1ecd2a605451de4732ca5e7722d1710b6b379b0fbe01353c"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "nineSlice": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "overlay": true,
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_overlay_cost-selected.svg",
+      "id": "c2d.overlay.cost-selected",
+      "file": "res://art/board/c2d_overlay_cost-selected.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_overlay_cost-selected.png",
+      "sha256": "35d6730ebec74aa4a115bffd937ee1d231d665cd84f9984a0641986e652d6192"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "nineSlice": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "overlay": true,
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_overlay_hover.svg",
+      "id": "c2d.overlay.hover",
+      "file": "res://art/board/c2d_overlay_hover.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_overlay_hover.png",
+      "sha256": "72eb9b5d43a57ec3efd1fceb9666d76d61705d8fe9e3826bb97918cb9775d495"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "nineSlice": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "overlay": true,
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_overlay_legal.svg",
+      "id": "c2d.overlay.legal",
+      "file": "res://art/board/c2d_overlay_legal.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_overlay_legal.png",
+      "sha256": "35d6730ebec74aa4a115bffd937ee1d231d665cd84f9984a0641986e652d6192"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "nineSlice": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "overlay": true,
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_overlay_selected.svg",
+      "id": "c2d.overlay.selected",
+      "file": "res://art/board/c2d_overlay_selected.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_overlay_selected.png",
+      "sha256": "bfd65a99797351f36c8c21d297cba284feb22b605584dd743584b1fb521a579d"
+    },
+    {
+      "size": [
+        128,
+        176
+      ],
+      "nineSlice": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "overlay": true,
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_overlay_target.svg",
+      "id": "c2d.overlay.target",
+      "file": "res://art/board/c2d_overlay_target.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_overlay_target.png",
+      "sha256": "06d3dda484cab10c6f3e2fda3e77feed4869b61cfb86a007dbe69f32955c8154"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_action.svg",
+      "id": "c2d.panel.action",
+      "file": "res://art/ui/c2d_panel_action.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_action.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_browser.svg",
+      "id": "c2d.panel.browser",
+      "file": "res://art/ui/c2d_panel_browser.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_browser.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_chain.svg",
+      "id": "c2d.panel.chain",
+      "file": "res://art/ui/c2d_panel_chain.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_chain.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_confirm.svg",
+      "id": "c2d.panel.confirm",
+      "file": "res://art/ui/c2d_panel_confirm.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_confirm.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_detail.svg",
+      "id": "c2d.panel.detail",
+      "file": "res://art/ui/c2d_panel_detail.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_detail.png",
+      "sha256": "0331440877f8112f5c37051025e83951e752adb7f1778ffea65e0fd623ebd573"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_dialog.svg",
+      "id": "c2d.panel.dialog",
+      "file": "res://art/ui/c2d_panel_dialog.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_dialog.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_dropdown.svg",
+      "id": "c2d.panel.dropdown",
+      "file": "res://art/ui/c2d_panel_dropdown.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_dropdown.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_empty.svg",
+      "id": "c2d.panel.empty",
+      "file": "res://art/ui/c2d_panel_empty.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_empty.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_input.svg",
+      "id": "c2d.panel.input",
+      "file": "res://art/ui/c2d_panel_input.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_input.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_list.svg",
+      "id": "c2d.panel.list",
+      "file": "res://art/ui/c2d_panel_list.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_list.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_loading.svg",
+      "id": "c2d.panel.loading",
+      "file": "res://art/ui/c2d_panel_loading.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_loading.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_log.svg",
+      "id": "c2d.panel.log",
+      "file": "res://art/ui/c2d_panel_log.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_log.png",
+      "sha256": "0331440877f8112f5c37051025e83951e752adb7f1778ffea65e0fd623ebd573"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_notification.svg",
+      "id": "c2d.panel.notification",
+      "file": "res://art/ui/c2d_panel_notification.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_notification.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_phase.svg",
+      "id": "c2d.panel.phase",
+      "file": "res://art/ui/c2d_panel_phase.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_phase.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_portrait.svg",
+      "id": "c2d.panel.portrait",
+      "file": "res://art/ui/c2d_panel_portrait.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_portrait.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_privacy.svg",
+      "id": "c2d.panel.privacy",
+      "file": "res://art/ui/c2d_panel_privacy.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_privacy.png",
+      "sha256": "0331440877f8112f5c37051025e83951e752adb7f1778ffea65e0fd623ebd573"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_recipe.svg",
+      "id": "c2d.panel.recipe",
+      "file": "res://art/ui/c2d_panel_recipe.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_recipe.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_reconnect.svg",
+      "id": "c2d.panel.reconnect",
+      "file": "res://art/ui/c2d_panel_reconnect.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_reconnect.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_resource.svg",
+      "id": "c2d.panel.resource",
+      "file": "res://art/ui/c2d_panel_resource.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_resource.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_scroll-track.svg",
+      "id": "c2d.panel.scroll-track",
+      "file": "res://art/ui/c2d_panel_scroll-track.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_scroll-track.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_slider-track.svg",
+      "id": "c2d.panel.slider-track",
+      "file": "res://art/ui/c2d_panel_slider-track.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_slider-track.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_surface.svg",
+      "id": "c2d.panel.surface",
+      "file": "res://art/ui/c2d_panel_surface.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_surface.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_tabs.svg",
+      "id": "c2d.panel.tabs",
+      "file": "res://art/ui/c2d_panel_tabs.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_tabs.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_panel_tooltip.svg",
+      "id": "c2d.panel.tooltip",
+      "file": "res://art/ui/c2d_panel_tooltip.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_panel_tooltip.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_rarity_common.svg",
+      "id": "c2d.rarity.common",
+      "file": "res://art/cards/c2d_rarity_common.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_rarity_common.png",
+      "sha256": "e7da391a4728e8ed3057a5a0ef310800e207aa0d1837dd7d0537d9cb182dd3f3"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_rarity_epic.svg",
+      "id": "c2d.rarity.epic",
+      "file": "res://art/cards/c2d_rarity_epic.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_rarity_epic.png",
+      "sha256": "d597d5794331d492c32c1899876b3d98bb3b5c3d38f3175c43ff37ea52a82796"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_rarity_legendary.svg",
+      "id": "c2d.rarity.legendary",
+      "file": "res://art/cards/c2d_rarity_legendary.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_rarity_legendary.png",
+      "sha256": "3494aac08fe8daced99783da4655bef63d68b27575081792fe7a397063299718"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_rarity_rare.svg",
+      "id": "c2d.rarity.rare",
+      "file": "res://art/cards/c2d_rarity_rare.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_rarity_rare.png",
+      "sha256": "e11bec7b8b9a1c5878fa450a1edf744d8a2930ea6bb21c358cfa710fd0bd6359"
+    },
+    {
+      "size": [
+        64,
+        64
+      ],
+      "anchor": [
+        32,
+        32
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/cards/c2d_rarity_uncommon.svg",
+      "id": "c2d.rarity.uncommon",
+      "file": "res://art/cards/c2d_rarity_uncommon.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_rarity_uncommon.png",
+      "sha256": "0c99417b8d8986d4d0e7f37f7fd1f300bcf23ad7e110c4fa9b7c4b0f94e4bfe8"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_analysis-row.svg",
+      "id": "c2d.zone.analysis-row",
+      "file": "res://art/board/c2d_zone_analysis-row.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_analysis-row.png",
+      "sha256": "c38c13aceb0837d0d0a4a8acf1cc2fdc82b85dc3005ff5abd49992b05a1de944"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_ash.svg",
+      "id": "c2d.zone.ash",
+      "file": "res://art/board/c2d_zone_ash.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_ash.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_casting.svg",
+      "id": "c2d.zone.casting",
+      "file": "res://art/board/c2d_zone_casting.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_casting.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_empty-deck.svg",
+      "id": "c2d.zone.empty-deck",
+      "file": "res://art/board/c2d_zone_empty-deck.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_empty-deck.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_formation-anchor.svg",
+      "id": "c2d.zone.formation-anchor",
+      "file": "res://art/board/c2d_zone_formation-anchor.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_formation-anchor.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_hand.svg",
+      "id": "c2d.zone.hand",
+      "file": "res://art/board/c2d_zone_hand.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_hand.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_host-group.svg",
+      "id": "c2d.zone.host-group",
+      "file": "res://art/board/c2d_zone_host-group.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_host-group.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_main-deck.svg",
+      "id": "c2d.zone.main-deck",
+      "file": "res://art/board/c2d_zone_main-deck.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_main-deck.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_side-deck.svg",
+      "id": "c2d.zone.side-deck",
+      "file": "res://art/board/c2d_zone_side-deck.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_side-deck.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "size": [
+        128,
+        96
+      ],
+      "nineSlice": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "safeRect": [
+        16,
+        16,
+        96,
+        64
+      ],
+      "sampling": "nearest",
+      "origin": "new native SVG + primitive raster generator",
+      "license": "Project-authored original; no external stock",
+      "authoringSource": "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_zone_slot.svg",
+      "id": "c2d.zone.slot",
+      "file": "res://art/board/c2d_zone_slot.png",
+      "source": "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_slot.png",
+      "sha256": "571be71ef4d35beb5e1e5b225b3f06126a88260a2d7f73dda6ce644496b6ca46"
+    },
+    {
+      "license": "SIL Open Font License 1.1",
+      "licenseAsset": "font.cjk.license",
+      "id": "font.cjk",
+      "file": "res://art/fonts/NotoSansCJKsc-Regular.otf",
+      "source": "assets/fonts/NotoSansCJKsc-Regular.otf",
+      "sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b"
+    },
+    {
+      "license": "SIL Open Font License 1.1",
+      "id": "font.cjk.license",
+      "file": "res://art/fonts/OFL.txt",
+      "source": "assets/fonts/OFL.txt",
+      "sha256": "88f117575237307bdd86a17ef15e21790fc9a662fe4dfb103ca1ca077f0d9982"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.aid",
+      "file": "res://art/illustrations/aid.png",
+      "source": "assets/art/alpha-v1/aid.png",
+      "sha256": "5e2bf7e1c105084e4f09fe49f2577f138f912bbf8ac7d2e4437ca74744bea585"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.arcane-recovery",
+      "file": "res://art/illustrations/arcane-recovery.png",
+      "source": "assets/art/alpha-release/arcane-recovery.png",
+      "sha256": "fb0fb59d214899f5c27d16ff850de09217fa15e55237e846f51bdebc088f495d"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.balance",
+      "file": "res://art/illustrations/balance.png",
+      "source": "assets/art/cards/balance.png",
+      "sha256": "e7030ea10267d4ead61d4dda8248b35392588a4ea307241a370f4e2d3674d922"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.barbs",
+      "file": "res://art/illustrations/barbs.png",
+      "source": "assets/art/cards/barbs.png",
+      "sha256": "e4b384d3f6524584f26666ef4d9019313eb584d277521f3d6a6198160352f941"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.clarity",
+      "file": "res://art/illustrations/clarity.png",
+      "source": "assets/art/cards/clarity.png",
+      "sha256": "1d035193e1a27676239548d91111f3ea51caa36268c824c91791ae3e291ba136"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.conduit",
+      "file": "res://art/illustrations/conduit.png",
+      "source": "assets/art/cards/conduit.png",
+      "sha256": "a79fbf4564b60bb9d02ddc30e3753b2b7fe94d08c34d3ac37bcf04e8941b1a65"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.counter-spell",
+      "file": "res://art/illustrations/counter-spell.png",
+      "source": "assets/art/alpha-v1/counter-spell.png",
+      "sha256": "d9934023300fcd1ddfc350c9086632d3513b21a40fff91d32bc6bc9923077937"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.disrupt",
+      "file": "res://art/illustrations/disrupt.png",
+      "source": "assets/art/cards/disrupt.png",
+      "sha256": "7999a07b83d160edbb5d66ef97165519851b5d480c0723c3d95b4c05fad1b505"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.engeas-four-point-star",
+      "file": "res://art/illustrations/engeas-four-point-star.png",
+      "source": "assets/art/alpha-v1/engeas-four-point-star.png",
+      "sha256": "160f0b0c332976753e446a3d63f7190d3d6a3be110c0cdd3850d451e4279dd62"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.false-life",
+      "file": "res://art/illustrations/false-life.png",
+      "source": "assets/art/alpha-release/false-life.png",
+      "sha256": "77ce8c29486e0b177fd7a2e518ed24fc456ce71095eee05dfc087092921476b0"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.fireball",
+      "file": "res://art/illustrations/fireball.png",
+      "source": "assets/art/cards/fireball.png",
+      "sha256": "17ce2e6248cb8caa16cbc1a585a0968da3f8fc1ed2b25357a2d075d4c4c8f356"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.instant-circuit-overload",
+      "file": "res://art/illustrations/instant-circuit-overload.png",
+      "source": "assets/art/alpha-v1/instant-circuit-overload.png",
+      "sha256": "d96e2ebcb7a0a582ea36e76c450917d455b23f7eefbcdc4039fc65f6181ad14a"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.instantly-sleep",
+      "file": "res://art/illustrations/instantly-sleep.png",
+      "source": "assets/art/alpha-v1/instantly-sleep.png",
+      "sha256": "12a441754813f76fcc40e9ad54634b46f84c91747c245322764be184e8083002"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.lesser-restoration",
+      "file": "res://art/illustrations/lesser-restoration.png",
+      "source": "assets/art/alpha-release/lesser-restoration.png",
+      "sha256": "7e4ae91acb40afae4a65766aadd722424cb0e612ce5df1f2c379a55f68fbeb47"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.lightning-bolt",
+      "file": "res://art/illustrations/lightning-bolt.png",
+      "source": "assets/art/alpha-release/lightning-bolt.png",
+      "sha256": "deabc4495bef0799371dcaa1b2cfb0fcfaecac5d19a72a61ba43c55c536f2dca"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.magic-missile",
+      "file": "res://art/illustrations/magic-missile.png",
+      "source": "assets/art/alpha-v1/magic-missile.png",
+      "sha256": "70218f5f4cc2a34a540c5086f070fde286f557d38216940f648d634c92a2475c"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.mend",
+      "file": "res://art/illustrations/mend.png",
+      "source": "assets/art/cards/mend.png",
+      "sha256": "335c7eb5b461c29f9cc167f191613b9505cabbc14b8f4f98185142d91a3af614"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.messy-wave",
+      "file": "res://art/illustrations/messy-wave.png",
+      "source": "assets/art/alpha-v1/messy-wave.png",
+      "sha256": "93e19cd54d8688321d618dbbf32d537ed07f8176c5e2616a5ea21e057922d746"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.pentagram-of-life",
+      "file": "res://art/illustrations/pentagram-of-life.png",
+      "source": "assets/art/alpha-v1/pentagram-of-life.png",
+      "sha256": "a62a70a02131145d233683fdcd0d908c68300b687e75b16b6769be2482f6d674"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.protective-flame",
+      "file": "res://art/illustrations/protective-flame.png",
+      "source": "assets/art/alpha-v1/protective-flame.png",
+      "sha256": "10844cbe89afad254b1ccd946be88cace940d4ef6ba7dfa2aed7be3bd84c6282"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.ray-of-frost",
+      "file": "res://art/illustrations/ray-of-frost.png",
+      "source": "assets/art/alpha-release/ray-of-frost.png",
+      "sha256": "78689ea9ade3fb05ca3def89b56c8902216e2ea2aae3c81579b894e6683363c9"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.recall",
+      "file": "res://art/illustrations/recall.png",
+      "source": "assets/art/cards/recall.png",
+      "sha256": "1343187a17c79589fe6f83856d050489b62f169a59e3b320cb4067b037eebf6e"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.reservoir",
+      "file": "res://art/illustrations/reservoir.png",
+      "source": "assets/art/cards/reservoir.png",
+      "sha256": "11ef7008b3be608d9042a7f24978955ef2cbe4ada7d4201c84bebd060b4d2d0e"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.ring",
+      "file": "res://art/illustrations/ring.png",
+      "source": "assets/art/cards/ring.png",
+      "sha256": "2fbf807d92e1df81c8be056bf480583ea3ac4e32df81735366d8ba130d8c40fb"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.shield",
+      "file": "res://art/illustrations/shield.png",
+      "source": "assets/art/alpha-release/shield.png",
+      "sha256": "e0b8c5bcf9c4dacb8159b5420a2e6a8f561512009434e9b50ef0f93f58adca93"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.spark",
+      "file": "res://art/illustrations/spark.png",
+      "source": "assets/art/cards/spark.png",
+      "sha256": "29a6fe63b7b00046c1fe51aa4e047235574d40f63acc4c937dd75852d103248a"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.true-strike",
+      "file": "res://art/illustrations/true-strike.png",
+      "source": "assets/art/alpha-v1/true-strike.png",
+      "sha256": "ff359f2b5a84902352655f2b9a9f87c4acc52be834575e4f6878bb433a7f4953"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.unravel",
+      "file": "res://art/illustrations/unravel.png",
+      "source": "assets/art/cards/unravel.png",
+      "sha256": "8f4108da181b893637407aa8232922844bc76a3a7a992ca8f27fc266d36e7d06"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.uplift",
+      "file": "res://art/illustrations/uplift.png",
+      "source": "assets/art/alpha-v1/uplift.png",
+      "sha256": "5b8b00e376be5680059acbb509826275f3e17e8410f20e67b128712ce1a76e00"
+    },
+    {
+      "sampling": "linear",
+      "origin": "Existing WizardCard illustration",
+      "id": "illustration.ward",
+      "file": "res://art/illustrations/ward.png",
+      "source": "assets/art/cards/ward.png",
+      "sha256": "e8354e351207c487312d669495d29747ea364dc49c1d2c649337c8fccbf6dc5a"
+    }
+  ]
+}

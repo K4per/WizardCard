@@ -1,0 +1,12 @@
+{
+  "id": "ring",
+  "name": "奥术圆环",
+  "rarity": "common",
+  "type": "seal",
+  "cost": 1,
+  "ringBonus": 1,
+  "refundSetting": 1,
+  "text": "阵法附着效果：该阵法环位数+1。法术附着效果：宿主成功释放后，获得等于该法术设置时实际支付费用的魔素。",
+  "flavor": "闭合的圆，会把尚未散去的力量带回起点。",
+  "speed": 1
+}

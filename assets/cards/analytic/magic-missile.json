@@ -1,0 +1,59 @@
+{
+  "id": "magic-missile",
+  "name": "魔法飞弹",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 2,
+  "castCost": 2,
+  "rank": 1,
+  "speed": 2,
+  "school": "evocation",
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 3,
+      "damageType": "force"
+    },
+    {
+      "kind": "destroy_ambush",
+      "amount": 0
+    }
+  ],
+  "responses": [
+    {
+      "id": "quick_cast",
+      "name": "快速释放",
+      "sources": [
+        "analysis"
+      ],
+      "windows": [
+        "phase_start",
+        "phase_end",
+        "action",
+        "prepare",
+        "cast",
+        "trigger"
+      ],
+      "target": "opponent",
+      "phases": [
+        "cast"
+      ],
+      "eventOwner": "opponent",
+      "requiresSource": true,
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "force"
+        },
+        {
+          "kind": "destroy_ambush",
+          "amount": 0
+        }
+      ]
+    }
+  ],
+  "text": "解析完成后，可在对方施法阶段的合法时点支付施法费用直接释放。对对方造成3点力场伤害；那之后，可以销毁对方一张埋伏卡。",
+  "flavor": "折磨你的对手。"
+}

@@ -105,9 +105,9 @@ std::vector<DeckPreset> loadPresets(const Content &content, const std::filesyste
     }
     return out;
 }
-Application::Application(Content content, std::filesystem::path directory, std::vector<DeckPreset> presets)
+Application::Application(Content content, std::filesystem::path directory, std::vector<DeckPreset> presets, RoomFactory roomFactory)
     : content_(std::move(content)), directory_(std::move(directory)), presets_(std::move(presets)),
-      decks_(content_.catalog, directory_) {
+      decks_(content_.catalog, directory_), roomFactory_(std::move(roomFactory)) {
     if (presets_.empty())
         presets_.push_back({"default", "示范卡组", {"balance", content_.deck}});
     for (const auto &preset : presets_) {
@@ -227,7 +227,7 @@ CommandResult Application::submit(PlayerId actor, const Command &command, std::u
     if (network_) {
         if (actor != network_->view().viewer)
             return {false, "无权操作对方席位", {}, {}, "wrong_player"};
-        return network_->submit(command);
+        return static_cast<Session &>(*network_).submit(actor, command);
     }
     if (mode() == MatchMode::Tutorial && actor == 0 &&
         !tutorial_.allows(match_->engine().viewFor(0), command))
@@ -388,8 +388,8 @@ bool Application::confirmSurrender(PlayerId actor, std::string &error) {
 }
 GameView Application::viewFor(PlayerId player) const {
     if (network_)
-        return network_->view();
-    return match().engine().viewFor(player);
+        return network_->viewFor(player);
+    return match().viewFor(player);
 }
 PlayerId Application::actingPlayer() const {
     if (network_)
@@ -404,8 +404,13 @@ bool Application::startNetwork(bool host, const std::string &address, unsigned s
         return false;
     }
     try {
-        auto path = directory_ / "replays" / ("network-" + net::token() + ".json");
-        auto peer = std::make_unique<net::Peer>(content_, path);
+        if (!roomFactory_)
+            throw std::runtime_error("当前应用未配置联机会话适配器");
+        auto serial = std::chrono::steady_clock::now().time_since_epoch().count();
+        auto path = directory_ / "replays" / ("network-" + std::to_string(serial) + ".json");
+        auto peer = roomFactory_(content_, path);
+        if (!peer)
+            throw std::runtime_error("联机会话适配器创建失败");
         if (host)
             peer->host(port, d);
         else

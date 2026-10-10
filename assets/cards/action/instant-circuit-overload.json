@@ -1,0 +1,16 @@
+{
+  "id": "instant-circuit-overload",
+  "name": "瞬发回路过载",
+  "type": "action",
+  "rarity": "uncommon",
+  "cost": 2,
+  "target": "own_analyzing_spell",
+  "effects": [
+    {
+      "kind": "accelerate_analysis",
+      "amount": 0
+    }
+  ],
+  "text": "立即完成自己场上一张解析法术的解析。那之后，自身获得等于该法术实际解析费用的临时荷载，在下一个自己的结束阶段清除。",
+  "flavor": "通过强行激发大量魔素流动，使法术的解析立即完成。铤而走险。"
+}

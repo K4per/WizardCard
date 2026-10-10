@@ -15,6 +15,8 @@ jobs:
       - run: python -m pip install cmake==3.31.6 ninja==1.11.1.3
       - name: Verify generated card catalogue
         run: |
+          python tools/catalog_source.py --check
+          python tools/check_module_dependencies.py
           python tools/generate_card_catalog.py
           git diff --exit-code -- docs/card-catalog.md docs/card-catalog.html
       - name: Configure Windows with failure diagnostics
@@ -55,6 +57,10 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install cmake==3.31.6 ninja==1.11.1.3
+      - run: python tools/catalog_source.py --check
+      - run: python tools/check_module_dependencies.py
+      - run: cmake -S . -B build/core-only -G Ninja -DWIZARD_CORE_ONLY=ON -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build build/core-only --parallel 4
       - run: cmake --preset headless
       - run: cmake --build --preset headless --parallel 4
       - run: ctest --preset headless
@@ -63,6 +69,34 @@ jobs:
         with:
           name: linux-core-cli
           path: build/headless/wizard_cli
+  godot-bridge:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install cmake==3.31.6
+      - name: Download pinned editor
+        shell: pwsh
+        run: |
+          Invoke-WebRequest 'https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_win64.exe.zip' -OutFile godot-editor.zip
+          Expand-Archive -LiteralPath godot-editor.zip -DestinationPath build/godot-editor
+      - name: Configure independent native bridge
+        shell: pwsh
+        run: |
+          $editor = (Resolve-Path build/godot-editor/Godot_v4.7.2-stable_win64_console.exe).Path
+          cmake -S . -B build/godot-debug -G 'Visual Studio 17 2022' -A x64 -DWIZARD_BUILD_CLIENT=OFF -DWIZARD_BUILD_GODOT=ON -DGODOTCPP_TARGET=template_debug "-DGODOT_BIN=$editor"
+      - run: cmake --build build/godot-debug --config Release --target wizard_godot_bridge wizard_cli --parallel 4
+      - run: ctest --test-dir build/godot-debug -C Release -R godot_ --output-on-failure
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: godot-bridge-evidence
+          path: |
+            build/godot-debug/Testing/Temporary/
+            build/godot-debug/godot-replay-report.json
+            godot/bin/wizard_godot_bridge.debug.dll
   cross-platform-replay:
     runs-on: ubuntu-latest
     needs: [windows, linux-core]

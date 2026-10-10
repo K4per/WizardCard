@@ -1,0 +1,24 @@
+{
+  "id": "false-life",
+  "name": "虚假生命",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 2,
+  "castCost": 1,
+  "rank": 1,
+  "speed": 1,
+  "school": "necromancy",
+  "analysisTurns": 0,
+  "target": "self",
+  "effects": [
+    {
+      "kind": "temporary_life",
+      "amount": 8
+    },
+    {
+      "kind": "independent",
+      "amount": 2
+    }
+  ],
+  "text": "立即解析。获得8点临时生命（取较高值，不叠加），然后获得2点独立荷载。"
+}

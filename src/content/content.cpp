@@ -392,7 +392,7 @@ std::vector<std::string> parseDeck(const Json &j, const CardCatalog &cat, const 
 }
 Content loadContent(const std::filesystem::path &dir) {
     Content c;
-    c.catalog = parseCatalog(readJson(dir / "cards.json"), (dir / "cards.json").string());
+    c.catalog = parseCatalog(readCatalogJson(dir), dir.string());
     c.deck = parseDeck(readJson(dir / "deck.json"), c.catalog, (dir / "deck.json").string());
     return c;
 }

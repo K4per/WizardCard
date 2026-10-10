@@ -1,4 +1,5 @@
 #include "wizard/application.hpp"
+#include "wizard/network.hpp"
 #include "wizard/runtime.hpp"
 #include "wizard/interaction.hpp"
 #include "wizard/presentation.hpp"
@@ -27,7 +28,7 @@ sf::Color accent(CardType t) {return std::array<sf::Color,5>{sf::Color{216,156,9
 MatchConfig configuration(const Content& content,std::uint32_t seed,const Json& recording){MatchConfig config;config.seed=seed;for(int p=0;p<2;++p){config.players[p].cards=content.deck;if(!recording.is_null()){config.players[p].baseFormation=recording.at("players").at(p).at("baseFormation").get<std::string>();config.players[p].cards=recording.at("players").at(p).at("cards").get<std::vector<std::string>>();}}return config;}
 class Client {
 public:
-    Client(std::filesystem::path assets,std::uint32_t seed,const Json& recording,std::filesystem::path userDirectory,bool singleReplay=false):assets_(std::move(assets)),content_(loadContent(assets_)),app_(content_,std::move(userDirectory),app::loadPresets(content_,assets_)),resources_(assets_) {
+    Client(std::filesystem::path assets,std::uint32_t seed,const Json& recording,std::filesystem::path userDirectory,bool singleReplay=false):assets_(std::move(assets)),content_(loadContent(assets_)),app_(content_,std::move(userDirectory),app::loadPresets(content_,assets_),net::createRoom),resources_(assets_) {
         const auto manifest=readJson(assets_/"art"/"runtime.json");
         for(auto it=manifest.at("cards").begin();it!=manifest.at("cards").end();++it)art_[it.key()]=assets_/"art"/it.value().get<std::string>();
         const auto skin=readJson(assets_/"art"/"ui"/"manifest.json");

@@ -1,0 +1,44 @@
+{
+  "id": "counter-spell",
+  "name": "法术反制",
+  "type": "word",
+  "rarity": "legendary",
+  "cost": 4,
+  "rank": 3,
+  "speed": 4,
+  "school": "evocation",
+  "responseOnly": true,
+  "effects": [
+    {
+      "kind": "counter_spell",
+      "amount": 0
+    }
+  ],
+  "responses": [
+    {
+      "id": "counter_cast",
+      "name": "无效并销毁法术",
+      "sources": [
+        "words",
+        "ambush"
+      ],
+      "windows": [
+        "phase_start",
+        "phase_end",
+        "action",
+        "prepare",
+        "cast",
+        "trigger"
+      ],
+      "target": "enemy_spell_link",
+      "effects": [
+        {
+          "kind": "counter_spell",
+          "amount": 0
+        }
+      ]
+    }
+  ],
+  "text": "对手释放法术时，可以无效并销毁该法术。自身获得等于其实际施法费用的临时荷载，在下一个自己的结束阶段清除。四速后不可响应。",
+  "flavor": "火球术！反制！反制你的反制！温馨提示，这种场景在奥术决斗中不会出现。"
+}

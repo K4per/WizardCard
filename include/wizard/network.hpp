@@ -1,5 +1,6 @@
 #pragma once
-#include "wizard/content.hpp"
+#include "wizard/replay.hpp"
+#include "wizard/room.hpp"
 #include <chrono>
 #include <memory>
 
@@ -134,7 +135,7 @@ class Tcp {
     std::vector<Json> poll();
 };
 // Frontend-independent controller: poll every frame, even while settings/animations are open.
-class Peer {
+class Peer : public RoomSession {
     Content content_;
     Tcp tcp_;
     std::unique_ptr<HostSession> host_;
@@ -157,6 +158,12 @@ class Peer {
 
   public:
     explicit Peer(Content, std::filesystem::path);
+    GameView viewFor(PlayerId) const override { return view_; }
+    CommandResult submit(PlayerId actor, const Command &command) override {
+        if (!started() || actor != view_.viewer)
+            return {false, "当前不是本机玩家", {}, {}, "wrong_player"};
+        return submit(command);
+    }
     void host(unsigned short, const PlayerDeck &);
     void join(const std::string &, unsigned short);
     void tick();
@@ -207,4 +214,5 @@ class Peer {
         return notice_;
     }
 };
+std::unique_ptr<RoomSession> createRoom(Content, std::filesystem::path);
 } // namespace wizard::net

@@ -29,9 +29,11 @@
 
 core → 标准库；content/codec/interaction/ai → core；replay → content/codec/core；session → core/replay；network → session/codec/content/interaction，transport → 平台套接字；application → session/content/ai/interaction；CLI与桥接组合根选择本地/网络适配，Godot只依赖桥接公开DTO。应用公共接口不返回具体Peer或GameEngine，离线调试/复盘校验有独立入口。
 
-共同会话接口提供 viewFor、actingPlayer、submit、revision、blocked、tick、recording、saveReplay。房间的host/join/deck/configure/ready/leave由网络房间控制接口承担，不能为了统一接口让本地会话实现空网络方法。应用对局生命周期与前端页面路由分离。
+dev.2共同会话接口提供viewFor、submit、revision、started、blocked、tick；actingPlayer由应用投影推导，recording/saveReplay分别由本地复盘和房间持久化入口承担，不强迫客机暴露尚未获得的记录。房间的host/join/deck/configure/ready/leave由RoomSession承担，本地会话不实现空网络方法。旧客机accepted且pending表示入队，必须等pending清除及权威修订后才消费规则事件。
 
 内部状态头只供规则实现和离线夹具；公开视图包括裁剪CardView、PlayerView、合法动作、决策和可见事件。历史core.hpp作为迁移兼容入口，新的生产调用者使用具体头文件。
+
+工程过渡期间Application保留match()供历史离线验证和旧客户端使用，仍可达内部状态；新Godot入口只能使用桥接白名单DTO。这个兼容入口的彻底移除依赖旧客户端调用迁移，不能将dev.2称为最终公共接口隔离已经全部完成。模块实际接口和测试入口见src/core、src/content、src/application中的README。
 
 ## 内容与兼容
 

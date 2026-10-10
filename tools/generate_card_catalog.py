@@ -8,6 +8,7 @@ from collections import Counter
 import hashlib
 import html
 import json
+from catalog_source import load_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
 TYPES = {'formation': '阵法卡', 'analytic': '解析法术', 'word': '言灵法术',
@@ -111,7 +112,7 @@ def response(c):
     return out
 
 def main():
-    catalog=load('assets/cards.json'); cards=catalog['cards']; mapping=load('assets/art/runtime.json')['cards']
+    catalog=load_catalog(); cards=catalog['cards']; mapping=load('assets/art/runtime.json')['cards']
     presets=[{'id':'default','name':'示范卡组','baseFormation':'balance','cards':load('assets/deck.json'),
               'description':'原始综合示范：练习解析、言灵、符文、阵法和荷载管理。'}]+load('assets/presets.json')
     by_id={c['id']:c for c in cards}

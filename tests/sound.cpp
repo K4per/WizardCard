@@ -1,5 +1,5 @@
 #include "wizard/sound.hpp"
-#include "wizard/content.hpp"
+#include "wizard/replay.hpp"
 #include <algorithm>
 #include <catch2/catch_test_macros.hpp>
 using namespace wizard;

@@ -1,0 +1,108 @@
+{
+  "cardSetVersion": "1.0.0",
+  "commands": [
+    {
+      "actor": 0,
+      "command": {
+        "gate": 1,
+        "type": 14
+      },
+      "digest": "fd2e15e05ef4849a"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 2,
+        "type": 14
+      },
+      "digest": "9d7aa0f5a3f7060f"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 14,
+        "replace": 0,
+        "type": 0
+      },
+      "digest": "bc72f524816330a0"
+    }
+  ],
+  "contentHash": "733319e247ac38ff",
+  "finalDigest": "bc72f524816330a0",
+  "format": 2,
+  "players": [
+    {
+      "baseFormation": "balance",
+      "cards": [
+        "fireball",
+        "fireball",
+        "fireball",
+        "spark",
+        "spark",
+        "spark",
+        "mend",
+        "mend",
+        "mend",
+        "recall",
+        "recall",
+        "recall",
+        "reservoir",
+        "reservoir",
+        "reservoir",
+        "ring",
+        "ring",
+        "ring",
+        "ward",
+        "ward",
+        "barbs",
+        "barbs",
+        "disrupt",
+        "disrupt",
+        "clarity",
+        "clarity",
+        "conduit",
+        "conduit",
+        "unravel",
+        "unravel"
+      ]
+    },
+    {
+      "baseFormation": "balance",
+      "cards": [
+        "fireball",
+        "fireball",
+        "fireball",
+        "spark",
+        "spark",
+        "spark",
+        "mend",
+        "mend",
+        "mend",
+        "recall",
+        "recall",
+        "recall",
+        "reservoir",
+        "reservoir",
+        "reservoir",
+        "ring",
+        "ring",
+        "ring",
+        "ward",
+        "ward",
+        "barbs",
+        "barbs",
+        "disrupt",
+        "disrupt",
+        "clarity",
+        "clarity",
+        "conduit",
+        "conduit",
+        "unravel",
+        "unravel"
+      ]
+    }
+  ],
+  "programVersion": "1.0.0-alpha",
+  "rulesVersion": "1.0.0",
+  "seed": 42
+}

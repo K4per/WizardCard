@@ -1,4 +1,4 @@
-#include "wizard/content.hpp"
+#include "wizard/replay.hpp"
 #include "wizard/interaction.hpp"
 #include <catch2/catch_test_macros.hpp>
 using namespace wizard;

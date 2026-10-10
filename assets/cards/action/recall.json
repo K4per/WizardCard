@@ -1,0 +1,21 @@
+{
+  "id": "recall",
+  "name": "奥术回想",
+  "rarity": "common",
+  "type": "action",
+  "cost": 1,
+  "target": "self",
+  "effects": [
+    {
+      "kind": "draw",
+      "amount": 2
+    },
+    {
+      "kind": "temporary",
+      "amount": 1
+    }
+  ],
+  "text": "抽两张牌。那之后，获得1点临时荷载，在本回合结束阶段移除。",
+  "flavor": "尚未熄灭的记忆，也能成为下一道咒文。",
+  "speed": 1
+}

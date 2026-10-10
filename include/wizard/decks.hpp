@@ -1,5 +1,5 @@
 #pragma once
-#include "wizard/content.hpp"
+#include "wizard/replay.hpp"
 
 namespace wizard::app {
 struct DeckDraft {

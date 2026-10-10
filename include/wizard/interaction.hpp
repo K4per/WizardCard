@@ -1,5 +1,5 @@
 #pragma once
-#include "wizard/core.hpp"
+#include "wizard/core/view.hpp"
 
 namespace wizard::ui {
 std::optional<AdvancePhase> automaticAdvance(const GameView&,bool enabled);

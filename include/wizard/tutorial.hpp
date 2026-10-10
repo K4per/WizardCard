@@ -1,6 +1,6 @@
 #pragma once
 #include "wizard/ai.hpp"
-#include "wizard/content.hpp"
+#include "wizard/replay.hpp"
 
 namespace wizard::app {
 enum class Lesson {

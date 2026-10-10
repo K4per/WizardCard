@@ -1,0 +1,14 @@
+{
+  "id": "uplift",
+  "name": "昂扬",
+  "type": "seal",
+  "rarity": "common",
+  "cost": 1,
+  "capacityBonus": 1,
+  "rankBonus": 1,
+  "incomeBonus": -1,
+  "castCostBonus": 1,
+  "damageBonus": 2,
+  "text": "阵法附着：荷载容量+1，最大位阶+1，准备阶段魔素收入-1。法术附着：实际施法费用+1，成功释放时额外对对方造成2点力场伤害。",
+  "flavor": "沸腾的魔素是一把双刃剑。"
+}

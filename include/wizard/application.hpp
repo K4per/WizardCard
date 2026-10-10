@@ -1,7 +1,7 @@
 #pragma once
-#include "wizard/content.hpp"
+#include "wizard/replay.hpp"
 #include "wizard/decks.hpp"
-#include "wizard/network.hpp"
+#include "wizard/room.hpp"
 #include "wizard/tutorial.hpp"
 #include <memory>
 
@@ -55,7 +55,7 @@ struct AiPlan {
 // No window dependencies. AI receives only a projection; settings pause all submissions.
 class Application {
   public:
-    Application(Content, std::filesystem::path userDirectory, std::vector<DeckPreset> = {});
+    Application(Content, std::filesystem::path userDirectory, std::vector<DeckPreset> = {}, RoomFactory = {});
     Page page() const {
         return page_;
     }
@@ -93,13 +93,15 @@ class Application {
     std::uint64_t generation() const {
         return generation_;
     }
+    std::uint64_t revision() const { return revision_; }
+    // Compatibility accessor for legacy offline tools; presentation uses viewFor.
     const MatchSession &match() const;
     GameView viewFor(PlayerId) const;
     PlayerId actingPlayer() const;
-    net::Peer *network() {
+    RoomSession *network() {
         return network_.get();
     }
-    const net::Peer *network() const {
+    const RoomSession *network() const {
         return network_.get();
     }
     bool startNetwork(bool host, const std::string &address, unsigned short port, const PlayerDeck &,
@@ -147,7 +149,8 @@ class Application {
     std::vector<DeckPreset> presets_;
     DeckLibrary decks_;
     std::unique_ptr<MatchSession> match_;
-    std::unique_ptr<net::Peer> network_;
+    std::unique_ptr<RoomSession> network_;
+    RoomFactory roomFactory_;
     MatchConfig configuration_;
     Page page_{Page::Menu}, settingsReturn_{Page::Menu}, confirmationReturn_{Page::Menu};
     std::string notice_;

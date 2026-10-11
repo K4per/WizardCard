@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "cardSetVersion": "2.0.0",
+  "cardSetVersion": "2.0.0-rc.1-preview",
   "usage": "illustrated-preview",
   "sources": [
     "assets/card-designs/v2/新法术设计.md",

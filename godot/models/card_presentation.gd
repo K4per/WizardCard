@@ -1,6 +1,14 @@
 class_name CardPresentation
 extends Resource
 
+const RARITY_LABELS: Dictionary[String, String] = {
+	"common": "普通",
+	"uncommon": "罕见",
+	"rare": "稀有",
+	"epic": "史诗",
+	"legendary": "传说",
+}
+
 @export var instance_id: String = ""
 @export var definition_id: String = ""
 @export var number: String = ""
@@ -83,6 +91,9 @@ func art_id() -> String:
 
 func detail_text() -> String:
 	return text if metadata_text.is_empty() else metadata_text + "\n\n效果：\n" + text
+
+func rarity_text() -> String:
+	return RARITY_LABELS.get(rarity, rarity)
 
 static func anonymous(id: String = "") -> CardPresentation:
 	var card: CardPresentation = CardPresentation.new()

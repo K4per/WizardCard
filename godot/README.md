@@ -1,10 +1,12 @@
 # Godot 2D Alpha v2 integration
 
-This directory contains the native bridge and the first runnable 2D frontend:
-menu, card library, persisted settings, deck construction/editing and a field showcase.
-The showcase is explicitly not a playable match. Approved C pixel art and all
-30 original illustrations are copied without editing into `art/`, with hashes
-and geometry in `art/assets.json`. Old 2.5D layouts are not imported.
+This directory contains the native bridge and the runnable 2D frontend for
+`2.0.0-rc.1`: menu, the 46-card library, persisted settings, deck
+construction/editing, local match flows, replay and a field showcase. The
+showcase remains a presentation fixture, while match pages use the native
+session service. Approved C pixel art and preserved illustrations are copied
+without editing into `art/`, with hashes and geometry in `art/assets.json`.
+Old 2.5D layouts are not imported.
 
 Pinned toolchain: Godot **4.7.2**, matching export templates, godot-cpp
 **10.0.0-stable**, commit `507ed9d840c01a3c5b2a39af8bb4000bfac30bf5`.
@@ -34,10 +36,10 @@ visual/audio and physical LAN acceptance belong to the release-candidate gate.
   visible, without inventing substitute card data.
 - `models/`: typed presentation resources. Hidden projection cards are stripped
   of identity before textures, tooltips, details and drag previews see them.
-- `pages/`: independent menu, library, settings, deck list/editor and field scenes. Card migration
-  proposals are not used as the official library. The library opens on a separate
-  **2.0 新卡** edition with 20 spells and 12 formations; **现有卡池** keeps the
-  30 native playable definitions. Preview cards cannot enter native deck drafts.
+- `pages/`: independent menu, library, settings, deck list/editor, match,
+  replay, rooms and field scenes. The official library reads the native
+  46-card `assets/cards.json` catalogue. `data/card-previews-v2.json` contains
+  32 display-only design previews and cannot enter native deck drafts.
 - `ui/`: shared pixel theme, art cache, card drawing/detail, decision panel and
   field canvas. Cards and rings on the battlefield are drawn by one CanvasItem;
   there are no per-card buttons, permanent log panels or boxed empty zones.
@@ -77,7 +79,9 @@ preview cards cannot enter drafts. `tests/deck_frontend_smoke.gd` verifies these
 flows with a fresh isolated `--user-data`, `--assets` and `--output` directory;
 add `--capture` for actual rendered screenshots.
 
-The 2.0 illustrated catalogue is `data/card-previews-v2.json`. Source design
+The 2.0 illustrated preview catalogue is `data/card-previews-v2.json`, marked
+`2.0.0-rc.1-preview` so it cannot be mistaken for the formal card-set version.
+Source design
 documents are preserved in `assets/card-designs/v2/` at the repository root;
 `tools/import_card_previews_v2.py` regenerates presentation data from those
 documents. Values, schools, summon conditions and effect text are shown in

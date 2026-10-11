@@ -76,7 +76,9 @@ def build_catalogue() -> dict:
             "sourceFields": fields,
         })
     return {
-        "format": 1, "cardSetVersion": "2.0.0", "usage": "illustrated-preview",
+        # Preview design data is separate from the authoritative 2.0.0-rc.1
+        # playable catalogue and cannot enter a native deck draft.
+        "format": 1, "cardSetVersion": "2.0.0-rc.1-preview", "usage": "illustrated-preview",
         "sources": ["assets/card-designs/v2/新法术设计.md", "assets/card-designs/v2/新阵法设计.md"],
         "normalizations": {
             "解析法数": "解析法术", "解析回合": "解析时间", "施法等级（太阳）": "阵法等级",

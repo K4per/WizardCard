@@ -2,7 +2,7 @@
 
 2026-10-08：新增1.1.0-alpha联机候选实现。`wizard_network`包含协议、权威/客机会话、独立TCP及`Peer`控制器；`wizard_application`为SFML提供共用视图/提交入口。规则内核保持引擎无关。详见[联机架构与协议](network-play.md)，两机验收与Godot接入尚未完成。
 
-当前发行：Alpha v1.0（程序1.0.0-alpha、规则/卡池1.0.0），使用SFML本地客户端。用户已确定v1.5采用Godot重构图形界面，保留C++内核、内容、AI、CLI与复盘；通过可选GDExtension桥接复用应用/交互逻辑，核心不引入Godot依赖。Godot负责页面、输入、音频、动画与网络传输适配。迁移、局域网权威主机、裁剪视图和分阶段验收见[v1.5计划](plans/v1.5.md)，已发行1.0不含Godot前端或联网；联机候选另见上述说明。以下描述1.0基线架构。
+当前发行候选：`2.0.0-rc.1`。C++17 规则内核、内容、AI、CLI、复盘和网络会话保持引擎无关；Godot 4.7.2 通过可选 GDExtension 桥接复用应用与交互模型，负责页面、输入、音频、动画和网络适配。Windows x64 发行包使用可执行文件同级 `assets/` 与 `bin/wizard_godot_bridge.release.dll`，用户数据与安装资源分离。本文后续 Alpha v1/SFML 段落是历史架构记录，不作为当前前端交付说明。
 
 `wizard_core` 为纯 C++17：GameState、Command、Rules、EffectQueue、EffectResolver、GameView，以及 GameEngine、PendingDecision、StateMaintenance、GameEvent。
 

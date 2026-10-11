@@ -2,7 +2,7 @@
 
 2026-10-08补充：真人联机先于Godot前端实施，候选版本1.1.0-alpha，详见[联机说明](network-play.md)。2D/2.5D方案讨论不阻塞网络模块。
 
-当前为 **Alpha v1.0 / 1.0.0-alpha**，规则与卡池1.0.0；[Alpha路线](plans/alpha-v1.0.md)已完成Windows自动交付，30种卡、九套预设及五方向，详见[发布验收](reports/alpha-v1.0-release.md)。用户取消本次20局真人门槛，后续远程Windows/Linux和跨平台复盘已通过，见[同步验收](reports/repository-sync.md)。v1.5新增Godot图形界面重构、保留C++内核，先桥接和本地迁移，再推进局域网P2P、联动与动画，见[新版计划](plans/v1.5.md)。当前分支约定为master/dev，见[分支约定](branching.md)。卡牌设计见[指南](card-design-guide.md)，以下原型分解及main/codex分支说明均为历史记录。
+当前候选为 **WizardCard 2.0.0-rc.1**，规则与正式卡池均为 `2.0.0-rc.1`；正式卡池46张，主卡组40张、副卡组10张，Godot 4.7.2 前端已接入构筑、对局、AI、教学、复盘和局域网页面。发布入口和自动化验证见[发行说明](releases/2.0.0-rc.1.md)；实机输入法、DPI、声音和双机网络仍需按发行说明补充记录。Alpha v1、v1.5 及原型阶段内容以下作为历史路线保留。
 
 ## 原型阶段路线（历史）
 

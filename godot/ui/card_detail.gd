@@ -116,7 +116,7 @@ func configure(value: CardPresentation) -> void:
 	if card.speed > 0:
 		_type.text += " · %d速" % card.speed
 	if not card.rarity.is_empty():
-		_type.text += " · " + card.rarity
+		_type.text += " · " + card.rarity_text()
 	if card.preview:
 		_type.text += " · 2.0"
 	_body.text = card.detail_text()

@@ -250,6 +250,7 @@ func _catalogue_checks(library: LibraryPage) -> void:
 	for card: CardPresentation in _app.service.cards:
 		_check(card.number.length() == 6 and card.number.is_valid_int() and card.number.begins_with(prefixes[card.type_key]) and not numbers.has(card.number), "Each card has a unique six-digit number matching its kind: " + card.title)
 		numbers[card.number] = true
+		_check(card.rarity_text() in ["普通", "罕见", "稀有", "史诗", "传说"], "Rarity uses the Chinese display label: " + card.title)
 		_check(ArtBank.texture("illustration." + card.art_id()) != null, "Every official card resolves an illustration: " + card.title)
 		_check(ArtBank.texture(CardPainter.frame_id(card)) != null, "Every official card resolves a frame: " + card.title)
 	library._search.text = "010002"

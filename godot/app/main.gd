@@ -29,8 +29,12 @@ func _ready() -> void:
 	get_window().close_requested.connect(_on_close_requested)
 	theme = ArtBank.make_theme()
 	var assets: String = ProjectSettings.globalize_path("res://").path_join("../assets").simplify_path()
-	if OS.has_feature("standalone"):
-		assets = OS.get_executable_path().get_base_dir().path_join("assets")
+	# Exported PCK builds can report different feature flags across Godot
+	# templates. Prefer the portable resource directory whenever it exists so a
+	# release launched from any working directory never falls back to ../assets.
+	var packaged_assets: String = OS.get_executable_path().get_base_dir().path_join("assets")
+	if FileAccess.file_exists(packaged_assets.path_join("cards.json")):
+		assets = packaged_assets
 	var user_directory: String = ProjectSettings.globalize_path("user://alpha-v2-frontend")
 	var arguments: PackedStringArray = OS.get_cmdline_user_args()
 	for index: int in range(arguments.size() - 1):

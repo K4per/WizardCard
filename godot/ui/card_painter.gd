@@ -21,6 +21,11 @@ static func fitted_rect(bounds: Rect2) -> Rect2:
 	var dimensions: Vector2 = Vector2(width, width / 0.75)
 	return Rect2(bounds.get_center() - dimensions * 0.5, dimensions)
 
+static func scaled_rect(bounds: Rect2, scale_factor: float) -> Rect2:
+	var fitted: Rect2 = fitted_rect(bounds)
+	var dimensions: Vector2 = fitted.size * maxf(1.0, scale_factor)
+	return Rect2(bounds.get_center() - dimensions * 0.5, dimensions)
+
 static func _region(layout: Dictionary, key: String, rect: Rect2, factor: Vector2) -> Rect2:
 	var pixels: Array = layout[key]
 	return Rect2(rect.position + Vector2(float(pixels[0]), float(pixels[1])) * factor, Vector2(float(pixels[2]), float(pixels[3])) * factor)

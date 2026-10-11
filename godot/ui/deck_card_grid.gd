@@ -29,10 +29,13 @@ func _draw() -> void:
 		return
 	var cell: Vector2 = size / Vector2(columns, rows)
 	for index: int in range(mini(slot_count, columns * rows)):
-		# Keep a narrow breathing line between cards while giving each card and
-		# empty-slot base the largest stable rectangle in its grid cell.
-		var area: Rect2 = Rect2(Vector2(index % columns, index / columns) * cell + Vector2(2, 2), cell - Vector2(4, 4))
-		var frame: Rect2 = CardPainter.fitted_rect(area)
+		# Use the cell height efficiently: the former inset left a visibly wide
+		# gutter around every card in the six-column builder grid.
+		var area: Rect2 = Rect2(Vector2(index % columns, index / columns) * cell + Vector2.ONE, cell - Vector2.ONE * 2.0)
+		var frame: Rect2 = CardPainter.scaled_rect(area, 1.1)
+		frame.position = Vector2(
+			clampf(frame.position.x, 0.0, maxf(0.0, size.x - frame.size.x)),
+			clampf(frame.position.y, 0.0, maxf(0.0, size.y - frame.size.y)))
 		if index >= ids.size():
 			if origin == "built":
 				draw_texture_rect(ArtBank.texture("c2d.v2.deck.empty-slot"), frame, false)

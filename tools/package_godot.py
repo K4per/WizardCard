@@ -48,6 +48,12 @@ def main():
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
     shutil.copytree(ROOT / "assets/audio", output / "assets/audio", ignore=shutil.ignore_patterns("*.py"))
+    # The extension manifest resolves the native bridge as res://bin/...;
+    # keep that layout in the portable package so deck construction and all
+    # other native service calls work after export.
+    bridge_destination = output / "bin" / "wizard_godot_bridge.release.dll"
+    bridge_destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(ROOT / "godot/bin/wizard_godot_bridge.release.dll", bridge_destination)
     for name in ("wizard_cli.exe", "wizard_network_probe.exe"):
         shutil.copy2(args.build / args.configuration / name, output / name)
     if args.crt:
@@ -64,6 +70,8 @@ def main():
     run(output / "wizard_cli.exe", "validate", output / "assets")
     run(output / "wizard_cli.exe", "smoke", output / "assets", output / "verification.json", "42")
     run(output / "wizard_cli.exe", "replay", output / "assets", output / "verification.json")
+    if not bridge_destination.is_file():
+        raise SystemExit("Portable package is missing bin/wizard_godot_bridge.release.dll")
     inventory = {str(path.relative_to(output)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
                  for path in sorted(output.rglob("*")) if path.is_file()}
     (output / "SHA256.json").write_text(json.dumps(inventory, indent=2), encoding="utf-8")

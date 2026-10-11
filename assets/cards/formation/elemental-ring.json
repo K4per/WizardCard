@@ -12,6 +12,7 @@
   "baseEligible": false,
   "cost": 0,
   "text": "在该法阵解析的【塑能】法术伤害+1。",
+  "summonCondition": "1魔素+已解析的【塑能】法术。",
   "recipe": [
     {
       "kind": "mana",
@@ -27,6 +28,6 @@
   "traits": [
     "host_evocation_damage_plus_one"
   ],
-  "number": "010012",
+  "number": "010011",
   "illustrationId": "v2-elemental-ring"
 }

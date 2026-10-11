@@ -104,13 +104,19 @@ func open_draft(id: String) -> bool:
 		editing_draft.erase("problems")
 		editing_draft.erase("matchCompatible")
 		saved_draft = editing_draft.duplicate(true)
+		# ``balance`` was the old six-point formation ID. The release keeps the
+		# reviewed mechanics under ``hexagram`` and uses ``small-hexagram`` as the
+		# only level-1 initial formation, so migrate legacy drafts in memory.
+		if str(editing_draft.get("baseFormation", "")) == "balance":
+			editing_draft["baseFormation"] = "small-hexagram"
 		if int(editing_draft.get("format", 1)) == 1:
 			editing_draft["format"] = 2
 			var side: Dictionary = {}
 			var main: Dictionary = editing_draft["cards"]
 			for key: String in main.keys():
-				if int(definitions.get(key, {}).get("type", -1)) == 3:
-					side[key] = main[key]
+				var target: String = "hexagram" if key == "balance" else key
+				if key == "balance" or int(definitions.get(key, {}).get("type", -1)) == 3:
+					side[target] = int(side.get(target, 0)) + int(main[key])
 					main.erase(key)
 			var initial: String = str(editing_draft["baseFormation"])
 			if definitions.has(initial) and not side.has(initial):

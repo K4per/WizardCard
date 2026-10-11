@@ -23,7 +23,7 @@ FORMATION_IDS = [
     "small-hexagram", "hexagram", "pentagram", "octagram", "sun", "upright-cross",
     "inverted-cross", "ankh", "elemental-ring", "chaos-ring", "void", "sulfur",
 ]
-REUSED = {
+ART_OVERRIDES = {
     **{key: key for key in (
         "fireball", "ray-of-frost", "lightning-bolt", "magic-missile", "mend",
         "false-life", "ward", "spark", "disrupt", "true-strike", "barbs", "shield",
@@ -31,6 +31,7 @@ REUSED = {
     )},
     "hexagram": "balance",
     "pentagram": "pentagram-of-life",
+    "void": "reservoir",
 }
 
 
@@ -62,7 +63,7 @@ def build_catalogue() -> dict:
             "costText": fields["费用"], "costParts": costs,
             "analysisTurns": int(fields.get("解析时间", fields.get("解析回合"))),
             "speed": int(fields["速度"]), "text": fields["效果"].replace("**", "").removesuffix("、"),
-            "illustrationId": REUSED.get(identifier, "v2-" + identifier), "sourceFields": fields,
+            "illustrationId": ART_OVERRIDES.get(identifier, "v2-" + identifier), "sourceFields": fields,
         }
         cards.append(card)
     for identifier, (title, fields) in zip(FORMATION_IDS, formations, strict=True):
@@ -72,7 +73,7 @@ def build_catalogue() -> dict:
             "body": int(fields.get("阵体大小", fields.get("阵法大小"))),
             "rings": int(fields["最大解析数"]), "capacity": int(fields["荷载上限"]),
             "income": int(fields["魔素收入"]), "summonCondition": fields["召唤条件"],
-            "text": fields["效果"], "illustrationId": REUSED.get(identifier, "v2-" + identifier),
+            "text": fields["效果"], "illustrationId": ART_OVERRIDES.get(identifier, "v2-" + identifier),
             "sourceFields": fields,
         })
     return {
@@ -85,7 +86,8 @@ def build_catalogue() -> dict:
             "阵法大小": "阵体大小", "效果文本": "Remove Markdown emphasis and trailing stray punctuation only",
         },
         "artReuseNotes": {
-            "缝合生命": "生命缝合 / mend", "六芒星": "均衡之六芒星 / balance",
+            "缝合生命": "生命缝合 / mend", "空洞": "阿克乌姆之弧 / reservoir",
+            "均衡之六芒星": "旧版均衡六芒星插画 / balance",
             "五芒星": "生命之五芒星 / pentagram-of-life",
         },
         "unspecifiedFields": ["rarity", "formation speed"],
@@ -98,4 +100,4 @@ if __name__ == "__main__":
     catalogue = build_catalogue()
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Imported {len(catalogue['cards'])} 2.0 preview cards; reused illustrations: {len(REUSED)}")
+    print(f"Imported {len(catalogue['cards'])} 2.0 preview cards; art overrides: {len(ART_OVERRIDES)}")

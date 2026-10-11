@@ -39,7 +39,7 @@ func _run() -> void:
 	if not _app.service.error.is_empty():
 		quit(2)
 		return
-	_check(_app.service.cards.size() == 46, "All 46 official cards must be browsable")
+	_check(_app.service.cards.size() == 45, "All 45 official cards must be browsable")
 	await _screenshot("menu")
 	var hidden: CardPresentation = CardPresentation.from_projection({"id": "private-1", "hidden": true, "definition": {"name": "secret", "id": "fireball", "type": 4, "text": "secret"}})
 	_check(hidden.hidden and hidden.title == "盖伏卡" and hidden.definition_id.is_empty() and hidden.text.is_empty() and hidden.type_key.is_empty(), "Hidden cards must discard identity before art/details")
@@ -171,7 +171,7 @@ func _run() -> void:
 		_app.navigate(&"library")
 		await _settle()
 		var tiled: LibraryPage = _app.page as LibraryPage
-		_check(tiled._grid.get_child_count() == 46, "Library lists all 46 authoritative cards at each size")
+		_check(tiled._grid.get_child_count() == 45, "Library lists all 45 authoritative cards at each size")
 		await _screenshot("library-%dx%d" % [dimensions.x, dimensions.y])
 		var first_tile: CardTile = tiled._grid.get_child(0) as CardTile
 		first_tile.pressed.emit()
@@ -193,7 +193,7 @@ func _run() -> void:
 		tiled._kind_filter.select(0)
 		tiled._kind_filter.item_selected.emit(0)
 		await _settle()
-		_check(tiled._grid.get_child_count() == 46 and not tiled._detail.visible, "Reset type restores the unified card pool and closes stale details")
+		_check(tiled._grid.get_child_count() == 45 and not tiled._detail.visible, "Reset type restores the unified card pool and closes stale details")
 	if _capture:
 		await _frame_preview()
 	_app.navigate(&"library")
@@ -253,8 +253,8 @@ func _catalogue_checks(library: LibraryPage) -> void:
 		_check(card.rarity_text() in ["普通", "罕见", "稀有", "史诗", "传说"], "Rarity uses the Chinese display label: " + card.title)
 		_check(ArtBank.texture("illustration." + card.art_id()) != null, "Every official card resolves an illustration: " + card.title)
 		_check(ArtBank.texture(CardPainter.frame_id(card)) != null, "Every official card resolves a frame: " + card.title)
-	library._search.text = "010002"
-	library._search.text_changed.emit("010002")
+	library._search.text = "010001"
+	library._search.text_changed.emit("010001")
 	await _settle()
 	_check(library._grid.get_child_count() == 1, "Official number search resolves exactly one card")
 	if library._grid.get_child_count() > 0:

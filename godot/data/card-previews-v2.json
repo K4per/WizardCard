@@ -15,7 +15,8 @@
   },
   "artReuseNotes": {
     "缝合生命": "生命缝合 / mend",
-    "六芒星": "均衡之六芒星 / balance",
+    "空洞": "阿克乌姆之弧 / reservoir",
+    "均衡之六芒星": "旧版均衡六芒星插画 / balance",
     "五芒星": "生命之五芒星 / pentagram-of-life"
   },
   "unspecifiedFields": [
@@ -561,7 +562,7 @@
     },
     {
       "id": "v2-hexagram",
-      "name": "六芒星",
+      "name": "均衡之六芒星",
       "typeKey": "formation",
       "typeLabel": "阵法",
       "level": 3,
@@ -592,7 +593,7 @@
       "rings": 3,
       "capacity": 10,
       "income": 2,
-      "summonCondition": "【六芒星】+已解析的法术。",
+      "summonCondition": "【均衡之六芒星】+已解析的法术。",
       "text": "自己准备阶段开始时，获得一点荷载。",
       "illustrationId": "pentagram-of-life",
       "sourceFields": {
@@ -601,7 +602,7 @@
         "最大解析数": "3",
         "荷载上限": "10",
         "魔素收入": "2",
-        "召唤条件": "【六芒星】+已解析的法术。",
+        "召唤条件": "【均衡之六芒星】+已解析的法术。",
         "效果": "自己准备阶段开始时，获得一点荷载。"
       }
     },
@@ -615,7 +616,7 @@
       "rings": 4,
       "capacity": 15,
       "income": 2,
-      "summonCondition": "【小六芒星】+【六芒星】",
+      "summonCondition": "【小六芒星】+【均衡之六芒星】",
       "text": "该卡不能被效果破坏。自己每一个法术解析完成，清除一点荷载。",
       "illustrationId": "v2-octagram",
       "sourceFields": {
@@ -624,7 +625,7 @@
         "最大解析数": "4",
         "荷载上限": "15",
         "魔素收入": "2",
-        "召唤条件": "【小六芒星】+【六芒星】",
+        "召唤条件": "【小六芒星】+【均衡之六芒星】",
         "效果": "该卡不能被效果破坏。自己每一个法术解析完成，清除一点荷载。"
       }
     },
@@ -778,7 +779,7 @@
       "income": 0,
       "summonCondition": "手牌×2。",
       "text": "无特殊效果。",
-      "illustrationId": "v2-void",
+      "illustrationId": "reservoir",
       "sourceFields": {
         "阵法等级": "0",
         "阵法大小": "1",

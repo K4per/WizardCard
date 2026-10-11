@@ -6,7 +6,7 @@
   "cost": 0,
   "body": 1,
   "capacity": 2,
-  "income": 4,
+  "income": 3,
   "rings": 1,
   "maxRank": 3,
   "quickRankOne": true,
@@ -28,6 +28,7 @@
       "readyOnly": true
     }
   ],
-  "number": "010004",
+  "summonCondition": "3魔素+已解析的法术。",
+  "number": "010003",
   "illustrationId": "engeas-four-point-star"
 }

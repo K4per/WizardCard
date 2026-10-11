@@ -455,8 +455,9 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         if (!cat.cards.emplace(d.id, d).second)
             fail(p + "/id", "duplicate card id");
     }
-    if (!cat.cards.count("balance") || !cat.at("balance").baseEligible)
-        fail(source + "/cards", "missing eligible base formation balance");
+    const std::string requiredBase = cat.alphaV2 ? "small-hexagram" : "balance";
+    if (!cat.cards.count(requiredBase) || !cat.at(requiredBase).baseEligible)
+        fail(source + "/cards", "missing eligible base formation " + requiredBase);
     cat.contentHash = fingerprint(j.dump());
     return cat;
 }

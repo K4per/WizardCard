@@ -29,12 +29,13 @@
       "readyOnly": true
     }
   ],
+  "summonCondition": "【均衡之六芒星】+已解析的法术。",
   "onPrepare": [
     {
       "kind": "independent",
       "amount": 1
     }
   ],
-  "number": "010003",
+  "number": "010002",
   "illustrationId": "pentagram-of-life"
 }

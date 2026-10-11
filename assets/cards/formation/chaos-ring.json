@@ -12,6 +12,7 @@
   "baseEligible": false,
   "cost": 0,
   "text": "该法阵不能同时解析相同派系的法术。",
+  "summonCondition": "已解析的不同派系法术×2。",
   "recipe": [
     {
       "kind": "sacrifice_spell",
@@ -23,6 +24,6 @@
   "traits": [
     "distinct_host_schools"
   ],
-  "number": "010013",
+  "number": "010012",
   "illustrationId": "v2-chaos-ring"
 }

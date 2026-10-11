@@ -1,13 +1,9 @@
 {
-  "initialFormation": "balance",
+  "initialFormation": "small-hexagram",
   "cards": [
     {
-      "id": "balance",
-      "count": 1
-    },
-    {
       "id": "small-hexagram",
-      "count": 2
+      "count": 3
     },
     {
       "id": "hexagram",

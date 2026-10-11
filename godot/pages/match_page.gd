@@ -9,6 +9,9 @@ var _notice: Label
 var _phase: Label
 var _action_title: Label
 var _action_list: VBoxContainer
+var _action_button: Button
+var _action_popup: PanelContainer
+var _detail_shade: ColorRect
 var _detail: CardDetail
 var _tutorial: Label
 var _tutorial_button: Button
@@ -21,7 +24,7 @@ var _shade: ColorRect
 var _selected: CardPresentation
 var _pending: Dictionary = {}
 var _pending_viewer: int = -1
-var _show_all: bool = false
+var _global_popup_open: bool = false
 var _auto_busy: bool = false
 var _quitting: bool = false
 var _network_waiting: bool = false
@@ -29,9 +32,11 @@ var _confirm: ConfirmationDialog
 var _leave_dialog: ConfirmationDialog
 var _pending_generation: String = ""
 var _pending_revision: String = ""
-var _zone_picker: OptionButton
-var _filter_button: Button
-var _history: RichTextLabel
+var _collection: PanelContainer
+var _collection_title: Label
+var _collection_grid: GridContainer
+var _collection_scroll: ScrollContainer
+var _collection_kind: String = ""
 var _leaving_network: bool = false
 var _force_leave: Button
 var _force_dialog: ConfirmationDialog
@@ -39,13 +44,15 @@ var _reconnect: Button
 
 func _ready() -> void:
 	var column: VBoxContainer = VBoxContainer.new()
-	UiFactory.margin(self, 12).add_child(column)
+	UiFactory.margin(self, 8).add_child(column)
 	var header: HBoxContainer = HBoxContainer.new()
 	column.add_child(header)
 	header.add_child(UiFactory.button("暂停 / 设置", _open_settings))
 	header.add_child(UiFactory.button("保存复盘", _save_replay))
 	header.add_child(UiFactory.button("查看复盘", _open_replay))
 	header.add_child(UiFactory.button("结束对局", request_leave))
+	_action_button = UiFactory.button("阶段操作", _toggle_action_popup)
+	header.add_child(_action_button)
 	_reconnect = UiFactory.button("重新连接", _reconnect_network)
 	header.add_child(_reconnect)
 	_reconnect.hide()
@@ -56,8 +63,8 @@ func _ready() -> void:
 	_phase.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_phase.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(_phase)
-	_notice = UiFactory.label("", 16, true)
-	_notice.custom_minimum_size.y = 28
+	_notice = UiFactory.label("", 14, true)
+	_notice.custom_minimum_size.y = 22
 	column.add_child(_notice)
 	var main: HBoxContainer = HBoxContainer.new()
 	main.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -85,63 +92,126 @@ func _ready() -> void:
 	_cue.offset_top = 60
 	_cue.offset_bottom = 108
 	_cue.hide()
-	var side: VBoxContainer = VBoxContainer.new()
-	side.custom_minimum_size.x = 380
-	side.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	side.add_theme_constant_override(&"separation", 8)
-	main.add_child(side)
-	_action_title = UiFactory.label("当前合法操作", 24)
-	side.add_child(_action_title)
-	_filter_button = UiFactory.button("显示全部合法操作", _toggle_all)
-	side.add_child(_filter_button)
-	_zone_picker = OptionButton.new()
-	_zone_picker.custom_minimum_size.y = 44
-	_zone_picker.item_selected.connect(_zone_selected)
-	side.add_child(_zone_picker)
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	side.add_child(scroll)
-	_action_list = VBoxContainer.new()
-	_action_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.add_child(_action_list)
+	canvas.zone_clicked.connect(_zone_clicked)
 	_tutorial = UiFactory.label("", 16, true)
-	side.add_child(_tutorial)
 	_tutorial_button = UiFactory.button("继续教学", _continue_tutorial)
-	side.add_child(_tutorial_button)
+	_tutorial_button.hide()
+	column.add_child(_tutorial)
+	column.add_child(_tutorial_button)
 	_detail = CardDetail.new()
 	_detail.battle_skin = true
-	_detail.custom_minimum_size = Vector2(380, 270)
-	_detail.size_flags_vertical = Control.SIZE_SHRINK_END
-	side.add_child(_detail)
+	_detail.vertical_battle_layout = true
+	_detail.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE)
+	add_child(_detail_shade_node())
+	add_child(_detail)
 	_detail.closed.connect(_clear_card)
 	_detail.hide()
-	_history = RichTextLabel.new()
-	_history.bbcode_enabled = false
-	_history.custom_minimum_size.y = 90
-	_history.add_theme_font_size_override(&"normal_font_size", 14)
-	side.add_child(_history)
+	_action_popup = PanelContainer.new()
+	_action_popup.add_theme_stylebox_override(&"panel", ArtBank.box("c2d.v2.ui.panel", 18))
+	_action_popup.custom_minimum_size = Vector2(320, 80)
+	_action_popup.z_index = 5
+	add_child(_action_popup)
+	var action_column: VBoxContainer = VBoxContainer.new()
+	_action_popup.add_child(action_column)
+	var action_heading: HBoxContainer = HBoxContainer.new()
+	action_column.add_child(action_heading)
+	_action_title = UiFactory.label("操作", 18, true)
+	_action_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	action_heading.add_child(_action_title)
+	var action_scroll: ScrollContainer = ScrollContainer.new()
+	action_scroll.custom_minimum_size.y = 150
+	action_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	action_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	action_column.add_child(action_scroll)
+	_action_list = VBoxContainer.new()
+	_action_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	action_scroll.add_child(_action_list)
+	_action_popup.hide()
+	_collection = _build_collection()
+	add_child(_collection)
+	_collection.hide()
 	var footer: HBoxContainer = HBoxContainer.new()
 	column.add_child(footer)
 	footer.add_child(UiFactory.button("收起 / 展开手牌", _toggle_hand))
 	footer.add_child(UiFactory.button("取消选择", _clear_card))
-	footer.add_child(UiFactory.label("点击卡牌查看操作 · 右键取消选择 · Tab 与方向键可浏览场地", 16, true))
+	footer.add_child(UiFactory.label("点击卡牌显示操作 · 点击灰烬区查看卡牌 · 点击副卡组设置阵法", 14, true))
 	_feedback = MatchFeedback.new()
 	add_child(_feedback)
 	_build_dialogs()
 	_build_privacy()
 	_build_decision()
 	resized.connect(_layout_panels)
+	get_viewport().size_changed.connect(_layout_panels)
 	_layout_panels()
+
+func _detail_shade_node() -> ColorRect:
+	_detail_shade = ColorRect.new()
+	_detail_shade.color = Color(0.015, 0.035, 0.06, 0.76)
+	_detail_shade.mouse_filter = Control.MOUSE_FILTER_STOP
+	_detail_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_detail_shade.hide()
+	return _detail_shade
+
+func _build_collection() -> PanelContainer:
+	var panel: PanelContainer = PanelContainer.new()
+	panel.custom_minimum_size = Vector2(760, 580)
+	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	panel.offset_left = -380
+	panel.offset_right = 380
+	panel.offset_top = -290
+	panel.offset_bottom = 290
+	panel.z_index = 7
+	panel.add_theme_stylebox_override(&"panel", ArtBank.box("c2d.v2.ui.panel", 22))
+	var column: VBoxContainer = VBoxContainer.new()
+	column.add_theme_constant_override(&"separation", 8)
+	panel.add_child(column)
+	var heading: HBoxContainer = HBoxContainer.new()
+	column.add_child(heading)
+	_collection_title = UiFactory.label("区域", 22, true)
+	_collection_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	heading.add_child(_collection_title)
+	heading.add_child(UiFactory.button("关闭", _close_collection))
+	_collection_scroll = ScrollContainer.new()
+	_collection_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(_collection_scroll)
+	_collection_grid = GridContainer.new()
+	_collection_grid.columns = 4
+	_collection_grid.add_theme_constant_override(&"h_separation", 10)
+	_collection_grid.add_theme_constant_override(&"v_separation", 10)
+	_collection_scroll.add_child(_collection_grid)
+	return panel
 
 func _layout_panels() -> void:
 	if _decision == null:
 		return
-	var extent: Vector2 = Vector2(minf(1140, size.x - 64), minf(650, size.y - 72))
+	# MatchPage can be laid out before the app assigns the viewport size. Use the
+	# viewport as a fallback so right-anchored detail never receives negative
+	# offsets during that first pass.
+	var available: Vector2 = size
+	if available.x < 1.0 or available.y < 1.0:
+		available = get_viewport_rect().size
+	available.x = maxf(available.x, 320.0)
+	available.y = maxf(available.y, 240.0)
+	var compact_response: bool = _decision.request != null and _decision.request.response_mode
+	var extent: Vector2 = Vector2(minf(960 if compact_response else 1140, available.x - 40), minf(510 if compact_response else 650, available.y - 48))
 	_decision.offset_left = -extent.x * 0.5
 	_decision.offset_right = extent.x * 0.5
 	_decision.offset_top = -extent.y * 0.5
 	_decision.offset_bottom = extent.y * 0.5
+	var detail_width: float = clampf(available.x * 0.31, 320.0, 520.0)
+	detail_width = minf(detail_width, available.x - 24.0)
+	_detail.offset_left = -detail_width - 12
+	_detail.offset_right = -12
+	_detail.offset_top = 12
+	_detail.offset_bottom = -12
+	_action_popup.custom_minimum_size.x = minf(320, available.x * 0.8)
+	if _collection != null:
+		var collection_width: float = minf(960, available.x - 32)
+		var collection_height: float = minf(680, available.y - 32)
+		_collection.offset_left = -collection_width * 0.5
+		_collection.offset_right = collection_width * 0.5
+		_collection.offset_top = -collection_height * 0.5
+		_collection.offset_bottom = collection_height * 0.5
 
 func _build_dialogs() -> void:
 	_confirm = ConfirmationDialog.new()
@@ -229,22 +299,10 @@ func _refresh() -> void:
 	_privacy_layer.hide()
 	_selected = null
 	_detail.hide()
-	_zone_picker.clear()
-	_zone_picker.add_item("查看副卡组 / 灰烬区 / 附着符文")
-	for row: Dictionary in snapshot.get("cards", []):
-		var zone: int = int(row.get("zone", -1))
-		if zone not in [6, 7, 9] or bool(row.get("hidden", false)):
-			continue
-		if zone == 9 and int(row.get("owner", -1)) != service.match_viewer:
-			continue
-		var card: CardPresentation = CardPresentation.from_projection(row)
-		_zone_picker.add_item(("我方" if int(row.get("owner", -1)) == service.match_viewer else "对手") + " · " + str(row.get("zoneName", "")) + " · " + card.title)
-		_zone_picker.set_item_metadata(_zone_picker.item_count - 1, card.instance_id)
-	var events: Array = snapshot.get("events", [])
-	var event_lines: Array[String] = []
-	for event: Dictionary in events.slice(maxi(0, events.size() - 6)):
-		event_lines.append(str(event.get("text", "")))
-	_history.text = "\n".join(event_lines)
+	_detail_shade.hide()
+	_collection.hide()
+	_action_popup.hide()
+	_global_popup_open = false
 	var actor: int = int(snapshot.get("actingPlayer", 0))
 	var phase: String = str(snapshot.get("phaseName", ""))
 	_phase.text = "第 %d 位玩家 · %s" % [actor + 1, phase]
@@ -262,14 +320,29 @@ func _refresh() -> void:
 	_schedule_automatic()
 
 func _render_actions() -> void:
+	var snapshot: Dictionary = service.match_snapshot
+	var actions: Array = snapshot.get("actions", [])
+	var global_count: int = 0
+	for action: Dictionary in actions:
+		if str(action.get("source", "0")) == "0":
+			global_count += 1
+	_action_button.text = "阶段操作 · %d" % global_count
+	if _selected != null:
+		_show_action_list(_selected.instance_id, _selected.title + " · 操作", true)
+	elif _global_popup_open:
+		_show_action_list("0", "阶段操作", false)
+	else:
+		_action_popup.hide()
+
+func _show_action_list(source: String, title: String, contextual: bool) -> void:
 	for child: Node in _action_list.get_children():
+		_action_list.remove_child(child)
 		child.queue_free()
 	var snapshot: Dictionary = service.match_snapshot
 	var actions: Array = snapshot.get("actions", [])
 	var displayed: int = 0
-	var source: String = _selected.instance_id if _selected != null else "0"
 	for action: Dictionary in actions:
-		if not _show_all and str(action.get("source", "0")) != source:
+		if str(action.get("source", "0")) != source:
 			continue
 		var detail: String = MatchProjection.action_detail(snapshot, action)
 		var button: Button = UiFactory.button(detail, _choose_action.bind(action))
@@ -281,8 +354,92 @@ func _render_actions() -> void:
 		_action_list.add_child(button)
 		displayed += 1
 	if displayed == 0:
-		_action_list.add_child(UiFactory.label("此处暂无合法操作。可点击场上或手中的卡牌；也可显示全部合法操作。", 16, true))
-	_action_title.text = ("%s · 合法操作 %d" % [_selected.title, displayed]) if _selected != null else ("全部合法操作 %d" if _show_all else "全局操作 %d") % displayed
+		_action_list.add_child(UiFactory.label("暂无合法操作。" if contextual else "当前没有阶段级操作。", 14, true))
+	_action_title.text = "%s · %d" % [title, displayed]
+	_action_popup.reset_size()
+	_action_popup.show()
+	_position_action_popup(contextual)
+
+func _position_action_popup(contextual: bool) -> void:
+	if not _action_popup.visible:
+		return
+	var available: Vector2 = size
+	if available.x < 1.0 or available.y < 1.0:
+		available = get_viewport_rect().size
+	var desired_height: float = clampf(86 + _action_list.get_child_count() * 64.0, 120, maxf(120, minf(500, available.y - 32)))
+	_action_popup.size = Vector2(maxf(160, minf(340, available.x - 24)), desired_height)
+	var point: Vector2
+	var max_right: float = available.x - _action_popup.size.x - 8
+	if contextual and _detail.visible:
+		max_right = minf(max_right, size.x - _detail.size.x - _action_popup.size.x - 20)
+	if contextual and _selected != null:
+		var bounds: Rect2 = canvas.card_bounds(_selected)
+		point = canvas.global_position - global_position + Vector2(bounds.get_center().x - _action_popup.size.x * 0.5, bounds.position.y - _action_popup.size.y - 8)
+		if point.y < 8:
+			point.y = bounds.end.y + 8
+	else:
+		point = _action_button.position + Vector2(_action_button.size.x - _action_popup.size.x, _action_button.size.y + 4)
+	_action_popup.position = Vector2(clampf(point.x, 8, maxf(8, max_right)), clampf(point.y, 8, maxf(8, available.y - _action_popup.size.y - 8)))
+
+func _toggle_action_popup() -> void:
+	if _selected != null:
+		_clear_card()
+	_global_popup_open = not _global_popup_open
+	_render_actions()
+
+func _zone_clicked(kind: String, owner: int) -> void:
+	if _privacy_layer.visible or _decision.visible:
+		return
+	if kind == "side_deck":
+		if owner == service.match_viewer:
+			_open_collection("side_deck", owner)
+		else:
+			_notice.text = "对手副卡组内容不公开。"
+	elif kind == "ash":
+		_open_collection("ash", owner)
+	elif kind == "main_deck":
+		_notice.text = "主牌库内容保持未知。"
+
+func _open_collection(kind: String, owner: int) -> void:
+	if kind == "side_deck" and owner != service.match_viewer:
+		return
+	_clear_card()
+	_collection_kind = kind
+	_collection_title.text = ("我方" if owner == service.match_viewer else "对手") + (" · 副卡组" if kind == "side_deck" else " · 灰烬区")
+	for child: Node in _collection_grid.get_children():
+		_collection_grid.remove_child(child)
+		child.queue_free()
+	var wanted_zone: int = 9 if kind == "side_deck" else 6
+	var cards: Array[CardPresentation] = []
+	for row: Dictionary in service.match_snapshot.get("cards", []):
+		if int(row.get("zone", -1)) == wanted_zone and int(row.get("owner", -1)) == owner:
+			cards.append(CardPresentation.from_projection(row))
+	for card: CardPresentation in cards:
+		var tile: Button = Button.new()
+		tile.custom_minimum_size = Vector2(148, 224)
+		tile.tooltip_text = "查看详情与操作：" + card.title
+		var face: CardFace = CardFace.new()
+		face.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		face.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		face.configure(card)
+		tile.add_child(face)
+		tile.pressed.connect(_collection_card.bind(card))
+		_collection_grid.add_child(tile)
+	if cards.is_empty():
+		_collection_grid.add_child(UiFactory.label("该区域当前没有卡牌。", 16, true))
+	_detail_shade.show()
+	_collection.show()
+	_collection.move_to_front()
+	_layout_panels()
+
+func _collection_card(card: CardPresentation) -> void:
+	_close_collection()
+	_select_card(card)
+
+func _close_collection() -> void:
+	_collection.hide()
+	if not _detail.visible:
+		_detail_shade.hide()
 
 func _render_decision() -> void:
 	var snapshot: Dictionary = service.match_snapshot
@@ -302,8 +459,9 @@ func _render_decision() -> void:
 	request.decision_id = str(decision.get("id", ""))
 	var kinds: Array[String] = ["响应窗口", "选择弃牌", "清除荷载", "荷载溢出", "选择阵法", "效果弃牌", "追加施法", "维持专注", "摧毁盖伏", "检索牌库", "法术回位", "效果选择", "伤害类型", "清除荷载"]
 	var kind: int = int(decision.get("kind", -1))
+	request.response_mode = kind == 0
 	request.title = "%s · 玩家 %d" % [kinds[kind] if kind >= 0 and kind < kinds.size() else "请选择", service.match_viewer + 1]
-	request.description = "选择一项操作，再确认。目标和所需材料会显示在右侧。"
+	request.description = "点击合法响应卡立即操作，或选择不响应。" if request.response_mode else "选择一项操作，再确认。目标和所需材料会显示在卡牌说明中。"
 	request.may_cancel = false
 	for action: Dictionary in snapshot.get("actions", []):
 		var choice: DecisionChoice = DecisionChoice.new()
@@ -315,6 +473,11 @@ func _render_decision() -> void:
 		_notice.text = "规则决策缺少合法选项，请重新加载对局视图。"
 		return
 	_decision.configure(request)
+	_layout_panels()
+	_action_popup.hide()
+	_detail.hide()
+	_detail_shade.hide()
+	_collection.hide()
 	_shade.show()
 	_decision.show()
 	canvas.focus_mode = Control.FOCUS_NONE
@@ -323,34 +486,25 @@ func _select_card(card: CardPresentation) -> void:
 	if _privacy_layer.visible or _decision.visible:
 		return
 	_selected = card
+	_global_popup_open = false
 	canvas.selected_id = card.instance_id
 	canvas.queue_redraw()
 	_detail.configure(card)
+	_detail_shade.show()
+	_detail_shade.move_to_front()
 	_detail.show()
+	_detail.move_to_front()
+	_layout_panels()
 	_render_actions()
 
 func _clear_card() -> void:
 	_selected = null
 	_detail.hide()
+	_detail_shade.hide()
 	canvas.selected_id = ""
 	canvas.queue_redraw()
 	if service != null and not service.match_snapshot.is_empty():
 		_render_actions()
-
-func _toggle_all() -> void:
-	_show_all = not _show_all
-	_filter_button.text = "仅显示选中卡牌操作" if _show_all else "显示全部合法操作"
-	_render_actions()
-
-func _zone_selected(index: int) -> void:
-	if index <= 0:
-		_clear_card()
-		return
-	var card: CardPresentation = MatchProjection.card(service.match_snapshot, str(_zone_picker.get_item_metadata(index)))
-	if card != null:
-		_show_all = false
-		_filter_button.text = "显示全部合法操作"
-		_select_card(card)
 
 func _toggle_hand() -> void:
 	if _privacy_layer.visible or _decision.visible:
@@ -361,7 +515,7 @@ func _placement_requested(card_id: String, _host_id: String, _ring_index: int) -
 	var card: CardPresentation = MatchProjection.card(service.match_snapshot, card_id)
 	if card != null:
 		_select_card(card)
-	_notice.text = "请在右侧选择完整合法操作；规则将决定环位、目标与费用。"
+	_notice.text = "请在选中卡牌的操作列表中选择合法操作；规则将决定环位、目标与费用。"
 
 func _choose_action(action: Dictionary) -> void:
 	if _privacy_layer.visible or _decision.visible or _network_waiting or not _pending.is_empty():

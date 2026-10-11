@@ -12,6 +12,7 @@
   "baseEligible": false,
   "cost": 0,
   "text": "该卡不能被效果破坏。自己每一个法术解析完成，清除一点荷载。",
+  "summonCondition": "【小六芒星】+【均衡之六芒星】",
   "recipe": [
     {
       "kind": "sacrifice_formation",
@@ -28,6 +29,6 @@
     "effect_indestructible",
     "clear_load_on_analysis"
   ],
-  "number": "010007",
+  "number": "010006",
   "illustrationId": "v2-octagram"
 }

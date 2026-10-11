@@ -44,7 +44,7 @@ func _run() -> void:
 	root.add_child(_app)
 	await _settle()
 	_check(_app.service.error.is_empty(), "Native bridge initializes: " + _app.service.error)
-	_check(_app.service.cards.size() == 46, "Real native card catalogue is used")
+	_check(_app.service.cards.size() == 45, "Real native card catalogue is used")
 	if not _app.service.error.is_empty():
 		_finish()
 		return
@@ -61,16 +61,18 @@ func _run() -> void:
 	editor._name.text = "星辉藏书 · 40 / 10"
 	editor._rename(editor._name.text)
 	# The same UI adjustment path handles right clicks and committed drops.
-	editor._adjust("balance", 1, "cards")
+	editor._adjust("hexagram", 1, "cards")
 	_check(DeckUi.total(_app.service.editing_draft["sideCards"]) == 1 and DeckUi.total(_app.service.editing_draft["cards"]) == 0, "Formation cards route into the side deck")
-	editor._adjust("balance", -1, "sideCards")
+	editor._adjust("hexagram", -1, "sideCards")
+	editor._adjust("small-hexagram", 1, "sideCards")
 	for definition: Dictionary in _app.service.definitions.values():
 		var membership: String = "sideCards" if int(definition["type"]) == 3 else "cards"
 		var target: int = 10 if membership == "sideCards" else 40
 		var remaining: int = target - DeckUi.total(_app.service.editing_draft[membership])
-		for copy: int in range(mini(3, remaining)):
+		var current: int = int(_app.service.editing_draft[membership].get(str(definition["id"]), 0))
+		for copy: int in range(mini(3 - current, remaining)):
 			editor._adjust(str(definition["id"]), 1, "cards")
-	_app.service.editing_draft["baseFormation"] = "balance"
+	_app.service.editing_draft["baseFormation"] = "small-hexagram"
 	editor._choose_section("cards")
 	await _settle()
 	_check(DeckUi.total(_app.service.editing_draft["cards"]) == 40, "Main deck reaches 40")
@@ -78,10 +80,10 @@ func _run() -> void:
 	_check(_app.service.draft_problems().is_empty(), "Native construction validator accepts complete 40/10")
 	var complete: Dictionary = _app.service.editing_draft.duplicate(true)
 	editor._adjust("fireball", 1, "cards")
-	editor._adjust("balance", 1, "sideCards")
+	editor._adjust("hexagram", 1, "sideCards")
 	_check(_app.service.editing_draft == complete, "Full deck and copy limits reject extra cards")
 	_check(editor._tabs[0].text.contains("40 / 40") and editor._tabs[1].text.contains("10 / 10"), "Independent counts remain visible")
-	_check(editor._initial_ids.has("balance"), "Initial formation choices come from own side deck")
+	_check(editor._initial_ids.has("small-hexagram"), "Initial formation choices come from own side deck")
 	_check(editor._built.ids.size() == 30, "First main page displays 30 individual cards")
 	editor._turn_built(1)
 	_check(editor._built.ids.size() == 10, "Second main page displays remaining 10 cards")
@@ -93,7 +95,7 @@ func _run() -> void:
 	editor._query_changed("")
 	_check(editor._pool_ids.is_empty(), "Combined name and type filters produce empty results")
 	editor._reset_query()
-	_check(editor._pool_ids.size() == 46, "Reset restores full catalogue")
+	_check(editor._pool_ids.size() == 45, "Reset restores full catalogue")
 	_check(_app.service.query_cards({"rank": 0}).is_empty(), "Rank filtering excludes unrelated types")
 	_check(_app.service.query_cards({"type": 0, "castCost": 0}).is_empty(), "Removed action type does not match formal cards")
 	await _input_checks(editor)
@@ -152,13 +154,14 @@ func _run() -> void:
 	_check(bool(_app.service._request(&"save_draft", [old]).get("ok", false)), "Legacy draft can coexist with new drafts")
 	_app.service.refresh_library()
 	_check(_app.service.open_draft(str(old["id"])), "Legacy draft opens for migration")
-	_check(int(_app.service.editing_draft["format"]) == 2 and _app.service.editing_draft["sideCards"].get("balance", 0) == 3 and not _app.service.editing_draft["cards"].has("balance") and _app.service.draft_dirty(), "Legacy formation moves to side in a dirty draft")
+	_check(int(_app.service.editing_draft["format"]) == 2 and _app.service.editing_draft["sideCards"].get("hexagram", 0) == 3 and not _app.service.editing_draft["cards"].has("balance") and _app.service.editing_draft["baseFormation"] == "small-hexagram" and _app.service.draft_dirty(), "Legacy formation migrates to the surviving card ID in a dirty draft")
 	_app.navigate(&"deck_editor")
 	await _settle()
 	editor = _app.page as DeckEditorPage
 	editor._choose_section("sideCards")
 	await _settle()
-	_check(editor._built._hits.size() == 12, "Excess legacy side cards remain visible for repair")
+	_check(editor._built._hits.size() == 13, "Excess legacy side cards remain visible for repair")
+	editor._adjust("reservoir", -1, "sideCards")
 	editor._adjust("reservoir", -1, "sideCards")
 	editor._adjust("reservoir", -1, "sideCards")
 	_check(DeckUi.total(_app.service.editing_draft["sideCards"]) == 10, "Legacy excess can be removed without dropping hidden cards")

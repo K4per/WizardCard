@@ -18,19 +18,19 @@ SEAL_LABELS = {"ringBonus": "环位", "incomeBonus": "收入", "capacityBonus": 
 # Authored design hypotheses, deliberately separate from computed measurements.
 # New definitions receive an explicit unreviewed label instead of an invented score.
 REVIEWS = {
-    "balance": ("基础参照", "10容量、2基础总收入；扩展实例免费，但占2阵体。"),
-    "pentagram-of-life": ("基础参照", "7容量、3基础总收入；基础实例才减费，低容量是主要约束。"),
+    "hexagram": ("基础参照", "10容量、1基础收入；须以小六芒星和2魔素召唤，不能作为基础阵法。"),
+    "pentagram-of-life": ("资源观察", "扩展阵法：2阵体提供10容量和2收入；需均衡之六芒星与已解析法术，费用和替换机会共同决定价值。"),
     "reservoir": ("高优先级观察", "免费、1阵体换5容量且免对手销毁；会削弱荷载负担的定价。"),
-    "engeas-four-point-star": ("高优先级观察", "免费、1阵体、每轮+4收入并加速；不能选为基础。先测试设置费1或收入3。"),
-    "conduit": ("高优先级观察", "1费换每轮+2收入，可附在受保护基础阵法；先测试费用2。"),
-    "ring": ("组合观察", "返还实际设置费，不减少释放前峰值荷载；五芒星折扣会降低返还。"),
+    "engeas-four-point-star": ("调整后待测", "收入已从4调至3；仍以1阵体提供低阶法术加速，需验证产费与加速的组合强度。"),
+    "conduit": ("调整后待测", "附着费用已从1调至2；每轮收入+2仍可附着于受保护基础阵法。"),
+    "ring": ("组合观察", "返还实际设置费，不减少释放前峰值荷载；当前初始阵法不提供费用折扣。"),
     "uplift": ("分模式观察", "阵法模式以每轮-1收入换容量/位阶；法术模式总增费2换2力场伤害。"),
-    "recall": ("优先削弱", "1费抽2净赚1手牌，1临时荷载本回合到期；首轮候选费用2，费用3作上界对照。"),
+    "recall": ("调整后待测", "费用已从1调至2；抽2净赚1手牌并承担1临时荷载，需对局验证其周转速度。"),
     "arcane-recovery": ("高优先级观察", "0费产3，短期2荷载；与回想合用可净产2魔素且手牌净变化0。"),
     "true-strike": ("组合观察", "净手牌0；提高行动获取质量，必须与回想/复苏一起定价。"),
-    "fireball": ("伤害上沿", "通常4费10伤；五芒星3费10伤。比闪电束少1费、多2伤，类型不同。"),
-    "lightning-bolt": ("优先补偿", "通常5费8伤；火抗环境有优势。先测试伤害10或解析费用2，两者择一。"),
-    "ray-of-frost": ("低费参照", "通常2费3伤，五芒星1费3伤；低启动费、低位阶、非火伤。"),
+    "fireball": ("伤害上沿", "4费10伤；当前初始阵法不提供费用折扣。比闪电束少1费、多2伤，类型不同。"),
+    "lightning-bolt": ("优先补偿", "5费8伤；火抗环境有优势。先测试伤害10或解析费用2，两者择一。"),
+    "ray-of-frost": ("低费参照", "3费6伤；低启动费、低位阶、非火伤。"),
     "spark": ("即时参照", "1费2伤；无需阵法/解析等待，但消耗1张牌。"),
     "magic-missile": ("条件观察", "4费3伤加可选拆埋伏；空埋伏环境只剩低伤，快速释放有时机价值。"),
     "ward": ("优先补偿", "3费首次2伤；每次再付1魔素、累积1绑定荷载换1伤。先测试周期伤害2。"),
@@ -72,12 +72,12 @@ def draw_surplus(draws, cost, load, card_price, load_price, extra_discard=0):
     return (draws - 1 - extra_discard) * card_price - cost - load * load_price
 
 
-def card_row(card):
+def card_row(card, initial_formation_discount=False):
     kind = card["type"]
     cost = card.get("cost", 0)
     analytic = kind == "analytic"
     cast = card.get("castCost", 0) if analytic else 0
-    discount = min(1, cost) if analytic and card.get("school") in ("evocation", "conjuration") else 0
+    discount = min(1, cost) if analytic and initial_formation_discount and card.get("school") in ("evocation", "conjuration") else 0
     wait = card.get("analysisTurns", 1) if analytic else 0
     damage = amount(card, "damage")
     temp_self = amount(card, "temporary") if card.get("target") == "self" else 0
@@ -85,11 +85,11 @@ def card_row(card):
         "id": card["id"], "name": card["name"], "type": kind,
         "cost": cost, "castCost": cast,
         "totalMana": cost + cast,
-        "lifeBaseMana": cost + cast - discount,
-        "lifeBaseDiscount": discount,
+        "initialFormationMana": cost + cast - discount,
+        "initialFormationDiscount": discount,
         "analysisTurns": wait, "rank": card.get("rank", 0), "speed": card.get("speed", 1),
         "boundLoadBeforeRelease": cost + cast if kind in ("analytic", "word") else 0,
-        "lifeBaseBoundLoadBeforeRelease": cost + cast - discount if kind in ("analytic", "word") else 0,
+        "initialFormationBoundLoadBeforeRelease": cost + cast - discount if kind in ("analytic", "word") else 0,
         "firstDamage": damage, "damageTypes": sorted({e.get("damageType", "force") for e in card.get("effects", []) if e["kind"] == "damage"}),
         "healCeiling": amount(card, "heal"), "temporaryLifeCeiling": amount(card, "temporary_life"),
         "selfTemporaryLoad": temp_self, "independentLoad": amount(card, "independent"),
@@ -111,7 +111,11 @@ def card_row(card):
 
 def build_model(catalog, presets, params):
     cards = {c["id"]: c for c in catalog["cards"]}
-    rows = [card_row(c) for c in catalog["cards"]]
+    initial_discount = any(
+        c.get("baseEligible", False) and c.get("baseAnalysisDiscount", False)
+        for c in catalog["cards"]
+    )
+    rows = [card_row(c, initial_discount) for c in catalog["cards"]]
     draw_cards = [c for c in catalog["cards"] if amount(c, "draw")]
     draw_sensitivity = []
     for card in draw_cards:
@@ -142,7 +146,7 @@ def build_model(catalog, presets, params):
         c = cards["ward"]
         special["wardByMaintenances"] = [{"maintenanceCount": n, "mana": c["cost"] + c["castCost"] * (n + 1), "boundLoad": c["cost"] + c["castCost"] * (n + 1), "damage": amount(c, "damage") + n * amount(c, "damage", "onCast")} for n in range(4)]
     tracked = ["assets/cards.json", "assets/presets.json", "assets/deck.json", "docs/balance-parameters.json", "src/core/engine.cpp", "src/core/state.cpp", "src/content/content.cpp", "src/application/application.cpp"]
-    return {"modelVersion": params["modelVersion"], "rulesVersion": catalog["rulesVersion"], "cardSetVersion": catalog["cardSetVersion"], "parameters": params, "inputSha256": {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in tracked}, "cards": rows, "drawSensitivity": draw_sensitivity, "incomeEngines": engines, "presets": preset_rows, "specialCases": special, "limitations": ["静态分析和人工设计假设，不是对局胜率预测。", "折现收入假定存活与完全利用，未扣阵体/环位机会成本。", "五芒星费用只在对应基础宿主上适用；费用表不表示目标、容量及时点均可满足。", "绑定峰值为无符文单卡释放前值；独立负担与反制/加速的动态负担另算。"]}
+    return {"modelVersion": params["modelVersion"], "rulesVersion": catalog["rulesVersion"], "cardSetVersion": catalog["cardSetVersion"], "parameters": params, "inputSha256": {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in tracked}, "cards": rows, "drawSensitivity": draw_sensitivity, "incomeEngines": engines, "presets": preset_rows, "specialCases": special, "limitations": ["静态分析和人工设计假设，不是对局胜率预测。", "折现收入假定存活与完全利用，未扣阵体/环位机会成本。", "初始阵法折扣只按当前合格阵法定义计算；当前只有小六芒星且不提供折扣。", "绑定峰值为无符文单卡释放前值；独立负担与反制/加速的动态负担另算。"]}
 
 
 def fmt(n):
@@ -154,9 +158,9 @@ def render(model):
     names = {c["id"]: c["name"] for c in model["cards"]}
     for r in model["drawSensitivity"]:
         lines.append(f"| {names[r['id']]} | {r['cost']} | {fmt(r['centralSurplus'])} | {fmt(r['range'][0])}～{fmt(r['range'][1])} |")
-    lines += ["", f"## {len(model['cards'])}张卡的资源与评估", "", "费用‘普通/五芒星’为首次总支出；五芒星只指在基础实例上解析。阵法费用为扩展设置，基础实例开局免费。解析等待以自己的回合计；四角星低阶加速另算。言灵等待0不代表可从手牌响应，仍须合法设置/释放时点。绑定峰值为释放前，瞬时离场会清理，不能把它与永久负担相加定价。", ""]
+    lines += ["", f"## {len(model['cards'])}张卡的资源与评估", "", "费用‘普通/初始阵法’为首次总支出；阵法费用为扩展设置，初始阵法开局免费。当前唯一初始阵法小六芒星不提供费用折扣，因此两列相同。解析等待以自己的回合计；四角星低阶加速另算。言灵等待0不代表可从手牌响应，仍须合法设置/释放时点。绑定峰值为释放前，瞬时离场会清理，不能把它与永久负担相加定价。", ""]
     for kind, label in TYPES.items():
-        lines += [f"### {label}", "", "| 卡牌 | 首次费用 普通/五芒星 | 等待 | 绑定峰值 普通/五芒星 | 数值收益/约束 | 评估与候选 |", "|---|---:|---:|---:|---|---|"]
+        lines += [f"### {label}", "", "| 卡牌 | 首次费用 普通/初始阵法 | 等待 | 绑定峰值 普通/初始阵法 | 数值收益/约束 | 评估与候选 |", "|---|---:|---:|---:|---|---|"]
         for c in model["cards"]:
             if c["type"] != kind:
                 continue
@@ -172,7 +176,7 @@ def render(model):
                 parts.append("专注维持累积荷载")
             if c["duration"]:
                 parts.append(f"持续{c['duration']}（含首次）")
-            lines.append(f"| {c['name']} | {c['totalMana']}/{c['lifeBaseMana']} | {c['analysisTurns']} | {c['boundLoadBeforeRelease']}/{c['lifeBaseBoundLoadBeforeRelease']} | {'；'.join(parts) or '条件效果，见右列'} | **{c['assessment'][0]}**：{c['assessment'][1]} |")
+            lines.append(f"| {c['name']} | {c['totalMana']}/{c['initialFormationMana']} | {c['analysisTurns']} | {c['boundLoadBeforeRelease']}/{c['initialFormationBoundLoadBeforeRelease']} | {'；'.join(parts) or '条件效果，见右列'} | **{c['assessment'][0]}**：{c['assessment'][1]} |")
     lines += ["", "## 产费结构", "", f"以未来{model['parameters']['incomeHorizon']}次自己的准备阶段、每期折现{model['parameters']['futureDiscount']}计算；减去设置费及1张牌的先验价格。假定满额利用、宿主存活，未扣阵体机会成本；不是无条件强度评分。基础免费实例的开局价值不在此表中。", "", "| 扩展阵法/阵法符文 | 设置费 | 每轮新增收入 | 阵体 | 回本需后续收入次数 | 条件净现值 |", "|---|---:|---:|---:|---:|---:|"]
     for e in model["incomeEngines"]:
         lines.append(f"| {names[e['id']]} | {e['cost']} | {e['income']} | {e['body']} | {e['fullUseManaPaybackEvents']} | {fmt(e['conditionalNetPresentMana'])} |")
@@ -194,7 +198,7 @@ def main():
     catalog = read_json(ROOT / "assets/cards.json")
     presets = read_json(ROOT / "assets/presets.json")
     # Match loadPresets in src/application/application.cpp, including the default deck.
-    presets = [{"id": "default", "name": "示范卡组", "baseFormation": "balance", "cards": read_json(ROOT / "assets/deck.json")}] + presets
+    presets = [{"id": "default", "name": "示范卡组", "baseFormation": "small-hexagram", "cards": read_json(ROOT / "assets/deck.json")}] + presets
     params = read_json(ROOT / "docs/balance-parameters.json")
     model = build_model(catalog, presets, params)
     outputs = {"docs/reports/card-balance.json": json.dumps(model, ensure_ascii=False, indent=2) + "\n", "docs/reports/card-balance.md": render(model)}

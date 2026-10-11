@@ -1,6 +1,8 @@
 class_name UiFactory
 extends RefCounted
 
+static var reduced_motion: bool = false
+
 static func label(text: String, font_size: int = 18, wrap: bool = false) -> Label:
 	var result: Label = Label.new()
 	result.text = text
@@ -17,9 +19,36 @@ static func button(text: String, callback: Callable, primary: bool = false) -> B
 	result.text = text
 	result.custom_minimum_size.y = 52
 	result.pressed.connect(callback)
+	result.pressed.connect(_button_pressed.bind(result))
+	result.mouse_entered.connect(_button_hover.bind(result, true))
+	result.mouse_exited.connect(_button_hover.bind(result, false))
+	result.resized.connect(_button_resized.bind(result))
 	if primary:
 		ArtBank.primary(result)
 	return result
+
+static func _button_hover(button: Button, hovered: bool) -> void:
+	if not is_instance_valid(button):
+		return
+	var target: Color = Color(1.08, 1.04, 0.94, 1.0) if hovered and not button.disabled else Color.WHITE
+	if reduced_motion:
+		button.self_modulate = target
+		return
+	var tween: Tween = button.create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(button, "self_modulate", target, 0.12)
+
+static func _button_resized(button: Button) -> void:
+	button.pivot_offset = button.size * 0.5
+
+static func _button_pressed(button: Button) -> void:
+	if reduced_motion or button.disabled:
+		return
+	button.pivot_offset = button.size * 0.5
+	var tween: Tween = button.create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(button, "scale", Vector2(0.985, 0.985), 0.045)
+	tween.tween_property(button, "scale", Vector2.ONE, 0.11)
 
 static func margin(parent: Node, amount: int = 24) -> MarginContainer:
 	var result: MarginContainer = MarginContainer.new()

@@ -19,6 +19,7 @@ const PAGES: Dictionary[StringName, PackedScene] = {
 var service: FrontendService = FrontendService.new()
 var current_page: StringName = &""
 var page: Control
+var _audio: MatchFeedback
 @onready var _host: Control = %PageHost
 @onready var _background: TextureRect = %Background
 @onready var _dim: ColorRect = $Dim
@@ -45,6 +46,10 @@ func _ready() -> void:
 	get_window().min_size = Vector2i(1280, 720)
 	if service.initialize(assets, user_directory):
 		FrontendDisplay.apply(service.settings)
+	UiFactory.reduced_motion = bool(service.settings.get("reducedMotion", false))
+	_audio = MatchFeedback.new()
+	_audio.service = service
+	add_child(_audio)
 	navigate(&"menu")
 	_network_timer = Timer.new()
 	_network_timer.wait_time = 0.25
@@ -72,7 +77,39 @@ func navigate(destination: StringName) -> void:
 	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	page.connect(&"navigation_requested", navigate)
 	page.call(&"configure", service)
+	_host.modulate.a = 0.0 if not UiFactory.reduced_motion else 1.0
+	if not UiFactory.reduced_motion:
+		var tween: Tween = create_tween()
+		tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(_host, "modulate:a", 1.0, 0.16)
 	page_changed.emit(destination)
+
+func _input(event: InputEvent) -> void:
+	if _audio == null:
+		return
+	if event is InputEventMouseButton:
+		var mouse: InputEventMouseButton = event
+		if mouse.button_index != MOUSE_BUTTON_LEFT or mouse.pressed:
+			return
+		var hovered: Control = get_viewport().gui_get_hovered_control()
+		if hovered is FieldCanvas:
+			var canvas: FieldCanvas = hovered as FieldCanvas
+			if canvas.card_at(canvas.get_local_mouse_position()) != null:
+				_audio.play_ui("card_select.mp3")
+		elif hovered is DeckCardGrid:
+			var grid: DeckCardGrid = hovered as DeckCardGrid
+			if not grid.id_at(grid.get_local_mouse_position()).is_empty():
+				_audio.play_ui("card_select.mp3")
+		elif hovered is CardTile:
+			_audio.play_ui("card_select.mp3")
+		elif hovered is BaseButton and not (hovered as BaseButton).disabled:
+			_audio.play_ui("ui_click.mp3")
+		elif hovered is Slider:
+			_audio.play_ui("ui_click.mp3")
+	elif event.is_action_pressed(&"ui_accept"):
+		var focused: Control = get_viewport().gui_get_focus_owner()
+		if focused is BaseButton and not (focused as BaseButton).disabled:
+			_audio.play_ui("ui_click.mp3")
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"ui_cancel") and current_page != &"menu":

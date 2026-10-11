@@ -9,14 +9,14 @@ static func create(library: Array[CardPresentation]) -> FieldPresentation:
 	for card: CardPresentation in library:
 		by_id[card.definition_id] = card
 	var own: FormationPresentation = FormationPresentation.new()
-	own.card = _copy(by_id.get("balance", library[0]), "formation-own")
+	own.card = _copy(by_id.get("hexagram", library[0]), "formation-own")
 	own.ring_count = 4
 	own.occupants[0] = _copy(by_id.get("fireball", library[0]), "own-spell")
 	own.occupants[0].status = "解析中"
 	own.occupants[2] = CardPresentation.anonymous("own-covered")
 	field.own_formations.append(own)
 	var opponent: FormationPresentation = FormationPresentation.new()
-	opponent.card = _copy(by_id.get("balance", library[0]), "formation-opponent")
+	opponent.card = _copy(by_id.get("hexagram", library[0]), "formation-opponent")
 	opponent.ring_count = 6
 	opponent.occupants[1] = CardPresentation.anonymous("opponent-covered")
 	field.opponent_formations.append(opponent)

@@ -52,17 +52,33 @@ void choose(GameEngine &engine, CardId option) {
     send(engine, decision.player, Choose{decision.id, option});
 }
 }
-TEST_CASE("rc content is a numbered executable 46 card pool with legal 40 plus 10 presets", "[rc-content]") {
+TEST_CASE("rc content is a numbered executable 45 card pool with legal 40 plus 10 presets", "[rc-content]") {
     const auto content = rcContent();
-    REQUIRE(content.catalog.cards.size() == 46);
+    REQUIRE(content.catalog.cards.size() == 45);
     REQUIRE(content.catalog.alphaV2);
     REQUIRE(content.catalog.at("reservoir").name == "阿克乌姆之弧");
     REQUIRE(content.catalog.at("reservoir").level == 0);
+    REQUIRE_FALSE(content.catalog.cards.count("balance"));
+    REQUIRE(content.catalog.at("hexagram").name == "均衡之六芒星");
+    REQUIRE(content.catalog.at("hexagram").illustrationId == "balance");
+    REQUIRE(content.catalog.at("recall").cost == 2);
+    REQUIRE(content.catalog.at("conduit").cost == 2);
+    REQUIRE(content.catalog.at("engeas-four-point-star").income == 3);
     std::set<std::string> numbers;
     for (const auto &[id, card] : content.catalog.cards) {
         REQUIRE(card.number.size() == 6);
         REQUIRE(numbers.insert(card.number).second);
         REQUIRE_FALSE(card.illustrationId.empty());
+        const std::string prefix = card.type == CardType::Formation ? "01" :
+            card.type == CardType::Analytic ? "02" :
+            card.type == CardType::Word ? "03" :
+            card.type == CardType::Talisman ? "04" : "05";
+        REQUIRE(card.number.substr(0, 2) == prefix);
+    }
+    std::set<std::string> illustrations;
+    for (const auto &[id, card] : content.catalog.cards) {
+        INFO(id);
+        REQUIRE(illustrations.insert(card.illustrationId).second);
     }
     const auto presets = app::loadPresets(content, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     REQUIRE(presets.size() == 10);
@@ -74,6 +90,44 @@ TEST_CASE("rc content is a numbered executable 46 card pool with legal 40 plus 1
         MatchConfig config; config.players = {preset.deck, preset.deck};
         REQUIRE_NOTHROW(GameEngine(content.catalog, config));
     }
+}
+TEST_CASE("rc pentagram candidates consume exactly one hexagram and one ready spell", "[rc-content]") {
+    CardScenario f;
+    f.state.phase = Phase::Main;
+    f.state.phaseStep = PhaseStep::Body;
+    f.state.flow = Flow::Main;
+    f.state.phaseGate = 1;
+    f.state.cards.at(1).definition = "small-hexagram";
+    f.state.cards.at(1).base = true;
+    f.add(3, "hexagram", 0, Zone::Analysis);
+    f.add(4, "hexagram", 0, Zone::Analysis);
+    auto &ready = f.spell(5, "fireball");
+    ready.host = ready.sourceFormation = 3;
+    ready.ringIndex = Rules::freeRing(f.state, f.content.catalog, 3);
+    f.add(10, "pentagram-of-life", 0, Zone::SideDeck);
+
+    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    std::vector<SetFormation> candidates;
+    for (const auto &action : engine.viewFor(0).actions)
+        if (const auto *command = std::get_if<SetFormation>(&action.command);
+            command && command->card == 10 && command->replace == 0)
+            candidates.push_back(*command);
+
+    REQUIRE(candidates.size() == 2);
+    for (const auto &candidate : candidates) {
+        REQUIRE(candidate.materials.size() == 2);
+        REQUIRE(std::count(candidate.materials.begin(), candidate.materials.end(), CardId{3}) +
+                std::count(candidate.materials.begin(), candidate.materials.end(), CardId{4}) == 1);
+        REQUIRE(std::find(candidate.materials.begin(), candidate.materials.end(), CardId{5}) != candidate.materials.end());
+    }
+
+    const auto result = engine.submit(0, SetFormation{10, 0, {3, 5}});
+    INFO(result.error);
+    REQUIRE(result.accepted);
+    REQUIRE(engine.state().cards.at(3).zone == Zone::Ash);
+    REQUIRE(engine.state().cards.at(5).zone == Zone::Ash);
+    REQUIRE(engine.state().cards.at(4).zone == Zone::Analysis);
+    REQUIRE(engine.state().cards.at(10).zone == Zone::Analysis);
 }
 TEST_CASE("rc source formations modify healing damage and sunburst fees", "[rc-content]") {
     CardScenario f;

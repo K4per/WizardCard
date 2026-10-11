@@ -12,6 +12,7 @@
   "baseEligible": true,
   "cost": 0,
   "text": "该卡不能同时存在两张。",
+  "summonCondition": "2魔素。",
   "recipe": [
     {
       "kind": "mana",
@@ -21,6 +22,6 @@
   "traits": [
     "unique"
   ],
-  "number": "010005",
+  "number": "010004",
   "illustrationId": "v2-small-hexagram"
 }

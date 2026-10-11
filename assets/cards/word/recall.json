@@ -3,7 +3,7 @@
   "name": "奥术回想",
   "rarity": "common",
   "type": "word",
-  "cost": 1,
+  "cost": 2,
   "target": "self",
   "effects": [
     {

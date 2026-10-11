@@ -12,6 +12,7 @@
   "baseEligible": false,
   "cost": 0,
   "text": "将一张【灰烬区】的阵法卡加入副卡组。当该卡进入【灰烬区】时，盖伏放置。",
+  "summonCondition": "1魔素+已解析的【死灵】法术。",
   "recipe": [
     {
       "kind": "mana",
@@ -28,6 +29,6 @@
     "return_formation_from_ash",
     "self_ambush_on_leave"
   ],
-  "number": "010011",
+  "number": "010010",
   "illustrationId": "v2-ankh"
 }

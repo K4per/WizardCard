@@ -3,7 +3,7 @@
   "name": "逆三角星符",
   "rarity": "common",
   "type": "seal",
-  "cost": 1,
+  "cost": 2,
   "incomeBonus": 2,
   "text": "阵法附着：该阵法在抽牌阶段提供的魔素收入+2。法术附着：无额外效果。",
   "flavor": "聚能并非环。",

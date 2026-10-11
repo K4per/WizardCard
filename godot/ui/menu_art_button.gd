@@ -35,6 +35,8 @@ func _ready() -> void:
 	add_theme_color_override(&"font_outline_color", Color("08131f"))
 	add_theme_constant_override(&"outline_size", 2)
 	draw.connect(_refresh_skin)
+	pressed.connect(_animate_press)
+	resized.connect(func() -> void: pivot_offset = size * 0.5)
 	_refresh_skin()
 
 func _refresh_skin() -> void:
@@ -57,3 +59,12 @@ func _has_point(point: Vector2) -> bool:
 	if size.x <= 0 or size.y <= 0:
 		return false
 	return Geometry2D.is_point_in_polygon(point * DESIGN_SIZE / size, _hit_polygon)
+
+func _animate_press() -> void:
+	if UiFactory.reduced_motion or disabled:
+		return
+	pivot_offset = size * 0.5
+	var tween: Tween = create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "scale", Vector2(0.985, 0.985), 0.045)
+	tween.tween_property(self, "scale", Vector2.ONE, 0.11)

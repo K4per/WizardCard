@@ -133,6 +133,7 @@ func save() -> void:
 	if not service.apply_settings(next):
 		_notice.text = service.error
 		return
+	UiFactory.reduced_motion = bool(next.get("reducedMotion", false))
 	_notice.text = "已保存"
 	FrontendDisplay.apply(next)
 

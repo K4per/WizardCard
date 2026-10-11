@@ -5,33 +5,6 @@
   "mechanicsRevision": 2,
   "cards": [
     {
-      "id": "balance",
-      "name": "均衡之六芒星",
-      "rarity": "common",
-      "type": "formation",
-      "body": 2,
-      "capacity": 8,
-      "income": 1,
-      "rings": 3,
-      "maxRank": 1,
-      "text": "无特殊效果。",
-      "flavor": "魔法界最流行的一种法阵，你几乎可以在任何一种复杂术式中看到它的身影。六芒星诉说着它的信念：秩序不偏向任何一边。",
-      "speed": 1,
-      "cost": 0,
-      "castCost": 0,
-      "rank": 0,
-      "level": 1,
-      "baseEligible": true,
-      "recipe": [
-        {
-          "kind": "mana",
-          "amount": 2
-        }
-      ],
-      "number": "010001",
-      "illustrationId": "balance"
-    },
-    {
       "id": "fireball",
       "name": "火球术",
       "rarity": "rare",
@@ -109,7 +82,7 @@
       "name": "奥术回想",
       "rarity": "common",
       "type": "word",
-      "cost": 1,
+      "cost": 2,
       "target": "self",
       "effects": [
         {
@@ -309,7 +282,8 @@
           "amount": 2
         }
       ],
-      "number": "010002",
+      "summonCondition": "2张手牌。",
+      "number": "010001",
       "illustrationId": "reservoir"
     },
     {
@@ -317,7 +291,7 @@
       "name": "逆三角星符",
       "rarity": "common",
       "type": "seal",
-      "cost": 1,
+      "cost": 2,
       "incomeBonus": 2,
       "text": "阵法附着：该阵法在抽牌阶段提供的魔素收入+2。法术附着：无额外效果。",
       "flavor": "聚能并非环。",
@@ -655,13 +629,14 @@
           "readyOnly": true
         }
       ],
+      "summonCondition": "【均衡之六芒星】+已解析的法术。",
       "onPrepare": [
         {
           "kind": "independent",
           "amount": 1
         }
       ],
-      "number": "010003",
+      "number": "010002",
       "illustrationId": "pentagram-of-life"
     },
     {
@@ -672,7 +647,7 @@
       "cost": 0,
       "body": 1,
       "capacity": 2,
-      "income": 4,
+      "income": 3,
       "rings": 1,
       "maxRank": 3,
       "quickRankOne": true,
@@ -694,7 +669,8 @@
           "readyOnly": true
         }
       ],
-      "number": "010004",
+      "summonCondition": "3魔素+已解析的法术。",
+      "number": "010003",
       "illustrationId": "engeas-four-point-star"
     },
     {
@@ -1105,6 +1081,7 @@
       "baseEligible": true,
       "cost": 0,
       "text": "该卡不能同时存在两张。",
+      "summonCondition": "2魔素。",
       "recipe": [
         {
           "kind": "mana",
@@ -1114,12 +1091,12 @@
       "traits": [
         "unique"
       ],
-      "number": "010005",
+      "number": "010004",
       "illustrationId": "v2-small-hexagram"
     },
     {
       "id": "hexagram",
-      "name": "六芒星",
+      "name": "均衡之六芒星",
       "type": "formation",
       "rarity": "uncommon",
       "level": 3,
@@ -1131,6 +1108,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "该卡不能被效果破坏。",
+      "summonCondition": "【小六芒星】+2魔素。",
       "recipe": [
         {
           "kind": "sacrifice_formation",
@@ -1145,7 +1123,8 @@
       "traits": [
         "effect_indestructible"
       ],
-      "number": "010006",
+      "flavor": "魔法界最流行的一种法阵，你几乎可以在任何一种复杂术式中看到它的身影。六芒星诉说着它的信念：秩序不偏向任何一边。",
+      "number": "010005",
       "illustrationId": "balance"
     },
     {
@@ -1162,6 +1141,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "该卡不能被效果破坏。自己每一个法术解析完成，清除一点荷载。",
+      "summonCondition": "【小六芒星】+【均衡之六芒星】",
       "recipe": [
         {
           "kind": "sacrifice_formation",
@@ -1178,7 +1158,7 @@
         "effect_indestructible",
         "clear_load_on_analysis"
       ],
-      "number": "010007",
+      "number": "010006",
       "illustrationId": "v2-octagram"
     },
     {
@@ -1195,6 +1175,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "该卡不受其他卡效果影响。每回合结束时，将场上所有盖伏放置的卡翻开。",
+      "summonCondition": "【五芒星】+【八芒星】",
       "recipe": [
         {
           "kind": "sacrifice_formation",
@@ -1215,7 +1196,7 @@
           "kind": "reveal_all_ambush"
         }
       ],
-      "number": "010008",
+      "number": "010007",
       "illustrationId": "v2-sun"
     },
     {
@@ -1232,6 +1213,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "于该法阵释放的法术，回复生命时额外回复1点生命。",
+      "summonCondition": "1魔素+【死灵】法术。",
       "recipe": [
         {
           "kind": "mana",
@@ -1246,7 +1228,7 @@
       "traits": [
         "host_heal_plus_one"
       ],
-      "number": "010009",
+      "number": "010008",
       "illustrationId": "v2-upright-cross"
     },
     {
@@ -1263,6 +1245,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "于该法阵施法时，失去一点生命，获得两点临时生命。",
+      "summonCondition": "1魔素+【死灵】法术。",
       "recipe": [
         {
           "kind": "mana",
@@ -1277,7 +1260,7 @@
       "traits": [
         "host_cast_life_for_temporary"
       ],
-      "number": "010010",
+      "number": "010009",
       "illustrationId": "v2-inverted-cross"
     },
     {
@@ -1294,6 +1277,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "将一张【灰烬区】的阵法卡加入副卡组。当该卡进入【灰烬区】时，盖伏放置。",
+      "summonCondition": "1魔素+已解析的【死灵】法术。",
       "recipe": [
         {
           "kind": "mana",
@@ -1310,7 +1294,7 @@
         "return_formation_from_ash",
         "self_ambush_on_leave"
       ],
-      "number": "010011",
+      "number": "010010",
       "illustrationId": "v2-ankh"
     },
     {
@@ -1327,6 +1311,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "在该法阵解析的【塑能】法术伤害+1。",
+      "summonCondition": "1魔素+已解析的【塑能】法术。",
       "recipe": [
         {
           "kind": "mana",
@@ -1342,7 +1327,7 @@
       "traits": [
         "host_evocation_damage_plus_one"
       ],
-      "number": "010012",
+      "number": "010011",
       "illustrationId": "v2-elemental-ring"
     },
     {
@@ -1359,6 +1344,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "该法阵不能同时解析相同派系的法术。",
+      "summonCondition": "已解析的不同派系法术×2。",
       "recipe": [
         {
           "kind": "sacrifice_spell",
@@ -1370,7 +1356,7 @@
       "traits": [
         "distinct_host_schools"
       ],
-      "number": "010013",
+      "number": "010012",
       "illustrationId": "v2-chaos-ring"
     },
     {
@@ -1387,6 +1373,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "该法阵只能解析火焰伤害法术。每当自己的法术从【施法区】进入【灰烬区】时，对对方造成1点火焰伤害。",
+      "summonCondition": "已解析的火焰伤害法术×2。",
       "recipe": [
         {
           "kind": "sacrifice_spell",
@@ -1399,7 +1386,7 @@
         "host_fire_only",
         "ping_on_spell_leave"
       ],
-      "number": "010014",
+      "number": "010013",
       "illustrationId": "v2-sulfur"
     }
   ]

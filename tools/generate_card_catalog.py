@@ -18,7 +18,7 @@ def load(path):
 def attributes(card):
     pairs = [("编号", card["number"]), ("类型", TYPES[card["type"]])]
     if card["type"] == "formation":
-        pairs += [("等级", card["level"]), ("阵体", card["body"]), ("荷载上限", card["capacity"]), ("魔素收入", card["income"]), ("环位", card["rings"]), ("承载位阶", card["maxRank"])]
+        pairs += [("等级", card["level"]), ("阵体", card["body"]), ("荷载上限", card["capacity"]), ("魔素收入", card["income"]), ("环位", card["rings"]), ("承载位阶", card["maxRank"]), ("召唤条件", card.get("summonCondition", "待补充"))]
     elif card["type"] == "seal":
         pairs += [("附着费用", card["cost"])]
     else:

@@ -12,6 +12,7 @@
   "baseEligible": false,
   "cost": 0,
   "text": "该卡不受其他卡效果影响。每回合结束时，将场上所有盖伏放置的卡翻开。",
+  "summonCondition": "【五芒星】+【八芒星】",
   "recipe": [
     {
       "kind": "sacrifice_formation",
@@ -32,6 +33,6 @@
       "kind": "reveal_all_ambush"
     }
   ],
-  "number": "010008",
+  "number": "010007",
   "illustrationId": "v2-sun"
 }

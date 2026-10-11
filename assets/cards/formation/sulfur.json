@@ -12,6 +12,7 @@
   "baseEligible": false,
   "cost": 0,
   "text": "该法阵只能解析火焰伤害法术。每当自己的法术从【施法区】进入【灰烬区】时，对对方造成1点火焰伤害。",
+  "summonCondition": "已解析的火焰伤害法术×2。",
   "recipe": [
     {
       "kind": "sacrifice_spell",
@@ -24,6 +25,6 @@
     "host_fire_only",
     "ping_on_spell_leave"
   ],
-  "number": "010014",
+  "number": "010013",
   "illustrationId": "v2-sulfur"
 }

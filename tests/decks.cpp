@@ -11,6 +11,8 @@ TEST_CASE("new construction drafts persist 40 main and 10 formation side cards a
     draft.id = "construction-v2";
     draft.name = "新版四十与十";
     draft.format = 2;
+    draft.baseFormation = "small-hexagram";
+    draft.sideCards[draft.baseFormation] = 1;
     for (const auto &[id, card] : content.catalog.cards) {
         const bool side = card.type == CardType::Formation;
         const int remaining = side ? 10 - draft.sideSize() : 40 - draft.size();
@@ -29,7 +31,7 @@ TEST_CASE("new construction drafts persist 40 main and 10 formation side cards a
     misplaced.sideCards["fireball"] = 1;
     REQUIRE_FALSE(constructionProblems(content.catalog, misplaced).empty());
     misplaced = draft;
-    misplaced.sideCards.erase("balance");
+    misplaced.sideCards.erase("small-hexagram");
     REQUIRE_FALSE(constructionProblems(content.catalog, misplaced).empty());
     auto invalid = encodeDraft(draft);
     invalid["sideCards"]["balance"] = 1.5;

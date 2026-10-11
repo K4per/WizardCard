@@ -12,6 +12,7 @@
   "baseEligible": false,
   "cost": 0,
   "text": "于该法阵施法时，失去一点生命，获得两点临时生命。",
+  "summonCondition": "1魔素+【死灵】法术。",
   "recipe": [
     {
       "kind": "mana",
@@ -26,6 +27,6 @@
   "traits": [
     "host_cast_life_for_temporary"
   ],
-  "number": "010010",
+  "number": "010009",
   "illustrationId": "v2-inverted-cross"
 }

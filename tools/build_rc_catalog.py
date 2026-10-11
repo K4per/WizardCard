@@ -66,6 +66,8 @@ def migrated_cards() -> list[dict]:
     overrides = {
         "fireball": {"rank": 3, "cost": 3, "castCost": 1, "effects": [effect("damage", 10, damageType="fire")],
                      "text": "对一个目标造成10点火焰伤害。"},
+        "recall": {"cost": 2},
+        "conduit": {"cost": 2},
         "ray-of-frost": {"rank": 2, "cost": 2, "castCost": 1, "effects": [effect("damage", 6, damageType="cold"), effect("delay_enemy_analysis", 1)],
                          "text": "对对方玩家造成6点寒冷伤害。选择对方一张解析法术，使其解析进度后退1回合。"},
         "lightning-bolt": {"rank": 3, "effects": [effect("damage", 8, damageType="thunder"), effect("conceal_enemy_spell")],
@@ -92,7 +94,9 @@ def migrated_cards() -> list[dict]:
         "reservoir": {"name": "阿克乌姆之弧", "level": 1, "body": 1, "capacity": 15,
                       "income": 0, "rings": 0, "maxRank": 1, "opponentDestroyProtected": False,
                       "baseEligible": False, "recipe": [{"kind": "discard_hand", "amount": 2}],
-                      "text": "以两张手牌为材料设置。没有环位；无特殊效果。"},
+                      "summonCondition": "2张手牌。", "text": "以两张手牌为材料设置。没有环位；无特殊效果。"},
+        "pentagram-of-life": {"summonCondition": "【均衡之六芒星】+已解析的法术。"},
+        "engeas-four-point-star": {"summonCondition": "3魔素+已解析的法术。"},
         "unravel": {"text": "指定对方场上一张没有承载法术的阵法。将己方副卡组一张阵法送入灰烬区，然后销毁目标阵法。"},
     }
     for identifier, change in overrides.items():
@@ -133,6 +137,15 @@ def migrated_cards() -> list[dict]:
     by_id["barbs"]["responses"][0]["name"] = "银光反制"
     by_id["shield"]["responses"][0]["name"] = "降低法术伤害"
     by_id["shield"]["responses"][0]["eventOwner"] = "opponent"
+
+    # The old balance formation and the reviewed hexagram represented the same
+    # six-point formation in the release pool. Keep one authoritative card ID;
+    # the newer definition keeps its mechanics and illustration while inheriting
+    # the established name and flavor text from the old card.
+    # Drop the legacy definition from the generated list. The reviewed
+    # formation with id ``hexagram`` receives the inherited display text in
+    # ``fresh_formations`` below.
+    by_id.pop("balance")
     # Old abilities remain mechanically active, with 2.0 terminology.
     for card in old:
         if card["id"] not in overrides and card["type"] in ("word", "talisman"):
@@ -152,12 +165,11 @@ def migrated_cards() -> list[dict]:
                               {"kind": "sacrifice_spell", "amount": 1, "readyOnly": True}]
             card["onPrepare"] = [effect("independent", 1)]
             card["text"] = "己方准备阶段开始时，自己获得1点独立荷载。"
-        if card["id"] == "balance":
-            card["recipe"] = [{"kind": "mana", "amount": 2}]
         if card["id"] == "engeas-four-point-star":
+            card["income"] = 3
             card["recipe"] = [{"kind": "mana", "amount": 3},
                               {"kind": "sacrifice_spell", "amount": 1, "readyOnly": True}]
-    return old
+    return [card for card in old if card["id"] != "balance"]
 
 
 NEW_SPELLS = {
@@ -261,8 +273,12 @@ def fresh_formations() -> list[dict]:
             "rings": preview["rings"], "capacity": preview["capacity"],
             "income": preview["income"], "maxRank": preview["level"],
             "baseEligible": preview["level"] == 1 and preview["rings"] > 0,
-            "cost": 0, "text": preview["text"], **FORMATION_DATA[identifier],
+            "cost": 0, "text": preview["text"], "summonCondition": preview["summonCondition"],
+            **FORMATION_DATA[identifier],
         }
+        if identifier == "hexagram":
+            card["name"] = "均衡之六芒星"
+            card["flavor"] = "魔法界最流行的一种法阵，你几乎可以在任何一种复杂术式中看到它的身影。六芒星诉说着它的信念：秩序不偏向任何一边。"
         cards.append(card)
     return cards
 
@@ -297,10 +313,10 @@ def build() -> tuple[dict, dict, dict, dict]:
         presets.append({"id": preset_id, "name": preset_name, "description": p.get("description", ""),
                         "baseFormation": p["initialFormation"], "cards": p["main"], "sideCards": p["side"]})
     side_cards = [{"id": identifier, "count": amount} for identifier, amount in
-                  [("balance", 1), ("small-hexagram", 2), ("hexagram", 2), ("pentagram-of-life", 1),
+                  [("small-hexagram", 3), ("hexagram", 2), ("pentagram-of-life", 1),
                    ("octagram", 1), ("reservoir", 1), ("engeas-four-point-star", 1), ("elemental-ring", 1)]]
     for preset in presets:
-        preset["baseFormation"] = "balance"
+        preset["baseFormation"] = "small-hexagram"
         preset["sideCards"] = side_cards
     # Representative default: 40 main cards, 10 side cards, initial formation in side deck.
     deck = presets[0]["cards"]

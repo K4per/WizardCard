@@ -8,10 +8,6 @@
   },
   "definitions": [
     {
-      "id": "balance",
-      "file": "cards/formation/balance.json"
-    },
-    {
       "id": "fireball",
       "file": "cards/analytic/fireball.json"
     },

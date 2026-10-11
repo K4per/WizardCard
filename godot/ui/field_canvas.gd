@@ -5,6 +5,7 @@ signal card_selected(card: CardPresentation)
 signal selection_cleared()
 signal hand_toggle_requested()
 signal placement_requested(card_id: String, host_id: String, ring_index: int)
+signal zone_clicked(kind: String, owner: int)
 signal layout_changed()
 
 var field: FieldPresentation = FieldPresentation.new()
@@ -12,6 +13,7 @@ var privacy: bool = false
 var hand_collapsed: bool = false
 var _card_hits: Array[Dictionary] = []
 var _ring_hits: Array[Dictionary] = []
+var _zone_hits: Array[Dictionary] = []
 var _hover_id: String = ""
 var _keyboard_index: int = -1
 var _own_start: int = 0
@@ -61,6 +63,7 @@ func set_privacy(enabled: bool) -> void:
 	_drag_active = false
 	_card_hits.clear()
 	_ring_hits.clear()
+	_zone_hits.clear()
 	_keyboard_index = -1
 	tooltip_text = ""
 	queue_redraw()
@@ -73,6 +76,7 @@ func _clear_hover() -> void:
 func _draw() -> void:
 	_card_hits.clear()
 	_ring_hits.clear()
+	_zone_hits.clear()
 	_draw_cover(BattleArt.texture("dungeon_background"), Rect2(Vector2.ZERO, size), Color.WHITE)
 	draw_rect(Rect2(Vector2.ZERO, size), Color(0.031, 0.075, 0.122, 0.18))
 	if privacy:
@@ -90,10 +94,10 @@ func _draw() -> void:
 	_draw_formations(field.own_formations, _own_region, _own_start, true)
 	_draw_casting(field.opponent_casting, field.opponent_casting_slots, _opponent_casting_region, false)
 	_draw_casting(field.own_casting, field.own_casting_slots, _own_casting_region, true)
-	_draw_decks(size.x * 0.015, size.y * 0.14, field.opponent_side_count, field.opponent_deck_count)
-	_draw_decks(size.x * 0.015, size.y * 0.54, field.own_side_count, field.own_deck_count)
-	_draw_ash(size.x * 0.92, size.y * 0.23, field.opponent_ash_count)
-	_draw_ash(size.x * 0.92, size.y * 0.66, field.own_ash_count)
+	_draw_decks(size.x * 0.015, size.y * 0.14, field.opponent_side_count, field.opponent_deck_count, 1)
+	_draw_decks(size.x * 0.015, size.y * 0.54, field.own_side_count, field.own_deck_count, 0)
+	_draw_ash(size.x * 0.92, size.y * 0.23, field.opponent_ash_count, 1)
+	_draw_ash(size.x * 0.92, size.y * 0.66, field.own_ash_count, 0)
 	_draw_hud(Rect2(size.x * 0.76, 12, size.x * 0.23, 96), false)
 	_draw_hud(Rect2(18, size.y - 110, size.x * 0.23, 96), true)
 	var phase: Rect2 = Rect2(size.x * 0.41, 4, size.x * 0.21, 48)
@@ -180,19 +184,23 @@ func _draw_casting(cards: Array[CardPresentation], _slots: int, region: Rect2, o
 	for index: int in range(cards.size()):
 		_draw_card(cards[index], Rect2(region.position + Vector2(32 + index * (side + 16), (region.size.y - side) * 0.5), Vector2.ONE * side))
 
-func _draw_decks(x: float, y: float, side: int, main: int) -> void:
+func _draw_decks(x: float, y: float, side: int, main: int, owner: int) -> void:
 	# Side deck above main deck; only remaining counts are displayed.
 	for index: int in range(2):
 		var extent: float = minf(92, size.y * 0.10)
 		var point: Vector2 = Vector2(x, y + index * (extent + 18))
-		draw_texture_rect(BattleArt.texture("side_deck_plate" if index == 0 else "main_deck_plate"), Rect2(point, Vector2.ONE * extent), false)
+		var rect: Rect2 = Rect2(point, Vector2.ONE * extent)
+		_zone_hits.append({"kind": "side_deck" if index == 0 else "main_deck", "owner": owner, "rect": rect})
+		draw_texture_rect(BattleArt.texture("side_deck_plate" if index == 0 else "main_deck_plate"), rect, false)
 		draw_texture_rect(ArtBank.texture("c2d.card.back.ai"), CardPainter.fitted_rect(Rect2(point + Vector2(12, 9), Vector2(extent - 34, extent - 22))), false)
 		var label: String = ("副卡组 %d" % side) if index == 0 else ("牌库 %d" % main)
 		_draw_label(label, Rect2(point + Vector2(extent + 8, extent * 0.5 - 16), Vector2(128, 32)), 18, Color("d9e4da"))
 
-func _draw_ash(x: float, y: float, count: int) -> void:
+func _draw_ash(x: float, y: float, count: int, owner: int) -> void:
 	var extent: float = minf(76, size.y * 0.09)
-	draw_texture_rect(BattleArt.texture("ash_plate"), Rect2(x, y, extent, extent), false)
+	var rect: Rect2 = Rect2(x, y, extent, extent)
+	_zone_hits.append({"kind": "ash", "owner": owner, "rect": rect})
+	draw_texture_rect(BattleArt.texture("ash_plate"), rect, false)
 	_draw_label("灰烬区 %d" % count, Rect2(x - 12, y + extent + 4, minf(112, size.x - x + 4), 32), 18, CardPainter.PAPER, true)
 
 func _draw_hud(rect: Rect2, own: bool) -> void:
@@ -314,6 +322,12 @@ func _gui_input(event: InputEvent) -> void:
 				var selected: CardPresentation = card_at(mouse.position)
 				if selected != null:
 					card_selected.emit(selected)
+				else:
+					for hit: Dictionary in _zone_hits:
+						if hit["rect"].has_point(mouse.position):
+							zone_clicked.emit(str(hit["kind"]), int(hit["owner"]))
+							accept_event()
+							break
 			if not mouse.pressed:
 				_dragged = null
 				_drag_active = false
@@ -339,3 +353,10 @@ func _scroll_formations(point: Vector2, direction: int) -> void:
 		_opponent_start = clampi(_opponent_start + direction, 0, maxi(0, field.opponent_formations.size() - capacity))
 	_keyboard_index = -1
 	_clear_hover()
+
+func zone_at(point: Vector2) -> Dictionary:
+	for index: int in range(_zone_hits.size() - 1, -1, -1):
+		var hit: Dictionary = _zone_hits[index]
+		if hit["rect"].has_point(point):
+			return hit
+	return {}

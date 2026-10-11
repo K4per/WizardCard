@@ -62,6 +62,9 @@ func configure(value: DecisionPresentation) -> void:
 	_counter = UiFactory.label("", 16)
 	heading.add_child(_counter)
 	_column.add_child(UiFactory.label(value.description, 16, true))
+	if value.response_mode:
+		_build_response_choices(value)
+		return
 	var content: HBoxContainer = HBoxContainer.new()
 	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	content.add_theme_constant_override(&"separation", 32)
@@ -141,6 +144,56 @@ func configure(value: DecisionPresentation) -> void:
 	_cancel.visible = value.may_cancel
 	actions.add_child(_cancel)
 	_refresh()
+
+func _build_response_choices(value: DecisionPresentation) -> void:
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_candidate_scroll = scroll
+	_column.add_child(scroll)
+	var choices: HBoxContainer = HBoxContainer.new()
+	choices.add_theme_constant_override(&"separation", 10)
+	scroll.add_child(choices)
+	for choice: DecisionChoice in value.choices:
+		var option: Button = Button.new()
+		option.custom_minimum_size = Vector2(148, 212) if choice.card != null else Vector2(164, 96)
+		option.disabled = not choice.available
+		option.tooltip_text = choice.label
+		option.pressed.connect(_on_response_choice.bind(choice.id, value.generation, value.revision, value.decision_id))
+		BattleArt.button(option)
+		choices.add_child(option)
+		if choice.card != null:
+			var face: CardFace = CardFace.new()
+			face.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			option.add_child(face)
+			face.position = Vector2(14, 8)
+			face.size = Vector2(120, 160)
+			face.configure(choice.card)
+			var caption: Label = UiFactory.label(choice.card.title, 13, true)
+			caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			caption.position = Vector2(8, 170)
+			caption.size = Vector2(132, 34)
+			option.add_child(caption)
+		else:
+			var pass_label: Label = UiFactory.label(choice.label, 17, true)
+			pass_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			pass_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			pass_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			pass_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			option.add_child(pass_label)
+	var hint: Label = UiFactory.label("选择响应卡立即提交；也可选择不响应。", 13, true)
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_column.add_child(hint)
+	_confirm = null
+	_cancel = null
+
+func _on_response_choice(id: String, generation: String, revision: String, decision_id: String) -> void:
+	if not _current(generation, revision, decision_id):
+		return
+	var selected: Array[String] = [id]
+	confirmed.emit(generation, revision, decision_id, selected)
 
 func _current(generation: String, revision: String, decision_id: String) -> bool:
 	return request != null and request.generation == generation and request.revision == revision and request.decision_id == decision_id

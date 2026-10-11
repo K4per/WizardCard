@@ -56,7 +56,6 @@ func _ready() -> void:
 	_actions = CardActionMenu.new()
 	add_child(_actions)
 	_actions.size = Vector2(300, 70)
-	_actions.detail_requested.connect(_show_active_detail)
 	_actions.effect_preview_requested.connect(_show_decision)
 	_actions.hide()
 	canvas.resized.connect(_position_actions)
@@ -109,10 +108,6 @@ func _show_detail(card: CardPresentation) -> void:
 	_detail.configure(card)
 	_detail.show()
 	_position_actions()
-
-func _show_active_detail() -> void:
-	if _active_card != null:
-		_show_detail(_active_card)
 
 func _position_actions() -> void:
 	if _active_card == null or _actions == null or canvas.privacy or _decision.visible:

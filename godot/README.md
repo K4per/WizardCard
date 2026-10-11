@@ -1,7 +1,7 @@
 # Godot 2D Alpha v2 integration
 
 This directory contains the native bridge and the runnable 2D frontend for
-`2.0.0-rc.1`: menu, the 46-card library, persisted settings, deck
+`2.0.0-rc.1`: menu, the 45-card library, persisted settings, deck
 construction/editing, local match flows, replay and a field showcase. The
 showcase remains a presentation fixture, while match pages use the native
 session service. Approved C pixel art and preserved illustrations are copied
@@ -38,7 +38,7 @@ visual/audio and physical LAN acceptance belong to the release-candidate gate.
   of identity before textures, tooltips, details and drag previews see them.
 - `pages/`: independent menu, library, settings, deck list/editor, match,
   replay, rooms and field scenes. The official library reads the native
-  46-card `assets/cards.json` catalogue. `data/card-previews-v2.json` contains
+  45-card `assets/cards.json` catalogue. `data/card-previews-v2.json` contains
   32 display-only design previews and cannot enter native deck drafts.
 - `ui/`: shared pixel theme, art cache, card drawing/detail, decision panel and
   field canvas. Cards and rings on the battlefield are drawn by one CanvasItem;

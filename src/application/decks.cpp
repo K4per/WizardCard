@@ -359,6 +359,8 @@ DeckDraft DeckLibrary::create(const std::string &name) const {
     DeckDraft d;
     d.name = name;
     d.format = catalog_.usesAlphaV2() ? 2 : 1;
+    if (catalog_.usesAlphaV2())
+        d.baseFormation = "small-hexagram";
     do {
         d.id = "deck-" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) + "-" +
                std::to_string(++serial);

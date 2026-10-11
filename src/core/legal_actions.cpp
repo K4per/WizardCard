@@ -161,12 +161,20 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                         pool.push_back(materialId);
                 auto choose = [&](auto &&self, std::size_t pos) -> void {
                     if (static_cast<int>(selected.size()) == count) {
-                        add("设置阵法 " + name, id, 0, SetFormation{id, 0, selected});
+                        auto add_formation = [&](CardId replace) {
+                            auto trial = *this;
+                            if (!trial.executeV2(p, SetFormation{id, replace, selected}).empty()) return;
+                            if (!replace)
+                                add("设置阵法 " + name, id, 0, SetFormation{id, 0, selected});
+                            else
+                                add("替换 " + catalog_.at(s.cards.at(replace).definition).name + " 为 " + name,
+                                    id, replace, SetFormation{id, replace, selected});
+                        };
+                        add_formation(0);
                         for (const auto &[host, formation] : s.cards)
                             if (formation.owner == p && formation.zone == Zone::Analysis &&
                                 catalog_.at(formation.definition).type == CardType::Formation)
-                                add("替换 " + catalog_.at(formation.definition).name + " 为 " + name,
-                                    id, host, SetFormation{id, host, selected});
+                                add_formation(host);
                         return;
                     }
                     for (std::size_t i = pos; i < pool.size(); ++i) {

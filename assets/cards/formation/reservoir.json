@@ -23,6 +23,7 @@
       "amount": 2
     }
   ],
-  "number": "010002",
+  "summonCondition": "2张手牌。",
+  "number": "010001",
   "illustrationId": "reservoir"
 }

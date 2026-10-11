@@ -27,8 +27,8 @@ MatchConfig tutorialConfiguration(const Content &content) {
         c.seed = 5; // Recorded shuffle: learner opens fireball + conduit, opponent opens shield.
         for (auto &player : c.players) {
             player.baseFormation = "small-hexagram";
-            player.sideDeck = {"small-hexagram", "small-hexagram", "hexagram", "hexagram", "hexagram",
-                "balance", "balance", "reservoir", "reservoir", "elemental-ring"};
+            player.sideDeck = {"small-hexagram", "small-hexagram", "small-hexagram", "hexagram", "hexagram",
+                "hexagram", "reservoir", "reservoir", "elemental-ring", "engeas-four-point-star"};
             for (const auto *id : {"fireball", "conduit", "shield", "spark", "recall", "clarity", "ring",
                                   "aid", "mend", "ward", "ray-of-frost", "unravel", "arcane-recovery"})
                 player.cards.insert(player.cards.end(), 3, id);

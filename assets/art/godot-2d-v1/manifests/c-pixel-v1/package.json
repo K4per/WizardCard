@@ -1,0 +1,7 @@
+{
+  "file": "build/art-delivery/WizardCard-C-2D-v1.zip",
+  "bytes": 77770585,
+  "sha256": "9c598b496dc7a35893ae7436a7d73890a4b8759aec9bb9b45eb40076837d6364",
+  "addonRoot": "extract into project root; includes referenced illustration and licensed font files",
+  "derivedArtifact": true
+}

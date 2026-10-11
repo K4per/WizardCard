@@ -1,0 +1,37 @@
+{
+  "id": "sun",
+  "name": "太阳",
+  "type": "formation",
+  "rarity": "legendary",
+  "level": 7,
+  "body": 4,
+  "rings": 7,
+  "capacity": 25,
+  "income": 4,
+  "maxRank": 7,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "该卡不受其他卡效果影响。每回合结束时，将场上所有盖伏放置的卡翻开。",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "pentagram-of-life"
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "octagram"
+    }
+  ],
+  "traits": [
+    "effect_immune"
+  ],
+  "onEnd": [
+    {
+      "kind": "reveal_all_ambush"
+    }
+  ],
+  "number": "010008",
+  "illustrationId": "v2-sun"
+}

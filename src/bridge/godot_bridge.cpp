@@ -1,4 +1,5 @@
 #include "wizard/bridge.hpp"
+#include "wizard/network.hpp"
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/godot.hpp>
@@ -71,7 +72,7 @@ template<class F> Dictionary bridgeCall(F &&function) {
 
 class WizardBridge : public godot::RefCounted {
     GDCLASS(WizardBridge, godot::RefCounted)
-    wizard::bridge::LocalSession session_;
+    wizard::bridge::LocalSession session_{wizard::net::createRoom};
   protected:
     static void _bind_methods() {
         using namespace godot;
@@ -89,8 +90,10 @@ class WizardBridge : public godot::RefCounted {
         ClassDB::bind_method(D_METHOD("release_session"), &WizardBridge::release_session);
         ClassDB::bind_method(D_METHOD("read_replay_plan", "path"), &WizardBridge::read_replay_plan);
         ClassDB::bind_method(D_METHOD("verify_replay", "path"), &WizardBridge::verify_replay);
+        ClassDB::bind_method(D_METHOD("replay_frame", "path", "step", "viewer"), &WizardBridge::replay_frame);
         ClassDB::bind_method(D_METHOD("library"), &WizardBridge::library);
         ClassDB::bind_method(D_METHOD("create_draft", "preset"), &WizardBridge::create_draft);
+        ClassDB::bind_method(D_METHOD("create_construction_draft", "preset"), &WizardBridge::create_construction_draft);
         ClassDB::bind_method(D_METHOD("validate_draft", "draft"), &WizardBridge::validate_draft);
         ClassDB::bind_method(D_METHOD("save_draft", "draft"), &WizardBridge::save_draft);
         ClassDB::bind_method(D_METHOD("erase_draft", "id"), &WizardBridge::erase_draft);
@@ -98,6 +101,8 @@ class WizardBridge : public godot::RefCounted {
         ClassDB::bind_method(D_METHOD("apply_settings", "settings"), &WizardBridge::apply_settings);
         ClassDB::bind_method(D_METHOD("leave_match", "viewer"), &WizardBridge::leave_match);
         ClassDB::bind_method(D_METHOD("interact", "viewer", "request", "generation", "revision"), &WizardBridge::interact);
+        ClassDB::bind_method(D_METHOD("network_request", "request"), &WizardBridge::network_request);
+        ClassDB::bind_method(D_METHOD("poll_network"), &WizardBridge::poll_network);
     }
   public:
     Dictionary initialize(const String &assets, const String &user_directory) {
@@ -138,8 +143,16 @@ class WizardBridge : public godot::RefCounted {
     Dictionary verify_replay(const String &path) {
         return bridgeCall([&] { return session_.verifyReplay(std::filesystem::u8path(utf8(path))); });
     }
+    Dictionary replay_frame(const String &path, std::int64_t step, std::int64_t viewer) {
+        return bridgeCall([&]() -> Json {
+            if (step < 0) throw std::runtime_error("复盘位置不能为负数");
+            return session_.replayFrame(std::filesystem::u8path(utf8(path)), static_cast<std::size_t>(step),
+                viewer == 0 || viewer == 1 ? static_cast<int>(viewer) : -1);
+        });
+    }
     Dictionary library() { return bridgeCall([&] { return session_.library(); }); }
     Dictionary create_draft(const String &preset) { return bridgeCall([&] { return session_.createDraft(utf8(preset)); }); }
+    Dictionary create_construction_draft(const String &preset) { return bridgeCall([&] { return session_.createDraft(utf8(preset), 2); }); }
     Dictionary validate_draft(const Dictionary &draft) { return bridgeCall([&] { return session_.validateDraft(json(draft)); }); }
     Dictionary save_draft(const Dictionary &draft) { return bridgeCall([&] { return session_.saveDraft(json(draft)); }); }
     Dictionary erase_draft(const String &id) { return bridgeCall([&] { return session_.eraseDraft(utf8(id)); }); }
@@ -152,6 +165,10 @@ class WizardBridge : public godot::RefCounted {
         return bridgeCall([&] { return session_.interact(viewer == 0 || viewer == 1 ? static_cast<int>(viewer) : -1,
             json(request), utf8(generation), utf8(revision)); });
     }
+    Dictionary network_request(const Dictionary &request) {
+        return bridgeCall([&] { return session_.networkRequest(json(request)); });
+    }
+    Dictionary poll_network() { return bridgeCall([&] { return session_.pollNetwork(); }); }
 };
 
 extern "C" GDExtensionBool GDE_EXPORT wizard_bridge_init(GDExtensionInterfaceGetProcAddress get_proc_address,

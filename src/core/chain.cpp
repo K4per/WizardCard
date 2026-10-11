@@ -13,7 +13,7 @@ void GameEngine::startChain(ResponseWindow window, ChainLink root, PlayerId prio
         const auto &d = catalog_.at(s.cards.at(root.item.source).definition);
         root.speed = catalog_.advancedRules ? d.speed : 0;
         const auto &source = s.cards.at(root.item.source);
-        root.castCost =
+        root.castCost = catalog_.usesAlphaV2() ? Rules::castCost(s, catalog_, root.item.source) :
             root.kind == LinkKind::Preparation ? root.preparationLoad
             : root.kind == LinkKind::Spell && d.type == CardType::Analytic && !source.payments.empty()
                 ? source.payments.back().paid
@@ -27,6 +27,7 @@ void GameEngine::startChain(ResponseWindow window, ChainLink root, PlayerId prio
     chain.window = window;
     chain.initiator = root.item.owner;
     chain.priority = priority;
+    chain.hadActualLinks = root.kind != LinkKind::Phase;
     chain.links.push_back(std::move(root));
     s.chain = std::move(chain);
     s.phaseGate = 0;
@@ -35,6 +36,7 @@ void GameEngine::startChain(ResponseWindow window, ChainLink root, PlayerId prio
                         s.chain->links.back().item.source});
 }
 void GameEngine::beginEffect(CardId id, AfterEffect after) {
+    if (state_.result != -1) return;
     const auto &c = state_.cards.at(id);
     const auto &d = catalog_.at(c.definition);
     ChainLink root;
@@ -51,13 +53,13 @@ void GameEngine::beginEffect(CardId id, AfterEffect after) {
     root.paid = after == AfterEffect::Action ? d.cost : 0;
     root.addedLoad = after == AfterEffect::Action ? d.burden : 0;
     startChain(after == AfterEffect::Action ? ResponseWindow::Action : ResponseWindow::Cast, std::move(root),
-               1 - c.owner);
+               catalog_.usesAlphaV2() ? 1 - state_.active : 1 - c.owner);
 }
 void GameEngine::startTrigger(Trigger t) {
     ChainLink root;
     root.kind = LinkKind::Trigger;
     root.item = std::move(t);
-    const int priority = 1 - root.item.owner;
+    const int priority = catalog_.usesAlphaV2() ? 1 - state_.active : 1 - root.item.owner;
     startChain(ResponseWindow::Trigger, std::move(root), priority);
 }
 void GameEngine::passResponse() {
@@ -85,6 +87,17 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
     const bool ambush = c.faceDown && a->fromAmbush && c.ambushedTurn < s.globalTurn;
     const bool analytic = !c.faceDown && c.zone == Zone::Analysis && c.spell == SpellState::Ready &&
                           a->fromAnalysis && c.canceledTurn != s.players[actor].ownTurn;
+    const bool casting = !c.faceDown && c.zone == Zone::Casting && c.spell == SpellState::Ready && a->fromCasting;
+    if (catalog_.usesAlphaV2()) {
+        if (analytic) return "not_prepared: 解析法术须先准备至施法区";
+        if (actor != s.active && (!c.wasAmbushed || c.ambushedTurn >= s.globalTurn))
+            return "response_source: 对方回合仅此前盖伏来源可以响应";
+        if (ambush && d.type == CardType::Analytic)
+            return "not_ready: 盖伏解析法术尚未完成解析";
+        if (ambush && !Rules::canHost(s, catalog_, c.id, c.host)) return "host_restriction";
+        if (!casting && static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog_, actor))
+            return "casting_capacity";
+    }
     if (catalog_.advancedRules) {
         const auto top = s.chain->links.back().speed;
         if (hand || d.speed == 1 || top == 4 || d.speed < top)
@@ -96,7 +109,7 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
     }
     if (!((hand && a->fromHand) ||
           (!c.faceDown && c.zone == Zone::Words && d.type == CardType::Word && a->fromWords) || ambush ||
-          analytic))
+          analytic || (catalog_.usesAlphaV2() && casting)))
         return "response_source: 当前区域不允许响应";
     if (std::find(s.chain->responded.begin(), s.chain->responded.end(), cmd.card) != s.chain->responded.end())
         return "response_used: 本连锁已使用该实体";
@@ -113,7 +126,8 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
                                         [&](const ChainLink &x) { return x.id == cmd.link; });
             if (l == s.chain->links.end() || l->item.owner == actor || !l->item.source ||
                 (catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Analytic &&
-                 catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Word))
+                 catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Word &&
+                 (!catalog_.usesAlphaV2() || catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Talisman)))
                 return "target: 必须指定对手释放中的法术";
         }
     } else if (cmd.link || !validTargets(s, a->target, a->targetCount, actor, cmd.target, cmd.targets))
@@ -125,15 +139,16 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
             return "extra_cost: 需要另一张手牌";
     } else if (cmd.discard)
         return "extra_cost: 无需弃牌";
-    const int paid =
-        analytic ? Rules::castCost(s, catalog_, c.id)
+    const int paid = catalog_.usesAlphaV2()
+        ? (d.type == CardType::Analytic && ambush ? d.cost : 0) + Rules::castCost(s, catalog_, c.id)
+        : analytic ? Rules::castCost(s, catalog_, c.id)
         : ambush ? d.cost
         : hand
             ? a->handCost
             : a->preloadedCost + (d.type == CardType::Word ? Rules::castCost(s, catalog_, c.id) - d.cost : 0);
-    const int bound = analytic || d.type == CardType::Word ? paid : 0;
+    const int bound = catalog_.usesAlphaV2() ? paid : analytic || d.type == CardType::Word ? paid : 0;
     if (paid < 0 || a->burden < 0 || s.players[actor].mana < paid ||
-        Rules::load(s, actor) + bound + a->burden > Rules::capacity(s, catalog_, actor))
+        (!catalog_.usesAlphaV2() && Rules::load(s, actor) + bound + a->burden > Rules::capacity(s, catalog_, actor)))
         return "cost: 魔素或荷载空间不足";
     return {};
 }
@@ -143,7 +158,8 @@ std::vector<Respond> GameEngine::responsesFor(PlayerId p, DecisionId decisionId)
     if (!s.chain || s.chain->mode != ChainMode::Building || s.chain->priority != p)
         return out;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p && (c.zone == Zone::Hand || c.zone == Zone::Words || c.zone == Zone::Analysis))
+        if (c.owner == p && (c.zone == Zone::Hand || c.zone == Zone::Words || c.zone == Zone::Analysis ||
+                            (catalog_.usesAlphaV2() && c.zone == Zone::Casting)))
             for (const auto &a : catalog_.at(c.definition).responses) {
                 if ((c.zone == Zone::Hand && !a.fromHand) ||
                     std::find(a.windows.begin(), a.windows.end(), s.chain->window) == a.windows.end())
@@ -184,9 +200,12 @@ void GameEngine::finishLink(bool success) {
             c.payments.at(static_cast<std::size_t>(link.paymentIndex)).canceled = true;
         if (link.kind == LinkKind::Preparation) {
             if (success) {
+                c.sourceFormation = c.host;
+                c.sourceRingIndex = c.ringIndex;
                 c.zone = Zone::Casting;
-                c.spell = SpellState::Pending;
+                c.spell = catalog_.usesAlphaV2() ? SpellState::Ready : SpellState::Pending;
                 c.host = 0;
+                if (catalog_.usesAlphaV2()) c.ringIndex = -1;
                 s.events.push_back({"prepared", "法术进入施法区", -1, c.id});
             } else {
                 if (c.zone == Zone::Analysis && !link.sourceLost) {
@@ -221,19 +240,23 @@ void GameEngine::finishLink(bool success) {
                 if (d.concentration) {
                     std::vector<CardId> old;
                     for (const auto &[id, other] : s.cards)
-                        if (id != c.id && other.owner == c.owner && other.zone == Zone::Casting &&
+                        if (id != c.id && other.owner == c.owner && (other.zone == Zone::Casting ||
+                            (catalog_.usesAlphaV2() && other.zone == Zone::Analysis)) &&
                             other.spell == SpellState::Active && catalog_.at(other.definition).concentration)
                             old.push_back(id);
                     for (auto id : old)
                         StateMaintenance::leave(s, id, &catalog_);
                     c.zone = Zone::Casting;
                     c.spell = SpellState::Active;
-                    c.concentrationCost = Rules::castCost(s, catalog_, c.id);
+                    c.concentrationCost = d.concentrationUpkeep >= 0 ? d.concentrationUpkeep : Rules::castCost(s, catalog_, c.id);
                 } else if (d.duration) {
                     c.spell = SpellState::Active;
                     c.remaining = d.duration;
-                } else
-                    StateMaintenance::leave(s, c.id, &catalog_);
+                } else if (catalog_.usesAlphaV2() && d.perpetual) {
+                    c.spell = SpellState::Active;
+                } else if (catalog_.usesAlphaV2()) {
+                    c.spell = SpellState::Resolved;
+                } else StateMaintenance::leave(s, c.id, &catalog_);
             } else {
                 if (link.paymentIndex >= 0)
                     c.payments.at(static_cast<std::size_t>(link.paymentIndex)).canceled = true;
@@ -257,8 +280,12 @@ void GameEngine::finishLink(bool success) {
     s.effect.reset();
     s.chain->links.pop_back();
     if (s.chain->links.empty()) {
+        const bool actual = s.chain->hadActualLinks;
         s.events.push_back({"chain_closed", "连锁结束"});
         s.chain.reset();
+        if (catalog_.usesAlphaV2() && s.phase != Phase::Cast)
+            s.returnRequested = true;
+        if (catalog_.usesAlphaV2() && actual) s.timingPending = true;
     }
     StateMaintenance::check(s, catalog_);
 }

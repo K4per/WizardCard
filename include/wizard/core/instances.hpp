@@ -22,6 +22,11 @@ struct CardInstance {
     bool faceDown{};
     std::uint64_t ambushedTurn{};
     int quickAnalysisTurn{-1};
+    int analysisProgress{};
+    std::uint64_t fieldOrder{};
+    int ringIndex{-1};
+    int sourceRingIndex{-1};
+    bool wasAmbushed{};
 };
 struct TemporaryLoad {
     std::uint32_t id{};

@@ -1,0 +1,17 @@
+{
+  "size": [
+    1920,
+    1080
+  ],
+  "buttons": [
+    "单人游戏",
+    "多人游戏",
+    "卡组构筑",
+    "游戏设置",
+    "退出游戏"
+  ],
+  "keyboardFocus": true,
+  "errors": [],
+  "scope": "Artwork assembly, no navigation or engine integration",
+  "ok": true
+}

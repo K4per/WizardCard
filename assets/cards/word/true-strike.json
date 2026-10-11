@@ -3,18 +3,21 @@
   "name": "克敌机先",
   "type": "word",
   "rarity": "uncommon",
-  "cost": 1,
-  "rank": 0,
-  "speed": 1,
-  "immediate": true,
+  "cost": 3,
+  "rank": 3,
+  "speed": 2,
   "school": "divination",
   "target": "self",
   "effects": [
     {
-      "kind": "search_action",
-      "amount": 0
+      "kind": "search_same_school"
     }
   ],
-  "text": "可单独设置，或设置并立即释放。释放时从牌库检索一张普通或罕见行动卡加入手牌，然后洗切牌库。",
-  "flavor": "魔法之洞见，它能指引你看到多远？"
+  "text": "选择自己解析区一张法术送入灰烬区，从牌库检索一张同学派法术加入手牌，然后洗切牌库。",
+  "flavor": "魔法之洞见，它能指引你看到多远？",
+  "castCost": 0,
+  "level": 3,
+  "analysisTurns": 0,
+  "number": "030005",
+  "illustrationId": "true-strike"
 }

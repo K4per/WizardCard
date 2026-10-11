@@ -16,14 +16,14 @@ FetchContent_Declare(godot_cpp
   GIT_REPOSITORY https://github.com/godotengine/godot-cpp.git
   GIT_TAG 507ed9d840c01a3c5b2a39af8bb4000bfac30bf5 EXCLUDE_FROM_ALL)
 FetchContent_MakeAvailable(godot_cpp)
-foreach(target wizard_core wizard_content wizard_codec wizard_replay wizard_ai wizard_application wizard_interaction wizard_bridge_model)
+foreach(target wizard_core wizard_content wizard_codec wizard_replay wizard_ai wizard_application wizard_interaction wizard_bridge_model wizard_network)
   set_property(TARGET ${target} PROPERTY POSITION_INDEPENDENT_CODE ON)
   if(MSVC)
     set_property(TARGET ${target} PROPERTY MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}")
   endif()
 endforeach()
 add_library(wizard_godot_bridge SHARED src/bridge/godot_bridge.cpp)
-target_link_libraries(wizard_godot_bridge PRIVATE wizard_bridge_model godot::cpp)
+target_link_libraries(wizard_godot_bridge PRIVATE wizard_bridge_model wizard_network godot::cpp)
 wizard_warnings(wizard_godot_bridge)
 if(GODOTCPP_TARGET STREQUAL "template_release")
   set(bridge_flavor release)
@@ -76,7 +76,9 @@ if(BUILD_TESTING AND GODOT_BIN)
     --script res://tests/bridge_smoke.gd -- --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
     --user-data ${CMAKE_CURRENT_BINARY_DIR}/replay-data --reference ${CMAKE_CURRENT_BINARY_DIR}/godot-reference.json
     --report ${CMAKE_CURRENT_BINARY_DIR}/godot-replay-report.json)
-  set_tests_properties(godot_bridge_replay PROPERTIES FIXTURES_REQUIRED "godot_import;godot_reference" TIMEOUT 120)
+  # The full 556-command bridge replay exercises every projected transition and
+  # takes several minutes on the pinned Windows Godot runtime.
+  set_tests_properties(godot_bridge_replay PROPERTIES FIXTURES_REQUIRED "godot_import;godot_reference" TIMEOUT 300)
   add_test(NAME godot_frontend_import COMMAND "${GODOT_BIN}" --headless
     --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --import --frame-delay 1000)
   set_tests_properties(godot_frontend_import PROPERTIES FIXTURES_SETUP frontend_import

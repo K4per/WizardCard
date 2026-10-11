@@ -161,7 +161,7 @@ TEST_CASE("bridge retains accepted state after replay save failure") {
     REQUIRE(f.bridge.saveReplay().at("ok") == true);
 }
 TEST_CASE("Alpha program whitelist retains every content and digest compatibility gate") {
-    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     const auto legacy = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-replay.json");
     REQUIRE(legacy.at("programVersion") == "1.0.0-alpha");
     REQUIRE(replay(content, legacy).digest() == legacy.at("finalDigest"));
@@ -181,7 +181,7 @@ TEST_CASE("Alpha program whitelist retains every content and digest compatibilit
 
 TEST_CASE("bridge local library preserves Chinese names and unknown IDs through atomic drafts") {
     Fixture f;
-    auto draft = f.bridge.createDraft("default").at("data");
+    auto draft = f.bridge.createDraft("default", 2).at("data");
     draft["name"] = "中文草稿 · 修复";
     draft["cards"]["removed-card-id"] = 1;
     REQUIRE_FALSE(f.bridge.validateDraft(draft).at("data").at("problems").empty());
@@ -253,4 +253,49 @@ TEST_CASE("bridge local settings and leave preserve match on persistence failure
     REQUIRE(f.bridge.leaveMatch(v.at("viewer")).at("ok") == true);
     REQUIRE(f.bridge.snapshot(0).at("ok") == false);
     REQUIRE(f.confirm(v).at("ok") == false);
+}
+
+TEST_CASE("bridge replay frames rewind without changing the live match and validate the unseen suffix") {
+    Fixture f;
+    const auto initial = f.bridge.snapshot(0).at("data");
+    auto v = f.actingView();
+    REQUIRE(f.select(v).at("ok") == true);
+    REQUIRE(f.confirm(v).at("ok") == true);
+    const auto live = f.bridge.snapshot(0).at("data");
+    const auto saved = f.bridge.saveReplay();
+    const auto path = std::filesystem::u8path(saved.at("data").at("path").get<std::string>());
+    auto record = readJson(path);
+    const auto frame = f.bridge.replayFrame(path, 0, 0);
+    REQUIRE(frame.at("ok") == true);
+    REQUIRE(frame.at("data").at("cards") == initial.at("cards"));
+    REQUIRE(frame.at("data").at("players") == initial.at("players"));
+    REQUIRE(f.bridge.replayFrame(path, 1, 0).at("data").at("digest") == record.at("finalDigest"));
+    REQUIRE(f.bridge.snapshot(0).at("data") == live);
+    REQUIRE_FALSE(f.bridge.replayFrame(path, 2, 0).at("ok").get<bool>());
+    REQUIRE_FALSE(f.bridge.replayFrame(path, 0, 2).at("ok").get<bool>());
+    record["commands"][0]["digest"] = "tampered";
+    writeJson(path, record);
+    REQUIRE_FALSE(f.bridge.replayFrame(path, 0, 0).at("ok").get<bool>());
+    REQUIRE(f.bridge.snapshot(0).at("data") == live);
+}
+
+TEST_CASE("v2 command DTO and wire codec retain recipe materials targets and exact decisions") {
+    const auto decision = std::numeric_limits<std::uint64_t>::max();
+    const std::vector<Command> commands = {
+        SetFormation{42, 8, {9, 10}}, StartAnalysis{2, 3, 4, {4, 5}},
+        PreloadWord{2, true, 3, 4, {4, 5}}, ActivateSpell{2, 4, {4, 5}},
+        PrepareCast{2, 4, 6, {4, 5}, decision}, FlipAmbush{2, 4, {4, 5}, decision},
+        Choose{decision, 7, 2},
+        Respond{decision, 2, "counter", 4, decision, 6, {4, 5}},
+        PassResponse{decision}, AdvancePhase{decision}};
+    for (const auto &command : commands) {
+        const auto encoded = encodeCommand(command);
+        REQUIRE(encodeCommand(decodeCommand(encoded)) == encoded);
+        const auto dto = bridge::commandDto(command);
+        for (const auto &[key, value] : dto.items()) {
+            if (key == "type" || key == "release" || key == "ability" || key == "ringIndex") continue;
+            if (value.is_array()) for (const auto &id : value) REQUIRE(id.is_string());
+            else REQUIRE(value.is_string());
+        }
+    }
 }

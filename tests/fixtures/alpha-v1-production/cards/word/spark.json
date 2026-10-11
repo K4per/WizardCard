@@ -1,0 +1,21 @@
+{
+  "id": "spark",
+  "name": "火花术",
+  "rarity": "common",
+  "type": "word",
+  "cost": 1,
+  "rank": 0,
+  "immediate": true,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 2,
+      "damageType": "fire"
+    }
+  ],
+  "text": "可单独设置，或设置并立即释放。释放时对对方造成2点火焰伤害。",
+  "flavor": "所有魔法学徒入门必学法术之一，告别火柴第一步！",
+  "speed": 1,
+  "school": "evocation"
+}

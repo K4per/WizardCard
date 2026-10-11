@@ -14,10 +14,16 @@ Json encodeCommand(const Command &c) {
                           !std::is_same_v<T, PassResponse> && !std::is_same_v<T, Surrender> &&
                           !std::is_same_v<T, Choose>)
                 j["card"] = x.card;
-            if constexpr (std::is_same_v<T, SetFormation>)
+            if constexpr (std::is_same_v<T, SetFormation>) {
                 j["replace"] = x.replace;
+                if (!x.materials.empty()) j["materials"] = x.materials;
+            }
             if constexpr (std::is_same_v<T, StartAnalysis> || std::is_same_v<T, SetAmbush>)
                 j["formation"] = x.formation;
+            if constexpr (std::is_same_v<T, StartAnalysis>) {
+                if (x.target) j["target"] = x.target;
+                if (!x.targets.empty()) j["targets"] = x.targets;
+            }
             if constexpr (std::is_same_v<T, PrepareCast> || std::is_same_v<T, Respond>) {
                 j["target"] = x.target;
                 j["discard"] = x.discard;
@@ -33,14 +39,21 @@ Json encodeCommand(const Command &c) {
                           std::is_same_v<T, ActivateSpell>)
                 if (!x.targets.empty())
                     j["targets"] = x.targets;
-            if constexpr (std::is_same_v<T, PreloadWord>)
+            if constexpr (std::is_same_v<T, PreloadWord>) {
                 j["release"] = x.release;
+                if (x.formation) j["formation"] = x.formation;
+                if (x.target) j["target"] = x.target;
+                if (!x.targets.empty()) j["targets"] = x.targets;
+            }
             if constexpr (std::is_same_v<T, AttachSeal>)
                 j["host"] = x.host;
             if constexpr (std::is_same_v<T, Choose>) {
                 j["decision"] = x.decision;
                 j["option"] = x.option;
+                if (x.ringIndex >= 0) j["ringIndex"] = x.ringIndex;
             }
+            if constexpr (std::is_same_v<T, FlipAmbush>)
+                if (x.decision) j["decision"] = x.decision;
             if constexpr (std::is_same_v<T, Respond>) {
                 j["decision"] = x.decision;
                 j["ability"] = x.ability;
@@ -68,20 +81,30 @@ Command decodeCommand(const Json &j) {
         for (const auto &t : j.at("targets"))
             targets.push_back(static_cast<CardId>(integer(t, std::numeric_limits<CardId>::max(), true)));
     }
+    std::vector<CardId> materials;
+    if (j.contains("materials")) {
+        if (!j.at("materials").is_array())
+            throw std::runtime_error("invalid materials");
+        for (const auto &material : j.at("materials"))
+            materials.push_back(static_cast<CardId>(integer(material, std::numeric_limits<CardId>::max(), true)));
+    }
     switch (id("type")) {
     case 0:
-        return SetFormation{id("card"), id("replace")};
+        return SetFormation{id("card"), id("replace"), materials};
     case 1:
         return RemoveFormation{id("card")};
     case 2:
-        return StartAnalysis{id("card"), id("formation")};
+        return StartAnalysis{id("card"), id("formation"),
+            j.contains("target") ? id("target") : 0, targets};
     case 3:
         return PrepareCast{id("card"), id("target"), id("discard"), targets,
                            j.contains("decision") ? serial("decision") : 0};
     case 4:
         return PlayAction{id("card"), id("target"), targets};
     case 5:
-        return PreloadWord{id("card"), j.value("release", false)};
+        return PreloadWord{id("card"), j.value("release", false),
+            j.contains("formation") ? id("formation") : 0,
+            j.contains("target") ? id("target") : 0, targets};
     case 6:
         return AttachSeal{id("card"), id("host")};
     case 7:
@@ -91,7 +114,8 @@ Command decodeCommand(const Json &j) {
     case 9:
         return Advance{};
     case 10:
-        return Choose{serial("decision"), id("option")};
+        return Choose{serial("decision"), id("option"),
+            j.contains("ringIndex") ? static_cast<int>(integer(j.at("ringIndex"), 1000)) : -1};
     case 11:
         return Surrender{};
     case 12: {
@@ -113,7 +137,8 @@ Command decodeCommand(const Json &j) {
     case 15:
         return SetAmbush{id("card"), id("formation")};
     case 16:
-        return FlipAmbush{id("card"), id("target"), targets};
+        return FlipAmbush{id("card"), id("target"), targets,
+            j.contains("decision") ? serial("decision") : 0};
     case 17:
         return ActivateSpell{id("card"), id("target"), targets};
     default:

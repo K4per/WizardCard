@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "file": "build/art-delivery/WizardCard-MainMenu-1080p-v1.zip",
+  "bytes": 38723010,
+  "sha256": "3ef87f914afbe26b0a213db97e8f562479c31da44d858c00d2500d0d9eb81f56",
+  "productionPng": 7,
+  "previewPng": 3,
+  "layout": "Extract into project root; includes font and its license"
+}

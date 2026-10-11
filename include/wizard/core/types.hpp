@@ -16,11 +16,11 @@ using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
 using ChainId = std::uint64_t;
 using LinkId = std::uint64_t;
-inline constexpr const char *programVersion = "2.0.0-dev.2";
+inline constexpr const char *programVersion = "2.0.0-rc.1";
 inline constexpr int startingLife = 40, maximumLife = 40;
-enum class CardType { Action, Analytic, Word, Formation, Seal };
-enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached, Resolving };
-enum class SpellState { None, Analyzing, Ready, Pending, Active };
+enum class CardType { Action, Analytic, Word, Formation, Seal, Talisman };
+enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached, Resolving, SideDeck };
+enum class SpellState { None, Analyzing, Ready, Pending, Active, Resolved };
 enum class Phase { Draw, Prepare, Main, Cast, End };
 enum class TargetKind {
     None,
@@ -60,7 +60,19 @@ enum class EffectKind {
     DestroyAmbush,
     AccelerateAnalysis,
     GrantResistance,
-    Conceal
+    Conceal,
+    DelayEnemyAnalysis,
+    ConcealEnemySpell,
+    RevealEnemyAmbush,
+    ChooseDamage,
+    DestroyFormationSpells,
+    ReturnEnemyAnalysis,
+    SearchSameSchool,
+    ReduceSpellDamage,
+    RecoverEnemyAshSpell,
+    RecoverFormation,
+    RevealAllAmbush,
+    ClearAnyLoad
 };
 enum class ResponseWindow { PhaseStart, PhaseEnd, Action, Prepare, Cast, Trigger };
 enum class EventOwner { Any, Self, Opponent };
@@ -87,7 +99,8 @@ enum class DamageType {
     Force,
     Slashing,
     Bludgeoning,
-    Piercing
+    Piercing,
+    Acid
 };
 enum class EffectRecipient { Target, Owner, Opponent };
 enum class LinkKind { Phase, Action, Preparation, Spell, Response, Trigger };

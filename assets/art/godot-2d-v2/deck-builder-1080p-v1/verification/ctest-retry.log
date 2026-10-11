@@ -1,0 +1,152 @@
+Start testing: Oct 11 02:59 �й���׼ʱ��
+----------------------------------------------------------
+231/232 Testing: content_validate
+231/232 Test: content_validate
+Command: "E:/Project/WizardCard/build/alpha-v2-godot-debug/Debug/wizard_cli.exe" "validate" "E:/Project/WizardCard/assets"
+Directory: E:/Project/WizardCard/build/alpha-v2-godot-debug
+"content_validate" start time: Oct 11 02:59 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+30 definitions; 30 cards; hash 733319e247ac38ff
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"content_validate" end time: Oct 11 02:59 �й���׼ʱ��
+"content_validate" time elapsed: 00:00:00
+----------------------------------------------------------
+
+226/232 Testing: godot_reference
+226/232 Test: godot_reference
+Command: "E:/Project/WizardCard/build/alpha-v2-godot-debug/Debug/wizard_cli.exe" "smoke" "E:/Project/WizardCard/assets" "E:/Project/WizardCard/build/alpha-v2-godot-debug/godot-reference.json" "42"
+Directory: E:/Project/WizardCard/build/alpha-v2-godot-debug
+"godot_reference" start time: Oct 11 02:59 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+result=0 digest=78116a78d64b0d90 recording=E:/Project/WizardCard/build/alpha-v2-godot-debug/godot-reference.json
+<end of output>
+Test time =  38.72 sec
+----------------------------------------------------------
+Test Passed.
+"godot_reference" end time: Oct 11 02:59 �й���׼ʱ��
+"godot_reference" time elapsed: 00:00:38
+----------------------------------------------------------
+
+232/232 Testing: scripted_match
+232/232 Test: scripted_match
+Command: "E:/Project/WizardCard/build/alpha-v2-godot-debug/Debug/wizard_cli.exe" "smoke" "E:/Project/WizardCard/assets" "E:/Project/WizardCard/build/alpha-v2-godot-debug/smoke.json"
+Directory: E:/Project/WizardCard/build/alpha-v2-godot-debug
+"scripted_match" start time: Oct 11 02:59 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+result=0 digest=78116a78d64b0d90 recording=E:/Project/WizardCard/build/alpha-v2-godot-debug/smoke.json
+<end of output>
+Test time =  38.65 sec
+----------------------------------------------------------
+Test Passed.
+"scripted_match" end time: Oct 11 02:59 �й���׼ʱ��
+"scripted_match" time elapsed: 00:00:38
+----------------------------------------------------------
+
+229/232 Testing: godot_frontend_import
+229/232 Test: godot_frontend_import
+Command: "E:/Project/WizardCard/.cache/godot-portable/Godot_v4.7.2-stable_win64_console.exe" "--headless" "--path" "E:/Project/WizardCard/godot" "--import" "--frame-delay" "1000"
+Directory: E:/Project/WizardCard/build/alpha-v2-godot-debug
+"godot_frontend_import" start time: Oct 11 02:59 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started 项目初始化 (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | 正在扫描文件结构……[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | 正在加载全局类名……[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | 正在校验 GDExtension……[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | 正在创建自动加载脚本……[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | 正在初始化插件……[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | 正在启动文件扫描……[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started 正在加载编辑器 (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | 正在加载编辑器布局……[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | 正在加载停靠面板……[39m[0m
+[  33% ] [90m[1mloading_editor_layout[22m | 正在重新打开场景……[39m[0m
+[  50% ] [90m[1mloading_editor_layout[22m | 正在加载中央编辑器布局……[39m[0m
+[  66% ] [90m[1mloading_editor_layout[22m | 正在加载插件窗口布局……[39m[0m
+[  83% ] [90m[1mloading_editor_layout[22m | 编辑器布局就绪。[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+<end of output>
+Test time =   6.49 sec
+----------------------------------------------------------
+Test Passed.
+"godot_frontend_import" end time: Oct 11 02:59 �й���׼ʱ��
+"godot_frontend_import" time elapsed: 00:00:06
+----------------------------------------------------------
+
+230/232 Testing: godot_frontend_smoke
+230/232 Test: godot_frontend_smoke
+Command: "E:/Project/WizardCard/.cache/godot-portable/Godot_v4.7.2-stable_win64_console.exe" "--headless" "--path" "E:/Project/WizardCard/godot" "--script" "res://tests/frontend_smoke.gd" "--" "--assets" "E:/Project/WizardCard/assets" "--user-data" "E:/Project/WizardCard/build/alpha-v2-godot-debug/frontend-smoke-data" "--report" "E:/Project/WizardCard/build/alpha-v2-godot-debug/frontend-report.json"
+Directory: E:/Project/WizardCard/build/alpha-v2-godot-debug
+"godot_frontend_smoke" start time: Oct 11 02:59 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Frontend smoke: PASS; checks=756; sizes=1280x720,1600x1000,1920x1080; actual cards=30
+<end of output>
+Test time =   4.62 sec
+----------------------------------------------------------
+Test Passed.
+"godot_frontend_smoke" end time: Oct 11 03:00 �й���׼ʱ��
+"godot_frontend_smoke" time elapsed: 00:00:04
+----------------------------------------------------------
+
+224/232 Testing: godot_import
+224/232 Test: godot_import
+Command: "E:/Project/WizardCard/.cache/godot-portable/Godot_v4.7.2-stable_win64_console.exe" "--headless" "--path" "E:/Project/WizardCard/build/alpha-v2-godot-debug/godot-probe" "--import" "--frame-delay" "1000"
+Directory: E:/Project/WizardCard/build/alpha-v2-godot-debug
+"godot_import" start time: Oct 11 03:00 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started 项目初始化 (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | 正在扫描文件结构……[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | 正在加载全局类名……[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | 正在校验 GDExtension……[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | 正在创建自动加载脚本……[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | 正在初始化插件……[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | 正在启动文件扫描……[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started 正在加载编辑器 (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | 正在加载编辑器布局……[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | 正在加载停靠面板……[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+<end of output>
+Test time =   5.73 sec
+----------------------------------------------------------
+Test Passed.
+"godot_import" end time: Oct 11 03:00 �й���׼ʱ��
+"godot_import" time elapsed: 00:00:05
+----------------------------------------------------------
+
+228/232 Testing: godot_bridge_replay
+228/232 Test: godot_bridge_replay
+Command: "E:/Project/WizardCard/.cache/godot-portable/Godot_v4.7.2-stable_win64_console.exe" "--headless" "--path" "E:/Project/WizardCard/build/alpha-v2-godot-debug/godot-probe" "--script" "res://tests/bridge_smoke.gd" "--" "--assets" "E:/Project/WizardCard/assets" "--user-data" "E:/Project/WizardCard/build/alpha-v2-godot-debug/replay-data" "--reference" "E:/Project/WizardCard/build/alpha-v2-godot-debug/godot-reference.json" "--report" "E:/Project/WizardCard/build/alpha-v2-godot-debug/godot-replay-report.json"
+Directory: E:/Project/WizardCard/build/alpha-v2-godot-debug
+"godot_bridge_replay" start time: Oct 11 03:00 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+<end of output>
+Test time = 120.04 sec
+----------------------------------------------------------
+Test Failed.
+"godot_bridge_replay" end time: Oct 11 03:02 �й���׼ʱ��
+"godot_bridge_replay" time elapsed: 00:02:00
+----------------------------------------------------------
+
+End testing: Oct 11 03:02 �й���׼ʱ��

@@ -1,0 +1,20 @@
+{
+  "id": "arcane-recovery",
+  "name": "奥术复苏",
+  "type": "action",
+  "rarity": "uncommon",
+  "cost": 0,
+  "speed": 1,
+  "target": "self",
+  "effects": [
+    {
+      "kind": "mana",
+      "amount": 3
+    },
+    {
+      "kind": "temporary",
+      "amount": 2
+    }
+  ],
+  "text": "获得3点魔素（不超过12），然后获得2点临时荷载，在本回合结束阶段清除。"
+}

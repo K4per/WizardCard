@@ -1,0 +1,31 @@
+{
+  "id": "hexagram",
+  "name": "六芒星",
+  "type": "formation",
+  "rarity": "uncommon",
+  "level": 3,
+  "body": 2,
+  "rings": 3,
+  "capacity": 10,
+  "income": 1,
+  "maxRank": 3,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "该卡不能被效果破坏。",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "small-hexagram"
+    },
+    {
+      "kind": "mana",
+      "amount": 2
+    }
+  ],
+  "traits": [
+    "effect_indestructible"
+  ],
+  "number": "010006",
+  "illustrationId": "balance"
+}

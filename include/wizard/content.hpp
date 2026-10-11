@@ -1,11 +1,18 @@
 #pragma once
 #include "wizard/core/catalog.hpp"
+#include "wizard/core/config.hpp"
 #include <filesystem>
 #include <nlohmann/json.hpp>
 
 namespace wizard {
 using Json=nlohmann::json;
-struct Content { CardCatalog catalog; std::vector<std::string> deck; };
+struct Content {
+    CardCatalog catalog;
+    std::vector<std::string> deck;
+    std::vector<std::string> sideDeck;
+    std::string initialFormation{"balance"};
+    PlayerDeck defaultPlayerDeck() const { return {initialFormation, deck, sideDeck}; }
+};
 Content loadContent(const std::filesystem::path& directory);
 CardCatalog parseCatalog(const Json&,const std::string& source="cards.json");
 // Explicit manifest order is the canonical card order; legacy cards.json remains importable.

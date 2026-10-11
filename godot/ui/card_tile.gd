@@ -8,6 +8,8 @@ var card: CardPresentation
 func _ready() -> void:
 	custom_minimum_size = Vector2(176, 242)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	for state: StringName in [&"normal", &"hover", &"pressed", &"disabled", &"focus"]:
+		add_theme_stylebox_override(state, StyleBoxEmpty.new())
 	pressed.connect(_on_pressed)
 	mouse_entered.connect(queue_redraw)
 	mouse_exited.connect(queue_redraw)

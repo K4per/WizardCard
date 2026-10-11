@@ -7,7 +7,7 @@ using namespace wizard;
 using namespace wizard::app;
 namespace {
 struct AppFixture {
-    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     std::filesystem::path directory;
     AppFixture() {
         static std::atomic<unsigned> serial{};
@@ -22,7 +22,7 @@ struct AppFixture {
     }
     Application app() {
         return Application(content, directory,
-                           loadPresets(content, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets"));
+                           loadPresets(content, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production"));
     }
     MatchConfig config() {
         MatchConfig c;

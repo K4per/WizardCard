@@ -1,0 +1,131 @@
+{
+  "format": 1,
+  "metadata": {
+    "rulesVersion": "1.0.0",
+    "cardSetVersion": "1.0.0",
+    "baseLoadCapacity": 2,
+    "mechanicsRevision": 1
+  },
+  "definitions": [
+    {
+      "id": "balance",
+      "file": "cards/formation/balance.json"
+    },
+    {
+      "id": "fireball",
+      "file": "cards/analytic/fireball.json"
+    },
+    {
+      "id": "barbs",
+      "file": "cards/word/barbs.json"
+    },
+    {
+      "id": "recall",
+      "file": "cards/action/recall.json"
+    },
+    {
+      "id": "ring",
+      "file": "cards/seal/ring.json"
+    },
+    {
+      "id": "spark",
+      "file": "cards/word/spark.json"
+    },
+    {
+      "id": "mend",
+      "file": "cards/analytic/mend.json"
+    },
+    {
+      "id": "unravel",
+      "file": "cards/analytic/unravel.json"
+    },
+    {
+      "id": "disrupt",
+      "file": "cards/action/disrupt.json"
+    },
+    {
+      "id": "clarity",
+      "file": "cards/action/clarity.json"
+    },
+    {
+      "id": "reservoir",
+      "file": "cards/formation/reservoir.json"
+    },
+    {
+      "id": "conduit",
+      "file": "cards/seal/conduit.json"
+    },
+    {
+      "id": "ward",
+      "file": "cards/analytic/ward.json"
+    },
+    {
+      "id": "messy-wave",
+      "file": "cards/analytic/messy-wave.json"
+    },
+    {
+      "id": "instantly-sleep",
+      "file": "cards/analytic/instantly-sleep.json"
+    },
+    {
+      "id": "magic-missile",
+      "file": "cards/analytic/magic-missile.json"
+    },
+    {
+      "id": "aid",
+      "file": "cards/analytic/aid.json"
+    },
+    {
+      "id": "counter-spell",
+      "file": "cards/word/counter-spell.json"
+    },
+    {
+      "id": "true-strike",
+      "file": "cards/word/true-strike.json"
+    },
+    {
+      "id": "protective-flame",
+      "file": "cards/word/protective-flame.json"
+    },
+    {
+      "id": "pentagram-of-life",
+      "file": "cards/formation/pentagram-of-life.json"
+    },
+    {
+      "id": "engeas-four-point-star",
+      "file": "cards/formation/engeas-four-point-star.json"
+    },
+    {
+      "id": "uplift",
+      "file": "cards/seal/uplift.json"
+    },
+    {
+      "id": "instant-circuit-overload",
+      "file": "cards/action/instant-circuit-overload.json"
+    },
+    {
+      "id": "ray-of-frost",
+      "file": "cards/analytic/ray-of-frost.json"
+    },
+    {
+      "id": "lightning-bolt",
+      "file": "cards/analytic/lightning-bolt.json"
+    },
+    {
+      "id": "lesser-restoration",
+      "file": "cards/analytic/lesser-restoration.json"
+    },
+    {
+      "id": "false-life",
+      "file": "cards/analytic/false-life.json"
+    },
+    {
+      "id": "arcane-recovery",
+      "file": "cards/action/arcane-recovery.json"
+    },
+    {
+      "id": "shield",
+      "file": "cards/word/shield.json"
+    }
+  ]
+}

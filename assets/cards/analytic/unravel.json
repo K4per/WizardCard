@@ -15,8 +15,11 @@
       "kind": "destroy"
     }
   ],
-  "text": "指定对方场上一张空白阵法。弃置自己一张阵法卡，销毁目标阵法。",
+  "text": "指定对方场上一张没有承载法术的阵法。将己方副卡组一张阵法送入灰烬区，然后销毁目标阵法。",
   "flavor": "碎碎平安！",
   "speed": 1,
-  "school": "transmutation"
+  "school": "transmutation",
+  "level": 1,
+  "number": "020003",
+  "illustrationId": "unravel"
 }

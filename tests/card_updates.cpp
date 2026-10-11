@@ -6,7 +6,7 @@
 using namespace wizard;
 namespace {
 struct UpdatedCards {
-    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     GameState state;
     UpdatedCards() {
         state.phase = Phase::Main;
@@ -616,7 +616,7 @@ TEST_CASE("word concentration uses its actual setting cost and replaces analytic
     REQUIRE(e.state().players[0].life == 19);
 }
 TEST_CASE("updated content rejects invalid immediate concentration and attachment declarations") {
-    const auto source = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/cards.json");
+    const auto source = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production/cards.json");
     auto index = [&](const char *id) {
         for (std::size_t n = 0; n < source["cards"].size(); ++n)
             if (source["cards"][n]["id"] == id)

@@ -1,10 +1,10 @@
 {
   "format": 1,
   "metadata": {
-    "rulesVersion": "1.0.0",
-    "cardSetVersion": "1.0.0",
+    "rulesVersion": "2.0.0-rc.1",
+    "cardSetVersion": "2.0.0-rc.1",
     "baseLoadCapacity": 2,
-    "mechanicsRevision": 1
+    "mechanicsRevision": 2
   },
   "definitions": [
     {
@@ -17,11 +17,11 @@
     },
     {
       "id": "barbs",
-      "file": "cards/word/barbs.json"
+      "file": "cards/talisman/barbs.json"
     },
     {
       "id": "recall",
-      "file": "cards/action/recall.json"
+      "file": "cards/word/recall.json"
     },
     {
       "id": "ring",
@@ -41,11 +41,11 @@
     },
     {
       "id": "disrupt",
-      "file": "cards/action/disrupt.json"
+      "file": "cards/word/disrupt.json"
     },
     {
       "id": "clarity",
-      "file": "cards/action/clarity.json"
+      "file": "cards/word/clarity.json"
     },
     {
       "id": "reservoir",
@@ -77,7 +77,7 @@
     },
     {
       "id": "counter-spell",
-      "file": "cards/word/counter-spell.json"
+      "file": "cards/talisman/counter-spell.json"
     },
     {
       "id": "true-strike",
@@ -101,7 +101,7 @@
     },
     {
       "id": "instant-circuit-overload",
-      "file": "cards/action/instant-circuit-overload.json"
+      "file": "cards/word/instant-circuit-overload.json"
     },
     {
       "id": "ray-of-frost",
@@ -121,11 +121,75 @@
     },
     {
       "id": "arcane-recovery",
-      "file": "cards/action/arcane-recovery.json"
+      "file": "cards/word/arcane-recovery.json"
     },
     {
       "id": "shield",
-      "file": "cards/word/shield.json"
+      "file": "cards/talisman/shield.json"
+    },
+    {
+      "id": "chromatic-orb",
+      "file": "cards/analytic/chromatic-orb.json"
+    },
+    {
+      "id": "guiding-bolt",
+      "file": "cards/analytic/guiding-bolt.json"
+    },
+    {
+      "id": "scorching-ray",
+      "file": "cards/analytic/scorching-ray.json"
+    },
+    {
+      "id": "sunburst",
+      "file": "cards/analytic/sunburst.json"
+    },
+    {
+      "id": "healing-circle",
+      "file": "cards/analytic/healing-circle.json"
+    },
+    {
+      "id": "funny-box",
+      "file": "cards/talisman/funny-box.json"
+    },
+    {
+      "id": "small-hexagram",
+      "file": "cards/formation/small-hexagram.json"
+    },
+    {
+      "id": "hexagram",
+      "file": "cards/formation/hexagram.json"
+    },
+    {
+      "id": "octagram",
+      "file": "cards/formation/octagram.json"
+    },
+    {
+      "id": "sun",
+      "file": "cards/formation/sun.json"
+    },
+    {
+      "id": "upright-cross",
+      "file": "cards/formation/upright-cross.json"
+    },
+    {
+      "id": "inverted-cross",
+      "file": "cards/formation/inverted-cross.json"
+    },
+    {
+      "id": "ankh",
+      "file": "cards/formation/ankh.json"
+    },
+    {
+      "id": "elemental-ring",
+      "file": "cards/formation/elemental-ring.json"
+    },
+    {
+      "id": "chaos-ring",
+      "file": "cards/formation/chaos-ring.json"
+    },
+    {
+      "id": "sulfur",
+      "file": "cards/formation/sulfur.json"
     }
   ]
 }

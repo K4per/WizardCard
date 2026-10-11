@@ -5,6 +5,8 @@ static func label(text: String, font_size: int = 18, wrap: bool = false) -> Labe
 	var result: Label = Label.new()
 	result.text = text
 	result.add_theme_font_size_override(&"font_size", font_size)
+	if font_size >= 22:
+		result.add_theme_font_override(&"font", Typography.HEADING)
 	if wrap:
 		result.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		result.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -13,7 +15,7 @@ static func label(text: String, font_size: int = 18, wrap: bool = false) -> Labe
 static func button(text: String, callback: Callable, primary: bool = false) -> Button:
 	var result: Button = Button.new()
 	result.text = text
-	result.custom_minimum_size.y = 48
+	result.custom_minimum_size.y = 52
 	result.pressed.connect(callback)
 	if primary:
 		ArtBank.primary(result)
@@ -31,7 +33,7 @@ static func heading(parent: Container, title: String, callback: Callable) -> HBo
 	var row: HBoxContainer = HBoxContainer.new()
 	parent.add_child(row)
 	row.add_child(button("‹ 返回", callback))
-	var title_label: Label = label(title, 26)
+	var title_label: Label = label(title, 28)
 	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(title_label)
 	return row

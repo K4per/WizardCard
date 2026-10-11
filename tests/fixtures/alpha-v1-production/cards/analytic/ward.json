@@ -1,0 +1,28 @@
+{
+  "id": "ward",
+  "name": "炽燃结界",
+  "rarity": "uncommon",
+  "type": "analytic",
+  "cost": 2,
+  "castCost": 1,
+  "rank": 2,
+  "concentration": true,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 2,
+      "damageType": "fire"
+    }
+  ],
+  "onCast": [
+    {
+      "kind": "damage",
+      "amount": 1,
+      "damageType": "fire"
+    }
+  ],
+  "text": "成功释放时对对方玩家造成2点火焰伤害。专注时，对对方玩家造成1点火焰伤害。",
+  "speed": 1,
+  "school": "evocation"
+}

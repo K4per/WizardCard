@@ -3,9 +3,8 @@
   "name": "火花术",
   "rarity": "common",
   "type": "word",
-  "cost": 1,
-  "rank": 0,
-  "immediate": true,
+  "cost": 2,
+  "rank": 1,
   "target": "opponent",
   "effects": [
     {
@@ -14,8 +13,13 @@
       "damageType": "fire"
     }
   ],
-  "text": "可单独设置，或设置并立即释放。释放时对对方造成2点火焰伤害。",
+  "text": "对对方玩家造成2点火焰伤害。",
   "flavor": "所有魔法学徒入门必学法术之一，告别火柴第一步！",
-  "speed": 1,
-  "school": "evocation"
+  "speed": 2,
+  "school": "abjuration",
+  "castCost": 0,
+  "level": 1,
+  "analysisTurns": 0,
+  "number": "030002",
+  "illustrationId": "spark"
 }

@@ -103,5 +103,6 @@ TEST_CASE("real effect metadata captures capped healing and actual draw independ
     REQUIRE(s.events.back().actualAmount == 0);
     EffectResolver::apply(s, content.catalog, t, {EffectKind::Draw, 2});
     REQUIRE(s.events.back().actualAmount == 0);
-    REQUIRE(s.players[0].drawFailed);
+    REQUIRE(s.players[0].exhaustion == 2);
+    REQUIRE(s.players[0].life == maximumLife - 3);
 }

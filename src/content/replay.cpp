@@ -8,8 +8,13 @@ namespace {
 MatchConfig sharedConfig(const Content &c, std::uint32_t seed) {
     MatchConfig config;
     config.seed = seed;
-    for (auto &p : config.players)
+    for (auto &p : config.players) {
         p.cards = c.deck;
+        if (c.catalog.usesAlphaV2()) {
+            p.sideDeck = c.sideDeck;
+            p.baseFormation = c.initialFormation;
+        }
+    }
     return config;
 }
 }
@@ -24,9 +29,13 @@ CommandResult MatchSession::submit(PlayerId p, const Command &c) {
 }
 Json MatchSession::recording() const {
     Json players = Json::array();
-    for (const auto &p : config_.players)
-        players.push_back({{"baseFormation", p.baseFormation}, {"cards", p.cards}});
-    Json j = {{"format", 2},
+    const bool newRules = content_.catalog.usesAlphaV2();
+    for (const auto &p : config_.players) {
+        Json player = {{"baseFormation", p.baseFormation}, {"cards", p.cards}};
+        if (newRules) player["sideDeck"] = p.sideDeck;
+        players.push_back(std::move(player));
+    }
+    Json j = {{"format", newRules ? 3 : 2},
               {"programVersion", programVersion},
               {"rulesVersion", content_.catalog.rulesVersion},
               {"cardSetVersion", content_.catalog.cardSetVersion},
@@ -60,8 +69,12 @@ void MatchSession::save(const std::filesystem::path &path) const {
     writeJson(path, recording());
 }
 GameEngine replay(const Content &c, const Json &j) {
-    if (j.at("format") != 2 || (j.at("programVersion") != programVersion &&
-        j.at("programVersion") != "1.1.0-alpha" && j.at("programVersion") != "1.0.0-alpha") ||
+    const bool newRules = c.catalog.usesAlphaV2();
+    if (j.at("format") != (newRules ? 3 : 2) ||
+        (j.at("programVersion") != programVersion &&
+         (newRules || (j.at("programVersion") != "2.0.0-dev.2" &&
+                       j.at("programVersion") != "1.1.0-alpha" &&
+                       j.at("programVersion") != "1.0.0-alpha"))) ||
         j.at("rulesVersion") != c.catalog.rulesVersion ||
         j.at("cardSetVersion") != c.catalog.cardSetVersion || j.at("contentHash") != c.catalog.contentHash)
         throw std::runtime_error("incompatible replay version or content hash");
@@ -73,6 +86,8 @@ GameEngine replay(const Content &c, const Json &j) {
     for (int p = 0; p < 2; ++p) {
         config.players[p].baseFormation = j.at("players").at(p).at("baseFormation").get<std::string>();
         config.players[p].cards = j.at("players").at(p).at("cards").get<std::vector<std::string>>();
+        if (newRules)
+            config.players[p].sideDeck = j.at("players").at(p).at("sideDeck").get<std::vector<std::string>>();
     }
     GameEngine engine(c.catalog, config);
     if (!j.at("commands").is_array())

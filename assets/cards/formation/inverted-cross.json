@@ -1,0 +1,31 @@
+{
+  "id": "inverted-cross",
+  "name": "逆十字",
+  "type": "formation",
+  "rarity": "uncommon",
+  "level": 3,
+  "body": 1,
+  "rings": 2,
+  "capacity": 5,
+  "income": 0,
+  "maxRank": 3,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "于该法阵施法时，失去一点生命，获得两点临时生命。",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 1
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "school": "necromancy"
+    }
+  ],
+  "traits": [
+    "host_cast_life_for_temporary"
+  ],
+  "number": "010010",
+  "illustrationId": "v2-inverted-cross"
+}

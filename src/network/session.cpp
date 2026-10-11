@@ -5,18 +5,24 @@ namespace wizard::net {
 namespace {
 PlayerDeck readDeck(const Json &j, const CardCatalog &c) {
     PlayerDeck d{j.at("baseFormation"), j.at("cards").get<std::vector<std::string>>()};
+    if (c.usesAlphaV2()) d.sideDeck = j.at("sideDeck").get<std::vector<std::string>>();
     auto e = Rules::deckErrors(c, d);
     if (!e.empty())
         throw std::runtime_error(e.front());
     return d;
 }
 Json deckJson(const PlayerDeck &d) {
-    return {{"baseFormation", d.baseFormation}, {"cards", d.cards}};
+    return {{"baseFormation", d.baseFormation}, {"cards", d.cards}, {"sideDeck", d.sideDeck}};
 }
 } // namespace
 HostSession::HostSession(Content c) : content_(std::move(c)) {
-    for (auto &d : decks_)
+    for (auto &d : decks_) {
         d.cards = content_.deck;
+        if (content_.catalog.usesAlphaV2()) {
+            d.sideDeck = content_.sideDeck;
+            d.baseFormation = content_.initialFormation;
+        }
+    }
 }
 void HostSession::deck(const PlayerDeck &d) {
     if (started())

@@ -1,0 +1,1654 @@
+{
+  "modelVersion": "0.1.0",
+  "rulesVersion": "1.0.0",
+  "cardSetVersion": "1.0.0",
+  "parameters": {
+    "modelVersion": "0.1.0",
+    "cardPriceMana": 2.5,
+    "cardPriceRange": [
+      2.0,
+      3.0
+    ],
+    "temporaryLoadPriceMana": 0.15,
+    "temporaryLoadPriceRange": [
+      0.0,
+      0.3
+    ],
+    "futureDiscount": 0.85,
+    "incomeHorizon": 3,
+    "drawCandidateCosts": [
+      1,
+      2,
+      3
+    ],
+    "description": "设计先验，未经胜率拟合；临时荷载价格仅用于安全且不接近过载的抽牌情景。"
+  },
+  "inputSha256": {
+    "assets/cards.json": "d2c4ca0402d920aedd76eff86198eb194b3163ca98d806d59ea631074e7baeab",
+    "assets/presets.json": "dbff3d0295835cd6748f9ef5036dc4c48769e983664e72ebb6e8efd4b282d58a",
+    "assets/deck.json": "49c7724d1ab5857747d6270dcc18f75dfc61727d8535529cac3ab87c85b8198b",
+    "docs/balance-parameters.json": "a711c050552c81e998e574bb3d23a6a55e517a7b5bf4acbcc598a0204f8fc278",
+    "src/core/engine.cpp": "0dddfe2d10f53fd40cc98a6c8edbf3327c0ffe2be18a5a2ffef6fe52c430abca",
+    "src/core/state.cpp": "2828bef0af8634e3ce98c63bcfbcb022f2a776fbfb79c6b96f19af30f3503329",
+    "src/content/content.cpp": "1e2a72d99297beb9d5c7b63b168ef81dc25d2bd1459b8840bd487179d873817f",
+    "src/application/application.cpp": "02d718d5d6faef239808389a3a9d6bf8c78ee52ee2734fa7904e8b68b1a77a93"
+  },
+  "cards": [
+    {
+      "id": "balance",
+      "name": "均衡之六芒星",
+      "type": "formation",
+      "cost": 0,
+      "castCost": 0,
+      "totalMana": 0,
+      "lifeBaseMana": 0,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "基础参照",
+        "10容量、2基础总收入；扩展实例免费，但占2阵体。"
+      ],
+      "body": 2,
+      "capacity": 8,
+      "income": 1,
+      "rings": 3,
+      "maxRank": 2,
+      "baseEligible": true
+    },
+    {
+      "id": "fireball",
+      "name": "火球术",
+      "type": "analytic",
+      "cost": 3,
+      "castCost": 1,
+      "totalMana": 4,
+      "lifeBaseMana": 3,
+      "lifeBaseDiscount": 1,
+      "analysisTurns": 1,
+      "rank": 2,
+      "speed": 1,
+      "boundLoadBeforeRelease": 4,
+      "lifeBaseBoundLoadBeforeRelease": 3,
+      "firstDamage": 10,
+      "damageTypes": [
+        "fire"
+      ],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 10,
+          "damageType": "fire"
+        },
+        {
+          "kind": "optional_destroy_own_formation"
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "伤害上沿",
+        "通常4费10伤；五芒星3费10伤。比闪电束少1费、多2伤，类型不同。"
+      ]
+    },
+    {
+      "id": "barbs",
+      "name": "银光锐语",
+      "type": "word",
+      "cost": 5,
+      "castCost": 0,
+      "totalMana": 5,
+      "lifeBaseMana": 5,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 1,
+      "speed": 2,
+      "boundLoadBeforeRelease": 5,
+      "lifeBaseBoundLoadBeforeRelease": 5,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "cancel"
+        },
+        {
+          "kind": "optional_prepare"
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [
+        {
+          "id": "cancel_preparation",
+          "name": "反制并准备施法",
+          "sources": [
+            "words",
+            "ambush"
+          ],
+          "windows": [
+            "prepare"
+          ],
+          "eventOwner": "opponent",
+          "target": "preparation_root",
+          "effects": [
+            {
+              "kind": "cancel"
+            },
+            {
+              "kind": "optional_prepare"
+            }
+          ]
+        }
+      ],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "优先补偿",
+        "5费取消准备，只耗掉对手本次施法费、延迟一轮；额外准备仍付费。先测试费用3或4。"
+      ]
+    },
+    {
+      "id": "recall",
+      "name": "奥术回想",
+      "type": "action",
+      "cost": 1,
+      "castCost": 0,
+      "totalMana": 1,
+      "lifeBaseMana": 1,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 1,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 2,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "draw",
+          "amount": 2
+        },
+        {
+          "kind": "temporary",
+          "amount": 1
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "优先削弱",
+        "1费抽2净赚1手牌，1临时荷载本回合到期；首轮候选费用2，费用3作上界对照。"
+      ]
+    },
+    {
+      "id": "ring",
+      "name": "奥术圆环",
+      "type": "seal",
+      "cost": 1,
+      "castCost": 0,
+      "totalMana": 1,
+      "lifeBaseMana": 1,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "组合观察",
+        "返还实际设置费，不减少释放前峰值荷载；五芒星折扣会降低返还。"
+      ],
+      "sealModes": {
+        "ringBonus": 1,
+        "incomeBonus": 0,
+        "capacityBonus": 0,
+        "rankBonus": 0,
+        "castCostBonus": 0,
+        "damageBonus": 0,
+        "refundSetting": 1
+      }
+    },
+    {
+      "id": "spark",
+      "name": "火花术",
+      "type": "word",
+      "cost": 1,
+      "castCost": 0,
+      "totalMana": 1,
+      "lifeBaseMana": 1,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 1,
+      "lifeBaseBoundLoadBeforeRelease": 1,
+      "firstDamage": 2,
+      "damageTypes": [
+        "fire"
+      ],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 2,
+          "damageType": "fire"
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "即时参照",
+        "1费2伤；无需阵法/解析等待，但消耗1张牌。"
+      ]
+    },
+    {
+      "id": "mend",
+      "name": "生命缝合",
+      "type": "analytic",
+      "cost": 1,
+      "castCost": 1,
+      "totalMana": 2,
+      "lifeBaseMana": 2,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 1,
+      "rank": 1,
+      "speed": 1,
+      "boundLoadBeforeRelease": 2,
+      "lifeBaseBoundLoadBeforeRelease": 2,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 6,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 2,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "heal",
+          "amount": 6
+        },
+        {
+          "kind": "independent",
+          "amount": 2
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "永久负担观察",
+        "至多治疗6，留下2独立荷载；当前卡池没有独立清除。"
+      ]
+    },
+    {
+      "id": "unravel",
+      "name": "碎环术",
+      "type": "analytic",
+      "cost": 2,
+      "castCost": 0,
+      "totalMana": 2,
+      "lifeBaseMana": 2,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 1,
+      "rank": 1,
+      "speed": 1,
+      "boundLoadBeforeRelease": 2,
+      "lifeBaseBoundLoadBeforeRelease": 2,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 1,
+      "effects": [
+        {
+          "kind": "discard_formation"
+        },
+        {
+          "kind": "destroy"
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "目标稀缺",
+        "2费并另弃阵法手牌；只能空白扩展阵法，无法拆基础/受保护储容。"
+      ]
+    },
+    {
+      "id": "disrupt",
+      "name": "魔力扰动",
+      "type": "action",
+      "cost": 2,
+      "castCost": 0,
+      "totalMana": 2,
+      "lifeBaseMana": 2,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 4,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "temporary",
+          "amount": 4
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "非线性风险",
+        "对手剩余容量小于4时直接过载；可同回合连续使用。"
+      ]
+    },
+    {
+      "id": "clarity",
+      "name": "心如止水",
+      "type": "action",
+      "cost": 1,
+      "castCost": 0,
+      "totalMana": 1,
+      "lifeBaseMana": 1,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 1,
+      "effects": [
+        {
+          "kind": "discard_hand"
+        },
+        {
+          "kind": "clear_all_temporary"
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "场景依赖",
+        "1费并另弃1手牌换清临时；已经过载败北后无法补救。"
+      ]
+    },
+    {
+      "id": "reservoir",
+      "name": "阿克乌姆之弧",
+      "type": "formation",
+      "cost": 0,
+      "castCost": 0,
+      "totalMana": 0,
+      "lifeBaseMana": 0,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "高优先级观察",
+        "免费、1阵体换5容量且免对手销毁；会削弱荷载负担的定价。"
+      ],
+      "body": 1,
+      "capacity": 5,
+      "income": 0,
+      "rings": 0,
+      "maxRank": 0,
+      "baseEligible": false
+    },
+    {
+      "id": "conduit",
+      "name": "逆三角星符",
+      "type": "seal",
+      "cost": 1,
+      "castCost": 0,
+      "totalMana": 1,
+      "lifeBaseMana": 1,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "高优先级观察",
+        "1费换每轮+2收入，可附在受保护基础阵法；先测试费用2。"
+      ],
+      "sealModes": {
+        "ringBonus": 0,
+        "incomeBonus": 2,
+        "capacityBonus": 0,
+        "rankBonus": 0,
+        "castCostBonus": 0,
+        "damageBonus": 0,
+        "refundSetting": 0
+      }
+    },
+    {
+      "id": "ward",
+      "name": "炽燃结界",
+      "type": "analytic",
+      "cost": 2,
+      "castCost": 1,
+      "totalMana": 3,
+      "lifeBaseMana": 2,
+      "lifeBaseDiscount": 1,
+      "analysisTurns": 1,
+      "rank": 2,
+      "speed": 1,
+      "boundLoadBeforeRelease": 3,
+      "lifeBaseBoundLoadBeforeRelease": 2,
+      "firstDamage": 2,
+      "damageTypes": [
+        "fire"
+      ],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 2,
+          "damageType": "fire"
+        }
+      ],
+      "periodicCastEffects": [
+        {
+          "kind": "damage",
+          "amount": 1,
+          "damageType": "fire"
+        }
+      ],
+      "responses": [],
+      "concentration": true,
+      "duration": 0,
+      "assessment": [
+        "优先补偿",
+        "3费首次2伤；每次再付1魔素、累积1绑定荷载换1伤。先测试周期伤害2。"
+      ]
+    },
+    {
+      "id": "messy-wave",
+      "name": "紊乱波动",
+      "type": "analytic",
+      "cost": 4,
+      "castCost": 4,
+      "totalMana": 8,
+      "lifeBaseMana": 7,
+      "lifeBaseDiscount": 1,
+      "analysisTurns": 1,
+      "rank": 2,
+      "speed": 1,
+      "boundLoadBeforeRelease": 8,
+      "lifeBaseBoundLoadBeforeRelease": 7,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 5,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "source_temporary",
+          "amount": 5
+        }
+      ],
+      "periodicCastEffects": [
+        {
+          "kind": "source_temporary",
+          "amount": 3
+        }
+      ],
+      "responses": [],
+      "concentration": false,
+      "duration": 3,
+      "assessment": [
+        "非线性风险",
+        "8峰值绑定荷载；对手来源临时荷载5→8→11，持续3包括释放回合。"
+      ]
+    },
+    {
+      "id": "instantly-sleep",
+      "name": "昏昏入睡",
+      "type": "analytic",
+      "cost": 3,
+      "castCost": 1,
+      "totalMana": 4,
+      "lifeBaseMana": 4,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 1,
+      "rank": 1,
+      "speed": 1,
+      "boundLoadBeforeRelease": 4,
+      "lifeBaseBoundLoadBeforeRelease": 4,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "block_actions",
+          "amount": 0
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "环境依赖",
+        "4费且默认等一轮，只禁下一个对方回合的行动；不禁设置/解析/释放。"
+      ]
+    },
+    {
+      "id": "magic-missile",
+      "name": "魔法飞弹",
+      "type": "analytic",
+      "cost": 2,
+      "castCost": 2,
+      "totalMana": 4,
+      "lifeBaseMana": 3,
+      "lifeBaseDiscount": 1,
+      "analysisTurns": 1,
+      "rank": 1,
+      "speed": 2,
+      "boundLoadBeforeRelease": 4,
+      "lifeBaseBoundLoadBeforeRelease": 3,
+      "firstDamage": 3,
+      "damageTypes": [
+        "force"
+      ],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "force"
+        },
+        {
+          "kind": "destroy_ambush",
+          "amount": 0
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [
+        {
+          "id": "quick_cast",
+          "name": "快速释放",
+          "sources": [
+            "analysis"
+          ],
+          "windows": [
+            "phase_start",
+            "phase_end",
+            "action",
+            "prepare",
+            "cast",
+            "trigger"
+          ],
+          "target": "opponent",
+          "phases": [
+            "cast"
+          ],
+          "eventOwner": "opponent",
+          "requiresSource": true,
+          "effects": [
+            {
+              "kind": "damage",
+              "amount": 3,
+              "damageType": "force"
+            },
+            {
+              "kind": "destroy_ambush",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "条件观察",
+        "4费3伤加可选拆埋伏；空埋伏环境只剩低伤，快速释放有时机价值。"
+      ]
+    },
+    {
+      "id": "aid",
+      "name": "支援术",
+      "type": "analytic",
+      "cost": 1,
+      "castCost": 1,
+      "totalMana": 2,
+      "lifeBaseMana": 2,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 1,
+      "speed": 1,
+      "boundLoadBeforeRelease": 2,
+      "lifeBaseBoundLoadBeforeRelease": 2,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 5,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 5
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "防护参照",
+        "2费立即解析获得5临时生命，仍须阵法、环位和释放时点。"
+      ]
+    },
+    {
+      "id": "counter-spell",
+      "name": "法术反制",
+      "type": "word",
+      "cost": 4,
+      "castCost": 0,
+      "totalMana": 4,
+      "lifeBaseMana": 4,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 3,
+      "speed": 4,
+      "boundLoadBeforeRelease": 4,
+      "lifeBaseBoundLoadBeforeRelease": 4,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "counter_spell",
+          "amount": 0
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [
+        {
+          "id": "counter_cast",
+          "name": "无效并销毁法术",
+          "sources": [
+            "words",
+            "ambush"
+          ],
+          "windows": [
+            "phase_start",
+            "phase_end",
+            "action",
+            "prepare",
+            "cast",
+            "trigger"
+          ],
+          "target": "enemy_spell_link",
+          "effects": [
+            {
+              "kind": "counter_spell",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "反制参照",
+        "4费无效并销毁；另承担目标实际施法费的临时荷载，不是总解析+施法费。"
+      ]
+    },
+    {
+      "id": "true-strike",
+      "name": "克敌机先",
+      "type": "word",
+      "cost": 1,
+      "castCost": 0,
+      "totalMana": 1,
+      "lifeBaseMana": 1,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 1,
+      "lifeBaseBoundLoadBeforeRelease": 1,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "search_action",
+          "amount": 0
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "组合观察",
+        "净手牌0；提高行动获取质量，必须与回想/复苏一起定价。"
+      ]
+    },
+    {
+      "id": "protective-flame",
+      "name": "避火咒",
+      "type": "word",
+      "cost": 2,
+      "castCost": 0,
+      "totalMana": 2,
+      "lifeBaseMana": 2,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 1,
+      "speed": 2,
+      "boundLoadBeforeRelease": 2,
+      "lifeBaseBoundLoadBeforeRelease": 2,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "grant_resistance",
+          "amount": 0
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [
+        {
+          "id": "protect",
+          "name": "获得火焰抗性",
+          "sources": [
+            "words",
+            "ambush"
+          ],
+          "windows": [
+            "phase_start",
+            "phase_end",
+            "action",
+            "prepare",
+            "cast",
+            "trigger"
+          ],
+          "target": "self",
+          "effects": [
+            {
+              "kind": "grant_resistance",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "concentration": true,
+      "duration": 0,
+      "assessment": [
+        "环境依赖",
+        "首次2费，后续每次2费+2累积荷载；按每次火伤向下取整后减免。"
+      ]
+    },
+    {
+      "id": "pentagram-of-life",
+      "name": "生命之五芒星",
+      "type": "formation",
+      "cost": 1,
+      "castCost": 0,
+      "totalMana": 1,
+      "lifeBaseMana": 1,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "基础参照",
+        "7容量、3基础总收入；基础实例才减费，低容量是主要约束。"
+      ],
+      "body": 2,
+      "capacity": 5,
+      "income": 2,
+      "rings": 5,
+      "maxRank": 3,
+      "baseEligible": true
+    },
+    {
+      "id": "engeas-four-point-star",
+      "name": "恩格亚斯四角星",
+      "type": "formation",
+      "cost": 0,
+      "castCost": 0,
+      "totalMana": 0,
+      "lifeBaseMana": 0,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "高优先级观察",
+        "免费、1阵体、每轮+4收入并加速；不能选为基础。先测试设置费1或收入3。"
+      ],
+      "body": 1,
+      "capacity": 2,
+      "income": 4,
+      "rings": 1,
+      "maxRank": 3,
+      "baseEligible": false
+    },
+    {
+      "id": "uplift",
+      "name": "昂扬",
+      "type": "seal",
+      "cost": 1,
+      "castCost": 0,
+      "totalMana": 1,
+      "lifeBaseMana": 1,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "分模式观察",
+        "阵法模式以每轮-1收入换容量/位阶；法术模式总增费2换2力场伤害。"
+      ],
+      "sealModes": {
+        "ringBonus": 0,
+        "incomeBonus": -1,
+        "capacityBonus": 1,
+        "rankBonus": 1,
+        "castCostBonus": 1,
+        "damageBonus": 2,
+        "refundSetting": 0
+      }
+    },
+    {
+      "id": "instant-circuit-overload",
+      "name": "瞬发回路过载",
+      "type": "action",
+      "cost": 2,
+      "castCost": 0,
+      "totalMana": 2,
+      "lifeBaseMana": 2,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "accelerate_analysis",
+          "amount": 0
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "组合观察",
+        "2费加实际解析费等量延迟临时荷载；四角星存在免费同类加速。"
+      ]
+    },
+    {
+      "id": "ray-of-frost",
+      "name": "寒霜射线",
+      "type": "analytic",
+      "cost": 1,
+      "castCost": 1,
+      "totalMana": 2,
+      "lifeBaseMana": 1,
+      "lifeBaseDiscount": 1,
+      "analysisTurns": 1,
+      "rank": 1,
+      "speed": 1,
+      "boundLoadBeforeRelease": 2,
+      "lifeBaseBoundLoadBeforeRelease": 1,
+      "firstDamage": 3,
+      "damageTypes": [
+        "cold"
+      ],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "cold"
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "低费参照",
+        "通常2费3伤，五芒星1费3伤；低启动费、低位阶、非火伤。"
+      ]
+    },
+    {
+      "id": "lightning-bolt",
+      "name": "闪电束",
+      "type": "analytic",
+      "cost": 3,
+      "castCost": 2,
+      "totalMana": 5,
+      "lifeBaseMana": 4,
+      "lifeBaseDiscount": 1,
+      "analysisTurns": 1,
+      "rank": 2,
+      "speed": 1,
+      "boundLoadBeforeRelease": 5,
+      "lifeBaseBoundLoadBeforeRelease": 4,
+      "firstDamage": 8,
+      "damageTypes": [
+        "lightning"
+      ],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 8,
+          "damageType": "lightning"
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "优先补偿",
+        "通常5费8伤；火抗环境有优势。先测试伤害10或解析费用2，两者择一。"
+      ]
+    },
+    {
+      "id": "lesser-restoration",
+      "name": "次级复原",
+      "type": "analytic",
+      "cost": 2,
+      "castCost": 1,
+      "totalMana": 3,
+      "lifeBaseMana": 3,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 1,
+      "speed": 1,
+      "boundLoadBeforeRelease": 3,
+      "lifeBaseBoundLoadBeforeRelease": 3,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 2,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "clear_all_temporary"
+        },
+        {
+          "kind": "heal",
+          "amount": 2
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "场景依赖",
+        "3费立即解析，清全部临时并治疗至多2；释放前先要容纳3绑定荷载。"
+      ]
+    },
+    {
+      "id": "false-life",
+      "name": "虚假生命",
+      "type": "analytic",
+      "cost": 2,
+      "castCost": 1,
+      "totalMana": 3,
+      "lifeBaseMana": 3,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 1,
+      "speed": 1,
+      "boundLoadBeforeRelease": 3,
+      "lifeBaseBoundLoadBeforeRelease": 3,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 8,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 2,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 8
+        },
+        {
+          "kind": "independent",
+          "amount": 2
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "永久负担观察",
+        "3费8临时生命并留下2独立荷载；已有临时生命时只补差额。"
+      ]
+    },
+    {
+      "id": "arcane-recovery",
+      "name": "奥术复苏",
+      "type": "action",
+      "cost": 0,
+      "castCost": 0,
+      "totalMana": 0,
+      "lifeBaseMana": 0,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 0,
+      "speed": 1,
+      "boundLoadBeforeRelease": 0,
+      "lifeBaseBoundLoadBeforeRelease": 0,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 0,
+      "selfTemporaryLoad": 2,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 3,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "mana",
+          "amount": 3
+        },
+        {
+          "kind": "temporary",
+          "amount": 2
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "高优先级观察",
+        "0费产3，短期2荷载；与回想合用可净产2魔素且手牌净变化0。"
+      ]
+    },
+    {
+      "id": "shield",
+      "name": "护盾术",
+      "type": "word",
+      "cost": 2,
+      "castCost": 0,
+      "totalMana": 2,
+      "lifeBaseMana": 2,
+      "lifeBaseDiscount": 0,
+      "analysisTurns": 0,
+      "rank": 1,
+      "speed": 2,
+      "boundLoadBeforeRelease": 2,
+      "lifeBaseBoundLoadBeforeRelease": 2,
+      "firstDamage": 0,
+      "damageTypes": [],
+      "healCeiling": 0,
+      "temporaryLifeCeiling": 6,
+      "selfTemporaryLoad": 0,
+      "independentLoad": 0,
+      "enemyTemporaryLoad": 0,
+      "enemySourceLoad": 0,
+      "draw": 0,
+      "manaGainCeiling": 0,
+      "extraDiscard": 0,
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 6
+        }
+      ],
+      "periodicCastEffects": [],
+      "responses": [
+        {
+          "id": "shield",
+          "name": "展开护盾",
+          "sources": [
+            "words",
+            "ambush"
+          ],
+          "windows": [
+            "phase_start",
+            "phase_end",
+            "action",
+            "prepare",
+            "cast",
+            "trigger"
+          ],
+          "target": "self",
+          "effects": [
+            {
+              "kind": "temporary_life",
+              "amount": 6
+            }
+          ]
+        }
+      ],
+      "concentration": false,
+      "duration": 0,
+      "assessment": [
+        "防护上沿",
+        "2费6临时生命，可预置响应；不能从手牌响应，预置占荷载/后场位。"
+      ]
+    }
+  ],
+  "drawSensitivity": [
+    {
+      "id": "recall",
+      "cost": 1,
+      "centralSurplus": 1.35,
+      "range": [
+        0.7,
+        2.0
+      ]
+    },
+    {
+      "id": "recall",
+      "cost": 2,
+      "centralSurplus": 0.35,
+      "range": [
+        -0.3,
+        1.0
+      ]
+    },
+    {
+      "id": "recall",
+      "cost": 3,
+      "centralSurplus": -0.65,
+      "range": [
+        -1.3,
+        0.0
+      ]
+    }
+  ],
+  "incomeEngines": [
+    {
+      "id": "balance",
+      "income": 1,
+      "cost": 0,
+      "body": 2,
+      "fullUseManaPaybackEvents": 0,
+      "conditionalNetPresentMana": -0.3133750000000002
+    },
+    {
+      "id": "conduit",
+      "income": 2,
+      "cost": 1,
+      "body": 0,
+      "fullUseManaPaybackEvents": 1,
+      "conditionalNetPresentMana": 0.8732499999999996
+    },
+    {
+      "id": "pentagram-of-life",
+      "income": 2,
+      "cost": 1,
+      "body": 2,
+      "fullUseManaPaybackEvents": 1,
+      "conditionalNetPresentMana": 0.8732499999999996
+    },
+    {
+      "id": "engeas-four-point-star",
+      "income": 4,
+      "cost": 0,
+      "body": 1,
+      "fullUseManaPaybackEvents": 0,
+      "conditionalNetPresentMana": 6.246499999999999
+    }
+  ],
+  "presets": [
+    {
+      "id": "default",
+      "name": "示范卡组",
+      "baseFormation": "均衡之六芒星",
+      "totalCards": 30,
+      "baseCapacity": 10,
+      "baseIncome": 2,
+      "directDrawCopies": 3,
+      "actionTutorCopies": 0,
+      "drawAccessOpening5": 0.43349753694581283,
+      "drawOrTutorOpening5": 0.43349753694581283
+    },
+    {
+      "id": "analysis-practice",
+      "name": "解析练习",
+      "baseFormation": "均衡之六芒星",
+      "totalCards": 30,
+      "baseCapacity": 10,
+      "baseIncome": 2,
+      "directDrawCopies": 3,
+      "actionTutorCopies": 0,
+      "drawAccessOpening5": 0.43349753694581283,
+      "drawOrTutorOpening5": 0.43349753694581283
+    },
+    {
+      "id": "counter-load",
+      "name": "言灵与荷载",
+      "baseFormation": "均衡之六芒星",
+      "totalCards": 30,
+      "baseCapacity": 10,
+      "baseIncome": 2,
+      "directDrawCopies": 3,
+      "actionTutorCopies": 0,
+      "drawAccessOpening5": 0.43349753694581283,
+      "drawOrTutorOpening5": 0.43349753694581283
+    },
+    {
+      "id": "concentration-practice",
+      "name": "专注练习",
+      "baseFormation": "均衡之六芒星",
+      "totalCards": 30,
+      "baseCapacity": 10,
+      "baseIncome": 2,
+      "directDrawCopies": 3,
+      "actionTutorCopies": 0,
+      "drawAccessOpening5": 0.43349753694581283,
+      "drawOrTutorOpening5": 0.43349753694581283
+    },
+    {
+      "id": "quick-circuit",
+      "name": "速解与支援",
+      "baseFormation": "均衡之六芒星",
+      "totalCards": 30,
+      "baseCapacity": 10,
+      "baseIncome": 2,
+      "directDrawCopies": 0,
+      "actionTutorCopies": 3,
+      "drawAccessOpening5": 0.0,
+      "drawOrTutorOpening5": 0.0
+    },
+    {
+      "id": "source-load",
+      "name": "持续荷载与防护",
+      "baseFormation": "均衡之六芒星",
+      "totalCards": 30,
+      "baseCapacity": 10,
+      "baseIncome": 2,
+      "directDrawCopies": 3,
+      "actionTutorCopies": 0,
+      "drawAccessOpening5": 0.43349753694581283,
+      "drawOrTutorOpening5": 0.43349753694581283
+    },
+    {
+      "id": "pentagram-evocation",
+      "name": "五芒星塑能",
+      "baseFormation": "生命之五芒星",
+      "totalCards": 30,
+      "baseCapacity": 7,
+      "baseIncome": 3,
+      "directDrawCopies": 3,
+      "actionTutorCopies": 0,
+      "drawAccessOpening5": 0.43349753694581283,
+      "drawOrTutorOpening5": 0.43349753694581283
+    },
+    {
+      "id": "fortress-sustain",
+      "name": "防护与续航",
+      "baseFormation": "均衡之六芒星",
+      "totalCards": 30,
+      "baseCapacity": 10,
+      "baseIncome": 2,
+      "directDrawCopies": 3,
+      "actionTutorCopies": 0,
+      "drawAccessOpening5": 0.43349753694581283,
+      "drawOrTutorOpening5": 0.43349753694581283
+    },
+    {
+      "id": "word-tempo",
+      "name": "言灵与节奏",
+      "baseFormation": "均衡之六芒星",
+      "totalCards": 30,
+      "baseCapacity": 10,
+      "baseIncome": 2,
+      "directDrawCopies": 3,
+      "actionTutorCopies": 3,
+      "drawAccessOpening5": 0.43349753694581283,
+      "drawOrTutorOpening5": 0.7017388741526673
+    }
+  ],
+  "specialCases": {
+    "sourceLoadByOwnCast": [
+      5,
+      8,
+      11
+    ],
+    "wardByMaintenances": [
+      {
+        "maintenanceCount": 0,
+        "mana": 3,
+        "boundLoad": 3,
+        "damage": 2
+      },
+      {
+        "maintenanceCount": 1,
+        "mana": 4,
+        "boundLoad": 4,
+        "damage": 3
+      },
+      {
+        "maintenanceCount": 2,
+        "mana": 5,
+        "boundLoad": 5,
+        "damage": 4
+      },
+      {
+        "maintenanceCount": 3,
+        "mana": 6,
+        "boundLoad": 6,
+        "damage": 5
+      }
+    ]
+  },
+  "limitations": [
+    "静态分析和人工设计假设，不是对局胜率预测。",
+    "折现收入假定存活与完全利用，未扣阵体/环位机会成本。",
+    "五芒星费用只在对应基础宿主上适用；费用表不表示目标、容量及时点均可满足。",
+    "绑定峰值为无符文单卡释放前值；独立负担与反制/加速的动态负担另算。"
+  ]
+}

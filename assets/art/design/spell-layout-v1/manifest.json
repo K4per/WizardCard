@@ -1,0 +1,48 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "user sketch 2026-10-08",
+  "assets": [
+    {
+      "file": "spell-frame-A-antique-gold.png",
+      "size": [
+        1086,
+        1448
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "artWindowCenterAlpha": 0,
+      "exteriorCornerAlpha": 0
+    },
+    {
+      "file": "spell-frame-B-moon-silver.png",
+      "size": [
+        1086,
+        1448
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "artWindowCenterAlpha": 0,
+      "exteriorCornerAlpha": 0
+    },
+    {
+      "file": "spell-frame-C-legendary-gold.png",
+      "size": [
+        1086,
+        1448
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "artWindowCenterAlpha": 0,
+      "exteriorCornerAlpha": 0
+    }
+  ]
+}

@@ -81,7 +81,7 @@ std::vector<DeckPreset> loadPresets(const Content &content, const std::filesyste
     std::vector<DeckPreset> out{
         {"default",
          "示范卡组",
-         {"balance", content.deck},
+         content.defaultPlayerDeck(),
          "覆盖解析、言灵和荷载的综合入门卡组。先建立荷载空间，解析火球术，再选择施法顺序。"}};
     if (!std::filesystem::exists(assets / "presets.json"))
         return out;
@@ -98,6 +98,17 @@ std::vector<DeckPreset> loadPresets(const Content &content, const std::filesyste
             throw std::runtime_error("预设卡组ID或名称无效");
         p.deck.baseFormation = row.at("baseFormation").get<std::string>();
         p.deck.cards = parseDeck(row.at("cards"), content.catalog, "presets.json/" + p.id);
+        if (content.catalog.usesAlphaV2()) {
+            if (!row.contains("sideCards") || !row.at("sideCards").is_array())
+                throw std::runtime_error("新版预设缺少副卡组：" + p.id);
+            for (const auto &entry : row.at("sideCards")) {
+                const auto id = entry.at("id").get<std::string>();
+                const int count = entry.at("count").get<int>();
+                if (count < 1 || count > 3)
+                    throw std::runtime_error("副卡组数量无效：" + p.id);
+                p.deck.sideDeck.insert(p.deck.sideDeck.end(), count, id);
+            }
+        }
         auto errors = Rules::deckErrors(content.catalog, p.deck);
         if (!errors.empty())
             throw std::runtime_error(errors.front());
@@ -109,7 +120,7 @@ Application::Application(Content content, std::filesystem::path directory, std::
     : content_(std::move(content)), directory_(std::move(directory)), presets_(std::move(presets)),
       decks_(content_.catalog, directory_), roomFactory_(std::move(roomFactory)) {
     if (presets_.empty())
-        presets_.push_back({"default", "示范卡组", {"balance", content_.deck}});
+        presets_.push_back({"default", "示范卡组", content_.defaultPlayerDeck()});
     for (const auto &preset : presets_) {
         auto errors = Rules::deckErrors(content_.catalog, preset.deck);
         if (!errors.empty())
@@ -190,6 +201,7 @@ bool Application::start(const MatchConfig &config, std::string &error, SessionOp
         ++revision_;
         options_ = options;
         tutorial_ = {};
+        tutorial_.alphaV2 = content_.catalog.usesAlphaV2();
         page_ = Page::Match;
         return true;
     } catch (const std::exception &e) {

@@ -13,6 +13,29 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
     auto &c = i->second;
     const auto &def = catalog_.at(c.definition);
     auto &pl = s.players[actor];
+    if (catalog_.usesAlphaV2()) {
+        if (def.type != CardType::Analytic || c.faceDown || cmd.discard || c.zone != Zone::Analysis || c.spell != SpellState::Ready ||
+            c.canceledTurn == pl.ownTurn)
+            return "not_ready: 法术未解析完成";
+        if (!deferred && ((actor != s.active && (!c.wasAmbushed || c.ambushedTurn >= s.globalTurn || def.speed < 2)) ||
+            (def.speed == 1 && s.phase != Phase::Main) ||
+            (def.speed == 2 && s.phase != Phase::Main && s.phase != Phase::Cast)))
+            return "spell_speed: 此时不能准备";
+        if (static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog_, actor))
+            return "casting_capacity: 施法区没有空位";
+        if (!deferred && cmd.decision) return "stale_decision";
+        c.targetCard = cmd.target; c.targets = cmd.targets;
+        for (const auto &pending : s.deferredPreparations)
+            if (pending.item.source == cmd.card) return "not_ready";
+        if (s.chain)
+            for (const auto &link : s.chain->links)
+                if (link.kind == LinkKind::Preparation && link.item.source == cmd.card) return "not_ready";
+        ChainLink root; root.kind = LinkKind::Preparation; root.item = snapshot(c, def);
+        root.item.effects.clear(); root.item.requiresSource = true; root.speed = def.speed;
+        if (deferred) s.deferredPreparations.push_back(std::move(root));
+        else startChain(ResponseWindow::Prepare, std::move(root), 1 - s.active);
+        return {};
+    }
     if (def.type != CardType::Analytic || c.zone != Zone::Analysis || c.spell != SpellState::Ready ||
         c.canceledTurn == pl.ownTurn)
         return "not_ready: 法术未就绪或本回合已被取消";
@@ -98,6 +121,9 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         if (actor != d.player)
             return "decision_mismatch: 请完成当前玩家的选择";
         if (d.kind == DecisionKind::Response) {
+            if (catalog_.usesAlphaV2() && (std::holds_alternative<PrepareCast>(command) ||
+                                          std::holds_alternative<FlipAmbush>(command)))
+                return responseSetupV2(actor, command);
             Command selected = command;
             if (auto old = std::get_if<Choose>(&selected)) {
                 if (old->decision != d.id)
@@ -133,13 +159,15 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             const bool hand = c.zone == Zone::Hand;
             const bool analytic = c.zone == Zone::Analysis && !c.faceDown;
             const bool ambush = c.faceDown;
-            const int paid =
-                analytic ? Rules::castCost(s, catalog_, c.id)
+            const int paid = catalog_.usesAlphaV2()
+                ? Rules::castCost(s, catalog_, c.id) +
+                      (ambush && def.type == CardType::Analytic ? def.cost : 0)
+                : analytic ? Rules::castCost(s, catalog_, c.id)
                 : ambush ? def.cost
                 : hand   ? a.handCost
                          : a.preloadedCost +
                              (def.type == CardType::Word ? Rules::castCost(s, catalog_, c.id) - def.cost : 0);
-            const int bound = analytic || def.type == CardType::Word ? paid : 0;
+            const int bound = catalog_.usesAlphaV2() ? paid : analytic || def.type == CardType::Word ? paid : 0;
             s.players[actor].mana -= paid;
             if (r->discard)
                 StateMaintenance::leave(s, r->discard, &catalog_);
@@ -149,17 +177,22 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             if ((hand || ambush) && def.type == CardType::Word)
                 c.settingPaid = paid;
             c.castLoad += bound;
-            c.zone = analytic ? Zone::Casting : Zone::Resolving;
+            ResourceRules::increasedLoad(s, catalog_, actor, bound + a.burden);
+            if (s.result != -1) return {};
+            c.sourceRingIndex = c.ringIndex >= 0 ? c.ringIndex : c.sourceRingIndex;
+            c.sourceFormation = c.host ? c.host : c.sourceFormation;
+            c.zone = catalog_.usesAlphaV2() || analytic ? Zone::Casting : Zone::Resolving;
             c.faceDown = false;
             c.host = 0;
-            c.spell = analytic ? SpellState::Pending : SpellState::None;
+            if (catalog_.usesAlphaV2()) c.ringIndex = -1;
+            c.spell = catalog_.usesAlphaV2() || analytic ? SpellState::Pending : SpellState::None;
             c.targetCard = r->target;
             c.targets = targetCards(r->target, r->targets);
             c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
             c.payments.push_back({s.players[actor].ownTurn, paid, bound, false});
             ChainLink link;
             link.id = s.nextLink++;
-            link.kind = analytic ? LinkKind::Spell : LinkKind::Response;
+            link.kind = catalog_.usesAlphaV2() || analytic ? LinkKind::Spell : LinkKind::Response;
             link.speed = catalog_.advancedRules ? def.speed : 0;
             link.castCost = Rules::castCost(s, catalog_, c.id);
             link.ability = a.id;
@@ -172,7 +205,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             link.item.targetCard = r->target;
             link.item.targetCards = targetCards(r->target, r->targets);
             link.item.targetPlayer = a.target == TargetKind::Opponent ? 1 - actor : actor;
-            link.item.effects = a.effects;
+            link.item.effects = a.effects.empty() && catalog_.usesAlphaV2() ? def.effects : a.effects;
             for (const auto &[sid, seal] : s.cards)
                 if (seal.zone == Zone::Attached && seal.host == c.id &&
                     catalog_.at(seal.definition).damageBonus)
@@ -181,6 +214,11 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             link.item.target = a.target;
             link.item.targetLink = r->link;
             link.item.requiresSource = a.requiresSource;
+            if (catalog_.usesAlphaV2()) {
+                castingTraitsV2(c.id);
+                if (s.result != -1) return {};
+            s.chain->hadActualLinks = true;
+            }
             s.chain->links.push_back(std::move(link));
             s.chain->responded.push_back(c.id);
             s.chain->passes = 0;
@@ -213,6 +251,10 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             return "invalid_option: 无效选择";
         s.decision.reset();
         s.events.push_back({"choice", "玩家 " + std::to_string(actor + 1) + " 完成选择"});
+        if (catalog_.usesAlphaV2() && (d.kind == DecisionKind::EffectChoice || d.kind == DecisionKind::DamageChoice)) {
+            chooseContentEffectV2(actor, d.kind, opt);
+            return {};
+        }
         switch (d.kind) {
         case DecisionKind::CastOrder:
             if (opt)
@@ -250,6 +292,22 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                 s.events.push_back({"load", "移除1点临时荷载"});
             }
             break;
+        case DecisionKind::ClearAnyLoad:
+            if (!opt) { ++s.effect->cursor; s.effect->clearRemaining = -1; }
+            else {
+                if (opt & 0x80000000u) {
+                    const auto id = opt & 0x7fffffffu;
+                    auto load = std::find_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &t) { return t.id == id; });
+                    --load->amount;
+                } else {
+                    auto &card = s.cards.at(opt);
+                    if (card.castLoad) --card.castLoad;
+                    else --card.analysisLoad;
+                }
+                --s.effect->clearRemaining;
+                s.events.push_back({"load", "清除1点荷载"});
+            }
+            break;
         case DecisionKind::SearchDeck: {
             auto &deck = s.players[actor].deck;
             deck.erase(std::find(deck.begin(), deck.end(), opt));
@@ -276,15 +334,18 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         case DecisionKind::Concentration: {
             CardId source = 0;
             for (const auto &[id, c] : s.cards)
-                if (c.owner == actor && c.zone == Zone::Casting && c.spell == SpellState::Active &&
+                if (c.owner == actor && (c.zone == Zone::Casting || (catalog_.usesAlphaV2() && c.zone == Zone::Analysis)) && c.spell == SpellState::Active &&
                     catalog_.at(c.definition).concentration)
-                    source = id;
+                    source = catalog_.usesAlphaV2() ? s.maintenanceSource : id;
+            if (!source) break;
             auto &c = s.cards.at(source);
             if (opt) {
                 const int paid = c.concentrationCost;
                 s.players[actor].mana -= paid;
                 c.castLoad += paid;
                 c.payments.push_back({s.players[actor].ownTurn, paid, paid, false});
+                ResourceRules::increasedLoad(s, catalog_, actor, paid);
+                if (s.result != -1) return {};
                 s.events.push_back({"concentration", "维持专注：支付 " + std::to_string(paid) + " 魔素及荷载",
                                     -1, source, paid});
             } else {
@@ -293,11 +354,37 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             }
             break;
         }
+        case DecisionKind::ReturnSpell: {
+            const CardId source = s.maintenanceSource;
+            if (!source || !s.cards.count(source)) return "invalid_return";
+            auto &card = s.cards.at(source);
+            if (opt) {
+                if (!s.cards.count(opt) || s.cards.at(opt).owner != actor ||
+                    s.cards.at(opt).zone != Zone::Analysis ||
+                    catalog_.at(s.cards.at(opt).definition).type != CardType::Formation ||
+                    catalog_.at(card.definition).rank > Rules::maxRank(s, catalog_, opt) ||
+                    Rules::freeRing(s, catalog_, opt) < 0) return "invalid_return";
+                if (!Rules::canHost(s, catalog_, source, opt)) return "invalid_return";
+                const int ring = choose->ringIndex < 0 ? Rules::freeRing(s, catalog_, opt) : choose->ringIndex;
+                if (ring < 0 || ring >= Rules::rings(s, catalog_, opt)) return "invalid_return";
+                for (const auto &[id, other] : s.cards)
+                    if (id != source && other.zone == Zone::Analysis && other.host == opt && other.ringIndex == ring)
+                        return "invalid_return";
+                card.zone = Zone::Analysis; card.host = opt; card.sourceFormation = opt;
+                card.ringIndex = ring; card.sourceRingIndex = ring;
+                card.fieldOrder = s.nextFieldOrder++;
+                s.events.push_back({"return", "持续法术回位", -1, source});
+            } else StateMaintenance::leave(s, source, &catalog_);
+            s.maintenanceSource = 0;
+            break;
+        }
         case DecisionKind::Response:
             break;
         }
         return {};
     }
+    if (catalog_.usesAlphaV2())
+        return executeV2(actor, command);
     if (std::holds_alternative<Choose>(command) || std::holds_alternative<Respond>(command) ||
         std::holds_alternative<PassResponse>(command))
         return "stale_decision: 选择已过期";
@@ -569,3 +656,4 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
     return error;
 }
 } // namespace wizard
+#include "v2_commands.inc"

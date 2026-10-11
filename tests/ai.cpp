@@ -7,7 +7,7 @@ using namespace wizard;
 using namespace wizard::app;
 namespace {
 Content content() {
-    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
 }
 CardView shown(CardId id, const char *name, int owner = 0, Zone zone = Zone::Hand) {
     CardView c;
@@ -46,7 +46,7 @@ struct Fixture {
     }
     Application app() {
         return Application(data, directory,
-                           loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets"));
+                           loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production"));
     }
 };
 Command student(const Application &a) {
@@ -352,7 +352,7 @@ TEST_CASE("AI can pay a preloaded response discard and counter an opposing count
 }
 TEST_CASE("all difficulties finish fixed seed games with representative decks and deterministic replay") {
     auto c = content();
-    auto presets = loadPresets(c, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    auto presets = loadPresets(c, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     std::set<DecisionKind> encountered;
     for (int d = 0; d < 3; ++d)
         for (auto seed : {1u, 39u, 42u}) {

@@ -1,0 +1,39 @@
+{
+  "id": "scorching-ray",
+  "name": "炽热射线",
+  "type": "analytic",
+  "rarity": "epic",
+  "rank": 5,
+  "level": 5,
+  "speed": 1,
+  "school": "necromancy",
+  "cost": 4,
+  "castCost": 2,
+  "analysisTurns": 2,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "fire"
+    },
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "fire"
+    },
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "fire"
+    },
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "fire"
+    }
+  ],
+  "text": "造成5点火焰伤害4次。",
+  "number": "020015",
+  "illustrationId": "v2-scorching-ray"
+}

@@ -38,7 +38,8 @@ Json LocalSession::library() const {
         presets.push_back({{"id", preset.id}, {"name", preset.name}, {"description", preset.description}});
     for (const auto &draft : application_->decks().drafts()) {
         auto data = app::encodeDraft(draft);
-        data["problems"] = application_->decks().problems(draft);
+        data["problems"] = app::constructionProblems(content_->catalog, draft);
+        data["matchCompatible"] = app::deckProblems(content_->catalog, draft).empty();
         drafts.push_back(std::move(data));
     }
     Json playable = Json::array();
@@ -48,9 +49,11 @@ Json LocalSession::library() const {
         {"settings", app::encodeSettings(application_->settings())},
         {"writable", application_->decks().writable()}, {"notice", application_->notice()}});
 }
-Json LocalSession::createDraft(const std::string &presetId) const {
+Json LocalSession::createDraft(const std::string &presetId, int format) const {
     if (!application_) return fail("请先加载内容");
+    if (format != 1 && format != 2) return fail("卡组草稿版本无效");
     auto draft = application_->decks().create();
+    draft.format = format;
     if (!presetId.empty()) {
         const auto &presets = application_->presets();
         const auto found = std::find_if(presets.begin(), presets.end(), [&](const app::DeckPreset &p) { return p.id == presetId; });
@@ -58,12 +61,29 @@ Json LocalSession::createDraft(const std::string &presetId) const {
         draft.name = found->name + " · 副本";
         draft.baseFormation = found->deck.baseFormation;
         for (const auto &id : found->deck.cards) ++draft.cards[id];
+        if (format == 2)
+            for (const auto &id : found->deck.sideDeck) ++draft.sideCards[id];
+    }
+    if (format == 2) {
+        for (auto it = draft.cards.begin(); it != draft.cards.end();) {
+            const auto found = content_->catalog.cards.find(it->first);
+            if (found != content_->catalog.cards.end() && found->second.type == CardType::Formation) {
+                draft.sideCards[it->first] += it->second;
+                it = draft.cards.erase(it);
+            } else ++it;
+        }
+        if (!presetId.empty() && !draft.sideCards.count(draft.baseFormation))
+            draft.sideCards[draft.baseFormation] = 1;
     }
     return ok(app::encodeDraft(draft));
 }
 Json LocalSession::validateDraft(const Json &data) const {
     if (!application_) return fail("请先加载内容");
-    try { return ok({{"problems", application_->decks().problems(app::decodeDraft(data))}}); }
+    try {
+        const auto draft = app::decodeDraft(data);
+        return ok({{"problems", app::constructionProblems(content_->catalog, draft)},
+                   {"matchCompatible", app::deckProblems(content_->catalog, draft).empty()}});
+    }
     catch (const std::exception &e) { return fail(e.what()); }
 }
 Json LocalSession::saveDraft(const Json &data) {
@@ -88,7 +108,7 @@ Json LocalSession::query(const Json &data) const {
         query.rarity = data.value("rarity", std::string{});
         if (data.contains("type")) {
             const auto type = data.at("type").get<int>();
-            if (type < 0 || type > 4) return fail("类型筛选无效");
+            if (type < 0 || type > static_cast<int>(CardType::Talisman)) return fail("类型筛选无效");
             query.type = static_cast<CardType>(type);
         }
         if (data.contains("cost")) query.cost = data.at("cost").get<int>();
@@ -149,6 +169,71 @@ Json LocalSession::interact(PlayerId viewer, const Json &request, const std::str
             {"groups", groups}, {"candidates", candidates}, {"links", links},
             {"pending", interaction_.pending() ? Json(interaction_.pending()->label) : Json()},
             {"command", interaction_.pending() ? commandDto(interaction_.pending()->command) : Json()}});
+    } catch (const std::exception &e) { return fail(e.what()); }
+}
+
+Json LocalSession::networkRequest(const Json &request) {
+    if (!application_) return fail("请先加载内容");
+    try {
+        const auto operation = request.at("operation").get<std::string>();
+        const auto chooseDeck = [&]() -> PlayerDeck {
+            const auto decks = application_->playableDecks();
+            const auto id = request.value("deck", std::string("default"));
+            const auto found = std::find_if(decks.begin(), decks.end(),
+                [&](const app::DeckPreset &preset) { return preset.id == id; });
+            if (found == decks.end()) throw std::invalid_argument("未找到合法卡组");
+            return found->deck;
+        };
+        if (operation == "host" || operation == "join") {
+            const auto port = request.value("port", 4242);
+            if (port < 1 || port > 65535) return fail("端口必须在1到65535之间");
+            const auto address = request.value("address", std::string("127.0.0.1"));
+            std::string error;
+            if (!application_->startNetwork(operation == "host", address,
+                                            static_cast<unsigned short>(port), chooseDeck(), error))
+                return fail(error);
+            ++generation_;
+            pending_.reset();
+            interaction_.cancel();
+        } else {
+            auto *room = application_->network();
+            if (!room) return fail("当前没有联机房间");
+            if (operation == "deck") room->deck(chooseDeck());
+            else if (operation == "configure")
+                room->configure(request.value("hostFirst", true), request.value("automatic", true));
+            else if (operation == "ready") room->ready();
+            else if (operation == "reconnect") room->reconnect();
+            else if (operation == "leave") {
+                std::string error;
+                if (!application_->leaveNetwork(error, request.value("force", false))) return fail(error);
+                ++generation_;
+                pending_.reset();
+                interaction_.cancel();
+                return ok();
+            } else return fail("未知联机操作");
+        }
+        return pollNetwork();
+    } catch (const std::exception &e) { return fail(e.what()); }
+}
+
+Json LocalSession::pollNetwork() {
+    if (!application_ || !application_->network()) return ok({{"exists", false}});
+    try {
+        application_->tickNetwork();
+        if (application_->networkReset()) {
+            ++generation_;
+            pending_.reset();
+            interaction_.cancel();
+        }
+        auto *room = application_->network();
+        if (!room) return ok({{"exists", false}, {"ended", true}, {"generation", std::to_string(generation_)}});
+        const auto localPlayer = room->started() ? room->view().viewer : -1;
+        return ok({{"exists", true}, {"room", room->room()}, {"host", room->isHost()},
+                   {"connected", room->connected()}, {"started", room->started()},
+                   {"blocked", room->blocked()}, {"ended", room->ended()},
+                   {"replayDelivered", room->replayDelivered()}, {"notice", room->notice()},
+                   {"viewer", localPlayer}, {"generation", std::to_string(generation_)},
+                   {"revision", std::to_string(application_->revision())}});
     } catch (const std::exception &e) { return fail(e.what()); }
 }
 } // namespace wizard::bridge

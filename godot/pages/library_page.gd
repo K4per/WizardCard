@@ -9,17 +9,29 @@ var _search: LineEdit
 var _detail: CardDetail
 var _content: HBoxContainer
 var _notice: Label
+var _kind_filter: OptionButton
+
+const KINDS: Array[String] = ["", "analysis", "incantation", "talisman", "formation", "rune"]
 
 func _ready() -> void:
 	var margin: MarginContainer = UiFactory.margin(self)
 	var column: VBoxContainer = VBoxContainer.new()
 	margin.add_child(column)
 	UiFactory.heading(column, "卡牌图鉴", navigation_requested.emit.bind(&"menu"))
+	var filters: HBoxContainer = HBoxContainer.new()
+	column.add_child(filters)
 	_search = LineEdit.new()
-	_search.placeholder_text = "搜索名称或能力"
+	_search.placeholder_text = "搜索编号、名称、学派或效果"
 	_search.custom_minimum_size.y = 48
+	_search.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_search.text_changed.connect(_populate)
-	column.add_child(_search)
+	filters.add_child(_search)
+	_kind_filter = OptionButton.new()
+	_kind_filter.custom_minimum_size = Vector2(224, 48)
+	for kind: String in ["全部类型", "解析法术", "言灵法术", "咒符法术", "阵法", "符文"]:
+		_kind_filter.add_item(kind)
+	_kind_filter.item_selected.connect(_kind_changed)
+	filters.add_child(_kind_filter)
 	_notice = UiFactory.label("", 16)
 	column.add_child(_notice)
 	_content = HBoxContainer.new()
@@ -40,9 +52,6 @@ func _ready() -> void:
 
 func configure(value: FrontendService) -> void:
 	service = value
-	_notice.text = "当前正式卡池 %s · 卡牌迁移方案待审定" % service.rules_version
-	if not service.error.is_empty():
-		_notice.text = service.error
 	_populate("")
 	_resize_grid()
 
@@ -52,13 +61,23 @@ func _populate(query: String) -> void:
 		child.queue_free()
 	if service == null:
 		return
-	for card: CardPresentation in service.cards:
-		if not query.is_empty() and not (card.title + card.text).contains(query):
+	var collection: Array[CardPresentation] = service.cards
+	for card: CardPresentation in collection:
+		if _kind_filter.selected > 0 and card.type_key != KINDS[_kind_filter.selected]:
+			continue
+		if not query.is_empty() and not (card.title + card.type_label + card.metadata_text + card.text).contains(query):
 			continue
 		var tile: CardTile = CardTile.new()
 		_grid.add_child(tile)
 		tile.configure(card)
 		tile.card_selected.connect(_show_detail)
+	_notice.text = "正式卡池 %s · 显示 %d / %d 张" % [service.rules_version, _grid.get_child_count(), collection.size()]
+	if not service.error.is_empty():
+		_notice.text = service.error
+
+func _kind_changed(_index: int) -> void:
+	_close_detail()
+	_populate(_search.text)
 
 func _resize_grid() -> void:
 	var available: float = size.x - 64 - (360 if _detail.visible else 0)

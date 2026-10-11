@@ -21,19 +21,37 @@ ART = GODOT / "art"
 COLLECTION = ROOT / "assets/art/godot-2d-v1"
 SOURCE_MANIFEST = COLLECTION / "manifests/c-pixel-v1/manifest.json"
 RUNTIME_MANIFEST = ART / "assets.json"
+MENU_COLLECTION = ROOT / "assets/art/godot-2d-v2/main-menu-1080p-v1"
+MENU_MANIFEST = MENU_COLLECTION / "manifest.json"
+UI_COLLECTION = ROOT / "assets/art/godot-2d-v2/ui-components-1080p-v1"
+UI_MANIFEST = UI_COLLECTION / "manifest.json"
+FONT_COLLECTION = ROOT / "assets/art/fonts/noto-sans-cjk-sc"
+FONT_MANIFEST = FONT_COLLECTION / "manifest.json"
+DECK_COLLECTION = ROOT / "assets/art/godot-2d-v2/deck-builder-1080p-v1"
+DECK_MANIFEST = DECK_COLLECTION / "manifest.json"
+PREVIEW_COLLECTION = ROOT / "assets/art/godot-2d-v2/card-illustrations-v2-20261011"
+PREVIEW_MANIFEST = PREVIEW_COLLECTION / "manifest.json"
 METADATA = (
     "size", "nineSlice", "safeRect", "artRect", "nameRect", "effectRect",
     "rarityAnchor", "valueAnchors", "cardType", "view", "anchor", "layer",
-    "overlay", "sampling", "origin", "license",
+    "overlay", "sampling", "origin", "license", "region", "textSafeRect", "targetSize",
+    "licenseAsset", "fontFamily", "fontStyle", "fontWeight", "version", "copyright", "upstream",
 )
 REQUIRED = {
-    "font.cjk", "font.cjk.license", "c2d.background.realm", "c2d.brand.logo",
-    "c2d.card.back.compact", "c2d.card.missing-art", "c2d.zone.slot",
+    "font.cjk", "font.cjk.bold", "font.cjk.black", "font.cjk.license", "font.cjk.weights.license", "c2d.background.realm", "c2d.brand.logo",
+    "c2d.card.back.ai", "c2d.card.missing-art", "c2d.zone.slot",
     "c2d.overlay.target", "c2d.panel.surface",
+    "c2d.v2.menu.background", "c2d.v2.menu.logo",
+    *("c2d.v2.deck." + component for component in
+      ("background", "detail-panel", "grid-panel", "list-entry", "empty-slot", "quantity-badge", "drop-highlight")),
+    *("c2d.v2.ui." + component for component in
+      ("panel", "field", "slider-track", "slider-knob", "toggle-on", "toggle-off")),
+    *(f"c2d.v2.menu.button-{state}" for state in
+      ("normal", "hover", "pressed", "focus", "disabled")),
     *(f"c2d.button.primary.{state}" for state in
       ("normal", "hover", "pressed", "focus", "disabled")),
-    *(f"c2d.card.{view}.{kind}" for view in ("field", "hand", "builder", "detail")
-      for kind in ("analysis", "talisman", "incantation", "formation", "rune")),
+    *(f"c2d.card.detail.{kind}.ai" for kind in
+      ("analysis", "talisman", "incantation", "formation", "rune")),
 }
 
 
@@ -62,11 +80,14 @@ def confined_path(base: Path, relative: str) -> Path:
 
 
 def selected(asset_id: str) -> bool:
-    # Native templates cover each target card size. Large AI card bodies are
-    # omitted to keep small cards readable and anonymous cards type-neutral.
-    return not asset_id.startswith(("c2d.fx.", "c2d.result.")) and not (
-        asset_id.startswith("c2d.card.") and asset_id.endswith(".ai")
-    )
+    # All views use the original AI frames. Historical simplified templates
+    # remain in the source collection, but are not selected for runtime use.
+    if asset_id == "c2d.card.back.compact":
+        return False
+    if asset_id.startswith(("c2d.card.field.", "c2d.card.hand.",
+                            "c2d.card.builder.", "c2d.card.detail.")):
+        return asset_id.endswith(".ai")
+    return not asset_id.startswith(("c2d.fx.", "c2d.result."))
 
 
 def copied_entry(asset_id: str, source: Path, relative: str, expected_hash: str | None = None,
@@ -90,6 +111,22 @@ def synchronize() -> None:
         original_file = confined_path(COLLECTION, asset["file"])
         relative = PurePosixPath(asset["file"]).relative_to("export/c-pixel-v1").as_posix()
         metadata = {key: asset[key] for key in METADATA if key in asset}
+        if asset["id"].startswith("c2d.card.detail.") and asset["id"].endswith(".ai"):
+            # Safe pixel rectangles measured against the unchanged 1086x1448
+            # original, rather than the approximate authoring anchors.
+            kind = asset["cardType"]
+            strip_y = 817 if kind == "talisman" else 800
+            metadata["runtimeLayout"] = {
+                "name": [150, 112, 650, 68],
+                "art": [119, 228, 850, 534],
+                "type": [238, strip_y + 12, 124, 46],
+                "speed": [415, strip_y + 12, 340, 46],
+                "rarity": [857, strip_y + 1, 112, 70],
+                "effect": [148, 955, 785, 200 if kind == "formation" else 235],
+                "identifier": [783, 1333, 179, 33],
+                "values": [[950, 147], [144, 1288]],
+            }
+            metadata["runtimeViews"] = ["field", "hand", "builder", "detail"]
         metadata["authoringSource"] = (
             COLLECTION.relative_to(ROOT) / asset["source"]
         ).as_posix()
@@ -111,11 +148,53 @@ def synchronize() -> None:
                                           "licenseAsset": "font.cjk.license"}))
     entries.append(copied_entry("font.cjk.license", ROOT / original["fontLicense"],
                                 "fonts/OFL.txt", metadata={"license": "SIL Open Font License 1.1"}))
+    fonts = read_json(FONT_MANIFEST)
+    entries.append(copied_entry("font.cjk.weights.license", FONT_COLLECTION / fonts["licenseFile"],
+                                "fonts/NotoSansCJK-OFL.txt", fonts["licenseSha256"],
+                                {"license": fonts["license"], "upstream": fonts["licenseUrl"]}))
+    for asset in fonts["assets"]:
+        source = confined_path(FONT_COLLECTION, asset["file"])
+        metadata = {key: asset[key] for key in METADATA if key in asset}
+        entries.append(copied_entry(asset["id"], source, "fonts/" + source.name,
+                                    asset["sha256"], metadata))
+    for asset in read_json(MENU_MANIFEST)["assets"]:
+        source = confined_path(MENU_COLLECTION, asset["file"])
+        metadata = {key: asset[key] for key in METADATA if key in asset}
+        metadata["authoringSource"] = confined_path(MENU_COLLECTION, asset["source"]).relative_to(ROOT).as_posix()
+        entries.append(copied_entry(asset["id"], source, "menu-v2/" + source.name,
+                                    asset["sha256"], metadata))
+    for asset in read_json(UI_MANIFEST)["assets"]:
+        source = confined_path(UI_COLLECTION, asset["file"])
+        metadata = {key: asset[key] for key in METADATA if key in asset}
+        metadata["authoringSource"] = confined_path(UI_COLLECTION, asset["source"]).relative_to(ROOT).as_posix()
+        entries.append(copied_entry(asset["id"], source, "ui-v2/" + source.name,
+                                    asset["sha256"], metadata))
+    for asset in read_json(DECK_MANIFEST)["assets"]:
+        source = confined_path(DECK_COLLECTION, asset["file"])
+        metadata = {key: asset[key] for key in METADATA if key in asset}
+        metadata["authoringSource"] = confined_path(DECK_COLLECTION, asset["source"]).relative_to(ROOT).as_posix()
+        entries.append(copied_entry(asset["id"], source, "deck-v2/" + source.name,
+                                    asset["sha256"], metadata))
+    for asset in read_json(PREVIEW_MANIFEST)["assets"]:
+        source = confined_path(PREVIEW_COLLECTION, asset["file"])
+        metadata = {key: asset[key] for key in METADATA if key in asset}
+        entries.append(copied_entry(asset["id"], source, "illustrations-v2/" + source.name,
+                                    asset["sha256"], metadata))
     manifest = {
         "format": 1,
         "collection": "WizardCard C pixel fantasy frontend foundation",
         "sourceManifest": SOURCE_MANIFEST.relative_to(ROOT).as_posix(),
         "sourceManifestSha256": sha256(SOURCE_MANIFEST),
+        "additionalSourceManifests": [{"file": MENU_MANIFEST.relative_to(ROOT).as_posix(),
+                                       "sha256": sha256(MENU_MANIFEST)},
+                                      {"file": UI_MANIFEST.relative_to(ROOT).as_posix(),
+                                       "sha256": sha256(UI_MANIFEST)},
+                                      {"file": FONT_MANIFEST.relative_to(ROOT).as_posix(),
+                                       "sha256": sha256(FONT_MANIFEST)},
+                                      {"file": DECK_MANIFEST.relative_to(ROOT).as_posix(),
+                                       "sha256": sha256(DECK_MANIFEST)},
+                                      {"file": PREVIEW_MANIFEST.relative_to(ROOT).as_posix(),
+                                       "sha256": sha256(PREVIEW_MANIFEST)}],
         "palette": original["nativePalette"],
         "assets": sorted(entries, key=lambda entry: entry["id"]),
     }
@@ -154,6 +233,22 @@ def verify() -> tuple[int, int]:
             dimensions = list(struct.unpack(">II", header[16:24]))
             if "size" in entry and dimensions != entry["size"]:
                 raise ValueError(f"PNG dimensions disagree with manifest: {asset_id}")
+            if "runtimeLayout" in entry:
+                layout = entry["runtimeLayout"]
+                for key in ("name", "art", "type", "speed", "rarity", "effect", "identifier"):
+                    rectangle = layout[key]
+                    if (len(rectangle) != 4 or any(type(v) is not int for v in rectangle)
+                            or min(rectangle[:2]) < 0 or min(rectangle[2:]) <= 0
+                            or rectangle[0] + rectangle[2] > dimensions[0]
+                            or rectangle[1] + rectangle[3] > dimensions[1]):
+                        raise ValueError(f"Invalid card layout {key}: {asset_id}")
+            if "region" in entry:
+                region = entry["region"]
+                if (len(region) != 4 or any(type(v) is not int for v in region)
+                        or min(region[:2]) < 0 or min(region[2:]) <= 0
+                        or region[0] + region[2] > dimensions[0]
+                        or region[1] + region[3] > dimensions[1]):
+                    raise ValueError(f"Invalid texture region: {asset_id}")
             if "nineSlice" in entry:
                 margins = entry["nineSlice"]
                 if (len(margins) != 4 or any(type(v) is not int or v < 0 for v in margins)
@@ -163,8 +258,21 @@ def verify() -> tuple[int, int]:
     missing = REQUIRED - ids
     if missing:
         raise ValueError(f"Missing frontend foundation assets: {', '.join(sorted(missing))}")
-    if len([asset_id for asset_id in ids if asset_id.startswith("illustration.")]) != 30:
+    if len([asset_id for asset_id in ids if asset_id.startswith("illustration.") and
+            not asset_id.startswith("illustration.v2-")]) != 30:
         raise ValueError("Runtime collection must preserve all 30 illustrations")
+    previews = read_json(GODOT / "data/card-previews-v2.json")
+    if previews.get("usage") != "illustrated-preview" or len(previews["cards"]) != 32:
+        raise ValueError("Expected 32 display-only 2.0 preview cards")
+    card_ids = set()
+    for card in previews["cards"]:
+        if not card["id"].startswith("v2-") or card["id"] in card_ids:
+            raise ValueError("Duplicate or invalid 2.0 preview card id")
+        card_ids.add(card["id"])
+        if "illustration." + card["illustrationId"] not in ids:
+            raise ValueError("Missing 2.0 card illustration: " + card["id"])
+        if card["typeKey"] not in ("analysis", "incantation", "talisman", "formation"):
+            raise ValueError("Unsupported 2.0 card frame: " + card["id"])
     return len(ids), byte_count
 
 

@@ -1,0 +1,50 @@
+{
+  "id": "shield",
+  "name": "护盾术",
+  "type": "talisman",
+  "rarity": "common",
+  "cost": 2,
+  "rank": 3,
+  "speed": 2,
+  "concentration": false,
+  "school": "abjuration",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "reduce_spell_damage",
+      "amount": 5
+    }
+  ],
+  "responses": [
+    {
+      "id": "shield",
+      "name": "降低法术伤害",
+      "sources": [
+        "ambush"
+      ],
+      "windows": [
+        "phase_start",
+        "phase_end",
+        "action",
+        "prepare",
+        "cast",
+        "trigger"
+      ],
+      "target": "enemy_spell_link",
+      "effects": [
+        {
+          "kind": "reduce_spell_damage",
+          "amount": 5
+        }
+      ],
+      "eventOwner": "opponent"
+    }
+  ],
+  "text": "响应对方造成伤害的法术：该链节的一次伤害降低至多5点；力场伤害降低至多10点。",
+  "castCost": 0,
+  "level": 3,
+  "responseOnly": true,
+  "analysisTurns": 0,
+  "number": "040003",
+  "illustrationId": "shield"
+}

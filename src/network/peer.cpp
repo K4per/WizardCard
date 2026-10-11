@@ -234,7 +234,8 @@ void Peer::deck(const PlayerDeck &d) {
     else
         tcp_.send({{"type", "Deck"},
                    {"session", room_.at("session")},
-                   {"deck", {{"baseFormation", d.baseFormation}, {"cards", d.cards}}}});
+                   {"deck", {{"baseFormation", d.baseFormation}, {"cards", d.cards},
+                             {"sideDeck", d.sideDeck}}}});
 }
 void Peer::configure(bool first, bool automatic) {
     if (!host_)

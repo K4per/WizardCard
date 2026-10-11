@@ -7,11 +7,15 @@ namespace wizard {
 std::string GameEngine::stateKey(bool logical) const {
     const auto &s = state_;
     std::ostringstream o;
-    if (catalog_.alphaV2Draft)
-        o << "alpha-v2-resource-draft:" << s.players[0].exhaustion << ',' << s.players[1].exhaustion << ';';
+    if (catalog_.usesAlphaV2())
+        o << (catalog_.alphaV2Draft ? "alpha-v2-resource-draft:" : "alpha-v2-final:")
+          << s.players[0].exhaustion << ',' << s.players[1].exhaustion << ';';
     o << s.active << ',' << s.first << ',' << static_cast<int>(s.phase) << ','
       << static_cast<int>(s.phaseStep) << ',' << static_cast<int>(s.flow) << ',' << s.result << ',' << s.rng
       << ',' << s.durationApplied << ',' << (logical ? s.globalTurn % 2 : s.globalTurn) << ';';
+    if (catalog_.usesAlphaV2())
+        o << "v2:" << s.phaseCursor << ',' << s.maintenanceSource << ',' << s.phaseOrderCursor << ','
+          << s.returnRequested << ',' << s.timingPending << ',' << s.nextFieldOrder << ';';
     if (!logical)
         o << s.nextLoad << ',' << s.nextTrigger << ',' << s.nextBatch << ',' << s.nextDecision << ','
           << s.nextChain << ',' << s.nextLink << ',' << s.phaseGate << ';';
@@ -31,6 +35,7 @@ std::string GameEngine::stateKey(bool logical) const {
         for (auto id : p.deck)
             o << id << ',';
         o << ';';
+        if (catalog_.usesAlphaV2()) o << "exhaustion:" << p.exhaustion << ';';
     }
     for (const auto &[id, c] : s.cards) {
         o << id << ',' << std::quoted(c.definition) << ',' << c.owner << ',' << static_cast<int>(c.zone)
@@ -40,6 +45,9 @@ std::string GameEngine::stateKey(bool logical) const {
           << c.settingPaid << ',' << c.concentrationCost << ',' << c.faceDown << ','
           << (logical ? (c.faceDown && c.ambushedTurn == s.globalTurn) : c.ambushedTurn) << ','
           << c.quickAnalysisTurn << ':';
+        if (catalog_.usesAlphaV2())
+            o << "v2:" << c.analysisProgress << ',' << c.fieldOrder << ',' << c.ringIndex << ','
+              << c.wasAmbushed << ',' << c.sourceRingIndex << ':';
         for (const auto &pay : c.payments)
             o << pay.turn << ',' << pay.paid << ',' << pay.load << ',' << pay.canceled << '/';
         o << ':';
@@ -89,6 +97,7 @@ std::string GameEngine::stateKey(bool logical) const {
         const auto &c = *s.chain;
         o << 'C' << (logical ? 0 : c.id) << ',' << static_cast<int>(c.window) << ','
           << static_cast<int>(c.mode) << ',' << c.initiator << ',' << c.priority << ',' << c.passes << ';';
+        if (catalog_.usesAlphaV2()) o << "actual:" << c.hadActualLinks << ';';
         for (const auto &l : c.links) {
             o << 'N' << linkId(l.id) << ',' << static_cast<int>(l.kind) << ',' << l.canceled << ','
               << l.sourceLost << ',' << std::quoted(l.ability) << ',' << l.paymentIndex << ','

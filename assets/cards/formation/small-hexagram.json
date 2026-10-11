@@ -1,0 +1,26 @@
+{
+  "id": "small-hexagram",
+  "name": "小六芒星",
+  "type": "formation",
+  "rarity": "common",
+  "level": 1,
+  "body": 1,
+  "rings": 1,
+  "capacity": 5,
+  "income": 1,
+  "maxRank": 1,
+  "baseEligible": true,
+  "cost": 0,
+  "text": "该卡不能同时存在两张。",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 2
+    }
+  ],
+  "traits": [
+    "unique"
+  ],
+  "number": "010005",
+  "illustrationId": "v2-small-hexagram"
+}

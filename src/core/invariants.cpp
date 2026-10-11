@@ -44,7 +44,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
                     errors.push_back("missing deck card");
                 if (c.zone == Zone::Words)
                     ++words;
-                if (c.zone == Zone::Casting && c.spell == SpellState::Active &&
+                if ((c.zone == Zone::Casting || (cat.usesAlphaV2() && c.zone == Zone::Analysis)) && c.spell == SpellState::Active &&
                     cat.at(c.definition).concentration)
                     ++concentration;
                 if (c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation)
@@ -58,7 +58,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
     for (const auto &[id, c] : s.cards) {
         if (c.id != id || c.owner < 0 || c.owner > 1 || c.analysisLoad < 0 || c.castLoad < 0)
             errors.push_back("instance bounds");
-        if (c.base && c.zone != Zone::Analysis)
+        if (!cat.usesAlphaV2() && c.base && c.zone != Zone::Analysis)
             errors.push_back("base protection");
         if (c.zone == Zone::Ash && (c.analysisLoad || c.castLoad || c.host))
             errors.push_back("ash residue");
@@ -72,7 +72,8 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
                 errors.push_back("analysis host is not formation");
         }
         if ((c.zone == Zone::Attached ||
-             (c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Analytic)) &&
+             (c.zone == Zone::Analysis && (cat.at(c.definition).type == CardType::Analytic ||
+               (cat.usesAlphaV2() && cat.at(c.definition).type != CardType::Formation)))) &&
             !c.host)
             errors.push_back("missing host");
         if (c.zone == Zone::Attached && cat.at(c.definition).type != CardType::Seal)
@@ -85,6 +86,18 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
             errors.push_back("multiple seals");
         if (c.zone == Zone::Casting && c.host)
             errors.push_back("casting still attached to formation");
+        if (cat.usesAlphaV2()) {
+            if (c.zone == Zone::Words || c.zone == Zone::Action || c.zone == Zone::Resolving)
+                errors.push_back("obsolete v2 zone");
+            if (c.zone == Zone::SideDeck && cat.at(c.definition).type != CardType::Formation)
+                errors.push_back("non-formation side card");
+            if (c.zone == Zone::Analysis && c.host) {
+                if (c.ringIndex < 0) errors.push_back("missing ring index");
+                for (const auto &[other, x] : s.cards)
+                    if (other != id && x.zone == Zone::Analysis && x.host == c.host && x.ringIndex == c.ringIndex)
+                        errors.push_back("duplicate ring index");
+            }
+        }
     }
     return errors;
 }

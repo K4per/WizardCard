@@ -142,7 +142,7 @@ TEST_CASE("periodic triggers preserve chosen order and queued source snapshot") 
     auto d=*e.state().decision;accept(e,0,Choose{d.id,d.options.back()});REQUIRE(e.state().players[1].life==startingLife-4);
 }
 TEST_CASE("first player skips only first base draw and both get income") {
-    auto c=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");GameEngine e(c.catalog,{c.deck,c.deck},42);int first=e.state().first;
+    auto c=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"tests/fixtures/alpha-v1-production");GameEngine e(c.catalog,{c.deck,c.deck},42);int first=e.state().first;
     emptyPhases(e);
     REQUIRE(e.viewFor(first).players[first].handCount==5);REQUIRE(e.state().players[first].mana==3);
     accept(e,first,Advance{});REQUIRE(e.viewFor(1-first).players[1-first].handCount==6);REQUIRE(e.state().players[1-first].mana==3);
@@ -191,7 +191,7 @@ TEST_CASE("end triggers resolve and check before expiring temporary load") {
     f.state.players[1].life=2;f.state.temporary.push_back({1,0,0,1,1});auto e=f.engine();accept(e,0,Advance{});REQUIRE(e.state().result==0);REQUIRE(e.state().temporary.size()==1);
 }
 TEST_CASE("long legal and illegal command sequences preserve state invariants") {
-    auto content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");
+    auto content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"tests/fixtures/alpha-v1-production");
     for(std::uint32_t seed=1;seed<=8;++seed) {
         GameEngine e(content.catalog,{content.deck,content.deck},seed);std::uint32_t rng=seed;
         for(int n=0;n<100 && e.state().result==-1;++n) {

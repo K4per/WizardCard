@@ -4,12 +4,15 @@
 namespace wizard {
 struct SetFormation {
     CardId card{}, replace{};
+    std::vector<CardId> materials;
 };
 struct RemoveFormation {
     CardId card{};
 };
 struct StartAnalysis {
     CardId card{}, formation{};
+    CardId target{};
+    std::vector<CardId> targets;
 };
 struct PrepareCast {
     CardId card{}, target{}, discard{};
@@ -23,6 +26,8 @@ struct PlayAction {
 struct PreloadWord {
     CardId card{};
     bool release{};
+    CardId formation{}, target{};
+    std::vector<CardId> targets;
 };
 struct AttachSeal {
     CardId card{}, host{};
@@ -37,6 +42,7 @@ struct Advance {};
 struct Choose {
     DecisionId decision{};
     std::uint32_t option{};
+    int ringIndex{-1}; // ReturnSpell may select any empty ring; -1 keeps first-free compatibility.
 }; // 0 = pass/stop when permitted
 struct Surrender {};
 struct Respond {
@@ -60,6 +66,7 @@ struct SetAmbush {
 struct FlipAmbush {
     CardId card{}, target{};
     std::vector<CardId> targets;
+    DecisionId decision{};
 };
 struct ActivateSpell {
     CardId card{}, target{};
@@ -80,7 +87,11 @@ enum class DecisionKind {
     EffectPrepare,
     Concentration,
     DestroyAmbush,
-    SearchDeck
+    SearchDeck,
+    ReturnSpell,
+    EffectChoice,
+    DamageChoice,
+    ClearAnyLoad
 };
 struct PendingDecision {
     DecisionId id{};

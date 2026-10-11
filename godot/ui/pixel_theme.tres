@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=2 format=3]
+[gd_resource type="Theme" load_steps=3 format=3]
 
 [ext_resource type="FontFile" path="res://art/fonts/NotoSansCJKsc-Regular.otf" id="1_font"]
+[ext_resource type="FontFile" path="res://art/fonts/NotoSansCJKsc-Bold.otf" id="2_bold"]
 
 [resource]
 default_font = ExtResource("1_font")
@@ -14,8 +15,13 @@ Button/colors/font_hover_color = Color(1, 1, 1, 1)
 Button/colors/font_pressed_color = Color(0.714, 0.816, 0.757, 1)
 Button/colors/font_disabled_color = Color(0.537, 0.584, 0.635, 1)
 Button/font_sizes/font_size = 19
+Button/fonts/font = ExtResource("2_bold")
+OptionButton/fonts/font = ExtResource("2_bold")
 LineEdit/colors/font_color = Color(0.965, 0.933, 0.847, 1)
 RichTextLabel/colors/default_color = Color(0.965, 0.933, 0.847, 1)
+RichTextLabel/fonts/normal_font = ExtResource("1_font")
+RichTextLabel/fonts/bold_font = ExtResource("2_bold")
 CheckButton/colors/font_color = Color(0.965, 0.933, 0.847, 1)
+CheckButton/fonts/font = ExtResource("2_bold")
 VBoxContainer/constants/separation = 16
 HBoxContainer/constants/separation = 16

@@ -1,0 +1,218 @@
+{
+  "format": 1,
+  "date": "2026-10-11",
+  "mode": "OpenAI built-in image_gen",
+  "note": "Generate new subjects only. Reuse sixteen existing card illustrations. Copy selected PNGs unchanged; preserve alpha.",
+  "assets": [
+    {
+      "id": "illustration.v2-chromatic-orb",
+      "file": "v2-chromatic-orb.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-3df65253-77d7-482d-b39d-884b5afce490.png",
+      "prompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 繁彩球 / CHROMATIC ORB: a faceted magical sphere with six distinct jewel-like color segments: acid green, ice cyan, flame orange, lightning yellow, poison violet, thunder blue, encircled by two small interwoven gold orbital bands. A few crisp sparkling pixels. Clearly one single multicolored spell orb.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 繁彩球 / CHROMATIC ORB: a faceted magical sphere with six distinct jewel-like color segments: acid green, ice cyan, flame orange, lightning yellow, poison violet, thunder blue, encircled by two small interwoven gold orbital bands. A few crisp sparkling pixels. Clearly one single multicolored spell orb.",
+      "styleReferences": [
+        "assets/art/cards/mend.png",
+        "assets/art/cards/fireball.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-guiding-bolt",
+      "file": "v2-guiding-bolt.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-26ade153-c07d-4751-8f1d-44145c311e7b.png",
+      "prompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 曳光弹 / GUIDING BOLT: a white-gold radiant projectile with a pointed bright diamond core, trailing two curling amber and pale gold pixel ribbons, and small star-shaped light sparks. Isolated coherent bolt diagonally pointing upward-right, readable at thumbnail size.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 曳光弹 / GUIDING BOLT: a white-gold radiant projectile with a pointed bright diamond core, trailing two curling amber and pale gold pixel ribbons, and small star-shaped light sparks. Isolated coherent bolt diagonally pointing upward-right, readable at thumbnail size.",
+      "styleReferences": [
+        "assets/art/cards/fireball.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-scorching-ray",
+      "file": "v2-scorching-ray.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-3a9d0162-8122-40a6-ae24-7579b7b39bea.png",
+      "prompt": "Edit this spell illustration: it currently has THREE fiery beams, change it to exactly FOUR. Retain the gold and turquoise arcane focus, orange-red white-hot fire, and original crisp chunky pixel-art style. Four clearly SEPARATED beams: one nearly vertical, one steep diagonal, one middle diagonal, one shallow diagonal. Four individual bright flame heads; no overlaps hiding a beam. Fit the whole sprite completely INSIDE a square canvas with generous transparent padding on all edges (12%). True transparent alpha background, no scene or text or card frame. Subject 炽热射线, hits four times, therefore FOUR distinct rays.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 炽热射线 / SCORCHING RAY: exactly FOUR narrow parallel blazing orange-red magical beams fanning outward from a tiny gold arcane focus. Four individually distinguishable white-hot ray heads and fiery tails. Compact coherent cluster diagonal upward-right, no extra rays.",
+      "styleReferences": [
+        "assets/art/cards/fireball.png"
+      ],
+      "repaired": true,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-sunburst",
+      "file": "v2-sunburst.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-843aaf64-6453-4c38-85ec-4438f9538d4a.png",
+      "prompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 阳炎爆 / SUNBURST: a brilliant golden sun-like magical explosion with a compact amber core, orange flame tongues and many pointed gold-white starburst rays. Single powerful radial blast, sharp stepped pixel flames, no scene or background.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 阳炎爆 / SUNBURST: a brilliant golden sun-like magical explosion with a compact amber core, orange flame tongues and many pointed gold-white starburst rays. Single powerful radial blast, sharp stepped pixel flames, no scene or background.",
+      "styleReferences": [
+        "assets/art/cards/fireball.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-healing-circle",
+      "file": "v2-healing-circle.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-7f14e709-f89c-433b-81b2-a2cd3cd5d85d.png",
+      "prompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 治疗之环 / HEALING CIRCLE: an ornate gold magical ring encircling a small faceted ruby heart, three equidistant teal healing jewels on the ring. Luminous turquoise magical threads link jewels toward the heart, crisp small pixel sparkles. Front-on circular emblem, transparent open spaces.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 治疗之环 / HEALING CIRCLE: an ornate gold magical ring encircling a small faceted ruby heart, three equidistant teal healing jewels on the ring. Luminous turquoise magical threads link jewels toward the heart, crisp small pixel sparkles. Front-on circular emblem, transparent open spaces.",
+      "styleReferences": [
+        "assets/art/cards/mend.png",
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-funny-box",
+      "file": "v2-funny-box.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-cd76f09f-006a-4239-9846-de19eee0866b.png",
+      "prompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 滑稽魔盒 / FUNNY MAGIC BOX: a small ornate antique gold and violet jack-in-the-box, open lid, a mischievous little ivory theatrical jester mask on a curling teal magical spring. One compact playful sinister magic container, gold filigree and purple enamel, three-quarter view, no human figure.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 滑稽魔盒 / FUNNY MAGIC BOX: a small ornate antique gold and violet jack-in-the-box, open lid, a mischievous little ivory theatrical jester mask on a curling teal magical spring. One compact playful sinister magic container, gold filigree and purple enamel, three-quarter view, no human figure.",
+      "styleReferences": [
+        "assets/art/cards/mend.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-small-hexagram",
+      "file": "v2-small-hexagram.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-7b06bf4c-f253-456d-93a6-d917f93db883.png",
+      "prompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 小六芒星 / SMALL HEXAGRAM FORMATION: a SIMPLE thin six-pointed star made of two interwoven gold triangles, tiny teal jewel at the top, six precise star tips, less elaborate than reference, open transparent holes. Flat front-on geometrical emblem, small basic foundation spell formation. No outer circle.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 小六芒星 / SMALL HEXAGRAM FORMATION: a SIMPLE thin six-pointed star made of two interwoven gold triangles, tiny teal jewel at the top, six precise star tips, less elaborate than reference, open transparent holes. Flat front-on geometrical emblem, small basic foundation spell formation. No outer circle.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-octagram",
+      "file": "v2-octagram.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-712d8b47-a70d-48dc-9219-a0c9b3daca92.png",
+      "prompt": "Edit the attached six-pointed star into an EIGHT-POINTED STAR. Change geometry completely: DELETE both triangles, build TWO overlapping SQUARES, one upright square and one square rotated 45 degrees (diamond). The resulting outline MUST have eight tips, at top, upper-right, right, lower-right, bottom, lower-left, left, upper-left. Put one teal gemstone on EACH of the EIGHT tips. Octagonal opening in the center is transparent. Keep the old antique GOLD metal, teal inlay, dark contour and crisp stepped pixel-art texture. Square canvas, centered complete isolated symbol with 12% transparent margins. Actual transparent alpha, no text, no background, no card frame. This is 八芒星, cannot be a hexagram.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: a SINGLE individual WizardCard 2.0 card illustration sprite, NOT a complete card. Reference images are STYLE references only: match crisp chunky pixel-art clusters, stepped silhouettes, limited shaded palette, dark outlines, antique gold metal and teal gems where present, original fantasy game icon style. Square centered composition, complete subject occupies 70-80%, generous transparent margin on ALL four sides. Truly transparent alpha background everywhere outside sprite and through empty holes. No scenery, floor, pedestal, card frame, words, digits, watermark, background glow cloud, drawn checkerboard, or smooth photorealism. Subject: 八芒星 / OCTAGRAM FORMATION: exactly EIGHT-pointed symmetrical star formed by two interwoven rotated gold squares, one aligned square and one diamond, eight teal pointed gems evenly spaced at tips. Ornate old-gold bevels and teal inlay. All internal empty holes transparent, orthographic top-down sigil.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": true,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-sun",
+      "file": "v2-sun.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-d96e8880-9229-4ddd-9a66-b2342d5ececd.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 太阳 / SUN FORMATION: a grand golden solar emblem, circular honey-gold sun disk with a faceted teal gemstone center; alternating long and short angular gilded sun rays arranged radially. Symmetrical sacred arcane artifact, prominent sunny silhouette, front-on.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 太阳 / SUN FORMATION: a grand golden solar emblem, circular honey-gold sun disk with a faceted teal gemstone center; alternating long and short angular gilded sun rays arranged radially. Symmetrical sacred arcane artifact, prominent sunny silhouette, front-on.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-upright-cross",
+      "file": "v2-upright-cross.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-e3e6516d-bab5-4b3a-8800-1945f19cbbae.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 正十字 / UPRIGHT CROSS FORMATION: a single traditional upright Latin cross, long vertical lower arm and shorter equal horizontal arms near the top. Ornate beveled gold metal, dark teal inlaid channels, a pale turquoise healing gemstone at the intersection. No circle around it. Front-on symmetrical geometry.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 正十字 / UPRIGHT CROSS FORMATION: a single traditional upright Latin cross, long vertical lower arm and shorter equal horizontal arms near the top. Ornate beveled gold metal, dark teal inlaid channels, a pale turquoise healing gemstone at the intersection. No circle around it. Front-on symmetrical geometry.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-inverted-cross",
+      "file": "v2-inverted-cross.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-1a18c6ad-16fc-4626-b11f-53f13c66623e.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 逆十字 / INVERTED CROSS FORMATION: an upside-down Latin cross, LONG vertical arm ABOVE the intersection and short vertical arm below it, equal short horizontal arms near the LOWER THIRD. Ancient gold metal, deep ruby crimson inlay, teal jewel at intersection, slightly sinister necromancy emblem. No circle. Front-on, unmistakably inverted.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 逆十字 / INVERTED CROSS FORMATION: an upside-down Latin cross, LONG vertical arm ABOVE the intersection and short vertical arm below it, equal short horizontal arms near the LOWER THIRD. Ancient gold metal, deep ruby crimson inlay, teal jewel at intersection, slightly sinister necromancy emblem. No circle. Front-on, unmistakably inverted.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-ankh",
+      "file": "v2-ankh.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-0410d32b-36ef-4fa3-90fc-4263b53188a4.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 安卡十字 / ANKH FORMATION: a single recognizable Egyptian ankh symbol, an oval OPEN loop at the top, horizontal gold crossbar below loop, long gold shaft below crossbar. Beveled antique gold, turquoise enamel channels and teal diamond at intersection. The hole INSIDE the oval loop must be transparent. Front-on.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 安卡十字 / ANKH FORMATION: a single recognizable Egyptian ankh symbol, an oval OPEN loop at the top, horizontal gold crossbar below loop, long gold shaft below crossbar. Beveled antique gold, turquoise enamel channels and teal diamond at intersection. The hole INSIDE the oval loop must be transparent. Front-on.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-elemental-ring",
+      "file": "v2-elemental-ring.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-a9c0875a-b3f4-46e7-89d0-be0c7ee23bf8.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 元素之环 / ELEMENTAL RING FORMATION: a circular open-center gold magical ring bearing FOUR distinct gemstone elemental nodes in clockwise order: orange flame above, icy cyan crystal right, emerald wind spiral below, deep blue water droplet left. Tiny gold rune-like abstract etched marks, transparent center, geometrical top-down sigil.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 元素之环 / ELEMENTAL RING FORMATION: a circular open-center gold magical ring bearing FOUR distinct gemstone elemental nodes in clockwise order: orange flame above, icy cyan crystal right, emerald wind spiral below, deep blue water droplet left. Tiny gold rune-like abstract etched marks, transparent center, geometrical top-down sigil.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-chaos-ring",
+      "file": "v2-chaos-ring.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-b3433ae0-c16c-40d6-b365-07a3b7f81dc7.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 混沌之环 / CHAOS RING FORMATION: two interwoven antique gold circular rings with five irregular violet and teal jewel nodes, twisting gold ribbons and asymmetric purple magical strands imply unstable chaotic magic. Clear circular overall silhouette and open TRANSPARENT center with negative space, arcane metal sigil front-on.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 混沌之环 / CHAOS RING FORMATION: two interwoven antique gold circular rings with five irregular violet and teal jewel nodes, twisting gold ribbons and asymmetric purple magical strands imply unstable chaotic magic. Clear circular overall silhouette and open TRANSPARENT center with negative space, arcane metal sigil front-on.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-void",
+      "file": "v2-void.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-1dd2ba1c-0fe3-4e84-bad9-e97e434591a8.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 空洞 / VOID FORMATION: a heavy unbroken hollow circular band of blackened antique gold with teal recesses, a deep EMPTY opening in the middle. Four small gold rivets and subtle teal cracks on the ring. The large central hole is completely TRANSPARENT, not black fill. Minimal simple weighty annular arcane glyph, front-on, no rays, no star.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 空洞 / VOID FORMATION: a heavy unbroken hollow circular band of blackened antique gold with teal recesses, a deep EMPTY opening in the middle. Four small gold rivets and subtle teal cracks on the ring. The large central hole is completely TRANSPARENT, not black fill. Minimal simple weighty annular arcane glyph, front-on, no rays, no star.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    },
+    {
+      "id": "illustration.v2-sulfur",
+      "file": "v2-sulfur.png",
+      "generatedFile": "C:\\Users\\home_\\.codex\\generated_images\\01a10315-0ee6-76b1-b603-7f9bb2415153\\exec-dcccf324-00d4-4aa0-92e9-ed77c549cb18.png",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 硫磺 / SULFUR FORMATION: a recognizable alchemical sulfur/brimstone glyph, a gold upward-pointing OPEN triangle sitting above a gold upright cross. Deep amber and ruby inlay, bright yellow sulfur crystal facets embedded at the three triangle tips, subtle red-orange pixel flames licking along the lower cross arms. Open triangle center transparent; a single coherent ornate glyph front-on.",
+      "initialPrompt": "Use case: stylized-concept. Asset type: ONE individual WizardCard 2.0 card illustration sprite, NOT a complete card. The attached image is a STYLE reference only: match crisp chunky pixel clusters, stepped silhouettes, restrained antique gold bevels, dark outline and teal gemstone inlay. Original ornate pixel fantasy game style; visually readable at small card size. Square centered composition, whole symbol fills about 70-80%, 12% transparent margin all around. Actual alpha transparency outside the object and through ALL open spaces. No background, scene, floor, pedestal, outer decorative card frame, text, letters, numbers, watermark, painted checkerboard, smooth illustration, blurry halo. Subject: 硫磺 / SULFUR FORMATION: a recognizable alchemical sulfur/brimstone glyph, a gold upward-pointing OPEN triangle sitting above a gold upright cross. Deep amber and ruby inlay, bright yellow sulfur crystal facets embedded at the three triangle tips, subtle red-orange pixel flames licking along the lower cross arms. Open triangle center transparent; a single coherent ornate glyph front-on.",
+      "styleReferences": [
+        "assets/art/cards/balance.png"
+      ],
+      "repaired": false,
+      "mode": "builtin-imagegen",
+      "transparentBackground": true
+    }
+  ]
+}

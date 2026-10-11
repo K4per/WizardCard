@@ -5,19 +5,18 @@
   "rarity": "rare",
   "cost": 2,
   "castCost": 2,
-  "rank": 1,
+  "rank": 2,
   "speed": 2,
   "school": "evocation",
   "target": "opponent",
   "effects": [
     {
       "kind": "damage",
-      "amount": 3,
+      "amount": 2,
       "damageType": "force"
     },
     {
-      "kind": "destroy_ambush",
-      "amount": 0
+      "kind": "destroy_ambush"
     }
   ],
   "responses": [
@@ -44,16 +43,19 @@
       "effects": [
         {
           "kind": "damage",
-          "amount": 3,
+          "amount": 2,
           "damageType": "force"
         },
         {
-          "kind": "destroy_ambush",
-          "amount": 0
+          "kind": "destroy_ambush"
         }
       ]
     }
   ],
-  "text": "解析完成后，可在对方施法阶段的合法时点支付施法费用直接释放。对对方造成3点力场伤害；那之后，可以销毁对方一张埋伏卡。",
-  "flavor": "折磨你的对手。"
+  "text": "对对方玩家造成2点力场伤害，然后可以摧毁一张对方盖伏的法术。",
+  "flavor": "折磨你的对手。",
+  "level": 2,
+  "analysisTurns": 1,
+  "number": "020007",
+  "illustrationId": "magic-missile"
 }

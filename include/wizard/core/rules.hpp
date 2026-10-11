@@ -11,6 +11,10 @@ struct Rules {
     static int castCost(const GameState &, const CardCatalog &, CardId);
     static int damage(const GameState &, const CardCatalog &, PlayerId, const Effect &);
     static int occupied(const GameState &, CardId);
+    static int castingCapacity(const GameState &, const CardCatalog &, PlayerId);
+    static int freeRing(const GameState &, const CardCatalog &, CardId);
+    static bool canHost(const GameState &, const CardCatalog &, CardId spell, CardId formation,
+                        bool faceDown = false);
     static bool targetValid(const GameState &, const CardDefinition &, PlayerId, CardId);
     static bool targetValid(const GameState &, TargetKind, PlayerId, CardId);
     static bool linkTargetValid(const GameState &, TargetKind, LinkId);

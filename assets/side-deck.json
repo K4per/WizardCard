@@ -1,0 +1,37 @@
+{
+  "initialFormation": "balance",
+  "cards": [
+    {
+      "id": "balance",
+      "count": 1
+    },
+    {
+      "id": "small-hexagram",
+      "count": 2
+    },
+    {
+      "id": "hexagram",
+      "count": 2
+    },
+    {
+      "id": "pentagram-of-life",
+      "count": 1
+    },
+    {
+      "id": "octagram",
+      "count": 1
+    },
+    {
+      "id": "reservoir",
+      "count": 1
+    },
+    {
+      "id": "engeas-four-point-star",
+      "count": 1
+    },
+    {
+      "id": "elemental-ring",
+      "count": 1
+    }
+  ]
+}

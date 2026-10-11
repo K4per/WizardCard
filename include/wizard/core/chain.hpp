@@ -45,5 +45,6 @@ struct ChainState {
     int passes{};
     std::vector<ChainLink> links;
     std::vector<CardId> responded;
+    bool hadActualLinks{};
 };
 } // namespace wizard

@@ -1,0 +1,22 @@
+{
+  "id": "unravel",
+  "name": "碎环术",
+  "rarity": "rare",
+  "type": "analytic",
+  "cost": 2,
+  "castCost": 0,
+  "rank": 1,
+  "target": "empty_enemy_formation",
+  "effects": [
+    {
+      "kind": "discard_formation"
+    },
+    {
+      "kind": "destroy"
+    }
+  ],
+  "text": "指定对方场上一张空白阵法。弃置自己一张阵法卡，销毁目标阵法。",
+  "flavor": "碎碎平安！",
+  "speed": 1,
+  "school": "transmutation"
+}

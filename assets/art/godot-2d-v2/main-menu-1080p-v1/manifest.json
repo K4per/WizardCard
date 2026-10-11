@@ -1,0 +1,365 @@
+{
+  "version": 1,
+  "designSize": [
+    1920,
+    1080
+  ],
+  "style": "C refined pixel fantasy",
+  "exportApproval": "User explicitly approved dimension normalization",
+  "assets": [
+    {
+      "id": "c2d.v2.menu.background",
+      "file": "export/background-1080p.png",
+      "source": "source/background-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1672,
+        941
+      ],
+      "transparent": false,
+      "region": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "sha256": "bd4f0ffe2a254d49ba52c7a392d3c5959413313c0803dbeea740127e0ccc1a94",
+      "sourceSha256": "0dd93176d486c1b126b2243a0bb4b7cead1ccd2517e8f60cee2e6e47a9a4327a",
+      "normalization": "Nearest-neighbor dimensional export; trim near-invisible alpha margins at threshold 8; no repaint/color edits",
+      "runtimeIntegrated": true
+    },
+    {
+      "id": "c2d.v2.menu.logo",
+      "file": "export/logo-1080p.png",
+      "source": "source/logo-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1717,
+        916
+      ],
+      "transparent": true,
+      "region": [
+        440,
+        268,
+        1040,
+        543
+      ],
+      "sha256": "470c860be6bc68cd696472445a94a76c46f6f66477b9c821b5af51a225193b40",
+      "sourceSha256": "7d308324de6f0a4f73349e6b35fd7bec320cc8fb4f7f2a9e453409339a1c7d78",
+      "normalization": "Nearest-neighbor dimensional export; trim near-invisible alpha margins at threshold 8; no repaint/color edits",
+      "runtimeIntegrated": true
+    },
+    {
+      "id": "c2d.v2.menu.button-normal",
+      "file": "export/button-normal-1080p.png",
+      "source": "source/button-normal-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1983,
+        793
+      ],
+      "transparent": true,
+      "region": [
+        680,
+        490,
+        560,
+        100
+      ],
+      "sha256": "5bd0da627002e60ff057a319ab36c93550792a4f8bc9b7a8961c41f538c864fc",
+      "sourceSha256": "2d3070073432ef6a55daf975cefe855794ec1b238be5ca119bbcd21095b112ca",
+      "normalization": "Nearest-neighbor dimensional export; trim near-invisible alpha margins at threshold 8; no repaint/color edits",
+      "runtimeIntegrated": true,
+      "textSafeRect": [
+        760,
+        512,
+        400,
+        56
+      ],
+      "targetSize": [
+        560,
+        100
+      ],
+      "stretchPolicy": "Use region as AtlasTexture at 560x100; no stretch or automatic nine-slice",
+      "hitPolygon": [
+        [
+          0,
+          50
+        ],
+        [
+          46,
+          0
+        ],
+        [
+          514,
+          0
+        ],
+        [
+          560,
+          50
+        ],
+        [
+          514,
+          100
+        ],
+        [
+          46,
+          100
+        ]
+      ]
+    },
+    {
+      "id": "c2d.v2.menu.button-hover",
+      "file": "export/button-hover-1080p.png",
+      "source": "source/button-hover-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1983,
+        793
+      ],
+      "transparent": true,
+      "region": [
+        680,
+        490,
+        560,
+        100
+      ],
+      "sha256": "276583c5112dd0e231c27862ce8949a23abc18ae44d4ba096e2b800c50dcc304",
+      "sourceSha256": "bb0141b1adc200e6631d8abec9d2e9f7bf8ffe24507cadb7a6143f287a0441da",
+      "normalization": "Nearest-neighbor dimensional export; trim near-invisible alpha margins at threshold 8; no repaint/color edits",
+      "runtimeIntegrated": true,
+      "textSafeRect": [
+        760,
+        512,
+        400,
+        56
+      ],
+      "targetSize": [
+        560,
+        100
+      ],
+      "stretchPolicy": "Use region as AtlasTexture at 560x100; no stretch or automatic nine-slice",
+      "hitPolygon": [
+        [
+          0,
+          50
+        ],
+        [
+          46,
+          0
+        ],
+        [
+          514,
+          0
+        ],
+        [
+          560,
+          50
+        ],
+        [
+          514,
+          100
+        ],
+        [
+          46,
+          100
+        ]
+      ]
+    },
+    {
+      "id": "c2d.v2.menu.button-pressed",
+      "file": "export/button-pressed-1080p.png",
+      "source": "source/button-pressed-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1983,
+        793
+      ],
+      "transparent": true,
+      "region": [
+        680,
+        490,
+        560,
+        100
+      ],
+      "sha256": "079156e9af5e74fcc6321971b4ecba0dfb0cec4c7737ae72e3d85f1540cc104e",
+      "sourceSha256": "a571406b0c4b8e233267212a778d5d6c0fad692687c3fa4c12a4a48846a0e19f",
+      "normalization": "Nearest-neighbor dimensional export; trim near-invisible alpha margins at threshold 8; no repaint/color edits",
+      "runtimeIntegrated": true,
+      "textSafeRect": [
+        760,
+        512,
+        400,
+        56
+      ],
+      "targetSize": [
+        560,
+        100
+      ],
+      "stretchPolicy": "Use region as AtlasTexture at 560x100; no stretch or automatic nine-slice",
+      "hitPolygon": [
+        [
+          0,
+          50
+        ],
+        [
+          46,
+          0
+        ],
+        [
+          514,
+          0
+        ],
+        [
+          560,
+          50
+        ],
+        [
+          514,
+          100
+        ],
+        [
+          46,
+          100
+        ]
+      ]
+    },
+    {
+      "id": "c2d.v2.menu.button-focus",
+      "file": "export/button-focus-1080p.png",
+      "source": "source/button-focus-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1983,
+        793
+      ],
+      "transparent": true,
+      "region": [
+        680,
+        490,
+        560,
+        100
+      ],
+      "sha256": "b1b582b81d3121d785dc1a3115a9707b96ca8cd4586257e6d91042b0b05d14e3",
+      "sourceSha256": "f6c813d98ae8796b67d022aca88999eb2323a5168a07e3a9c77e6358f5fffabe",
+      "normalization": "Nearest-neighbor dimensional export; trim near-invisible alpha margins at threshold 8; no repaint/color edits",
+      "runtimeIntegrated": true,
+      "textSafeRect": [
+        760,
+        512,
+        400,
+        56
+      ],
+      "targetSize": [
+        560,
+        100
+      ],
+      "stretchPolicy": "Use region as AtlasTexture at 560x100; no stretch or automatic nine-slice",
+      "hitPolygon": [
+        [
+          0,
+          50
+        ],
+        [
+          46,
+          0
+        ],
+        [
+          514,
+          0
+        ],
+        [
+          560,
+          50
+        ],
+        [
+          514,
+          100
+        ],
+        [
+          46,
+          100
+        ]
+      ]
+    },
+    {
+      "id": "c2d.v2.menu.button-disabled",
+      "file": "export/button-disabled-1080p.png",
+      "source": "source/button-disabled-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1983,
+        793
+      ],
+      "transparent": true,
+      "region": [
+        680,
+        490,
+        560,
+        100
+      ],
+      "sha256": "7225e301dee9aa6261fe4445a880ac8f505c730727a86553576386591580c0f5",
+      "sourceSha256": "77d771b9ebbf9c1f7fad96e9252ebe82b2155e60b31246f1a0a2532d23af40ef",
+      "normalization": "Nearest-neighbor dimensional export; trim near-invisible alpha margins at threshold 8; no repaint/color edits",
+      "runtimeIntegrated": true,
+      "textSafeRect": [
+        760,
+        512,
+        400,
+        56
+      ],
+      "targetSize": [
+        560,
+        100
+      ],
+      "stretchPolicy": "Use region as AtlasTexture at 560x100; no stretch or automatic nine-slice",
+      "hitPolygon": [
+        [
+          0,
+          50
+        ],
+        [
+          46,
+          0
+        ],
+        [
+          514,
+          0
+        ],
+        [
+          560,
+          50
+        ],
+        [
+          514,
+          100
+        ],
+        [
+          46,
+          100
+        ]
+      ]
+    }
+  ],
+  "runtimeManifest": "godot/art/assets.json"
+}

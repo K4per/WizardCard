@@ -36,7 +36,8 @@ int Rules::rings(const GameState &s, const CardCatalog &cat, CardId id) {
     return n;
 }
 int Rules::maxRank(const GameState &s, const CardCatalog &cat, CardId id) {
-    int n = cat.at(s.cards.at(id).definition).maxRank;
+    const auto &definition = cat.at(s.cards.at(id).definition);
+    int n = cat.usesAlphaV2() ? definition.level : definition.maxRank;
     for (const auto &[cid, c] : s.cards)
         if (c.zone == Zone::Attached && c.host == id)
             n += cat.at(c.definition).rankBonus;
@@ -45,7 +46,15 @@ int Rules::maxRank(const GameState &s, const CardCatalog &cat, CardId id) {
 int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, CardId host) {
     const auto &d = cat.at(s.cards.at(id).definition);
     const auto &h = s.cards.at(host);
-    return std::max(0, d.cost - (h.base && cat.at(h.definition).baseAnalysisDiscount &&
+    int discount = 0;
+    if (cat.usesAlphaV2() && std::find(d.traits.begin(), d.traits.end(), "ash_evocation_discount") != d.traits.end())
+        for (const auto &[cid, card] : s.cards) {
+            const auto &definition = cat.at(card.definition);
+            if (card.owner == s.cards.at(id).owner && card.zone == Zone::Ash &&
+                definition.school == "evocation" && (definition.type == CardType::Analytic ||
+                    definition.type == CardType::Word || definition.type == CardType::Talisman)) ++discount;
+        }
+    return std::max(0, d.cost - discount - (h.base && cat.at(h.definition).baseAnalysisDiscount &&
                                          (d.school == "evocation" || d.school == "conjuration")
                                      ? 1
                                      : 0));
@@ -53,16 +62,23 @@ int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, C
 int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
     const auto &d = cat.at(c.definition);
-    int n = d.type == CardType::Word ? d.cost : d.castCost;
+    int n = d.type == CardType::Word || (cat.usesAlphaV2() && d.type == CardType::Talisman) ? d.cost : d.castCost;
+    if (cat.usesAlphaV2() && std::find(d.traits.begin(), d.traits.end(), "ash_evocation_discount") != d.traits.end())
+        for (const auto &[cid, card] : s.cards) {
+            const auto &definition = cat.at(card.definition);
+            if (card.owner == c.owner && card.zone == Zone::Ash && definition.school == "evocation" &&
+                (definition.type == CardType::Analytic || definition.type == CardType::Word ||
+                 definition.type == CardType::Talisman)) --n;
+        }
     for (const auto &[sid, seal] : s.cards)
         if (seal.zone == Zone::Attached && seal.host == id)
             n += cat.at(seal.definition).castCostBonus;
-    return n;
+    return std::max(0, n);
 }
 int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const Effect &e) {
     bool resistance = false;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p && c.zone == Zone::Casting && c.spell == SpellState::Active) {
+        if (c.owner == p && (c.zone == Zone::Casting || (cat.usesAlphaV2() && c.zone == Zone::Analysis)) && c.spell == SpellState::Active) {
             const auto &d = cat.at(c.definition);
             if (std::find(d.immunities.begin(), d.immunities.end(), e.damageType) != d.immunities.end())
                 return 0;
@@ -78,6 +94,42 @@ int Rules::occupied(const GameState &s, CardId host) {
             ++n;
     return n;
 }
+int Rules::castingCapacity(const GameState &s, const CardCatalog &cat, PlayerId player) {
+    int count = 0;
+    for (const auto &[id, c] : s.cards)
+        if (c.owner == player && c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation)
+            count += rings(s, cat, id);
+    return count;
+}
+int Rules::freeRing(const GameState &s, const CardCatalog &cat, CardId host) {
+    for (int ring = 0; ring < rings(s, cat, host); ++ring) {
+        bool occupied = false;
+        for (const auto &[id, c] : s.cards)
+            occupied |= c.zone == Zone::Analysis && c.host == host && c.ringIndex == ring;
+        if (!occupied)
+            return ring;
+    }
+    return -1;
+}
+bool Rules::canHost(const GameState &s, const CardCatalog &cat, CardId spell, CardId formation, bool faceDown) {
+    const auto source = s.cards.find(spell), host = s.cards.find(formation);
+    if (source == s.cards.end() || host == s.cards.end() || source->second.owner != host->second.owner ||
+        host->second.zone != Zone::Analysis || host->second.faceDown ||
+        cat.at(host->second.definition).type != CardType::Formation) return false;
+    const auto &definition = cat.at(source->second.definition);
+    if (definition.rank > maxRank(s, cat, formation)) return false;
+    if (faceDown) return true; // Hidden cards do not analyze; host restrictions apply when flipped.
+    const auto &traits = cat.at(host->second.definition).traits;
+    if (std::find(traits.begin(), traits.end(), "host_fire_only") != traits.end() &&
+        std::none_of(definition.effects.begin(), definition.effects.end(), [](const Effect &e) {
+            return e.kind == EffectKind::Damage && e.damageType == DamageType::Fire;
+        })) return false;
+    if (std::find(traits.begin(), traits.end(), "distinct_host_schools") != traits.end())
+        for (const auto &[id, card] : s.cards)
+            if (id != spell && card.host == formation && card.zone == Zone::Analysis && !card.faceDown &&
+                cat.at(card.definition).school == definition.school) return false;
+    return true;
+}
 bool Rules::targetValid(const GameState &s, const CardDefinition &d, PlayerId p, CardId target) {
     return targetValid(s, d.target, p, target);
 }
@@ -91,7 +143,7 @@ bool Rules::targetValid(const GameState &s, TargetKind kind, PlayerId p, CardId 
     if (i == s.cards.end())
         return false;
     const auto &c = i->second;
-    if (c.base || c.zone == Zone::Deck || c.zone == Zone::Hand || c.zone == Zone::Ash)
+    if ((c.base && !c.fieldOrder) || c.zone == Zone::Deck || c.zone == Zone::Hand || c.zone == Zone::Ash || c.zone == Zone::SideDeck)
         return false;
     if (kind == TargetKind::OwnAnalyzingSpell)
         return c.owner == p && c.zone == Zone::Analysis && !c.faceDown && c.spell == SpellState::Analyzing;
@@ -115,6 +167,27 @@ bool Rules::linkTargetValid(const GameState &s, TargetKind kind, LinkId id) {
 }
 std::vector<std::string> Rules::deckErrors(const CardCatalog &cat, const PlayerDeck &deck) {
     std::vector<std::string> out;
+    if (cat.usesAlphaV2()) {
+        if (deck.cards.size() != 40) out.push_back("main deck must contain exactly 40 cards");
+        if (deck.sideDeck.size() != 10) out.push_back("side deck must contain exactly 10 formations");
+        for (bool side : {false, true}) {
+            std::map<std::string, int> counts;
+            for (const auto &id : side ? deck.sideDeck : deck.cards) {
+                const auto it = cat.cards.find(id);
+                if (it == cat.cards.end()) { out.push_back("unknown card: " + id); continue; }
+                const auto &d = it->second;
+                if ((d.type == CardType::Formation) != side || d.type == CardType::Action)
+                    out.push_back("card is not legal in its deck: " + id);
+                if (++counts[d.name] > 3) out.push_back("at most 3 cards per name in each deck");
+            }
+        }
+        const auto initial = cat.cards.find(deck.baseFormation);
+        if (initial == cat.cards.end() || initial->second.type != CardType::Formation ||
+            initial->second.level != 1 || !initial->second.baseEligible ||
+            std::find(deck.sideDeck.begin(), deck.sideDeck.end(), deck.baseFormation) == deck.sideDeck.end())
+            out.push_back("initial formation must be an eligible level 1 entity in the side deck");
+        return out;
+    }
     if (deck.cards.size() != 30)
         out.push_back("deck must contain exactly 30 cards");
     std::map<std::string, int> counts;

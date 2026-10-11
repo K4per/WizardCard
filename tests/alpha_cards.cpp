@@ -5,7 +5,7 @@
 using namespace wizard;
 namespace {
 struct V1 {
-    Content data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    Content data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     GameState s;
     V1() {
         s.phase = Phase::Main;
@@ -601,8 +601,8 @@ TEST_CASE("cancelled preparation cannot bypass its retry restriction via direct 
     REQUIRE(e.state().players[1].life == 17);
 }
 TEST_CASE("new representative decks finish every AI difficulty and replay all accepted commands") {
-    const auto data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
-    const auto presets = app::loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    const auto data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    const auto presets = app::loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     for (int d = 0; d < 3; ++d)
         for (std::size_t k = 4; k < presets.size(); ++k) {
             MatchConfig cfg;
@@ -735,8 +735,8 @@ TEST_CASE("required multi target release skips its entire effect when one target
     REQUIRE(e.state().cards.at(10).zone == Zone::Ash);
 }
 TEST_CASE("full new card replay covers ambush flip search and direct release through legal projection") {
-    const auto data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
-    const auto presets = app::loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    const auto data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    const auto presets = app::loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     MatchConfig cfg;
     cfg.seed = 42;
     cfg.players[0] = cfg.players[1] = presets[4].deck;

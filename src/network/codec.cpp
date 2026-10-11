@@ -10,24 +10,26 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Payment, turn, paid, load, canceled)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CardInstance, id, definition, owner, zone, spell, host, sourceFormation,
                                    targetCard, targetPlayer, base, analysisStarted, remaining, analysisLoad,
                                    castLoad, canceledTurn, payments, targets, settingPaid, concentrationCost,
-                                   faceDown, ambushedTurn, quickAnalysisTurn)
+                                   faceDown, ambushedTurn, quickAnalysisTurn, analysisProgress, fieldOrder,
+                                   ringIndex, wasAmbushed, sourceRingIndex)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLoad, id, owner, source, amount, expiryTurn, independent,
                                    sourceBound)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PlayerView, life, mana, load, capacity, handCount, deckCount, ownTurn,
-                                   actionsPlayed, temporaryLife, blockedActionTurn, resistances, immunities)
+                                   actionsPlayed, temporaryLife, blockedActionTurn, resistances, immunities,
+                                   sideDeckCount, exhaustion)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PendingDecision, id, player, kind, options, mayPass)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Trigger, id, batch, owner, source, targetCard, targetPlayer, effects,
                                    target, requiresSource, targetLink, targetCards)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChainLink, id, kind, item, canceled, sourceLost, ability, paymentIndex,
                                    preparationLoad, paid, addedLoad, discarded, speed, castCost)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChainState, id, window, mode, initiator, priority, passes, links,
-                                   responded)
+                                   responded, hadActualLinks)
 } // namespace wizard
 namespace wizard::net {
 namespace {
 bool wide(const std::string &k) {
     return k == "id" || k == "decision" || k == "gate" || k == "link" || k == "targetLink" ||
-           k == "phaseGate" || k == "ambushedTurn" || k == "eventBase";
+           k == "phaseGate" || k == "ambushedTurn" || k == "eventBase" || k == "fieldOrder";
 }
 void transform(Json &j, bool encode) {
     if (j.is_array())
@@ -72,7 +74,7 @@ Command unwireCommand(Json j) {
 }
 Json hello(const Content &c) {
     return {{"type", "Hello"},
-            {"protocol", 1},
+            {"protocol", c.catalog.usesAlphaV2() ? 2 : 1},
             {"program", programVersion},
             {"rules", c.catalog.rulesVersion},
             {"cards", c.catalog.cardSetVersion},

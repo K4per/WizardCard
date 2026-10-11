@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "designSize": [
+    1920,
+    1080
+  ],
+  "style": "C refined pixel fantasy / original AI card frames",
+  "exportApproval": "User explicitly approved dimension normalization",
+  "assets": [
+    {
+      "id": "c2d.v2.ui.panel",
+      "file": "export/panel-1080p.png",
+      "source": "source/panel-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1611,
+        976
+      ],
+      "sourceBounds": [
+        37,
+        122,
+        1575,
+        844
+      ],
+      "targetSize": [
+        440,
+        280
+      ],
+      "region": [
+        740,
+        400,
+        440,
+        280
+      ],
+      "transparent": true,
+      "sha256": "56aa80f310204bcf6db052775cf64668aabd774fbac6dd094a5041fb25bd3de8",
+      "sourceSha256": "a234b9102c0034511666ed9e35bd8df953f265d75974fde06751433d4c6b7f60",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in ImageGen",
+      "normalization": "User-approved alpha-margin trim and nearest dimensional normalization only",
+      "runtimeIntegrated": true,
+      "nineSlice": [
+        62,
+        70,
+        62,
+        70
+      ]
+    },
+    {
+      "id": "c2d.v2.ui.field",
+      "file": "export/field-1080p.png",
+      "source": "source/field-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        2172,
+        724
+      ],
+      "sourceBounds": [
+        54,
+        233,
+        2118,
+        493
+      ],
+      "targetSize": [
+        500,
+        72
+      ],
+      "region": [
+        710,
+        504,
+        500,
+        72
+      ],
+      "transparent": true,
+      "sha256": "2e80dbcdc67a1ea9ce590c29a23fecbb2aedd1c38f1efbd9c103aa1aa3d43396",
+      "sourceSha256": "e99807a81453152d86d45cfeb38ecfba3c7f201fe83e38971010e9f76d91465f",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in ImageGen",
+      "normalization": "User-approved alpha-margin trim and nearest dimensional normalization only",
+      "runtimeIntegrated": true,
+      "nineSlice": [
+        60,
+        30,
+        60,
+        30
+      ]
+    },
+    {
+      "id": "c2d.v2.ui.slider-track",
+      "file": "export/slider-track-1080p.png",
+      "source": "source/slider-track-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1586,
+        992
+      ],
+      "sourceBounds": [
+        41,
+        421,
+        1545,
+        588
+      ],
+      "targetSize": [
+        520,
+        32
+      ],
+      "region": [
+        700,
+        524,
+        520,
+        32
+      ],
+      "transparent": true,
+      "sha256": "fde8fe74ac7ba2dbd6a7d87f287ccb1c4d374614b878de00d94682f7f41812a7",
+      "sourceSha256": "87337f85e5eb18d56da5edfccb47ceb6d18e16cafc904bda1f4de3e584ec17fc",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in ImageGen",
+      "normalization": "User-approved alpha-margin trim and nearest dimensional normalization only",
+      "runtimeIntegrated": true,
+      "nineSlice": [
+        60,
+        14,
+        60,
+        14
+      ]
+    },
+    {
+      "id": "c2d.v2.ui.slider-knob",
+      "file": "export/slider-knob-1080p.png",
+      "source": "source/slider-knob-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1330,
+        1182
+      ],
+      "sourceBounds": [
+        278,
+        148,
+        1055,
+        1017
+      ],
+      "targetSize": [
+        36,
+        44
+      ],
+      "region": [
+        942,
+        518,
+        36,
+        44
+      ],
+      "transparent": true,
+      "sha256": "728f64f22642853b8e278ba8aa7b3dd47e0e5b262d8c10ca344a354835683515",
+      "sourceSha256": "48da0dedca07d4d60fd03f6fa74357fae43827dab0ac489bfbf74414f93da179",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in ImageGen",
+      "normalization": "User-approved alpha-margin trim and nearest dimensional normalization only",
+      "runtimeIntegrated": true
+    },
+    {
+      "id": "c2d.v2.ui.toggle-on",
+      "file": "export/toggle-on-1080p.png",
+      "source": "source/toggle-on-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1920,
+        819
+      ],
+      "sourceBounds": [
+        95,
+        223,
+        1825,
+        607
+      ],
+      "targetSize": [
+        104,
+        44
+      ],
+      "region": [
+        908,
+        518,
+        104,
+        44
+      ],
+      "transparent": true,
+      "sha256": "beb4181fbed190ae525b1113c32345447c733ed3ec1fb5163f6efa03e9edaa35",
+      "sourceSha256": "9034b5ab805abe43373cde4c8cf6e1c10d17b0910510cb5dba8277e3f4de55fe",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in ImageGen",
+      "normalization": "User-approved alpha-margin trim and nearest dimensional normalization only",
+      "runtimeIntegrated": true
+    },
+    {
+      "id": "c2d.v2.ui.toggle-off",
+      "file": "export/toggle-off-1080p.png",
+      "source": "source/toggle-off-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1921,
+        819
+      ],
+      "sourceBounds": [
+        144,
+        228,
+        1777,
+        561
+      ],
+      "targetSize": [
+        104,
+        44
+      ],
+      "region": [
+        908,
+        518,
+        104,
+        44
+      ],
+      "transparent": true,
+      "sha256": "8b038c31da4dc29339a0ef8481e80080e5f61522bece486d3844fb8b976131d1",
+      "sourceSha256": "4eaf7dd5b8dbb378532fa89856be5b0a9a66a981f38c9174cb7cb399b053784e",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in ImageGen",
+      "normalization": "User-approved alpha-margin trim and nearest dimensional normalization only",
+      "runtimeIntegrated": true
+    }
+  ]
+}

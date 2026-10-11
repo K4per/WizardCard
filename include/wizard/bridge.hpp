@@ -11,6 +11,7 @@ Json cardDefinitionDto(const CardDefinition &);
 
 class LocalSession {
   public:
+    explicit LocalSession(RoomFactory roomFactory = {}) : roomFactory_(std::move(roomFactory)) {}
     Json initialize(const std::filesystem::path &assets, const std::filesystem::path &userDirectory);
     Json start(const Json &options);
     Json snapshot(PlayerId viewer) const;
@@ -25,7 +26,7 @@ class LocalSession {
     Json restart(std::uint32_t seed);
     Json release();
     Json library() const;
-    Json createDraft(const std::string &preset) const;
+    Json createDraft(const std::string &preset, int format = 1) const;
     Json validateDraft(const Json &) const;
     Json saveDraft(const Json &);
     Json eraseDraft(const std::string &);
@@ -33,14 +34,18 @@ class LocalSession {
     Json applySettings(const Json &);
     Json leaveMatch(PlayerId);
     Json interact(PlayerId, const Json &, const std::string &generation, const std::string &revision);
+    Json networkRequest(const Json &request);
+    Json pollNetwork();
     // Explicit OFFLINE verification tools, not part of the player snapshot or network protocol.
     Json readReplayPlan(const std::filesystem::path &path) const;
     Json verifyReplay(const std::filesystem::path &path) const;
+    Json replayFrame(const std::filesystem::path &path, std::size_t step, PlayerId viewer) const;
     std::uint64_t generation() const { return generation_; }
 
   private:
     struct Pending { PlayerId viewer; Command command; std::uint64_t generation, revision; };
     std::optional<Content> content_;
+    RoomFactory roomFactory_;
     std::unique_ptr<app::Application> application_;
     std::optional<Pending> pending_;
     std::uint64_t generation_{};

@@ -8,7 +8,7 @@ using namespace detail;
 GameEngine::GameEngine(CardCatalog cat, std::array<std::vector<std::string>, 2> decks, std::uint32_t seed)
     : GameEngine(std::move(cat), shared(std::move(decks), seed)) {}
 GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) : catalog_(std::move(cat)) {
-    if (catalog_.alphaV2Draft)
+    if (catalog_.alphaV2Draft && !catalog_.alphaV2)
         throw std::invalid_argument("Alpha v2 draft requires the explicit offline scenario entry point");
     for (const auto &deck : config.players) {
         auto errors = Rules::deckErrors(catalog_, deck);
@@ -24,7 +24,15 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) : catalog_(st
         base.owner = p;
         base.base = true;
         base.zone = Zone::Analysis;
+        if (catalog_.usesAlphaV2()) base.fieldOrder = state_.nextFieldOrder++;
         state_.cards.emplace(base.id, base);
+        bool selected = false;
+        for (const auto &key : config.players[p].sideDeck) {
+            if (!selected && key == config.players[p].baseFormation) { selected = true; continue; }
+            CardInstance c;
+            c.id = id++; c.owner = p; c.definition = key; c.zone = Zone::SideDeck;
+            state_.cards.emplace(c.id, c);
+        }
         for (const auto &key : config.players[p].cards) {
             CardInstance c;
             c.id = id++;
@@ -48,6 +56,21 @@ GameEngine GameEngine::scenario(CardCatalog cat, GameState state) {
     GameEngine e;
     e.catalog_ = std::move(cat);
     e.state_ = std::move(state);
+    if (e.catalog_.usesAlphaV2()) {
+        for (const auto &[id, card] : e.state_.cards)
+            e.state_.nextFieldOrder = std::max(e.state_.nextFieldOrder, card.fieldOrder + 1);
+        for (auto &[id, card] : e.state_.cards)
+            if (card.zone == Zone::Analysis && !card.fieldOrder)
+                card.fieldOrder = e.state_.nextFieldOrder++;
+        for (auto &[id, card] : e.state_.cards)
+            if (card.zone == Zone::Analysis && card.host && card.ringIndex < 0)
+                card.ringIndex = Rules::freeRing(e.state_, e.catalog_, card.host);
+        for (auto &[id, card] : e.state_.cards)
+            if (card.zone == Zone::Analysis && card.host) {
+                card.sourceFormation = card.host;
+                card.sourceRingIndex = card.ringIndex;
+            }
+    }
     if (e.state_.phase == Phase::Main && e.state_.flow == Flow::Main &&
         e.state_.phaseStep == PhaseStep::Enter)
         e.state_.phaseStep = PhaseStep::Body;

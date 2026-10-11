@@ -1,0 +1,44 @@
+{
+  "format": 1,
+  "collection": "WizardCard Pixelorama v2 samples",
+  "canvas": "1920x1080 design; native component source sizes",
+  "palette": "../palettes/wizardcard-c-pixel-v2.json",
+  "assets": [
+    {
+      "id": "c2d.v2.button.primary",
+      "source": "../source/pixelorama/wizardcard_ui_button_primary_v2.pxo",
+      "export": "../export/wizardcard_ui_button_primary_v2.png",
+      "size": [192, 48],
+      "layers": ["base", "gold-inlay", "highlight"],
+      "sampling": "nearest",
+      "status": "style sample; not runtime-connected"
+    },
+    {
+      "id": "c2d.v2.icon.mana",
+      "source": "../source/pixelorama/wizardcard_icon_mana_v2.pxo",
+      "export": "../export/wizardcard_icon_mana_v2.png",
+      "size": [64, 64],
+      "layers": ["base", "inlay", "highlight"],
+      "sampling": "nearest",
+      "status": "style sample; not runtime-connected"
+    },
+    {
+      "id": "c2d.v2.anchor.ring",
+      "source": "../source/pixelorama/wizardcard_anchor_ring_v2.pxo",
+      "export": "../export/wizardcard_anchor_ring_v2.png",
+      "size": [64, 64],
+      "layers": ["base", "rune", "highlight"],
+      "sampling": "nearest",
+      "status": "style sample; not runtime-connected"
+    },
+    {
+      "id": "c2d.v2.board.arena-material",
+      "source": "../source/pixelorama/wizardcard_arena_material_v2.pxo",
+      "export": "../export/wizardcard_arena_material_v2.png",
+      "size": [128, 96],
+      "layers": ["stone-base", "rune-inlay", "edge-highlight"],
+      "sampling": "nearest",
+      "status": "style sample; not runtime-connected"
+    }
+  ]
+}

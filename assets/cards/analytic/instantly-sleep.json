@@ -15,6 +15,9 @@
       "amount": 0
     }
   ],
-  "text": "对方下一个自己的回合无法使用行动卡。",
-  "flavor": "巫师牌安眠药。"
+  "text": "对方下一个自己的回合不能从手牌发动言灵法术；已盖伏的法术不受影响。",
+  "flavor": "巫师牌安眠药。",
+  "level": 1,
+  "number": "020006",
+  "illustrationId": "instantly-sleep"
 }

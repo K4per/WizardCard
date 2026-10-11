@@ -1,0 +1,30 @@
+{
+  "id": "sunburst",
+  "name": "阳炎爆",
+  "type": "analytic",
+  "rarity": "legendary",
+  "rank": 6,
+  "level": 6,
+  "speed": 3,
+  "school": "evocation",
+  "cost": 20,
+  "castCost": 2,
+  "analysisTurns": 2,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 15,
+      "damageType": "fire"
+    },
+    {
+      "kind": "destroy_formation_spells"
+    }
+  ],
+  "text": "自己灰烬区每有一张塑能学派法术，此卡魔素消耗-1。对对方玩家造成15点火焰伤害。那之后，可以摧毁对方一个阵法上的所有法术。",
+  "traits": [
+    "ash_evocation_discount"
+  ],
+  "number": "020016",
+  "illustrationId": "v2-sunburst"
+}

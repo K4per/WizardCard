@@ -24,7 +24,7 @@ TEST_CASE("injected room sessions preserve pending authority privacy and polling
     const auto directory = std::filesystem::path(WIZARD_SOURCE_DIR) / "build" / "session-tests" / net::token();
     app::Application host(content, directory / "host", {}, net::createRoom);
     app::Application guest(content, directory / "guest", {}, net::createRoom);
-    PlayerDeck deck; deck.cards = content.deck;
+    PlayerDeck deck = content.defaultPlayerDeck();
     std::string error;
     unsigned short port{};
     for (unsigned short candidate = 32500; candidate < 32600; ++candidate)

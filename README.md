@@ -1,14 +1,12 @@
 # 巫师牌 / WizardCard
 
-**1.1.0-alpha 联机候选版**：主菜单新增真人联机，现有SFML客户端支持局域网/虚拟局域网两人对战；网络会话可复用于未来Godot。使用方法、协议和验收命令见[真人联机](docs/network-play.md)。原1.0发行包保留；两台实体设备验收及Godot接入尚未完成。
+**2.0.0-rc.1**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。规则与正式卡池版本均为 `2.0.0-rc.1`；程序使用六位卡牌编号，前两位表示类型，后四位表示序号。
 
-C++17 专用卡牌规则引擎与 SFML 本地卡牌游戏，支持换手对战、三档AI及固定教学。当前规则见 [五阶段与轻量连锁](docs/alpha-v1.0-rules.md)，继承规则见 [原型规则](docs/design.md)，模块边界见 [架构](docs/architecture.md)。
-
-Alpha v1.0 已交付：程序 `1.0.0-alpha`、规则/卡池 `1.0.0`，30种卡、九套预设与五种代表性方向，初始/最大生命40。下载解压后运行 `wizard_client.exe`；详见[发布说明](docs/releases/alpha-v1.0.md)和[自动验收报告](docs/reports/alpha-v1.0-release.md)。[v1.5计划](docs/plans/v1.5.md)新增Godot图形界面重构、保留C++内核，并继续推进局域网P2P、卡牌联动与动画。规则与内容设计入口：[新卡规则](docs/alpha-v1-cards.md)、[发布补充卡](docs/alpha-release-cards.md)、[设计指南](docs/card-design-guide.md)、[术语规范](docs/terminology.md)。
+正式卡牌图鉴见 [docs/card-catalog.md](docs/card-catalog.md)，规则见 [docs/alpha-v2.0-rules.md](docs/alpha-v2.0-rules.md)，术语见 [GLOSSARY.md](GLOSSARY.md)。旧版 Alpha v1 文档与兼容夹具保留在 `docs/` 和 `tests/fixtures/alpha-v1-production/`，仅用于历史复盘验证。
 
 ## 构建
 
-Windows：安装 Visual Studio 2022 C++ Build Tools（含 Windows SDK）、Git、CMake 3.28+。依赖自动从固定 Git 提交获取；首次配置需要网络。不要把项目路径写入全局工具配置。
+Windows：安装 Visual Studio 2022 C++ Build Tools（含 Windows SDK）、Git、CMake 3.28+。依赖自动从固定 Git 提交获取；首次配置需要网络。
 
 ```powershell
 cmake --preset windows
@@ -27,7 +25,7 @@ ctest --preset headless
 ./build/headless/wizard_cli validate assets
 ```
 
-关闭 `WIZARD_BUILD_CLIENT` 时完全不下载或链接 SFML。所有构建产物在 `build/`，发布包在 `dist/`。依赖版本与提交在 CMakeLists.txt 中固定，不跟踪上游分支。
+Godot 前端需要固定的 Godot `4.7.2.stable.official.ed1daf0bf`、对应导出模板和 `godot/bin/wizard_godot_bridge.release.dll`。发行导出使用 `godot/export_presets.cfg`；`tools/package_godot.py` 会校验引擎版本、复制可运行资源并生成带 SHA256 清单的 ZIP。关闭 `WIZARD_BUILD_CLIENT` 时不下载或链接 SFML。
 
 ## 操作
 
@@ -58,6 +56,8 @@ Windows 用户数据默认在 `%LOCALAPPDATA%/WizardCard`，设置文件为 `set
 本轮两份内容侧清单的逐项核对与待定决策见[对接报告](docs/reports/content-handoff-review.md)，远程分支约定见[master/dev说明](docs/branching.md)。
 
 全卡效果、费用、插画、使用要点与九套预设牌表见[卡池图鉴](docs/card-catalog.md)，可在[图文浏览版](docs/card-catalog.html)按卡名、类型、稀有度与学派组合筛选。
+
+数值平衡采用[数学模型](docs/balance-model.md)与[全卡测算](docs/reports/card-balance.md)，覆盖净手牌、魔素经济、荷载阈值、伤害曲线及组合风险；运行 `python tools/analyze_balance.py` 可按当前卡池重新计算。模型参数为待验证的设计先验，候选调整尚未写入正式卡池。
 
 从主菜单进入卡组列表，可新建空白草稿、从预设复制、点击自建卡组修改或确认删除。编辑器中点击名称输入中文/英文，支持Ctrl+A及Ctrl+V；列表与编辑器均为独立的全窗口页面。编辑器左侧显示详情，中间逐张展示主卡组，右侧为卡池。右键卡池卡牌加入一张，右键主卡组卡牌移除一张；拖动到另一栏同样增减一张。点击查看详情，拖动时按Esc或右键取消。
 

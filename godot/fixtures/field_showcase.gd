@@ -28,6 +28,13 @@ static func create(library: Array[CardPresentation]) -> FieldPresentation:
 	field.opponent_side_count = 9
 	field.own_deck_count = 35
 	field.opponent_deck_count = 35
+	field.own_mana = 6
+	field.opponent_mana = 6
+	field.own_load = 4
+	field.opponent_load = 4
+	field.own_load_limit = 10
+	field.opponent_load_limit = 10
+	field.phase_label = "主要阶段"
 	return field
 
 static func _copy(card: CardPresentation, id: String) -> CardPresentation:

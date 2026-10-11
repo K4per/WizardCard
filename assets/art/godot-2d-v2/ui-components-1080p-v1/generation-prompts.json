@@ -1,0 +1,32 @@
+[
+  {
+    "name": "panel",
+    "source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-a9e19dd0-58f9-4eb2-8a67-fb167cf15e86.png",
+    "prompt": "One large wide rectangular settings/window panel, object aspect ratio 1.65:1. Beautiful gilded carved corners and a small cyan gem at each corner, double inset gold and teal edge rails. Border confined to a thin 4 percent of width. Center filled with very dark navy subtly textured leather, completely empty and quiet. Straight uniform edges between the ornate corner blocks so it can be nine-sliced. No central crest, no circular sockets, no internal dividers."
+  },
+  {
+    "name": "field",
+    "source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-ff3d4bfe-c000-4440-88de-1a219bc9f4cf.png",
+    "prompt": "One long rectangular dropdown/input control bezel, object aspect ratio 7:1. Match the gold metal and cyan gems. Small engraved gold corner brackets, restrained cyan gem detail at the two ends, thin bevel rails, deep navy empty interior. Absolutely no arrow, text, icons or inner divisions. Straight constant horizontal rails suitable for nine-slice stretching. Keep end ornaments within the outer 8 percent."
+  },
+  {
+    "name": "slider-track",
+    "source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-5e4aa394-7da7-4b2d-8112-e4b4cc890e1d.png",
+    "prompt": "One slim horizontal slider rail, object aspect ratio 16:1. Gold sculpted metal end caps with tiny cyan stones, slim double gold rails enclosing a deep navy empty groove. Refined pixel texture; an empty inactive track, no handle, no progress fill. Straight uniform central track suitable for horizontal nine-slice stretching."
+  },
+  {
+    "name": "slider-knob",
+    "source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-f3c6df9d-2003-4817-8721-ebedb678eb03.png",
+    "prompt": "One small symmetric jewel slider handle: vertical diamond-cut cyan crystal mounted in a finely engraved warm gold rhombus bezel, restrained dark navy recess. Object aspect ratio 0.9:1. No wings, no long rail. Strong cyan center and crisp gold contour, excellent readability when reduced to 36x40 screen pixels."
+  },
+  {
+    "name": "toggle-on",
+    "source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-7e6e3939-33ab-4d6a-9159-80821ffc9d0d.png",
+    "prompt": "One complete enabled toggle switch, object aspect ratio 2.35:1. A horizontal capsule formed by fine gold metal rim, quiet deep navy backing, bright teal-cyan active groove, circular faceted turquoise knob positioned unmistakably at RIGHT end. Small refined gilded flourishes at ends. No words, letters or check mark. Readable at 104x44 screen pixels."
+  },
+  {
+    "name": "toggle-off",
+    "source": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-74c269d4-c11e-4c57-946f-7b1d7d5d3434.png",
+    "prompt": "One complete disabled/off toggle switch, object aspect ratio 2.35:1. A horizontal capsule formed by fine gold metal rim, quiet deep navy groove, circular faceted dim pale blue-gray knob positioned unmistakably at LEFT end. Match enabled switch body outline and small gilded end flourishes. No words, letters, crosses or check mark. Readable at 104x44 screen pixels."
+  }
+]

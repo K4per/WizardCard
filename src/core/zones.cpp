@@ -12,14 +12,16 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
     std::uint32_t batch = 0;
     auto leaveOne = [&](auto &&self, CardId source) -> void {
         auto i = s.cards.find(source);
-        if (i == s.cards.end() || i->second.zone == Zone::Ash || i->second.base)
+        if (i == s.cards.end() || i->second.zone == Zone::Ash ||
+            (i->second.base && (!cat || !cat->usesAlphaV2())))
             return;
         auto &c = i->second;
         std::vector<CardId> children;
         for (const auto &[cid, x] : s.cards)
             if (x.host == source && (x.zone == Zone::Attached || x.zone == Zone::Analysis))
                 children.push_back(cid);
-        const bool publicSource = c.zone != Zone::Hand && c.zone != Zone::Deck;
+        const bool publicSource = c.zone != Zone::Hand && c.zone != Zone::Deck && c.zone != Zone::SideDeck;
+        const bool wasCasting = c.zone == Zone::Casting;
         if (cat && publicSource && !cat->at(c.definition).onLeave.empty()) {
             if (!batch)
                 batch = s.nextBatch++;
@@ -54,6 +56,32 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
         c.castLoad = 0;
         c.remaining = 0;
         c.faceDown = false;
+        c.ringIndex = -1;
+        if (cat && cat->usesAlphaV2()) {
+            c.wasAmbushed = false;
+            c.ambushedTurn = 0;
+            c.analysisProgress = 0;
+            const auto &definition = cat->at(c.definition);
+            c.faceDown = std::find(definition.traits.begin(), definition.traits.end(), "self_ambush_on_leave") != definition.traits.end();
+            if (wasCasting && (definition.type == CardType::Analytic || definition.type == CardType::Word ||
+                               definition.type == CardType::Talisman))
+                for (const auto &[formationId, formation] : s.cards) {
+                    const auto &passive = cat->at(formation.definition);
+                    if (formation.owner != c.owner || formation.zone != Zone::Analysis ||
+                        std::find(passive.traits.begin(), passive.traits.end(), "ping_on_spell_leave") == passive.traits.end())
+                        continue;
+                    if (!batch) batch = s.nextBatch++;
+                    Trigger trigger;
+                    trigger.id = s.nextTrigger++;
+                    trigger.batch = batch;
+                    trigger.owner = c.owner;
+                    trigger.source = formationId;
+                    trigger.target = TargetKind::Opponent;
+                    trigger.targetPlayer = 1 - c.owner;
+                    trigger.effects.push_back({EffectKind::Damage, 1, DamageType::Fire});
+                    captured.push_back(std::move(trigger));
+                }
+        }
         {
             s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(),
                                              [&](const TemporaryLoad &t) {
@@ -77,8 +105,8 @@ void StateMaintenance::check(GameState &s, const CardCatalog &cat, bool endClean
     bool loses[2]{};
     for (int p = 0; p < 2; ++p)
         loses[p] = s.players[p].life <= 0 || s.players[p].surrendered ||
-                   (cat.alphaV2Draft
-                        ? endCleanup && Rules::load(s, p) > 0 &&
+                   (cat.usesAlphaV2()
+                        ? endCleanup && p == s.active && Rules::load(s, p) > Rules::capacity(s, cat, p) &&
                             Rules::load(s, p) >= 2 * Rules::capacity(s, cat, p)
                         : s.players[p].drawFailed || Rules::load(s, p) > Rules::capacity(s, cat, p));
     if (loses[0] || loses[1]) {

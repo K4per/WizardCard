@@ -1,0 +1,37 @@
+{
+  "format": 1,
+  "family": "Noto Sans CJK SC",
+  "release": "Sans2.004",
+  "license": "SIL Open Font License 1.1",
+  "licenseFile": "OFL.txt",
+  "licenseSha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+  "licenseUrl": "https://github.com/notofonts/noto-cjk/blob/Sans2.004/LICENSE",
+  "assets": [
+    {
+      "id": "font.cjk.bold",
+      "file": "NotoSansCJKsc-Bold.otf",
+      "sha256": "b5f0d1a190a7f9b43c310a8850630af12553df32c4c050543f9059732d9b4c0a",
+      "fontFamily": "Noto Sans CJK SC",
+      "fontStyle": "Bold",
+      "fontWeight": 700,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "copyright": "© 2014-2021 Adobe (http://www.adobe.com/).",
+      "license": "SIL Open Font License 1.1",
+      "licenseAsset": "font.cjk.weights.license",
+      "upstream": "https://raw.githubusercontent.com/notofonts/noto-cjk/Sans2.004/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Bold.otf"
+    },
+    {
+      "id": "font.cjk.black",
+      "file": "NotoSansCJKsc-Black.otf",
+      "sha256": "2267c4a0312d267dff8c0d1609948f7d949a3da8be3e126f5e2690cb9cc883b4",
+      "fontFamily": "Noto Sans CJK SC",
+      "fontStyle": "Black",
+      "fontWeight": 900,
+      "version": "Version 2.004;hotconv 1.0.118;makeotfexe 2.5.65603",
+      "copyright": "© 2014-2021 Adobe (http://www.adobe.com/).",
+      "license": "SIL Open Font License 1.1",
+      "licenseAsset": "font.cjk.weights.license",
+      "upstream": "https://raw.githubusercontent.com/notofonts/noto-cjk/Sans2.004/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Black.otf"
+    }
+  ]
+}

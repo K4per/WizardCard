@@ -19,11 +19,20 @@ struct ResponseAbility {
     std::vector<Effect> effects;
     bool fromAnalysis{}, fromAmbush{};
     std::vector<Phase> phases;
+    bool fromCasting{};
+};
+enum class RecipeCostKind { Mana, SacrificeFormation, SacrificeSpell, DiscardHand };
+struct RecipeCost {
+    RecipeCostKind kind{RecipeCostKind::Mana};
+    int amount{};
+    std::string definition, school;
+    bool readyOnly{}, distinctSchools{}, fireDamage{};
 };
 struct CardDefinition {
     std::string id, name, text, rarity = "common", flavor;
     CardType type{};
     int cost{}, castCost{}, rank{}, analysisTurns{1}, duration{}, burden{}, extraDiscard{};
+    int concentrationUpkeep{-1};
     int body{}, capacity{}, income{}, rings{}, maxRank{}, ringBonus{}, refundCast{};
     int incomeBonus{}, refundSetting{};
     bool immediate{}, concentration{}, opponentDestroyProtected{};
@@ -32,12 +41,17 @@ struct CardDefinition {
     bool baseEligible{};
     int targetCount{1};
     std::vector<std::string> tags;
+    std::vector<std::string> traits; // Validated executable 2.0 card capabilities.
     std::vector<ResponseAbility> responses;
     std::vector<Effect> onDraw, onMain, onCast, onLeave, onMana;
     std::string school;
     int speed{1}, capacityBonus{}, rankBonus{}, castCostBonus{}, damageBonus{};
     bool responseOnly{}, baseAnalysisDiscount{}, quickRankOne{};
     std::vector<DamageType> resistances, immunities;
+    std::string number, illustrationId;
+    int level{1};
+    bool perpetual{};
+    std::vector<RecipeCost> recipe;
 };
 struct CardCatalog {
     std::string rulesVersion, cardSetVersion, contentHash;
@@ -46,6 +60,8 @@ struct CardCatalog {
     // Offline Alpha v2 rule fixtures only, until construction/phase gates are complete.
     // The production JSON loader deliberately does not enable this draft mode.
     bool alphaV2Draft{};
+    bool alphaV2{};
+    bool usesAlphaV2() const { return alphaV2 || alphaV2Draft; }
     int baseLoadCapacity{};
     const CardDefinition &at(const std::string &id) const;
 };

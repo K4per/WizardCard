@@ -154,8 +154,7 @@ TEST_CASE("network room changes clear both readiness flags and host seat swaps")
     h.configure(false, false);
     CHECK(h.player() == 1);
     CHECK(h.room().at("ready") == Json::array({false, false}));
-    PlayerDeck d;
-    d.cards = c.deck;
+    PlayerDeck d = c.defaultPlayerDeck();
     h.deck(d);
     h.ready();
     h.receive({{"type", "Ready"}, {"session", h.session()}});
@@ -190,8 +189,7 @@ TEST_CASE("network real TCP peers support settings independent progress and term
     auto c = content();
     auto directory = std::filesystem::path(WIZARD_SOURCE_DIR) / "build" / "network-tests" / token();
     Peer host(c, directory / "host.json"), guest(c, directory / "guest.json");
-    PlayerDeck d;
-    d.cards = c.deck;
+    PlayerDeck d = c.defaultPlayerDeck();
     unsigned short port = 0;
     for (unsigned short p = 32000; p < 32100; ++p) {
         try {
@@ -237,11 +235,11 @@ TEST_CASE("network real TCP peers support settings independent progress and term
     guest.tick();
     CHECK(guest.save(error));
 }
-TEST_CASE("network keeps Alpha 1.0 replay compatibility") {
+TEST_CASE("network v2 recordings require the matching program and format") {
     Pair p;
     auto j = p.host.recording();
     j["programVersion"] = "1.0.0-alpha";
-    CHECK_NOTHROW(replay(p.c, j));
+    CHECK_THROWS(replay(p.c, j));
     j["programVersion"] = "unknown";
     CHECK_THROWS(replay(p.c, j));
 }
@@ -296,8 +294,7 @@ TEST_CASE("network save failure keeps the authoritative match until explicit exi
     auto directory = std::filesystem::path(WIZARD_SOURCE_DIR) / "build" / "network-tests" / token();
     writeJson(directory / "blocked", Json{{"file", true}});
     Peer host(c, directory / "blocked" / "host.json"), guest(c, directory / "guest.json");
-    PlayerDeck d;
-    d.cards = c.deck;
+    PlayerDeck d = c.defaultPlayerDeck();
     unsigned short port = 0;
     for (unsigned short p = 32300; p < 32400; ++p) {
         try {

@@ -22,6 +22,7 @@ struct Tutorial {
     Lesson lesson{Lesson::Intro};
     CardId spell{};
     bool countered{};
+    bool alphaV2{};
     std::string title() const;
     std::string hint(const GameView &) const;
     bool canContinue(const GameView &) const;

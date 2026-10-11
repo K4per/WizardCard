@@ -1,0 +1,35 @@
+{
+  "tool": "Built-in image_gen.imagegen",
+  "transparent_background": true,
+  "referenceImages": [
+    "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_detail_analysis_ai.png",
+    "assets/art/godot-2d-v2/main-menu-1080p-v1/source/button-normal-original.png"
+  ],
+  "commonPrompt": "Generate one production-ready reusable UI sprite for the Godot game WizardCard. Reference images are STYLE REFERENCES ONLY, not edit targets: match their refined fantasy pixel art, intricate warm gold filigree metal, dark midnight navy enamel, faceted cyan turquoise gemstones, crisp stepped pixel edges and high craft. Orthographic straight-on 2D game UI, no perspective. Truly transparent background outside the isolated object. No text, letters, numbers, labels, scene, backdrop, watermark, glow haze or mock interface. Center the object with generous transparent margin. Preserve clearly readable low-contrast interior surfaces for Godot live text. Output on a landscape 1920x1080 canvas if possible. ",
+  "assetPrompts": [
+    {
+      "name": "panel",
+      "prompt": "One large wide rectangular settings/window panel, object aspect ratio 1.65:1. Beautiful gilded carved corners and a small cyan gem at each corner, double inset gold and teal edge rails. Border confined to a thin 4 percent of width. Center filled with very dark navy subtly textured leather, completely empty and quiet. Straight uniform edges between the ornate corner blocks so it can be nine-sliced. No central crest, no circular sockets, no internal dividers."
+    },
+    {
+      "name": "field",
+      "prompt": "One long rectangular dropdown/input control bezel, object aspect ratio 7:1. Match the gold metal and cyan gems. Small engraved gold corner brackets, restrained cyan gem detail at the two ends, thin bevel rails, deep navy empty interior. Absolutely no arrow, text, icons or inner divisions. Straight constant horizontal rails suitable for nine-slice stretching. Keep end ornaments within the outer 8 percent."
+    },
+    {
+      "name": "slider-track",
+      "prompt": "One slim horizontal slider rail, object aspect ratio 16:1. Gold sculpted metal end caps with tiny cyan stones, slim double gold rails enclosing a deep navy empty groove. Refined pixel texture; an empty inactive track, no handle, no progress fill. Straight uniform central track suitable for horizontal nine-slice stretching."
+    },
+    {
+      "name": "slider-knob",
+      "prompt": "One small symmetric jewel slider handle: vertical diamond-cut cyan crystal mounted in a finely engraved warm gold rhombus bezel, restrained dark navy recess. Object aspect ratio 0.9:1. No wings, no long rail. Strong cyan center and crisp gold contour, excellent readability when reduced to 36x40 screen pixels."
+    },
+    {
+      "name": "toggle-on",
+      "prompt": "One complete enabled toggle switch, object aspect ratio 2.35:1. A horizontal capsule formed by fine gold metal rim, quiet deep navy backing, bright teal-cyan active groove, circular faceted turquoise knob positioned unmistakably at RIGHT end. Small refined gilded flourishes at ends. No words, letters or check mark. Readable at 104x44 screen pixels."
+    },
+    {
+      "name": "toggle-off",
+      "prompt": "One complete disabled/off toggle switch, object aspect ratio 2.35:1. A horizontal capsule formed by fine gold metal rim, quiet deep navy groove, circular faceted dim pale blue-gray knob positioned unmistakably at LEFT end. Match enabled switch body outline and small gilded end flourishes. No words, letters, crosses or check mark. Readable at 104x44 screen pixels."
+    }
+  ]
+}

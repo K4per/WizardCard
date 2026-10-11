@@ -1,0 +1,23 @@
+{
+  "id": "funny-box",
+  "name": "滑稽魔盒",
+  "type": "talisman",
+  "rarity": "epic",
+  "rank": 5,
+  "level": 5,
+  "speed": 3,
+  "school": "enchantment",
+  "cost": 4,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "target": "self",
+  "effects": [
+    {
+      "kind": "recover_enemy_ash_spell"
+    }
+  ],
+  "text": "将对方【灰烬区】的一张5级以下的解析法术盖伏在己方法阵上。",
+  "responseOnly": false,
+  "number": "040004",
+  "illustrationId": "v2-funny-box"
+}

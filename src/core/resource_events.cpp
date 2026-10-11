@@ -15,15 +15,17 @@ void ResourceRules::damage(GameState &state, PlayerId player, int amount, const 
     state.events.push_back(std::move(event));
 }
 void ResourceRules::increasedLoad(GameState &state, const CardCatalog &catalog, PlayerId player, int increment) {
-    if (catalog.alphaV2Draft && increment > 0 && Rules::load(state, player) > Rules::capacity(state, catalog, player))
+    if (catalog.usesAlphaV2() && increment > 0 && Rules::load(state, player) > Rules::capacity(state, catalog, player)) {
         damage(state, player, increment * 2, "overload");
+        StateMaintenance::check(state, catalog);
+    }
 }
 void ResourceRules::drawOne(GameState &state, const CardCatalog &catalog, PlayerId player) {
     auto &owner = state.players.at(static_cast<std::size_t>(player));
-    if (catalog.alphaV2Draft && (state.result != -1 || owner.life <= 0))
+    if (catalog.usesAlphaV2() && (state.result != -1 || owner.life <= 0))
         return;
     if (owner.deck.empty()) {
-        if (catalog.alphaV2Draft)
+        if (catalog.usesAlphaV2())
             damage(state, player, ++owner.exhaustion, "exhaustion");
         else
             owner.drawFailed = true;

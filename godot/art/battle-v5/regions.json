@@ -1,0 +1,6 @@
+{
+  "analysis_floor": {"file": "res://art/battle-v5/01-floor-inlays.png", "region": [42, 45, 1588, 678]},
+  "casting_floor": {"file": "res://art/battle-v5/01-floor-inlays.png", "region": [42, 778, 1588, 126]},
+  "spell_art_normal": {"file": "res://art/battle-v5/02-spell-art-frames.png", "region": [35, 40, 836, 808]},
+  "spell_art_selected": {"file": "res://art/battle-v5/02-spell-art-frames.png", "region": [899, 40, 844, 808]}
+}

@@ -7,8 +7,20 @@
 #include <stdexcept>
 
 namespace wizard {
+namespace {
+bool trait(const CardDefinition &d, const char *name) {
+    return std::find(d.traits.begin(), d.traits.end(), name) != d.traits.end();
+}
+const CardDefinition *effectHost(const GameState &s, const CardCatalog &cat, const Trigger &t) {
+    auto source = s.cards.find(t.source);
+    if (source == s.cards.end()) return nullptr;
+    auto host = s.cards.find(source->second.sourceFormation);
+    return host != s.cards.end() && host->second.zone == Zone::Analysis
+        ? &cat.at(host->second.definition) : nullptr;
+}
+}
 void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &t, const Effect &e) {
-    if (cat.alphaV2Draft && s.result != -1)
+    if (cat.usesAlphaV2() && s.result != -1)
         return;
     int p = t.targetPlayer >= 0 ? t.targetPlayer : t.owner;
     if (e.recipient == EffectRecipient::Owner)
@@ -20,7 +32,14 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     const auto previousDeck = s.players[t.owner].deck.size();
     switch (e.kind) {
     case EffectKind::Damage: {
-        int amount = Rules::damage(s, cat, p, e);
+        auto adjusted = e;
+        if (cat.usesAlphaV2()) {
+            const auto *host = effectHost(s, cat, t);
+            const auto source = s.cards.find(t.source);
+            if (host && trait(*host, "host_evocation_damage_plus_one") && source != s.cards.end() &&
+                cat.at(source->second.definition).school == "evocation") ++adjusted.amount;
+        }
+        int amount = Rules::damage(s, cat, p, adjusted);
         const int shield = std::min(amount, s.players[p].temporaryLife);
         s.players[p].temporaryLife -= shield;
         s.players[p].life -= amount - shield;
@@ -41,6 +60,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::AccelerateAnalysis: {
         auto &c = s.cards.at(t.targetCard);
         c.spell = SpellState::Ready;
+        if (cat.usesAlphaV2()) c.analysisProgress = cat.at(c.definition).analysisTurns;
         s.temporary.push_back(
             {s.nextLoad++, t.owner, t.source, c.settingPaid, s.players[t.owner].ownTurn + 1});
         ResourceRules::increasedLoad(s, cat, t.owner, c.settingPaid);
@@ -57,6 +77,40 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         }
         break;
     }
+    case EffectKind::ReduceSpellDamage:
+        if (s.chain)
+            for (auto &link : s.chain->links)
+                if (link.id == t.targetLink) {
+                    for (auto &pending : link.item.effects)
+                        if (pending.kind == EffectKind::Damage) {
+                            pending.amount = std::max(0, pending.amount -
+                                (pending.damageType == DamageType::Force ? 10 : e.amount));
+                            break;
+                        }
+                    break;
+                }
+        break;
+    case EffectKind::RevealAllAmbush:
+        for (auto &[id, card] : s.cards)
+            if (card.zone == Zone::Analysis && card.faceDown && cat.at(card.definition).type != CardType::Formation) {
+                card.faceDown = false;
+                card.spell = cat.at(card.definition).type == CardType::Analytic ? SpellState::Analyzing
+                                                                            : SpellState::Ready;
+                card.analysisStarted = s.players[card.owner].ownTurn;
+                card.analysisProgress = 0;
+                s.events.push_back({"reveal", "结束阶段反转盖伏法术：" + cat.at(card.definition).name, -1, id});
+            }
+        break;
+    case EffectKind::DelayEnemyAnalysis:
+    case EffectKind::ConcealEnemySpell:
+    case EffectKind::RevealEnemyAmbush:
+    case EffectKind::ChooseDamage:
+    case EffectKind::DestroyFormationSpells:
+    case EffectKind::ReturnEnemyAnalysis:
+    case EffectKind::SearchSameSchool:
+    case EffectKind::RecoverEnemyAshSpell:
+    case EffectKind::RecoverFormation:
+        throw std::logic_error("content effect requires a decision");
     case EffectKind::CounterSpell: {
         if (s.chain)
             for (auto &l : s.chain->links)
@@ -72,9 +126,12 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
                 }
         break;
     }
-    case EffectKind::Heal:
-        s.players[p].life = std::min(maximumLife, s.players[p].life + e.amount);
+    case EffectKind::Heal: {
+        const auto *host = cat.usesAlphaV2() ? effectHost(s, cat, t) : nullptr;
+        s.players[p].life = std::min(maximumLife, s.players[p].life + e.amount +
+            (host && trait(*host, "host_heal_plus_one") ? 1 : 0));
         break;
+    }
     case EffectKind::GainMana: {
         s.players[t.owner].mana = std::min(12, s.players[t.owner].mana + e.amount);
         const auto batch = s.nextBatch++;
@@ -100,7 +157,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::Draw:
         for (int k = 0; k < e.amount; ++k) {
             ResourceRules::drawOne(s, cat, t.owner);
-            if (cat.alphaV2Draft && s.players[t.owner].life <= 0)
+            if (cat.usesAlphaV2() && s.players[t.owner].life <= 0)
                 break;
         }
         break;
@@ -123,8 +180,10 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::Destroy: {
         auto destroy = [&](CardId id) {
             auto i = s.cards.find(id);
-            if (i != s.cards.end() && i->second.owner != t.owner &&
-                cat.at(i->second.definition).opponentDestroyProtected) {
+            if (i != s.cards.end() && ((i->second.owner != t.owner &&
+                cat.at(i->second.definition).opponentDestroyProtected) ||
+                (cat.usesAlphaV2() && (trait(cat.at(i->second.definition), "effect_immune") ||
+                                      trait(cat.at(i->second.definition), "effect_indestructible"))))) {
                 s.events.push_back({"protected", "对手效果不能销毁此卡", -1, id});
                 return;
             }
@@ -228,6 +287,23 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::Conceal:
         message = "法术转为埋伏";
         break;
+    case EffectKind::ReduceSpellDamage:
+        message = "降低目标法术伤害";
+        break;
+    case EffectKind::RevealAllAmbush:
+        message = "揭示场上所有盖伏法术";
+        break;
+    case EffectKind::DelayEnemyAnalysis:
+    case EffectKind::ConcealEnemySpell:
+    case EffectKind::RevealEnemyAmbush:
+    case EffectKind::ChooseDamage:
+    case EffectKind::DestroyFormationSpells:
+    case EffectKind::ReturnEnemyAnalysis:
+    case EffectKind::SearchSameSchool:
+    case EffectKind::RecoverEnemyAshSpell:
+    case EffectKind::RecoverFormation:
+        message = "选择卡牌效果";
+        break;
     case EffectKind::NegateLink:
         message = "取消链节 #" + std::to_string(t.targetLink);
         break;
@@ -243,7 +319,8 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         event.affectedPlayer = t.owner;
     }
     s.events.push_back(std::move(event));
-    if (cat.alphaV2Draft)
+    if (cat.usesAlphaV2())
         StateMaintenance::check(s, cat);
 }
 } // namespace wizard
+#include "effects_v2.inc"

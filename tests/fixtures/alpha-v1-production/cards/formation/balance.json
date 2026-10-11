@@ -1,0 +1,16 @@
+{
+  "id": "balance",
+  "name": "均衡之六芒星",
+  "rarity": "common",
+  "type": "formation",
+  "baseEligible": true,
+  "body": 2,
+  "capacity": 8,
+  "income": 1,
+  "rings": 3,
+  "maxRank": 2,
+  "text": "无特殊效果。",
+  "flavor": "魔法界最流行的一种法阵，你几乎可以在任何一种复杂术式中看到它的身影。六芒星诉说着它的信念：秩序不偏向任何一边。",
+  "speed": 1,
+  "cost": 0
+}

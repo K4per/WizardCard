@@ -3,9 +3,9 @@
   "name": "寒霜射线",
   "type": "analytic",
   "rarity": "common",
-  "cost": 1,
+  "cost": 2,
   "castCost": 1,
-  "rank": 1,
+  "rank": 2,
   "speed": 1,
   "school": "evocation",
   "analysisTurns": 1,
@@ -13,9 +13,16 @@
   "effects": [
     {
       "kind": "damage",
-      "amount": 3,
+      "amount": 6,
       "damageType": "cold"
+    },
+    {
+      "kind": "delay_enemy_analysis",
+      "amount": 1
     }
   ],
-  "text": "对对方造成3点寒冷伤害。"
+  "text": "对对方玩家造成6点寒冷伤害。选择对方一张解析法术，使其解析进度后退1回合。",
+  "level": 2,
+  "number": "020009",
+  "illustrationId": "ray-of-frost"
 }

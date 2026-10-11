@@ -1,0 +1,241 @@
+#include "engine_internal.hpp"
+#include <algorithm>
+#include <limits>
+namespace wizard {
+using namespace detail;
+namespace {
+struct OrderedCard { std::uint64_t key{}; CardId id{}; };
+OrderedCard nextFieldCard(const GameState &state, const CardCatalog &catalog, PlayerId owner,
+                          bool formation, std::uint64_t after, bool anyPersistent = false) {
+    OrderedCard result{std::numeric_limits<std::uint64_t>::max(), 0};
+    for (const auto &[id, card] : state.cards) {
+        if (card.owner != owner || card.zone != Zone::Analysis) continue;
+        const auto &def = catalog.at(card.definition);
+        if (formation != (def.type == CardType::Formation)) continue;
+        if (!formation && (card.faceDown || card.spell != SpellState::Active || (!anyPersistent && !def.perpetual) || !card.host)) continue;
+        std::uint64_t key = formation ? card.fieldOrder :
+            (state.cards.at(card.host).fieldOrder << 16) + static_cast<std::uint64_t>(card.ringIndex + 1);
+        if (key > after && key < result.key) result = {key, id};
+    }
+    return result;
+}
+}
+bool GameEngine::returnSpellsV2() {
+    auto &s = state_;
+    if (!s.returnRequested || s.decision || s.chain || s.effect) return false;
+    std::vector<CardId> pending;
+    for (const auto &[id, spell] : s.cards)
+        if (spell.zone == Zone::Casting && spell.spell == SpellState::Active) pending.push_back(id);
+    auto order = [&](CardId id) {
+        const auto &spell = s.cards.at(id);
+        const auto host = s.cards.find(spell.sourceFormation);
+        const auto formationOrder = host == s.cards.end() ? spell.fieldOrder : host->second.fieldOrder;
+        return std::make_tuple(spell.owner != s.active, formationOrder, spell.sourceRingIndex, spell.fieldOrder, id);
+    };
+    std::sort(pending.begin(), pending.end(), [&](CardId a, CardId b) { return order(a) < order(b); });
+    for (const auto id : pending) {
+        const auto &spell = s.cards.at(id);
+        if (spell.zone != Zone::Casting || spell.spell != SpellState::Active) continue;
+        const auto &definition = catalog_.at(spell.definition);
+        if (!(definition.perpetual || definition.concentration || definition.duration > 0)) continue;
+        std::vector<std::uint32_t> options;
+        for (const auto &[hostId, host] : s.cards)
+            if (host.owner == spell.owner && host.zone == Zone::Analysis &&
+                catalog_.at(host.definition).type == CardType::Formation &&
+                Rules::canHost(s, catalog_, id, hostId) &&
+                Rules::freeRing(s, catalog_, hostId) >= 0)
+                options.push_back(hostId);
+        if (options.empty()) {
+            StateMaintenance::leave(s, id, &catalog_);
+            return true;
+        }
+        s.maintenanceSource = id;
+        decision(spell.owner, DecisionKind::ReturnSpell, std::move(options));
+        return true;
+    }
+    s.returnRequested = false;
+    return false;
+}
+bool GameEngine::phaseV2() {
+    auto &s = state_;
+    auto &pl = s.players[s.active];
+    auto triggered = [&](CardId id, const std::vector<Effect> &effects) {
+        if (effects.empty()) return false;
+        const auto &card = s.cards.at(id);
+        auto trigger = snapshot(card, catalog_.at(card.definition));
+        trigger.id = s.nextTrigger++;
+        trigger.batch = s.nextBatch++;
+        trigger.effects = effects;
+        startTrigger(std::move(trigger));
+        return true;
+    };
+    switch (s.phaseStep) {
+    case PhaseStep::Enter: {
+        s.phaseGate = 0; s.phaseCursor = 0; s.phaseOrderCursor = 0;
+        s.durationApplied = false;
+        s.events.push_back({"phase_enter", "进入" + phaseName(s.phase) + "阶段"});
+        s.phaseStep = s.phase == Phase::End ? PhaseStep::StartWindow : PhaseStep::PrepareIncome;
+        return true;
+    }
+    case PhaseStep::PrepareIncome: {
+        if (s.phase == Phase::Draw && s.phaseCursor == 0) {
+            int income = 0;
+            for (const auto &[id, card] : s.cards)
+                if (card.owner == s.active && card.zone == Zone::Analysis &&
+                    catalog_.at(card.definition).type == CardType::Formation) {
+                    income += catalog_.at(card.definition).income;
+                    for (const auto &[sealId, seal] : s.cards)
+                        if (seal.zone == Zone::Attached && seal.host == id)
+                            income += catalog_.at(seal.definition).incomeBonus;
+                }
+            Trigger trigger; trigger.owner = s.active;
+            EffectResolver::apply(s, catalog_, trigger, {EffectKind::GainMana, std::max(0, income)});
+            s.events.push_back({"income", "阵法收入 " + std::to_string(income)});
+            ++s.phaseCursor;
+            return true; // Income-triggered choices finish before attempting to draw.
+        }
+        if (s.phase == Phase::Draw && s.phaseCursor == 1) {
+            ++s.phaseCursor;
+            Trigger trigger; trigger.owner = s.active;
+            if (!(s.active == s.first && pl.ownTurn == 1))
+                EffectResolver::apply(s, catalog_, trigger, {EffectKind::Draw, 1});
+            StateMaintenance::check(s, catalog_);
+            if (s.result != -1) return false;
+            return true;
+        }
+        if (s.phase != Phase::Prepare) {
+            const int first = s.phase == Phase::Draw ? 2 : 0;
+            if (s.phaseCursor < first + 2) {
+                const auto next = nextFieldCard(s, catalog_, s.active, s.phaseCursor == first, s.phaseOrderCursor, true);
+                if (next.id) {
+                    s.phaseOrderCursor = next.key;
+                    const auto &def = catalog_.at(s.cards.at(next.id).definition);
+                    triggered(next.id, s.phase == Phase::Draw ? def.onDraw : s.phase == Phase::Main ? def.onMain : def.onCast);
+                    return true;
+                }
+                ++s.phaseCursor; s.phaseOrderCursor = 0; return true;
+            }
+            s.phaseStep = PhaseStep::StartWindow; return true;
+        }
+        if (s.phaseCursor == 0) {
+            s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &load) {
+                return load.owner == s.active && !load.independent && !load.sourceBound;
+            }), s.temporary.end());
+            ++s.phaseCursor; return true;
+        }
+        if (s.phaseCursor == 1) {
+            pl.temporaryLife = 0; ++s.phaseCursor; return true;
+        }
+        if (s.phaseCursor == 2 || s.phaseCursor == 3) {
+            auto next = nextFieldCard(s, catalog_, s.active, s.phaseCursor == 2, s.phaseOrderCursor);
+            if (next.id) {
+                s.phaseOrderCursor = next.key;
+                const auto &effects = catalog_.at(s.cards.at(next.id).definition).onPrepare;
+                if (triggered(next.id, effects)) return true;
+                return true;
+            }
+            ++s.phaseCursor; s.phaseOrderCursor = 0; return true;
+        }
+        if (s.phaseCursor == 4) {
+            OrderedCard next{std::numeric_limits<std::uint64_t>::max(), 0};
+            for (const auto &[id, card] : s.cards)
+                if (card.owner == s.active && card.zone == Zone::Analysis && card.spell == SpellState::Active &&
+                    catalog_.at(card.definition).concentration && card.host) {
+                    const auto key = (s.cards.at(card.host).fieldOrder << 16) +
+                                     static_cast<std::uint64_t>(card.ringIndex + 1);
+                    if (key > s.phaseOrderCursor && key < next.key) next = {key, id};
+                }
+            if (next.id) {
+                s.phaseOrderCursor = next.key;
+                s.maintenanceSource = next.id;
+                const int fee = s.cards.at(next.id).concentrationCost;
+                std::vector<std::uint32_t> options;
+                if (pl.mana >= fee) options.push_back(next.id);
+                decision(s.active, DecisionKind::Concentration, std::move(options), true);
+                return false;
+            }
+            ++s.phaseCursor; s.phaseOrderCursor = 0; return true;
+        }
+        if (s.phaseCursor == 5) {
+            for (auto &[id, card] : s.cards)
+                if (card.owner == s.active && card.zone == Zone::Analysis && !card.faceDown &&
+                    card.spell == SpellState::Analyzing &&
+                    ++card.analysisProgress >= catalog_.at(card.definition).analysisTurns) {
+                    card.spell = SpellState::Ready;
+                    analysisCompletedV2(id);
+                }
+            ++s.phaseCursor; return true;
+        }
+        s.phaseStep = PhaseStep::StartWindow; return true;
+    }
+    case PhaseStep::StartWindow: {
+        s.phaseStep = PhaseStep::Body;
+        ChainLink root; root.kind = LinkKind::Phase; root.item.owner = s.active;
+        startChain(ResponseWindow::PhaseStart, std::move(root), 1 - s.active);
+        return true;
+    }
+    case PhaseStep::Body:
+        if (!s.phaseGate) s.phaseGate = s.nextDecision++;
+        return false;
+    case PhaseStep::EndWindow: {
+        s.phaseStep = PhaseStep::EndTriggers;
+        ChainLink root; root.kind = LinkKind::Phase; root.item.owner = s.active;
+        startChain(ResponseWindow::PhaseEnd, std::move(root), 1 - s.active);
+        return true;
+    }
+    case PhaseStep::EndTriggers:
+        if (s.phase == Phase::Cast) s.returnRequested = true;
+        s.phaseStep = PhaseStep::Cleanup; s.phaseCursor = 0; s.phaseOrderCursor = 0; return true;
+    case PhaseStep::Cleanup: {
+        if (s.phase != Phase::End) { s.phaseStep = PhaseStep::Finish; return true; }
+        if (s.phaseCursor == 0 || s.phaseCursor == 1) {
+            auto next = nextFieldCard(s, catalog_, s.active, s.phaseCursor == 0, s.phaseOrderCursor);
+            if (next.id) {
+                s.phaseOrderCursor = next.key;
+                const auto &effects = catalog_.at(s.cards.at(next.id).definition).onEnd;
+                if (triggered(next.id, effects)) return true;
+                return true;
+            }
+            ++s.phaseCursor; s.phaseOrderCursor = 0; return true;
+        }
+        if (s.phaseCursor == 2) {
+            if (!s.durationApplied) {
+                s.durationApplied = true;
+                std::vector<CardId> expired;
+                for (auto &[id, card] : s.cards)
+                    if (card.zone == Zone::Analysis && card.spell == SpellState::Active &&
+                        catalog_.at(card.definition).duration > 0 && --card.remaining <= 0)
+                        expired.push_back(id);
+                for (auto id : expired) StateMaintenance::leave(s, id, &catalog_);
+            }
+            ++s.phaseCursor; return true;
+        }
+        if (s.phaseCursor == 3) {
+            for (const auto &[id, card] : s.cards)
+                if (card.zone == Zone::Casting) { StateMaintenance::leave(s, id, &catalog_); return true; }
+            ++s.phaseCursor; return true;
+        }
+        if (s.phaseCursor == 4) {
+            auto hand = inZone(s, s.active, Zone::Hand);
+            if (hand.size() > 8) { decision(s.active, DecisionKind::Discard, std::move(hand)); return false; }
+            ++s.phaseCursor; return true;
+        }
+        StateMaintenance::check(s, catalog_, true);
+        if (s.result != -1) return false;
+        s.phaseStep = PhaseStep::Finish; return true;
+    }
+    case PhaseStep::Finish:
+        s.events.push_back({"phase_end", phaseName(s.phase) + "阶段结束"});
+        if (s.phase == Phase::End) {
+            pl.actionsPlayed = 0; pl.formations = 0; pl.sealRemovals = 0;
+            for (auto &[id, card] : s.cards)
+                if (card.owner == s.active) card.canceledTurn = -1;
+            ++s.globalTurn; s.active = 1 - s.active; ++s.players[s.active].ownTurn;
+            s.phase = Phase::Draw;
+        } else s.phase = static_cast<Phase>(static_cast<int>(s.phase) + 1);
+        s.phaseStep = PhaseStep::Enter; s.phaseGate = 0; return true;
+    default:
+        s.phaseStep = PhaseStep::StartWindow; return true;
+    }
+}
+}

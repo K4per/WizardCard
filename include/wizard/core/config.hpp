@@ -5,6 +5,7 @@ namespace wizard {
 struct PlayerDeck {
     std::string baseFormation{"balance"};
     std::vector<std::string> cards;
+    std::vector<std::string> sideDeck;
 };
 struct MatchConfig {
     std::array<PlayerDeck, 2> players;

@@ -23,6 +23,7 @@ struct PlayerView {
     int life{}, mana{}, load{}, capacity{}, handCount{}, deckCount{}, ownTurn{}, actionsPlayed{};
     int temporaryLife{}, blockedActionTurn{-1};
     std::vector<DamageType> resistances, immunities;
+    int sideDeckCount{}, exhaustion{};
 };
 struct CardView {
     CardInstance instance;

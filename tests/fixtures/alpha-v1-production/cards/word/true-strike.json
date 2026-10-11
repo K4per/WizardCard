@@ -1,0 +1,20 @@
+{
+  "id": "true-strike",
+  "name": "克敌机先",
+  "type": "word",
+  "rarity": "uncommon",
+  "cost": 1,
+  "rank": 0,
+  "speed": 1,
+  "immediate": true,
+  "school": "divination",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "search_action",
+      "amount": 0
+    }
+  ],
+  "text": "可单独设置，或设置并立即释放。释放时从牌库检索一张普通或罕见行动卡加入手牌，然后洗切牌库。",
+  "flavor": "魔法之洞见，它能指引你看到多远？"
+}

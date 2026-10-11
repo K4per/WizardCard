@@ -5,20 +5,21 @@
   "type": "analytic",
   "cost": 3,
   "castCost": 1,
-  "rank": 2,
+  "rank": 3,
   "target": "opponent",
   "effects": [
     {
       "kind": "damage",
       "amount": 10,
       "damageType": "fire"
-    },
-    {
-      "kind": "optional_destroy_own_formation"
     }
   ],
-  "text": "对对方玩家造成10点火焰伤害。那之后，可以销毁自己的一个空白阵法。",
+  "text": "对一个目标造成10点火焰伤害。",
   "flavor": "没错，这确实是经典之选。“伟大的法师都精通了火球术使用！”阿克莉娅如是说，她本人是个术士。",
   "speed": 1,
-  "school": "evocation"
+  "school": "evocation",
+  "level": 3,
+  "analysisTurns": 1,
+  "number": "020001",
+  "illustrationId": "fireball"
 }

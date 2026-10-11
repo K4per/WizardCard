@@ -1,0 +1,23 @@
+{
+  "id": "lesser-restoration",
+  "name": "次级复原",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 2,
+  "castCost": 1,
+  "rank": 1,
+  "speed": 1,
+  "school": "abjuration",
+  "analysisTurns": 0,
+  "target": "self",
+  "effects": [
+    {
+      "kind": "clear_all_temporary"
+    },
+    {
+      "kind": "heal",
+      "amount": 2
+    }
+  ],
+  "text": "立即解析。清除自身所有临时荷载，然后恢复2点生命。不能清除独立或绑定荷载。"
+}

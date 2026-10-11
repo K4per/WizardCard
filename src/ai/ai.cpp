@@ -10,7 +10,7 @@ const CardView *card(const GameView &v, CardId id) {
     for (const auto &c : v.cards)
         if (c.instance.id == id &&
             (c.instance.zone != Zone::Deck ||
-             (v.decision && v.decision->kind == DecisionKind::SearchDeck &&
+             (v.decision && (v.decision->kind == DecisionKind::SearchDeck || v.decision->kind == DecisionKind::EffectChoice) &&
               std::find(v.decision->options.begin(), v.decision->options.end(), id) !=
                   v.decision->options.end())) &&
             (c.instance.zone != Zone::Hand || c.instance.owner == v.viewer))
@@ -48,6 +48,7 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
                                                                          : targetRecipient;
         auto &load = loads[recipient];
         switch (e.kind) {
+        case EffectKind::ChooseDamage:
         case EffectKind::Damage: {
             const auto &pl = v.players[recipient];
             int amount = e.amount;
@@ -71,6 +72,7 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
             score += owner == p ? 12 : -12;
             break;
         case EffectKind::SearchAction:
+        case EffectKind::SearchSameSchool:
             score += owner == p ? 12 : -12;
             break;
         case EffectKind::DestroyAmbush:
@@ -86,7 +88,24 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
             break;
         }
         case EffectKind::Conceal:
+        case EffectKind::ConcealEnemySpell:
+        case EffectKind::DelayEnemyAnalysis:
             score += 2;
+            break;
+        case EffectKind::ReturnEnemyAnalysis:
+        case EffectKind::RecoverEnemyAshSpell:
+        case EffectKind::RecoverFormation:
+            score += 8;
+            break;
+        case EffectKind::RevealEnemyAmbush:
+        case EffectKind::RevealAllAmbush:
+            score += 2;
+            break;
+        case EffectKind::DestroyFormationSpells:
+            score += 12;
+            break;
+        case EffectKind::ReduceSpellDamage:
+            score += 15;
             break;
         case EffectKind::Heal:
             score += (recipient == p ? 1 : -1) * std::min(e.amount, maximumLife - v.players[recipient].life) *
@@ -198,6 +217,8 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
                         if (l.id == cmd.option)
                             return 10 + l.amount;
                     return 0;
+                case DecisionKind::ClearAnyLoad:
+                    return cmd.option ? 20 : 0;
                 case DecisionKind::DestroyOwnFormation:
                     // Optional self-destruction is safely skipped; removing useful capacity is not a benefit.
                     return cmd.option ? -100 - value(c) : 0;
@@ -231,6 +252,22 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
                     return cmd.option ? 10 : 0;
                 case DecisionKind::Response:
                     return cmd.option ? 20 : 0;
+                case DecisionKind::ReturnSpell:
+                    return cmd.option && c ? 25 + c->effectiveRings - c->occupiedRings : -50;
+                case DecisionKind::DamageChoice: {
+                    const auto type = static_cast<DamageType>(cmd.option - 1);
+                    const auto &enemy = v.players[1 - p];
+                    if (std::find(enemy.immunities.begin(), enemy.immunities.end(), type) != enemy.immunities.end()) return -10;
+                    if (std::find(enemy.resistances.begin(), enemy.resistances.end(), type) != enemy.resistances.end()) return 1;
+                    return 20;
+                }
+                case DecisionKind::EffectChoice:
+                    if (!cmd.option) return -5;
+                    if (!c) return 1;
+                    if (c->instance.owner != p || c->instance.zone == Zone::Deck || c->instance.zone == Zone::Ash)
+                        return 10 + value(c);
+                    if (c->definition.type == CardType::Formation) return 10 + c->effectiveRings - c->occupiedRings;
+                    return 10 - value(c); // Same-school search sacrifices the least valuable own spell.
                 }
                 return 0;
             } else {

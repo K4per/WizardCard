@@ -32,7 +32,8 @@ GameView GameEngine::viewFor(PlayerId p) const {
                         pl.temporaryLife,
                         pl.blockedActionTurn};
         for (const auto &[id, c] : state_.cards)
-            if (c.owner == i && c.zone == Zone::Casting && c.spell == SpellState::Active) {
+            if (c.owner == i && (c.zone == Zone::Casting || (catalog_.usesAlphaV2() && c.zone == Zone::Analysis)) &&
+                !c.faceDown && c.spell == SpellState::Active) {
                 const auto &d = catalog_.at(c.definition);
                 v.players[i].resistances.insert(v.players[i].resistances.end(), d.resistances.begin(),
                                                 d.resistances.end());
@@ -40,13 +41,19 @@ GameView GameEngine::viewFor(PlayerId p) const {
                                                d.immunities.end());
             }
     }
+    for (int player = 0; player < 2; ++player) {
+        v.players[player].exhaustion = state_.players[player].exhaustion;
+        for (const auto &[id, card] : state_.cards)
+            if (card.owner == player && card.zone == Zone::SideDeck) ++v.players[player].sideDeckCount;
+    }
     for (const auto &[id, c] : state_.cards)
         if ((c.zone != Zone::Deck ||
              (state_.decision && state_.decision->player == p &&
-              state_.decision->kind == DecisionKind::SearchDeck &&
+              (state_.decision->kind == DecisionKind::SearchDeck ||
+               (catalog_.usesAlphaV2() && state_.decision->kind == DecisionKind::EffectChoice)) &&
               std::find(state_.decision->options.begin(), state_.decision->options.end(), id) !=
                   state_.decision->options.end())) &&
-            (c.zone != Zone::Hand || c.owner == p)) {
+            (c.zone != Zone::Hand || c.owner == p) && (c.zone != Zone::SideDeck || c.owner == p)) {
             const auto &def = catalog_.at(c.definition);
             CardView card{c, def};
             card.effectiveCastCost = Rules::castCost(state_, catalog_, id);
@@ -57,6 +64,8 @@ GameView GameEngine::viewFor(PlayerId p) const {
                 card.instance.owner = c.owner;
                 card.instance.zone = c.zone;
                 card.instance.host = c.host;
+                card.instance.ringIndex = c.ringIndex;
+                card.instance.fieldOrder = c.fieldOrder;
                 card.instance.faceDown = true;
                 card.definition = {};
                 card.definition.name = "埋伏卡";
@@ -70,7 +79,8 @@ GameView GameEngine::viewFor(PlayerId p) const {
             }
             if (c.spell == SpellState::Analyzing)
                 card.turnsToReady =
-                    std::max(0, def.analysisTurns - (state_.players[c.owner].ownTurn - c.analysisStarted));
+                    std::max(0, def.analysisTurns - (catalog_.usesAlphaV2() ? c.analysisProgress :
+                        state_.players[c.owner].ownTurn - c.analysisStarted));
             v.cards.push_back(std::move(card));
         }
     if (state_.decision && state_.decision->player == p)

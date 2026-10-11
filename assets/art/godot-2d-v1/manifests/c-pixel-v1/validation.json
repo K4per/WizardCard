@@ -1,0 +1,2423 @@
+{
+  "ok": true,
+  "png": 292,
+  "nativeSvg": 284,
+  "aiRaster": 8,
+  "checks": [
+    {
+      "id": "c2d.panel.surface",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.dialog",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.tooltip",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.input",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.dropdown",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.list",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.tabs",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.slider-track",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.scroll-track",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.loading",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.empty",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.notification",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.portrait",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.resource",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.phase",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.detail",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.chain",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.log",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.action",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.confirm",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.recipe",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.browser",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.privacy",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.panel.reconnect",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.primary.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.primary.hover",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.primary.pressed",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.primary.focus",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.primary.disabled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.secondary.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.secondary.hover",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.secondary.pressed",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.secondary.focus",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.secondary.disabled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.danger.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.danger.hover",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.danger.pressed",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.danger.focus",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.button.danger.disabled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.input.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.input.hover",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.input.pressed",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.input.focus",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.input.disabled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.tab.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.tab.hover",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.tab.pressed",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.tab.focus",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.tab.disabled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.dropdown.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.dropdown.hover",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.dropdown.pressed",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.dropdown.focus",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.dropdown.disabled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.switch.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.switch.hover",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.switch.pressed",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.switch.focus",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.switch.disabled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.checkbox.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.checkbox.hover",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.checkbox.pressed",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.checkbox.focus",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.checkbox.disabled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.control.pagination-prev",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.control.pagination-next",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.control.scroll-thumb",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.control.slider-thumb",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.control.spinner",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.control.empty",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.control.focus",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.checked",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.unchecked",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.on",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.control.off",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.card.hand.analysis",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.field.analysis",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.builder.analysis",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.detail.analysis",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.hand.talisman",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.field.talisman",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.builder.talisman",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.detail.talisman",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.hand.incantation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.field.incantation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.builder.incantation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.detail.incantation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.hand.formation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.field.formation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.builder.formation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.detail.formation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.hand.rune",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.field.rune",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.builder.rune",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.card.detail.rune",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "artWindowTransparent": true
+    },
+    {
+      "id": "c2d.rarity.common",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.rarity.uncommon",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.rarity.rare",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.rarity.epic",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.rarity.legendary",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.type.analysis",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.type.talisman",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.type.incantation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.type.formation",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.type.rune",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.speed.1",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.speed.2",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.speed.3",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.speed.4",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.level.1",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.level.2",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.level.3",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.level.4",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.level.5",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.level.6",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.level.7",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.rank.1",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.rank.2",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.rank.3",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.rank.4",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.rank.5",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.rank.6",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.rank.7",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.mana",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.analysis-cost",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.cast-cost",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.body",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.capacity",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.ring-slot",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.income",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.recipe-mana",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.recipe-ash",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.attribute.recipe-material",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.analysis-start",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.analysis-ongoing",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.analysis-complete",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.ready",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.facedown",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.flip",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.talisman-wait",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.focused",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.sustained",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.cancelled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.attached",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.missing",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.state.invalid-id",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.card.missing-art",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.missing-art",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.card.back.compact",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.board.background",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.board.main-surface",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.board.edge-overlay",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.casting",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.analysis-row",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.formation-anchor",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.hand",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.main-deck",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.side-deck",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.ash",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.host-group",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.slot",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.zone.empty-deck",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.zone.main-deck",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.zone.side-deck",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.zone.ash",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.zone.empty-deck",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.zone.host",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.board.host-link",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.hud.life",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.hud.temp-life",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.hud.mana",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.hud.load",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.hud.cap",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.hud.load.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.hud.load-normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.hud.load.overload",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.hud.load-overload",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.hud.load.danger",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.hud.load-danger",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.phase.draw",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.phase.prepare",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.phase.main",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.phase.cast",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.phase.end",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.chain.priority",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.chain.pass",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.chain.pending",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.chain.resolving",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.chain.cancelled",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.chain.no-response",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.overlay.hover",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.overlay.selected",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.overlay.legal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.overlay.target",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.overlay.cost-candidate",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.overlay.cost-selected",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.drag.preview",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.drag.legal-drop",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.drag.invalid-drop",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.drag.return",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.decision.quota-available",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.decision.quota-used",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.decision.condition-met",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.decision.condition-unmet",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.decision.zero-cost",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.decision.flip-cost",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.decision.wait-turn",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.icon.decision.cannot-cast",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.analysis-start.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.analysis-start.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.analysis-start.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.analysis-loop.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.analysis-loop.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.analysis-loop.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.analysis-complete.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.analysis-complete.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.analysis-complete.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.prepare.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.prepare.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.prepare.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.cast.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.cast.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.cast.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.resolve.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.resolve.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.resolve.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.counter.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.counter.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.counter.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.damage.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.damage.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.damage.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.heal.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.heal.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.heal.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.mana.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.mana.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.mana.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.load.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.load.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.load.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.overload-damage.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.overload-damage.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.overload-damage.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.exhaustion-damage.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.exhaustion-damage.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.exhaustion-damage.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.temp-life-gain.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.temp-life-gain.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.temp-life-gain.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.temp-life-expire.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.temp-life-expire.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.temp-life-expire.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.attach.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.attach.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.attach.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.formation-destroy.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.formation-destroy.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.formation-destroy.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.leave.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.leave.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.leave.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.facedown.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.facedown.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.facedown.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.flip.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.flip.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.flip.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.material-to-ash.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.material-to-ash.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.material-to-ash.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.formation-set.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.formation-set.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.formation-set.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.formation-replace.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.formation-replace.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.formation-replace.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.end-cleanup.mask",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.fx.end-cleanup.normal",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.fx.end-cleanup.reduced",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true,
+      "sheetValid": true
+    },
+    {
+      "id": "c2d.result.victory",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.result.defeat",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.result.draw",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.result.opening",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "binaryAlpha": true,
+      "paletteCorrect": true
+    },
+    {
+      "id": "c2d.background.realm",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true
+    },
+    {
+      "id": "c2d.brand.logo",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "transparentPixelsExist": true,
+      "rasterSourceMatches": true
+    },
+    {
+      "id": "c2d.card.back.ai",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "transparentPixelsExist": true,
+      "rasterSourceMatches": true
+    },
+    {
+      "id": "c2d.card.detail.analysis.ai",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "transparentPixelsExist": true,
+      "rasterSourceMatches": true,
+      "artWindowCenterTransparent": true
+    },
+    {
+      "id": "c2d.card.detail.talisman.ai",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "transparentPixelsExist": true,
+      "rasterSourceMatches": true,
+      "artWindowCenterTransparent": true
+    },
+    {
+      "id": "c2d.card.detail.incantation.ai",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "transparentPixelsExist": true,
+      "rasterSourceMatches": true,
+      "artWindowCenterTransparent": true
+    },
+    {
+      "id": "c2d.card.detail.formation.ai",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "transparentPixelsExist": true,
+      "rasterSourceMatches": true,
+      "artWindowCenterTransparent": true
+    },
+    {
+      "id": "c2d.card.detail.rune.ai",
+      "sizeCorrect": true,
+      "sourcePresent": true,
+      "shaCorrect": true,
+      "transparentPixelsExist": true,
+      "rasterSourceMatches": true,
+      "artWindowCenterTransparent": true
+    }
+  ],
+  "errors": [],
+  "notVerified": [
+    "Godot frontend integration",
+    "real game lifecycle and hidden-information authority",
+    "human DPI/IME/input/network acceptance",
+    "full-game performance"
+  ],
+  "aiNote": "AI original colors and soft alpha preserved; native export exact 32-color binary alpha."
+}

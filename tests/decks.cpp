@@ -1,14 +1,62 @@
 #include "wizard/application.hpp"
 #include <catch2/catch_test_macros.hpp>
+#include <algorithm>
 #include <chrono>
 #include <fstream>
 using namespace wizard;
 using namespace wizard::app;
+TEST_CASE("new construction drafts persist 40 main and 10 formation side cards alongside legacy decks") {
+    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    DeckDraft draft;
+    draft.id = "construction-v2";
+    draft.name = "新版四十与十";
+    draft.format = 2;
+    for (const auto &[id, card] : content.catalog.cards) {
+        const bool side = card.type == CardType::Formation;
+        const int remaining = side ? 10 - draft.sideSize() : 40 - draft.size();
+        if (remaining > 0) (side ? draft.sideCards : draft.cards)[id] = std::min(3, remaining);
+    }
+    REQUIRE(draft.size() == 40);
+    REQUIRE(draft.sideSize() == 10);
+    REQUIRE(constructionProblems(content.catalog, draft).empty());
+    REQUIRE(deckProblems(content.catalog, draft).empty());
+    REQUIRE(draft.playerDeck().sideDeck.size() == 10);
+    REQUIRE(encodeDraft(decodeDraft(encodeDraft(draft))) == encodeDraft(draft));
+    auto misplaced = draft;
+    misplaced.cards["balance"] = 1;
+    REQUIRE_FALSE(constructionProblems(content.catalog, misplaced).empty());
+    misplaced = draft;
+    misplaced.sideCards["fireball"] = 1;
+    REQUIRE_FALSE(constructionProblems(content.catalog, misplaced).empty());
+    misplaced = draft;
+    misplaced.sideCards.erase("balance");
+    REQUIRE_FALSE(constructionProblems(content.catalog, misplaced).empty());
+    auto invalid = encodeDraft(draft);
+    invalid["sideCards"]["balance"] = 1.5;
+    REQUIRE_THROWS(decodeDraft(invalid));
+    invalid = encodeDraft(draft);
+    invalid["format"] = 9;
+    REQUIRE_THROWS(decodeDraft(invalid));
+    const auto directory = std::filesystem::path(WIZARD_SOURCE_DIR) / "build" / "deck-tests" /
+        ("construction-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    DeckLibrary store(content.catalog, directory);
+    auto legacy = store.create("保留旧版");
+    legacy.format = 1;
+    std::string error;
+    REQUIRE(store.save(legacy, error));
+    REQUIRE(store.save(draft, error));
+    DeckLibrary reopened(content.catalog, directory);
+    REQUIRE(reopened.writable());
+    REQUIRE(reopened.find(legacy.id)->format == 1);
+    REQUIRE(encodeDraft(*reopened.find(draft.id)) == encodeDraft(draft));
+    std::error_code ignored;
+    std::filesystem::remove_all(directory, ignored);
+}
 TEST_CASE("rank and casting fee filters do not give unrelated card types artificial zero values") {
     const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     CardQuery query;
     query.rank = 0;
-    REQUIRE(queryCards(content.catalog, query) == std::vector<std::string>{"true-strike", "spark"});
+    REQUIRE(queryCards(content.catalog, query).empty());
     query = {};
     query.castCost = 0;
     const auto rows = queryCards(content.catalog, query);
@@ -20,7 +68,7 @@ TEST_CASE("rank and casting fee filters do not give unrelated card types artific
 }
 namespace {
 struct DeckFixture {
-    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     std::filesystem::path directory =
         std::filesystem::path(WIZARD_SOURCE_DIR) / "build" / "deck-tests" /
         std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());

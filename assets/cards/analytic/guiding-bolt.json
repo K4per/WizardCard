@@ -1,0 +1,27 @@
+{
+  "id": "guiding-bolt",
+  "name": "曳光弹",
+  "type": "analytic",
+  "rarity": "rare",
+  "rank": 2,
+  "level": 2,
+  "speed": 1,
+  "school": "evocation",
+  "cost": 2,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 8,
+      "damageType": "radiant"
+    },
+    {
+      "kind": "reveal_enemy_ambush"
+    }
+  ],
+  "text": "对一个目标造成8点光耀伤害，展示对方一张盖伏的法术卡。",
+  "number": "020014",
+  "illustrationId": "v2-guiding-bolt"
+}

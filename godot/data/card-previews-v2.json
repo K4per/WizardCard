@@ -1,0 +1,816 @@
+{
+  "format": 1,
+  "cardSetVersion": "2.0.0",
+  "usage": "illustrated-preview",
+  "sources": [
+    "assets/card-designs/v2/新法术设计.md",
+    "assets/card-designs/v2/新阵法设计.md"
+  ],
+  "normalizations": {
+    "解析法数": "解析法术",
+    "解析回合": "解析时间",
+    "施法等级（太阳）": "阵法等级",
+    "阵法大小": "阵体大小",
+    "效果文本": "Remove Markdown emphasis and trailing stray punctuation only"
+  },
+  "artReuseNotes": {
+    "缝合生命": "生命缝合 / mend",
+    "六芒星": "均衡之六芒星 / balance",
+    "五芒星": "生命之五芒星 / pentagram-of-life"
+  },
+  "unspecifiedFields": [
+    "rarity",
+    "formation speed"
+  ],
+  "costDisplay": "Preserve the supplied single or slash-separated cost notation without inventing new labels",
+  "cards": [
+    {
+      "id": "v2-fireball",
+      "name": "火球术",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 3,
+      "school": "塑能",
+      "costText": "3/1",
+      "costParts": [
+        3,
+        1
+      ],
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "对一个目标造成10点火焰伤害。",
+      "illustrationId": "fireball",
+      "sourceFields": {
+        "法术类型": "解析法术",
+        "法术等级": "3",
+        "学派": "塑能",
+        "费用": "3/1",
+        "解析时间": "1",
+        "速度": "1",
+        "效果": "对一个目标造成10点火焰伤害。"
+      }
+    },
+    {
+      "id": "v2-ray-of-frost",
+      "name": "寒霜射线",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 2,
+      "school": "塑能",
+      "costText": "2/1",
+      "costParts": [
+        2,
+        1
+      ],
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "对一个目标造成6点寒冷伤害。选择对方一张解析法术卡，使其解析时间+1。",
+      "illustrationId": "ray-of-frost",
+      "sourceFields": {
+        "法术类型": "解析法术",
+        "法术等级": "2",
+        "学派": "塑能",
+        "费用": "2/1",
+        "解析时间": "1",
+        "速度": "1",
+        "效果": "对一个目标造成6点寒冷伤害。选择对方一张解析法术卡，使其解析时间+1。"
+      }
+    },
+    {
+      "id": "v2-lightning-bolt",
+      "name": "闪电束",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 3,
+      "school": "塑能",
+      "costText": "3/2",
+      "costParts": [
+        3,
+        2
+      ],
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "对一个目标造成8点雷鸣伤害。选择对方一张法术卡，使其盖伏。",
+      "illustrationId": "lightning-bolt",
+      "sourceFields": {
+        "法术类型": "解析法术",
+        "法术等级": "3",
+        "学派": "塑能",
+        "费用": "3/2",
+        "解析时间": "1",
+        "速度": "1",
+        "效果": "对一个目标造成8点雷鸣伤害。选择对方一张法术卡，使其盖伏。"
+      }
+    },
+    {
+      "id": "v2-magic-missile",
+      "name": "魔法飞弹",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 2,
+      "school": "塑能",
+      "costText": "2/2",
+      "costParts": [
+        2,
+        2
+      ],
+      "analysisTurns": 1,
+      "speed": 2,
+      "text": "对一个目标造成2点力场伤害，破坏对方一张盖伏法术卡。",
+      "illustrationId": "magic-missile",
+      "sourceFields": {
+        "法术类型": "解析法术",
+        "法术等级": "2",
+        "学派": "塑能",
+        "费用": "2/2",
+        "解析时间": "1",
+        "速度": "2",
+        "效果": "对一个目标造成2点力场伤害，破坏对方一张盖伏法术卡。"
+      }
+    },
+    {
+      "id": "v2-chromatic-orb",
+      "name": "繁彩球",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 2,
+      "school": "塑能",
+      "costText": "2/2",
+      "costParts": [
+        2,
+        2
+      ],
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "对一个目标造成8点伤害，伤害类型由你从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择一种。",
+      "illustrationId": "v2-chromatic-orb",
+      "sourceFields": {
+        "法术类型": "解析法术",
+        "法术等级": "2",
+        "学派": "塑能",
+        "费用": "2/2",
+        "解析时间": "1",
+        "速度": "1",
+        "效果": "对一个目标造成8点伤害，伤害类型由你从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择一种。"
+      }
+    },
+    {
+      "id": "v2-guiding-bolt",
+      "name": "曳光弹",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 2,
+      "school": "塑能",
+      "costText": "2/2",
+      "costParts": [
+        2,
+        2
+      ],
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "对一个目标造成8点光耀伤害，展示对方一张盖伏的法术卡。",
+      "illustrationId": "v2-guiding-bolt",
+      "sourceFields": {
+        "法术类型": "解析法术",
+        "法术等级": "2",
+        "学派": "塑能",
+        "费用": "2/2",
+        "解析时间": "1",
+        "速度": "1",
+        "效果": "对一个目标造成8点光耀伤害，展示对方一张盖伏的法术卡。"
+      }
+    },
+    {
+      "id": "v2-mend",
+      "name": "缝合生命",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 3,
+      "school": "死灵",
+      "costText": "2/1",
+      "costParts": [
+        2,
+        1
+      ],
+      "analysisTurns": 1,
+      "speed": 2,
+      "text": "恢复一个目标4点生命值。",
+      "illustrationId": "mend",
+      "sourceFields": {
+        "法术类型": "解析法术",
+        "法术等级": "3",
+        "学派": "死灵",
+        "费用": "2/1",
+        "解析时间": "1",
+        "速度": "2",
+        "效果": "恢复一个目标4点生命值。"
+      }
+    },
+    {
+      "id": "v2-false-life",
+      "name": "虚假生命",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 3,
+      "school": "死灵",
+      "costText": "2/1",
+      "costParts": [
+        2,
+        1
+      ],
+      "analysisTurns": 1,
+      "speed": 2,
+      "text": "获得6点临时生命值。",
+      "illustrationId": "false-life",
+      "sourceFields": {
+        "法术类型": "解析法术",
+        "法术等级": "3",
+        "学派": "死灵",
+        "费用": "2/1",
+        "解析时间": "1",
+        "速度": "2",
+        "效果": "获得6点临时生命值。"
+      }
+    },
+    {
+      "id": "v2-scorching-ray",
+      "name": "炽热射线",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 5,
+      "school": "死灵",
+      "costText": "4/2",
+      "costParts": [
+        4,
+        2
+      ],
+      "analysisTurns": 2,
+      "speed": 1,
+      "text": "造成5点火焰伤害4次。",
+      "illustrationId": "v2-scorching-ray",
+      "sourceFields": {
+        "法术类型": "解析法术",
+        "法术等级": "5",
+        "学派": "死灵",
+        "费用": "4/2",
+        "解析时间": "2",
+        "速度": "1",
+        "效果": "造成5点火焰伤害4次。"
+      }
+    },
+    {
+      "id": "v2-ward",
+      "name": "炽燃结界",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 2,
+      "school": "塑能",
+      "costText": "2/0",
+      "costParts": [
+        2,
+        0
+      ],
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "专注1。对对方玩家造成4点火焰伤害，维持专注时对对方玩家造成2点火焰伤害。",
+      "illustrationId": "ward",
+      "sourceFields": {
+        "类型": "解析法术",
+        "法术等级": "2",
+        "学派": "塑能",
+        "费用": "2/0",
+        "解析时间": "1",
+        "速度": "1",
+        "效果": "**专注1**。对对方玩家造成4点火焰伤害，维持专注时对对方玩家造成2点火焰伤害。"
+      }
+    },
+    {
+      "id": "v2-sunburst",
+      "name": "阳炎爆",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 6,
+      "school": "塑能",
+      "costText": "20/2",
+      "costParts": [
+        20,
+        2
+      ],
+      "analysisTurns": 2,
+      "speed": 3,
+      "text": "自己灰烬区每有一张塑能学派法术，此卡魔素消耗-1。对对方玩家造成15点火焰伤害。那之后，可以摧毁对方一个阵法上的所有法术。",
+      "illustrationId": "v2-sunburst",
+      "sourceFields": {
+        "类型": "解析法数",
+        "法术等级": "6",
+        "学派": "塑能",
+        "费用": "20/2",
+        "解析回合": "2",
+        "速度": "3",
+        "效果": "自己灰烬区每有一张塑能学派法术，此卡魔素消耗-1。对对方玩家造成15点火焰伤害。那之后，可以摧毁对方一个阵法上的所有法术。"
+      }
+    },
+    {
+      "id": "v2-healing-circle",
+      "name": "治疗之环",
+      "typeKey": "analysis",
+      "typeLabel": "解析法术",
+      "level": 3,
+      "school": "防护",
+      "costText": "3/3",
+      "costParts": [
+        3,
+        3
+      ],
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "计时3。回合开始时，恢复2点生命值。",
+      "illustrationId": "v2-healing-circle",
+      "sourceFields": {
+        "类型": "解析法术",
+        "法术等级": "3",
+        "学派": "防护",
+        "费用": "3/3",
+        "解析时间": "1",
+        "速度": "1",
+        "效果": "**计时3**。回合开始时，恢复2点生命值。"
+      }
+    },
+    {
+      "id": "v2-spark",
+      "name": "火花术",
+      "typeKey": "incantation",
+      "typeLabel": "言灵法术",
+      "level": 1,
+      "school": "防护",
+      "costText": "2",
+      "costParts": [
+        2
+      ],
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "造成2点火焰伤害。",
+      "illustrationId": "spark",
+      "sourceFields": {
+        "法术类型": "言灵法术",
+        "法术等级": "1",
+        "学派": "防护",
+        "费用": "2",
+        "解析时间": "0",
+        "速度": "2",
+        "效果": "造成2点火焰伤害。"
+      }
+    },
+    {
+      "id": "v2-disrupt",
+      "name": "魔力扰动",
+      "typeKey": "incantation",
+      "typeLabel": "言灵法术",
+      "level": 2,
+      "school": "咒法",
+      "costText": "2",
+      "costParts": [
+        2
+      ],
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "给予对方3点临时荷载，给予自己1点临时荷载。",
+      "illustrationId": "disrupt",
+      "sourceFields": {
+        "法术类型": "言灵法术",
+        "法术等级": "2",
+        "学派": "咒法",
+        "费用": "2",
+        "解析时间": "0",
+        "速度": "2",
+        "效果": "给予对方3点临时荷载，给予自己1点临时荷载。"
+      }
+    },
+    {
+      "id": "v2-true-strike",
+      "name": "克敌机先",
+      "typeKey": "incantation",
+      "typeLabel": "言灵法术",
+      "level": 3,
+      "school": "预言",
+      "costText": "3",
+      "costParts": [
+        3
+      ],
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "将一张解析区的法术移入【灰烬区】，将同派系的一张法术卡从牌组加入手牌。",
+      "illustrationId": "true-strike",
+      "sourceFields": {
+        "法术类型": "言灵法术",
+        "法术等级": "3",
+        "学派": "预言",
+        "费用": "3",
+        "解析时间": "0",
+        "速度": "2",
+        "效果": "将一张解析区的法术移入【灰烬区】，将同派系的一张法术卡从牌组加入手牌。"
+      }
+    },
+    {
+      "id": "v2-barbs",
+      "name": "银光锐语",
+      "typeKey": "talisman",
+      "typeLabel": "咒符法术",
+      "level": 3,
+      "school": "惑控",
+      "costText": "5",
+      "costParts": [
+        5
+      ],
+      "analysisTurns": 0,
+      "speed": 3,
+      "text": "对方准备施法时才能发动，取消该次准备。那之后，可以将对方解析区的一张解析法术弹回持有者手牌。",
+      "illustrationId": "barbs",
+      "sourceFields": {
+        "类型": "咒符法术",
+        "法术等级": "3",
+        "学派": "惑控",
+        "费用": "5",
+        "解析时间": "0",
+        "速度": "3",
+        "效果": "对方准备施法时才能发动，取消该次准备。那之后，可以将对方解析区的一张解析法术弹回持有者手牌。"
+      }
+    },
+    {
+      "id": "v2-shield",
+      "name": "护盾术",
+      "typeKey": "talisman",
+      "typeLabel": "咒符法术",
+      "level": 3,
+      "school": "防护",
+      "costText": "2",
+      "costParts": [
+        2
+      ],
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "降低至多5点伤害，若伤害为力场伤害，则至多降低10点。",
+      "illustrationId": "shield",
+      "sourceFields": {
+        "法术类型": "咒符法术",
+        "法术等级": "3",
+        "学派": "防护",
+        "费用": "2",
+        "解析时间": "0",
+        "速度": "2",
+        "效果": "降低至多5点伤害，若伤害为力场伤害，则至多降低10点。"
+      }
+    },
+    {
+      "id": "v2-counter-spell",
+      "name": "法术反制",
+      "typeKey": "talisman",
+      "typeLabel": "咒符法术",
+      "level": 5,
+      "school": "防护",
+      "costText": "5",
+      "costParts": [
+        5
+      ],
+      "analysisTurns": 0,
+      "speed": 4,
+      "text": "对方发动法术时才能发动，将其无效并摧毁。那之后自身获得与其魔素消耗相对应的临时荷载。",
+      "illustrationId": "counter-spell",
+      "sourceFields": {
+        "类型": "咒符法术",
+        "法术等级": "5",
+        "学派": "防护",
+        "费用": "5",
+        "解析时间": "0",
+        "速度": "4",
+        "效果": "对方发动法术时才能发动，将其无效并摧毁。那之后自身获得与其魔素消耗相对应的临时荷载。、"
+      }
+    },
+    {
+      "id": "v2-protective-flame",
+      "name": "避火咒",
+      "typeKey": "talisman",
+      "typeLabel": "咒符法术",
+      "level": 4,
+      "school": "防护",
+      "costText": "2",
+      "costParts": [
+        2
+      ],
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "专注2。自身受到的火焰伤害减半，火焰抗性不可叠加。",
+      "illustrationId": "protective-flame",
+      "sourceFields": {
+        "类型": "咒符法术",
+        "法术等级": "4",
+        "学派": "防护",
+        "费用": "2",
+        "解析时间": "0",
+        "速度": "2",
+        "效果": "**专注2**。自身受到的火焰伤害减半，火焰抗性不可叠加。"
+      }
+    },
+    {
+      "id": "v2-funny-box",
+      "name": "滑稽魔盒",
+      "typeKey": "talisman",
+      "typeLabel": "咒符法术",
+      "level": 5,
+      "school": "惑控",
+      "costText": "4",
+      "costParts": [
+        4
+      ],
+      "analysisTurns": 0,
+      "speed": 3,
+      "text": "将对方【灰烬区】的一张5级以下的解析法术盖伏在己方法阵上。",
+      "illustrationId": "v2-funny-box",
+      "sourceFields": {
+        "类型": "咒符法术",
+        "法术等级": "5",
+        "学派": "惑控",
+        "费用": "4",
+        "解析回合": "0",
+        "速度": "3",
+        "效果": "将对方【灰烬区】的一张5级以下的解析法术盖伏在己方法阵上。"
+      }
+    },
+    {
+      "id": "v2-small-hexagram",
+      "name": "小六芒星",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 1,
+      "body": 1,
+      "rings": 1,
+      "capacity": 5,
+      "income": 1,
+      "summonCondition": "2魔素。",
+      "text": "该卡不能同时存在两张。",
+      "illustrationId": "v2-small-hexagram",
+      "sourceFields": {
+        "阵法等级": "1",
+        "阵体大小": "1",
+        "最大解析数": "1",
+        "荷载上限": "5",
+        "魔素收入": "1",
+        "召唤条件": "2魔素。",
+        "效果": "该卡不能同时存在两张。"
+      }
+    },
+    {
+      "id": "v2-hexagram",
+      "name": "六芒星",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 3,
+      "body": 2,
+      "rings": 3,
+      "capacity": 10,
+      "income": 1,
+      "summonCondition": "【小六芒星】+2魔素。",
+      "text": "该卡不能被效果破坏。",
+      "illustrationId": "balance",
+      "sourceFields": {
+        "阵法等级": "3",
+        "阵体大小": "2",
+        "最大解析数": "3",
+        "荷载上限": "10",
+        "魔素收入": "1",
+        "召唤条件": "【小六芒星】+2魔素。",
+        "效果": "该卡不能被效果破坏。"
+      }
+    },
+    {
+      "id": "v2-pentagram",
+      "name": "五芒星",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 5,
+      "body": 2,
+      "rings": 3,
+      "capacity": 10,
+      "income": 2,
+      "summonCondition": "【六芒星】+已解析的法术。",
+      "text": "自己准备阶段开始时，获得一点荷载。",
+      "illustrationId": "pentagram-of-life",
+      "sourceFields": {
+        "阵法等级": "5",
+        "阵体大小": "2",
+        "最大解析数": "3",
+        "荷载上限": "10",
+        "魔素收入": "2",
+        "召唤条件": "【六芒星】+已解析的法术。",
+        "效果": "自己准备阶段开始时，获得一点荷载。"
+      }
+    },
+    {
+      "id": "v2-octagram",
+      "name": "八芒星",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 6,
+      "body": 2,
+      "rings": 4,
+      "capacity": 15,
+      "income": 2,
+      "summonCondition": "【小六芒星】+【六芒星】",
+      "text": "该卡不能被效果破坏。自己每一个法术解析完成，清除一点荷载。",
+      "illustrationId": "v2-octagram",
+      "sourceFields": {
+        "阵法等级": "6",
+        "阵体大小": "2",
+        "最大解析数": "4",
+        "荷载上限": "15",
+        "魔素收入": "2",
+        "召唤条件": "【小六芒星】+【六芒星】",
+        "效果": "该卡不能被效果破坏。自己每一个法术解析完成，清除一点荷载。"
+      }
+    },
+    {
+      "id": "v2-sun",
+      "name": "太阳",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 7,
+      "body": 4,
+      "rings": 7,
+      "capacity": 25,
+      "income": 4,
+      "summonCondition": "【五芒星】+【八芒星】",
+      "text": "该卡不受其他卡效果影响。每回合结束时，将场上所有盖伏放置的卡翻开。",
+      "illustrationId": "v2-sun",
+      "sourceFields": {
+        "施法等级": "7",
+        "阵体大小": "4",
+        "最大解析数": "7",
+        "荷载上限": "25",
+        "魔素收入": "4",
+        "召唤条件": "【五芒星】+【八芒星】",
+        "效果": "该卡不受其他卡效果影响。每回合结束时，将场上所有盖伏放置的卡翻开。"
+      }
+    },
+    {
+      "id": "v2-upright-cross",
+      "name": "正十字",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 3,
+      "body": 1,
+      "rings": 2,
+      "capacity": 5,
+      "income": 0,
+      "summonCondition": "1魔素+【死灵】法术。",
+      "text": "于该法阵释放的法术，回复生命时额外回复1点生命。",
+      "illustrationId": "v2-upright-cross",
+      "sourceFields": {
+        "阵法等级": "3",
+        "阵体大小": "1",
+        "最大解析数": "2",
+        "荷载上限": "5",
+        "魔素收入": "0",
+        "召唤条件": "1魔素+【死灵】法术。",
+        "效果": "于该法阵释放的法术，回复生命时额外回复1点生命。"
+      }
+    },
+    {
+      "id": "v2-inverted-cross",
+      "name": "逆十字",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 3,
+      "body": 1,
+      "rings": 2,
+      "capacity": 5,
+      "income": 0,
+      "summonCondition": "1魔素+【死灵】法术。",
+      "text": "于该法阵施法时，失去一点生命，获得两点临时生命。",
+      "illustrationId": "v2-inverted-cross",
+      "sourceFields": {
+        "阵法等级": "3",
+        "阵体大小": "1",
+        "最大解析数": "2",
+        "荷载上限": "5",
+        "魔素收入": "0",
+        "召唤条件": "1魔素+【死灵】法术。",
+        "效果": "于该法阵施法时，失去一点生命，获得两点临时生命。"
+      }
+    },
+    {
+      "id": "v2-ankh",
+      "name": "安卡十字",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 3,
+      "body": 2,
+      "rings": 1,
+      "capacity": 5,
+      "income": 1,
+      "summonCondition": "1魔素+已解析的【死灵】法术。",
+      "text": "将一张【灰烬区】的阵法卡加入副卡组。当该卡进入【灰烬区】时，盖伏放置。",
+      "illustrationId": "v2-ankh",
+      "sourceFields": {
+        "阵法等级": "3",
+        "阵体大小": "2",
+        "最大解析数": "1",
+        "荷载上限": "5",
+        "魔素收入": "1",
+        "召唤条件": "1魔素+已解析的【死灵】法术。",
+        "效果": "将一张【灰烬区】的阵法卡加入副卡组。当该卡进入【灰烬区】时，盖伏放置。"
+      }
+    },
+    {
+      "id": "v2-elemental-ring",
+      "name": "元素之环",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 3,
+      "body": 2,
+      "rings": 2,
+      "capacity": 8,
+      "income": 1,
+      "summonCondition": "1魔素+已解析的【塑能】法术。",
+      "text": "在该法阵解析的【塑能】法术伤害+1。",
+      "illustrationId": "v2-elemental-ring",
+      "sourceFields": {
+        "阵法等级": "3",
+        "阵体大小": "2",
+        "最大解析数": "2",
+        "荷载上限": "8",
+        "魔素收入": "1",
+        "召唤条件": "1魔素+已解析的【塑能】法术。",
+        "效果": "在该法阵解析的【塑能】法术伤害+1。"
+      }
+    },
+    {
+      "id": "v2-chaos-ring",
+      "name": "混沌之环",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 3,
+      "body": 2,
+      "rings": 5,
+      "capacity": 12,
+      "income": 1,
+      "summonCondition": "已解析的不同派系法术×2。",
+      "text": "该法阵不能同时解析相同派系的法术。",
+      "illustrationId": "v2-chaos-ring",
+      "sourceFields": {
+        "阵法等级": "3",
+        "阵体大小": "2",
+        "最大解析数": "5",
+        "荷载上限": "12",
+        "魔素收入": "1",
+        "召唤条件": "已解析的不同派系法术×2。",
+        "效果": "该法阵不能同时解析相同派系的法术。"
+      }
+    },
+    {
+      "id": "v2-void",
+      "name": "空洞",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 0,
+      "body": 1,
+      "rings": 0,
+      "capacity": 15,
+      "income": 0,
+      "summonCondition": "手牌×2。",
+      "text": "无特殊效果。",
+      "illustrationId": "v2-void",
+      "sourceFields": {
+        "阵法等级": "0",
+        "阵法大小": "1",
+        "最大解析数": "0",
+        "荷载上限": "15",
+        "魔素收入": "0",
+        "召唤条件": "手牌×2。",
+        "效果": "无特殊效果。"
+      }
+    },
+    {
+      "id": "v2-sulfur",
+      "name": "硫磺",
+      "typeKey": "formation",
+      "typeLabel": "阵法",
+      "level": 6,
+      "body": 2,
+      "rings": 6,
+      "capacity": 6,
+      "income": 2,
+      "summonCondition": "已解析的火焰伤害法术×2。",
+      "text": "该法阵只能解析火焰伤害法术。每当自己的法术从【施法区】进入【灰烬区】时，对对方造成1点火焰伤害。",
+      "illustrationId": "v2-sulfur",
+      "sourceFields": {
+        "阵法等级": "6",
+        "阵法大小": "2",
+        "最大解析数": "6",
+        "荷载上限": "6",
+        "魔素收入": "2",
+        "召唤条件": "已解析的火焰伤害法术×2。",
+        "效果": "该法阵只能解析火焰伤害法术。每当自己的法术从【施法区】进入【灰烬区】时，对对方造成1点火焰伤害。"
+      }
+    }
+  ]
+}

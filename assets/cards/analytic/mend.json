@@ -3,22 +3,22 @@
   "name": "生命缝合",
   "rarity": "common",
   "type": "analytic",
-  "cost": 1,
+  "cost": 2,
   "castCost": 1,
-  "rank": 1,
+  "rank": 3,
   "target": "self",
   "effects": [
     {
       "kind": "heal",
-      "amount": 6
-    },
-    {
-      "kind": "independent",
-      "amount": 2
+      "amount": 4
     }
   ],
-  "text": "恢复自身6点生命。那之后，获得2点独立荷载，保留至被效果清除。",
+  "text": "恢复自身4点生命。",
   "flavor": "把你的心我的心串一串……",
-  "speed": 1,
-  "school": "necromancy"
+  "speed": 2,
+  "school": "necromancy",
+  "level": 3,
+  "analysisTurns": 1,
+  "number": "020002",
+  "illustrationId": "mend"
 }

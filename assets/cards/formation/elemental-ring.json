@@ -1,0 +1,32 @@
+{
+  "id": "elemental-ring",
+  "name": "元素之环",
+  "type": "formation",
+  "rarity": "uncommon",
+  "level": 3,
+  "body": 2,
+  "rings": 2,
+  "capacity": 8,
+  "income": 1,
+  "maxRank": 3,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "在该法阵解析的【塑能】法术伤害+1。",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 1
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "school": "evocation",
+      "readyOnly": true
+    }
+  ],
+  "traits": [
+    "host_evocation_damage_plus_one"
+  ],
+  "number": "010012",
+  "illustrationId": "v2-elemental-ring"
+}

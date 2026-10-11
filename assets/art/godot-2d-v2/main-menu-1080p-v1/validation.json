@@ -1,0 +1,188 @@
+{
+  "ok": true,
+  "designSize": [
+    1920,
+    1080
+  ],
+  "assets": [
+    {
+      "id": "c2d.v2.menu.background",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "alphaRange": [
+        255,
+        255
+      ],
+      "alphaBounds": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "sha256": "bd4f0ffe2a254d49ba52c7a392d3c5959413313c0803dbeea740127e0ccc1a94"
+    },
+    {
+      "id": "c2d.v2.menu.logo",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        440,
+        268,
+        1480,
+        811
+      ],
+      "sha256": "470c860be6bc68cd696472445a94a76c46f6f66477b9c821b5af51a225193b40"
+    },
+    {
+      "id": "c2d.v2.menu.button-normal",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        680,
+        490,
+        1240,
+        590
+      ],
+      "sha256": "5bd0da627002e60ff057a319ab36c93550792a4f8bc9b7a8961c41f538c864fc"
+    },
+    {
+      "id": "c2d.v2.menu.button-hover",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        680,
+        490,
+        1240,
+        590
+      ],
+      "sha256": "276583c5112dd0e231c27862ce8949a23abc18ae44d4ba096e2b800c50dcc304"
+    },
+    {
+      "id": "c2d.v2.menu.button-pressed",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        680,
+        490,
+        1240,
+        590
+      ],
+      "sha256": "079156e9af5e74fcc6321971b4ecba0dfb0cec4c7737ae72e3d85f1540cc104e"
+    },
+    {
+      "id": "c2d.v2.menu.button-focus",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        680,
+        490,
+        1240,
+        590
+      ],
+      "sha256": "b1b582b81d3121d785dc1a3115a9707b96ca8cd4586257e6d91042b0b05d14e3"
+    },
+    {
+      "id": "c2d.v2.menu.button-disabled",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaBounds": [
+        680,
+        490,
+        1240,
+        590
+      ],
+      "sha256": "7225e301dee9aa6261fe4445a880ac8f505c730727a86553576386591580c0f5"
+    }
+  ],
+  "previews": [
+    {
+      "file": "preview-1080p.png",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "sha256": "2d48deb2c30ecb36ab4020cc8cecf110be2a19f4139ad2d3f49238e878ee8998"
+    },
+    {
+      "file": "button-states-1080p.png",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "sha256": "f0484941d85bc5d5cb780540d753bad205c5df8f85e28bd2bb42880d1ad4123e"
+    },
+    {
+      "file": "godot-menu-1080p.png",
+      "ok": true,
+      "size": [
+        1920,
+        1080
+      ],
+      "sha256": "2cb927cbc57ed8664bc312f5cfc2fc835a30b11d49df972d02bf2df1c4046a98"
+    }
+  ],
+  "browser": {
+    "size": [
+      1920,
+      1080
+    ],
+    "buttons": [
+      "单人游戏",
+      "多人游戏",
+      "卡组构筑",
+      "游戏设置",
+      "退出游戏"
+    ],
+    "keyboardFocus": true,
+    "errors": [],
+    "scope": "Artwork assembly, no navigation or engine integration",
+    "ok": true
+  }
+}

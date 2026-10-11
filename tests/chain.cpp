@@ -125,7 +125,7 @@ int events(const GameEngine &e, const std::string &kind) {
 } // namespace
 
 TEST_CASE("PH-01 PH-02 five distinct phase gates preserve draw and income") {
-    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     GameEngine e(c.catalog, {c.deck, c.deck}, 42);
     auto first = e.state().first;
     REQUIRE(e.state().phase == Phase::Draw);
@@ -579,7 +579,7 @@ TEST_CASE("ST-08 logical cycle key ignores allocations but waiting choices stop 
     reject(e, 0, PlayAction{11, 0});
 }
 TEST_CASE("CF-01 CF-02 CF-03 CF-04 base qualification and two independent configurations") {
-    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     MatchConfig config;
     for (auto &p : config.players)
         p.cards = c.deck;
@@ -597,11 +597,11 @@ TEST_CASE("CF-01 CF-02 CF-03 CF-04 base qualification and two independent config
     config.players[0].baseFormation = "balance";
     c.catalog.cards.at("reservoir").capacity = 0;
     REQUIRE_THROWS(GameEngine(c.catalog, config));
-    auto j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/cards.json");
+    auto j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production/cards.json");
     j["cards"][1]["baseEligible"] = true;
     REQUIRE_THROWS(parseCatalog(j));
     for (const auto *field : {"capacity", "rings", "maxRank"}) {
-        j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/cards.json");
+        j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production/cards.json");
         j["cards"][0][field] = 0;
         REQUIRE_THROWS(parseCatalog(j));
     }
@@ -621,7 +621,7 @@ TEST_CASE("CF-01 CF-02 CF-03 CF-04 base qualification and two independent config
     REQUIRE_NOTHROW(GameEngine(a.content.catalog, {deck.cards, deck.cards}, 42));
 }
 TEST_CASE("RP-01 RP-02 RP-03 format two records configurations and detects protocol tampering") {
-    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     c.catalog.cards.at("reservoir").baseEligible = true;
     c.catalog.cards.at("reservoir").rings = 1;
     c.catalog.cards.at("reservoir").maxRank = 1;
@@ -686,7 +686,7 @@ TEST_CASE("RP-01 RP-02 RP-03 format two records configurations and detects proto
     REQUIRE(altered.digest() != e.digest());
 }
 TEST_CASE("content response schema requires explicit source cost window and target") {
-    auto j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/cards.json");
+    auto j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production/cards.json");
     auto bad = j;
     bad["cards"][2]["responses"][0]["sources"] = {"hand"};
     REQUIRE_THROWS(parseCatalog(bad));
@@ -789,7 +789,7 @@ TEST_CASE("LC-04 cancelled hand word keeps mana and discard but releases bound l
     REQUIRE(e.state().cards.at(10).zone == Zone::Casting);
 }
 TEST_CASE("PH-05 automatic phase driver respects disabled main and forced decisions") {
-    auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
     MatchSession session(content, 42);
     auto active = session.engine().state().active;
     auto view = session.engine().viewFor(active);

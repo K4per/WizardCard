@@ -1,0 +1,128 @@
+[
+  {
+    "file": "01-dungeon-background.png",
+    "width": 1672,
+    "height": 941,
+    "transparentSamples": 0,
+    "translucentSamples": 0,
+    "sampleCount": 6195,
+    "sha256": "aa11476bfdf2f5fc1914a0e8fdb73c8546dce40d1f16ecaf583a3235beab5ce7"
+  },
+  {
+    "file": "02-field-structure-atlas.png",
+    "width": 1672,
+    "height": 941,
+    "transparentSamples": 4096,
+    "translucentSamples": 2097,
+    "sampleCount": 6195,
+    "sha256": "d99be65c2bec846227ec46cc711737dc6d68ec26f6e6658d5aafca18dc99c8f3"
+  },
+  {
+    "file": "02b-field-structure-atlas.png",
+    "width": 1672,
+    "height": 941,
+    "transparentSamples": 4859,
+    "translucentSamples": 1336,
+    "sampleCount": 6195,
+    "sha256": "c837a94ed12ca55478abea28de8d9ad065613b4d7cb2e7472adca0eb16d6a339"
+  },
+  {
+    "file": "03-card-detail-panel.png",
+    "width": 1003,
+    "height": 1568,
+    "transparentSamples": 876,
+    "translucentSamples": 5298,
+    "sampleCount": 6174,
+    "sha256": "d89a7a9fdde0d0d569e73785c7d979686d4aa393b975b88707d12bab212517f4"
+  },
+  {
+    "file": "04-card-actions-atlas.png",
+    "width": 1536,
+    "height": 1024,
+    "transparentSamples": 3442,
+    "translucentSamples": 2702,
+    "sampleCount": 6144,
+    "sha256": "87989681f500d24db85ccabd5cfe8db15676d6345ff47405c220ffaba1498a47"
+  },
+  {
+    "file": "05-search-decision-modal.png",
+    "width": 1564,
+    "height": 1006,
+    "transparentSamples": 979,
+    "translucentSamples": 5195,
+    "sampleCount": 6174,
+    "sha256": "7f1c47d32d37fdd9cd842103a52fe3617ba782619fe89adc9244f4a70c7275cb"
+  },
+  {
+    "file": "05b-effect-selection-popup.png",
+    "width": 1840,
+    "height": 855,
+    "transparentSamples": 1920,
+    "translucentSamples": 4290,
+    "sampleCount": 6210,
+    "sha256": "42d04e88386d47cc8658830f4f60dbc5aee65dbcfdc158181faa2a0f329eb8c3"
+  },
+  {
+    "file": "06-common-controls-atlas.png",
+    "width": 1672,
+    "height": 941,
+    "transparentSamples": 3549,
+    "translucentSamples": 2646,
+    "sampleCount": 6195,
+    "sha256": "286c8a6106803a08c19def90db6cc7e60e390cc7279f9b329fe9ba582b57543e"
+  },
+  {
+    "file": "07-hud-load-bar-atlas.png",
+    "width": 1672,
+    "height": 941,
+    "transparentSamples": 3236,
+    "translucentSamples": 2959,
+    "sampleCount": 6195,
+    "sha256": "49cf53ee9a35821a1dbe25a6c7bbeee667123f7e2dedfe1187092b9c4d4e4e90"
+  },
+  {
+    "file": "08-resource-icons-atlas.png",
+    "width": 2172,
+    "height": 724,
+    "transparentSamples": 4512,
+    "translucentSamples": 1740,
+    "sampleCount": 6256,
+    "sha256": "932e48cf30918ec418a51109da32f937ef2eb2b3e27061e2d5fe365d227975b9"
+  },
+  {
+    "file": "09-selection-state-atlas.png",
+    "width": 1774,
+    "height": 887,
+    "transparentSamples": 3315,
+    "translucentSamples": 2886,
+    "sampleCount": 6216,
+    "sha256": "1ccc7815a259ebec434c6b640cca501fa35689124fcf1c91813f8558efa2fe21"
+  },
+  {
+    "file": "10-zone-plates-atlas.png",
+    "width": 1536,
+    "height": 1024,
+    "transparentSamples": 3843,
+    "translucentSamples": 2301,
+    "sampleCount": 6144,
+    "sha256": "44573558a0e9b51310f66e0402462e9e97c34668efe6d418ef95c5b6977876d3"
+  },
+  {
+    "file": "11-information-panels-atlas.png",
+    "width": 1536,
+    "height": 1024,
+    "transparentSamples": 3013,
+    "translucentSamples": 3131,
+    "sampleCount": 6144,
+    "sha256": "40c82160ae987e4b85c34665540d66a1269d6a848dda4fab0731ef2e7c49f6b1"
+  },
+  {
+    "file": "12-utility-icons-atlas.png",
+    "width": 1448,
+    "height": 1086,
+    "transparentSamples": 3856,
+    "translucentSamples": 2321,
+    "sampleCount": 6188,
+    "sha256": "b5e557c658cda926f0b08921c3e4a9fd08fdaab555fc56d28096a5a7d0279ff4"
+  }
+]

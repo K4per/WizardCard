@@ -1,0 +1,506 @@
+{
+  "format": 1,
+  "collection": "WizardCard 2.0 new transparent card illustrations",
+  "generatedCount": 16,
+  "reusedCount": 16,
+  "promptRecord": "prompts.json",
+  "runtimeDirectory": "godot/art/illustrations-v2",
+  "assets": [
+    {
+      "id": "illustration.v2-chromatic-orb",
+      "file": "v2-chromatic-orb.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "93adbf724881b8c5b6e931f9fc4200644731e67680b22ed57dc87b1f7402cdc6",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.530462,
+      "alphaBounds": [
+        0,
+        9,
+        1240,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-guiding-bolt",
+      "file": "v2-guiding-bolt.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "ff6652261663d2fef22d2ce91a4c25c876fc1bedac1af16792e991274025a21f",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.623678,
+      "alphaBounds": [
+        0,
+        21,
+        1253,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-scorching-ray",
+      "file": "v2-scorching-ray.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "7e1ce794aa3c20385aa562308023f144503bb00670b0051010a9cfe62ada5f6e",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.56432,
+      "alphaBounds": [
+        0,
+        19,
+        1244,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-sunburst",
+      "file": "v2-sunburst.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "914e3b9a02dbbc9e881d0e7fb900d18e33207ee1a86d8bed593c514f0280f2e0",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "transparentPixelRatio": 0.519056,
+      "alphaBounds": [
+        0,
+        8,
+        1240,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-healing-circle",
+      "file": "v2-healing-circle.png",
+      "size": [
+        1272,
+        1236
+      ],
+      "sha256": "1a15ac106b4d1b18fd13d87b51a9e899629619bbc27bb66c181a3c01a8378480",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.506946,
+      "alphaBounds": [
+        0,
+        8,
+        1266,
+        1236
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-funny-box",
+      "file": "v2-funny-box.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "6d352190a57ed6dbd8845d7ddf3ed03f3df32f1c3029749086832fcca92a667e",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.608467,
+      "alphaBounds": [
+        0,
+        0,
+        1238,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-small-hexagram",
+      "file": "v2-small-hexagram.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "197ec673d275758c75e5bf70a321ef57cc5d09215a82ae5708d8b427a79370f4",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.723501,
+      "alphaBounds": [
+        0,
+        29,
+        1214,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-octagram",
+      "file": "v2-octagram.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "98a68ceb94d4ca2f5d6e99f8cd9e632ce6be6ca691a69a177b1b4400e2db9521",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.644061,
+      "alphaBounds": [
+        0,
+        28,
+        1232,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-sun",
+      "file": "v2-sun.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "37150aa2601e55ab8432168b6e29aa72da938ab0d214abdbe22e6a69f9f00d91",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.639346,
+      "alphaBounds": [
+        0,
+        8,
+        1430,
+        1086
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-upright-cross",
+      "file": "v2-upright-cross.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "84e762cf541de2acae6340016b8d3ecd6b1038a7eaf084a31ddc5e02d935cd32",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.781371,
+      "alphaBounds": [
+        0,
+        6,
+        1236,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-inverted-cross",
+      "file": "v2-inverted-cross.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "cf4c6694daf35971c2475abb4d29e2a73a0d5731d8ae44b41711caca112b0e97",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.813625,
+      "alphaBounds": [
+        0,
+        19,
+        1254,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-ankh",
+      "file": "v2-ankh.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "cc23d067f57dc3b493fe053484dfb5f02d1c223906f93fb53a301c2c54540933",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.785135,
+      "alphaBounds": [
+        31,
+        2,
+        1232,
+        1254
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-elemental-ring",
+      "file": "v2-elemental-ring.png",
+      "size": [
+        1296,
+        1213
+      ],
+      "sha256": "1e8afd37f1dfac5082ab913d4d00468a3720bbf98406b84a438d41eec149153c",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.652668,
+      "alphaBounds": [
+        0,
+        13,
+        1295,
+        1213
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-chaos-ring",
+      "file": "v2-chaos-ring.png",
+      "size": [
+        1278,
+        1230
+      ],
+      "sha256": "0e77f3a29da3416593c1fdd04f7b61508e5c1890fe89eea1517b79093316c94d",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.485938,
+      "alphaBounds": [
+        25,
+        0,
+        1260,
+        1230
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-void",
+      "file": "v2-void.png",
+      "size": [
+        1295,
+        1214
+      ],
+      "sha256": "c332ad57d2a7da7f4a5ce5138f0ae5ffee739faaf8a5d5ee79a18f72963bfcbc",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.693572,
+      "alphaBounds": [
+        0,
+        7,
+        1294,
+        1214
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    },
+    {
+      "id": "illustration.v2-sulfur",
+      "file": "v2-sulfur.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "9b6cc7f788dfede0f12fcc0ad328f8bd336eafc9b4e492b785aa4279f54073f5",
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
+      "hasTransparency": true,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "alphaCorners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentPixelRatio": 0.784328,
+      "alphaBounds": [
+        41,
+        0,
+        1394,
+        1086
+      ],
+      "promptRecord": "prompts.json",
+      "visualReview": "subject, pixel style, complete silhouette; repaired octagram geometry and four scorching rays"
+    }
+  ]
+}

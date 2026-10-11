@@ -1,0 +1,33 @@
+{
+  "id": "ankh",
+  "name": "安卡十字",
+  "type": "formation",
+  "rarity": "rare",
+  "level": 3,
+  "body": 2,
+  "rings": 1,
+  "capacity": 5,
+  "income": 1,
+  "maxRank": 3,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "将一张【灰烬区】的阵法卡加入副卡组。当该卡进入【灰烬区】时，盖伏放置。",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 1
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "school": "necromancy",
+      "readyOnly": true
+    }
+  ],
+  "traits": [
+    "return_formation_from_ash",
+    "self_ambush_on_leave"
+  ],
+  "number": "010011",
+  "illustrationId": "v2-ankh"
+}

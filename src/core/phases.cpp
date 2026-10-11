@@ -54,12 +54,26 @@ void GameEngine::pump() {
         if (overflow)
             break;
         if (s.effect) {
+            if (catalog_.usesAlphaV2() && contentEffectV2()) continue;
             auto &f = *s.effect;
             if (f.cursor == f.item.effects.size()) {
                 finishEffect();
                 continue;
             }
             auto e = f.item.effects[f.cursor];
+            if (e.kind == EffectKind::ClearAnyLoad) {
+                if (f.clearRemaining < 0) f.clearRemaining = e.amount;
+                std::vector<std::uint32_t> opts;
+                for (const auto &[id, card] : s.cards)
+                    if (card.owner == f.item.owner && card.analysisLoad + card.castLoad > 0) opts.push_back(id);
+                for (const auto &load : s.temporary)
+                    if (load.owner == f.item.owner && load.amount > 0) opts.push_back(load.id | 0x80000000u);
+                if (!f.clearRemaining || opts.empty()) {
+                    ++f.cursor; f.clearRemaining = -1; continue;
+                }
+                decision(f.item.owner, DecisionKind::ClearAnyLoad, std::move(opts), true);
+                break;
+            }
             if (e.kind == EffectKind::ClearTemporary) {
                 if (f.clearRemaining < 0)
                     f.clearRemaining = e.amount;
@@ -109,7 +123,8 @@ void GameEngine::pump() {
                 break;
             }
             if (e.kind == EffectKind::DiscardHand || e.kind == EffectKind::DiscardFormation) {
-                auto opts = inZone(s, f.item.owner, Zone::Hand);
+                auto opts = inZone(s, f.item.owner,
+                    catalog_.usesAlphaV2() && e.kind == EffectKind::DiscardFormation ? Zone::SideDeck : Zone::Hand);
                 if (e.kind == EffectKind::DiscardFormation)
                     opts.erase(std::remove_if(opts.begin(), opts.end(),
                                               [&](CardId id) {
@@ -149,7 +164,8 @@ void GameEngine::pump() {
             auto &chain = *s.chain;
             if (chain.mode == ChainMode::Building) {
                 auto responses = responsesFor(chain.priority, s.nextDecision);
-                if (responses.empty()) {
+                auto setups = catalog_.usesAlphaV2() ? responseSetupsV2(chain.priority, s.nextDecision) : std::vector<LegalAction>{};
+                if (responses.empty() && setups.empty()) {
                     passResponse();
                     continue;
                 }
@@ -157,6 +173,8 @@ void GameEngine::pump() {
                 for (const auto &r : responses)
                     if (std::find(opts.begin(), opts.end(), r.card) == opts.end())
                         opts.push_back(r.card);
+                for (const auto &setup : setups)
+                    if (std::find(opts.begin(), opts.end(), setup.source) == opts.end()) opts.push_back(setup.source);
                 decision(chain.priority, DecisionKind::Response, std::move(opts), true);
                 break;
             }
@@ -166,10 +184,13 @@ void GameEngine::pump() {
             if (link.kind == LinkKind::Preparation)
                 valid = valid && !link.sourceLost && source != s.cards.end() &&
                         source->second.zone == Zone::Analysis && source->second.spell == SpellState::Ready;
-            else if (link.kind == LinkKind::Spell)
+            if (catalog_.usesAlphaV2() && link.kind == LinkKind::Preparation)
+                valid = valid && static_cast<int>(inZone(s, link.item.owner, Zone::Casting).size()) <
+                                     Rules::castingCapacity(s, catalog_, link.item.owner);
+            if (link.kind == LinkKind::Spell)
                 valid = valid && !link.sourceLost && source != s.cards.end() &&
                         source->second.zone == Zone::Casting && source->second.spell == SpellState::Pending;
-            else if (link.item.requiresSource)
+            else if (link.kind != LinkKind::Preparation && link.item.requiresSource)
                 valid =
                     valid && !link.sourceLost && source != s.cards.end() && source->second.zone != Zone::Ash;
             auto item = link.item;
@@ -201,8 +222,13 @@ void GameEngine::pump() {
             startChain(ResponseWindow::Prepare, std::move(root), priority);
             continue;
         }
+        if (catalog_.usesAlphaV2() && s.returnRequested && returnSpellsV2())
+            continue;
+        if (catalog_.usesAlphaV2() && s.returnRequested && s.decision)
+            break;
         // End cleanup batches are deferred until expiry, duration and forced discards finish.
-        if (!s.queue.items.empty() && !(s.phase == Phase::End && s.phaseStep == PhaseStep::Cleanup)) {
+        if (!s.queue.items.empty() && (catalog_.usesAlphaV2() ||
+            !(s.phase == Phase::End && s.phaseStep == PhaseStep::Cleanup))) {
             const auto batch = s.queue.items.front().batch;
             PlayerId owner = s.queue.items.front().owner;
             for (const auto &t : s.queue.items)
@@ -223,10 +249,19 @@ void GameEngine::pump() {
             startTrigger(std::move(t));
             continue;
         }
+        if (catalog_.usesAlphaV2() && s.timingPending) {
+            s.timingPending = false;
+            actionTimingV2(ResponseWindow::Action);
+            continue;
+        }
         StateMaintenance::check(s, catalog_);
         if (s.result != -1)
             break;
         auto &pl = s.players[s.active];
+        if (catalog_.usesAlphaV2()) {
+            if (phaseV2()) continue;
+            return;
+        }
         switch (s.phaseStep) {
         case PhaseStep::Enter: {
             s.phaseGate = 0;
@@ -396,3 +431,4 @@ void GameEngine::pump() {
     }
 }
 } // namespace wizard
+#include "v2_phases.inc"

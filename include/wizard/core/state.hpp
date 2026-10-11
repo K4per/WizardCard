@@ -48,5 +48,10 @@ struct GameState {
     std::optional<ChainState> chain;
     std::deque<ChainLink> deferredPreparations;
     std::vector<GameEvent> events;
+    int phaseCursor{};
+    CardId maintenanceSource{};
+    std::uint64_t nextFieldOrder{1};
+    bool returnRequested{}, timingPending{};
+    std::uint64_t phaseOrderCursor{};
 };
 } // namespace wizard

@@ -1,0 +1,21 @@
+{
+  "id": "aid",
+  "name": "支援术",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 1,
+  "castCost": 1,
+  "rank": 1,
+  "speed": 1,
+  "analysisTurns": 0,
+  "school": "abjuration",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "temporary_life",
+      "amount": 5
+    }
+  ],
+  "text": "立即完成解析。自身获得5点临时生命之核，取较高值，不叠加；受伤时优先扣除，无回合到期。",
+  "flavor": "你被增强了！"
+}

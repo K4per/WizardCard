@@ -1,0 +1,33 @@
+{
+  "id": "octagram",
+  "name": "八芒星",
+  "type": "formation",
+  "rarity": "epic",
+  "level": 6,
+  "body": 2,
+  "rings": 4,
+  "capacity": 15,
+  "income": 2,
+  "maxRank": 6,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "该卡不能被效果破坏。自己每一个法术解析完成，清除一点荷载。",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "small-hexagram"
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "hexagram"
+    }
+  ],
+  "traits": [
+    "effect_indestructible",
+    "clear_load_on_analysis"
+  ],
+  "number": "010007",
+  "illustrationId": "v2-octagram"
+}

@@ -12,6 +12,10 @@ int main(int argc, char **argv) {
         net::Peer peer(c, std::filesystem::path(argv[3]));
         PlayerDeck d;
         d.cards = c.deck;
+        if (c.catalog.usesAlphaV2()) {
+            d.sideDeck = c.sideDeck;
+            d.baseFormation = c.initialFormation;
+        }
         auto port = std::stoul(argv[4]);
         if (!port || port > 65535)
             throw std::runtime_error("Invalid port");

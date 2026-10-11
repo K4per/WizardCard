@@ -1,0 +1,25 @@
+{
+  "id": "healing-circle",
+  "name": "治疗之环",
+  "type": "analytic",
+  "rarity": "rare",
+  "rank": 3,
+  "level": 3,
+  "speed": 1,
+  "school": "abjuration",
+  "cost": 3,
+  "castCost": 3,
+  "analysisTurns": 1,
+  "target": "self",
+  "effects": [],
+  "text": "计时3。回合开始时，恢复2点生命值。",
+  "duration": 3,
+  "onDraw": [
+    {
+      "kind": "heal",
+      "amount": 2
+    }
+  ],
+  "number": "020017",
+  "illustrationId": "v2-healing-circle"
+}

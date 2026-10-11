@@ -16,7 +16,7 @@ Json LocalSession::initialize(const std::filesystem::path &assets,
     try {
         auto content = loadContent(assets);
         auto next = std::make_unique<app::Application>(content, userDirectory,
-                                                      app::loadPresets(content, assets));
+                                                      app::loadPresets(content, assets), roomFactory_);
         application_ = std::move(next);
         content_ = std::move(content);
         pending_.reset();
@@ -59,6 +59,8 @@ Json LocalSession::start(const Json &options) {
                 for (int p = 0; p < 2; ++p) {
                     config.players[p].baseFormation = players.at(p).at("baseFormation").get<std::string>();
                     config.players[p].cards = players.at(p).at("cards").get<std::vector<std::string>>();
+                    if (content_->catalog.usesAlphaV2())
+                        config.players[p].sideDeck = players.at(p).at("sideDeck").get<std::vector<std::string>>();
                 }
             } else {
                 const auto presets = application_->playableDecks();
@@ -83,7 +85,10 @@ Json LocalSession::start(const Json &options) {
 }
 bool LocalSession::visibleTo(PlayerId viewer) const {
     return application_ && application_->hasMatch() && viewer >= 0 && viewer <= 1 &&
-        (application_->mode() == app::MatchMode::Hotseat || viewer == 0);
+        (application_->mode() == app::MatchMode::Hotseat ||
+         (application_->mode() == app::MatchMode::Network && application_->network() &&
+          application_->network()->started() && application_->network()->view().viewer == viewer) ||
+         (viewer == 0 && application_->mode() != app::MatchMode::Network));
 }
 bool LocalSession::current(const std::string &generation, const std::string &revision) const {
     return application_ && application_->hasMatch() && generation == std::to_string(generation_) &&
@@ -94,7 +99,7 @@ std::string LocalSession::actionId(PlayerId viewer, std::size_t index) const {
            std::to_string(viewer) + ":" + std::to_string(index);
 }
 GameView LocalSession::view(PlayerId viewer) const {
-    auto v = application_->match().engine().viewFor(viewer);
+    auto v = application_->viewFor(viewer);
     if (const auto *tutorial = application_->tutorial())
         v.actions.erase(std::remove_if(v.actions.begin(), v.actions.end(),
             [&](const LegalAction &a) { return !tutorial->allows(v, a.command); }), v.actions.end());
@@ -108,12 +113,11 @@ Json LocalSession::snapshot(PlayerId viewer) const {
     data["revision"] = std::to_string(application_->revision());
     data["paused"] = application_->paused();
     data["aiTurn"] = application_->aiTurn();
-    const auto &state = application_->match().engine().state();
-    data["actingPlayer"] = state.decision ? state.decision->player : state.active;
+    data["actingPlayer"] = application_->actingPlayer();
     data["actions"] = Json::array();
     data["automaticAction"] = nullptr;
     const auto automatic = ui::automaticAdvance(v, application_->settings().automaticPhases &&
-        application_->mode() != app::MatchMode::Tutorial);
+        application_->mode() != app::MatchMode::Tutorial && application_->mode() != app::MatchMode::Network);
     for (std::size_t i = 0; i < v.actions.size(); ++i) {
         const auto &a = v.actions[i];
         data["actions"].push_back({{"id", actionId(viewer, i)}, {"label", a.label},
@@ -145,6 +149,14 @@ Json LocalSession::selectAction(PlayerId viewer, const std::string &id,
 Json LocalSession::accepted(const CommandResult &result, const GameView &before) {
     if (!result.accepted) return fail(result.errorCode.empty() ? "rejected" : result.errorCode, result.error);
     pending_.reset();
+    if (result.pending) {
+        return ok({{"generation", std::to_string(generation_)},
+                   {"revision", std::to_string(application_->revision())},
+                   {"pending", true}, {"replaySaved", false}, {"saveError", ""},
+                   {"sounds", Json::array()}, {"cues", Json::array()}});
+    }
+    if (application_->mode() == app::MatchMode::Network)
+        application_->tickNetwork();
     std::string error;
     const bool saved = application_->saveReplay(error);
     Json sounds = Json::array();
@@ -167,7 +179,8 @@ Json LocalSession::accepted(const CommandResult &result, const GameView &before)
     }
     return ok({{"generation", std::to_string(generation_)},
                {"revision", std::to_string(application_->revision())},
-               {"replaySaved", saved}, {"saveError", error}, {"sounds", sounds}, {"cues", cues}});
+               {"pending", false}, {"replaySaved", saved}, {"saveError", error},
+               {"sounds", sounds}, {"cues", cues}});
 }
 Json LocalSession::confirmAction(const std::string &generation, const std::string &revision) {
     if (!current(generation, revision)) return fail("stale_action", "确认已过期");
@@ -202,6 +215,8 @@ Json LocalSession::continueTutorial(const std::string &generation, const std::st
 }
 Json LocalSession::saveReplay() const {
     if (!application_ || !application_->hasMatch()) return fail("no_match", "没有对局");
+    if (application_->mode() == app::MatchMode::Network && application_->network()->view().result == -1)
+        return fail("replay_unavailable", "完整联机复盘在对局结束后开放");
     std::string error;
     if (!application_->saveReplay(error)) return fail("save_failed", error);
     return ok({{"path", application_->replayPath().u8string()}});
@@ -218,6 +233,8 @@ Json LocalSession::release() {
 }
 Json LocalSession::readReplayPlan(const std::filesystem::path &path) const {
     if (!content_) return fail("not_initialized", "请先加载内容");
+    if (application_->network() && application_->network()->started() && application_->network()->view().result == -1)
+        return fail("replay_unavailable", "联机对局进行中不能打开完整复盘");
     try {
         const auto j = readJson(path);
         (void)replay(*content_, j); // Validate before exporting any test sequence.
@@ -232,6 +249,8 @@ Json LocalSession::readReplayPlan(const std::filesystem::path &path) const {
 }
 Json LocalSession::verifyReplay(const std::filesystem::path &path) const {
     if (!content_) return fail("not_initialized", "请先加载内容");
+    if (application_->network() && application_->network()->started() && application_->network()->view().result == -1)
+        return fail("replay_unavailable", "联机对局进行中不能打开完整复盘");
     try {
         const auto j = readJson(path);
         const auto engine = replay(*content_, j);
@@ -239,6 +258,38 @@ Json LocalSession::verifyReplay(const std::filesystem::path &path) const {
         for (const auto &row : j.at("commands")) digests.push_back(row.at("digest"));
         return ok({{"digest", engine.digest()}, {"commandCount", j.at("commands").size()},
                    {"digests", digests}});
+    } catch (const std::exception &e) { return fail("invalid_replay", e.what()); }
+}
+Json LocalSession::replayFrame(const std::filesystem::path &path, std::size_t step, PlayerId viewer) const {
+    if (!content_) return fail("not_initialized", "请先加载内容");
+    if (application_->network() && application_->network()->started() && application_->network()->view().result == -1)
+        return fail("replay_unavailable", "联机对局进行中不能打开完整复盘");
+    if (viewer != 0 && viewer != 1) return fail("invalid_viewer", "复盘查看者无效");
+    try {
+        auto record = readJson(path);
+        (void)replay(*content_, record); // Validate the complete recording, including the unshown suffix.
+        const auto count = record.at("commands").size();
+        if (step > count) return fail("invalid_step", "复盘位置超出范围");
+        MatchConfig config;
+        config.seed = record.at("seed").get<std::uint32_t>();
+        for (int p = 0; p < 2; ++p) {
+            const auto &player = record.at("players").at(p);
+            config.players[p].baseFormation = player.at("baseFormation").get<std::string>();
+            config.players[p].cards = player.at("cards").get<std::vector<std::string>>();
+            if (content_->catalog.usesAlphaV2())
+                config.players[p].sideDeck = player.at("sideDeck").get<std::vector<std::string>>();
+        }
+        GameEngine engine(content_->catalog, config);
+        for (std::size_t i = 0; i < step; ++i) {
+            const auto &row = record.at("commands").at(i);
+            if (!engine.submit(row.at("actor"), decodeCommand(row.at("command"))).accepted)
+                throw std::runtime_error("复盘指令未能重放");
+        }
+        auto data = viewDto(engine.viewFor(viewer));
+        data["step"] = step;
+        data["commandCount"] = count;
+        data["digest"] = engine.digest();
+        return ok(std::move(data));
     } catch (const std::exception &e) { return fail("invalid_replay", e.what()); }
 }
 } // namespace wizard::bridge

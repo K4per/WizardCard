@@ -503,8 +503,27 @@ func _clear_card() -> void:
 	_detail_shade.hide()
 	canvas.selected_id = ""
 	canvas.queue_redraw()
+	if canvas.visible and canvas.focus_mode != Control.FOCUS_NONE:
+		canvas.grab_focus()
 	if service != null and not service.match_snapshot.is_empty():
 		_render_actions()
+
+func dismiss_cancel() -> bool:
+	# Keep Esc local to transient match UI even if the root receives it first.
+	if _decision.visible or _privacy_layer.visible:
+		return true
+	if _confirm.visible:
+		_confirm.hide()
+		_cancel_pending()
+		return true
+	if _collection.visible:
+		_close_collection()
+		return true
+	if _detail.visible or _action_popup.visible or _global_popup_open or _selected != null:
+		_global_popup_open = false
+		_clear_card()
+		return true
+	return false
 
 func _toggle_hand() -> void:
 	if _privacy_layer.visible or _decision.visible:
@@ -753,12 +772,5 @@ func network_updated(state: Dictionary) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event.is_action_pressed(&"ui_cancel"):
 		return
-	if _decision.visible or _privacy_layer.visible:
-		get_viewport().set_input_as_handled()
-	elif _confirm.visible:
-		_confirm.hide()
-		_cancel_pending()
-		get_viewport().set_input_as_handled()
-	elif _detail.visible:
-		_clear_card()
+	if dismiss_cancel():
 		get_viewport().set_input_as_handled()

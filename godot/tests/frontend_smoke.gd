@@ -341,6 +341,13 @@ func _field_input_checks(page: FieldPage) -> void:
 	await _settle()
 	_check(not page._detail.visible and _app.current_page == &"field", "Escape closes detail before navigating away")
 	_check(not page._actions.visible and page.canvas.selected_id.is_empty(), "Closing details clears context actions and selection")
+	var second_hand_card: CardPresentation = page.canvas.field.hand[1]
+	var second_hand_point: Vector2 = page.canvas.global_position + page.canvas.card_bounds(second_hand_card).get_center()
+	_mouse_button(second_hand_point, true)
+	_mouse_button(second_hand_point, false)
+	await _settle()
+	_check(page.canvas.selected_id == second_hand_card.instance_id and page._detail.visible and page._detail.card.instance_id == second_hand_card.instance_id, "Clicking another card after Escape restores field card context")
+	page._close_detail()
 	var ring_hit: Rect2
 	for hit: Dictionary in page.canvas._ring_hits:
 		if hit["host"] == page.canvas.field.own_formations[0].card.instance_id and hit["ring"] == 1:

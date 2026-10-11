@@ -126,6 +126,20 @@ func _close_detail() -> void:
 	_active_card = null
 	canvas.selected_id = ""
 	canvas.queue_redraw()
+	if canvas.visible and canvas.focus_mode != Control.FOCUS_NONE:
+		canvas.grab_focus()
+
+func dismiss_cancel() -> bool:
+	# Esc first dismisses transient field UI. The root window uses this as a
+	# fallback when Godot routes the key past the page's unhandled callback.
+	if _decision.visible:
+		if _decision.request != null and _decision.request.may_cancel:
+			_decision._on_cancel(_decision.request.generation, _decision.request.revision, _decision.request.decision_id)
+		return true
+	if _detail.visible or _actions.visible or not canvas.selected_id.is_empty():
+		_close_detail()
+		return true
+	return false
 
 func _toggle_privacy() -> void:
 	canvas.set_privacy(not canvas.privacy)
@@ -186,12 +200,7 @@ func _decision_cancelled(_generation: String, _revision: String, _decision_id: S
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event.is_action_pressed(&"ui_cancel"):
 		return
-	if _decision.visible:
-		var request: DecisionPresentation = _decision.request
-		_decision._on_cancel(request.generation, request.revision, request.decision_id)
-		get_viewport().set_input_as_handled()
-	elif _detail.visible:
-		_close_detail()
+	if dismiss_cancel():
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:

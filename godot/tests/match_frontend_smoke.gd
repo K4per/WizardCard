@@ -67,6 +67,20 @@ func _run() -> void:
 		return
 	if not _expect(match_page._action_popup.visible and match_page._action_popup.get_global_rect().position.x < match_page._detail.get_global_rect().position.x, "selected card operations stay beside the selected card and outside the detail pane"):
 		return
+	var second_card: CardPresentation = match_page.canvas.field.hand[1]
+	var escape: InputEventKey = InputEventKey.new()
+	escape.keycode = KEY_ESCAPE
+	escape.pressed = true
+	root.push_input(escape, true)
+	await process_frame
+	if not _expect(match_page.canvas.selected_id.is_empty() and not match_page._detail.visible and not match_page._action_popup.visible, "Escape clears the selected card context"):
+		return
+	var second_point: Vector2 = match_page.canvas.global_position + match_page.canvas.card_bounds(second_card).get_center()
+	_mouse_button(second_point, true)
+	_mouse_button(second_point, false)
+	await process_frame
+	if not _expect(match_page.canvas.selected_id == second_card.instance_id and match_page._detail.visible and match_page._detail.card.instance_id == second_card.instance_id, "clicking another card after Escape restores card context"):
+		return
 	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 1000), Vector2i(1920, 1080)]:
 		root.size = dimensions
 		await process_frame
@@ -185,6 +199,14 @@ func _run() -> void:
 	await _capture_page("rooms")
 	print("MATCH_FRONTEND ok · setup / hotseat / authority / replay / AI privacy / tutorial / rooms")
 	quit(0)
+
+func _mouse_button(point: Vector2, pressed: bool, button: MouseButton = MOUSE_BUTTON_LEFT) -> void:
+	var event: InputEventMouseButton = InputEventMouseButton.new()
+	event.position = point
+	event.global_position = point
+	event.button_index = button
+	event.pressed = pressed
+	root.push_input(event, true)
 
 func _capture_page(label: String) -> void:
 	if not _capture or _output.is_empty():

@@ -4,7 +4,7 @@
 namespace wizard::net {
 namespace {
 PlayerDeck readDeck(const Json &j, const CardCatalog &c) {
-    PlayerDeck d{j.at("baseFormation"), j.at("cards").get<std::vector<std::string>>()};
+    PlayerDeck d{j.value("baseFormation", std::string{}), j.at("cards").get<std::vector<std::string>>()};
     if (c.usesAlphaV2()) d.sideDeck = j.at("sideDeck").get<std::vector<std::string>>();
     auto e = Rules::deckErrors(c, d);
     if (!e.empty())
@@ -52,7 +52,20 @@ void HostSession::ready() {
         for (unsigned attempt = 0; attempt < 128; ++attempt) {
             c.seed = std::random_device{}();
             auto next = std::make_unique<MatchSession>(content_, c);
-            if (next->engine().state().first == 0) {
+            auto probe = next->engine();
+            if (probe.state().opening) {
+                for (int p = 0; p < 2; ++p) {
+                    const auto v = probe.viewFor(p);
+                    for (const auto &a : v.actions)
+                        if (std::holds_alternative<SelectInitialFormation>(a.command)) {
+                            if (!probe.submit(p, a.command).accepted)
+                                throw std::runtime_error("开局种子探测失败");
+                            break;
+                        }
+                }
+            }
+            if (probe.state().first == 0) {
+                if (content_.catalog.usesAlphaV25()) next->enableClock(automatic_);
                 match_ = std::move(next);
                 break;
             }
@@ -65,7 +78,7 @@ void HostSession::ready() {
 GameView HostSession::view() const {
     if (!match_)
         throw std::runtime_error("对局未开始");
-    return match_->engine().viewFor(hostPlayer_);
+    return match_->viewFor(hostPlayer_);
 }
 Json HostSession::room() const {
     return {{"type", "Room"},    {"session", session_},     {"hostPlayer", hostPlayer_}, {"ready", ready_},
@@ -77,7 +90,7 @@ Json HostSession::snapshot(PlayerId p) const {
     return {{"type", "View"},
             {"session", session_},
             {"revision", std::to_string(revision_)},
-            {"view", encodeView(match_->engine().viewFor(p))}};
+            {"view", encodeView(match_->viewFor(p))}};
 }
 Json HostSession::recording() const {
     if (!match_)
@@ -87,9 +100,10 @@ Json HostSession::recording() const {
 CommandResult HostSession::submit(const Command &c) {
     if (!match_ || frozen_ || ended_)
         return {false, "连接中断或对局已结束", {}, {}, "disconnected"};
+    tick();
+    const auto before = match_->revision();
     auto r = match_->submit(hostPlayer_, c);
-    if (r.accepted)
-        ++revision_;
+    revision_ += match_->revision() - before;
     r.events.erase(
         std::remove_if(r.events.begin(), r.events.end(),
                        [&](const GameEvent &e) { return e.audience != -1 && e.audience != hostPlayer_; }),
@@ -99,17 +113,33 @@ CommandResult HostSession::submit(const Command &c) {
     return r;
 }
 bool HostSession::advance() {
+    tick();
     if (!match_ || frozen_ || ended_ || !automatic_)
         return false;
     const auto &s = match_->engine().state();
     auto p = s.decision ? s.decision->player : s.active;
-    auto a = ui::automaticAdvance(match_->engine().viewFor(p), true);
+    auto a = ui::automaticAdvance(match_->viewFor(p), true);
     if (!a)
         return false;
+    const auto before = match_->revision();
     auto r = match_->submit(p, *a);
-    if (r.accepted)
-        ++revision_;
+    revision_ += match_->revision() - before;
     return r.accepted;
+}
+void HostSession::tick() {
+    if (!match_) return;
+    const auto before = match_->revision();
+    match_->tick();
+    revision_ += match_->revision() - before;
+}
+void HostSession::freeze(bool value) {
+    tick();
+    frozen_ = value;
+    if (match_) {
+        const auto before = match_->revision();
+        match_->freezeClock(value);
+        revision_ += match_->revision() - before;
+    }
 }
 Json HostSession::receive(const Json &j) {
     const auto type = j.at("type").get<std::string>();
@@ -128,7 +158,7 @@ Json HostSession::receive(const Json &j) {
     if (type == "Resume") {
         if (!joined_ || j.at("session") != session_ || j.at("credential") != credential_)
             throw std::runtime_error("重连凭据无效");
-        frozen_ = false;
+        freeze(false);
         return {{"type", "Resumed"}, {"room", room()}, {"snapshot", snapshot(1 - hostPlayer_)}};
     }
     if (!joined_ || j.at("session") != session_)
@@ -149,6 +179,7 @@ Json HostSession::receive(const Json &j) {
         return room();
     }
     if (type == "Command") {
+        tick();
         auto seq = number(j.at("sequence"));
         auto found = replies_.find(seq);
         if (found != replies_.end()) {
@@ -169,14 +200,16 @@ Json HostSession::receive(const Json &j) {
         if (match_ && !frozen_ && number(j.at("revision")) == revision_) {
             try {
                 auto command = unwireCommand(j.at("command"));
-                auto v = match_->engine().viewFor(1 - hostPlayer_);
+                auto v = match_->viewFor(1 - hostPlayer_);
                 auto decision = v.decision ? v.decision->id : 0;
                 if (number(j.at("decision")) != decision)
                     throw std::runtime_error("决策已过期");
+                const auto before = match_->revision();
                 auto r = match_->submit(1 - hostPlayer_, command);
+                revision_ += match_->revision() - before;
                 result["error"] = r.error;
+                result["revision"] = std::to_string(revision_);
                 if (r.accepted) {
-                    ++revision_;
                     result["type"] = "Accepted";
                     result["revision"] = std::to_string(revision_);
                 }
@@ -214,9 +247,11 @@ void GuestSession::receive(const Json &j) {
         if (j.at("session") != session_)
             throw std::runtime_error("视图会话不一致");
         auto revision = number(j.at("revision"));
-        if (revision < revision_ || (started_ && revision == revision_ && !resumed_))
+        if (revision < revision_)
             return;
         auto view = decodeView(j.at("view"), content_.catalog);
+        if (started_ && revision == revision_ && view.clock.sequence <= view_.clock.sequence)
+            return;
         view_ = std::move(view);
         revision_ = revision;
         started_ = true;

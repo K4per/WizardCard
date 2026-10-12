@@ -1,6 +1,6 @@
 # 巫师牌 / WizardCard
 
-**2.0.0-rc.1**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。规则与正式卡池版本均为 `2.0.0-rc.1`；程序使用六位卡牌编号，前两位表示类型，后四位表示序号。
+**2.5.0-preview.1**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序版本为 `2.5.0-preview.1`，规则与正式卡池版本为 `2.5.0`。
 
 正式卡牌图鉴见 [docs/card-catalog.md](docs/card-catalog.md)，规则见 [docs/alpha-v2.0-rules.md](docs/alpha-v2.0-rules.md)，术语见 [GLOSSARY.md](GLOSSARY.md)。旧版 Alpha v1 文档与兼容夹具保留在 `docs/` 和 `tests/fixtures/alpha-v1-production/`，仅用于历史复盘验证。
 

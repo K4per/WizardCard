@@ -17,6 +17,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLoad, id, owner, source, amount, exp
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PlayerView, life, mana, load, capacity, handCount, deckCount, ownTurn,
                                    actionsPlayed, temporaryLife, blockedActionTurn, resistances, immunities,
                                    sideDeckCount, exhaustion)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MatchClockView, enabled, running, remainingMs, runningPlayers, runningPlayer, sequence)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PendingDecision, id, player, kind, options, mayPass)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Trigger, id, batch, owner, source, targetCard, targetPlayer, effects,
                                    target, requiresSource, targetLink, targetCards)
@@ -29,7 +30,8 @@ namespace wizard::net {
 namespace {
 bool wide(const std::string &k) {
     return k == "id" || k == "decision" || k == "gate" || k == "link" || k == "targetLink" ||
-           k == "phaseGate" || k == "ambushedTurn" || k == "eventBase" || k == "fieldOrder";
+           k == "phaseGate" || k == "ambushedTurn" || k == "eventBase" || k == "fieldOrder" ||
+           k == "globalTurn" || k == "sequence";
 }
 void transform(Json &j, bool encode) {
     if (j.is_array())
@@ -74,7 +76,7 @@ Command unwireCommand(Json j) {
 }
 Json hello(const Content &c) {
     return {{"type", "Hello"},
-            {"protocol", c.catalog.usesAlphaV2() ? 2 : 1},
+            {"protocol", c.catalog.usesAlphaV25() ? 3 : c.catalog.usesAlphaV2() ? 2 : 1},
             {"program", programVersion},
             {"rules", c.catalog.rulesVersion},
             {"cards", c.catalog.cardSetVersion},
@@ -83,7 +85,9 @@ Json hello(const Content &c) {
 Json encodeView(const GameView &v) {
     Json j = {{"viewer", v.viewer},       {"active", v.active},       {"phase", v.phase},
               {"result", v.result},       {"players", v.players},     {"temporary", v.temporary},
-              {"phaseStep", v.phaseStep}, {"phaseGate", v.phaseGate}, {"triggers", v.triggers}};
+              {"phaseStep", v.phaseStep}, {"phaseGate", v.phaseGate}, {"triggers", v.triggers},
+              {"opening", v.opening}, {"initialFormationConfirmed", v.initialFormationConfirmed},
+              {"initialFormation", v.initialFormation}, {"globalTurn", v.globalTurn}, {"clock", v.clock}};
     j["decision"] = v.decision ? Json(*v.decision) : Json();
     j["chain"] = v.chain ? Json(*v.chain) : Json();
     j["cards"] = Json::array();
@@ -137,6 +141,11 @@ GameView decodeView(const Json &raw, const CardCatalog &catalog) {
     j.at("phaseGate").get_to(v.phaseGate);
     j.at("triggers").get_to(v.triggers);
     j.at("eventBase").get_to(v.eventBase);
+    j.at("opening").get_to(v.opening);
+    j.at("initialFormationConfirmed").get_to(v.initialFormationConfirmed);
+    j.at("initialFormation").get_to(v.initialFormation);
+    j.at("globalTurn").get_to(v.globalTurn);
+    j.at("clock").get_to(v.clock);
     if (!j.at("decision").is_null())
         v.decision = j.at("decision").get<PendingDecision>();
     if (!j.at("chain").is_null())

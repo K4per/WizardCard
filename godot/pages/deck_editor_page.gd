@@ -7,8 +7,7 @@ var service: FrontendService
 var _title: Label
 var _state: Label
 var _name: LineEdit
-var _initial: OptionButton
-var _initial_ids: Array[String] = []
+var _initial: Label
 var _detail: DeckDetailPane
 var _built_panel: Panel
 var _pool_panel: Panel
@@ -40,97 +39,61 @@ var _pool_ids: Array[String] = []
 var _building: bool = false
 
 func _ready() -> void:
-	_title = UiFactory.label("编辑卡组", 28)
-	add_child(_title)
-	_state = UiFactory.label("尚未保存", 16)
-	add_child(_state)
-	_name = LineEdit.new()
+	_title = %Title
+	_state = %State
+	_name = %Name
+	_initial = %InitialNotice
+	_detail = %Detail
+	_built_panel = %BuiltPanel
+	_pool_panel = %PoolPanel
+	_built = %Built
+	_pool = %Pool
+	_tabs.assign([%MainTab, %SideTab])
+	_built_prev = %BuiltPrevious
+	_built_next = %BuiltNext
+	_built_page_label = %BuiltPosition
+	_pool_title = %PoolTitle
+	_search = %Search
+	_filters.assign([%Filter0, %Filter1, %Filter2, %Filter3, %Filter4, %Filter5])
+	_reset = %Reset
+	_pool_hint = %PoolHint
+	_pool_prev = %PoolPrevious
+	_pool_next = %PoolNext
+	_pool_page_label = %PoolPosition
+	_save = %Save
+	_back = %Back
+	_notice = %Notice
+	_dialog = %Dialog
 	DeckUi.compact_field(_name, 20)
-	_name.max_length = 80
+	DeckUi.compact_field(_search)
+	for filter: OptionButton in _filters:
+		DeckUi.compact_field(filter, 12)
+		filter.item_selected.connect(_filter_changed)
 	_name.text_changed.connect(_rename)
-	add_child(_name)
-	_initial = OptionButton.new()
-	DeckUi.compact_field(_initial)
-	_initial.item_selected.connect(_choose_initial)
-	add_child(_initial)
-	_detail = DeckDetailPane.new()
-	add_child(_detail)
-	_built_panel = _panel()
-	_pool_panel = _panel()
-	for caption: String in ["主卡组", "阵法副卡组"]:
-		var tab: Button = _button(caption, _choose_section.bind("cards" if _tabs.is_empty() else "sideCards"))
-		_tabs.append(tab)
-		_built_panel.add_child(tab)
-	_built = DeckCardGrid.new()
 	_built.inspected.connect(_inspect)
 	_built.adjusted.connect(_adjust)
-	_built_panel.add_child(_built)
-	_built_prev = _button("上一页", _turn_built.bind(-1))
-	_built_next = _button("下一页", _turn_built.bind(1))
-	_built_page_label = UiFactory.label("", 16)
-	_built_page_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	for control: Control in [_built_prev, _built_next, _built_page_label]:
-		_built_panel.add_child(control)
-	_pool_title = UiFactory.label("卡池", 22)
-	_pool_panel.add_child(_pool_title)
-	_reset = _button("重置", _reset_query)
-	_pool_panel.add_child(_reset)
-	_search = LineEdit.new()
-	_search.placeholder_text = "搜索卡名（部分匹配）"
-	DeckUi.compact_field(_search)
-	_search.text_changed.connect(_query_changed)
-	_pool_panel.add_child(_search)
-	for caption: String in ["类型", "稀有度", "费用", "施法", "位阶", "标签"]:
-		var filter: OptionButton = OptionButton.new()
-		DeckUi.compact_field(filter, 14)
-		filter.item_selected.connect(_filter_changed)
-		filter.set_meta(&"caption", caption)
-		_filters.append(filter)
-		_pool_panel.add_child(filter)
-	_pool_hint = UiFactory.label("右键加入 · 拖入卡组", 13)
-	_pool_panel.add_child(_pool_hint)
-	_pool = DeckCardGrid.new()
+	_pool.inspected.connect(_inspect)
+	_pool.adjusted.connect(_adjust)
 	_pool.origin = "pool"
 	_pool.columns = 3
 	_pool.rows = 3
-	_pool.inspected.connect(_inspect)
-	_pool.adjusted.connect(_adjust)
-	_pool_panel.add_child(_pool)
-	_pool_prev = _button("上一页", _turn_pool.bind(-1))
-	_pool_next = _button("下一页", _turn_pool.bind(1))
-	_pool_page_label = UiFactory.label("", 16)
-	_pool_page_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	for control: Control in [_pool_prev, _pool_next, _pool_page_label]:
-		_pool_panel.add_child(control)
-	_save = _button("保存卡组 / 草稿", _save_draft)
-	_back = _button("返回卡组列表", request_leave)
-	_notice = _button("", _show_problems)
-	_notice.flat = true
-	for state: StringName in [&"normal", &"hover", &"pressed", &"disabled"]:
-		_notice.add_theme_stylebox_override(state, StyleBoxEmpty.new())
-	for control: Control in [_save, _back, _notice]:
-		add_child(control)
-	_dialog = DeckDialog.new()
+	_tabs[0].pressed.connect(_choose_section.bind("cards"))
+	_tabs[1].pressed.connect(_choose_section.bind("sideCards"))
+	_built_prev.pressed.connect(_turn_built.bind(-1))
+	_built_next.pressed.connect(_turn_built.bind(1))
+	_pool_prev.pressed.connect(_turn_pool.bind(-1))
+	_pool_next.pressed.connect(_turn_pool.bind(1))
+	_reset.pressed.connect(_reset_query)
+	_search.text_changed.connect(_query_changed)
+	_save.pressed.connect(_save_draft)
+	_back.pressed.connect(request_leave)
+	_notice.pressed.connect(_show_problems)
 	_dialog.chosen.connect(_dialog_chosen)
-	add_child(_dialog)
-	resized.connect(_reflow)
 	get_window().focus_exited.connect(_cancel_drag)
-	_reflow()
 
 func _cancel_drag() -> void:
 	if get_viewport().gui_is_dragging():
 		get_viewport().gui_cancel_drag()
-
-func _panel() -> Panel:
-	var panel: Panel = Panel.new()
-	panel.add_theme_stylebox_override(&"panel", ArtBank.box("c2d.v2.deck.grid-panel", 0))
-	add_child(panel)
-	return panel
-
-func _button(text: String, callback: Callable) -> Button:
-	var button: Button = UiFactory.button(text, callback)
-	DeckUi.compact_button(button)
-	return button
 
 func configure(value: FrontendService) -> void:
 	service = value
@@ -145,55 +108,6 @@ func configure(value: FrontendService) -> void:
 	_refresh()
 	if not _pool_ids.is_empty():
 		_inspect(_pool_ids[0])
-
-func _reflow() -> void:
-	if _built == null:
-		return
-	var compact: bool = size.y < 850
-	var top: float = 104 if compact else 124
-	var bottom: float = size.y - 68
-	var left_width: float = size.x * 0.21
-	var middle_width: float = size.x * 0.52375
-	var right_x: float = left_width + middle_width
-	DeckUi.place(_title, Rect2(24, 18, left_width - 40, 42))
-	DeckUi.place(_state, Rect2(24, 66, left_width - 40, 26))
-	DeckUi.place(_name, Rect2(left_width + 20, 18, middle_width - 40, 38))
-	DeckUi.place(_initial, Rect2(left_width + 20, 64, middle_width - 40, 34))
-	DeckUi.place(_detail, Rect2(16, top, left_width - 28, bottom - top - 8))
-	DeckUi.place(_built_panel, Rect2(left_width + 4, top, middle_width - 12, bottom - top - 8))
-	DeckUi.place(_pool_panel, Rect2(right_x + 4, top, size.x - right_x - 20, bottom - top - 8))
-	var bw: float = _built_panel.size.x
-	var bh: float = _built_panel.size.y
-	var panel_inset: float = 22 if compact else 32
-	var tab_y: float = 34 if compact else 46
-	DeckUi.place(_tabs[0], Rect2(panel_inset, tab_y, (bw - panel_inset * 2 - 8) * 0.5, 38))
-	DeckUi.place(_tabs[1], Rect2(4 + bw * 0.5, tab_y, (bw - panel_inset * 2 - 8) * 0.5, 38))
-	DeckUi.place(_built, Rect2(panel_inset, tab_y + 44, bw - panel_inset * 2, bh - tab_y - 102))
-	DeckUi.place(_built_prev, Rect2(26, bh - 58, 110, 36))
-	DeckUi.place(_built_next, Rect2(bw - 136, bh - 58, 110, 36))
-	DeckUi.place(_built_page_label, Rect2(140, bh - 58, bw - 280, 36))
-	var pw: float = _pool_panel.size.x
-	var ph: float = _pool_panel.size.y
-	var filter_height: float = 30 if compact else 38
-	var filter_width: float = (pw - 56) * 0.5
-	DeckUi.place(_pool_title, Rect2(panel_inset, tab_y, pw - panel_inset - 130, 34))
-	DeckUi.place(_reset, Rect2(pw - panel_inset - 86, tab_y, 86, 34))
-	DeckUi.place(_search, Rect2(24, tab_y + 42, pw - 48, 36 if compact else 42))
-	var filter_y: float = 116 if compact else 140
-	for index: int in range(6):
-		_filters[index].add_theme_font_size_override(&"font_size", 12 if compact else 14)
-		DeckUi.place(_filters[index], Rect2(24 + (index % 2) * (filter_width + 8), filter_y + (index / 2) * (filter_height + 6), filter_width, filter_height))
-	var grid_y: float = filter_y + 3 * (filter_height + 6) + 30
-	DeckUi.place(_pool_hint, Rect2(24, grid_y - 25, pw - 48, 22))
-	DeckUi.place(_pool, Rect2(16, grid_y, pw - 32, ph - grid_y - 70))
-	DeckUi.place(_pool_prev, Rect2(24, ph - 56, 104, 34))
-	DeckUi.place(_pool_next, Rect2(pw - 128, ph - 56, 104, 34))
-	DeckUi.place(_pool_page_label, Rect2(132, ph - 56, pw - 264, 34))
-	DeckUi.place(_save, Rect2(24, size.y - 58, 244, 40))
-	DeckUi.place(_back, Rect2(size.x - 264, size.y - 58, 240, 40))
-	DeckUi.place(_notice, Rect2(286, size.y - 58, size.x - 568, 40))
-	_built.queue_redraw()
-	_pool.queue_redraw()
 
 func _build_filters() -> void:
 	_filter_values = [[null, 1, 2, 3, 4, 5], [null, "common", "uncommon", "rare", "epic", "legendary"], [null], [null], [null], [null]]
@@ -277,20 +191,7 @@ func _refresh() -> void:
 	var problems: Array[String] = service.draft_problems()
 	_notice.text = "构筑检查通过" if problems.is_empty() else problems[0] + " · 查看详情"
 	_notice.tooltip_text = "\n".join(problems)
-	_refresh_initial()
 	_refresh_pool()
-
-func _refresh_initial() -> void:
-	_initial.clear()
-	_initial_ids = [""]
-	_initial.add_item("初始阵法：请从副卡组选择")
-	var side: Dictionary = service.editing_draft.get("sideCards", {})
-	for id: String in side.keys():
-		if bool(service.definitions.get(id, {}).get("baseEligible", false)):
-			_initial_ids.append(id)
-			_initial.add_item("初始阵法：" + service.card_by_id(id).title)
-	var selected: int = _initial_ids.find(str(service.editing_draft.get("baseFormation", "")))
-	_initial.select(maxi(0, selected))
 
 func _refresh_pool() -> void:
 	_pool_page = clampi(_pool_page, 0, maxi(0, ceili(_pool_ids.size() / 9.0) - 1))
@@ -309,10 +210,6 @@ func _rename(text: String) -> void:
 	if service != null:
 		service.editing_draft["name"] = text
 		_refresh()
-
-func _choose_initial(index: int) -> void:
-	service.editing_draft["baseFormation"] = _initial_ids[index]
-	_refresh()
 
 func _choose_section(section: String) -> void:
 	_section = section

@@ -1,6 +1,7 @@
 #include "wizard/application.hpp"
 #include "wizard/network.hpp"
 #include <catch2/catch_test_macros.hpp>
+#include <algorithm>
 #include <chrono>
 #include <thread>
 
@@ -15,8 +16,22 @@ TEST_CASE("local session interface preserves revision projection and rejected co
     REQUIRE(session.revision() == 0);
     REQUIRE_FALSE(session.submit(initial.active, AdvancePhase{initial.phaseGate + 1}).accepted);
     REQUIRE(session.revision() == 0);
-    REQUIRE(session.submit(initial.active, AdvancePhase{initial.phaseGate}).accepted);
-    REQUIRE(session.revision() == 1);
+    REQUIRE(initial.opening);
+    for (int player = 0; player < 2; ++player) {
+        const auto view = session.viewFor(player);
+        const auto choice = std::find_if(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
+            return std::holds_alternative<SelectInitialFormation>(action.command);
+        });
+        REQUIRE(choice != view.actions.end());
+        REQUIRE(session.submit(player, choice->command).accepted);
+        REQUIRE(session.revision() == static_cast<std::uint64_t>(player + 1));
+    }
+    const auto started = session.viewFor(0);
+    REQUIRE_FALSE(started.opening);
+    REQUIRE_FALSE(session.submit(started.active, AdvancePhase{started.phaseGate + 1}).accepted);
+    REQUIRE(session.revision() == 2);
+    REQUIRE(session.submit(started.active, AdvancePhase{started.phaseGate}).accepted);
+    REQUIRE(session.revision() == 3);
     REQUIRE(replay(content, local.recording()).digest() == local.engine().digest());
 }
 TEST_CASE("injected room sessions preserve pending authority privacy and polling while settings are open") {

@@ -2,6 +2,7 @@ class_name CardFace
 extends Control
 
 var card: CardPresentation
+@export var simple_style: bool = false
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -13,4 +14,7 @@ func configure(value: CardPresentation) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	CardPainter.paint(self, card, Rect2(Vector2.ZERO, size), "detail")
+	if simple_style:
+		SimpleCardPainter.paint(self, card, Rect2(Vector2.ZERO, size))
+	else:
+		CardPainter.paint(self, card, Rect2(Vector2.ZERO, size), "detail")

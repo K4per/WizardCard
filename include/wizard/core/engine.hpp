@@ -11,6 +11,7 @@ class GameEngine {
     // Explicit scenario entry point, used by regression tools; never accepts client state.
     static GameEngine scenario(CardCatalog catalog, GameState state);
     CommandResult submit(PlayerId actor, const Command &command);
+    CommandResult timeout(PlayerId actor);
     GameView viewFor(PlayerId viewer) const;
     const GameState &state() const {
         return state_;
@@ -27,6 +28,8 @@ class GameEngine {
     CardCatalog catalog_;
     GameState state_;
     std::string execute(PlayerId, const Command &);
+    void finishOpening();
+    CommandResult submitAuthority(PlayerId, const Command &);
     std::string executeV2(PlayerId, const Command &);
     bool phaseV2();
     bool returnSpellsV2();

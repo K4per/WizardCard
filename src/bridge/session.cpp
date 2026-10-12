@@ -57,7 +57,7 @@ Json LocalSession::start(const Json &options) {
                 if (!players.is_array() || players.size() != 2)
                     return fail("invalid_options", "需要双方牌表");
                 for (int p = 0; p < 2; ++p) {
-                    config.players[p].baseFormation = players.at(p).at("baseFormation").get<std::string>();
+                    config.players[p].baseFormation = players.at(p).value("baseFormation", std::string{});
                     config.players[p].cards = players.at(p).at("cards").get<std::vector<std::string>>();
                     if (content_->catalog.usesAlphaV2())
                         config.players[p].sideDeck = players.at(p).at("sideDeck").get<std::vector<std::string>>();
@@ -274,7 +274,7 @@ Json LocalSession::replayFrame(const std::filesystem::path &path, std::size_t st
         config.seed = record.at("seed").get<std::uint32_t>();
         for (int p = 0; p < 2; ++p) {
             const auto &player = record.at("players").at(p);
-            config.players[p].baseFormation = player.at("baseFormation").get<std::string>();
+            config.players[p].baseFormation = player.value("baseFormation", std::string{});
             config.players[p].cards = player.at("cards").get<std::vector<std::string>>();
             if (content_->catalog.usesAlphaV2())
                 config.players[p].sideDeck = player.at("sideDeck").get<std::vector<std::string>>();
@@ -282,7 +282,10 @@ Json LocalSession::replayFrame(const std::filesystem::path &path, std::size_t st
         GameEngine engine(content_->catalog, config);
         for (std::size_t i = 0; i < step; ++i) {
             const auto &row = record.at("commands").at(i);
-            if (!engine.submit(row.at("actor"), decodeCommand(row.at("command"))).accepted)
+            const auto command = decodeCommand(row.at("command"));
+            const auto result = std::holds_alternative<Timeout>(command) ? engine.timeout(row.at("actor")) :
+                engine.submit(row.at("actor"), command);
+            if (!result.accepted)
                 throw std::runtime_error("复盘指令未能重放");
         }
         auto data = viewDto(engine.viewFor(viewer));

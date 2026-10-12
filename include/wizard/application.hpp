@@ -28,6 +28,7 @@ struct Settings {
     unsigned width{1600}, height{1000};
     bool automaticPhases{true};
     bool reducedMotion{};
+    std::string fieldBackground{"arcane"};
     float effectiveSoundVolume() const;
 };
 Json encodeSettings(const Settings &);

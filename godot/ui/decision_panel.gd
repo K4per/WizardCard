@@ -3,6 +3,8 @@ extends PanelContainer
 
 signal confirmed(generation: String, revision: String, decision_id: String, selected: Array[String])
 signal cancelled(generation: String, revision: String, decision_id: String)
+signal card_chosen(card: CardPresentation)
+signal collapse_requested()
 
 var request: DecisionPresentation
 var _selected: Array[String] = []
@@ -16,20 +18,66 @@ var _counter: Label
 var _cancel: Button
 var _padding: StyleBoxEmpty
 var _candidate_scroll: ScrollContainer
+var _title: Label
+var _description: Label
+var _choices: HBoxContainer
+var _preview_column: VBoxContainer
+var _actions: HBoxContainer
+var _response_hint: Label
+var _collapse: Button
+@export var simple_style: bool = false
+@export var content_padding: int = 20
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_padding = StyleBoxEmpty.new()
 	add_theme_stylebox_override(&"panel", _padding)
-	_column = VBoxContainer.new()
-	_column.add_theme_constant_override(&"separation", 8)
-	add_child(_column)
+	# Direct construction remains supported by the showcase and older callers.
+	# Its structure still comes from the same editor-owned PackedScene.
+	if not has_node("Column"):
+		var structure: Control = load("res://ui/decision_panel.tscn").instantiate() as Control
+		for child: Node in structure.get_children():
+			_clear_structure_owner(child)
+			structure.remove_child(child)
+			add_child(child)
+			_own_structure(child)
+		structure.free()
+	_column = %Column
+	_title = %Title
+	_counter = %Counter
+	_description = %Description
+	_candidate_scroll = %CandidateScroll
+	_choices = %Choices
+	_preview_column = %PreviewColumn
+	_preview = %Preview
+	_preview_text = %PreviewText
+	_actions = %Actions
+	_confirm = %Confirm
+	_cancel = %Cancel
+	_response_hint = %ResponseHint
+	_collapse = %Collapse
+	_collapse.pressed.connect(collapse_requested.emit)
 	resized.connect(_layout_skin)
 	_layout_skin()
 	if request != null:
 		configure(request)
 
+func _clear_structure_owner(node: Node) -> void:
+	node.owner = null
+	for child: Node in node.get_children():
+		_clear_structure_owner(child)
+
+func _own_structure(node: Node) -> void:
+	node.owner = self
+	for child: Node in node.get_children():
+		_own_structure(child)
+
 func _layout_skin() -> void:
+	if simple_style:
+		for side: int in range(4):
+			_padding.set_content_margin(side, 8 if request != null and request.docked else content_padding)
+		queue_redraw()
+		return
 	_padding.set_content_margin(SIDE_LEFT, size.x * 0.07)
 	_padding.set_content_margin(SIDE_RIGHT, size.x * 0.07)
 	_padding.set_content_margin(SIDE_TOP, size.y * 0.18)
@@ -37,6 +85,10 @@ func _layout_skin() -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	if simple_style:
+		draw_rect(Rect2(Vector2.ZERO, size), Color("182631"), true)
+		draw_rect(Rect2(Vector2.ZERO, size), Color("78919f"), false, 1)
+		return
 	draw_texture_rect(BattleArt.texture("effect_popup_complete"), Rect2(Vector2.ZERO, size), false)
 	# Replace the baked footer controls with an empty footer segment, so mandatory
 	# decisions can actually hide cancellation and live buttons own their states.
@@ -51,41 +103,38 @@ func configure(value: DecisionPresentation) -> void:
 	_labels.clear()
 	if not is_node_ready():
 		return
-	for child: Node in _column.get_children():
-		_column.remove_child(child)
+	_layout_skin()
+	for child: Node in _choices.get_children():
+		_choices.remove_child(child)
 		child.queue_free()
-	var heading: HBoxContainer = HBoxContainer.new()
-	_column.add_child(heading)
-	var title: Label = UiFactory.label(value.title, 22)
-	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	heading.add_child(title)
-	_counter = UiFactory.label("", 16)
-	heading.add_child(_counter)
-	_column.add_child(UiFactory.label(value.description, 16, true))
-	if value.response_mode:
+	_title.text = value.title
+	_counter.text = ""
+	_description.text = value.description
+	_description.visible = not value.docked and not value.description.is_empty()
+	_preview_column.visible = not value.docked and not value.response_mode
+	_actions.visible = not value.browse_mode
+	_response_hint.visible = false
+	_collapse.visible = value.docked
+	_candidate_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_candidate_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_candidate_scroll.custom_minimum_size.y = 124 if value.docked else 160
+	_disconnect_actions()
+	_confirm.visible = not value.browse_mode and (not value.response_mode or value.docked)
+	_cancel.visible = value.may_cancel or not value.pass_id.is_empty()
+	if value.response_mode and not value.docked:
 		_build_response_choices(value)
 		return
-	var content: HBoxContainer = HBoxContainer.new()
-	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	content.add_theme_constant_override(&"separation", 32)
-	_column.add_child(content)
-	var scroll: ScrollContainer = ScrollContainer.new()
-	_candidate_scroll = scroll
-	scroll.custom_minimum_size.y = 160
-	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	content.add_child(scroll)
-	var choices: HBoxContainer = HBoxContainer.new()
-	choices.add_theme_constant_override(&"separation", 12)
-	scroll.add_child(choices)
+	_choices.add_theme_constant_override(&"separation", 12)
 	for choice: DecisionChoice in value.choices:
+		if choice.id == value.pass_id:
+			continue
 		var option: Button = Button.new()
-		option.toggle_mode = true
+		option.toggle_mode = not value.browse_mode
 		option.text = ""
 		option.clip_text = true
 		option.tooltip_text = choice.label
 		option.disabled = not choice.available
-		option.custom_minimum_size = Vector2(132, 188)
+		option.custom_minimum_size = Vector2(116, 124) if value.docked else Vector2(132, 188)
 		option.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		option.alignment = HORIZONTAL_ALIGNMENT_CENTER
 		option.add_theme_font_size_override(&"font_size", 14)
@@ -95,76 +144,69 @@ func configure(value: DecisionPresentation) -> void:
 			choice_style.border_color = Color("64cfe6") if state in ["pressed", "focus", "hover"] else Color("715033")
 			choice_style.set_border_width_all(2 if state == "pressed" else 1)
 			option.add_theme_stylebox_override(StringName(state), choice_style)
-		option.toggled.connect(_on_choice.bind(choice.id, value.generation, value.revision, value.decision_id))
-		choices.add_child(option)
+		if value.browse_mode:
+			option.pressed.connect(card_chosen.emit.bind(choice.card))
+		else:
+			option.toggled.connect(_on_choice.bind(choice.id, value.generation, value.revision, value.decision_id))
+		_choices.add_child(option)
 		_options[choice.id] = option
-		var caption: Label = UiFactory.label(choice.label, 14)
+		var caption: Label = UiFactory.label(choice.card.title if choice.card != null else choice.label, 14)
 		caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		caption.position = Vector2(8, 157)
-		caption.size = Vector2(116, 24)
+		caption.position = Vector2(6, 98) if value.docked else Vector2(8, 157)
+		caption.size = Vector2(104, 22) if value.docked else Vector2(116, 24)
 		caption.clip_text = true
 		caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		option.add_child(caption)
 		_labels[choice.id] = caption
 		if choice.card != null:
 			var face: CardFace = CardFace.new()
+			face.simple_style = simple_style
 			face.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			option.add_child(face)
-			face.position = Vector2(12, 8)
-			face.size = Vector2(108, 146)
+			face.position = Vector2(10, 6) if value.docked else Vector2(12, 8)
+			face.size = Vector2(96, 90) if value.docked else Vector2(108, 146)
 			face.configure(choice.card)
 		else:
-			caption.position = Vector2(10, 16)
-			caption.size = Vector2(112, 154)
+			caption.position = Vector2(8, 8)
+			caption.size = option.custom_minimum_size - Vector2(16, 16)
 			caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	var preview_column: VBoxContainer = VBoxContainer.new()
-	preview_column.custom_minimum_size.x = 180
-	content.add_child(preview_column)
-	_preview = CardFace.new()
-	_preview.custom_minimum_size = Vector2(180, 190 if get_viewport_rect().size.y >= 900 else 140)
-	preview_column.add_child(_preview)
-	_preview_text = RichTextLabel.new()
-	_preview_text.bbcode_enabled = false
-	_preview_text.custom_minimum_size.y = 42
-	_preview_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_preview_text.add_theme_font_size_override(&"normal_font_size", 14)
-	preview_column.add_child(_preview_text)
+	if value.browse_mode and value.choices.is_empty():
+		_choices.add_child(UiFactory.label("该区域当前没有卡牌。", 16, true))
+	_preview.simple_style = simple_style
 	if not value.choices.is_empty():
 		_show_preview(value.choices[0])
-	var actions: HBoxContainer = HBoxContainer.new()
-	_column.add_child(actions)
-	_confirm = UiFactory.button("确认选择", _on_confirm.bind(value.generation, value.revision, value.decision_id), true)
-	BattleArt.button(_confirm)
-	var spacer: Control = Control.new()
-	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	actions.add_child(spacer)
-	actions.add_child(_confirm)
-	_cancel = UiFactory.button("返回", _on_cancel.bind(value.generation, value.revision, value.decision_id))
-	BattleArt.button(_cancel)
-	_cancel.visible = value.may_cancel
-	actions.add_child(_cancel)
-	_refresh()
+	_confirm.pressed.connect(_on_confirm.bind(value.generation, value.revision, value.decision_id))
+	if not simple_style:
+		BattleArt.button(_confirm)
+	_cancel.pressed.connect(_on_cancel.bind(value.generation, value.revision, value.decision_id))
+	if not simple_style:
+		BattleArt.button(_cancel)
+	_cancel.visible = value.may_cancel or not value.pass_id.is_empty()
+	_cancel.text = "放弃" if not value.pass_id.is_empty() else "返回"
+	if not value.browse_mode:
+		_refresh()
+
+func _disconnect_actions() -> void:
+	for button: Button in [_confirm, _cancel]:
+		for connection: Dictionary in button.pressed.get_connections():
+			var callback: Callable = connection["callable"]
+			if callback.get_object() == self:
+				button.pressed.disconnect(callback)
 
 func _build_response_choices(value: DecisionPresentation) -> void:
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
-	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	_candidate_scroll = scroll
-	_column.add_child(scroll)
-	var choices: HBoxContainer = HBoxContainer.new()
-	choices.add_theme_constant_override(&"separation", 10)
-	scroll.add_child(choices)
+	_choices.add_theme_constant_override(&"separation", 10)
 	for choice: DecisionChoice in value.choices:
 		var option: Button = Button.new()
 		option.custom_minimum_size = Vector2(148, 212) if choice.card != null else Vector2(164, 96)
 		option.disabled = not choice.available
 		option.tooltip_text = choice.label
 		option.pressed.connect(_on_response_choice.bind(choice.id, value.generation, value.revision, value.decision_id))
-		BattleArt.button(option)
-		choices.add_child(option)
+		if not simple_style:
+			BattleArt.button(option)
+		_choices.add_child(option)
 		if choice.card != null:
 			var face: CardFace = CardFace.new()
+			face.simple_style = simple_style
 			face.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			option.add_child(face)
 			face.position = Vector2(14, 8)
@@ -183,11 +225,6 @@ func _build_response_choices(value: DecisionPresentation) -> void:
 			pass_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			pass_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			option.add_child(pass_label)
-	var hint: Label = UiFactory.label("选择响应卡立即提交；也可选择不响应。", 13, true)
-	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_column.add_child(hint)
-	_confirm = null
-	_cancel = null
 
 func _on_response_choice(id: String, generation: String, revision: String, decision_id: String) -> void:
 	if not _current(generation, revision, decision_id):
@@ -203,6 +240,8 @@ func _on_choice(enabled: bool, id: String, generation: String, revision: String,
 		return
 	var allowed: bool = false
 	for choice: DecisionChoice in request.choices:
+		if not _options.has(choice.id):
+			continue
 		if choice.id == id and choice.available:
 			allowed = true
 			_show_preview(choice)
@@ -219,12 +258,14 @@ func _on_choice(enabled: bool, id: String, generation: String, revision: String,
 
 func _refresh() -> void:
 	for choice: DecisionChoice in request.choices:
+		if not _options.has(choice.id):
+			continue
 		var option: Button = _options[choice.id]
 		option.set_pressed_no_signal(_selected.has(choice.id))
-		_labels[choice.id].text = ("✓ " if _selected.has(choice.id) else "") + choice.label
+		_labels[choice.id].text = choice.card.title if choice.card != null else choice.label
 	_confirm.disabled = not request.has_exact_context() or _selected.size() < request.minimum or _selected.size() > request.maximum
-	_confirm.text = "确认选择（%d）" % _selected.size()
-	_counter.text = "已选 %d / %d" % [_selected.size(), request.maximum]
+	_confirm.text = "确定"
+	_counter.text = "" if request.maximum == 1 else "已选 %d / %d" % [_selected.size(), request.maximum]
 
 func _show_preview(choice: DecisionChoice) -> void:
 	_preview.visible = choice.card != null
@@ -258,6 +299,12 @@ func _on_confirm(generation: String, revision: String, decision_id: String) -> v
 	confirmed.emit(request.generation, request.revision, request.decision_id, _selected.duplicate())
 
 func _on_cancel(generation: String, revision: String, decision_id: String) -> void:
-	if not _current(generation, revision, decision_id) or not request.may_cancel:
+	if not _current(generation, revision, decision_id):
+		return
+	if not request.pass_id.is_empty():
+		var selected: Array[String] = [request.pass_id]
+		confirmed.emit(generation, revision, decision_id, selected)
+		return
+	if not request.may_cancel:
 		return
 	cancelled.emit(request.generation, request.revision, request.decision_id)

@@ -110,6 +110,10 @@ std::string Interaction::intent(const LegalAction &a, const std::optional<Pendin
                 return "释放法术";
             else if constexpr (std::is_same_v<T, Surrender>)
                 return "投降";
+            else if constexpr (std::is_same_v<T, SelectInitialFormation>)
+                return "确认初始阵法";
+            else if constexpr (std::is_same_v<T, Timeout>)
+                return "思考时间耗尽";
             else {
                 if (c.option == 0)
                     return a.label;
@@ -265,7 +269,7 @@ void Interaction::offer(const LegalAction &action) {
                 if constexpr (std::is_same_v<T, Choose>)
                     return x.decision == y.decision && x.option == y.option;
                 else if constexpr (std::is_same_v<T, AdvancePhase>)
-                    return x.gate == y.gate;
+                    return x.gate == y.gate && x.skipCast == y.skipCast;
                 else if constexpr (std::is_same_v<T, PassResponse>)
                     return x.decision == y.decision;
                 else if constexpr (std::is_same_v<T, Respond>)
@@ -280,6 +284,8 @@ void Interaction::offer(const LegalAction &action) {
                     return x.card == y.card && x.target == y.target && x.targets == y.targets;
                 else if constexpr (std::is_same_v<T, SetAmbush>)
                     return x.card == y.card && x.formation == y.formation;
+                else if constexpr (std::is_same_v<T, SelectInitialFormation>)
+                    return x.card == y.card;
                 else if constexpr (std::is_same_v<T, PreloadWord>)
                     return x.card == y.card && x.release == y.release;
                 else

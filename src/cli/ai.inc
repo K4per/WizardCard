@@ -14,7 +14,7 @@ int runAi(const Content &content, const std::filesystem::path &assets, int argc,
             if (++steps > 500)
                 throw std::runtime_error("tutorial did not complete");
             auto v = application.match().engine().viewFor(0);
-            if (application.tutorial()->canContinue(v)) {
+            if (!v.opening && application.tutorial()->canContinue(v)) {
                 application.continueTutorial();
                 continue;
             }

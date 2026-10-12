@@ -129,6 +129,12 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
                  catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Word &&
                  (!catalog_.usesAlphaV2() || catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Talisman)))
                 return "target: 必须指定对手释放中的法术";
+            if (std::any_of(a->effects.begin(), a->effects.end(), [](const Effect &effect) {
+                    return effect.kind == EffectKind::ReduceSpellDamage;
+                }) && std::none_of(l->item.effects.begin(), l->item.effects.end(), [](const Effect &effect) {
+                    return (effect.kind == EffectKind::Damage || effect.kind == EffectKind::ChooseDamage) && effect.amount > 0;
+                }))
+                return "target: 必须指定造成伤害的法术";
         }
     } else if (cmd.link || !validTargets(s, a->target, a->targetCount, actor, cmd.target, cmd.targets))
         return "target: 无效响应目标";

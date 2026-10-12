@@ -80,8 +80,9 @@ void Peer::tick() {
                     notice_ = started() && view_.result != -1 ? "对方已离开房间" : "对方已离开，对局中止";
                     persist();
                 } else {
+                    const auto before = host_->revision();
                     auto response = host_->receive(j);
-                    if (type == "Command" && response.at("type") == "Accepted")
+                    if (host_->revision() != before)
                         persist();
                     if (response.at("type") == "Replay")
                         queueReplay(response.at("recording"));
@@ -151,15 +152,20 @@ void Peer::tick() {
             heartbeat_ = now;
         }
         if (host_) {
+            const auto beforeTick = host_->revision();
+            host_->tick();
+            if (host_->revision() != beforeTick) persist();
             if (authenticated_ && connected_ && !closing_ && host_->advance())
                 persist();
             room_ = host_->room();
             if (host_->started()) {
                 revision_ = host_->revision();
                 view_ = host_->view();
-                if (authenticated_ && connected_ && revision_ != sentRevision_) {
+                if (authenticated_ && connected_ &&
+                    (revision_ != sentRevision_ || now - clockSent_ >= 250ms)) {
                     tcp_.send(host_->snapshot(1 - host_->player()));
                     sentRevision_ = revision_;
+                    clockSent_ = now;
                 }
             }
             if (authenticated_ && connected_ && room_ != roomSent_) {
@@ -256,8 +262,9 @@ CommandResult Peer::submit(const Command &c) {
     if (blocked())
         return {false, "等待连接恢复或操作确认", {}, {}, "network_wait"};
     if (host_) {
+        const auto before = host_->revision();
         auto r = host_->submit(c);
-        if (r.accepted) {
+        if (host_->revision() != before) {
             persist();
             revision_ = host_->revision();
             view_ = host_->view();

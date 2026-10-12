@@ -51,7 +51,8 @@ Json LocalSession::library() const {
 }
 Json LocalSession::createDraft(const std::string &presetId, int format) const {
     if (!application_) return fail("请先加载内容");
-    if (format != 1 && format != 2) return fail("卡组草稿版本无效");
+    if (format == 2 && content_->catalog.usesAlphaV25()) format = 3;
+    if (format != 1 && format != 2 && format != 3) return fail("卡组草稿版本无效");
     auto draft = application_->decks().create();
     draft.format = format;
     if (!presetId.empty()) {
@@ -61,10 +62,10 @@ Json LocalSession::createDraft(const std::string &presetId, int format) const {
         draft.name = found->name + " · 副本";
         draft.baseFormation = found->deck.baseFormation;
         for (const auto &id : found->deck.cards) ++draft.cards[id];
-        if (format == 2)
+        if (format >= 2)
             for (const auto &id : found->deck.sideDeck) ++draft.sideCards[id];
     }
-    if (format == 2) {
+    if (format >= 2) {
         for (auto it = draft.cards.begin(); it != draft.cards.end();) {
             const auto found = content_->catalog.cards.find(it->first);
             if (found != content_->catalog.cards.end() && found->second.type == CardType::Formation) {
@@ -72,7 +73,7 @@ Json LocalSession::createDraft(const std::string &presetId, int format) const {
                 it = draft.cards.erase(it);
             } else ++it;
         }
-        if (!presetId.empty() && !draft.sideCards.count(draft.baseFormation))
+        if (format == 2 && !presetId.empty() && !draft.sideCards.count(draft.baseFormation))
             draft.sideCards[draft.baseFormation] = 1;
     }
     return ok(app::encodeDraft(draft));

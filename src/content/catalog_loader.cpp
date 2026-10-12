@@ -18,7 +18,16 @@ Json readCatalogJson(const std::filesystem::path &directory) {
         fail("invalid catalog manifest");
     Json catalog = manifest.at("metadata");
     catalog["cards"] = Json::array();
-    const auto root = std::filesystem::weakly_canonical(directory);
+    // Windows can reject weakly_canonical on a workspace mounted with a
+    // restricted reparse-point policy even when every catalogue file is
+    // readable.  Absolute lexical normalization still lets the containment
+    // check below reject traversal while keeping portable packages usable.
+    std::filesystem::path root;
+    try {
+        root = std::filesystem::weakly_canonical(directory);
+    } catch (const std::filesystem::filesystem_error &) {
+        root = std::filesystem::absolute(directory).lexically_normal();
+    }
     std::set<std::string> ids;
     std::set<std::filesystem::path> files;
     for (const auto &entry : manifest.at("definitions")) {
@@ -37,7 +46,12 @@ Json readCatalogJson(const std::filesystem::path &directory) {
         for (const auto &component : relative)
             if (component == ".." || component == ".")
                 fail("definition path cannot traverse directories");
-        const auto file = std::filesystem::weakly_canonical(root / relative);
+        std::filesystem::path file;
+        try {
+            file = std::filesystem::weakly_canonical(root / relative);
+        } catch (const std::filesystem::filesystem_error &) {
+            file = (root / relative).lexically_normal();
+        }
         const auto contained = file.lexically_relative(root);
         if (contained.empty() || contained.is_absolute() || *contained.begin() == ".." ||
             !files.insert(file).second)

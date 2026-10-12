@@ -9,24 +9,11 @@ var _body: RichTextLabel
 var _actions: HBoxContainer
 
 func _ready() -> void:
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var shade: ColorRect = ColorRect.new()
-	shade.color = Color(0.01, 0.03, 0.06, 0.82)
-	add_child(shade)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_panel = PanelContainer.new()
+	_panel = %Panel
+	_title = %Title
+	_body = %Body
+	_actions = %Actions
 	_panel.add_theme_stylebox_override(&"panel", ArtBank.box("c2d.v2.ui.panel", 40))
-	add_child(_panel)
-	var column: VBoxContainer = VBoxContainer.new()
-	_panel.add_child(column)
-	_title = UiFactory.label("", 26)
-	column.add_child(_title)
-	_body = RichTextLabel.new()
-	_body.bbcode_enabled = false
-	_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	column.add_child(_body)
-	_actions = HBoxContainer.new()
-	column.add_child(_actions)
 	resized.connect(_reflow)
 	hide()
 

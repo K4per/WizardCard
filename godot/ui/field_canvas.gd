@@ -1,12 +1,47 @@
+@tool
 class_name FieldCanvas
 extends Control
 
 signal card_selected(card: CardPresentation)
+signal card_hovered(card: CardPresentation)
 signal selection_cleared()
 signal hand_toggle_requested()
 signal placement_requested(card_id: String, host_id: String, ring_index: int)
+signal ring_selected(host_id: String, ring_index: int)
 signal zone_clicked(kind: String, owner: int)
 signal layout_changed()
+
+@export_group("Presentation")
+@export var greybox: bool = false
+## Enable to author field bounds directly with the child Control anchors.
+## Otherwise FieldLayout supplies their bounds in both editor and runtime.
+@export var scene_region_overrides: bool = false:
+	set(value):
+		scene_region_overrides = value
+		queue_redraw()
+var background_theme: String = "arcane"
+@export var layout: FieldLayout = preload("res://ui/default_field_layout.tres"):
+	set(value):
+		if layout != null and layout.changed.is_connected(_layout_resource_changed):
+			layout.changed.disconnect(_layout_resource_changed)
+		layout = value if value != null else FieldLayout.new()
+		if not layout.changed.is_connected(_layout_resource_changed):
+			layout.changed.connect(_layout_resource_changed)
+		queue_redraw()
+@export_group("Editor Preview")
+@export var editor_preview: bool = true:
+	set(value):
+		editor_preview = value
+		queue_redraw()
+@export_range(0, 12, 1) var preview_ring_count: int = 6:
+	set(value):
+		preview_ring_count = value
+		queue_redraw()
+@export_range(0, 20, 1) var preview_hand_count: int = 5:
+	set(value):
+		preview_hand_count = value
+		queue_redraw()
+
 
 var field: FieldPresentation = FieldPresentation.new()
 var privacy: bool = false
@@ -27,25 +62,57 @@ var _opponent_region: Rect2
 var _own_casting_region: Rect2
 var _opponent_casting_region: Rect2
 var selected_id: String = ""
+var target_ids: Dictionary[String, bool] = {}
+var target_rings: Dictionary[String, PackedInt32Array] = {}
+
+func set_action_targets(ids: Array[String], rings: Dictionary[String, PackedInt32Array] = {}) -> void:
+	target_ids.clear()
+	for id: String in ids:
+		target_ids[id] = true
+	target_rings = rings.duplicate()
+	_dragged = null
+	_drag_active = false
+	queue_redraw()
+
+func clear_action_targets() -> void:
+	target_ids.clear()
+	target_rings.clear()
+	queue_redraw()
+
+func set_background_theme(theme_id: String) -> void:
+	background_theme = theme_id if theme_id in ["arcane", "slate", "ember"] else "arcane"
+	queue_redraw()
 
 func card_bounds(card: CardPresentation) -> Rect2:
 	for hit: Dictionary in _card_hits:
-		if hit["card"] == card:
+		if (hit["card"] as CardPresentation).instance_id == card.instance_id:
 			return hit["rect"]
 	return Rect2()
 
 func _ready() -> void:
+	if not layout.changed.is_connected(_layout_resource_changed):
+		layout.changed.connect(_layout_resource_changed)
 	focus_mode = Control.FOCUS_ALL
 	clip_contents = true
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	resized.connect(queue_redraw)
 	mouse_exited.connect(_clear_hover)
 
+func _layout_resource_changed() -> void:
+	queue_redraw()
+
 func configure(value: FieldPresentation) -> void:
 	field = value
 	hand_collapsed = false
 	_own_start = 0
 	_opponent_start = 0
+	selected_id = ""
+	_dragged = null
+	_drag_active = false
+	_keyboard_index = -1
+	_card_hits.clear()
+	_ring_hits.clear()
+	_zone_hits.clear()
 	_clear_hover()
 
 func set_hand_collapsed(enabled: bool) -> void:
@@ -69,6 +136,8 @@ func set_privacy(enabled: bool) -> void:
 	queue_redraw()
 
 func _clear_hover() -> void:
+	if not _hover_id.is_empty():
+		card_hovered.emit(null)
 	_hover_id = ""
 	tooltip_text = ""
 	queue_redraw()
@@ -77,49 +146,130 @@ func _draw() -> void:
 	_card_hits.clear()
 	_ring_hits.clear()
 	_zone_hits.clear()
-	_draw_cover(BattleArt.texture("dungeon_background"), Rect2(Vector2.ZERO, size), Color.WHITE)
+	if size.x < 1.0 or size.y < 1.0:
+		return
+	if Engine.is_editor_hint():
+		if editor_preview:
+			_draw_editor_preview()
+		return
+	if greybox:
+		draw_rect(Rect2(Vector2.ZERO, size), Color("18232e"))
+	elif background_theme == "slate":
+		draw_rect(Rect2(Vector2.ZERO, size), Color("243441"))
+	elif background_theme == "ember":
+		draw_rect(Rect2(Vector2.ZERO, size), Color("302329"))
+	else:
+		draw_rect(Rect2(Vector2.ZERO, size), Color("14202b"))
 	draw_rect(Rect2(Vector2.ZERO, size), Color(0.031, 0.075, 0.122, 0.18))
 	if privacy:
-		_draw_label("交接设备后，再揭开场地", Rect2(Vector2(0, size.y * 0.5 - 24), Vector2(size.x, 48)), 26, CardPainter.PAPER, true)
+		_draw_label("交接设备后，再揭开场地", Rect2(Vector2(0, size.y * 0.5 - 24), Vector2(size.x, 48)), 26, Color("e4edf0"), true)
 		return
 	# Keep deck labels clear of the first formation even when the live match
 	# shares the viewport with its action panel.
-	var left: float = maxf(size.x * 0.12, minf(210.0, size.x * 0.25))
-	var width: float = size.x - left - maxf(30.0, size.x * 0.08)
-	_opponent_region = Rect2(left, size.y * 0.105, width, size.y * 0.26)
-	_own_region = Rect2(left, size.y * 0.575, width, size.y * 0.415)
-	_opponent_casting_region = Rect2(left, size.y * 0.375, width, size.y * 0.09)
-	_own_casting_region = Rect2(left, size.y * 0.475, width, size.y * 0.09)
+	_update_regions()
 	_draw_formations(field.opponent_formations, _opponent_region, _opponent_start, false)
 	_draw_formations(field.own_formations, _own_region, _own_start, true)
 	_draw_casting(field.opponent_casting, field.opponent_casting_slots, _opponent_casting_region, false)
 	_draw_casting(field.own_casting, field.own_casting_slots, _own_casting_region, true)
-	_draw_decks(size.x * 0.015, size.y * 0.14, field.opponent_side_count, field.opponent_deck_count, 1)
-	_draw_decks(size.x * 0.015, size.y * 0.54, field.own_side_count, field.own_deck_count, 0)
-	_draw_ash(size.x * 0.92, size.y * 0.23, field.opponent_ash_count, 1)
-	_draw_ash(size.x * 0.92, size.y * 0.66, field.own_ash_count, 0)
-	_draw_hud(Rect2(size.x * 0.76, 12, size.x * 0.23, 96), false)
-	_draw_hud(Rect2(18, size.y - 110, size.x * 0.23, 96), true)
-	var phase: Rect2 = Rect2(size.x * 0.41, 4, size.x * 0.21, 48)
-	draw_texture_rect(BattleArt.texture("phase_banner"), phase, false)
-	_draw_label(field.phase_label, phase.grow(-6), 24, CardPainter.PAPER, true)
-	_draw_hand(size.y * 0.22)
+	_draw_piles(false)
+	_draw_piles(true)
+	_draw_opponent_hand()
+	_draw_hand(size.y * layout.hand_height_ratio)
 	if _drag_active and _dragged != null:
-		CardPainter.paint(self, _dragged, Rect2(_pointer - Vector2(40, 55), Vector2(80, 110)), "field", true)
+		_draw_simple_card(_dragged, Rect2(_pointer - Vector2(40, 55), Vector2(80, 110)), true)
 	layout_changed.emit()
 
-func _draw_cover(texture: Texture2D, rect: Rect2, modulate: Color) -> void:
-	if texture == null:
-		return
-	var texture_size: Vector2 = texture.get_size()
-	var scale_factor: float = maxf(rect.size.x / texture_size.x, rect.size.y / texture_size.y)
-	var crop_size: Vector2 = rect.size / scale_factor
-	var crop: Rect2 = Rect2((texture_size - crop_size) * 0.5, crop_size)
-	draw_texture_rect_region(texture, rect, crop, modulate)
+func _update_regions() -> void:
+	_own_region = _scene_region("OwnAnalysis", layout.field_region(size, layout.own_analysis))
+	_opponent_region = _scene_region("OpponentAnalysis", layout.field_region(size, layout.opponent_analysis))
+	_own_casting_region = _scene_region("OwnCasting", layout.field_region(size, layout.own_casting))
+	_opponent_casting_region = _scene_region("OpponentCasting", layout.field_region(size, layout.opponent_casting))
 
-func _draw_label(text: String, rect: Rect2, font_size: int, color: Color = CardPainter.PAPER, centered: bool = false) -> void:
+func _scene_region(node_name: String, fallback: Rect2) -> Rect2:
+	var region_node: Control = get_node_or_null(NodePath(node_name)) as Control
+	if region_node == null:
+		return fallback
+	if scene_region_overrides:
+		return Rect2(region_node.position, region_node.size)
+	region_node.anchor_left = fallback.position.x / size.x
+	region_node.anchor_top = fallback.position.y / size.y
+	region_node.anchor_right = fallback.end.x / size.x
+	region_node.anchor_bottom = fallback.end.y / size.y
+	region_node.offset_left = 0.0
+	region_node.offset_top = 0.0
+	region_node.offset_right = 0.0
+	region_node.offset_bottom = 0.0
+	return fallback
+
+func _mirror(rect: Rect2) -> Rect2:
+	return Rect2(size - rect.end, rect.size)
+
+func _draw_piles(own: bool) -> void:
+	var extent: Vector2 = size * layout.pile_size
+	var pile_positions: Array[Vector2] = [layout.main_deck_position, layout.ash_position, layout.side_deck_position]
+	var names: Array[String] = ["牌库", "灰烬区", "副卡组"]
+	var kinds: Array[String] = ["main_deck", "ash", "side_deck"]
+	var counts: Array[int] = [field.own_deck_count, field.own_ash_count, field.own_side_count]
+	if not own:
+		counts.assign([field.opponent_deck_count, field.opponent_ash_count, field.opponent_side_count])
+	for index: int in range(3):
+		var rect: Rect2 = Rect2(Vector2(size.x * pile_positions[index].x, size.y * pile_positions[index].y), extent)
+		var node_names: Array[String] = ["OwnMainDeck", "OwnAsh", "OwnSideDeck"]
+		rect = _scene_region(node_names[index], rect)
+		if not own:
+			rect = _mirror(rect)
+		_zone_hits.append({"kind": kinds[index], "owner": field.viewer if own else 1 - field.viewer, "rect": rect})
+		draw_rect(rect, Color("20303e"), true)
+		draw_rect(rect, Color("78919f"), false, 1)
+		_draw_label(names[index], Rect2(rect.position + Vector2(4, 10), Vector2(rect.size.x - 8, 24)), 17, Color("e4edf0"), true)
+		_draw_label(str(counts[index]), Rect2(rect.position + Vector2(4, 36), Vector2(rect.size.x - 8, 32)), 25, Color("e4edf0"), true)
+
+func _draw_opponent_hand() -> void:
+	var count: int = mini(field.opponent_hand_count, 16)
+	var extent: Vector2 = Vector2(34, 46)
+	var band: Rect2 = _scene_region("OpponentHand", Rect2(0, 2, size.x, 46))
+	for index: int in range(count):
+		var rect: Rect2 = Rect2(Vector2(band.get_center().x - (count * 22 + 12) * 0.5 + index * 22, band.position.y), extent)
+		draw_rect(rect, Color("20303e"), true)
+		draw_rect(rect, Color("78919f"), false, 1)
+
+func _draw_editor_preview() -> void:
+	# Editor-only silhouettes use no native service, player data or input hitboxes.
+	draw_rect(Rect2(Vector2.ZERO, size), Color("14202b"))
+	_update_regions()
+	_draw_editor_analysis(_opponent_region, false)
+	_draw_editor_analysis(_own_region, true)
+	_draw_piles(false)
+	_draw_piles(true)
+	_zone_hits.clear()
+	for region: Rect2 in [_opponent_casting_region, _own_casting_region]:
+		draw_rect(region, Color("303540"), true)
+		_draw_label("施法区 · 编辑器预览", region.grow(-8), 22, Color("f1dfb3"), true)
+	_draw_label("场地布局 · 仅展示数据", Rect2(size.x * 0.35, 4, size.x * 0.30, 48), 24, Color("e4edf0"), true)
+	var extent: Vector2 = _hand_card_size(size.y * layout.hand_height_ratio)
+	var stride: float = _hand_stride(extent.x, preview_hand_count)
+	var total: float = extent.x + (preview_hand_count - 1) * stride
+	var start_x: float = (size.x - total + extent.x) * 0.5
+	for index: int in range(preview_hand_count):
+		draw_set_transform_matrix(_hand_pose(index, preview_hand_count, start_x, stride, extent, false))
+		_draw_editor_card(Rect2(-extent * 0.5, extent))
+	draw_set_transform_matrix(Transform2D.IDENTITY)
+
+func _draw_editor_card(rect: Rect2) -> void:
+	if not rect.has_area():
+		return
+	draw_rect(rect, Color("243c4b"), true)
+	draw_rect(rect, Color("75919e"), false, 1)
+
+func _draw_label(text: String, rect: Rect2, font_size: int, color: Color = Color("e4edf0"), centered: bool = false) -> void:
 	var font: Font = Typography.HEADING
-	var displayed: String = CardPainter.shortened(text, rect.size.x, font_size, font)
+	var displayed: String = text
+	while not displayed.is_empty() and font.get_string_size(displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > rect.size.x:
+		displayed = displayed.left(displayed.length() - 1)
+	if displayed != text:
+		while not displayed.is_empty() and font.get_string_size(displayed + "…", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > rect.size.x:
+			displayed = displayed.left(displayed.length() - 1)
+		displayed += "…"
 	var width: float = font.get_string_size(displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	var x: float = (rect.size.x - width) * 0.5 if centered else 0.0
 	var baseline: Vector2 = rect.position + Vector2(x, (rect.size.y - font.get_height(font_size)) * 0.5 + font.get_ascent(font_size))
@@ -127,119 +277,163 @@ func _draw_label(text: String, rect: Rect2, font_size: int, color: Color = CardP
 	draw_string(font, baseline, displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, color)
 
 func _analysis_content(region: Rect2) -> Rect2:
-	# The texture has an inset floor border; its outer rectangle is not playable space.
-	var inset: Vector2 = region.size * Vector2(0.065, 0.12)
-	return Rect2(region.position + inset + Vector2(0, 40), region.size - inset * 2 - Vector2(0, 40))
+	var content: Rect2 = layout.analysis_content(region)
+	if region == _opponent_region:
+		content.position.y -= minf(layout.analysis_header_height, maxf(0.0, region.size.y - region.size.y * layout.analysis_safe_margin.y * 2.0))
+	return content
 
-func _draw_formations(formations: Array[FormationPresentation], region: Rect2, start: int, own: bool) -> void:
-	# One floor boundary per side; invisible lanes preserve formation/ring positions.
-	draw_texture_rect(BattleArt.texture("analysis_floor"), region, false, Color(1, 1, 1, 0.58))
-	var inset: Vector2 = region.size * Vector2(0.065, 0.12)
-	var header: Rect2 = Rect2(region.position + inset, Vector2(region.size.x - inset.x * 2, 32))
-	_draw_label(("我方" if own else "对手") + " · 解析区", header, 22, Color("f1dfb3"))
-	var capacity: int = _visible_groups(region)
-	var shown: int = mini(capacity, maxi(0, formations.size() - start))
+func _draw_formations(formations: Array[FormationPresentation], region: Rect2, _start: int, own: bool) -> void:
+	draw_rect(region, Color("20303e"), true)
 	var content: Rect2 = _analysis_content(region)
-	var stride: float = _tile_side() + 16
-	for offset: int in range(shown):
-		var cluster: Rect2 = Rect2(content.position + Vector2(0, offset * stride), Vector2(content.size.x, _tile_side()))
-		_draw_formation_cluster(formations[start + offset], cluster)
-	if formations.size() > capacity:
-		var counter_width: float = minf(360, header.size.x * 0.5)
-		_draw_label("%d–%d / %d 阵法 · 滚轮浏览" % [start + 1, start + shown, formations.size()], Rect2(Vector2(header.end.x - counter_width, header.position.y), Vector2(counter_width, 32)), 16, Color("d9e4da"))
+	var slot_count: int = maxi(1, layout.formation_slot_count)
+	var rows: int = mini(maxi(1, layout.formation_rows), slot_count)
+	var columns: int = maxi(1, ceili(float(slot_count) / rows))
+	var cell: Vector2 = Vector2((content.size.x - layout.slot_gap * (columns - 1)) / columns, (content.size.y - layout.slot_gap * (rows - 1)) / rows)
+	for slot: int in range(layout.formation_slot_count):
+		var cluster: Rect2 = Rect2(content.position + Vector2(slot % columns, slot / columns) * (cell + Vector2.ONE * layout.slot_gap), cell)
+		if not own:
+			cluster.position = content.end - (cluster.end - content.position)
+		draw_rect(cluster, Color("152632"), true)
+		draw_rect(cluster, Color("465e6c"), false, 1)
+		if slot < formations.size():
+			_draw_formation_cluster(formations[slot], cluster, own)
+		else:
+			_draw_empty_formation_lane(cluster, slot, own)
+	var inset: Vector2 = region.size * layout.analysis_safe_margin
+	var header_position: Vector2 = region.position + inset if own else Vector2(region.position.x + inset.x, region.end.y - inset.y - 24)
+	_draw_label(("我方" if own else "对手") + " · 解析区（%d槽）" % layout.formation_slot_count, Rect2(header_position, Vector2(region.size.x - inset.x * 2, 24)), 16, Color("b7c6ce"))
 
-func _draw_formation_cluster(formation: FormationPresentation, region: Rect2) -> void:
+func _draw_formation_cluster(formation: FormationPresentation, region: Rect2, own: bool = true) -> void:
 	var count: int = maxi(0, formation.ring_count)
-	var host_side: float = _tile_side()
-	var gap: float = host_side * 0.30
-	var host_rect: Rect2 = Rect2(region.position, Vector2.ONE * host_side)
-	var grid_origin: Vector2 = Vector2(host_rect.end.x + gap, host_rect.position.y)
-	var available: float = maxf(1, region.end.x - grid_origin.x)
-	# Every ring comes from the projection, including currently empty rings.
-	var stride: float = minf(host_side + gap, available / maxi(1, count))
-	var side: float = minf(host_side, stride * host_side / (host_side + gap))
+	var padding: float = 5.0
+	var host_width: float = maxf(48.0, region.size.x * layout.formation_slot_width_ratio)
+	var host_rect: Rect2 = Rect2(region.position + Vector2.ONE * padding, Vector2(host_width, region.size.y - padding * 2))
+	var grid: Rect2 = Rect2(host_rect.end.x + padding, region.position.y + padding, region.size.x - host_width - padding * 3, region.size.y - padding * 2)
+	# Every formation row owns a horizontal ring lane.  The lane remains a
+	# single row even when a formation has many spell positions, matching the
+	# tabletop layout and keeping each slot independent.
+	var columns: int = maxi(1, count)
+	var rows: int = 1
+	var gap: float = 3.0
+	var extent: Vector2 = Vector2((grid.size.x - gap * (columns - 1)) / columns, (grid.size.y - gap * (rows - 1)) / rows)
+	if not own:
+		host_rect.position.x = region.end.x - padding - host_width
 	for ring: int in range(count):
-		var ring_rect: Rect2 = Rect2(grid_origin + Vector2(ring * stride, (host_side - side) * 0.5), Vector2.ONE * side)
+		var ring_rect: Rect2 = Rect2(grid.position + Vector2(ring % columns, ring / columns) * (extent + Vector2.ONE * gap), extent)
+		if not own:
+			ring_rect.position = region.end - (ring_rect.end - region.position)
 		_ring_hits.append({"rect": ring_rect, "host": formation.card.instance_id, "ring": ring})
-		if formation.occupants.has(ring) or _drag_active:
-			draw_line(host_rect.get_center(), ring_rect.get_center(), Color(0.36, 0.65, 0.63, 0.19), 1)
+		draw_rect(ring_rect, Color("263c49"), true)
+		draw_rect(ring_rect, Color("506e7d"), false, 1)
+		if target_rings.has(formation.card.instance_id) and target_rings[formation.card.instance_id].has(ring):
+			draw_rect(ring_rect, Color(0.49, 0.86, 0.61, 0.22), true)
+			draw_rect(ring_rect.grow(-1), Color("82db9d"), false, 2)
 		if formation.occupants.has(ring):
 			_draw_card(formation.occupants[ring], ring_rect)
-		elif _drag_active:
-			draw_rect(ring_rect, Color(0.28, 0.65, 0.67, 0.4), false, 1)
+		else:
+			_draw_label(str(ring + 1), ring_rect, 11, Color("77929f"), true)
 	_draw_card(formation.card, host_rect)
 
-func _draw_card(card: CardPresentation, rect: Rect2, view: String = "field") -> void:
+func _draw_empty_formation_lane(region: Rect2, slot: int, own: bool) -> void:
+	var padding: float = 4.0
+	var host_width: float = maxf(48.0, region.size.x * layout.formation_slot_width_ratio)
+	var host: Rect2 = Rect2(region.position + Vector2.ONE * padding, Vector2(host_width, region.size.y - padding * 2))
+	var lane: Rect2 = Rect2(host.end.x + padding, host.position.y, region.size.x - host_width - padding * 3, host.size.y)
+	if not own:
+		host.position.x = region.end.x - padding - host_width
+		lane.position.x = region.position.x + padding
+	draw_rect(host, Color("223642"), true)
+	draw_rect(host, Color("567180"), false, 1)
+	draw_rect(lane, Color("1d2f3c"), true)
+	draw_rect(lane, Color("3f5968"), false, 1)
+	_draw_label("阵法槽 %d" % (slot + 1), host.grow(-2), 12, Color("829aa8"), true)
+
+func _draw_editor_analysis(region: Rect2, own: bool) -> void:
+	# Editor preview mirrors the runtime lane structure but never creates card
+	# hitboxes.  This keeps scene authorship predictable while still showing all
+	# five editable rows in the inspector.
+	draw_rect(region, Color("20303e"), true)
+	var content: Rect2 = _analysis_content(region)
+	var slot_count: int = maxi(1, layout.formation_slot_count)
+	var rows: int = mini(maxi(1, layout.formation_rows), slot_count)
+	var columns: int = maxi(1, ceili(float(slot_count) / rows))
+	var cell: Vector2 = Vector2((content.size.x - layout.slot_gap * (columns - 1)) / columns, (content.size.y - layout.slot_gap * (rows - 1)) / rows)
+	for slot: int in range(slot_count):
+		var row: Rect2 = Rect2(content.position + Vector2(slot % columns, slot / columns) * (cell + Vector2.ONE * layout.slot_gap), cell)
+		if not own:
+			row.position = content.end - (row.end - content.position)
+		var host_width: float = maxf(48.0, row.size.x * layout.formation_slot_width_ratio)
+		var host: Rect2 = Rect2(row.position + Vector2(5, 5), Vector2(host_width, maxf(1.0, row.size.y - 10)))
+		var lane: Rect2 = Rect2(host.end.x + 5, row.position.y + 5, maxf(1.0, row.size.x - host_width - 15), maxf(1.0, row.size.y - 10))
+		if not own:
+			host.position.x = row.end.x - 5 - host_width
+			lane = Rect2(row.position.x + 5, row.position.y + 5, maxf(1.0, row.size.x - host_width - 15), maxf(1.0, row.size.y - 10))
+		_draw_editor_card(host)
+		var count: int = maxi(1, preview_ring_count)
+		var gap: float = 3.0
+		var side: float = maxf(1.0, (lane.size.x - gap * (count - 1)) / count)
+		for ring: int in range(count):
+			var ring_x: float = lane.position.x + ring * (side + gap)
+			if not own:
+				ring_x = lane.end.x - side - ring * (side + gap)
+			_draw_editor_card(Rect2(ring_x, lane.position.y, side, lane.size.y))
+
+func _draw_card(card: CardPresentation, rect: Rect2, _view: String = "field") -> void:
 	_card_hits.append({"rect": rect, "card": card})
-	if view == "field":
-		CardPainter.paint_art(self, card, rect, card.instance_id == _hover_id or card.instance_id == selected_id)
-	else:
-		CardPainter.paint(self, card, rect, view, card.instance_id == _hover_id or card.instance_id == selected_id)
+	_draw_simple_card(card, rect, card.instance_id == _hover_id or card.instance_id == selected_id)
+	_draw_legal_highlight(card, rect)
+
+func _draw_simple_card(card: CardPresentation, rect: Rect2, highlighted: bool = false) -> void:
+	SimpleCardPainter.paint(self, card, rect, highlighted)
+
+func _draw_legal_highlight(card: CardPresentation, rect: Rect2) -> void:
+	if not target_ids.is_empty():
+		if target_ids.has(card.instance_id):
+			draw_rect(rect.grow(4), Color(0.49, 0.86, 0.61, 0.18), false, 7)
+			draw_rect(rect.grow(2), Color("82db9d"), false, 2)
+		return
+	var availability: int = field.legal_cards.get(card.instance_id, 0)
+	if availability > 0 and not card.hidden:
+		var color: Color = Color("e5c773") if availability == 2 else Color("7ec5e3")
+		draw_rect(rect.grow(4), Color(color, 0.16), false, 7)
+		draw_rect(rect.grow(2), color, false, 2)
 
 func _draw_casting(cards: Array[CardPresentation], _slots: int, region: Rect2, own: bool) -> void:
-	draw_texture_rect(BattleArt.texture("casting_floor"), region, false, Color(1, 1, 1, 0.55))
+	if greybox:
+		draw_rect(region, Color("3a3938"))
+		draw_rect(region, Color("c9b894"), false, 1)
+	else:
+		draw_rect(region, Color("303540"), true)
 	if cards.is_empty():
 		_draw_label("施法区（%s）" % ("我方" if own else "对手"), region.grow(-8), 22, Color("f1dfb3"), true)
-	var side: float = minf(_tile_side(), minf(region.size.y - 16, (region.size.x - 80) / maxi(cards.size(), 1) - 8))
+	# Casting is a compact horizontal track.  At 720p its height is only about
+	# 32px, so using a square card would collapse into an unreadable 16px tile.
+	# Keep a short card strip instead and fit several cards without leaving the
+	# track bounds.
+	var card_height: float = clampf(region.size.y - 8.0, 18.0, 26.0)
+	var card_width: float = minf(110.0, maxf(34.0, (region.size.x - 64.0) / maxi(cards.size(), 1) - 6.0))
+	var gap: float = 6.0
+	var total_width: float = cards.size() * card_width + maxi(0, cards.size() - 1) * gap
+	var start_x: float = region.position.x + maxf(8.0, (region.size.x - total_width) * 0.5)
 	for index: int in range(cards.size()):
-		_draw_card(cards[index], Rect2(region.position + Vector2(32 + index * (side + 16), (region.size.y - side) * 0.5), Vector2.ONE * side))
+		var x: float = start_x + index * (card_width + gap)
+		if not own:
+			x = region.end.x - (start_x - region.position.x) - card_width - index * (card_width + gap)
+		_draw_card(cards[index], Rect2(Vector2(x, region.position.y + (region.size.y - card_height) * 0.5), Vector2(card_width, card_height)))
 
-func _draw_decks(x: float, y: float, side: int, main: int, owner: int) -> void:
-	# Side deck above main deck; only remaining counts are displayed.
-	for index: int in range(2):
-		var extent: float = minf(92, size.y * 0.10)
-		var point: Vector2 = Vector2(x, y + index * (extent + 18))
-		var rect: Rect2 = Rect2(point, Vector2.ONE * extent)
-		_zone_hits.append({"kind": "side_deck" if index == 0 else "main_deck", "owner": owner, "rect": rect})
-		draw_texture_rect(BattleArt.texture("side_deck_plate" if index == 0 else "main_deck_plate"), rect, false)
-		draw_texture_rect(ArtBank.texture("c2d.card.back.ai"), CardPainter.fitted_rect(Rect2(point + Vector2(12, 9), Vector2(extent - 34, extent - 22))), false)
-		var label: String = ("副卡组 %d" % side) if index == 0 else ("牌库 %d" % main)
-		_draw_label(label, Rect2(point + Vector2(extent + 8, extent * 0.5 - 16), Vector2(128, 32)), 18, Color("d9e4da"))
-
-func _draw_ash(x: float, y: float, count: int, owner: int) -> void:
-	var extent: float = minf(76, size.y * 0.09)
-	var rect: Rect2 = Rect2(x, y, extent, extent)
-	_zone_hits.append({"kind": "ash", "owner": owner, "rect": rect})
-	draw_texture_rect(BattleArt.texture("ash_plate"), rect, false)
-	_draw_label("灰烬区 %d" % count, Rect2(x - 12, y + extent + 4, minf(112, size.x - x + 4), 32), 18, CardPainter.PAPER, true)
-
-func _draw_hud(rect: Rect2, own: bool) -> void:
-	draw_texture_rect(BattleArt.texture("player_hud"), rect, false)
-	var values: Array[String] = [str(field.own_life if own else field.opponent_life), str(field.own_mana if own else field.opponent_mana), "%d/%d" % [field.own_load if own else field.opponent_load, field.own_load_limit if own else field.opponent_load_limit]]
-	var ids: Array[String] = ["resource_life", "resource_mana", "resource_load"]
-	var cell_width: float = (rect.size.x - 32) / 3
-	var icon_side: float = clampf(cell_width * 0.34, 32, 46)
-	for index: int in range(3):
-		var origin: Vector2 = rect.position + Vector2(16 + index * cell_width, 12)
-		var icon: Texture2D = BattleArt.texture(ids[index])
-		draw_texture_rect(icon, BattleArt.fitted(Rect2(origin + Vector2(0, (48 - icon_side) * 0.5), Vector2.ONE * icon_side), icon), false)
-		var value_rect: Rect2 = Rect2(origin + Vector2(icon_side + 6, 0), Vector2(cell_width - icon_side - 8, 48))
-		var value_size: int = clampi(roundi(cell_width * 0.20), 20, 26)
-		while value_size > 12 and Typography.HEADING.get_string_size(values[index], HORIZONTAL_ALIGNMENT_LEFT, -1, value_size).x > value_rect.size.x:
-			value_size -= 1
-		_draw_label(values[index], value_rect, value_size)
-	var track: Rect2 = Rect2(rect.position + Vector2(20, 74), Vector2(rect.size.x - 40, 10))
-	draw_texture_rect(BattleArt.texture("load_track"), track, false)
-	var limit: int = field.own_load_limit if own else field.opponent_load_limit
-	var load_value: int = field.own_load if own else field.opponent_load
-	var fraction: float = clampf(float(load_value) / limit, 0, 1) if limit > 0 else (1.0 if load_value > 0 else 0.0)
-	if fraction > 0:
-		var fill: Texture2D = BattleArt.texture("load_fill_warning" if load_value > limit else "load_fill_normal")
-		draw_texture_rect_region(fill, Rect2(track.position + Vector2(5, 2), Vector2((track.size.x - 10) * fraction, 6)), Rect2(Vector2.ZERO, Vector2(fill.get_width() * fraction, fill.get_height())))
-
-func _visible_groups(region: Rect2) -> int:
-	return maxi(1, floori((_analysis_content(region).size.y + 16) / (_tile_side() + 16)))
+func _visible_groups(_region: Rect2) -> int:
+	return layout.formation_slot_count
 
 func _tile_side() -> float:
-	return minf(80, size.y * 0.086)
+	return minf(layout.tile_max_size, size.y * layout.tile_height_ratio)
 
 func _draw_hand(height: float) -> void:
-	var card_height: float = minf(224, height)
-	var width: float = card_height * 160.0 / 224.0
+	var extent: Vector2 = _hand_card_size(height)
+	var width: float = extent.x
 	var count: int = field.hand.size()
 	if count == 0 or hand_collapsed:
 		return
-	var stride: float = minf(width * 0.66, (size.x * 0.70 - width) / maxi(1, count - 1))
+	var stride: float = _hand_stride(width, count)
 	var total: float = width + (count - 1) * stride
 	var start_x: float = (size.x - total + width) * 0.5
 	var selected_index: int = -1
@@ -247,26 +441,53 @@ func _draw_hand(height: float) -> void:
 		if field.hand[index].instance_id == selected_id:
 			selected_index = index
 		else:
-			_draw_hand_card(index, start_x, stride, Vector2(width, card_height), false)
+			_draw_hand_card(index, start_x, stride, extent, false)
 	# A raised card is painted last so neighbours cannot cover its face or hit area.
 	if selected_index >= 0:
-		_draw_hand_card(selected_index, start_x, stride, Vector2(width, card_height), true)
+		_draw_hand_card(selected_index, start_x, stride, extent, true)
+
+func _hand_card_size(height: float) -> Vector2:
+	var card_height: float = minf(layout.hand_max_height, height)
+	return Vector2(card_height * 160.0 / 224.0, card_height)
+
+func _hand_stride(width: float, count: int) -> float:
+	return maxf(0.0, minf(width * layout.hand_card_spacing_ratio, (size.x * layout.hand_width_ratio - width) / maxi(1, count - 1)))
+
+func _hand_pose(index: int, count: int, start_x: float, stride: float, extent: Vector2, raised: bool) -> Transform2D:
+	var fraction: float = (2.0 * index / (count - 1) - 1.0) if count > 1 else 0.0
+	var angle: float = deg_to_rad(minf(layout.fan_max_angle, (count - 1) * layout.fan_angle_per_card) * fraction)
+	var arch: float = layout.fan_arch_ratio if count > 1 else 0.0
+	var band: Rect2 = _scene_region("OwnHand", Rect2(0, size.y - extent.y, size.x, extent.y))
+	var center: Vector2 = Vector2(start_x + index * stride, band.end.y - extent.y * (0.5 + arch) - layout.hand_bottom_margin + fraction * fraction * extent.y * layout.fan_edge_drop_ratio)
+	if raised:
+		center += Vector2(0, -extent.y * layout.selected_raise_ratio).rotated(angle)
+		angle *= 0.2
+	# A rotated Rect2 can extend past its unrotated center by a larger amount
+	# than either half dimension. Clamp the transformed bounding box so every
+	# real hit rectangle stays inside the full-screen field at every viewport.
+	center = _clamp_hand_center(center, angle, extent)
+	return Transform2D(angle, center)
+
+func _clamp_hand_center(center: Vector2, angle: float, extent: Vector2) -> Vector2:
+	var cosine: float = absf(cos(angle))
+	var sine: float = absf(sin(angle))
+	var half_width: float = cosine * extent.x * 0.5 + sine * extent.y * 0.5
+	var half_height: float = sine * extent.x * 0.5 + cosine * extent.y * 0.5
+	var margin: float = 1.0
+	return Vector2(
+		clampf(center.x, half_width + margin, maxf(half_width + margin, size.x - half_width - margin)),
+		clampf(center.y, half_height + margin, maxf(half_height + margin, size.y - half_height - margin))
+	)
 
 func _draw_hand_card(index: int, start_x: float, stride: float, extent: Vector2, raised: bool) -> void:
 	var card: CardPresentation = field.hand[index]
-	var fraction: float = (2.0 * index / (field.hand.size() - 1) - 1.0) if field.hand.size() > 1 else 0.0
-	var angle: float = deg_to_rad(minf(22, (field.hand.size() - 1) * 4.5) * fraction)
-	var arch: float = 0.21 if field.hand.size() > 1 else 0.0
-	var center: Vector2 = Vector2(start_x + index * stride, size.y - extent.y * (0.5 + arch) - 12 + fraction * fraction * extent.y * 0.16)
-	if raised:
-		center += Vector2(0, -extent.y * 0.34).rotated(angle)
-		angle *= 0.2
-	var pose: Transform2D = Transform2D(angle, center)
+	var pose: Transform2D = _hand_pose(index, field.hand.size(), start_x, stride, extent, raised)
 	var rect: Rect2 = Rect2(-extent * 0.5, extent)
 	_card_hits.append({"rect": pose * rect, "card": card, "pose": pose, "local_rect": rect})
 	draw_set_transform_matrix(pose)
 	draw_rect(Rect2(rect.position + Vector2(3, 5), rect.size), Color(0, 0, 0, 0.3))
-	CardPainter.paint(self, card, rect, "hand", raised or card.instance_id == _hover_id)
+	_draw_simple_card(card, rect, raised or card.instance_id == _hover_id)
+	_draw_legal_highlight(card, rect)
 	draw_set_transform_matrix(Transform2D.IDENTITY)
 
 func card_at(point: Vector2) -> CardPresentation:
@@ -284,7 +505,7 @@ func card_at(point: Vector2) -> CardPresentation:
 	return null
 
 func _gui_input(event: InputEvent) -> void:
-	if privacy:
+	if Engine.is_editor_hint() or privacy:
 		return
 	if event is InputEventMouseMotion:
 		var motion: InputEventMouseMotion = event
@@ -292,8 +513,11 @@ func _gui_input(event: InputEvent) -> void:
 		if _dragged != null and motion.button_mask & MOUSE_BUTTON_MASK_LEFT and _press_position.distance_to(_pointer) > 8:
 			_drag_active = true
 		var hovered: CardPresentation = card_at(motion.position)
-		_hover_id = hovered.instance_id if hovered != null else ""
-		tooltip_text = hovered.title if hovered != null else ""
+		var new_hover: String = hovered.instance_id if hovered != null else ""
+		if _hover_id != new_hover:
+			_hover_id = new_hover
+			card_hovered.emit(hovered)
+		tooltip_text = "" # Full information is shown by the page's fixed detail panel.
 		queue_redraw()
 	elif event is InputEventMouseButton:
 		var mouse: InputEventMouseButton = event
@@ -319,6 +543,15 @@ func _gui_input(event: InputEvent) -> void:
 						placement_requested.emit(_dragged.instance_id, str(hit["host"]), int(hit["ring"]))
 						break
 			else:
+				for hit: Dictionary in _ring_hits:
+					var host: String = str(hit["host"])
+					var ring: int = int(hit["ring"])
+					if target_rings.has(host) and target_rings[host].has(ring) and (hit["rect"] as Rect2).has_point(mouse.position):
+						ring_selected.emit(host, ring)
+						_dragged = null
+						_drag_active = false
+						accept_event()
+						return
 				var selected: CardPresentation = card_at(mouse.position)
 				if selected != null:
 					card_selected.emit(selected)
@@ -338,6 +571,7 @@ func _gui_input(event: InputEvent) -> void:
 		_keyboard_index = wrapi(_keyboard_index + (-1 if event.is_action_pressed(&"ui_left") else 1), 0, _card_hits.size())
 		var card: CardPresentation = _card_hits[_keyboard_index]["card"]
 		_hover_id = card.instance_id
+		card_hovered.emit(card)
 		queue_redraw()
 		accept_event()
 	elif event.is_action_pressed(&"ui_accept") and _keyboard_index >= 0 and _keyboard_index < _card_hits.size():

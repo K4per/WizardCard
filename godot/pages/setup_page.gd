@@ -11,45 +11,21 @@ var _notice: Label
 var _start: Button
 
 func _ready() -> void:
-	var column: VBoxContainer = VBoxContainer.new()
-	UiFactory.margin(self, 32).add_child(column)
-	UiFactory.heading(column, "开始对局", navigation_requested.emit.bind(&"menu"))
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	column.add_child(scroll)
-	var center: CenterContainer = CenterContainer.new()
-	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.add_child(center)
-	var panel: PanelContainer = PanelContainer.new()
-	panel.custom_minimum_size.x = 720
-	center.add_child(panel)
-	var options: VBoxContainer = VBoxContainer.new()
-	options.add_theme_constant_override(&"separation", 10)
-	panel.add_child(options)
-	options.add_child(UiFactory.label("选择玩法与卡组", 30))
-	_mode = _option(options, "对局模式", ["挑战 AI", "本地双人换手", "新手教学"])
-	_mode.item_selected.connect(_mode_changed)
-	_difficulty = _option(options, "AI 难度", ["入门", "标准", "进阶"])
+	_mode = %Mode
+	_difficulty = %Difficulty
+	_decks.assign([%PlayerDeck, %OpponentDeck])
+	_notice = %Notice
+	_start = %Start
+	(%Back as Button).pressed.connect(navigation_requested.emit.bind(&"menu"))
+	(%BuildDeck as Button).pressed.connect(navigation_requested.emit.bind(&"decks"))
+	_start.pressed.connect(start)
+	for caption: String in ["挑战 AI", "本地双人换手", "新手教学"]:
+		_mode.add_item(caption)
+	for caption: String in ["入门", "标准", "进阶"]:
+		_difficulty.add_item(caption)
 	_difficulty.select(1)
-	for title: String in ["玩家一 · 卡组", "玩家二 / AI · 卡组"]:
-		_decks.append(_option(options, title, []))
-	_notice = UiFactory.label("使用合法的 40 张主卡组和 10 张副卡组。换手时会遮挡双方私有信息。", 18, true)
-	options.add_child(_notice)
-	_start = UiFactory.button("开始对局", start, true)
-	options.add_child(_start)
-	options.add_child(UiFactory.button("前往卡组构筑", navigation_requested.emit.bind(&"decks")))
+	_mode.item_selected.connect(_mode_changed)
 	_mode_changed(0)
-
-func _option(parent: VBoxContainer, title: String, items: Array[String]) -> OptionButton:
-	parent.add_child(UiFactory.label(title, 18))
-	var option: OptionButton = OptionButton.new()
-	option.custom_minimum_size.y = 52
-	for item: String in items:
-		option.add_item(item)
-	parent.add_child(option)
-	return option
 
 func configure(value: FrontendService) -> void:
 	service = value

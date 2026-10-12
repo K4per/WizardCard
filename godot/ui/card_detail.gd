@@ -8,12 +8,21 @@ var _title: Label
 var _type: Label
 var _art: CardFace
 var _body: RichTextLabel
-var battle_skin: bool = false
-var vertical_battle_layout: bool = false
+@export var battle_skin: bool = false
+@export var vertical_battle_layout: bool = false
 var _battle_close: Button
 var _info_skin: TextureRect
 
 func _ready() -> void:
+	if has_node("Column"):
+		_title = %Title
+		_type = %Type
+		_art = %Art
+		_body = %Body
+		(%Close as Button).pressed.connect(closed.emit)
+		if card != null:
+			configure(card)
+		return
 	if battle_skin:
 		# The battle panel is sized by MatchPage on every viewport change. A
 		# fixed minimum here can force the right-anchored panel past the left edge

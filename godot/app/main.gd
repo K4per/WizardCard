@@ -122,7 +122,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		if page is DeckEditorPage:
 			(page as DeckEditorPage).request_leave()
 		elif page is MatchPage:
-			(page as MatchPage).request_leave()
+			(page as MatchPage)._open_match_menu()
 		else:
 			navigate(&"match" if service.match_active and current_page in [&"settings", &"replay"] else &"menu")
 		get_viewport().set_input_as_handled()

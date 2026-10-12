@@ -1,149 +1,133 @@
-# Godot 2D Alpha v2 integration
+# Godot Alpha v2.5.0 frontend
 
-This directory contains the native bridge and the runnable 2D frontend for
-`2.0.0-rc.1`: menu, the 45-card library, persisted settings, deck
-construction/editing, local match flows, replay and a field showcase. The
-showcase remains a presentation fixture, while match pages use the native
-session service. Approved C pixel art and preserved illustrations are copied
-without editing into `art/`, with hashes and geometry in `art/assets.json`.
-Old 2.5D layouts are not imported.
+This directory contains the native bridge and Godot 4.7.2 frontend for WizardCard
+2.5.0. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
+GDScript displays viewer projections and submits intents.
 
-Pinned toolchain: Godot **4.7.2**, matching export templates, godot-cpp
-**10.0.0-stable**, commit `507ed9d840c01a3c5b2a39af8bb4000bfac30bf5`.
-See `toolchain-lock.json`. Headless/native tests need neither Godot nor SFML.
+The frontend includes menu, library, settings, deck construction, setup,
+hotseat, AI, tutorial, LAN rooms, matches, replay and a display-only field
+showcase. The official library reads the 45-card native catalogue. Historical
+illustrated previews in `data/card-previews-v2.json` are display-only and cannot
+enter playable decks.
 
-Configure with `-DWIZARD_BUILD_CLIENT=OFF -DWIZARD_BUILD_GODOT=ON` and
-`-DGODOT_BIN=<pinned-editor>`. Use `GODOTCPP_TARGET=template_debug` and
-`template_release` in separate build directories. Build `wizard_godot_bridge`
-and `wizard_cli`, then run `ctest -R godot_ --output-on-failure`.
-`FETCHCONTENT_SOURCE_DIR_GODOT_CPP` may point to a verified local checkout.
+## Toolchain and execution
 
-`WizardBridge` is a RefCounted handle. Snapshots contain only the viewer's
-projection, legal actions, decisions and visible events. Session generations,
-revisions, decision/chain/link IDs cross the boundary as exact strings.
-Selection never pays; confirmation checks generation/revision again. Offline
-replay verification is explicitly separate from player snapshots. GDScript
-does not implement authoritative rules.
+The pinned engine is `4.7.2.stable.official.ed1daf0bf`; godot-cpp is pinned to
+`507ed9d840c01a3c5b2a39af8bb4000bfac30bf5`. See `toolchain-lock.json`.
+Configure with `WIZARD_BUILD_CLIENT=OFF`, `WIZARD_BUILD_GODOT=ON` and
+`GODOT_BIN=<pinned console executable>`. Use separate build directories for
+`GODOTCPP_TARGET=template_debug` and `template_release`.
 
-The isolated harness tests native loading, malformed DTOs, IDs, stale/duplicate
-callbacks, release and full CLI/Godot command-sequence replay. Human IME/DPI,
-visual/audio and physical LAN acceptance belong to the release-candidate gate.
+```powershell
+cmake --build build/godot-debug --config Debug --parallel 4
+ctest --test-dir build/godot-debug -C Debug --output-on-failure
+<Godot console executable> --path godot -- --assets <assets directory> --user-data <isolated directory>
+```
 
-## Frontend modules
+`tools/run_godot_frontend.ps1` is another development entry point. Native
+content is loaded from the filesystem; `tools/package_godot.py` exports the
+frontend and copies content and dependencies into a distribution directory.
+Default Godot persistence is isolated under `user://alpha-v2-frontend`;
+`--user-data` overrides it for native persistence tests.
 
-- `app/`: page navigation and a thin native library/settings service. It does
-  not start matches or interpret rules. Missing native/content failures are
-  visible, without inventing substitute card data.
-- `models/`: typed presentation resources. Hidden projection cards are stripped
-  of identity before textures, tooltips, details and drag previews see them.
-- `pages/`: independent menu, library, settings, deck list/editor, match,
-  replay, rooms and field scenes. The official library reads the native
-  45-card `assets/cards.json` catalogue. `data/card-previews-v2.json` contains
-  32 display-only design previews and cannot enter native deck drafts.
-- `ui/`: shared pixel theme, art cache, card drawing/detail, decision panel and
-  field canvas. Cards and rings on the battlefield are drawn by one CanvasItem;
-  there are no per-card buttons, permanent log panels or boxed empty zones.
-  Details appear on click; material decisions are modal and lock field input.
-  Formations start at the left of one large analysis boundary per side, with
-  ordered ring positions and no visible grid. Wheel browsing keeps additional
-  formations reachable. Hand cards overlap in a fan with lowered edges, extend
-  on selection, and retract with right click or Escape. With no card selected,
-  right click collapses or expands the whole hand; a footer button does the same.
-- `fixtures/`: labeled display-only arrangements, separate from real sessions.
-  Ring/slot counts are presentation inputs, not legality calculated in GDScript.
+## Editable scenes
 
-Decision signals carry exact string generation/revision/decision IDs; callbacks
-from an older displayed decision are ignored. Clicking or dragging emits an
-intent, without consuming a material, paying or mutating the projected board.
-Actual match submission, response/return choices, network polling, FX and sound
-integration follow the rule/session gates in dev.4–dev.7.
+Main page skeletons and shared controls are `.tscn` files. Headers, state bars,
+menus, details and decision shells can be selected in the scene tree and
+adjusted in the Inspector. Card lists, ring counts, legal actions and decision
+candidates are filled from projections at runtime.
 
-## Run and verify
+Open `pages/match_page.tscn` to edit the full-screen match shell. Its field is
+`ui/field_canvas.tscn`; child Controls define analysis, casting, hand and pile
+bounds. `FieldLayout` supplies their geometry by default. Enable
+`Presentation > Scene Region Overrides` to author the child Control anchors
+directly. To edit the field itself, open the shared scene or enable editable
+children on its instance.
 
-Deck construction opens through the enabled main-menu entry. Its list/editor
-preserve the v1.1 toolbar, three columns and pagination, with **40 main + 10
-formation side cards**, separate tabs/counts, a six-column built grid (30 per
-page), and a 3×3 pool with native search/combined filters. Cards use the original
-full AI frames. New archive/panel/slot/badge/drop art is in `art/deck-v2/`, with
-originals, prompts, 1080p exports and actual screenshots under
-`assets/art/godot-2d-v2/deck-builder-1080p-v1/` at the repository root.
+`ui/default_field_layout.tres` exposes formation row spacing, slot width ratio,
+analysis insets, hand fan and field/pile positions. Changing these
+parameters redraws the canvas and affects match and replay rendering. Use Make
+Unique and save a separate resource for a scene-specific layout.
 
-Right clicks and committed opposite-column drops adjust draft counts; Escape,
-right click, focus loss and invalid drops leave counts unchanged. Native draft
-format 2 stores main/side cards and initial formation independently. Opening a
-legacy draft migrates only the in-memory edit until explicitly saved. Incomplete
-drafts remain savable; failed writes preserve all edits. Unsaved leaving offers
-save/discard/continue. Construction validation is separate from old match
-legality: format-2 drafts cannot start legacy matches, and display-only 2.0
-preview cards cannot enter drafts. `tests/deck_frontend_smoke.gd` verifies these
-flows with a fresh isolated `--user-data`, `--assets` and `--output` directory;
-add `--capture` for actual rendered screenshots.
+`ui/simple_battle_theme.tres` owns battle fonts, panel styles and buttons. Match
+and replay scenes reference it directly; runtime initialization does not
+replace it. `pages/field_greybox.tscn` is the simple layout prototype.
 
-The 2.0 illustrated preview catalogue is `data/card-previews-v2.json`, marked
-`2.0.0-rc.1-preview` so it cannot be mistaken for the formal card-set version.
-Source design
-documents are preserved in `assets/card-designs/v2/` at the repository root;
-`tools/import_card_previews_v2.py` regenerates presentation data from those
-documents. Values, schools, summon conditions and effect text are shown in
-details and searched in Chinese. Slash-separated cost notation remains as
-supplied, and unspecified rarities/formation speeds remain blank. Sixteen cards
-reuse old illustrations (including the renamed mend/hexagram/pentagram motifs);
-sixteen new transparent PNGs and their ImageGen prompts/provenance live in
-`assets/art/godot-2d-v2/card-illustrations-v2-20261011/`. Art is copied unchanged
-to `art/illustrations-v2/`. This step imports art and catalogue display only;
-authoritative 2.0 effects remain a separate rule-engine migration.
+`FieldCanvas` has a tool preview using local silhouettes and exported ring/hand
+counts. It does not initialize a native session, read player files, generate
+input hitboxes or submit commands in the editor.
 
-The settings page and shared controls now use refined C-style ImageGen art in
-`art/ui-v2/`: gold-and-cyan panel borders, input frames, jewel sliders, and
-on/off switches. Ordinary buttons reuse the generated menu skins. Original
-images, 1080p exports, slicing metadata, prompts, and actual screenshots are in
-`assets/art/godot-2d-v2/ui-components-1080p-v1/` at the repository root. Settings
-behavior still uses the native persistence service.
+## Match interaction
 
-Typography uses open-source Noto Sans CJK SC: real Black 900 menu lettering
-(40px at 1080p), Bold 700 headings/actions/card names, and Regular body text.
-Shared weights are defined in `ui/typography.gd` and `ui/pixel_theme.tres`.
-Unmodified fonts and OFL notices are bundled under `art/fonts/`; pinned upstream
-URLs, copyright and hashes live in `assets/art/fonts/noto-sans-cjk-sc/` at the
-repository root. Menu glyph coverage and text/outline bounds are checked at
-all three frontend sizes.
+Each player has five permanent vertical analysis lanes. A lane contains one
+formation slot and a horizontal spell region, divided according to the
+projected ring count. Opponent lanes, piles and casting cards are centrally
+symmetric. The two casting tracks are compact and placed at the center.
 
-The field showcase uses overhead dungeon battle art in `art/battle-v3/` and
-`art/battle-v5/`: large unified analysis inlays, shallow casting strips, framed
-art-only spell thumbnails, HUD/load bars, a full card beside one information
-box, context controls and a card-effect choice skin. V5 source images and
-ImageGen prompts are in `assets/art/godot-2d-v2/battle-production-v5/` at the
-repository root. Rotated hand cards use their actual transformed rectangles
-for pointer input; the selected card is raised and drawn last. The analysis
-floor extends beneath the hand to the bottom of the field. Casting strips use
-9% of field height and artwork tiles are at most 80px at 1080p.
-Analysis card positions use the floor border's inner safe area. Larger resource
-icons and 20–26px Bold numbers, plus outlined Bold field labels, improve contrast
-against the dungeon floor.
-Enter through the menu's field preview link. Effect choices remain a labeled
-showcase; real session command submission is unchanged. Integration evidence is
-in `docs/reports/battle-layout-v7-integration.md` (repository root).
+The field fills the viewport. The top HUD displays turn, acting player, phase
+and parallel player status. Phase switching sits to the right of own casting.
+During Main it offers Cast or End; End skips Cast while retaining required
+responses and end-of-turn decisions. Every choice comes from legal actions.
 
-After building the debug bridge, run the pinned editor with `--path godot` from
-the repository root, or use `tools/run_godot_frontend.ps1`. `--assets <directory>`
-selects the official content directory; `--user-data <directory>` isolates native
-persistence. Development defaults to `user://alpha-v2-frontend`, separate from
-the old client's data. Content is still read by native filesystem code; packing
-it into a release distribution is a later export task.
+Hover displays non-modal card details. Clicking pins a card and shows one short
+button per operation. Placement highlights projected legal formations; clicking
+a formation submits that exact action. Return decisions highlight formations
+and empty rings directly. Targets and materials are selected on the field.
+Submission preserves exact string generation/revision IDs.
+Available-card highlights come from `snapshot.actions[].source`.
+GDScript does not derive legality or pay costs. Unknown cards discard identity
+before rendering, details and drag previews.
 
-`python tools/prepare_godot_frontend_assets.py --check` verifies committed art
-without the uncommitted original collection. `ctest -R godot_` now also imports
-the actual frontend and runs `tests/frontend_smoke.gd`: three sizes, 0/1/7/12
-rings, five formations, a twenty-card fan, whole-hand collapse/expand, real
-viewport mouse/right-click/Esc/drag input, hidden details,
-handover, modal selection, exact/stale IDs, Chinese search, long text and settings
-save/reopen. Tests use a build-local user directory. To capture actual rendered
-images, run that script with a graphics display and `--capture --output <folder>`;
-headless success alone is not visual acceptance.
+Escape cancels the current transient interaction first and opens the match menu
+when idle. Settings, phase actions, replay and leaving are in that menu.
+Side deck, ash and rule decisions share a bottom horizontal card tray replacing
+the hand. Response choices use explicit confirm and pass buttons. Collapsing a
+tray restores the hand while its rule decision remains pending; the hand button
+reopens it. Mandatory decisions cannot be skipped. A compact hand toggle and
+right click control the fan; rotated card hit tests use inverse transforms. Hand
+cards remain inside the canvas at supported viewport sizes.
 
-Cold headless discovery uses `--import --frame-delay 1000` and is verified in a
-new directory on every `godot_cold_import` run. Immediate import-and-exit crashed
-locally only on first extension discovery; delaying editor shutdown passed.
-This matches the upstream documentation-generation race reported in
-[Godot #111048](https://github.com/godotengine/godot/issues/111048). This is a
-harness workaround, not a patch to the pinned engine or a retry that hides errors.
+Matches use simple color panels, borders and text. Artwork remains available
+for other pages and provenance, but is not used for the match field, cards or
+match decision controls. Settings persist `arcane`, `slate` or `ember` and
+apply the same background identifier in match and replay.
+
+Both players privately choose a level-one formation from their own side deck
+before simultaneous reveal. Local hotseat, AI and tutorial have no clock. LAN
+clocks are authoritative: 300 seconds, +60 at own turn start, capped at 300.
+Menus and settings do not pause a LAN match; disconnect freeze and reconnect
+are managed by the host session. Card setting-condition text comes from the
+native recipe through `settingConditions`.
+
+Deck format 3 stores 40 main cards and 10 formation side cards without a fixed
+initial choice. Legacy drafts remain readable and repairable; incomplete
+drafts can be saved. Replay format 4 checks version and content hash and
+explicitly rejects 2.0.0-rc.1 recordings.
+
+## Verification
+
+`ctest -R godot_` checks import, cold extension discovery, bridge boundaries,
+full deterministic CLI/bridge replay, frontend, match, field and deck flows.
+Extension users run serially to avoid Windows DLL hot-reload collisions.
+
+Frontend checks cover 1280x720, 1600x1000 and 1920x1080, projected 0/1/7/12 ring
+counts, all five formation lanes, a twenty-card hand, mouse/right-click/Escape,
+drag intents, decision locks, hidden identities, settings and deck drafts.
+Match checks exercise private opening, real viewport clicks and confirmation,
+Escape/reselection/menu, replay, AI privacy, tutorial and rooms.
+Card selection checks cover grouped operations, field targets, return rings and
+stale contexts. Tray checks cover all three sizes, field visibility, private
+collections, collapse without submission, and explicit response pass.
+
+For actual rendered screenshots, run a smoke script without `--headless` and
+append `-- --assets <directory> --user-data <isolated directory> --capture
+--output <capture directory>`. Headless success alone is not visual acceptance.
+The standalone field script accepts `--output` without `--capture`.
+
+Cold imports use `--import --frame-delay 1000` so deferred extension docs finish
+before exit, matching the upstream race in Godot #111048. This is a test harness
+workaround rather than a change to the engine. Human DPI/IME and physical
+multi-device LAN acceptance are recorded separately from automated results.
+
+Art hashes and licenses remain in `art/assets.json`, `assets/art/` and the root
+third-party notices. Typography uses unmodified OFL Noto Sans CJK SC fonts.

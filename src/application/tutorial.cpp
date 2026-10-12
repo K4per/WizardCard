@@ -60,7 +60,7 @@ std::string Tutorial::title() const {
 std::string Tutorial::hint(const GameView &v) const {
     if (alphaV2) {
         switch (lesson) {
-        case Lesson::Intro: return "使用固定种子的40张主卡组与10张副卡组，初始小六芒星来自副卡组。对手手牌和盖伏卡身份保密。";
+        case Lesson::Intro: return v.opening ? "先从副卡组确认一张等级1阵法。双方确认后同时公开设置，再洗牌并抽取起手。" : "使用固定种子的40张主卡组与10张副卡组，初始小六芒星来自副卡组。对手手牌和盖伏卡身份保密。";
         case Lesson::Resources: return "抽牌阶段先获得阵法魔素收入，再抽牌；先手第一回合跳过抽牌。结束当前阶段，进入主要阶段。";
         case Lesson::Formation: return "从副卡组选择六芒星，以场上的小六芒星和2魔素支付配方。3级阵法才能承载3级火球术。";
         case Lesson::Rune: return "将逆三角星符附着于六芒星，使后续抽牌阶段魔素收入+2。魔素不足时先推进到下一回合。";
@@ -111,6 +111,7 @@ std::string Tutorial::hint(const GameView &v) const {
     return {};
 }
 bool Tutorial::canContinue(const GameView &v) const {
+    if (v.opening) return false;
     if (alphaV2) return lesson == Lesson::Intro || lesson == Lesson::Review;
     return lesson == Lesson::Intro || lesson == Lesson::Review ||
            (lesson == Lesson::Response && countered && !v.chain && !v.decision);
@@ -126,6 +127,7 @@ void Tutorial::continueLesson(const GameView &v) {
         lesson = Lesson::Complete;
 }
 bool Tutorial::allows(const GameView &v, const Command &cmd) const {
+    if (v.opening) return std::holds_alternative<SelectInitialFormation>(cmd) || std::holds_alternative<Surrender>(cmd);
     if (std::holds_alternative<Surrender>(cmd) || lesson == Lesson::Complete)
         return true;
     if (lesson == Lesson::Intro || lesson == Lesson::Review || canContinue(v))
@@ -252,6 +254,7 @@ void Tutorial::observe(PlayerId actor, const Command &cmd, const GameView &after
     (void)events;
 }
 std::optional<ai::Selection> Tutorial::opponent(const GameView &v) const {
+    if (v.opening) return ai::choose(v, ai::Difficulty::Easy);
     if (lesson == Lesson::Complete)
         return ai::choose(v, ai::Difficulty::Easy);
     if (alphaV2) {

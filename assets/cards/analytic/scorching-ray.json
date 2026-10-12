@@ -33,7 +33,7 @@
       "damageType": "fire"
     }
   ],
-  "text": "造成5点火焰伤害4次。",
+  "text": "对对方玩家造成5点火焰伤害4次。",
   "number": "020015",
   "illustrationId": "v2-scorching-ray"
 }

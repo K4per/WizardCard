@@ -1,10 +1,10 @@
 {
   "format": 1,
   "metadata": {
-    "rulesVersion": "2.0.0-rc.1",
-    "cardSetVersion": "2.0.0-rc.1",
+    "rulesVersion": "2.5.0",
+    "cardSetVersion": "2.5.0",
     "baseLoadCapacity": 2,
-    "mechanicsRevision": 2
+    "mechanicsRevision": 3
   },
   "definitions": [
     {

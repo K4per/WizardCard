@@ -48,9 +48,7 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 	if type_index == 3:
 		lines.append("阵体：%d　环位：%d" % [int(data.get("body", 0)), int(data.get("rings", 0))])
 		lines.append("荷载上限：%d　魔素收入：%d" % [int(data.get("capacity", 0)), int(data.get("income", 0))])
-		var summon_condition: String = str(data.get("summonCondition", ""))
-		if not summon_condition.is_empty():
-			lines.append("召唤条件：" + summon_condition)
+		lines.append("设置条件：" + formation_condition(data))
 	else:
 		var school: String = str(data.get("school", ""))
 		var schools: Dictionary[String, String] = {"abjuration": "防护", "conjuration": "咒法", "divination": "预言", "enchantment": "惑控", "evocation": "塑能", "illusion": "幻术", "necromancy": "死灵", "transmutation": "变化"}
@@ -60,6 +58,9 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 		lines.append("解析时间：%d　速度：%d" % [int(data.get("analysisTurns", 0)), card.speed])
 	card.metadata_text = "\n".join(lines)
 	return card
+
+static func formation_condition(data: Dictionary) -> String:
+	return str(data.get("settingConditions", ""))
 
 static func from_preview_definition(data: Dictionary) -> CardPresentation:
 	var card: CardPresentation = CardPresentation.new()

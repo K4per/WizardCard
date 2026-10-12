@@ -257,9 +257,11 @@ TEST_CASE("surrender through settings yields a result and restart preserves both
     a.requestSurrender();
     std::string error;
     auto actor = a.match().engine().state().active;
+    const auto revision = a.revision();
     REQUIRE(a.confirmSurrender(actor, error));
     REQUIRE(a.page() == Page::Match);
     REQUIRE(a.match().engine().state().result == 1 - actor);
+    REQUIRE(a.revision() > revision);
     REQUIRE(replay(f.content, readJson(a.replayPath())).digest() == a.match().engine().digest());
     const auto epoch = a.generation();
     REQUIRE(a.restart(91, error));
@@ -286,6 +288,7 @@ TEST_CASE("surrender save failure leaves the live session unmodified") {
     start(a, f.config());
     a.openSettings();
     const auto digest = a.match().engine().digest();
+    const auto revision = a.revision();
     std::filesystem::remove(a.replayPath());
     std::filesystem::create_directory(a.replayPath());
     a.requestSurrender();
@@ -293,6 +296,7 @@ TEST_CASE("surrender save failure leaves the live session unmodified") {
     REQUIRE_FALSE(a.confirmSurrender(a.match().engine().state().active, error));
     REQUIRE(a.page() == Page::ConfirmSurrender);
     REQUIRE(a.match().engine().digest() == digest);
+    REQUIRE(a.revision() == revision);
     a.cancelConfirmation();
     REQUIRE(a.page() == Page::Settings);
 }

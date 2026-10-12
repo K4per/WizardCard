@@ -4,6 +4,7 @@ extends Button
 signal card_selected(card: CardPresentation)
 
 var card: CardPresentation
+@export var simple_style: bool = false
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(176, 242)
@@ -22,7 +23,10 @@ func configure(value: CardPresentation) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	CardPainter.paint(self, card, Rect2(Vector2(4, 4), size - Vector2(8, 8)), "builder", is_hovered() or has_focus())
+	if simple_style:
+		SimpleCardPainter.paint(self, card, Rect2(Vector2(4, 4), size - Vector2(8, 8)), is_hovered() or has_focus())
+	else:
+		CardPainter.paint(self, card, Rect2(Vector2(4, 4), size - Vector2(8, 8)), "builder", is_hovered() or has_focus())
 
 func _on_pressed() -> void:
 	card_selected.emit(card)

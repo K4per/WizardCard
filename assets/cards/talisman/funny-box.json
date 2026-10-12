@@ -16,7 +16,7 @@
       "kind": "recover_enemy_ash_spell"
     }
   ],
-  "text": "将对方【灰烬区】的一张5级以下的解析法术盖伏在己方法阵上。",
+  "text": "将对方灰烬区一张等级低于5的解析法术盖伏在己方一个有合法空环位的阵法上。",
   "responseOnly": false,
   "number": "040004",
   "illustrationId": "v2-funny-box"

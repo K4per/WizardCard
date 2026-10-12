@@ -3,7 +3,7 @@ extends Control
 
 signal navigation_requested(page: StringName)
 
-var canvas: FieldCanvas
+@onready var canvas: FieldCanvas = $FieldCanvas
 var _detail: CardDetail
 var _decision: DecisionPanel
 var _privacy_button: Button
@@ -23,7 +23,7 @@ func _ready() -> void:
 	status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	header.add_child(status)
-	canvas = FieldCanvas.new()
+	remove_child(canvas)
 	canvas.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(canvas)
 	canvas.card_selected.connect(_show_detail)
@@ -96,6 +96,7 @@ func _layout_panels() -> void:
 
 func configure(service: FrontendService) -> void:
 	canvas.configure(FieldShowcase.create(service.cards))
+	canvas.set_background_theme(str(service.settings.get("fieldBackground", "arcane")))
 	if not service.error.is_empty():
 		_notice.text = service.error
 

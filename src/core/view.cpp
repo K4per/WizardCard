@@ -15,6 +15,10 @@ GameView GameEngine::viewFor(PlayerId p) const {
     v.phaseStep = state_.phaseStep;
     v.phaseGate = state_.phaseGate;
     v.chain = state_.chain;
+    v.opening = state_.opening;
+    v.initialFormationConfirmed = {state_.initialFormations[0] != 0, state_.initialFormations[1] != 0};
+    v.initialFormation = state_.initialFormations[p];
+    v.globalTurn = state_.globalTurn;
     for (int i = 0; i < 2; ++i) {
         const auto &pl = state_.players[i];
         int hand = 0;

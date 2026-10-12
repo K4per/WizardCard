@@ -43,12 +43,11 @@ class HostSession {
     void ready();
     CommandResult submit(const Command &);
     bool advance();
-    void freeze(bool value) {
-        frozen_ = value;
-    }
+    void freeze(bool value);
+    void tick();
     void end() {
         ended_ = true;
-        frozen_ = true;
+        freeze(true);
     }
     bool started() const {
         return bool(match_);
@@ -151,7 +150,7 @@ class Peer : public RoomSession {
     bool replayDelivered_{};
     unsigned short port_{};
     std::filesystem::path replayPath_;
-    std::chrono::steady_clock::time_point received_, heartbeat_, lost_, retry_, connecting_;
+    std::chrono::steady_clock::time_point received_, heartbeat_, lost_, retry_, connecting_, clockSent_;
     bool persist();
     void queueReplay(const Json &);
     void streamReplay();

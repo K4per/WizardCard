@@ -59,6 +59,13 @@ TEST_CASE("every command variant round trips") {
 }
 TEST_CASE("replay detects incompatible content versions and tampering") {
     auto c=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");MatchSession session(c,42);auto p=session.engine().state().active;
+    for (int actor = 0; actor < 2; ++actor) {
+        const auto view = session.viewFor(actor);
+        for (const auto &a : view.actions) if (std::holds_alternative<SelectInitialFormation>(a.command)) {
+            REQUIRE(session.submit(actor, a.command).accepted); break;
+        }
+    }
+    p = session.engine().state().active;
     REQUIRE(session.submit(p,AdvancePhase{session.engine().state().phaseGate}).accepted);REQUIRE(session.submit(1-p,Surrender{}).accepted);
     auto j=session.recording();REQUIRE(replay(c,j).digest()==session.engine().digest());
     j["contentHash"]="changed";REQUIRE_THROWS(replay(c,j));j=session.recording();j["commands"][0]["digest"]="wrong";REQUIRE_THROWS(replay(c,j));

@@ -17,6 +17,8 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
         if (def.type != CardType::Analytic || c.faceDown || cmd.discard || c.zone != Zone::Analysis || c.spell != SpellState::Ready ||
             c.canceledTurn == pl.ownTurn)
             return "not_ready: 法术未解析完成";
+        if (!validTargets(s, def.target, def.targetCount, actor, cmd.target, cmd.targets))
+            return "target: 无效目标";
         if (!deferred && ((actor != s.active && (!c.wasAmbushed || c.ambushedTurn >= s.globalTurn || def.speed < 2)) ||
             (def.speed == 1 && s.phase != Phase::Main) ||
             (def.speed == 2 && s.phase != Phase::Main && s.phase != Phase::Cast)))
@@ -111,11 +113,35 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         return "invalid_player: 无效玩家";
     if (s.result != -1)
         return "game_over: 对局已经结束";
+    if (std::holds_alternative<Timeout>(command)) {
+        s.result = 1 - actor; s.opening = false;
+        s.queue.items.clear(); s.deferredPreparations.clear(); s.decision.reset();
+        s.effect.reset(); s.chain.reset(); s.phaseGate = 0;
+        s.events.push_back({"timeout", "玩家 " + std::to_string(actor + 1) + " 思考时间耗尽", -1});
+        return {};
+    }
     if (std::holds_alternative<Surrender>(command)) {
+        s.opening = false;
         s.players[actor].surrendered = true;
         StateMaintenance::check(s, catalog_);
         return {};
     }
+    if (s.opening) {
+        const auto *choice = std::get_if<SelectInitialFormation>(&command);
+        if (!choice) return "opening_required: 请先确认初始阵法";
+        if (s.initialFormations[actor]) return "initial_confirmed: 初始阵法已确认";
+        const auto found = s.cards.find(choice->card);
+        if (found == s.cards.end() || found->second.owner != actor || found->second.zone != Zone::SideDeck)
+            return "invalid_initial: 初始阵法必须来自自己的副卡组";
+        const auto &definition = catalog_.at(found->second.definition);
+        if (definition.type != CardType::Formation || definition.level != 1)
+            return "invalid_initial: 初始阵法必须为等级1的阵法卡";
+        s.initialFormations[actor] = choice->card;
+        if (s.initialFormations[0] && s.initialFormations[1]) finishOpening();
+        else s.active = s.initialFormations[0] ? 1 : 0;
+        return {};
+    }
+    if (std::holds_alternative<SelectInitialFormation>(command)) return "opening_finished: 开局选择已经结束";
     if (s.decision) {
         const auto d = *s.decision;
         if (actor != d.player)
@@ -392,6 +418,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         if (std::holds_alternative<Advance>(command) && s.phase != Phase::Main)
             return "wrong_phase: 旧推进命令仅适用于主要阶段";
         auto gate = std::get_if<AdvancePhase>(&command);
+        if (gate && gate->skipCast) return "unsupported_phase: 当前规则不能跳过施法阶段";
         if (actor != s.active || s.phaseStep != PhaseStep::Body || !s.phaseGate ||
             (gate && gate->gate != s.phaseGate) || s.chain || s.effect || !s.queue.items.empty())
             return "phase_gate: 当前阶段不能结束";
@@ -480,7 +507,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             if constexpr (std::is_same_v<T, Advance> || std::is_same_v<T, AdvancePhase> ||
                           std::is_same_v<T, Choose> || std::is_same_v<T, PassResponse> ||
                           std::is_same_v<T, Respond> || std::is_same_v<T, Surrender> ||
-                          std::is_same_v<T, FlipAmbush> || std::is_same_v<T, ActivateSpell>)
+                          std::is_same_v<T, FlipAmbush> || std::is_same_v<T, ActivateSpell> || std::is_same_v<T, Timeout> ||
+                          std::is_same_v<T, SelectInitialFormation>)
                 return "invalid_command";
             else {
                 auto i = s.cards.find(cmd.card);

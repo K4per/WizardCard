@@ -12,7 +12,7 @@ Json encodeCommand(const Command &c) {
             using T = std::decay_t<decltype(x)>;
             if constexpr (!std::is_same_v<T, Advance> && !std::is_same_v<T, AdvancePhase> &&
                           !std::is_same_v<T, PassResponse> && !std::is_same_v<T, Surrender> &&
-                          !std::is_same_v<T, Choose>)
+                          !std::is_same_v<T, Choose> && !std::is_same_v<T, Timeout>)
                 j["card"] = x.card;
             if constexpr (std::is_same_v<T, SetFormation>) {
                 j["replace"] = x.replace;
@@ -61,8 +61,10 @@ Json encodeCommand(const Command &c) {
             }
             if constexpr (std::is_same_v<T, PassResponse>)
                 j["decision"] = x.decision;
-            if constexpr (std::is_same_v<T, AdvancePhase>)
+            if constexpr (std::is_same_v<T, AdvancePhase>) {
                 j["gate"] = x.gate;
+                if (x.skipCast) j["skipCast"] = true;
+            }
         },
         c);
     return j;
@@ -133,7 +135,7 @@ Command decodeCommand(const Json &j) {
     case 13:
         return PassResponse{serial("decision")};
     case 14:
-        return AdvancePhase{serial("gate")};
+        return AdvancePhase{serial("gate"), j.value("skipCast", false)};
     case 15:
         return SetAmbush{id("card"), id("formation")};
     case 16:
@@ -141,6 +143,10 @@ Command decodeCommand(const Json &j) {
             j.contains("decision") ? serial("decision") : 0};
     case 17:
         return ActivateSpell{id("card"), id("target"), targets};
+    case 18:
+        return SelectInitialFormation{id("card")};
+    case 19:
+        return Timeout{};
     default:
         throw std::runtime_error("unknown command type");
     }

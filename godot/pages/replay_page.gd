@@ -19,51 +19,26 @@ var _step: int = 0
 var _path: String = ""
 
 func _ready() -> void:
-	var column: VBoxContainer = VBoxContainer.new()
-	UiFactory.margin(self, 20).add_child(column)
-	UiFactory.heading(column, "复盘记录", _return)
-	var files: HBoxContainer = HBoxContainer.new()
-	column.add_child(files)
-	_files = OptionButton.new()
-	_files.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_files.custom_minimum_size.y = 48
-	files.add_child(_files)
-	files.add_child(UiFactory.button("打开复盘", _load, true))
-	_notice = UiFactory.label("", 16, true)
-	column.add_child(_notice)
-	var controls: HBoxContainer = HBoxContainer.new()
-	column.add_child(controls)
-	_previous = UiFactory.button("上一步", _move.bind(-1))
-	_next = UiFactory.button("下一步", _move.bind(1))
-	controls.add_child(_previous)
-	_position = UiFactory.label("", 20)
-	_position.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_position.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	controls.add_child(_position)
-	controls.add_child(_next)
-	_viewer = OptionButton.new()
+	_files = %Files
+	_notice = %Notice
+	_previous = %Previous
+	_next = %Next
+	_viewer = %Viewer
+	_position = %Position
+	_command = %Command
+	_canvas = %Canvas
+	_detail = %Detail
+	(%Back as Button).pressed.connect(_return)
+	(%Load as Button).pressed.connect(_load)
+	_previous.pressed.connect(_move.bind(-1))
+	_next.pressed.connect(_move.bind(1))
 	_viewer.add_item("玩家一视角")
 	_viewer.add_item("玩家二视角")
 	_viewer.item_selected.connect(_viewer_changed)
-	controls.add_child(_viewer)
-	var body: HBoxContainer = HBoxContainer.new()
-	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	column.add_child(body)
-	_canvas = FieldCanvas.new()
-	_canvas.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_canvas.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_canvas.card_selected.connect(_show_detail)
 	_canvas.selection_cleared.connect(_hide_detail)
 	_canvas.hand_toggle_requested.connect(_toggle_hand)
-	body.add_child(_canvas)
-	_detail = CardDetail.new()
 	_detail.closed.connect(_hide_detail)
-	body.add_child(_detail)
-	_detail.hide()
-	_command = RichTextLabel.new()
-	_command.bbcode_enabled = false
-	_command.custom_minimum_size.y = 60
-	column.add_child(_command)
 	_update_controls()
 
 func configure(value: FrontendService) -> void:
@@ -130,12 +105,13 @@ func _show_frame() -> void:
 		return
 	var frame: Dictionary = response.get("data", {})
 	_canvas.configure(MatchProjection.field(frame))
+	_canvas.set_background_theme(str(service.settings.get("fieldBackground", "arcane")))
 	_hide_detail()
 	_command.text = "对局开始" if _step == 0 else "步骤 %d · 玩家 %d\n%s" % [_step, int(_rows[_step - 1].get("actor", 0)) + 1, _command_label(_rows[_step - 1].get("command", {}))]
 	_update_controls()
 
 func _command_label(command: Dictionary) -> String:
-	var kinds: Array[String] = ["设置阵法", "拆除阵法", "开始解析", "准备施法", "使用行动", "设置法术", "附着符文", "解除符文", "弃置法术", "推进阶段", "确认决策", "投降", "响应", "放弃响应", "推进阶段", "盖伏", "翻开盖伏", "发动法术"]
+	var kinds: Array[String] = ["设置阵法", "拆除阵法", "开始解析", "准备施法", "使用行动", "设置法术", "附着符文", "解除符文", "弃置法术", "推进阶段", "确认决策", "投降", "响应", "放弃响应", "推进阶段", "盖伏", "翻开盖伏", "发动法术", "选择初始阵法"]
 	var type: int = int(command.get("type", -1))
 	return kinds[type] if type >= 0 and type < kinds.size() else "执行操作"
 

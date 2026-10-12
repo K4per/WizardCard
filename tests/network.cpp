@@ -1,6 +1,7 @@
 #include "wizard/network.hpp"
 #include "wizard/application.hpp"
 #include <catch2/catch_test_macros.hpp>
+#include <algorithm>
 #include <chrono>
 #include <thread>
 using namespace wizard;
@@ -8,6 +9,20 @@ using namespace wizard::net;
 namespace {
 Content content() {
     return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+}
+Command initialAction(const GameView &view) {
+    const auto choice = std::find_if(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
+        return std::holds_alternative<SelectInitialFormation>(action.command);
+    });
+    REQUIRE(choice != view.actions.end());
+    return choice->command;
+}
+void submitGuest(HostSession &host, GuestSession &guest, const Command &command) {
+    const auto reply = host.receive(guest.command(command));
+    INFO(reply.dump());
+    REQUIRE(reply.at("type") == "Accepted");
+    guest.receive(reply);
+    guest.receive(host.snapshot(1 - host.player()));
 }
 struct Pair {
     Content c = content();
@@ -92,6 +107,39 @@ TEST_CASE("network guest view contains no opponent hand deck seed or digest") {
     for (const auto &e : v.events)
         CHECK((e.audience == -1 || e.audience == 1));
 }
+TEST_CASE("network opening keeps confirmed choices private across resume and reveals both together") {
+    Pair p;
+    const auto hostChoice = initialAction(p.host.view()), guestChoice = initialAction(p.guest.view());
+    const auto guestId = std::get<SelectInitialFormation>(guestChoice).card;
+    REQUIRE(p.host.view().opening);
+    REQUIRE(p.guest.view().players[1].handCount == 0);
+    submitGuest(p.host, p.guest, guestChoice);
+    const auto hostWaiting = p.host.view();
+    REQUIRE(hostWaiting.initialFormationConfirmed[1]);
+    REQUIRE(hostWaiting.initialFormation == 0);
+    REQUIRE(std::none_of(hostWaiting.cards.begin(), hostWaiting.cards.end(), [](const CardView &card) {
+        return card.instance.owner == 1;
+    }));
+    REQUIRE(hostWaiting.players[1].sideDeckCount == 10);
+    REQUIRE(hostWaiting.events.empty());
+    p.host.freeze(true);
+    p.guest.receive(p.host.receive(p.guest.resume()));
+    REQUIRE(p.guest.view().initialFormation == guestId);
+    REQUIRE(p.guest.view().initialFormationConfirmed[1]);
+    REQUIRE_FALSE(p.host.frozen());
+    const auto before = p.host.recording();
+    REQUIRE_FALSE(p.host.submit(guestChoice).accepted);
+    REQUIRE(p.host.recording() == before);
+    REQUIRE(p.host.submit(hostChoice).accepted);
+    p.guest.receive(p.host.snapshot(1));
+    REQUIRE_FALSE(p.guest.view().opening);
+    REQUIRE(p.guest.view().players[0].handCount == 5);
+    REQUIRE(p.guest.view().players[1].handCount == 5);
+    REQUIRE(std::count_if(p.guest.view().events.begin(), p.guest.view().events.end(), [](const GameEvent &event) {
+        return event.kind == "initial_formation";
+    }) == 2);
+    REQUIRE(replay(p.c, p.host.recording()).digest() == p.host.recording().at("finalDigest"));
+}
 TEST_CASE("network authority duplicate requests do not execute twice") {
     Pair p;
     auto request = p.guest.command(Surrender{});
@@ -149,7 +197,8 @@ TEST_CASE("network replay is available only after normal terminal result") {
 TEST_CASE("network room changes clear both readiness flags and host seat swaps") {
     auto c = content();
     HostSession h(c);
-    h.receive(hello(c));
+    GuestSession g(c);
+    g.receive(h.receive(hello(c)));
     h.ready();
     h.configure(false, false);
     CHECK(h.player() == 1);
@@ -160,6 +209,12 @@ TEST_CASE("network room changes clear both readiness flags and host seat swaps")
     h.receive({{"type", "Ready"}, {"session", h.session()}});
     CHECK(h.started());
     CHECK(h.view().viewer == 1);
+    g.receive(h.snapshot(0));
+    REQUIRE(h.view().opening);
+    REQUIRE(h.submit(initialAction(h.view())).accepted);
+    g.receive(h.snapshot(0));
+    submitGuest(h, g, initialAction(g.view()));
+    REQUIRE_FALSE(h.view().opening);
     CHECK(h.recording().at("statistics").at("firstPlayer") == 0);
 }
 TEST_CASE("network memory sessions run a complete match with matching replay") {
@@ -168,10 +223,14 @@ TEST_CASE("network memory sessions run a complete match with matching replay") {
     while (p.host.view().result == -1 && steps++ < 3000) {
         auto hv = p.host.view();
         auto gv = p.guest.view();
-        auto actor = hv.decision ? hv.viewer : (!gv.actions.empty() ? gv.viewer : hv.active);
+        const auto actor = hv.opening
+            ? (!hv.initialFormationConfirmed[0] ? 0 : !hv.initialFormationConfirmed[1] ? 1 : hv.active)
+            : (hv.decision ? hv.viewer : gv.decision ? gv.viewer :
+               !hv.actions.empty() ? hv.viewer : !gv.actions.empty() ? gv.viewer : hv.active);
         const auto &v = actor == hv.viewer ? hv : gv;
         auto selection = ai::choose(v, ai::Difficulty::Normal);
         REQUIRE(selection);
+        REQUIRE_FALSE(std::holds_alternative<Surrender>(selection->command));
         if (actor == hv.viewer)
             REQUIRE(p.host.submit(selection->command).accepted);
         else {
@@ -183,6 +242,8 @@ TEST_CASE("network memory sessions run a complete match with matching replay") {
         p.guest.receive(p.host.snapshot(1));
     }
     REQUIRE(p.host.view().result != -1);
+    REQUIRE(steps > 2);
+    REQUIRE_FALSE(p.host.view().opening);
     CHECK(replay(p.c, p.host.recording()).digest() == p.host.recording().at("finalDigest"));
 }
 TEST_CASE("network real TCP peers support settings independent progress and terminal replay") {
@@ -235,9 +296,12 @@ TEST_CASE("network real TCP peers support settings independent progress and term
     guest.tick();
     CHECK(guest.save(error));
 }
-TEST_CASE("network v2 recordings require the matching program and format") {
+TEST_CASE("network v2.5 recordings require the matching program and format") {
     Pair p;
     auto j = p.host.recording();
+    REQUIRE(j.at("format") == 4);
+    auto wrongFormat = j; wrongFormat["format"] = 3;
+    CHECK_THROWS(replay(p.c, wrongFormat));
     j["programVersion"] = "1.0.0-alpha";
     CHECK_THROWS(replay(p.c, j));
     j["programVersion"] = "unknown";

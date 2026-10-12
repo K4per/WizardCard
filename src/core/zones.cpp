@@ -132,6 +132,7 @@ void StateMaintenance::check(GameState &s, const CardCatalog &cat, bool endClean
         s.chain.reset();
         s.effect.reset();
         s.phaseGate = 0;
+        s.skipCastPhase = false;
     }
 }
 } // namespace wizard

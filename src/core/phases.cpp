@@ -26,6 +26,7 @@ void GameEngine::enqueuePhase(bool) {
         }
 }
 void GameEngine::pump() {
+    if (state_.opening) return;
     auto &s = state_;
     std::set<std::string> seen;
     for (int steps = 0; s.result == -1 && !s.decision; ++steps) {
@@ -96,7 +97,9 @@ void GameEngine::pump() {
                     if (e.kind == EffectKind::SearchAction
                             ? (c.owner == f.item.owner && c.zone == Zone::Deck &&
                                d.type == CardType::Action && (d.rarity == "common" || d.rarity == "uncommon"))
-                            : (c.owner != f.item.owner && c.faceDown))
+                            : (c.owner != f.item.owner && c.faceDown &&
+                               (!catalog_.usesAlphaV2() || (c.zone == Zone::Analysis &&
+                                (d.type == CardType::Analytic || d.type == CardType::Word || d.type == CardType::Talisman)))))
                         opts.push_back(id);
                 }
                 if (opts.empty()) {
@@ -157,6 +160,8 @@ void GameEngine::pump() {
             EffectResolver::apply(s, catalog_, f.item, e);
             if (s.result != -1)
                 break; // Immediate rules damage can clear the effect frame and entire chain.
+            if (catalog_.usesAlphaV2() && e.kind == EffectKind::AccelerateAnalysis)
+                analysisCompletedV2(f.item.targetCard);
             ++f.cursor;
             continue;
         }

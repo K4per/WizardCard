@@ -56,7 +56,7 @@ if(BUILD_TESTING AND GODOT_BIN)
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/godot/tests/${script}.gd" "${probe_dir}/tests/${script}.gd" COPYONLY)
   endforeach()
   file(GENERATE OUTPUT "${probe_dir}/wizard_bridge.gdextension" CONTENT
-    "[configuration]\nentry_symbol=\"wizard_bridge_init\"\ncompatibility_minimum=\"4.7\"\n[libraries]\nwindows.debug.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\nwindows.release.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\nlinux.debug.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\nlinux.release.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\n")
+    "[configuration]\nentry_symbol=\"wizard_bridge_init\"\ncompatibility_minimum=\"4.7\"\nreloadable=false\n[libraries]\nwindows.debug.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\nwindows.release.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\nlinux.debug.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\nlinux.release.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\n")
   # Cold GDExtension docs can race immediate editor shutdown (Godot #111048).
   # Keep --import's completion check; allow deferred docs callbacks to finish.
   add_test(NAME godot_import COMMAND "${GODOT_BIN}" --headless --path ${probe_dir} --import --frame-delay 1000)
@@ -90,6 +90,40 @@ if(BUILD_TESTING AND GODOT_BIN)
     --report ${CMAKE_CURRENT_BINARY_DIR}/frontend-report.json)
   set_tests_properties(godot_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_match_frontend_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/match_frontend_smoke.gd --
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    --user-data ${CMAKE_CURRENT_BINARY_DIR}/match-frontend-smoke-data)
+  set_tests_properties(godot_match_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 90 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_field_v25_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/field_v25_smoke.gd)
+  set_tests_properties(godot_field_v25_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_phase_selector_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/phase_selector_smoke.gd)
+  set_tests_properties(godot_phase_selector_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 30 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_card_selection_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/card_selection_smoke.gd)
+  set_tests_properties(godot_card_selection_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_card_tray_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/card_tray_smoke.gd)
+  set_tests_properties(godot_card_tray_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_deck_frontend_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/deck_frontend_smoke.gd --
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    --user-data ${CMAKE_CURRENT_BINARY_DIR}/deck-frontend-smoke-data
+    --output ${CMAKE_CURRENT_BINARY_DIR}/deck-frontend-smoke-output)
+  set_tests_properties(godot_deck_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  # Windows hot-reload copies of the same extension DLL collide across Godot
+  # processes. Serialize all extension users even when ctest runs with -j.
+  set_tests_properties(godot_bridge_boundary godot_bridge_replay
+    godot_frontend_smoke godot_match_frontend_smoke godot_deck_frontend_smoke godot_field_v25_smoke godot_card_selection_smoke godot_phase_selector_smoke godot_card_tray_smoke
+    PROPERTIES RUN_SERIAL TRUE)
   foreach(test godot_import godot_bridge_boundary godot_bridge_replay)
     set_tests_properties(${test} PROPERTIES FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   endforeach()

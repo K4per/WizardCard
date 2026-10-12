@@ -12,7 +12,7 @@
   "analysisTurns": 1,
   "target": "self",
   "effects": [],
-  "text": "计时3。回合开始时，恢复2点生命值。",
+  "text": "计时3。每个己方抽牌阶段，恢复自身2点生命。",
   "duration": 3,
   "onDraw": [
     {

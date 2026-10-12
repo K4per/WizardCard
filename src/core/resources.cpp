@@ -181,11 +181,18 @@ std::vector<std::string> Rules::deckErrors(const CardCatalog &cat, const PlayerD
                 if (++counts[d.name] > 3) out.push_back("at most 3 cards per name in each deck");
             }
         }
-        const auto initial = cat.cards.find(deck.baseFormation);
-        if (initial == cat.cards.end() || initial->second.type != CardType::Formation ||
-            initial->second.level != 1 || !initial->second.baseEligible ||
-            std::find(deck.sideDeck.begin(), deck.sideDeck.end(), deck.baseFormation) == deck.sideDeck.end())
-            out.push_back("initial formation must be an eligible level 1 entity in the side deck");
+        if (cat.usesAlphaV25()) {
+            if (std::none_of(deck.sideDeck.begin(), deck.sideDeck.end(), [&](const std::string &id) {
+                const auto card = cat.cards.find(id);
+                return card != cat.cards.end() && card->second.type == CardType::Formation && card->second.level == 1;
+            })) out.push_back("side deck must contain a level 1 formation");
+        } else {
+            const auto initial = cat.cards.find(deck.baseFormation);
+            if (initial == cat.cards.end() || initial->second.type != CardType::Formation ||
+                initial->second.level != 1 || !initial->second.baseEligible ||
+                std::find(deck.sideDeck.begin(), deck.sideDeck.end(), deck.baseFormation) == deck.sideDeck.end())
+                out.push_back("initial formation must be an eligible level 1 entity in the side deck");
+        }
         return out;
     }
     if (deck.cards.size() != 30)

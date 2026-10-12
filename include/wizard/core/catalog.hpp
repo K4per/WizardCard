@@ -30,6 +30,7 @@ struct RecipeCost {
 };
 struct CardDefinition {
     std::string id, name, text, rarity = "common", flavor;
+    std::string settingConditions; // Display derived from the executable formation recipe.
     CardType type{};
     int cost{}, castCost{}, rank{}, analysisTurns{1}, duration{}, burden{}, extraDiscard{};
     int concentrationUpkeep{-1};
@@ -55,6 +56,7 @@ struct CardDefinition {
 };
 struct CardCatalog {
     std::string rulesVersion, cardSetVersion, contentHash;
+    int mechanicsRevision{};
     std::map<std::string, CardDefinition> cards;
     bool advancedRules{};
     // Offline Alpha v2 rule fixtures only, until construction/phase gates are complete.
@@ -62,6 +64,7 @@ struct CardCatalog {
     bool alphaV2Draft{};
     bool alphaV2{};
     bool usesAlphaV2() const { return alphaV2 || alphaV2Draft; }
+    bool usesAlphaV25() const { return mechanicsRevision >= 3; }
     int baseLoadCapacity{};
     const CardDefinition &at(const std::string &id) const;
 };

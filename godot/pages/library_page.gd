@@ -14,40 +14,18 @@ var _kind_filter: OptionButton
 const KINDS: Array[String] = ["", "analysis", "incantation", "talisman", "formation", "rune"]
 
 func _ready() -> void:
-	var margin: MarginContainer = UiFactory.margin(self)
-	var column: VBoxContainer = VBoxContainer.new()
-	margin.add_child(column)
-	UiFactory.heading(column, "卡牌图鉴", navigation_requested.emit.bind(&"menu"))
-	var filters: HBoxContainer = HBoxContainer.new()
-	column.add_child(filters)
-	_search = LineEdit.new()
-	_search.placeholder_text = "搜索编号、名称、学派或效果"
-	_search.custom_minimum_size.y = 48
-	_search.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_grid = %Grid
+	_search = %Search
+	_detail = %Detail
+	_content = %Content
+	_notice = %Notice
+	_kind_filter = %KindFilter
+	(%Back as Button).pressed.connect(navigation_requested.emit.bind(&"menu"))
 	_search.text_changed.connect(_populate)
-	filters.add_child(_search)
-	_kind_filter = OptionButton.new()
-	_kind_filter.custom_minimum_size = Vector2(224, 48)
 	for kind: String in ["全部类型", "解析法术", "言灵法术", "咒符法术", "阵法", "符文"]:
 		_kind_filter.add_item(kind)
 	_kind_filter.item_selected.connect(_kind_changed)
-	filters.add_child(_kind_filter)
-	_notice = UiFactory.label("", 16)
-	column.add_child(_notice)
-	_content = HBoxContainer.new()
-	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	column.add_child(_content)
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_content.add_child(scroll)
-	_grid = GridContainer.new()
-	_grid.add_theme_constant_override(&"h_separation", 20)
-	_grid.add_theme_constant_override(&"v_separation", 20)
-	scroll.add_child(_grid)
-	_detail = CardDetail.new()
-	_detail.visible = false
 	_detail.closed.connect(_close_detail)
-	_content.add_child(_detail)
 	resized.connect(_resize_grid)
 
 func configure(value: FrontendService) -> void:

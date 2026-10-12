@@ -1,4 +1,16 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 [ext_resource type="Script" path="res://pages/field_page.gd" id="1"]
+[ext_resource type="PackedScene" path="res://ui/field_canvas.tscn" id="2_canvas"]
+[ext_resource type="Resource" path="res://ui/default_field_layout.tres" id="3_layout"]
 [node name="FieldPage" type="Control"]
+offset_right = 1920.0
+offset_bottom = 1080.0
 script = ExtResource("1")
+
+[node name="FieldCanvas" parent="." instance=ExtResource("2_canvas")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 76.0
+offset_right = -16.0
+offset_bottom = -76.0
+layout = ExtResource("3_layout")

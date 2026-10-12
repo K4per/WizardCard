@@ -15,17 +15,24 @@ static func label(text: String, font_size: int = 18, wrap: bool = false) -> Labe
 	return result
 
 static func button(text: String, callback: Callable, primary: bool = false) -> Button:
-	var result: Button = Button.new()
+	var result: Button = load("res://ui/common_button.tscn").instantiate() as Button
 	result.text = text
 	result.custom_minimum_size.y = 52
 	result.pressed.connect(callback)
-	result.pressed.connect(_button_pressed.bind(result))
-	result.mouse_entered.connect(_button_hover.bind(result, true))
-	result.mouse_exited.connect(_button_hover.bind(result, false))
-	result.resized.connect(_button_resized.bind(result))
 	if primary:
 		ArtBank.primary(result)
 	return result
+
+static func bind_button(control: Button, callback: Callable = Callable()) -> void:
+	if callback.is_valid() and not control.pressed.is_connected(callback):
+		control.pressed.connect(callback)
+	var pressed: Callable = _button_pressed.bind(control)
+	if control.pressed.is_connected(pressed):
+		return
+	control.pressed.connect(pressed)
+	control.mouse_entered.connect(_button_hover.bind(control, true))
+	control.mouse_exited.connect(_button_hover.bind(control, false))
+	control.resized.connect(_button_resized.bind(control))
 
 static func _button_hover(button: Button, hovered: bool) -> void:
 	if not is_instance_valid(button):

@@ -104,7 +104,7 @@ bool GameEngine::contentEffectV2() {
                 });
             break;
         case EffectKind::SearchSameSchool:
-            optional = f.clearRemaining < 0;
+            optional = false;
             if (f.clearRemaining < 0)
                 eligible = card.owner == owner && card.zone == Zone::Analysis && !card.faceDown && isSpell(definition);
             else {
@@ -114,21 +114,21 @@ bool GameEngine::contentEffectV2() {
             }
             break;
         case EffectKind::RecoverEnemyAshSpell:
-            optional = f.clearRemaining < 0;
+            optional = false;
             if (f.clearRemaining < 0) {
                 eligible = card.owner != owner && card.zone == Zone::Ash && !card.faceDown &&
                            definition.type == CardType::Analytic && definition.rank < 5;
                 if (eligible)
                     eligible = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &item) {
                         const auto &host = item.second;
-                        return host.owner == owner && host.zone == Zone::Analysis &&
+                        return host.owner == owner && host.zone == Zone::Analysis && !host.faceDown &&
                                catalog_.at(host.definition).type == CardType::Formation &&
                                Rules::maxRank(s, catalog_, host.id) >= definition.rank &&
                                Rules::freeRing(s, catalog_, host.id) >= 0;
                     });
             } else {
                 const auto &spell = catalog_.at(s.cards.at(static_cast<CardId>(f.clearRemaining)).definition);
-                eligible = card.owner == owner && card.zone == Zone::Analysis &&
+                eligible = card.owner == owner && card.zone == Zone::Analysis && !card.faceDown &&
                            definition.type == CardType::Formation &&
                            Rules::maxRank(s, catalog_, id) >= spell.rank && Rules::freeRing(s, catalog_, id) >= 0;
             }

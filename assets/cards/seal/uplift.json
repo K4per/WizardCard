@@ -4,7 +4,7 @@
   "type": "seal",
   "rarity": "common",
   "cost": 1,
-  "capacityBonus": 1,
+  "ringBonus": 1,
   "rankBonus": 1,
   "incomeBonus": -1,
   "castCostBonus": 1,

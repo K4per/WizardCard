@@ -16,6 +16,9 @@ std::string GameEngine::stateKey(bool logical) const {
     if (catalog_.usesAlphaV2())
         o << "v2:" << s.phaseCursor << ',' << s.maintenanceSource << ',' << s.phaseOrderCursor << ','
           << s.returnRequested << ',' << s.timingPending << ',' << s.nextFieldOrder << ';';
+    if (catalog_.usesAlphaV25())
+        o << "opening:" << s.opening << ',' << s.initialFormations[0] << ',' << s.initialFormations[1] << ';';
+    if (s.skipCastPhase) o << "skip_cast;";
     if (!logical)
         o << s.nextLoad << ',' << s.nextTrigger << ',' << s.nextBatch << ',' << s.nextDecision << ','
           << s.nextChain << ',' << s.nextLink << ',' << s.phaseGate << ';';

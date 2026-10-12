@@ -22,40 +22,32 @@ var _delete_id: String = ""
 var _page_index: int = 0
 
 func _ready() -> void:
-	_title = UiFactory.label("卡组构筑", 32)
-	_description = UiFactory.label("管理本地卡组 · 主卡组 40 张 / 阵法副卡组 10 张", 16)
-	_new = _button("新建卡组", _create)
-	_preset = OptionButton.new()
+	_title = %Title
+	_description = %Description
+	_new = %New
+	_preset = %Preset
+	_copy = %Copy
+	_empty = %Empty
+	_previous = %Previous
+	_next = %Next
+	_count = %Count
+	_notice = %Notice
+	_back = %Back
+	_dialog = %Dialog
 	DeckUi.compact_field(_preset)
-	_copy = _button("从预设复制", _copy_preset)
-	_previous = _button("上一页", _turn_page.bind(-1))
-	_next = _button("下一页", _turn_page.bind(1))
-	_count = UiFactory.label("", 16)
-	_count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_notice = UiFactory.label("", 14)
-	_notice.clip_text = true
-	_back = _button("返回主菜单", navigation_requested.emit.bind(&"menu"))
-	_empty = UiFactory.label("还没有自建卡组。\n新建草稿，或复制预设开始构筑。", 22, true)
-	for control: Control in [_title, _description, _new, _preset, _copy, _previous, _next, _count, _notice, _back, _empty]:
-		add_child(control)
+	_new.pressed.connect(_create)
+	_copy.pressed.connect(_copy_preset)
+	_previous.pressed.connect(_turn_page.bind(-1))
+	_next.pressed.connect(_turn_page.bind(1))
+	_back.pressed.connect(navigation_requested.emit.bind(&"menu"))
 	for index: int in range(6):
-		var row: DeckListRow = DeckListRow.new()
+		var row: DeckListRow = get_node("Margin/Column/Rows/Row%d/Deck%d" % [index, index]) as DeckListRow
 		row.pressed.connect(_edit.bind(index))
 		_rows.append(row)
-		add_child(row)
-		var button: Button = _button("删除卡组", _request_delete.bind(index))
+		var button: Button = get_node("Margin/Column/Rows/Row%d/Delete%d" % [index, index]) as Button
+		button.pressed.connect(_request_delete.bind(index))
 		_delete_buttons.append(button)
-		add_child(button)
-	_dialog = DeckDialog.new()
 	_dialog.chosen.connect(_delete_confirmed)
-	add_child(_dialog)
-	resized.connect(_reflow)
-	_reflow()
-
-func _button(text: String, callback: Callable) -> Button:
-	var result: Button = UiFactory.button(text, callback)
-	DeckUi.compact_button(result)
-	return result
 
 func configure(value: FrontendService) -> void:
 	service = value
@@ -66,27 +58,6 @@ func configure(value: FrontendService) -> void:
 	_copy.disabled = service.presets.is_empty() or not service.writable
 	_new.disabled = not service.writable
 	_refresh()
-
-func _reflow() -> void:
-	if _rows.is_empty():
-		return
-	DeckUi.place(_title, Rect2(32, 20, size.x - 64, 48))
-	DeckUi.place(_description, Rect2(32, 74, size.x - 64, 28))
-	DeckUi.place(_new, Rect2(32, 112, 180, 40))
-	DeckUi.place(_preset, Rect2(232, 112, 400, 40))
-	DeckUi.place(_copy, Rect2(652, 112, 220, 40))
-	var row_y: float = maxf(170, size.y * 0.2)
-	var pagination_y: float = size.y - 122
-	var row_height: float = minf(112, (pagination_y - row_y - 44) / 6.0)
-	for index: int in range(6):
-		DeckUi.place(_rows[index], Rect2(32, row_y + index * (row_height + 6), size.x - 288, row_height))
-		DeckUi.place(_delete_buttons[index], Rect2(size.x - 232, row_y + index * (row_height + 6), 200, row_height))
-	DeckUi.place(_empty, Rect2(56, row_y + 24, size.x - 112, 120))
-	DeckUi.place(_previous, Rect2(32, pagination_y, 180, 38))
-	DeckUi.place(_next, Rect2(size.x - 212, pagination_y, 180, 38))
-	DeckUi.place(_count, Rect2(232, pagination_y, size.x - 464, 38))
-	DeckUi.place(_notice, Rect2(32, size.y - 59, size.x - 328, 36))
-	DeckUi.place(_back, Rect2(size.x - 264, size.y - 62, 232, 40))
 
 func _refresh() -> void:
 	_page_index = clampi(_page_index, 0, maxi(0, ceili(service.drafts.size() / 6.0) - 1))

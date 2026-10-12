@@ -1,6 +1,7 @@
 class_name FieldPresentation
 extends Resource
 
+var viewer: int = 0
 var own_formations: Array[FormationPresentation] = []
 var opponent_formations: Array[FormationPresentation] = []
 var hand: Array[CardPresentation] = []
@@ -23,3 +24,10 @@ var opponent_load_limit: int = 0
 var own_ash_count: int = 0
 var opponent_ash_count: int = 0
 var phase_label: String = ""
+var global_turn: String = "0"
+var opening: bool = false
+var opponent_hand_count: int = 0
+var legal_cards: Dictionary[String, int] = {} # 1: setup, 2: spell activation/response
+var clock_remaining: Array[int] = [0, 0]
+var clock_running: Array[bool] = [false, false]
+var clock_available: bool = false

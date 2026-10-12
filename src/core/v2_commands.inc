@@ -188,6 +188,8 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
     if (actor != s.active || s.phaseStep != PhaseStep::Body) return "priority: 当前没有行动权";
     if (const auto *advance = std::get_if<AdvancePhase>(&command)) {
         if (!s.phaseGate || advance->gate != s.phaseGate) return "phase_gate: 无效阶段令牌";
+        if (advance->skipCast && s.phase != Phase::Main) return "wrong_phase: 只能在主要阶段跳过施法";
+        s.skipCastPhase = advance->skipCast;
         s.phaseGate = 0;
         s.phaseStep = PhaseStep::EndWindow;
         if (s.phase == Phase::Cast) s.returnRequested = true;
@@ -200,7 +202,8 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
     auto cardId = std::visit([](const auto &item) -> CardId {
         using T = std::decay_t<decltype(item)>;
         if constexpr (std::is_same_v<T, Choose> || std::is_same_v<T, Advance> ||
-                      std::is_same_v<T, AdvancePhase> || std::is_same_v<T, PassResponse> || std::is_same_v<T, Surrender>) return 0;
+                      std::is_same_v<T, AdvancePhase> || std::is_same_v<T, PassResponse> || std::is_same_v<T, Surrender> ||
+                      std::is_same_v<T, Timeout>) return 0;
         else return item.card;
     }, command);
     auto it = s.cards.find(cardId);
@@ -331,6 +334,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         beginEffect(cardId, AfterEffect::Spell); return {};
     }
     if (const auto *cmd = std::get_if<PreloadWord>(&command)) {
+        if (pl.blockedActionTurn == pl.ownTurn) return "blocked_incantation";
         if (!setupSpeed() || c.zone != Zone::Hand || def.type != CardType::Word || def.responseOnly ||
             !ring(cmd->formation) ||
             static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog_, actor))

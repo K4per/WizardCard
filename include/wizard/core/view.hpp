@@ -32,6 +32,14 @@ struct CardView {
     bool hidden{};
     int effectiveCastCost{};
 };
+// Session-owned projection. The rule kernel never derives elapsed wall time.
+struct MatchClockView {
+    bool enabled{}, running{};
+    std::array<std::int64_t, 2> remainingMs{300000, 300000};
+    std::array<bool, 2> runningPlayers{};
+    PlayerId runningPlayer{-1};
+    std::uint64_t sequence{};
+};
 struct GameView {
     PlayerId viewer{}, active{};
     Phase phase{};
@@ -47,6 +55,11 @@ struct GameView {
     std::optional<ChainState> chain;
     std::vector<Trigger> triggers; // only visible choices of this viewer's trigger-order decision
     std::uint64_t eventBase{}; // projection-only offset for bounded network event history
+    bool opening{};
+    std::array<bool, 2> initialFormationConfirmed{};
+    CardId initialFormation{}; // Only this viewer's confirmed entity while opening.
+    std::uint64_t globalTurn{1};
+    MatchClockView clock;
 };
 inline std::size_t firstNewEvent(const GameView& before,const GameView& after) {
     auto end=before.eventBase+before.events.size();

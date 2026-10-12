@@ -24,7 +24,7 @@ def main():
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--build", type=Path, required=True)
     parser.add_argument("--configuration", default="Release")
-    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.0.0-rc.1-windows-x64")
+    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.0-preview.1-windows-x64")
     parser.add_argument("--crt", type=Path, help="Directory containing the x64 VC runtime DLLs")
     args = parser.parse_args()
     lock = json.loads((ROOT / "godot/toolchain-lock.json").read_text())
@@ -63,7 +63,7 @@ def main():
         shutil.copy2(ROOT / name, output / name)
     shutil.copytree(ROOT / "licenses", output / "licenses")
     (output / "docs").mkdir()
-    for name in ("alpha-v2.0-rules.md", "releases/2.0.0-rc.1.md"):
+    for name in ("alpha-v2.5-rules.md", "releases/2.5.0.md"):
         source = ROOT / "docs" / name
         if source.exists():
             shutil.copy2(source, output / "docs" / source.name)

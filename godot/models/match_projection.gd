@@ -4,6 +4,7 @@ extends RefCounted
 static func field(snapshot: Dictionary) -> FieldPresentation:
 	var result: FieldPresentation = FieldPresentation.new()
 	var viewer: int = int(snapshot.get("viewer", 0))
+	result.viewer = viewer
 	var players: Array = snapshot.get("players", [])
 	if players.size() != 2:
 		return result
@@ -22,6 +23,24 @@ static func field(snapshot: Dictionary) -> FieldPresentation:
 	result.own_side_count = int(own.get("sideDeckCount", 0))
 	result.opponent_side_count = int(opponent.get("sideDeckCount", 0))
 	result.phase_label = str(snapshot.get("phaseName", ""))
+	result.global_turn = str(snapshot.get("globalTurn", "0"))
+	result.opening = bool(snapshot.get("opening", false))
+	result.opponent_hand_count = int(opponent.get("handCount", 0))
+	var clock: Dictionary = snapshot.get("clock", {})
+	result.clock_available = bool(clock.get("enabled", false))
+	var remaining: Array = clock.get("remainingMs", [0, 0])
+	var running_player: int = int(clock.get("runningPlayer", -1))
+	var running_players: Array = clock.get("runningPlayers", [false, false])
+	for player: int in range(2):
+		result.clock_remaining[player] = int(remaining[player]) if remaining.size() > player else 0
+		result.clock_running[player] = bool(clock.get("running", false)) and (bool(running_players[player]) if running_players.size() > player else running_player == player)
+	for action: Dictionary in snapshot.get("actions", []):
+		var source: String = str(action.get("source", "0"))
+		if source.is_empty() or source == "0":
+			continue
+		var command: Dictionary = action.get("command", {})
+		var activation: bool = int(command.get("type", -1)) in [3, 12, 16, 17]
+		result.legal_cards[source] = maxi(result.legal_cards.get(source, 0), 2 if activation else 1)
 	var formations: Dictionary[String, FormationPresentation] = {}
 	var rows: Array = (snapshot.get("cards", []) as Array).duplicate()
 	rows.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
@@ -92,11 +111,48 @@ static func card_name(snapshot: Dictionary, id: String) -> String:
 	if id.is_empty() or id == "0":
 		return "无"
 	var value: CardPresentation = card(snapshot, id)
-	return value.title if value != null else "公开对象 #" + id
+	return value.title if value != null else "公开对象"
+
+static func action_group_key(action: Dictionary) -> String:
+	var command: Dictionary = action.get("command", {})
+	var type: int = int(command.get("type", -1))
+	var key: String = str(type)
+	if type == 0:
+		key += ":replace" if str(command.get("replace", "0")) != "0" else ":set"
+	elif type == 12:
+		key += ":" + str(command.get("ability", ""))
+	elif type == 14:
+		key += ":end" if bool(command.get("skipCast", false)) else ":next"
+	return key
+
+static func action_label(snapshot: Dictionary, action: Dictionary) -> String:
+	var command: Dictionary = action.get("command", {})
+	var type: int = int(command.get("type", -1))
+	var labels: Dictionary[int, String] = {1: "拆除阵法", 2: "设置解析", 3: "准备施法", 4: "发动", 6: "附着", 7: "拆除符文", 8: "放弃", 9: "继续", 11: "投降", 12: "响应", 13: "放弃响应", 14: "切换阶段", 15: "盖伏", 16: "反转", 17: "发动", 18: "选择初始阵法"}
+	if type == 0:
+		return "替换阵法" if str(command.get("replace", "0")) != "0" else "设置阵法"
+	if type == 5:
+		return "设置并发动" if bool(command.get("release", false)) else "设置言灵"
+	if type == 8:
+		for row: Dictionary in snapshot.get("cards", []):
+			if str(row.get("id", "0")) == str(action.get("source", "0")):
+				return "放弃施法" if int(row.get("zone", -1)) == 5 else "放弃"
+	if type == 14:
+		if bool(command.get("skipCast", false)):
+			return "切换到结束阶段"
+		return "切换到施法阶段" if int(snapshot.get("phase", -1)) == 2 else "结束当前阶段"
+	if type == 10:
+		var label: String = str(action.get("label", "确认"))
+		var option: String = str(command.get("option", "0"))
+		return label.replace(" #" + option, "") if option != "0" else label
+	return labels.get(type, "确认")
 
 static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 	var command: Dictionary = action.get("command", {})
-	var lines: Array[String] = [str(action.get("label", "确认操作"))]
+	var lines: Array[String] = [action_label(snapshot, action)]
+	var source: String = str(action.get("source", "0"))
+	if source != "0":
+		lines[0] += " · " + card_name(snapshot, source)
 	for entry: Array in [["formation", "环位所属阵法"], ["host", "附着宿主"], ["replace", "替换阵法"], ["target", "目标"], ["discard", "弃牌成本"]]:
 		var id: String = str(command.get(entry[0], "0"))
 		if id != "0" and not id.is_empty():
@@ -109,5 +165,10 @@ static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 			lines.append(str(entry[1]) + "：" + "、".join(names))
 	var link: String = str(command.get("link", "0"))
 	if link != "0":
-		lines.append("连锁目标：#" + link)
+		var chain: Dictionary = snapshot.get("chain", {}) if snapshot.get("chain") is Dictionary else {}
+		for entry: Dictionary in chain.get("links", []):
+			if str(entry.get("id", "0")) == link:
+				var link_source: String = str(entry.get("source", "0"))
+				lines.append("连锁目标：" + (card_name(snapshot, link_source) if link_source != "0" else str(entry.get("kindName", "阶段"))))
+				break
 	return "\n".join(lines)

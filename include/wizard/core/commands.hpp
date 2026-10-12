@@ -59,6 +59,7 @@ struct PassResponse {
 };
 struct AdvancePhase {
     DecisionId gate{};
+    bool skipCast{};
 };
 struct SetAmbush {
     CardId card{}, formation{};
@@ -72,9 +73,14 @@ struct ActivateSpell {
     CardId card{}, target{};
     std::vector<CardId> targets;
 };
+// Confirms a private side-deck entity; both confirmations reveal the formations together.
+struct SelectInitialFormation { CardId card{}; };
+// Authority-generated terminal event; transports must reject user-submitted timeouts.
+struct Timeout {};
 using Command = std::variant<SetFormation, RemoveFormation, StartAnalysis, PrepareCast, PlayAction,
                              PreloadWord, AttachSeal, RemoveSeal, Abandon, Advance, Choose, Surrender,
-                             Respond, PassResponse, AdvancePhase, SetAmbush, FlipAmbush, ActivateSpell>;
+                             Respond, PassResponse, AdvancePhase, SetAmbush, FlipAmbush, ActivateSpell,
+                             SelectInitialFormation, Timeout>;
 enum class DecisionKind {
     Response,
     CastOrder,

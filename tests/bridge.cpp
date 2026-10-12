@@ -135,8 +135,16 @@ TEST_CASE("bridge whitelist excludes private cards hidden definitions seed and w
         }
     }
     GameView view; CardView hidden; hidden.hidden = true; hidden.definition.name = "must not leak";
+    hidden.instance.id = 42;
+    hidden.instance.host = 7;
+    hidden.instance.ringIndex = 3;
+    hidden.instance.fieldOrder = 9;
     view.cards.push_back(hidden);
-    REQUIRE_FALSE(bridge::viewDto(view).at("cards").at(0).contains("definition"));
+    const auto hiddenDto = bridge::viewDto(view).at("cards").at(0);
+    REQUIRE_FALSE(hiddenDto.contains("definition"));
+    REQUIRE(hiddenDto.at("host") == "7");
+    REQUIRE(hiddenDto.at("ringIndex") == 3);
+    REQUIRE(hiddenDto.at("fieldOrder") == "9");
     REQUIRE(bridge::viewDto(view).dump().find("must not leak") == std::string::npos);
 }
 TEST_CASE("bridge AI exposes only human projection and rejects stale plans") {
@@ -279,7 +287,7 @@ TEST_CASE("bridge replay frames rewind without changing the live match and valid
     REQUIRE(f.bridge.snapshot(0).at("data") == live);
 }
 
-TEST_CASE("v2 command DTO and wire codec retain recipe materials targets and exact decisions") {
+TEST_CASE("v2.5 command DTO and wire codec retain opening recipe materials targets and exact decisions") {
     const auto decision = std::numeric_limits<std::uint64_t>::max();
     const std::vector<Command> commands = {
         SetFormation{42, 8, {9, 10}}, StartAnalysis{2, 3, 4, {4, 5}},
@@ -287,13 +295,13 @@ TEST_CASE("v2 command DTO and wire codec retain recipe materials targets and exa
         PrepareCast{2, 4, 6, {4, 5}, decision}, FlipAmbush{2, 4, {4, 5}, decision},
         Choose{decision, 7, 2},
         Respond{decision, 2, "counter", 4, decision, 6, {4, 5}},
-        PassResponse{decision}, AdvancePhase{decision}};
+        PassResponse{decision}, AdvancePhase{decision}, AdvancePhase{decision, true}, SelectInitialFormation{42}, Timeout{}};
     for (const auto &command : commands) {
         const auto encoded = encodeCommand(command);
         REQUIRE(encodeCommand(decodeCommand(encoded)) == encoded);
         const auto dto = bridge::commandDto(command);
         for (const auto &[key, value] : dto.items()) {
-            if (key == "type" || key == "release" || key == "ability" || key == "ringIndex") continue;
+            if (key == "type" || key == "release" || key == "ability" || key == "ringIndex" || key == "skipCast") continue;
             if (value.is_array()) for (const auto &id : value) REQUIRE(id.is_string());
             else REQUIRE(value.is_string());
         }

@@ -11,14 +11,13 @@ var _skin: TextureRect
 var _state: String = ""
 
 func _ready() -> void:
-	_skin = TextureRect.new()
-	_skin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_skin.show_behind_parent = true
-	_skin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_skin.stretch_mode = TextureRect.STRETCH_SCALE
-	_skin.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	add_child(_skin)
-	_skin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_skin = get_node_or_null("Skin") as TextureRect
+	if _skin == null:
+		var template: Button = load("res://ui/menu_art_button.tscn").instantiate() as Button
+		_skin = template.get_node("Skin") as TextureRect
+		template.remove_child(_skin)
+		add_child(_skin)
+		template.free()
 	for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
 		var empty: StyleBoxEmpty = StyleBoxEmpty.new()
 		empty.set_content_margin(SIDE_LEFT, 72)

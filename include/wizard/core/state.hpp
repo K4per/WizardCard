@@ -52,6 +52,9 @@ struct GameState {
     CardId maintenanceSource{};
     std::uint64_t nextFieldOrder{1};
     bool returnRequested{}, timingPending{};
+    bool skipCastPhase{}; // Keep the end-turn intent while response and cleanup choices resolve.
     std::uint64_t phaseOrderCursor{};
+    bool opening{};
+    std::array<CardId, 2> initialFormations{};
 };
 } // namespace wizard

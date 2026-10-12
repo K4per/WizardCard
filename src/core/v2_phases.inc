@@ -47,6 +47,9 @@ bool GameEngine::returnSpellsV2() {
                 options.push_back(hostId);
         if (options.empty()) {
             StateMaintenance::leave(s, id, &catalog_);
+            // No legal host remains, so the maintenance source has been
+            // consumed and must not leak into a later decision or snapshot.
+            s.maintenanceSource = 0;
             return true;
         }
         s.maintenanceSource = id;
@@ -79,6 +82,14 @@ bool GameEngine::phaseV2() {
     }
     case PhaseStep::PrepareIncome: {
         if (s.phase == Phase::Draw && s.phaseCursor == 0) {
+            if (catalog_.usesAlphaV25()) {
+                s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &load) {
+                    return load.owner == s.active && !load.independent && !load.sourceBound;
+                }), s.temporary.end());
+                s.events.push_back({"temporary_load_cleared", "抽牌阶段清除临时荷载", -1});
+                pl.temporaryLife = 0;
+                s.events.push_back({"temporary_life_cleared", "抽牌阶段清除临时生命", -1});
+            }
             int income = 0;
             for (const auto &[id, card] : s.cards)
                 if (card.owner == s.active && card.zone == Zone::Analysis &&
@@ -118,13 +129,15 @@ bool GameEngine::phaseV2() {
             s.phaseStep = PhaseStep::StartWindow; return true;
         }
         if (s.phaseCursor == 0) {
-            s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &load) {
-                return load.owner == s.active && !load.independent && !load.sourceBound;
-            }), s.temporary.end());
+            if (!catalog_.usesAlphaV25())
+                s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &load) {
+                    return load.owner == s.active && !load.independent && !load.sourceBound;
+                }), s.temporary.end());
             ++s.phaseCursor; return true;
         }
         if (s.phaseCursor == 1) {
-            pl.temporaryLife = 0; ++s.phaseCursor; return true;
+            if (!catalog_.usesAlphaV25()) pl.temporaryLife = 0;
+            ++s.phaseCursor; return true;
         }
         if (s.phaseCursor == 2 || s.phaseCursor == 3) {
             auto next = nextFieldCard(s, catalog_, s.active, s.phaseCursor == 2, s.phaseOrderCursor);
@@ -175,6 +188,10 @@ bool GameEngine::phaseV2() {
         return true;
     }
     case PhaseStep::Body:
+        if (s.phase == Phase::End && s.skipCastPhase) {
+            s.phaseStep = PhaseStep::EndWindow;
+            return true;
+        }
         if (!s.phaseGate) s.phaseGate = s.nextDecision++;
         return false;
     case PhaseStep::EndWindow: {
@@ -227,12 +244,14 @@ bool GameEngine::phaseV2() {
     case PhaseStep::Finish:
         s.events.push_back({"phase_end", phaseName(s.phase) + "阶段结束"});
         if (s.phase == Phase::End) {
+            s.skipCastPhase = false;
             pl.actionsPlayed = 0; pl.formations = 0; pl.sealRemovals = 0;
             for (auto &[id, card] : s.cards)
                 if (card.owner == s.active) card.canceledTurn = -1;
             ++s.globalTurn; s.active = 1 - s.active; ++s.players[s.active].ownTurn;
             s.phase = Phase::Draw;
-        } else s.phase = static_cast<Phase>(static_cast<int>(s.phase) + 1);
+        } else s.phase = s.phase == Phase::Main && s.skipCastPhase ? Phase::End :
+            static_cast<Phase>(static_cast<int>(s.phase) + 1);
         s.phaseStep = PhaseStep::Enter; s.phaseGate = 0; return true;
     default:
         s.phaseStep = PhaseStep::StartWindow; return true;

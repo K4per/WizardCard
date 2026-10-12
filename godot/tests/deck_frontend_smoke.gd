@@ -56,7 +56,7 @@ func _run() -> void:
 	list._new.pressed.emit()
 	await _settle()
 	var editor: DeckEditorPage = _app.page as DeckEditorPage
-	_check(editor != null and int(_app.service.editing_draft.get("format", 0)) == 2, "New drafts use 40/10 profile")
+	_check(editor != null and int(_app.service.editing_draft.get("format", 0)) == 3 and not _app.service.editing_draft.has("baseFormation"), "New drafts use format 3 with match-start initial formation selection")
 	var id: String = str(_app.service.editing_draft["id"])
 	editor._name.text = "星辉藏书 · 40 / 10"
 	editor._rename(editor._name.text)
@@ -72,7 +72,6 @@ func _run() -> void:
 		var current: int = int(_app.service.editing_draft[membership].get(str(definition["id"]), 0))
 		for copy: int in range(mini(3 - current, remaining)):
 			editor._adjust(str(definition["id"]), 1, "cards")
-	_app.service.editing_draft["baseFormation"] = "small-hexagram"
 	editor._choose_section("cards")
 	await _settle()
 	_check(DeckUi.total(_app.service.editing_draft["cards"]) == 40, "Main deck reaches 40")
@@ -83,7 +82,9 @@ func _run() -> void:
 	editor._adjust("hexagram", 1, "sideCards")
 	_check(_app.service.editing_draft == complete, "Full deck and copy limits reject extra cards")
 	_check(editor._tabs[0].text.contains("40 / 40") and editor._tabs[1].text.contains("10 / 10"), "Independent counts remain visible")
-	_check(editor._initial_ids.has("small-hexagram"), "Initial formation choices come from own side deck")
+	_check(editor._initial is Label and editor._initial.text.contains("对局开始") and not _app.service.editing_draft.has("baseFormation"), "Editor explains match-start selection instead of storing an initial formation")
+	for card_id: String in _app.service.editing_draft["cards"]:
+		_check(int(_app.service.definitions[card_id]["type"]) != 3, "Formations never enter the main deck")
 	_check(editor._built.ids.size() == 30, "First main page displays 30 individual cards")
 	editor._turn_built(1)
 	_check(editor._built.ids.size() == 10, "Second main page displays remaining 10 cards")
@@ -105,7 +106,7 @@ func _run() -> void:
 	_check(not _app.service.draft_dirty(), "Save clears the dirty state")
 	var reopened: FrontendService = FrontendService.new()
 	_check(reopened.initialize(_assets, _user_data) and reopened.open_draft(id), "Independent service reloads saved deck")
-	_check(reopened.editing_draft == complete, "Restart preserves all main, side and initial formation data")
+	_check(reopened.editing_draft == complete, "Restart preserves format-3 main and side deck data")
 	reopened.release()
 	for dimensions: Vector2i in [Vector2i(1920, 1080), Vector2i(1600, 1000), Vector2i(1280, 720)]:
 		root.size = dimensions
@@ -154,7 +155,7 @@ func _run() -> void:
 	_check(bool(_app.service._request(&"save_draft", [old]).get("ok", false)), "Legacy draft can coexist with new drafts")
 	_app.service.refresh_library()
 	_check(_app.service.open_draft(str(old["id"])), "Legacy draft opens for migration")
-	_check(int(_app.service.editing_draft["format"]) == 2 and _app.service.editing_draft["sideCards"].get("hexagram", 0) == 3 and not _app.service.editing_draft["cards"].has("balance") and _app.service.editing_draft["baseFormation"] == "small-hexagram" and _app.service.draft_dirty(), "Legacy formation migrates to the surviving card ID in a dirty draft")
+	_check(int(_app.service.editing_draft["format"]) == 3 and _app.service.editing_draft["sideCards"].get("hexagram", 0) == 3 and not _app.service.editing_draft["cards"].has("balance") and not _app.service.editing_draft.has("baseFormation") and _app.service.draft_dirty(), "Legacy formation migrates to a dirty format-3 side deck without storing the initial formation")
 	_app.navigate(&"deck_editor")
 	await _settle()
 	editor = _app.page as DeckEditorPage

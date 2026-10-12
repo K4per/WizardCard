@@ -36,7 +36,8 @@ Json encodeSettings(const Settings &s) {
             {"width", s.width},
             {"height", s.height},
             {"automaticPhases", s.automaticPhases},
-            {"reducedMotion", s.reducedMotion}};
+            {"reducedMotion", s.reducedMotion},
+            {"fieldBackground", s.fieldBackground}};
 }
 Settings decodeSettings(const Json &j) {
     if (integer(j, "format", 1, 1) != 1)
@@ -55,6 +56,9 @@ Settings decodeSettings(const Json &j) {
             throw std::runtime_error("动画设置无效");
         s.reducedMotion = j.at("reducedMotion").get<bool>();
     }
+    s.fieldBackground = j.value("fieldBackground", std::string("arcane"));
+    if (s.fieldBackground != "arcane" && s.fieldBackground != "slate" && s.fieldBackground != "ember")
+        throw std::runtime_error("背景主题无效");
     return s;
 }
 std::filesystem::path userDataDirectory() {
@@ -96,7 +100,7 @@ std::vector<DeckPreset> loadPresets(const Content &content, const std::filesyste
         p.description = row.value("description", std::string{});
         if (p.id.empty() || p.name.empty() || !ids.insert(p.id).second)
             throw std::runtime_error("预设卡组ID或名称无效");
-        p.deck.baseFormation = row.at("baseFormation").get<std::string>();
+        p.deck.baseFormation = row.value("baseFormation", std::string{});
         p.deck.cards = parseDeck(row.at("cards"), content.catalog, "presets.json/" + p.id);
         if (content.catalog.usesAlphaV2()) {
             if (!row.contains("sideCards") || !row.at("sideCards").is_array())
@@ -391,6 +395,7 @@ bool Application::confirmSurrender(PlayerId actor, std::string &error) {
             throw std::runtime_error(r.error);
         atomicWriteJson(replayPath_, finished->recording());
         match_ = std::move(finished);
+        ++revision_;
         page_ = Page::Match;
         return true;
     } catch (const std::exception &e) {

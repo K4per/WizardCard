@@ -16,19 +16,20 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) : catalog_(st
             throw std::invalid_argument(errors.front());
     }
     state_.rng = config.seed ? config.seed : 0x9e3779b9u;
+    state_.opening = catalog_.usesAlphaV25();
+    if (state_.opening) state_.globalTurn = 0;
     CardId id = 1;
     for (int p = 0; p < 2; ++p) {
-        CardInstance base;
-        base.id = id++;
-        base.definition = config.players[p].baseFormation;
-        base.owner = p;
-        base.base = true;
-        base.zone = Zone::Analysis;
-        if (catalog_.usesAlphaV2()) base.fieldOrder = state_.nextFieldOrder++;
-        state_.cards.emplace(base.id, base);
+        if (!state_.opening) {
+            CardInstance base;
+            base.id = id++; base.definition = config.players[p].baseFormation;
+            base.owner = p; base.base = true; base.zone = Zone::Analysis;
+            if (catalog_.usesAlphaV2()) base.fieldOrder = state_.nextFieldOrder++;
+            state_.cards.emplace(base.id, base);
+        }
         bool selected = false;
         for (const auto &key : config.players[p].sideDeck) {
-            if (!selected && key == config.players[p].baseFormation) { selected = true; continue; }
+            if (!state_.opening && !selected && key == config.players[p].baseFormation) { selected = true; continue; }
             CardInstance c;
             c.id = id++; c.owner = p; c.definition = key; c.zone = Zone::SideDeck;
             state_.cards.emplace(c.id, c);
@@ -41,6 +42,31 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) : catalog_(st
             state_.cards.emplace(c.id, c);
             state_.players[p].deck.push_back(c.id);
         }
+    }
+    if (state_.opening) {
+        const auto errors = Rules::invariants(state_, catalog_);
+        if (!errors.empty()) throw std::logic_error("invalid opening: " + errors.front());
+        return;
+    }
+    finishOpening();
+    pump();
+}
+void GameEngine::finishOpening() {
+    if (state_.opening) {
+        for (int p = 0; p < 2; ++p) {
+            auto &card = state_.cards.at(state_.initialFormations[p]);
+            card.zone = Zone::Analysis; card.base = true;
+            card.fieldOrder = state_.nextFieldOrder++;
+        }
+        state_.opening = false;
+        state_.globalTurn = 1;
+        for (int p = 0; p < 2; ++p) {
+            const auto id = state_.initialFormations[p];
+            state_.events.push_back({"initial_formation", "玩家 " + std::to_string(p + 1) + " 设置初始阵法 " +
+                catalog_.at(state_.cards.at(id).definition).name, -1, id});
+        }
+    }
+    for (int p = 0; p < 2; ++p) {
         auto &deck = state_.players[p].deck;
         for (std::size_t i = deck.size(); i > 1; --i)
             std::swap(deck[i - 1], deck[bounded(state_, static_cast<std::uint32_t>(i))]);
@@ -50,7 +76,6 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) : catalog_(st
     }
     state_.first = state_.active = static_cast<int>(bounded(state_, 2));
     state_.players[state_.active].ownTurn = 1;
-    pump();
 }
 GameEngine GameEngine::scenario(CardCatalog cat, GameState state) {
     GameEngine e;
@@ -76,7 +101,7 @@ GameEngine GameEngine::scenario(CardCatalog cat, GameState state) {
         e.state_.phaseStep = PhaseStep::Body;
     if (e.state_.decision)
         e.state_.nextDecision = std::max(e.state_.nextDecision, e.state_.decision->id + 1);
-    if (e.state_.phaseStep == PhaseStep::Body && !e.state_.decision && !e.state_.chain && !e.state_.effect &&
+    if (!e.state_.opening && e.state_.phaseStep == PhaseStep::Body && !e.state_.decision && !e.state_.chain && !e.state_.effect &&
         !e.state_.phaseGate)
         e.state_.phaseGate = e.state_.nextDecision++;
     auto errors = Rules::invariants(e.state_, e.catalog_);
@@ -88,6 +113,14 @@ void GameEngine::decision(PlayerId p, DecisionKind k, std::vector<std::uint32_t>
     state_.decision = PendingDecision{state_.nextDecision++, p, k, std::move(opts), pass};
 }
 CommandResult GameEngine::submit(PlayerId actor, const Command &command) {
+    if (std::holds_alternative<Timeout>(command))
+        return {false, "authority_only: 超时只能由权威会话产生", {}, state_.decision, "authority_only"};
+    return submitAuthority(actor, command);
+}
+CommandResult GameEngine::timeout(PlayerId actor) {
+    return submitAuthority(actor, Timeout{});
+}
+CommandResult GameEngine::submitAuthority(PlayerId actor, const Command &command) {
     GameEngine next = *this;
     const auto start = next.state_.events.size();
     auto error = next.execute(actor, command);

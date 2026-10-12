@@ -4,7 +4,7 @@ namespace wizard::bridge {
 Json commandDto(const Command &command) {
     auto encoded = encodeCommand(command);
     for (auto &[key, value] : encoded.items()) {
-        if (key == "type" || key == "ability" || key == "release") continue;
+        if (key == "type" || key == "ability" || key == "release" || key == "skipCast") continue;
         if (key == "ringIndex") continue; // A small ordinal, not a card/decision ID.
         if (value.is_array()) {
             for (auto &id : value) id = std::to_string(id.get<std::uint64_t>());
@@ -32,12 +32,18 @@ Json cardDefinitionDto(const CardDefinition &d) {
             {"body", d.body}, {"capacity", d.capacity}, {"income", d.income}, {"rings", d.rings},
             {"maxRank", d.maxRank}, {"baseEligible", d.baseEligible}, {"concentration", d.concentration},
             {"level", d.level}, {"perpetual", d.perpetual}, {"illustrationId", d.illustrationId},
-            {"recipe", recipe}};
+            {"recipe", recipe}, {"settingConditions", d.settingConditions}};
 }
 Json viewDto(const GameView &v) {
     Json out = {{"viewer", v.viewer}, {"activePlayer", v.active}, {"phase", static_cast<int>(v.phase)},
                 {"phaseName", phaseName(v.phase)}, {"phaseStep", static_cast<int>(v.phaseStep)},
                 {"phaseGate", std::to_string(v.phaseGate)}, {"result", v.result},
+                {"globalTurn", std::to_string(v.globalTurn)}, {"opening", v.opening},
+                {"initialFormationConfirmed", v.initialFormationConfirmed},
+                {"initialFormation", std::to_string(v.initialFormation)},
+                {"clock", {{"enabled", v.clock.enabled}, {"running", v.clock.running},
+                    {"runningPlayer", v.clock.runningPlayer}, {"runningPlayers", v.clock.runningPlayers},
+                    {"remainingMs", v.clock.remainingMs}, {"sequence", std::to_string(v.clock.sequence)}}},
                 {"players", Json::array()}, {"cards", Json::array()},
                 {"events", Json::array()}, {"loads", Json::array()}, {"triggers", Json::array()},
                 {"decision", nullptr}, {"chain", nullptr}};
@@ -52,6 +58,11 @@ Json viewDto(const GameView &v) {
         Json card = {{"id", std::to_string(i.id)}, {"owner", i.owner}, {"zone", static_cast<int>(i.zone)},
                      {"zoneName", zoneName(i.zone)}, {"host", std::to_string(i.host)},
                      {"hidden", c.hidden}, {"faceDown", i.faceDown}};
+        // Location metadata is public even when the card definition is hidden.
+        // The client needs the real ring/order to render anonymous covers without
+        // moving them into the first free slot.
+        card["ringIndex"] = i.ringIndex;
+        card["fieldOrder"] = std::to_string(i.fieldOrder);
         if (!c.hidden) {
             card["definition"] = cardDefinitionDto(c.definition);
             card["spellState"] = static_cast<int>(i.spell);
@@ -59,9 +70,7 @@ Json viewDto(const GameView &v) {
             card["turnsToReady"] = c.turnsToReady;
             card["remaining"] = i.remaining;
             card["analysisProgress"] = i.analysisProgress;
-            card["ringIndex"] = i.ringIndex;
             card["sourceRingIndex"] = i.sourceRingIndex;
-            card["fieldOrder"] = std::to_string(i.fieldOrder);
             card["effectiveRings"] = c.effectiveRings;
             card["occupiedRings"] = c.occupiedRings;
             card["effectiveCastCost"] = c.effectiveCastCost;

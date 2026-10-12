@@ -19,61 +19,28 @@ var _reconnect: Button
 var _configure: Button
 
 func _ready() -> void:
-	var column: VBoxContainer = VBoxContainer.new()
-	UiFactory.margin(self, 32).add_child(column)
-	UiFactory.heading(column, "多人游戏", navigation_requested.emit.bind(&"menu"))
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	column.add_child(scroll)
-	var body: VBoxContainer = VBoxContainer.new()
-	body.custom_minimum_size.x = 740
-	body.add_theme_constant_override(&"separation", 14)
-	scroll.add_child(body)
-	body.add_child(UiFactory.label("本地双人换手", 28))
-	body.add_child(UiFactory.label("在同一台设备上对战。每次换手前先遮挡私有信息。", 18, true))
-	body.add_child(UiFactory.button("配置本地双人", _hotseat))
-	body.add_child(HSeparator.new())
-	body.add_child(UiFactory.label("局域网房间", 28))
-	body.add_child(UiFactory.label("对方输入房主的局域网地址和相同端口。双方使用合法的 40+10 卡组。", 18, true))
-	_address = LineEdit.new()
-	_address.placeholder_text = "房主地址，例如 192.168.1.20"
-	_address.text = "127.0.0.1"
-	_address.custom_minimum_size.y = 48
-	body.add_child(_address)
-	_port = SpinBox.new()
-	_port.min_value = 1024
-	_port.max_value = 65535
-	_port.value = 18761
-	_port.custom_minimum_size.y = 48
-	body.add_child(_port)
-	body.add_child(UiFactory.label("入场卡组", 18))
-	_decks = OptionButton.new()
-	_decks.custom_minimum_size.y = 48
+	_address = %Address
+	_port = %Port
+	_decks = %Decks
+	_host_first = %HostFirst
+	_automatic = %Automatic
+	_notice = %Notice
+	_room = %Room
+	_host = %Host
+	_join = %Join
+	_ready_button = %Ready
+	_leave = %Leave
+	_reconnect = %Reconnect
+	_configure = %Configure
+	(%Back as Button).pressed.connect(navigation_requested.emit.bind(&"menu"))
+	(%Hotseat as Button).pressed.connect(_hotseat)
 	_decks.item_selected.connect(_deck_changed)
-	body.add_child(_decks)
-	_host_first = CheckButton.new()
-	_host_first.text = "房主先手"
-	_host_first.button_pressed = true
-	body.add_child(_host_first)
-	_automatic = CheckButton.new()
-	_automatic.text = "自动通过无操作阶段"
-	_automatic.button_pressed = true
-	body.add_child(_automatic)
-	var controls: HFlowContainer = HFlowContainer.new()
-	body.add_child(controls)
-	_host = UiFactory.button("创建房间", _host_room, true)
-	_join = UiFactory.button("加入房间", _join_room)
-	_ready_button = UiFactory.button("准备", _ready_room)
-	_leave = UiFactory.button("离开房间", _leave_room)
-	_reconnect = UiFactory.button("重新连接", _reconnect_room)
-	for button: Button in [_host, _join, _ready_button, _leave, _reconnect]:
-		controls.add_child(button)
-	_configure = UiFactory.button("应用房间设置", _configure_room)
-	body.add_child(_configure)
-	_room = UiFactory.label("", 18, true)
-	body.add_child(_room)
-	_notice = UiFactory.label("", 18, true)
-	body.add_child(_notice)
+	_host.pressed.connect(_host_room)
+	_join.pressed.connect(_join_room)
+	_ready_button.pressed.connect(_ready_room)
+	_leave.pressed.connect(_leave_room)
+	_reconnect.pressed.connect(_reconnect_room)
+	_configure.pressed.connect(_configure_room)
 
 func configure(value: FrontendService) -> void:
 	service = value

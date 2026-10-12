@@ -56,6 +56,7 @@ TEST_CASE("rc content is a numbered executable 45 card pool with legal 40 plus 1
     const auto content = rcContent();
     REQUIRE(content.catalog.cards.size() == 45);
     REQUIRE(content.catalog.alphaV2);
+    REQUIRE(content.catalog.usesAlphaV25());
     REQUIRE(content.catalog.at("reservoir").name == "阿克乌姆之弧");
     REQUIRE(content.catalog.at("reservoir").level == 0);
     REQUIRE_FALSE(content.catalog.cards.count("balance"));
@@ -203,6 +204,105 @@ TEST_CASE("rc sunburst respects protected formations and sulfur captures departu
     REQUIRE(f.state.cards.at(2).zone == Zone::Ash);
     REQUIRE(f.state.cards.at(2).faceDown);
 }
+TEST_CASE("printed uplift formation bonus adds a ring rather than load capacity", "[card-sync]") {
+    CardScenario f;
+    const auto capacity = Rules::capacity(f.state, f.content.catalog, 0);
+    const auto rings = Rules::rings(f.state, f.content.catalog, 1);
+    auto &seal = f.add(10, "uplift", 0, Zone::Attached); seal.host = 1;
+    REQUIRE(Rules::rings(f.state, f.content.catalog, 1) == rings + 1);
+    REQUIRE(Rules::capacity(f.state, f.content.catalog, 0) == capacity);
+    REQUIRE(Rules::maxRank(f.state, f.content.catalog, 1) == 4);
+}
+TEST_CASE("magic missile destroys only opponent face down spells in analysis", "[card-sync]") {
+    CardScenario f;
+    f.spell(20, "instantly-sleep", 1).faceDown = true;
+    f.add(21, "ankh", 1, Zone::Analysis).faceDown = true;
+    f.add(22, "ankh", 1, Zone::Ash).faceDown = true;
+    auto engine = f.casting("magic-missile");
+    send(engine, 0, ActivateSpell{10});
+    REQUIRE(engine.state().decision);
+    REQUIRE(engine.state().decision->kind == DecisionKind::DestroyAmbush);
+    REQUIRE(engine.state().decision->options == std::vector<CardId>{20});
+    choose(engine, 20);
+    REQUIRE(engine.state().cards.at(20).zone == Zone::Ash);
+    REQUIRE(engine.state().cards.at(21).zone == Zone::Analysis);
+}
+TEST_CASE("shield reduces chromatic orb chosen damage and cannot target a healing spell", "[card-sync]") {
+    CardScenario f;
+    auto &shield = f.spell(20, "shield", 1);
+    shield.faceDown = shield.wasAmbushed = true; shield.ambushedTurn = 4;
+    SECTION("chosen damage") {
+        auto engine = f.casting("chromatic-orb");
+        send(engine, 0, ActivateSpell{10});
+        const auto view = engine.viewFor(1);
+        const auto response = std::find_if(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
+            const auto *command = std::get_if<Respond>(&action.command);
+            return command && command->card == 20;
+        });
+        REQUIRE(response != view.actions.end());
+        send(engine, 1, response->command);
+        REQUIRE(engine.state().decision->kind == DecisionKind::DamageChoice);
+        choose(engine, static_cast<CardId>(DamageType::Fire) + 1);
+        REQUIRE(engine.state().players[1].life == startingLife - 3);
+    }
+    SECTION("healing") {
+        auto engine = f.casting("mend");
+        send(engine, 0, ActivateSpell{10});
+        REQUIRE_FALSE(engine.state().decision);
+        REQUIRE(engine.state().cards.at(20).faceDown);
+    }
+}
+TEST_CASE("accelerated analysis triggers octagram load removal", "[card-sync]") {
+    CardScenario f;
+    f.add(3, "octagram", 0, Zone::Analysis);
+    auto &target = f.spell(20, "fireball");
+    target.spell = SpellState::Analyzing; target.settingPaid = target.analysisLoad = 3;
+    auto engine = f.casting("instant-circuit-overload");
+    send(engine, 0, ActivateSpell{10, 20});
+    REQUIRE(engine.state().cards.at(20).spell == SpellState::Ready);
+    REQUIRE(engine.state().decision);
+    REQUIRE(engine.state().decision->kind == DecisionKind::ClearAnyLoad);
+    const auto load = Rules::load(engine.state(), 0);
+    choose(engine, 20);
+    REQUIRE(Rules::load(engine.state(), 0) == load - 1);
+}
+TEST_CASE("mandatory printed spell choices do not offer decline", "[card-sync]") {
+    SECTION("same school search") {
+        CardScenario f;
+        f.spell(20, "fireball");
+        f.add(21, "magic-missile", 0, Zone::Deck); f.state.players[0].deck.push_back(21);
+        auto engine = f.casting("true-strike");
+        send(engine, 0, ActivateSpell{10});
+        REQUIRE(engine.state().decision);
+        REQUIRE_FALSE(engine.state().decision->mayPass);
+        choose(engine, 20); choose(engine, 21);
+        REQUIRE(engine.state().cards.at(21).zone == Zone::Hand);
+    }
+    SECTION("enemy ash recovery") {
+        CardScenario f;
+        f.add(20, "fireball", 1, Zone::Ash);
+        auto engine = f.casting("funny-box");
+        send(engine, 0, ActivateSpell{10});
+        REQUIRE(engine.state().decision);
+        REQUIRE_FALSE(engine.state().decision->mayPass);
+    }
+}
+TEST_CASE("sleep blocks next turn hand incantations while permitting an older ambush", "[card-sync]") {
+    CardScenario f;
+    f.state.phase = Phase::Main;
+    Trigger trigger; trigger.owner = 1; trigger.targetPlayer = 0;
+    EffectResolver::apply(f.state, f.content.catalog, trigger, {EffectKind::BlockActions});
+    ++f.state.players[0].ownTurn;
+    f.add(10, "spark");
+    auto &ambush = f.spell(20, "spark");
+    ambush.faceDown = ambush.wasAmbushed = true; ambush.ambushedTurn = 4;
+    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    const auto before = engine.digest();
+    REQUIRE_FALSE(engine.submit(0, PreloadWord{10, true, 1}).accepted);
+    REQUIRE(engine.digest() == before);
+    send(engine, 0, FlipAmbush{20});
+    REQUIRE(engine.state().players[1].life == startingLife - 2);
+}
 TEST_CASE("rc tutorial completes using normal 40 plus 10 rules and recorded shield response", "[rc-content]") {
     const auto content = rcContent();
     const auto path = std::filesystem::path(WIZARD_SOURCE_DIR) / "build/rc-tutorial-test";
@@ -210,7 +310,7 @@ TEST_CASE("rc tutorial completes using normal 40 plus 10 rules and recorded shie
     std::string error; REQUIRE(application.startTutorial(error));
     REQUIRE(application.configuration().players[0].cards.size() == 40);
     REQUIRE(application.configuration().players[0].sideDeck.size() == 10);
-    REQUIRE(application.match().engine().state().first == 0);
+    REQUIRE(application.match().engine().state().opening);
     for (int step = 0; application.tutorial()->lesson != app::Lesson::Complete; ++step) {
         INFO(step); INFO(static_cast<int>(application.tutorial()->lesson));
         REQUIRE(step < 250);
@@ -230,6 +330,8 @@ TEST_CASE("rc tutorial completes using normal 40 plus 10 rules and recorded shie
         INFO(result.error); REQUIRE(result.accepted);
     }
     REQUIRE(application.tutorial()->countered);
+    REQUIRE_FALSE(application.match().engine().state().opening);
+    REQUIRE(application.match().engine().state().first == 0);
     REQUIRE(application.match().engine().state().players[1].life == startingLife - 5);
     REQUIRE(replay(content, application.match().recording()).digest() == application.match().engine().digest());
 }

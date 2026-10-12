@@ -30,7 +30,8 @@ int main(int argc,char** argv) {
                     int best=-10000;
                     for(std::size_t i=0;i<view.actions.size();++i) {
                         const auto& a=view.actions[i]; int score=-1000;
-                        if(std::holds_alternative<Choose>(a.command) || std::holds_alternative<Respond>(a.command)) score=100;
+                        if(std::holds_alternative<SelectInitialFormation>(a.command)) score=120;
+                        else if(std::holds_alternative<Choose>(a.command) || std::holds_alternative<Respond>(a.command)) score=100;
                         else if(std::holds_alternative<PrepareCast>(a.command)) score=s.decision && s.decision->kind==DecisionKind::EffectPrepare?110:80;
                         else if(std::holds_alternative<SetFormation>(a.command) && !std::get<SetFormation>(a.command).replace) score=75;
                         else if(std::holds_alternative<StartAnalysis>(a.command)) score=65;

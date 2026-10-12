@@ -14,6 +14,15 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
     };
     if (s.result != -1)
         return out;
+    if (s.opening) {
+        if (!s.initialFormations[p])
+            for (const auto &[id, card] : s.cards)
+                if (card.owner == p && card.zone == Zone::SideDeck &&
+                    catalog_.at(card.definition).type == CardType::Formation && catalog_.at(card.definition).level == 1)
+                    add("选择初始阵法 " + catalog_.at(card.definition).name, id, 0, SelectInitialFormation{id});
+        add("投降", 0, 0, Surrender{});
+        return out;
+    }
     if (s.decision) {
         const auto &d = *s.decision;
         if (d.player != p)
@@ -203,8 +212,10 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                     const auto target = ids.empty() ? 0 : ids.front();
                     if (card.faceDown) add("反转 " + name, id, target, FlipAmbush{id, target, ids});
                     else {
-                        add("准备施法 " + name, id, target, PrepareCast{id, target, 0, ids});
-                        add("发动 " + name, id, target, ActivateSpell{id, target, ids});
+                        if (card.zone == Zone::Analysis)
+                            add("准备施法 " + name, id, target, PrepareCast{id, target, 0, ids});
+                        if (card.zone == Zone::Casting)
+                            add("发动 " + name, id, target, ActivateSpell{id, target, ids});
                     }
                 }
                 if (card.faceDown && def.type == CardType::Analytic)
@@ -215,6 +226,8 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             add("拆除阵法 " + name, id, 0, RemoveFormation{id});
         }
         add("结束" + phaseName(s.phase) + "阶段", 0, 0, AdvancePhase{s.phaseGate});
+        if (s.phase == Phase::Main)
+            add("切换到结束阶段", 0, 0, AdvancePhase{s.phaseGate, true});
         add("投降", 0, 0, Surrender{});
         return out;
     }

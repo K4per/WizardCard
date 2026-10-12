@@ -22,20 +22,25 @@ MatchSession::MatchSession(Content c, std::uint32_t seed) : MatchSession(c, shar
 MatchSession::MatchSession(Content c, MatchConfig config)
     : content_(std::move(c)), config_(std::move(config)), engine_(content_.catalog, config_) {}
 CommandResult MatchSession::submit(PlayerId p, const Command &c) {
+    tick();
     auto result = engine_.submit(p, c);
-    if (result.accepted)
+    if (result.accepted) {
         commands_.push_back({p, c, engine_.digest()});
+        syncClock();
+    }
     return result;
 }
 Json MatchSession::recording() const {
     Json players = Json::array();
     const bool newRules = content_.catalog.usesAlphaV2();
+    const bool v25 = content_.catalog.usesAlphaV25();
     for (const auto &p : config_.players) {
         Json player = {{"baseFormation", p.baseFormation}, {"cards", p.cards}};
+        if (v25) player.erase("baseFormation");
         if (newRules) player["sideDeck"] = p.sideDeck;
         players.push_back(std::move(player));
     }
-    Json j = {{"format", newRules ? 3 : 2},
+    Json j = {{"format", v25 ? 4 : newRules ? 3 : 2},
               {"programVersion", programVersion},
               {"rulesVersion", content_.catalog.rulesVersion},
               {"cardSetVersion", content_.catalog.cardSetVersion},
@@ -70,7 +75,8 @@ void MatchSession::save(const std::filesystem::path &path) const {
 }
 GameEngine replay(const Content &c, const Json &j) {
     const bool newRules = c.catalog.usesAlphaV2();
-    if (j.at("format") != (newRules ? 3 : 2) ||
+    const bool v25 = c.catalog.usesAlphaV25();
+    if (j.at("format") != (v25 ? 4 : newRules ? 3 : 2) ||
         (j.at("programVersion") != programVersion &&
          (newRules || (j.at("programVersion") != "2.0.0-dev.2" &&
                        j.at("programVersion") != "1.1.0-alpha" &&
@@ -84,7 +90,7 @@ GameEngine replay(const Content &c, const Json &j) {
     if (!j.at("players").is_array() || j.at("players").size() != 2)
         throw std::runtime_error("replay requires two player decks");
     for (int p = 0; p < 2; ++p) {
-        config.players[p].baseFormation = j.at("players").at(p).at("baseFormation").get<std::string>();
+        if (!v25) config.players[p].baseFormation = j.at("players").at(p).at("baseFormation").get<std::string>();
         config.players[p].cards = j.at("players").at(p).at("cards").get<std::vector<std::string>>();
         if (newRules)
             config.players[p].sideDeck = j.at("players").at(p).at("sideDeck").get<std::vector<std::string>>();
@@ -95,7 +101,8 @@ GameEngine replay(const Content &c, const Json &j) {
     int n = 0;
     for (const auto &row : j.at("commands")) {
         auto actor = static_cast<int>(integer(row.at("actor"), 1));
-        auto result = engine.submit(actor, decodeCommand(row.at("command")));
+        const auto command = decodeCommand(row.at("command"));
+        auto result = std::holds_alternative<Timeout>(command) && v25 ? engine.timeout(actor) : engine.submit(actor, command);
         if (!result.accepted || engine.digest() != row.at("digest").get<std::string>())
             throw std::runtime_error("replay diverged at command " + std::to_string(n));
         ++n;

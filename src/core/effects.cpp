@@ -82,9 +82,9 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
             for (auto &link : s.chain->links)
                 if (link.id == t.targetLink) {
                     for (auto &pending : link.item.effects)
-                        if (pending.kind == EffectKind::Damage) {
+                        if (pending.kind == EffectKind::Damage || pending.kind == EffectKind::ChooseDamage) {
                             pending.amount = std::max(0, pending.amount -
-                                (pending.damageType == DamageType::Force ? 10 : e.amount));
+                                (pending.kind == EffectKind::Damage && pending.damageType == DamageType::Force ? 10 : e.amount));
                             break;
                         }
                     break;

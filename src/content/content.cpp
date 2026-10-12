@@ -127,10 +127,11 @@ void writeJson(const std::filesystem::path &p, const Json &j) {
 CardCatalog parseCatalog(const Json &j, const std::string &source) {
     CardCatalog cat;
     const auto revision = number(j, "mechanicsRevision", source);
-    if (revision > 2)
+    if (revision > 3)
         fail(source + "/mechanicsRevision", "unsupported mechanics revision");
     cat.advancedRules = revision >= 1;
-    cat.alphaV2 = revision == 2;
+    cat.mechanicsRevision = revision;
+    cat.alphaV2 = revision >= 2;
     cat.baseLoadCapacity = number(j, "baseLoadCapacity", source);
     cat.rulesVersion = text(j, "rulesVersion", source);
     cat.cardSetVersion = text(j, "cardSetVersion", source);
@@ -290,10 +291,10 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         d.targetCount = number(card, "targetCount", p, 1);
         if (d.targetCount < 1 || d.targetCount > 5)
             fail(p + "/targetCount", "expected 1..5");
-        if (d.baseEligible && (d.type != CardType::Formation || d.body < 1 || d.body > 5 || !d.capacity ||
+        if (!cat.usesAlphaV25() && d.baseEligible && (d.type != CardType::Formation || d.body < 1 || d.body > 5 || !d.capacity ||
                                !d.rings || !d.maxRank))
             fail(p + "/baseEligible", "requires usable formation");
-        if (cat.alphaV2 && d.baseEligible && d.level != 1)
+        if (!cat.usesAlphaV25() && cat.alphaV2 && d.baseEligible && d.level != 1)
             fail(p + "/baseEligible", "initial formation must be level 1");
         if (card.contains("tags")) {
             if (!card.at("tags").is_array())
@@ -455,9 +456,50 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         if (!cat.cards.emplace(d.id, d).second)
             fail(p + "/id", "duplicate card id");
     }
-    const std::string requiredBase = cat.alphaV2 ? "small-hexagram" : "balance";
-    if (!cat.cards.count(requiredBase) || !cat.at(requiredBase).baseEligible)
-        fail(source + "/cards", "missing eligible base formation " + requiredBase);
+    if (cat.usesAlphaV25()) {
+        if (std::none_of(cat.cards.begin(), cat.cards.end(), [](const auto &entry) {
+            return entry.second.type == CardType::Formation && entry.second.level == 1;
+        })) fail(source + "/cards", "missing level 1 formation");
+    } else {
+        const std::string requiredBase = cat.alphaV2 ? "small-hexagram" : "balance";
+        if (!cat.cards.count(requiredBase) || !cat.at(requiredBase).baseEligible)
+            fail(source + "/cards", "missing eligible base formation " + requiredBase);
+    }
+    // Resolve names only after the complete catalogue exists. Conditions describe the
+    // same recipe that the engine executes, so display text cannot authorize a cost.
+    if (cat.alphaV2) for (auto &[id, formation] : cat.cards) {
+        if (formation.type != CardType::Formation) continue;
+        std::vector<std::string> clauses;
+        if (formation.cost) clauses.push_back("支付" + std::to_string(formation.cost) + "魔素");
+        for (const auto &cost : formation.recipe) {
+            if (cost.kind == RecipeCostKind::Mana) {
+                clauses.push_back("支付" + std::to_string(cost.amount) + "魔素");
+                continue;
+            }
+            std::string material;
+            if (!cost.definition.empty()) {
+                const auto named = cat.cards.find(cost.definition);
+                if (named == cat.cards.end()) fail(source + "/cards/" + id + "/recipe", "unknown material definition");
+                material = "「" + named->second.name + "」";
+            } else material = cost.kind == RecipeCostKind::SacrificeFormation ? "阵法" :
+                cost.kind == RecipeCostKind::SacrificeSpell ? "法术" : "手牌";
+            if (!cost.school.empty()) material = schoolName(cost.school) + material;
+            if (cost.readyOnly) material = "已解析完成或持续生效的" + material;
+            if (cost.fireDamage) material = "具有火焰伤害效果的" + material;
+            auto clause = (cost.kind == RecipeCostKind::DiscardHand ? "弃置" : "将己方场上的") +
+                std::to_string(cost.amount) + "张" + material;
+            if (cost.distinctSchools) clause += "（学派互不相同）";
+            if (cost.kind != RecipeCostKind::DiscardHand) clause += "送入灰烬区";
+            clauses.push_back(std::move(clause));
+        }
+        formation.settingConditions = clauses.empty() ? "无额外设置成本" : clauses.front();
+        for (std::size_t i = 1; i < clauses.size(); ++i) formation.settingConditions += "；" + clauses[i];
+        formation.settingConditions += "。需有足够阵体空间；每己方回合最多设置或替换1个阵法。";
+        if (std::find(formation.traits.begin(), formation.traits.end(), "unique") != formation.traits.end())
+            formation.settingConditions += "己方场上最多存在1个同名阵法。";
+        if (cat.usesAlphaV25() && formation.level == 1)
+            formation.settingConditions += "开局可从副卡组免费选择，双方确认后同时设置，不计本回合额度。";
+    }
     cat.contentHash = fingerprint(j.dump());
     return cat;
 }
@@ -492,23 +534,25 @@ Content loadContent(const std::filesystem::path &dir) {
     c.deck = parseDeck(readJson(dir / "deck.json"), c.catalog, (dir / "deck.json").string());
     if (c.catalog.alphaV2) {
         auto side = readJson(dir / "side-deck.json");
-        if (!side.is_object() || !side.contains("initialFormation") ||
-            !side.at("initialFormation").is_string() || !side.contains("cards") ||
+        if (!side.is_object() || (!c.catalog.usesAlphaV25() && !side.contains("initialFormation")) ||
+            (side.contains("initialFormation") && !side.at("initialFormation").is_string()) || !side.contains("cards") ||
             !side.at("cards").is_array())
             fail((dir / "side-deck.json").string(), "invalid side deck");
-        c.initialFormation = side.at("initialFormation").get<std::string>();
+        c.initialFormation = side.value("initialFormation", std::string{});
         std::map<std::string, int> names;
         for (const auto &row : side.at("cards")) {
             auto id = text(row, "id", (dir / "side-deck.json").string());
             auto count = number(row, "count", (dir / "side-deck.json").string());
             if (!c.catalog.cards.count(id) || c.catalog.at(id).type != CardType::Formation ||
-                (names[c.catalog.at(id).name] += count) > 3)
+                count < 1 || (names[c.catalog.at(id).name] += count) > 3)
                 fail((dir / "side-deck.json").string(), "invalid formation or duplicate name");
             c.sideDeck.insert(c.sideDeck.end(), count, id);
         }
-        if (c.sideDeck.size() != 10 || !c.catalog.cards.count(c.initialFormation) ||
-            c.catalog.at(c.initialFormation).level != 1 ||
-            std::find(c.sideDeck.begin(), c.sideDeck.end(), c.initialFormation) == c.sideDeck.end())
+        const bool hasInitial = c.catalog.usesAlphaV25() ?
+            std::any_of(c.sideDeck.begin(), c.sideDeck.end(), [&](const auto &id) { return c.catalog.at(id).level == 1; }) :
+            c.catalog.cards.count(c.initialFormation) && c.catalog.at(c.initialFormation).level == 1 &&
+            std::find(c.sideDeck.begin(), c.sideDeck.end(), c.initialFormation) != c.sideDeck.end();
+        if (c.sideDeck.size() != 10 || !hasInitial)
             fail((dir / "side-deck.json").string(), "invalid initial formation or side deck size");
     }
     return c;

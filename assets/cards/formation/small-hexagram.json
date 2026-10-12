@@ -11,7 +11,7 @@
   "maxRank": 1,
   "baseEligible": true,
   "cost": 0,
-  "text": "该卡不能同时存在两张。",
+  "text": "己方场上不能同时存在两张同名阵法。",
   "summonCondition": "2魔素。",
   "recipe": [
     {

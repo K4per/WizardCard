@@ -44,6 +44,7 @@ func _run() -> void:
 	var hidden: CardPresentation = CardPresentation.from_projection({"id": "private-1", "hidden": true, "definition": {"name": "secret", "id": "fireball", "type": 4, "text": "secret"}})
 	_check(hidden.hidden and hidden.title == "盖伏卡" and hidden.definition_id.is_empty() and hidden.text.is_empty() and hidden.type_key.is_empty(), "Hidden cards must discard identity before art/details")
 	_check(CardPainter.frame_id(hidden) == "c2d.card.back.ai", "Hidden cards must use the anonymous original AI back")
+	await _projection_reset_checks()
 	for kind: String in ["analysis", "talisman", "incantation", "formation", "rune"]:
 		var frame: Dictionary = ArtBank.metadata("c2d.card.detail." + kind + ".ai")
 		var frame_size: Array = frame.get("size", [0, 0])
@@ -55,18 +56,18 @@ func _run() -> void:
 		await _settle()
 		var page: FieldPage = _app.page as FieldPage
 		_check(page._detail.visible == false and page._decision.visible == false, "Field must start without persistent detail/decision panels")
-		_check(page.canvas.get_child_count() == 0, "Field cards/rings must not create individual UI nodes")
+		_check(page.canvas.get_child_count() == 9 and page.canvas.has_node("OwnAnalysis"), "Editable region nodes remain stable while cards/rings are drawn from projection")
 		var bounds: Rect2 = Rect2(Vector2.ZERO, page.canvas.size)
-		_check(page.canvas._own_region.size.x >= page.canvas.size.x * 0.7, "Unified analysis area uses most of the battlefield width")
-		_check(page.canvas._own_region.end.y >= page.canvas.size.y * 0.97, "Analysis floor reaches the bottom even beneath the hand")
-		_check(page.canvas._own_casting_region.size.y >= 44 and not page.canvas._own_casting_region.intersects(page.canvas._own_region), "Casting area remains usable without overlapping the analysis area")
+		_check(page.canvas._own_region.size.x >= page.canvas.size.x * 0.65, "Analysis leaves side lanes clear for deck piles")
+		_check((page.canvas.size - page.canvas._own_region.end).is_equal_approx(page.canvas._opponent_region.position), "Player analysis regions are centrally symmetric")
+		_check(page.canvas._own_casting_region.size.y >= 24 and not page.canvas._own_casting_region.intersects(page.canvas._own_region), "Compact casting tracks do not overlap the analysis area")
 		_check(BattleArt.texture("analysis_floor") != null and BattleArt.texture("casting_floor") != null and BattleArt.texture("spell_art_normal") != null and BattleArt.texture("spell_art_selected") != null, "Generated floor and spell border assets are available")
 		for hit: Dictionary in page.canvas._card_hits:
 			_check(bounds.encloses(hit["rect"]), "Cards must fit field at " + str(dimensions))
 		_check(page.canvas._card_hits.size() >= 8, "Field must contain rendered card hit regions")
 		var own: FormationPresentation = page.canvas.field.own_formations[0]
 		var host_anchor: Rect2 = page.canvas.card_bounds(own.card)
-		_check(host_anchor.position.x < page.canvas._own_region.position.x + page.canvas._own_region.size.x * 0.15 and host_anchor.size.x <= 80, "Small formation tiles begin at the left of the analysis area")
+		_check(host_anchor.position.x < page.canvas._own_region.position.x + page.canvas._own_region.size.x * 0.15 and host_anchor.size.x <= page.canvas._own_region.size.x * page.canvas.layout.formation_slot_width_ratio + 0.1, "Formation slots begin at the left of the analysis area")
 		for rings: int in [0, 1, 7, 12]:
 			own.ring_count = rings
 			page.canvas.queue_redraw()
@@ -100,8 +101,8 @@ func _run() -> void:
 		page._show_decision()
 		await _settle()
 		await _screenshot("decision-%dx%d" % [dimensions.x, dimensions.y])
-		# More formations remain browsable as clusters inside the unified area.
-		for index: int in range(4):
+		# All five legal formations have their own permanent row.
+		for index: int in range(5 - page.canvas.field.own_formations.size()):
 			var extra: FormationPresentation = FormationPresentation.new()
 			extra.card = own.card.duplicate() as CardPresentation
 			extra.card.instance_id = "extra-" + str(index)
@@ -109,14 +110,12 @@ func _run() -> void:
 			page.canvas.field.own_formations.append(extra)
 		page.canvas.queue_redraw()
 		await _settle()
-		page.canvas._scroll_formations(page.canvas._own_region.get_center(), 99)
-		await _settle()
 		var last_visible: bool = false
 		for hit: Dictionary in page.canvas._card_hits:
 			var shown: CardPresentation = hit["card"]
-			last_visible = last_visible or shown.instance_id == "extra-3"
+			last_visible = last_visible or shown.instance_id.begins_with("extra-")
 			_check(bounds.encloses(hit["rect"]), "Formation clusters remain inside field")
-		_check(last_visible, "Wheel browsing reaches the last formation at " + str(dimensions))
+		_check(last_visible and page.canvas.field.own_formations.size() == 5, "All five formation rows are visible at " + str(dimensions))
 		# All ordinary pages also reflow at each required size.
 		_app.navigate(&"menu")
 		await _settle()
@@ -244,6 +243,25 @@ func _run() -> void:
 	await _settle()
 	quit(0 if _failures.is_empty() else 1)
 
+func _projection_reset_checks() -> void:
+	var canvas: FieldCanvas = FieldCanvas.new()
+	canvas.size = Vector2(1280, 720)
+	root.add_child(canvas)
+	var field: FieldPresentation = FieldPresentation.new()
+	field.hand.append(CardPresentation.anonymous("previous-projection-hand"))
+	canvas.configure(field)
+	await _settle()
+	var point: Vector2 = canvas.card_bounds(field.hand[0]).get_center()
+	_check(canvas.card_at(point) == field.hand[0], "Previous projection creates a real pointer hitbox")
+	canvas.selected_id = field.hand[0].instance_id
+	canvas._dragged = field.hand[0]
+	canvas._drag_active = true
+	canvas.configure(FieldPresentation.new())
+	_check(canvas.card_at(point) == null and canvas._ring_hits.is_empty() and canvas._zone_hits.is_empty(), "New projection discards all stale input hitboxes before drawing")
+	_check(canvas.selected_id.is_empty() and canvas._dragged == null and not canvas._drag_active, "New projection discards the previous selection and drag")
+	canvas.queue_free()
+	await _settle()
+
 func _catalogue_checks(library: LibraryPage) -> void:
 	var numbers: Dictionary[String, bool] = {}
 	var prefixes: Dictionary[String, String] = {"formation": "01", "analysis": "02", "incantation": "03", "talisman": "04", "rune": "05"}
@@ -308,7 +326,7 @@ func _field_input_checks(page: FieldPage) -> void:
 			for other: Dictionary in page.canvas._card_hits:
 				if other["card"] == page.canvas.field.hand[2]:
 					var middle_pose: Transform2D = other["pose"]
-					_check(pose.origin.y > middle_pose.origin.y + 16, "Fan edge cards sit below the middle card")
+					_check(pose.origin.y > middle_pose.origin.y + 8, "Fan edge cards sit below the middle card")
 	# A transparent hand corner may legitimately expose a battlefield card
 	# underneath. Isolate this card to check its inverse-rotation hit test.
 	var all_hits: Array[Dictionary] = page.canvas._card_hits
@@ -323,7 +341,7 @@ func _field_input_checks(page: FieldPage) -> void:
 	_check(page._actions.visible and page._actions.get_global_rect().end.y <= point.y, "Context actions float above the selected card")
 	_check(page._detail.battle_skin, "Field detail uses the new skin while retaining a full framed card")
 	var raised: Rect2 = page.canvas.card_bounds(hand_card)
-	_check(raised.position.y < hand_hit.position.y - 24, "Selected hand card extends out of the fan")
+	_check(raised.position.y < hand_hit.position.y - 15, "Selected hand card extends out of the fan")
 	_check(page.canvas.card_at(raised.get_center()) == hand_card and page.canvas._card_hits.back()["card"] == hand_card, "Selected card paints and receives clicks above neighbouring cards")
 	await _screenshot("battle-selected-detail-%dx%d" % [root.size.x, root.size.y])
 	_mouse_button(page.canvas.global_position + raised.get_center(), true, MOUSE_BUTTON_RIGHT)

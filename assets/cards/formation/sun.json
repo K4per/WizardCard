@@ -1,18 +1,18 @@
 {
   "id": "sun",
-  "name": "太阳",
+  "name": "至圣之太阳星",
   "type": "formation",
   "rarity": "legendary",
   "level": 7,
   "body": 4,
   "rings": 7,
-  "capacity": 25,
-  "income": 4,
+  "capacity": 15,
+  "income": 8,
   "maxRank": 7,
   "baseEligible": false,
   "cost": 0,
-  "text": "该卡不受其他卡效果影响。每回合结束时，将场上所有盖伏放置的卡翻开。",
-  "summonCondition": "【五芒星】+【八芒星】",
+  "text": "此卡不受其他卡的效果影响。在己方阵法槽内存在时，可随时查看对方解析区盖伏法术。",
+  "summonCondition": "【生命之五芒星】+【秩序之八芒星】",
   "recipe": [
     {
       "kind": "sacrifice_formation",
@@ -26,12 +26,8 @@
     }
   ],
   "traits": [
-    "effect_immune"
-  ],
-  "onEnd": [
-    {
-      "kind": "reveal_all_ambush"
-    }
+    "effect_immune",
+    "inspect_enemy_ambush"
   ],
   "number": "010007",
   "illustrationId": "v2-sun"

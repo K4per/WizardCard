@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://ui/deck_dialog.gd" id="1"]
-[ext_resource type="Theme" path="res://ui/pixel_theme.tres" id="theme"]
 
 [node name="DeckDialog" type="Control"]
 layout_mode = 3
@@ -10,7 +9,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("theme")
 script = ExtResource("1")
 visible = false
 
@@ -19,7 +17,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.01, 0.03, 0.06, 0.82)
+color = Color(0.13, 0.16, 0.20, 0.36)
 
 [node name="Panel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -28,10 +26,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -410.0
-offset_top = -190.0
-offset_right = 410.0
-offset_bottom = 190.0
+offset_left = -310.0
+offset_top = -140.0
+offset_right = 310.0
+offset_bottom = 140.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -43,7 +41,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 unique_name_in_owner = true
 text = "确认操作"
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 22
 
 [node name="Body" type="RichTextLabel" parent="Panel/Column"]
 layout_mode = 2

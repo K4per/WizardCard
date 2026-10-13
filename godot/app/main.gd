@@ -69,8 +69,9 @@ func navigate(destination: StringName) -> void:
 	if destination == &"menu":
 		background_id = "c2d.v2.menu.background"
 	elif destination in [&"decks", &"deck_editor"]:
-		background_id = "c2d.v2.deck.background"
-	_background.texture = ArtBank.texture(background_id)
+		background_id = ""
+	_background.texture = ArtBank.texture(background_id) if not background_id.is_empty() else null
+	_dim.color = DeckTheme.BACKGROUND if destination in [&"decks", &"deck_editor"] else Color(0.031, 0.075, 0.122, 0.28)
 	_dim.visible = destination != &"menu"
 	page = PAGES[destination].instantiate() as Control
 	_host.add_child(page)

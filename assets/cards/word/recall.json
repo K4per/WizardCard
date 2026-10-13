@@ -3,7 +3,7 @@
   "name": "奥术回想",
   "rarity": "common",
   "type": "word",
-  "cost": 2,
+  "cost": 3,
   "target": "self",
   "effects": [
     {
@@ -12,10 +12,10 @@
     },
     {
       "kind": "temporary",
-      "amount": 1
+      "amount": 2
     }
   ],
-  "text": "抽两张牌。那之后，获得1点临时荷载，在下一次己方抽牌阶段清除。",
+  "text": "抽两张卡，获得2点临时荷载。",
   "flavor": "尚未熄灭的记忆，也能成为下一道咒文。",
   "speed": 2,
   "castCost": 0,
@@ -25,5 +25,7 @@
     "former-action"
   ],
   "number": "030001",
-  "illustrationId": "recall"
+  "illustrationId": "recall",
+  "school": "divination",
+  "analysisTurns": 0
 }

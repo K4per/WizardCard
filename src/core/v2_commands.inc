@@ -72,6 +72,7 @@ void GameEngine::actionTimingV2(ResponseWindow window) {
 }
 void GameEngine::analysisCompletedV2(CardId spell) {
     auto &s = state_;
+    if (catalog_.usesAlphaV25() && catalog_.at(s.cards.at(spell).definition).type != CardType::Analytic) return;
     const auto owner = s.cards.at(spell).owner;
     const auto batch = s.nextBatch++;
     for (const auto &[id, formation] : s.cards) {
@@ -242,6 +243,34 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         return def.speed >= 3 || (def.speed >= 2 && (s.phase == Phase::Main || s.phase == Phase::Cast)) ||
                (def.speed == 1 && s.phase == Phase::Main);
     };
+    const bool discardSpellSearch = std::find(def.traits.begin(), def.traits.end(), "discard_spell_search") != def.traits.end();
+    auto validSpellCost = [&](CardId material) {
+        if (!discardSpellSearch) return material == 0;
+        const auto found = s.cards.find(material);
+        if (!material || material == cardId || found == s.cards.end() || found->second.owner != actor ||
+            found->second.zone != Zone::Hand || !spellType(catalog_.at(found->second.definition).type)) return false;
+        const auto &school = catalog_.at(found->second.definition).school;
+        return std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &item) {
+            return item.second.owner == actor && item.second.zone == Zone::Deck &&
+                spellType(catalog_.at(item.second.definition).type) && catalog_.at(item.second.definition).school == school;
+        });
+    };
+    auto validRecovery = [&](CardId target) {
+        if (def.target != TargetKind::EnemyAshCard) return true;
+        const auto selected = s.cards.find(target);
+        if (selected == s.cards.end() || catalog_.at(selected->second.definition).type != CardType::Analytic ||
+            catalog_.at(selected->second.definition).rank > 5) return false;
+        return std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &item) {
+            const auto &host = item.second;
+            return host.owner == actor && host.zone == Zone::Analysis && !host.faceDown &&
+                catalog_.at(host.definition).type == CardType::Formation &&
+                catalog_.at(selected->second.definition).rank <= Rules::maxRank(s, catalog_, item.first) &&
+                Rules::freeRing(s, catalog_, item.first) >= 0;
+        });
+    };
+    auto paySpellCost = [&](CardId material) {
+        if (material) { StateMaintenance::leave(s, material, &catalog_); c.targets = {material}; }
+    };
     if (const auto *cmd = std::get_if<SetFormation>(&command)) {
         if (s.phase != Phase::Main || c.zone != Zone::SideDeck || def.type != CardType::Formation || pl.formations)
             return "formation_limit";
@@ -298,6 +327,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         if (s.phase != Phase::Main || c.zone != Zone::Hand || !spellType(def.type) || !ring(cmd->formation, true))
             return "invalid_ambush";
         place(cmd->formation); c.faceDown = true; c.wasAmbushed = true;
+        c.publiclyRevealed = false;
         c.ambushedTurn = s.globalTurn; c.spell = SpellState::None;
         s.events.push_back({"ambush", "盖伏法术", -1, cardId});
         actionTimingV2(); return {};
@@ -321,13 +351,14 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         }
         if (static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog_, actor))
             return "casting_capacity";
-        if (def.responseOnly || !validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets))
+        if (def.responseOnly || !validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets) || !validSpellCost(cmd->discard) || !validRecovery(cmd->target))
             return "target_or_response_window";
         const int fee = Rules::castCost(s, catalog_, cardId);
         if (!pay(fee, fee)) return "cost: 魔素不足";
         if (s.result != -1) return {};
         c.settingPaid = fee; c.faceDown = false; c.zone = Zone::Casting; c.host = 0; c.ringIndex = -1;
         c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = cmd->targets;
+        paySpellCost(cmd->discard);
         c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
         c.payments.push_back({pl.ownTurn, fee, fee, false});
         castingTraitsV2(cardId);
@@ -339,7 +370,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             !ring(cmd->formation) ||
             static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog_, actor))
             return "word_setup";
-        if (!validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets)) return "target";
+        if (!validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets) || !validSpellCost(cmd->discard)) return "target_or_cost";
         const int fee = Rules::castCost(s, catalog_, cardId);
         if (!pay(fee, fee)) return "cost: 魔素不足";
         if (s.result != -1) return {};
@@ -347,6 +378,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         c.spell = SpellState::Ready;
         c.zone = Zone::Casting; c.host = 0; c.ringIndex = -1;
         c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = cmd->targets;
+        paySpellCost(cmd->discard);
         c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
         c.payments.push_back({pl.ownTurn, fee, fee, false});
         analysisCompletedV2(cardId); castingTraitsV2(cardId);
@@ -358,7 +390,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
     }
     if (const auto *cmd = std::get_if<ActivateSpell>(&command)) {
         if (c.zone != Zone::Casting || c.spell != SpellState::Ready || !phaseSpeed() ||
-            !validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets))
+            !validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets) || !validSpellCost(cmd->discard) || !validRecovery(cmd->target))
             return "not_ready";
         const int fee = Rules::castCost(s, catalog_, cardId);
         if (pl.mana < fee) return "cost: 魔素不足";
@@ -366,6 +398,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         if (s.result != -1) return {};
         c.payments.push_back({pl.ownTurn, fee, fee, false});
         c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = cmd->targets;
+        paySpellCost(cmd->discard);
         c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
         castingTraitsV2(cardId);
         beginEffect(cardId, AfterEffect::Spell); return {};

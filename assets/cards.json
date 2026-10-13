@@ -66,7 +66,7 @@
           ]
         }
       ],
-      "text": "对方准备施法时可发动：取消该次准备，然后可以将对方解析区一张解析法术返回手牌。",
+      "text": "对方准备施法时才能发动。将此次准备施法无效。那之后，可以将对方解析区一张解析法术弹回持有者手牌。",
       "flavor": "你神奇的话语将对手的失误转变为了自己的力量。",
       "speed": 3,
       "school": "enchantment",
@@ -75,14 +75,15 @@
       "level": 3,
       "analysisTurns": 0,
       "number": "040001",
-      "illustrationId": "barbs"
+      "illustrationId": "barbs",
+      "target": "self"
     },
     {
       "id": "recall",
       "name": "奥术回想",
       "rarity": "common",
       "type": "word",
-      "cost": 2,
+      "cost": 3,
       "target": "self",
       "effects": [
         {
@@ -91,10 +92,10 @@
         },
         {
           "kind": "temporary",
-          "amount": 1
+          "amount": 2
         }
       ],
-      "text": "抽两张牌。那之后，获得1点临时荷载，在下一次己方抽牌阶段清除。",
+      "text": "抽两张卡，获得2点临时荷载。",
       "flavor": "尚未熄灭的记忆，也能成为下一道咒文。",
       "speed": 2,
       "castCost": 0,
@@ -104,7 +105,9 @@
         "former-action"
       ],
       "number": "030001",
-      "illustrationId": "recall"
+      "illustrationId": "recall",
+      "school": "divination",
+      "analysisTurns": 0
     },
     {
       "id": "ring",
@@ -134,14 +137,14 @@
       "effects": [
         {
           "kind": "damage",
-          "amount": 2,
+          "amount": 3,
           "damageType": "fire"
         }
       ],
-      "text": "对对方玩家造成2点火焰伤害。",
+      "text": "对对方玩家造成3点火焰伤害。",
       "flavor": "所有魔法学徒入门必学法术之一，告别火柴第一步！",
       "speed": 2,
-      "school": "abjuration",
+      "school": "evocation",
       "castCost": 0,
       "level": 1,
       "analysisTurns": 0,
@@ -150,20 +153,20 @@
     },
     {
       "id": "mend",
-      "name": "生命缝合",
+      "name": "缝合生命",
       "rarity": "common",
       "type": "analytic",
       "cost": 2,
       "castCost": 1,
       "rank": 3,
-      "target": "self",
+      "target": "player",
       "effects": [
         {
           "kind": "heal",
           "amount": 4
         }
       ],
-      "text": "恢复自身4点生命。",
+      "text": "选择己方或对方玩家，为其恢复4点生命值。",
       "flavor": "把你的心我的心串一串……",
       "speed": 2,
       "school": "necromancy",
@@ -216,7 +219,7 @@
           "recipient": "owner"
         }
       ],
-      "text": "对方获得3点临时荷载，自己获得1点临时荷载；各自在下一次己方抽牌阶段清除。",
+      "text": "对方玩家获得3点临时荷载，己方玩家获得1点临时荷载。",
       "flavor": "捣蛋鬼别捣蛋！",
       "speed": 2,
       "castCost": 0,
@@ -326,7 +329,7 @@
           "damageType": "fire"
         }
       ],
-      "text": "专注1。首次发动对对方玩家造成4点火焰伤害；持续生效期间，每个己方施法阶段对对方玩家造成2点火焰伤害。",
+      "text": "专注1。对对方玩家造成4点火焰伤害；成功维持专注时对对方玩家造成2点火焰伤害。",
       "speed": 1,
       "school": "evocation",
       "level": 2,
@@ -443,7 +446,7 @@
           ]
         }
       ],
-      "text": "对对方玩家造成2点力场伤害，然后可以摧毁对方解析区一张盖伏的法术。",
+      "text": "对对方玩家造成2点力场伤害。那之后，可以销毁对方解析区一张盖伏法术。",
       "flavor": "折磨你的对手。",
       "level": 2,
       "analysisTurns": 1,
@@ -486,8 +489,7 @@
       "responseOnly": true,
       "effects": [
         {
-          "kind": "counter_spell",
-          "amount": 0
+          "kind": "counter_spell"
         }
       ],
       "responses": [
@@ -498,29 +500,25 @@
             "ambush"
           ],
           "windows": [
-            "phase_start",
-            "phase_end",
-            "action",
-            "prepare",
-            "cast",
-            "trigger"
+            "cast"
           ],
           "target": "enemy_spell_link",
           "effects": [
             {
-              "kind": "counter_spell",
-              "amount": 0
+              "kind": "counter_spell"
             }
-          ]
+          ],
+          "eventOwner": "opponent"
         }
       ],
-      "text": "对方发动法术时可发动：无效并摧毁该法术；自身获得其本次发动实际支付的魔素等量的临时荷载，在下次己方抽牌阶段清除。",
+      "text": "对方发动法术时才能发动。将其无效并销毁。那之后，获得与其原本设置费用等量的临时荷载。",
       "flavor": "火球术！反制！反制你的反制！温馨提示，这种场景在奥术决斗中不会出现。",
       "castCost": 0,
       "level": 5,
       "analysisTurns": 0,
       "number": "040002",
-      "illustrationId": "counter-spell"
+      "illustrationId": "counter-spell",
+      "target": "self"
     },
     {
       "id": "true-strike",
@@ -537,18 +535,21 @@
           "kind": "search_same_school"
         }
       ],
-      "text": "选择自己解析区一张法术送入灰烬区，从牌库检索一张同学派法术加入手牌，然后洗切牌库。",
+      "text": "将另一张手牌中的法术送入灰烬区作为发动成本。从牌库检索一张同学派法术加入手牌，然后洗切牌库。",
       "flavor": "魔法之洞见，它能指引你看到多远？",
       "castCost": 0,
       "level": 3,
       "analysisTurns": 0,
       "number": "030005",
-      "illustrationId": "true-strike"
+      "illustrationId": "true-strike",
+      "traits": [
+        "discard_spell_search"
+      ]
     },
     {
       "id": "protective-flame",
       "name": "避火咒",
-      "type": "word",
+      "type": "talisman",
       "rarity": "common",
       "cost": 2,
       "rank": 4,
@@ -561,8 +562,7 @@
       ],
       "effects": [
         {
-          "kind": "grant_resistance",
-          "amount": 0
+          "kind": "grant_resistance"
         }
       ],
       "responses": [
@@ -570,7 +570,6 @@
           "id": "protect",
           "name": "获得火焰抗性",
           "sources": [
-            "words",
             "ambush"
           ],
           "windows": [
@@ -584,19 +583,19 @@
           "target": "self",
           "effects": [
             {
-              "kind": "grant_resistance",
-              "amount": 0
+              "kind": "grant_resistance"
             }
           ]
         }
       ],
-      "text": "专注2。自身受到的火焰伤害减半，火焰抗性不叠加。",
+      "text": "专注2。受到的火焰伤害减半，火焰抗性不叠加。",
       "castCost": 0,
       "level": 4,
       "analysisTurns": 0,
       "concentrationUpkeep": 2,
-      "number": "030006",
-      "illustrationId": "protective-flame"
+      "number": "040005",
+      "illustrationId": "protective-flame",
+      "responseOnly": false
     },
     {
       "id": "pentagram-of-life",
@@ -605,12 +604,12 @@
       "rarity": "common",
       "cost": 0,
       "body": 2,
-      "capacity": 10,
-      "income": 2,
+      "capacity": 8,
+      "income": 3,
       "rings": 3,
       "maxRank": 5,
       "baseAnalysisDiscount": false,
-      "text": "己方准备阶段开始时，自己获得1点独立荷载。",
+      "text": "己方准备阶段开始时，获得1点独立荷载。",
       "flavor": "生命之五芒星以魔素高活跃性和高控制性著称。",
       "castCost": 0,
       "rank": 0,
@@ -679,7 +678,6 @@
       "type": "seal",
       "rarity": "common",
       "cost": 1,
-      "ringBonus": 1,
       "rankBonus": 1,
       "incomeBonus": -1,
       "castCostBonus": 1,
@@ -690,6 +688,7 @@
       "rank": 1,
       "speed": 1,
       "level": 0,
+      "ringBonus": 1,
       "number": "050003",
       "illustrationId": "uplift"
     },
@@ -741,7 +740,7 @@
           "amount": 1
         }
       ],
-      "text": "对对方玩家造成6点寒冷伤害。选择对方一张解析法术，使其解析进度后退1回合。",
+      "text": "对对方玩家造成6点寒冷伤害。那之后，可以使对方解析区一张解析法术的解析进度-1。",
       "level": 2,
       "number": "020009",
       "illustrationId": "ray-of-frost"
@@ -765,10 +764,10 @@
           "damageType": "thunder"
         },
         {
-          "kind": "conceal_enemy_spell"
+          "kind": "destroy_enemy_analysis"
         }
       ],
-      "text": "对对方玩家造成8点雷鸣伤害。可以将对方解析区一张法术盖伏。",
+      "text": "对对方玩家造成8点雷鸣伤害。那之后，可以销毁对方解析区一张解析法术。",
       "level": 3,
       "number": "020010",
       "illustrationId": "lightning-bolt"
@@ -817,7 +816,7 @@
           "amount": 6
         }
       ],
-      "text": "获得6点临时生命（不叠加，取较高值），在下次己方抽牌阶段清除。",
+      "text": "获得6点临时生命值（不叠加，取较高值）。",
       "level": 3,
       "number": "020012",
       "illustrationId": "false-life"
@@ -840,7 +839,7 @@
           "amount": 2
         }
       ],
-      "text": "获得3点魔素（不超过12），然后获得2点临时荷载，在下一次己方抽牌阶段清除。",
+      "text": "获得3点魔素（不超过20），然后获得2点临时荷载，在下一次己方抽牌阶段清除。",
       "castCost": 0,
       "rank": 1,
       "level": 1,
@@ -855,7 +854,7 @@
       "name": "护盾术",
       "type": "talisman",
       "rarity": "common",
-      "cost": 2,
+      "cost": 3,
       "rank": 3,
       "speed": 2,
       "concentration": false,
@@ -863,14 +862,14 @@
       "target": "self",
       "effects": [
         {
-          "kind": "reduce_spell_damage",
+          "kind": "shield_for_turn",
           "amount": 5
         }
       ],
       "responses": [
         {
           "id": "shield",
-          "name": "降低法术伤害",
+          "name": "本回合护盾",
           "sources": [
             "ambush"
           ],
@@ -882,20 +881,19 @@
             "cast",
             "trigger"
           ],
-          "target": "enemy_spell_link",
+          "target": "self",
           "effects": [
             {
-              "kind": "reduce_spell_damage",
+              "kind": "shield_for_turn",
               "amount": 5
             }
-          ],
-          "eventOwner": "opponent"
+          ]
         }
       ],
-      "text": "响应对方造成伤害的法术：该链节的一次伤害降低至多5点；力场伤害降低至多10点。",
+      "text": "此回合，每次受到伤害时降低至多5点；力场伤害降低至多10点。",
       "castCost": 0,
       "level": 3,
-      "responseOnly": true,
+      "responseOnly": false,
       "analysisTurns": 0,
       "number": "040003",
       "illustrationId": "shield"
@@ -919,7 +917,7 @@
           "amount": 8
         }
       ],
-      "text": "对对方玩家造成8点伤害，伤害类型由你从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择一种。",
+      "text": "对对方玩家造成8点自选伤害，从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择。",
       "number": "020013",
       "illustrationId": "v2-chromatic-orb"
     },
@@ -946,7 +944,7 @@
           "kind": "reveal_enemy_ambush"
         }
       ],
-      "text": "对对方玩家造成8点光耀伤害，展示对方解析区一张盖伏的法术卡（不反转）。",
+      "text": "对对方玩家造成8点光耀伤害。那之后，可以展示对方解析区一张盖伏法术（不反转）。",
       "number": "020014",
       "illustrationId": "v2-guiding-bolt"
     },
@@ -958,7 +956,7 @@
       "rank": 5,
       "level": 5,
       "speed": 1,
-      "school": "necromancy",
+      "school": "evocation",
       "cost": 4,
       "castCost": 2,
       "analysisTurns": 2,
@@ -978,14 +976,9 @@
           "kind": "damage",
           "amount": 5,
           "damageType": "fire"
-        },
-        {
-          "kind": "damage",
-          "amount": 5,
-          "damageType": "fire"
         }
       ],
-      "text": "对对方玩家造成5点火焰伤害4次。",
+      "text": "对对方玩家造成5点火焰伤害，重复三次。",
       "number": "020015",
       "illustrationId": "v2-scorching-ray"
     },
@@ -1012,7 +1005,7 @@
           "kind": "destroy_formation_spells"
         }
       ],
-      "text": "自己灰烬区每有一张塑能学派法术，此卡解析和施法费用各-1（最低为0）。对对方玩家造成15点火焰伤害。那之后，可以摧毁对方一个阵法承载的所有法术。",
+      "text": "对对方玩家造成15点火焰伤害。那之后，可以销毁对方一个阵法承载的所有法术。己方灰烬区每有一张塑能学派法术，此卡设置费用-1（最低0）；发动费用不变。",
       "traits": [
         "ash_evocation_discount"
       ],
@@ -1024,25 +1017,28 @@
       "name": "治疗之环",
       "type": "analytic",
       "rarity": "rare",
-      "rank": 3,
-      "level": 3,
+      "rank": 2,
+      "level": 2,
       "speed": 1,
-      "school": "abjuration",
+      "school": "necromancy",
       "cost": 3,
-      "castCost": 3,
-      "analysisTurns": 1,
+      "castCost": 0,
+      "analysisTurns": 2,
       "target": "self",
       "effects": [],
-      "text": "计时3。每个己方抽牌阶段，恢复自身2点生命。",
+      "text": "计时3。己方结束阶段开始时，恢复2点生命值。",
       "duration": 3,
-      "onDraw": [
+      "number": "020017",
+      "illustrationId": "v2-healing-circle",
+      "onEnd": [
         {
           "kind": "heal",
           "amount": 2
         }
       ],
-      "number": "020017",
-      "illustrationId": "v2-healing-circle"
+      "traits": [
+        "end_phase_start"
+      ]
     },
     {
       "id": "funny-box",
@@ -1056,20 +1052,20 @@
       "cost": 4,
       "castCost": 0,
       "analysisTurns": 0,
-      "target": "self",
+      "target": "enemy_ash_card",
       "effects": [
         {
           "kind": "recover_enemy_ash_spell"
         }
       ],
-      "text": "将对方灰烬区一张等级低于5的解析法术盖伏在己方一个有合法空环位的阵法上。",
+      "text": "选择对方灰烬区一张5级及以下解析法术，将其在己方有合法空环位的阵法上盖伏。",
       "responseOnly": false,
       "number": "040004",
       "illustrationId": "v2-funny-box"
     },
     {
       "id": "small-hexagram",
-      "name": "小六芒星",
+      "name": "运行之三角星",
       "type": "formation",
       "rarity": "common",
       "level": 1,
@@ -1080,7 +1076,7 @@
       "maxRank": 1,
       "baseEligible": true,
       "cost": 0,
-      "text": "己方场上不能同时存在两张同名阵法。",
+      "text": "此卡在己方阵法槽内仅可存在一张。",
       "summonCondition": "2魔素。",
       "recipe": [
         {
@@ -1102,13 +1098,13 @@
       "level": 3,
       "body": 2,
       "rings": 3,
-      "capacity": 10,
-      "income": 1,
+      "capacity": 8,
+      "income": 2,
       "maxRank": 3,
       "baseEligible": false,
       "cost": 0,
-      "text": "该卡不能被效果破坏。",
-      "summonCondition": "【小六芒星】+2魔素。",
+      "text": "此卡不会被效果破坏。",
+      "summonCondition": "【运行之三角星】+魔素×2。",
       "recipe": [
         {
           "kind": "sacrifice_formation",
@@ -1129,19 +1125,19 @@
     },
     {
       "id": "octagram",
-      "name": "八芒星",
+      "name": "秩序之八芒星",
       "type": "formation",
       "rarity": "epic",
       "level": 6,
       "body": 2,
       "rings": 4,
-      "capacity": 15,
-      "income": 2,
+      "capacity": 10,
+      "income": 4,
       "maxRank": 6,
       "baseEligible": false,
       "cost": 0,
-      "text": "该卡不能被效果破坏。自己每一个法术解析完成，清除一点荷载。",
-      "summonCondition": "【小六芒星】+【均衡之六芒星】",
+      "text": "此卡不会被效果破坏。己方每有一张解析法术解析完成，清除1点荷载。",
+      "summonCondition": "【运行之三角星】+【均衡之六芒星】",
       "recipe": [
         {
           "kind": "sacrifice_formation",
@@ -1163,19 +1159,19 @@
     },
     {
       "id": "sun",
-      "name": "太阳",
+      "name": "至圣之太阳星",
       "type": "formation",
       "rarity": "legendary",
       "level": 7,
       "body": 4,
       "rings": 7,
-      "capacity": 25,
-      "income": 4,
+      "capacity": 15,
+      "income": 8,
       "maxRank": 7,
       "baseEligible": false,
       "cost": 0,
-      "text": "该卡不受其他卡效果影响。每回合结束时，将场上所有盖伏放置的卡翻开。",
-      "summonCondition": "【五芒星】+【八芒星】",
+      "text": "此卡不受其他卡的效果影响。在己方阵法槽内存在时，可随时查看对方解析区盖伏法术。",
+      "summonCondition": "【生命之五芒星】+【秩序之八芒星】",
       "recipe": [
         {
           "kind": "sacrifice_formation",
@@ -1189,12 +1185,8 @@
         }
       ],
       "traits": [
-        "effect_immune"
-      ],
-      "onEnd": [
-        {
-          "kind": "reveal_all_ambush"
-        }
+        "effect_immune",
+        "inspect_enemy_ambush"
       ],
       "number": "010007",
       "illustrationId": "v2-sun"
@@ -1310,7 +1302,7 @@
       "maxRank": 3,
       "baseEligible": false,
       "cost": 0,
-      "text": "在该法阵解析的【塑能】法术伤害+1。",
+      "text": "在此阵法上解析的塑能法术伤害+1。",
       "summonCondition": "1魔素+已解析的【塑能】法术。",
       "recipe": [
         {
@@ -1343,7 +1335,7 @@
       "maxRank": 3,
       "baseEligible": false,
       "cost": 0,
-      "text": "该法阵不能同时解析相同派系的法术。",
+      "text": "此阵法不能同时解析相同学派法术。",
       "summonCondition": "已解析的不同派系法术×2。",
       "recipe": [
         {
@@ -1368,11 +1360,11 @@
       "body": 2,
       "rings": 6,
       "capacity": 6,
-      "income": 2,
+      "income": 3,
       "maxRank": 6,
       "baseEligible": false,
       "cost": 0,
-      "text": "该法阵只能解析火焰伤害法术。每当自己的法术从【施法区】进入【灰烬区】时，对对方造成1点火焰伤害。",
+      "text": "此阵法只能解析火焰伤害法术。每当己方法术从施法区进入灰烬区，对对方玩家造成1点火焰伤害。",
       "summonCondition": "已解析的火焰伤害法术×2。",
       "recipe": [
         {

@@ -20,6 +20,7 @@ struct CardInstance {
     std::vector<CardId> targets;
     int settingPaid{}, concentrationCost{};
     bool faceDown{};
+    bool publiclyRevealed{}; // Showing a concealed card exposes its face without flipping it.
     std::uint64_t ambushedTurn{};
     int quickAnalysisTurn{-1};
     int analysisProgress{};

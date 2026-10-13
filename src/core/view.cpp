@@ -19,6 +19,12 @@ GameView GameEngine::viewFor(PlayerId p) const {
     v.initialFormationConfirmed = {state_.initialFormations[0] != 0, state_.initialFormations[1] != 0};
     v.initialFormation = state_.initialFormations[p];
     v.globalTurn = state_.globalTurn;
+    const bool inspectEnemyAmbush = std::any_of(state_.cards.begin(), state_.cards.end(), [&](const auto &item) {
+        const auto &card = item.second;
+        const auto &traits = catalog_.at(card.definition).traits;
+        return card.owner == p && card.zone == Zone::Analysis && !card.faceDown &&
+            std::find(traits.begin(), traits.end(), "inspect_enemy_ambush") != traits.end();
+    });
     for (int i = 0; i < 2; ++i) {
         const auto &pl = state_.players[i];
         int hand = 0;
@@ -61,7 +67,14 @@ GameView GameEngine::viewFor(PlayerId p) const {
             const auto &def = catalog_.at(c.definition);
             CardView card{c, def};
             card.effectiveCastCost = Rules::castCost(state_, catalog_, id);
-            if (c.faceDown && c.owner != p) {
+            card.effectiveSettingCost = def.type == CardType::Talisman ? 0 : def.cost;
+            if (def.type == CardType::Analytic) {
+                // No host yet in hand: show the source's current setting cost.
+                // Once placed, also include the actual host's modifiers.
+                card.effectiveSettingCost = Rules::analysisCost(state_, catalog_, id,
+                    c.zone == Zone::Analysis ? c.host : 0);
+            }
+            if (c.faceDown && c.owner != p && !c.publiclyRevealed && !(inspectEnemyAmbush && c.zone == Zone::Analysis)) {
                 card.hidden = true;
                 card.instance = {};
                 card.instance.id = id;
@@ -74,6 +87,7 @@ GameView GameEngine::viewFor(PlayerId p) const {
                 card.definition = {};
                 card.definition.name = "埋伏卡";
                 card.effectiveCastCost = 0;
+                card.effectiveSettingCost = 0;
                 v.cards.push_back(std::move(card));
                 continue;
             }

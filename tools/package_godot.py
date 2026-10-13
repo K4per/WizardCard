@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +25,7 @@ def main():
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--build", type=Path, required=True)
     parser.add_argument("--configuration", default="Release")
-    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.0-preview.1-windows-x64")
+    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.0-preview.2-windows-x64")
     parser.add_argument("--crt", type=Path, help="Directory containing the x64 VC runtime DLLs")
     args = parser.parse_args()
     lock = json.loads((ROOT / "godot/toolchain-lock.json").read_text())
@@ -59,19 +60,44 @@ def main():
     if args.crt:
         for file in args.crt.glob("*.dll"):
             shutil.copy2(file, output / file.name)
-    for name in ("LICENSE", "THIRD_PARTY_NOTICES.md", "README.md"):
+    for name in ("LICENSE", "THIRD_PARTY_NOTICES.md", "README.md", "GLOSSARY.md"):
         shutil.copy2(ROOT / name, output / name)
     shutil.copytree(ROOT / "licenses", output / "licenses")
     (output / "docs").mkdir()
-    for name in ("alpha-v2.5-rules.md", "releases/2.5.0.md"):
+    for name in ("alpha-v2.5-rules.md", "card-catalog.md", "card-catalog.html", "branching.md",
+                 "releases/2.5.0-preview.2.md", "reports/preview2-card-alignment.md",
+                 "reports/2.5.0-preview.2.md"):
         source = ROOT / "docs" / name
         if source.exists():
-            shutil.copy2(source, output / "docs" / source.name)
+            destination = output / "docs" / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
+    # The offline catalogue uses the same relative illustration paths as the
+    # repository. Copy only the official cards' runtime art beside the docs.
+    art_files = {entry["id"]: entry["file"]
+                 for entry in json.loads((ROOT / "godot/art/assets.json").read_text(encoding="utf-8"))["assets"]}
+    cards = json.loads((ROOT / "assets/cards.json").read_text(encoding="utf-8"))["cards"]
+    for card in cards:
+        relative = art_files["illustration." + card.get("illustrationId", card["id"])].removeprefix("res://")
+        destination = output / "godot" / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / "godot" / relative, destination)
     run(output / "wizard_cli.exe", "validate", output / "assets")
     run(output / "wizard_cli.exe", "smoke", output / "assets", output / "verification.json", "42")
     run(output / "wizard_cli.exe", "replay", output / "assets", output / "verification.json")
     if not bridge_destination.is_file():
         raise SystemExit("Portable package is missing bin/wizard_godot_bridge.release.dll")
+    # Export exclusions can remove a global script class while editor tests still
+    # pass. Boot the actual executable; release templates disable --script.
+    with tempfile.TemporaryDirectory(prefix="wizardcard-package-") as startup_check:
+        check_dir = Path(startup_check)
+        log = check_dir / "startup.log"
+        subprocess.run([str(output / "WizardCard.exe"), "--headless", "--quit-after", "8", "--log-file", str(log),
+                        "--", "--assets", str(output / "assets"), "--user-data", str(check_dir / "data")],
+                       cwd=check_dir, check=True, timeout=45)
+        diagnostics = log.read_text(encoding="utf-8", errors="replace") if log.exists() else ""
+        if "Godot Engine v4.7.2" not in diagnostics or "ERROR:" in diagnostics:
+            raise SystemExit("Exported package startup failed:\n" + diagnostics)
     inventory = {str(path.relative_to(output)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
                  for path in sorted(output.rglob("*")) if path.is_file()}
     (output / "SHA256.json").write_text(json.dumps(inventory, indent=2), encoding="utf-8")
@@ -82,8 +108,10 @@ def main():
         for file in sorted(output.rglob("*")):
             if file.is_file():
                 package.write(file, str(file.relative_to(output.parent)))
+    archive_hash = hashlib.sha256(archive.read_bytes()).hexdigest()
+    (archive.parent / (archive.name + ".sha256")).write_text(archive_hash + "  " + archive.name + "\n", encoding="utf-8")
     print(json.dumps({"package": str(output), "zip": str(archive), "files": len(inventory),
-                      "sha256": hashlib.sha256(archive.read_bytes()).hexdigest()}, indent=2))
+                      "sha256": archive_hash}, indent=2))
 
 
 if __name__ == "__main__":

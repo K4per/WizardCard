@@ -83,13 +83,18 @@ static func paint(surface: CanvasItem, card: CardPresentation, bounds: Rect2, vi
 			var gem: Texture2D = ArtBank.texture("c2d.rarity." + card.rarity)
 			var gem_size: float = rarity_rect.size.y
 			surface.draw_texture_rect(gem, Rect2(rarity_rect.get_center() - Vector2.ONE * gem_size * 0.5, Vector2.ONE * gem_size), false)
-		var values: Array[String] = [card.primary_value, card.secondary_value]
+		var values: Array[String] = ["", card.secondary_value]
 		var anchors: Array = layout["values"]
 		var value_size: int = clampi(roundi(rect.size.x * 0.085), 7, 28)
 		for index: int in range(2):
 			var anchor: Array = anchors[index]
 			var center: Vector2 = rect.position + Vector2(float(anchor[0]), float(anchor[1])) * factor
 			_label(surface, values[index], Rect2(center - Vector2(rect.size.x * 0.05, value_size), Vector2(rect.size.x * 0.1, value_size * 2)), value_size, true, Typography.HEADING)
+		if card.type_key != "formation":
+			var cost_width: float = maxf(rect.size.x * 0.24, FONT.get_string_size(card.primary_value, HORIZONTAL_ALIGNMENT_LEFT, -1, value_size).x + 8)
+			var cost_rect: Rect2 = Rect2(rect.end.x - cost_width - rect.size.x * 0.035, rect.position.y + rect.size.y * 0.07, cost_width, value_size * 1.4)
+			surface.draw_rect(cost_rect, PAPER, true)
+			_label(surface, card.primary_value, cost_rect, value_size, true, Typography.HEADING)
 		# Tiny casting cards keep the full frame and values. Larger views place
 		# actual rules text inside the paper panel; details retain full text.
 		if rect.size.x >= 100:

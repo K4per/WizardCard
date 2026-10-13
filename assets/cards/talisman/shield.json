@@ -3,7 +3,7 @@
   "name": "护盾术",
   "type": "talisman",
   "rarity": "common",
-  "cost": 2,
+  "cost": 3,
   "rank": 3,
   "speed": 2,
   "concentration": false,
@@ -11,14 +11,14 @@
   "target": "self",
   "effects": [
     {
-      "kind": "reduce_spell_damage",
+      "kind": "shield_for_turn",
       "amount": 5
     }
   ],
   "responses": [
     {
       "id": "shield",
-      "name": "降低法术伤害",
+      "name": "本回合护盾",
       "sources": [
         "ambush"
       ],
@@ -30,20 +30,19 @@
         "cast",
         "trigger"
       ],
-      "target": "enemy_spell_link",
+      "target": "self",
       "effects": [
         {
-          "kind": "reduce_spell_damage",
+          "kind": "shield_for_turn",
           "amount": 5
         }
-      ],
-      "eventOwner": "opponent"
+      ]
     }
   ],
-  "text": "响应对方造成伤害的法术：该链节的一次伤害降低至多5点；力场伤害降低至多10点。",
+  "text": "此回合，每次受到伤害时降低至多5点；力场伤害降低至多10点。",
   "castCost": 0,
   "level": 3,
-  "responseOnly": true,
+  "responseOnly": false,
   "analysisTurns": 0,
   "number": "040003",
   "illustrationId": "shield"

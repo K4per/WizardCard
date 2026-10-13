@@ -16,8 +16,11 @@ using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
 using ChainId = std::uint64_t;
 using LinkId = std::uint64_t;
-inline constexpr const char *programVersion = "2.5.0-preview.1";
+inline constexpr const char *programVersion = "2.5.0-preview.2";
 inline constexpr int startingLife = 40, maximumLife = 40;
+inline constexpr int maximumMana = 20;
+// Player target tokens share the existing deterministic command target field.
+inline constexpr CardId playerTarget(PlayerId player) { return 0x40000001u + static_cast<CardId>(player); }
 enum class CardType { Action, Analytic, Word, Formation, Seal, Talisman };
 enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached, Resolving, SideDeck };
 enum class SpellState { None, Analyzing, Ready, Pending, Active, Resolved };
@@ -33,7 +36,9 @@ enum class TargetKind {
     PendingLink,
     PreparationRoot,
     OwnAnalyzingSpell,
-    EnemySpellLink
+    EnemySpellLink,
+    Player,
+    EnemyAshCard
 };
 enum class EffectKind {
     Damage,
@@ -72,7 +77,9 @@ enum class EffectKind {
     RecoverEnemyAshSpell,
     RecoverFormation,
     RevealAllAmbush,
-    ClearAnyLoad
+    ClearAnyLoad,
+    DestroyEnemyAnalysis,
+    ShieldForTurn
 };
 enum class ResponseWindow { PhaseStart, PhaseEnd, Action, Prepare, Cast, Trigger };
 enum class EventOwner { Any, Self, Opponent };

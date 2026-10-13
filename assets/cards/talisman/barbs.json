@@ -35,7 +35,7 @@
       ]
     }
   ],
-  "text": "对方准备施法时可发动：取消该次准备，然后可以将对方解析区一张解析法术返回手牌。",
+  "text": "对方准备施法时才能发动。将此次准备施法无效。那之后，可以将对方解析区一张解析法术弹回持有者手牌。",
   "flavor": "你神奇的话语将对手的失误转变为了自己的力量。",
   "speed": 3,
   "school": "enchantment",
@@ -44,5 +44,6 @@
   "level": 3,
   "analysisTurns": 0,
   "number": "040001",
-  "illustrationId": "barbs"
+  "illustrationId": "barbs",
+  "target": "self"
 }

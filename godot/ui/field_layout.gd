@@ -94,13 +94,6 @@ extends Resource
 		ring_gap_ratio = value
 		emit_changed()
 
-## Number of vertical rows used by the formation analysis lanes.  With the
-## default five slots this produces one slot per row; reducing it in the
-## inspector intentionally packs slots into columns for compact layouts.
-@export_range(1, 5, 1) var formation_rows: int = 5:
-	set(value):
-		formation_rows = value
-		emit_changed()
 @export_range(0.08, 0.35, 0.01) var formation_slot_width_ratio: float = 0.12:
 	set(value):
 		formation_slot_width_ratio = value
@@ -139,9 +132,9 @@ extends Resource
 	set(value):
 		fan_edge_drop_ratio = value
 		emit_changed()
-@export_range(0.0, 0.5, 0.01) var selected_raise_ratio: float = 0.34:
+@export_range(0.0, 1.0, 0.01) var hover_raise_ratio: float = 0.62:
 	set(value):
-		selected_raise_ratio = value
+		hover_raise_ratio = value
 		emit_changed()
 @export_range(0.0, 64.0, 1.0) var hand_bottom_margin: float = 12.0:
 	set(value):

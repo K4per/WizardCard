@@ -1,7 +1,7 @@
 {
   "id": "protective-flame",
   "name": "避火咒",
-  "type": "word",
+  "type": "talisman",
   "rarity": "common",
   "cost": 2,
   "rank": 4,
@@ -14,8 +14,7 @@
   ],
   "effects": [
     {
-      "kind": "grant_resistance",
-      "amount": 0
+      "kind": "grant_resistance"
     }
   ],
   "responses": [
@@ -23,7 +22,6 @@
       "id": "protect",
       "name": "获得火焰抗性",
       "sources": [
-        "words",
         "ambush"
       ],
       "windows": [
@@ -37,17 +35,17 @@
       "target": "self",
       "effects": [
         {
-          "kind": "grant_resistance",
-          "amount": 0
+          "kind": "grant_resistance"
         }
       ]
     }
   ],
-  "text": "专注2。自身受到的火焰伤害减半，火焰抗性不叠加。",
+  "text": "专注2。受到的火焰伤害减半，火焰抗性不叠加。",
   "castCost": 0,
   "level": 4,
   "analysisTurns": 0,
   "concentrationUpkeep": 2,
-  "number": "030006",
-  "illustrationId": "protective-flame"
+  "number": "040005",
+  "illustrationId": "protective-flame",
+  "responseOnly": false
 }

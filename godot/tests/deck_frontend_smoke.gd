@@ -72,7 +72,6 @@ func _run() -> void:
 		var current: int = int(_app.service.editing_draft[membership].get(str(definition["id"]), 0))
 		for copy: int in range(mini(3 - current, remaining)):
 			editor._adjust(str(definition["id"]), 1, "cards")
-	editor._choose_section("cards")
 	await _settle()
 	_check(DeckUi.total(_app.service.editing_draft["cards"]) == 40, "Main deck reaches 40")
 	_check(DeckUi.total(_app.service.editing_draft["sideCards"]) == 10, "Side deck reaches 10")
@@ -81,14 +80,13 @@ func _run() -> void:
 	editor._adjust("fireball", 1, "cards")
 	editor._adjust("hexagram", 1, "sideCards")
 	_check(_app.service.editing_draft == complete, "Full deck and copy limits reject extra cards")
-	_check(editor._tabs[0].text.contains("40 / 40") and editor._tabs[1].text.contains("10 / 10"), "Independent counts remain visible")
+	_check(editor._main_count.text.contains("40 / 40") and editor._side_count.text.contains("10 / 10"), "Independent counts remain visible")
 	_check(editor._initial is Label and editor._initial.text.contains("对局开始") and not _app.service.editing_draft.has("baseFormation"), "Editor explains match-start selection instead of storing an initial formation")
 	for card_id: String in _app.service.editing_draft["cards"]:
 		_check(int(_app.service.definitions[card_id]["type"]) != 3, "Formations never enter the main deck")
-	_check(editor._built.ids.size() == 30, "First main page displays 30 individual cards")
-	editor._turn_built(1)
-	_check(editor._built.ids.size() == 10, "Second main page displays remaining 10 cards")
-	editor._turn_built(-1)
+	_check(editor._built.ids.size() == 40 and editor._built.columns == 10 and editor._built.rows == 4, "All forty main cards are visible in one 10 by 4 grid")
+	_check(editor._side.ids.size() == 10 and editor._side.columns == 10 and editor._side.rows == 1, "All ten side cards are visible at the same time")
+	_check(editor._built.section == "cards" and editor._side.section == "sideCards", "Main and side grid membership stays fixed")
 	editor._search.text = "火球"
 	editor._query_changed("")
 	_check(editor._pool_ids == ["fireball"], "Native Chinese substring filter returns actual Fireball")
@@ -97,6 +95,13 @@ func _run() -> void:
 	_check(editor._pool_ids.is_empty(), "Combined name and type filters produce empty results")
 	editor._reset_query()
 	_check(editor._pool_ids.size() == 45, "Reset restores full catalogue")
+	var main_ids: Array[String] = editor._built.ids.duplicate()
+	var side_ids: Array[String] = editor._side.ids.duplicate()
+	editor._pool_next.pressed.emit()
+	_check(editor._pool_page == 1 and editor._pool.ids == editor._pool_ids.slice(9, 18), "Pool pagination shows the next nine native cards")
+	_check(editor._built.ids == main_ids and editor._side.ids == side_ids, "Pool pagination preserves both fully visible decks")
+	editor._pool_prev.pressed.emit()
+	_check(editor._pool_page == 0 and editor._pool.ids == editor._pool_ids.slice(0, 9), "Pool previous page restores the first nine cards")
 	_check(_app.service.query_cards({"rank": 0}).is_empty(), "Rank filtering excludes unrelated types")
 	_check(_app.service.query_cards({"type": 0, "castCost": 0}).is_empty(), "Removed action type does not match formal cards")
 	await _input_checks(editor)
@@ -111,20 +116,11 @@ func _run() -> void:
 	for dimensions: Vector2i in [Vector2i(1920, 1080), Vector2i(1600, 1000), Vector2i(1280, 720)]:
 		root.size = dimensions
 		await _settle()
-		editor._choose_section("cards")
-		await _settle()
 		_layout_checks(editor, dimensions)
-		await _screenshot("editor-main-%dx%d" % [dimensions.x, dimensions.y])
-		editor._turn_built(1)
-		await _settle()
-		_check(editor._built._hits.size() == 10, "Second page hit regions match ten cards")
-		if dimensions.x == 1920:
-			await _screenshot("editor-main-page2-1920x1080")
-		editor._choose_section("sideCards")
-		await _settle()
-		_check(editor._built.ids.size() == 10 and editor._built.slot_count == 10, "Side tab contains ten slots")
-		_layout_checks(editor, dimensions)
-		await _screenshot("editor-side-%dx%d" % [dimensions.x, dimensions.y])
+		_check(editor._built._hits.size() == 40 and editor._side._hits.size() == 10, "Both complete decks retain all fifty card hit targets at " + str(dimensions))
+		editor._inspect("sunburst")
+		_check(editor._detail._body.text.contains(_app.service.card_by_id("sunburst").text), "Scrollable detail retains the complete native effect")
+		await _screenshot("editor-%dx%d" % [dimensions.x, dimensions.y])
 	root.size = Vector2i(1920, 1080)
 	await _settle()
 	editor._rename("尚未保存的名字")
@@ -159,9 +155,8 @@ func _run() -> void:
 	_app.navigate(&"deck_editor")
 	await _settle()
 	editor = _app.page as DeckEditorPage
-	editor._choose_section("sideCards")
 	await _settle()
-	_check(editor._built._hits.size() == 13, "Excess legacy side cards remain visible for repair")
+	_check(editor._side._hits.size() == 13 and editor._built._hits.size() == 2, "Excess legacy side cards remain visible beside the main deck for repair")
 	editor._adjust("reservoir", -1, "sideCards")
 	editor._adjust("reservoir", -1, "sideCards")
 	editor._adjust("reservoir", -1, "sideCards")
@@ -201,14 +196,23 @@ func _layout_checks(editor: DeckEditorPage, dimensions: Vector2i) -> void:
 	for control: Control in [editor._name, editor._initial, editor._detail, editor._built_panel, editor._pool_panel, editor._save, editor._back, editor._notice]:
 		_check(bounds.encloses(control.get_global_rect()), "Editor controls fit " + str(dimensions) + ": " + control.get_class() + " " + str(control.get_global_rect()))
 	_check(not editor._detail.get_global_rect().intersects(editor._built_panel.get_global_rect()) and not editor._built_panel.get_global_rect().intersects(editor._pool_panel.get_global_rect()), "Three columns retain separate bounds")
-	for grid: DeckCardGrid in [editor._built, editor._pool]:
+	_check(editor._detail.size.y > 400.0, "Construction details retain a usable height")
+	for child: Control in [editor._detail._title, editor._detail._face, editor._detail._body, editor._detail._hint]:
+		_check(editor._detail.get_global_rect().encloses(child.get_global_rect()), "Detail title, face, effect and hint remain inside the left column")
+	_check(editor._detail._body.size.y >= 100.0, "Full native card text has a visible scrollable reading area")
+	_check(editor._detail.size.x >= 240.0 and editor._detail.size.x <= 270.0, "The illustration/detail column keeps a readable fixed width")
+	_check(editor._built.get_global_rect().end.y < editor._side.get_global_rect().position.y, "Main and side grids remain simultaneously visible without overlap")
+	for grid: DeckCardGrid in [editor._built, editor._side, editor._pool]:
 		for hit: Dictionary in grid._hits:
-			_check(Rect2(Vector2.ZERO, grid.size).encloses(hit["rect"]), "Full card frames remain in grid")
+			_check(Rect2(Vector2.ZERO, grid.size).encloses(hit["rect"]), "Complete flat card targets remain in each grid")
 	for filter: OptionButton in editor._filters:
-		_check(editor._pool_panel.get_global_rect().encloses(filter.get_global_rect()), "Filters fit right column")
-	for kind: String in ["analysis", "talisman", "incantation", "formation", "rune"]:
-		var dimensions_array: Array = ArtBank.metadata("c2d.card.detail." + kind + ".ai")["size"]
-		_check(int(dimensions_array[0]) == 1086 and int(dimensions_array[1]) == 1448, "Cards keep the original full art frame")
+		_check(editor._pool_panel.get_global_rect().encloses(filter.get_global_rect()), "Filters fit the right column")
+	_check(editor._save.get_script() == null and editor._back.get_script() == null, "Save and back controls are native buttons")
+	_check(editor._save.get_theme_stylebox(&"normal") is StyleBoxFlat and editor._name.get_theme_stylebox(&"normal") is StyleBoxFlat, "Construction controls use flat native styles")
+	var match_theme: Theme = SimpleBattleTheme.create()
+	var match_button: StyleBoxFlat = match_theme.get_stylebox(&"normal", &"Button") as StyleBoxFlat
+	var deck_button: StyleBoxFlat = editor._save.get_theme_stylebox(&"normal") as StyleBoxFlat
+	_check(deck_button.bg_color.is_equal_approx(match_button.bg_color) and deck_button.border_color.is_equal_approx(match_button.border_color), "Construction controls match the battle palette")
 
 func _motion(position: Vector2, relative: Vector2 = Vector2.ZERO, held: bool = false) -> void:
 	var event: InputEventMouseMotion = InputEventMouseMotion.new()
@@ -225,16 +229,59 @@ func _click(position: Vector2, pressed: bool, button: MouseButton = MOUSE_BUTTON
 	event.button_mask = MOUSE_BUTTON_MASK_LEFT if pressed and button == MOUSE_BUTTON_LEFT else 0
 	root.push_input(event, true)
 
-func _start_drag(grid: DeckCardGrid) -> void:
-	var point: Vector2 = grid.global_position + (grid._hits[0]["rect"] as Rect2).get_center()
+func _start_drag(grid: DeckCardGrid, id: String = "") -> void:
+	var point: Vector2 = grid.global_position + (grid._hits[0]["rect"] as Rect2).get_center() if id.is_empty() else _card_point(grid, id)
 	_motion(point)
 	_click(point, true)
 	await _settle()
 	_motion(point + Vector2(32, 8), Vector2(32, 8), true)
 	await _settle()
 
+func _card_point(grid: DeckCardGrid, id: String) -> Vector2:
+	for hit: Dictionary in grid._hits:
+		if str(hit["id"]) == id:
+			return grid.global_position + (hit["rect"] as Rect2).get_center()
+	_check(false, "Expected visible input target: " + id)
+	return grid.get_global_rect().get_center()
+
+func _key(keycode: Key) -> void:
+	var event: InputEventKey = InputEventKey.new()
+	event.keycode = keycode
+	event.pressed = true
+	root.push_input(event, true)
+	event = event.duplicate() as InputEventKey
+	event.pressed = false
+	root.push_input(event, true)
+
+func _search_for(editor: DeckEditorPage, id: String) -> void:
+	editor._search.text = _app.service.card_by_id(id).title
+	editor._query_changed("")
+	var index: int = editor._pool_ids.find(id)
+	_check(index >= 0, "Native search includes the requested input target: " + id)
+	if index >= 0:
+		editor._turn_pool(index / 9)
+	await _settle()
+
+func _keyboard_checks(editor: DeckEditorPage) -> void:
+	var before: Dictionary = _app.service.editing_draft.duplicate(true)
+	editor._built._keyboard_index = 0
+	editor._built.grab_focus()
+	_key(KEY_DOWN)
+	_check(editor._built._keyboard_index == 10 and editor._detail.card.definition_id == editor._built.ids[10], "Main-grid Down inspects the card in the next row")
+	_key(KEY_RIGHT)
+	_check(editor._built._keyboard_index == 11 and editor._detail.card.definition_id == editor._built.ids[11], "Main-grid Right inspects the next column")
+	_key(KEY_UP)
+	_key(KEY_LEFT)
+	_key(KEY_ENTER)
+	_check(editor._built._keyboard_index == 0 and editor._detail.card.definition_id == editor._built.ids[0], "Main-grid Up, Left and Enter inspect the expected original card")
+	editor._side._keyboard_index = 0
+	editor._side.grab_focus()
+	_key(KEY_RIGHT)
+	_key(KEY_ENTER)
+	_check(editor._side._keyboard_index == 1 and editor._detail.card.definition_id == editor._side.ids[1], "Side-grid keyboard navigation inspects the selected formation")
+	_check(_app.service.editing_draft == before, "Keyboard inspection never changes deck membership")
+
 func _input_checks(editor: DeckEditorPage) -> void:
-	editor._choose_section("cards")
 	await _settle()
 	var first: String = editor._built.ids[0]
 	var initial: int = DeckUi.total(_app.service.editing_draft["cards"])
@@ -290,7 +337,90 @@ func _input_checks(editor: DeckEditorPage) -> void:
 	_click(point, false)
 	await _settle()
 	_check(DeckUi.total(_app.service.editing_draft["cards"]) == initial, "Committed pool-to-built drag restores one")
+	var side_first: String = editor._side.ids[0]
+	var side_initial: int = DeckUi.total(_app.service.editing_draft["sideCards"])
+	var side_copies: int = int(_app.service.editing_draft["sideCards"].get(side_first, 0))
+	point = _card_point(editor._side, side_first)
+	_motion(point)
+	_click(point, true, MOUSE_BUTTON_RIGHT)
+	_click(point, false, MOUSE_BUTTON_RIGHT)
+	await _settle()
+	_check(DeckUi.total(_app.service.editing_draft["sideCards"]) == side_initial - 1 and int(_app.service.editing_draft["sideCards"].get(side_first, 0)) == side_copies - 1, "Side-grid right click removes exactly one formation")
+	await _search_for(editor, side_first)
+	point = _card_point(editor._pool, side_first)
+	_motion(point)
+	_click(point, true, MOUSE_BUTTON_RIGHT)
+	_click(point, false, MOUSE_BUTTON_RIGHT)
+	await _settle()
+	_check(DeckUi.total(_app.service.editing_draft["sideCards"]) == side_initial and DeckUi.total(_app.service.editing_draft["cards"]) == initial, "Pool right click restores the formation only to the side deck")
+	await _start_drag(editor._side, side_first)
+	point = editor._pool.get_global_rect().get_center()
+	_motion(point, Vector2(10, 10), true)
+	await _settle()
+	_click(point, false)
+	await _settle()
+	_check(DeckUi.total(_app.service.editing_draft["sideCards"]) == side_initial - 1, "Committed side-to-pool drag removes exactly one formation")
+	# Leave room in both decks so a wrong-section rejection cannot be caused by capacity.
+	editor._adjust(first, -1, "cards")
+	await _settle()
+	var before_wrong_section: Dictionary = _app.service.editing_draft.duplicate(true)
+	await _start_drag(editor._pool, side_first)
+	point = editor._built.get_global_rect().get_center()
+	_motion(point, Vector2(10, 10), true)
+	await _settle()
+	_click(point, false)
+	await _settle()
+	_check(_app.service.editing_draft == before_wrong_section and not root.gui_is_dragging(), "Formation drop onto the main deck is rejected even when both decks have room")
+	await _start_drag(editor._pool, side_first)
+	point = editor._side.get_global_rect().get_center()
+	_motion(point, Vector2(10, 10), true)
+	await _settle()
+	_click(point, false)
+	await _settle()
+	_check(DeckUi.total(_app.service.editing_draft["sideCards"]) == side_initial and DeckUi.total(_app.service.editing_draft["cards"]) == initial - 1, "Committed pool-to-side drag restores only the formation")
+	editor._adjust(first, 1, "cards")
+	await _side_copy_limit(editor)
+	await _keyboard_checks(editor)
 	editor._reset_query()
+
+func _side_copy_limit(editor: DeckEditorPage) -> void:
+	var saturated: String = ""
+	for id: String in editor._side.ids:
+		if _app.service.named_copies(id, "sideCards") == 3:
+			saturated = id
+			break
+	_check(not saturated.is_empty(), "Side deck contains a native three-copy limit fixture")
+	if saturated.is_empty():
+		return
+	var spare: String = ""
+	for id: String in editor._side.ids:
+		if id != saturated:
+			spare = id
+			break
+	_check(not spare.is_empty(), "Side deck has a different formation to free capacity")
+	if spare.is_empty():
+		return
+	var point: Vector2 = _card_point(editor._side, spare)
+	_motion(point)
+	_click(point, true, MOUSE_BUTTON_RIGHT)
+	_click(point, false, MOUSE_BUTTON_RIGHT)
+	await _search_for(editor, saturated)
+	var before: Dictionary = _app.service.editing_draft.duplicate(true)
+	point = _card_point(editor._pool, saturated)
+	_motion(point)
+	_click(point, true, MOUSE_BUTTON_RIGHT)
+	_click(point, false, MOUSE_BUTTON_RIGHT)
+	await _settle()
+	_check(DeckUi.total(_app.service.editing_draft["sideCards"]) == 9 and _app.service.named_copies(saturated, "sideCards") == 3 and _app.service.editing_draft == before, "Side copy limit rejects a fourth same-name formation while deck capacity remains")
+	await _start_drag(editor._pool, saturated)
+	point = editor._side.get_global_rect().get_center()
+	_motion(point, Vector2(10, 10), true)
+	await _settle()
+	_click(point, false)
+	await _settle()
+	_check(_app.service.editing_draft == before, "Pool-to-side drag also respects the same-name copy limit")
+	editor._adjust(spare, 1, "sideCards")
+	await _settle()
 
 func _screenshot(name: String) -> void:
 	if not _capture:

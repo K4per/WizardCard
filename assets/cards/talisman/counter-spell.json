@@ -10,8 +10,7 @@
   "responseOnly": true,
   "effects": [
     {
-      "kind": "counter_spell",
-      "amount": 0
+      "kind": "counter_spell"
     }
   ],
   "responses": [
@@ -22,27 +21,23 @@
         "ambush"
       ],
       "windows": [
-        "phase_start",
-        "phase_end",
-        "action",
-        "prepare",
-        "cast",
-        "trigger"
+        "cast"
       ],
       "target": "enemy_spell_link",
       "effects": [
         {
-          "kind": "counter_spell",
-          "amount": 0
+          "kind": "counter_spell"
         }
-      ]
+      ],
+      "eventOwner": "opponent"
     }
   ],
-  "text": "对方发动法术时可发动：无效并摧毁该法术；自身获得其本次发动实际支付的魔素等量的临时荷载，在下次己方抽牌阶段清除。",
+  "text": "对方发动法术时才能发动。将其无效并销毁。那之后，获得与其原本设置费用等量的临时荷载。",
   "flavor": "火球术！反制！反制你的反制！温馨提示，这种场景在奥术决斗中不会出现。",
   "castCost": 0,
   "level": 5,
   "analysisTurns": 0,
   "number": "040002",
-  "illustrationId": "counter-spell"
+  "illustrationId": "counter-spell",
+  "target": "self"
 }

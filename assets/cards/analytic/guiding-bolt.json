@@ -21,7 +21,7 @@
       "kind": "reveal_enemy_ambush"
     }
   ],
-  "text": "对对方玩家造成8点光耀伤害，展示对方解析区一张盖伏的法术卡（不反转）。",
+  "text": "对对方玩家造成8点光耀伤害。那之后，可以展示对方解析区一张盖伏法术（不反转）。",
   "number": "020014",
   "illustrationId": "v2-guiding-bolt"
 }

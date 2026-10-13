@@ -230,7 +230,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             link.item.source = c.id;
             link.item.targetCard = r->target;
             link.item.targetCards = targetCards(r->target, r->targets);
-            link.item.targetPlayer = a.target == TargetKind::Opponent ? 1 - actor : actor;
+            link.item.targetPlayer = a.target == TargetKind::Player && r->target
+                ? static_cast<PlayerId>(r->target - playerTarget(0)) : a.target == TargetKind::Opponent ? 1 - actor : actor;
             link.item.effects = a.effects.empty() && catalog_.usesAlphaV2() ? def.effects : a.effects;
             for (const auto &[sid, seal] : s.cards)
                 if (seal.zone == Zone::Attached && seal.host == c.id &&
@@ -374,6 +375,13 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                 if (s.result != -1) return {};
                 s.events.push_back({"concentration", "维持专注：支付 " + std::to_string(paid) + " 魔素及荷载",
                                     -1, source, paid});
+                const auto &definition = catalog_.at(c.definition);
+                if (catalog_.usesAlphaV25() && !definition.onCast.empty()) {
+                    auto trigger = snapshot(c, definition);
+                    trigger.id = s.nextTrigger++; trigger.batch = s.nextBatch++;
+                    trigger.effects = definition.onCast;
+                    s.queue.append(std::move(trigger));
+                }
             } else {
                 StateMaintenance::leave(s, source, &catalog_);
                 StateMaintenance::check(s, catalog_);

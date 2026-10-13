@@ -1,18 +1,18 @@
 {
   "id": "octagram",
-  "name": "八芒星",
+  "name": "秩序之八芒星",
   "type": "formation",
   "rarity": "epic",
   "level": 6,
   "body": 2,
   "rings": 4,
-  "capacity": 15,
-  "income": 2,
+  "capacity": 10,
+  "income": 4,
   "maxRank": 6,
   "baseEligible": false,
   "cost": 0,
-  "text": "该卡不能被效果破坏。自己每一个法术解析完成，清除一点荷载。",
-  "summonCondition": "【小六芒星】+【均衡之六芒星】",
+  "text": "此卡不会被效果破坏。己方每有一张解析法术解析完成，清除1点荷载。",
+  "summonCondition": "【运行之三角星】+【均衡之六芒星】",
   "recipe": [
     {
       "kind": "sacrifice_formation",

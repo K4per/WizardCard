@@ -77,7 +77,7 @@ bool GameEngine::phaseV2() {
         s.phaseGate = 0; s.phaseCursor = 0; s.phaseOrderCursor = 0;
         s.durationApplied = false;
         s.events.push_back({"phase_enter", "进入" + phaseName(s.phase) + "阶段"});
-        s.phaseStep = s.phase == Phase::End ? PhaseStep::StartWindow : PhaseStep::PrepareIncome;
+        s.phaseStep = s.phase == Phase::End && !catalog_.usesAlphaV25() ? PhaseStep::StartWindow : PhaseStep::PrepareIncome;
         return true;
     }
     case PhaseStep::PrepareIncome: {
@@ -96,7 +96,8 @@ bool GameEngine::phaseV2() {
                     catalog_.at(card.definition).type == CardType::Formation) {
                     income += catalog_.at(card.definition).income;
                     for (const auto &[sealId, seal] : s.cards)
-                        if (seal.zone == Zone::Attached && seal.host == id)
+                        if (seal.zone == Zone::Attached && seal.host == id &&
+                            std::find(catalog_.at(card.definition).traits.begin(), catalog_.at(card.definition).traits.end(), "effect_immune") == catalog_.at(card.definition).traits.end())
                             income += catalog_.at(seal.definition).incomeBonus;
                 }
             Trigger trigger; trigger.owner = s.active;
@@ -121,7 +122,10 @@ bool GameEngine::phaseV2() {
                 if (next.id) {
                     s.phaseOrderCursor = next.key;
                     const auto &def = catalog_.at(s.cards.at(next.id).definition);
-                    triggered(next.id, s.phase == Phase::Draw ? def.onDraw : s.phase == Phase::Main ? def.onMain : def.onCast);
+                    triggered(next.id, s.phase == Phase::End ?
+                        (std::find(def.traits.begin(), def.traits.end(), "end_phase_start") != def.traits.end() ? def.onEnd : std::vector<Effect>{}) :
+                        s.phase == Phase::Draw ? def.onDraw : s.phase == Phase::Main ? def.onMain :
+                        catalog_.usesAlphaV25() && def.concentration ? std::vector<Effect>{} : def.onCast);
                     return true;
                 }
                 ++s.phaseCursor; s.phaseOrderCursor = 0; return true;
@@ -206,11 +210,12 @@ bool GameEngine::phaseV2() {
     case PhaseStep::Cleanup: {
         if (s.phase != Phase::End) { s.phaseStep = PhaseStep::Finish; return true; }
         if (s.phaseCursor == 0 || s.phaseCursor == 1) {
-            auto next = nextFieldCard(s, catalog_, s.active, s.phaseCursor == 0, s.phaseOrderCursor);
+            auto next = nextFieldCard(s, catalog_, s.active, s.phaseCursor == 0, s.phaseOrderCursor, true);
             if (next.id) {
                 s.phaseOrderCursor = next.key;
                 const auto &effects = catalog_.at(s.cards.at(next.id).definition).onEnd;
-                if (triggered(next.id, effects)) return true;
+                const auto &traits = catalog_.at(s.cards.at(next.id).definition).traits;
+                if (std::find(traits.begin(), traits.end(), "end_phase_start") == traits.end() && triggered(next.id, effects)) return true;
                 return true;
             }
             ++s.phaseCursor; s.phaseOrderCursor = 0; return true;
@@ -244,6 +249,7 @@ bool GameEngine::phaseV2() {
     case PhaseStep::Finish:
         s.events.push_back({"phase_end", phaseName(s.phase) + "阶段结束"});
         if (s.phase == Phase::End) {
+            for (auto &player : s.players) player.damageReduction = player.forceDamageReduction = 0;
             s.skipCastPhase = false;
             pl.actionsPlayed = 0; pl.formations = 0; pl.sealRemovals = 0;
             for (auto &[id, card] : s.cards)

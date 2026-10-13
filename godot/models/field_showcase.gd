@@ -10,6 +10,7 @@ static func create(library: Array[CardPresentation]) -> FieldPresentation:
 		by_id[card.definition_id] = card
 	var own: FormationPresentation = FormationPresentation.new()
 	own.card = _copy(by_id.get("hexagram", library[0]), "formation-own")
+	own.body_size = 2
 	own.ring_count = 4
 	own.occupants[0] = _copy(by_id.get("fireball", library[0]), "own-spell")
 	own.occupants[0].status = "解析中"
@@ -17,6 +18,7 @@ static func create(library: Array[CardPresentation]) -> FieldPresentation:
 	field.own_formations.append(own)
 	var opponent: FormationPresentation = FormationPresentation.new()
 	opponent.card = _copy(by_id.get("hexagram", library[0]), "formation-opponent")
+	opponent.body_size = 2
 	opponent.ring_count = 6
 	opponent.occupants[1] = CardPresentation.anonymous("opponent-covered")
 	field.opponent_formations.append(opponent)

@@ -3,6 +3,7 @@
     "id": "analysis-practice",
     "name": "解析练习",
     "description": "",
+    "baseFormation": "small-hexagram",
     "cards": [
       {
         "id": "fireball",
@@ -128,6 +129,7 @@
     "id": "counter-load",
     "name": "言灵与荷载",
     "description": "",
+    "baseFormation": "small-hexagram",
     "cards": [
       {
         "id": "barbs",
@@ -253,6 +255,7 @@
     "id": "concentration-practice",
     "name": "专注练习",
     "description": "",
+    "baseFormation": "small-hexagram",
     "cards": [
       {
         "id": "ward",
@@ -378,6 +381,7 @@
     "id": "quick-circuit",
     "name": "速解与支援",
     "description": "",
+    "baseFormation": "small-hexagram",
     "cards": [
       {
         "id": "magic-missile",
@@ -511,6 +515,7 @@
     "id": "source-load",
     "name": "持续荷载与防护",
     "description": "",
+    "baseFormation": "small-hexagram",
     "cards": [
       {
         "id": "messy-wave",
@@ -644,6 +649,7 @@
     "id": "pentagram-evocation",
     "name": "五芒星塑能",
     "description": "",
+    "baseFormation": "small-hexagram",
     "cards": [
       {
         "id": "fireball",
@@ -777,6 +783,7 @@
     "id": "fortress-sustain",
     "name": "防护与续航",
     "description": "",
+    "baseFormation": "small-hexagram",
     "cards": [
       {
         "id": "shield",
@@ -902,6 +909,7 @@
     "id": "word-tempo",
     "name": "言灵与节奏",
     "description": "",
+    "baseFormation": "small-hexagram",
     "cards": [
       {
         "id": "spark",
@@ -1027,6 +1035,7 @@
     "id": "default-legacy",
     "name": "默认预设（旧版）",
     "description": "",
+    "baseFormation": "small-hexagram",
     "cards": [
       {
         "id": "fireball",

@@ -173,6 +173,8 @@ func _position_phase_button() -> void:
 	var width: float = maxf(82, minf(156, size.x - left - 12))
 	_end_phase.position = Vector2(minf(left, size.x - width - 12), canvas.position.y + casting.position.y)
 	_end_phase.size = Vector2(width, maxf(34, casting.size.y))
+	_phase.size = Vector2(width, 88)
+	_phase.position = Vector2(_end_phase.position.x, maxf(8, _end_phase.position.y - _phase.size.y - 8))
 
 func _build_dialogs() -> void:
 	_confirm = %ConfirmAction
@@ -252,7 +254,7 @@ func _refresh() -> void:
 	_global_popup_open = false
 	var actor: int = int(snapshot.get("actingPlayer", 0))
 	var phase: String = str(snapshot.get("phaseName", ""))
-	_phase.text = "第 %s 回合 · 玩家 %d · %s" % [str(snapshot.get("globalTurn", "0")), actor + 1, phase]
+	_phase.text = "第 %s 回合\n玩家 %d · %s" % [str(snapshot.get("globalTurn", "0")), actor + 1, phase]
 	_clock_received = Time.get_ticks_msec()
 	_update_status()
 	_hand_button.text = "▴ 手牌" if canvas.hand_collapsed else "▾ 手牌"
@@ -330,14 +332,15 @@ func _update_status() -> void:
 	for index: int in range(2):
 		var player: int = service.match_viewer if index == 0 else 1 - service.match_viewer
 		var values: Dictionary = players[player]
-		var text: String = "%s  生命 %d%s   魔素 %d   荷载 %d/%d" % ["我方" if index == 0 else "对手", int(values.get("life", 0)), " (+%d)" % int(values.get("temporaryLife", 0)) if int(values.get("temporaryLife", 0)) > 0 else "", int(values.get("mana", 0)), int(values.get("load", 0)), int(values.get("capacity", 0))]
+		var separator: String = "\n" if index == 0 else "   "
+		var text: String = "%s  生命 %d%s%s魔素 %d   荷载 %d/%d" % ["我方" if index == 0 else "对手", int(values.get("life", 0)), " (+%d)" % int(values.get("temporaryLife", 0)) if int(values.get("temporaryLife", 0)) > 0 else "", separator, int(values.get("mana", 0)), int(values.get("load", 0)), int(values.get("capacity", 0))]
 		if bool(clock.get("enabled", false)) and remaining.size() > player:
 			var milliseconds: int = int(remaining[player])
 			var player_running: bool = bool(running_players[player]) if running_players.size() > player else int(clock.get("runningPlayer", -1)) == player
 			if bool(clock.get("running", false)) and player_running:
 				milliseconds -= Time.get_ticks_msec() - _clock_received
 			var seconds: int = maxi(0, ceili(float(milliseconds) / 1000.0))
-			text += "   %02d:%02d" % [seconds / 60, seconds % 60]
+			text += separator + "%02d:%02d" % [seconds / 60, seconds % 60]
 			labels[index].modulate = Color("f0aaaa") if seconds <= 30 else Color.WHITE
 		labels[index].text = text
 
@@ -528,6 +531,18 @@ func _next_action_target(from_board: bool) -> void:
 					candidates.append(id)
 		if candidates.is_empty():
 			continue
+		# Players have target tokens rather than a card hitbox. Show the exact
+		# legal command variants, each labeled with its native player target.
+		var has_field_target: bool = false
+		for id: String in candidates:
+			var candidate: CardPresentation = MatchProjection.card(service.match_snapshot, id)
+			if candidate != null and canvas.card_bounds(candidate).has_area():
+				has_field_target = true
+				break
+		if candidates.has("1073741825") or candidates.has("1073741826") or not has_field_target:
+			canvas.clear_action_targets()
+			_show_target_variants()
+			return
 		_target_field = field
 		canvas.set_action_targets(candidates)
 		_detail.hide()
@@ -776,7 +791,12 @@ func _render_decision() -> void:
 		choice.id = str(action.get("id", ""))
 		choice.label = MatchProjection.action_detail(snapshot, action)
 		choice.card = MatchProjection.card(snapshot, str(action.get("source", "0")))
-		if choice.card == null and action_type == 10:
+		# Choose.option belongs to the decision's option domain: damage types,
+		# trigger IDs and load entries are not card IDs even when values collide.
+		if action_type == 10 and kind in [2, 4, 14, 15]:
+			choice.card = null
+			choice.label = str(action.get("label", choice.label))
+		elif choice.card == null and action_type == 10 and kind in [1, 3, 5, 6, 7, 9, 10, 11, 13]:
 			choice.card = MatchProjection.card(snapshot, str(command.get("option", "0")))
 		request.choices.append(choice)
 	if request.choices.is_empty() and request.pass_id.is_empty():

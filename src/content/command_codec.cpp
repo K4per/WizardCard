@@ -28,6 +28,8 @@ Json encodeCommand(const Command &c) {
                 j["target"] = x.target;
                 j["discard"] = x.discard;
             }
+            if constexpr (std::is_same_v<T, PreloadWord> || std::is_same_v<T, FlipAmbush> || std::is_same_v<T, ActivateSpell>)
+                if (x.discard) j["discard"] = x.discard;
             if constexpr (std::is_same_v<T, PlayAction> || std::is_same_v<T, FlipAmbush> ||
                           std::is_same_v<T, ActivateSpell>)
                 j["target"] = x.target;
@@ -106,7 +108,7 @@ Command decodeCommand(const Json &j) {
     case 5:
         return PreloadWord{id("card"), j.value("release", false),
             j.contains("formation") ? id("formation") : 0,
-            j.contains("target") ? id("target") : 0, targets};
+            j.contains("target") ? id("target") : 0, targets, j.contains("discard") ? id("discard") : 0};
     case 6:
         return AttachSeal{id("card"), id("host")};
     case 7:
@@ -140,9 +142,9 @@ Command decodeCommand(const Json &j) {
         return SetAmbush{id("card"), id("formation")};
     case 16:
         return FlipAmbush{id("card"), id("target"), targets,
-            j.contains("decision") ? serial("decision") : 0};
+            j.contains("decision") ? serial("decision") : 0, j.contains("discard") ? id("discard") : 0};
     case 17:
-        return ActivateSpell{id("card"), id("target"), targets};
+        return ActivateSpell{id("card"), id("target"), targets, j.contains("discard") ? id("discard") : 0};
     case 18:
         return SelectInitialFormation{id("card")};
     case 19:

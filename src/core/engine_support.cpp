@@ -49,7 +49,7 @@ bool hasOverflow(const GameState &s, const CardCatalog &cat) {
 }
 bool cardTarget(TargetKind t) {
     return t == TargetKind::EmptyEnemyFormation || t == TargetKind::EnemyCard || t == TargetKind::OwnCard ||
-           t == TargetKind::AnyCard || t == TargetKind::OwnAnalyzingSpell;
+           t == TargetKind::AnyCard || t == TargetKind::OwnAnalyzingSpell || t == TargetKind::EnemyAshCard;
 }
 std::vector<CardId> targetCards(CardId target, const std::vector<CardId> &targets) {
     return targets.empty() ? (target ? std::vector<CardId>{target} : std::vector<CardId>{}) : targets;
@@ -57,6 +57,8 @@ std::vector<CardId> targetCards(CardId target, const std::vector<CardId> &target
 bool validTargets(const GameState &s, TargetKind kind, int count, PlayerId p, CardId target,
                   const std::vector<CardId> &targets) {
     auto ids = targetCards(target, targets);
+    if (kind == TargetKind::Player)
+        return ids.size() == 1 && ids.front() == target && Rules::targetValid(s, kind, p, target);
     if (!cardTarget(kind))
         return target == 0 && targets.empty() && kind != TargetKind::PendingLink &&
                kind != TargetKind::PreparationRoot && kind != TargetKind::EnemySpellLink;
@@ -69,6 +71,7 @@ bool validTargets(const GameState &s, TargetKind kind, int count, PlayerId p, Ca
     return true;
 }
 std::vector<std::vector<CardId>> sets(const GameState &s, TargetKind kind, int count, PlayerId p) {
+    if (kind == TargetKind::Player) return {{playerTarget(0)}, {playerTarget(1)}};
     if (!cardTarget(kind))
         return {{}};
     std::vector<CardId> ids;
@@ -110,7 +113,7 @@ Trigger snapshot(const CardInstance &c, const CardDefinition &d) {
     t.owner = c.owner;
     t.source = c.id;
     t.targetCard = c.targetCard;
-    t.targetPlayer = c.targetPlayer;
+    t.targetPlayer = d.target == TargetKind::Player && c.targetCard ? static_cast<PlayerId>(c.targetCard - playerTarget(0)) : c.targetPlayer;
     t.target = d.target;
     t.targetCards = c.targets;
     t.effects = d.effects;

@@ -6,7 +6,7 @@
   "rank": 5,
   "level": 5,
   "speed": 1,
-  "school": "necromancy",
+  "school": "evocation",
   "cost": 4,
   "castCost": 2,
   "analysisTurns": 2,
@@ -26,14 +26,9 @@
       "kind": "damage",
       "amount": 5,
       "damageType": "fire"
-    },
-    {
-      "kind": "damage",
-      "amount": 5,
-      "damageType": "fire"
     }
   ],
-  "text": "对对方玩家造成5点火焰伤害4次。",
+  "text": "对对方玩家造成5点火焰伤害，重复三次。",
   "number": "020015",
   "illustrationId": "v2-scorching-ray"
 }

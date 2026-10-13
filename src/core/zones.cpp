@@ -56,6 +56,7 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
         c.castLoad = 0;
         c.remaining = 0;
         c.faceDown = false;
+        c.publiclyRevealed = false;
         c.ringIndex = -1;
         if (cat && cat->usesAlphaV2()) {
             c.wasAmbushed = false;

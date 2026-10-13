@@ -12,11 +12,10 @@ var _detail: DeckDetailPane
 var _built_panel: Panel
 var _pool_panel: Panel
 var _built: DeckCardGrid
+var _side: DeckCardGrid
 var _pool: DeckCardGrid
-var _tabs: Array[Button] = []
-var _built_prev: Button
-var _built_next: Button
-var _built_page_label: Label
+var _main_count: Label
+var _side_count: Label
 var _pool_title: Label
 var _search: LineEdit
 var _filters: Array[OptionButton] = []
@@ -32,55 +31,21 @@ var _notice: Button
 var _dialog: DeckDialog
 var _dialog_kind: String = ""
 var _leave_quits: bool = false
-var _section: String = "cards"
-var _built_page: int = 0
 var _pool_page: int = 0
 var _pool_ids: Array[String] = []
 var _building: bool = false
 
 func _ready() -> void:
-	_title = %Title
-	_state = %State
-	_name = %Name
-	_initial = %InitialNotice
-	_detail = %Detail
-	_built_panel = %BuiltPanel
-	_pool_panel = %PoolPanel
-	_built = %Built
-	_pool = %Pool
-	_tabs.assign([%MainTab, %SideTab])
-	_built_prev = %BuiltPrevious
-	_built_next = %BuiltNext
-	_built_page_label = %BuiltPosition
-	_pool_title = %PoolTitle
-	_search = %Search
-	_filters.assign([%Filter0, %Filter1, %Filter2, %Filter3, %Filter4, %Filter5])
-	_reset = %Reset
-	_pool_hint = %PoolHint
-	_pool_prev = %PoolPrevious
-	_pool_next = %PoolNext
-	_pool_page_label = %PoolPosition
-	_save = %Save
-	_back = %Back
-	_notice = %Notice
+	theme = DeckTheme.create()
+	_build_interface()
 	_dialog = %Dialog
-	DeckUi.compact_field(_name, 20)
-	DeckUi.compact_field(_search)
+	_dialog.move_to_front()
 	for filter: OptionButton in _filters:
-		DeckUi.compact_field(filter, 12)
 		filter.item_selected.connect(_filter_changed)
 	_name.text_changed.connect(_rename)
-	_built.inspected.connect(_inspect)
-	_built.adjusted.connect(_adjust)
-	_pool.inspected.connect(_inspect)
-	_pool.adjusted.connect(_adjust)
-	_pool.origin = "pool"
-	_pool.columns = 3
-	_pool.rows = 3
-	_tabs[0].pressed.connect(_choose_section.bind("cards"))
-	_tabs[1].pressed.connect(_choose_section.bind("sideCards"))
-	_built_prev.pressed.connect(_turn_built.bind(-1))
-	_built_next.pressed.connect(_turn_built.bind(1))
+	for grid: DeckCardGrid in [_built, _side, _pool]:
+		grid.inspected.connect(_inspect)
+		grid.adjusted.connect(_adjust)
 	_pool_prev.pressed.connect(_turn_pool.bind(-1))
 	_pool_next.pressed.connect(_turn_pool.bind(1))
 	_reset.pressed.connect(_reset_query)
@@ -91,6 +56,146 @@ func _ready() -> void:
 	_dialog.chosen.connect(_dialog_chosen)
 	get_window().focus_exited.connect(_cancel_drag)
 
+func _label(text: String, font_size: int = 15) -> Label:
+	var label: Label = Label.new()
+	label.text = text
+	label.add_theme_font_size_override(&"font_size", font_size)
+	return label
+
+func _button(text: String) -> Button:
+	var button: Button = Button.new()
+	button.text = text
+	DeckTheme.button(button)
+	return button
+
+func _panel_column(panel: Panel) -> VBoxContainer:
+	var margin: MarginContainer = MarginContainer.new()
+	panel.add_child(margin)
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side: StringName in [&"margin_left", &"margin_top", &"margin_right", &"margin_bottom"]:
+		margin.add_theme_constant_override(side, 10)
+	var column: VBoxContainer = VBoxContainer.new()
+	margin.add_child(column)
+	return column
+
+func _grid(section: String, columns: int, rows: int, origin: String = "built") -> DeckCardGrid:
+	var grid: DeckCardGrid = DeckCardGrid.new()
+	grid.section = section
+	grid.columns = columns
+	grid.rows = rows
+	grid.slot_count = columns * rows
+	grid.origin = origin
+	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return grid
+
+func _build_interface() -> void:
+	var background: ColorRect = ColorRect.new()
+	background.color = DeckTheme.BACKGROUND
+	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(background)
+	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var margin: MarginContainer = MarginContainer.new()
+	add_child(margin)
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side: StringName in [&"margin_left", &"margin_top", &"margin_right", &"margin_bottom"]:
+		margin.add_theme_constant_override(side, 12)
+	var page_column: VBoxContainer = VBoxContainer.new()
+	margin.add_child(page_column)
+	var header: HBoxContainer = HBoxContainer.new()
+	page_column.add_child(header)
+	_title = _label("卡组构筑", 21)
+	_title.custom_minimum_size.x = 118
+	header.add_child(_title)
+	_name = LineEdit.new()
+	_name.placeholder_text = "卡组名称"
+	_name.max_length = 80
+	_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_name.custom_minimum_size.y = 36
+	header.add_child(_name)
+	_state = _label("尚未保存")
+	_state.custom_minimum_size.x = 88
+	_state.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	header.add_child(_state)
+	var body: HBoxContainer = HBoxContainer.new()
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	page_column.add_child(body)
+	_detail = (load("res://ui/deck_detail_pane.tscn") as PackedScene).instantiate() as DeckDetailPane
+	_detail.custom_minimum_size.x = 250
+	body.add_child(_detail)
+	_built_panel = Panel.new()
+	_built_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	body.add_child(_built_panel)
+	var built_column: VBoxContainer = _panel_column(_built_panel)
+	_main_count = _label("主卡组  0 / 40", 17)
+	built_column.add_child(_main_count)
+	_built = _grid("cards", 10, 4)
+	_built.size_flags_stretch_ratio = 4.0
+	built_column.add_child(_built)
+	_side_count = _label("副卡组  0 / 10", 17)
+	built_column.add_child(_side_count)
+	_side = _grid("sideCards", 10, 1)
+	built_column.add_child(_side)
+	_initial = _label("初始阵法在对局开始时从副卡组选择", 13)
+	_initial.add_theme_color_override(&"font_color", DeckTheme.MUTED)
+	built_column.add_child(_initial)
+	_pool_panel = Panel.new()
+	_pool_panel.custom_minimum_size.x = 320
+	body.add_child(_pool_panel)
+	var pool_column: VBoxContainer = _panel_column(_pool_panel)
+	var pool_header: HBoxContainer = HBoxContainer.new()
+	pool_column.add_child(pool_header)
+	_pool_title = _label("卡池", 17)
+	_pool_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pool_header.add_child(_pool_title)
+	_reset = _button("重置")
+	pool_header.add_child(_reset)
+	_search = LineEdit.new()
+	_search.placeholder_text = "搜索卡名（部分匹配）"
+	_search.custom_minimum_size.y = 34
+	pool_column.add_child(_search)
+	var filters: GridContainer = GridContainer.new()
+	filters.columns = 2
+	filters.add_theme_constant_override(&"h_separation", 6)
+	filters.add_theme_constant_override(&"v_separation", 6)
+	pool_column.add_child(filters)
+	for caption: String in ["类型", "稀有度", "费用", "施法", "位阶", "标签"]:
+		var filter: OptionButton = OptionButton.new()
+		filter.set_meta(&"caption", caption)
+		filter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		filter.custom_minimum_size = Vector2(0, 30)
+		DeckTheme.field(filter)
+		filter.add_theme_font_size_override(&"font_size", 12)
+		filters.add_child(filter)
+		_filters.append(filter)
+	_pool_hint = _label("右键加入 · 拖入对应卡组", 12)
+	_pool_hint.add_theme_color_override(&"font_color", DeckTheme.MUTED)
+	pool_column.add_child(_pool_hint)
+	_pool = _grid("cards", 3, 3, "pool")
+	pool_column.add_child(_pool)
+	var pool_pagination: HBoxContainer = HBoxContainer.new()
+	pool_column.add_child(pool_pagination)
+	_pool_prev = _button("上一页")
+	pool_pagination.add_child(_pool_prev)
+	_pool_page_label = _label("1 / 1", 13)
+	_pool_page_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_pool_page_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	pool_pagination.add_child(_pool_page_label)
+	_pool_next = _button("下一页")
+	pool_pagination.add_child(_pool_next)
+	var footer: HBoxContainer = HBoxContainer.new()
+	page_column.add_child(footer)
+	_save = _button("保存卡组 / 草稿")
+	_save.custom_minimum_size.x = 180
+	footer.add_child(_save)
+	_notice = _button("构筑检查")
+	_notice.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_notice.clip_text = true
+	footer.add_child(_notice)
+	_back = _button("返回卡组列表")
+	_back.custom_minimum_size.x = 160
+	footer.add_child(_back)
+
 func _cancel_drag() -> void:
 	if get_viewport().gui_is_dragging():
 		get_viewport().gui_cancel_drag()
@@ -98,8 +203,8 @@ func _cancel_drag() -> void:
 func configure(value: FrontendService) -> void:
 	service = value
 	_detail.service = value
-	_built.service = value
-	_pool.service = value
+	for grid: DeckCardGrid in [_built, _side, _pool]:
+		grid.service = value
 	_building = true
 	_name.text = str(value.editing_draft.get("name", ""))
 	_build_filters()
@@ -164,27 +269,20 @@ func _reset_query() -> void:
 func _refresh() -> void:
 	var main: Dictionary = service.editing_draft.get("cards", {})
 	var side: Dictionary = service.editing_draft.get("sideCards", {})
-	_tabs[0].text = "主卡组  %d / 40" % DeckUi.total(main)
-	_tabs[1].text = "副卡组  %d / 10" % DeckUi.total(side)
-	_tabs[0].add_theme_color_override(&"font_color", Color("75ecf5") if _section == "cards" else CardPainter.PAPER)
-	_tabs[1].add_theme_color_override(&"font_color", Color("75ecf5") if _section == "sideCards" else CardPainter.PAPER)
-	var ids: Array[String] = []
-	var membership: Dictionary = service.editing_draft.get(_section, {})
-	var ordered: Array = membership.keys()
-	ordered.sort()
-	for id: String in ordered:
-		for copy: int in range(int(membership[id])):
-			ids.append(id)
-	var capacity: int = 30
-	_built_page = clampi(_built_page, 0, maxi(0, ceili(ids.size() / float(capacity)) - 1))
-	_built.ids.assign(ids.slice(_built_page * capacity, (_built_page + 1) * capacity))
-	_built.section = _section
-	# Keep excess legacy cards visible so the player can repair an overfull draft.
-	_built.slot_count = maxi(10, _built.ids.size()) if _section == "sideCards" else 30
-	_built.queue_redraw()
-	_built_prev.disabled = _built_page == 0
-	_built_next.disabled = (_built_page + 1) * capacity >= ids.size()
-	_built_page_label.text = "%d / %d" % [_built_page + 1, maxi(1, ceili(ids.size() / float(capacity)))]
+	_main_count.text = "主卡组  %d / 40" % DeckUi.total(main)
+	_side_count.text = "副卡组  %d / 10" % DeckUi.total(side)
+	for grid: DeckCardGrid in [_built, _side]:
+		var membership: Dictionary = service.editing_draft.get(grid.section, {})
+		var ordered: Array = membership.keys()
+		ordered.sort()
+		grid.ids.clear()
+		for id: String in ordered:
+			for copy: int in range(int(membership[id])):
+				grid.ids.append(id)
+		# Excess legacy cards remain visible for repair in the same fixed section.
+		grid.rows = maxi(4 if grid == _built else 1, ceili(grid.ids.size() / 10.0))
+		grid.slot_count = grid.rows * grid.columns
+		grid.queue_redraw()
 	_state.text = "尚未保存" if service.draft_dirty() else "已保存"
 	_save.text = "保存卡组 / 草稿 *" if service.draft_dirty() else "已保存 · 再次保存"
 	_save.disabled = not service.writable
@@ -211,15 +309,6 @@ func _rename(text: String) -> void:
 		service.editing_draft["name"] = text
 		_refresh()
 
-func _choose_section(section: String) -> void:
-	_section = section
-	_built_page = 0
-	_refresh()
-
-func _turn_built(delta: int) -> void:
-	_built_page += delta
-	_refresh()
-
 func _turn_pool(delta: int) -> void:
 	_pool_page += delta
 	_refresh_pool()
@@ -227,8 +316,10 @@ func _turn_pool(delta: int) -> void:
 func _inspect(id: String) -> void:
 	_detail.inspect(id)
 	_built.selected_id = id
+	_side.selected_id = id
 	_pool.selected_id = id
 	_built.queue_redraw()
+	_side.queue_redraw()
 	_pool.queue_redraw()
 
 func _adjust(id: String, delta: int, source_section: String) -> void:
@@ -247,7 +338,6 @@ func _adjust(id: String, delta: int, source_section: String) -> void:
 	else:
 		cards[id] = count + delta
 	service.editing_draft[membership] = cards
-	_section = membership
 	_refresh()
 	_inspect(id)
 

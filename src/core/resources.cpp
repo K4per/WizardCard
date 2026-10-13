@@ -7,6 +7,11 @@
 #include <stdexcept>
 
 namespace wizard {
+namespace {
+bool effectImmune(const CardDefinition &definition) {
+    return std::find(definition.traits.begin(), definition.traits.end(), "effect_immune") != definition.traits.end();
+}
+}
 int Rules::load(const GameState &s, PlayerId p) {
     int n = 0;
     for (const auto &[id, c] : s.cards)
@@ -23,7 +28,7 @@ int Rules::capacity(const GameState &s, const CardCatalog &cat, PlayerId p) {
         if (c.owner == p && c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation) {
             n += cat.at(c.definition).capacity;
             for (const auto &[sid, seal] : s.cards)
-                if (seal.zone == Zone::Attached && seal.host == id)
+                if (!effectImmune(cat.at(c.definition)) && seal.zone == Zone::Attached && seal.host == id)
                     n += cat.at(seal.definition).capacityBonus;
         }
     return n;
@@ -31,7 +36,7 @@ int Rules::capacity(const GameState &s, const CardCatalog &cat, PlayerId p) {
 int Rules::rings(const GameState &s, const CardCatalog &cat, CardId id) {
     int n = cat.at(s.cards.at(id).definition).rings;
     for (const auto &[cid, c] : s.cards)
-        if (c.zone == Zone::Attached && c.host == id)
+        if (!effectImmune(cat.at(s.cards.at(id).definition)) && c.zone == Zone::Attached && c.host == id)
             n += cat.at(c.definition).ringBonus;
     return n;
 }
@@ -39,13 +44,13 @@ int Rules::maxRank(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &definition = cat.at(s.cards.at(id).definition);
     int n = cat.usesAlphaV2() ? definition.level : definition.maxRank;
     for (const auto &[cid, c] : s.cards)
-        if (c.zone == Zone::Attached && c.host == id)
+        if (!effectImmune(definition) && c.zone == Zone::Attached && c.host == id)
             n += cat.at(c.definition).rankBonus;
     return n;
 }
 int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, CardId host) {
     const auto &d = cat.at(s.cards.at(id).definition);
-    const auto &h = s.cards.at(host);
+    const auto h = s.cards.find(host);
     int discount = 0;
     if (cat.usesAlphaV2() && std::find(d.traits.begin(), d.traits.end(), "ash_evocation_discount") != d.traits.end())
         for (const auto &[cid, card] : s.cards) {
@@ -54,7 +59,7 @@ int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, C
                 definition.school == "evocation" && (definition.type == CardType::Analytic ||
                     definition.type == CardType::Word || definition.type == CardType::Talisman)) ++discount;
         }
-    return std::max(0, d.cost - discount - (h.base && cat.at(h.definition).baseAnalysisDiscount &&
+    return std::max(0, d.cost - discount - (h != s.cards.end() && h->second.base && cat.at(h->second.definition).baseAnalysisDiscount &&
                                          (d.school == "evocation" || d.school == "conjuration")
                                      ? 1
                                      : 0));
@@ -63,13 +68,6 @@ int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
     const auto &d = cat.at(c.definition);
     int n = d.type == CardType::Word || (cat.usesAlphaV2() && d.type == CardType::Talisman) ? d.cost : d.castCost;
-    if (cat.usesAlphaV2() && std::find(d.traits.begin(), d.traits.end(), "ash_evocation_discount") != d.traits.end())
-        for (const auto &[cid, card] : s.cards) {
-            const auto &definition = cat.at(card.definition);
-            if (card.owner == c.owner && card.zone == Zone::Ash && definition.school == "evocation" &&
-                (definition.type == CardType::Analytic || definition.type == CardType::Word ||
-                 definition.type == CardType::Talisman)) --n;
-        }
     for (const auto &[sid, seal] : s.cards)
         if (seal.zone == Zone::Attached && seal.host == id)
             n += cat.at(seal.definition).castCostBonus;
@@ -85,7 +83,9 @@ int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const 
             resistance |=
                 std::find(d.resistances.begin(), d.resistances.end(), e.damageType) != d.resistances.end();
         }
-    return resistance ? e.amount / 2 : e.amount;
+    const int resisted = resistance ? e.amount / 2 : e.amount;
+    const int reduction = e.damageType == DamageType::Force ? s.players[p].forceDamageReduction : s.players[p].damageReduction;
+    return std::max(0, resisted - reduction);
 }
 int Rules::occupied(const GameState &s, CardId host) {
     int n = 0;
@@ -134,6 +134,7 @@ bool Rules::targetValid(const GameState &s, const CardDefinition &d, PlayerId p,
     return targetValid(s, d.target, p, target);
 }
 bool Rules::targetValid(const GameState &s, TargetKind kind, PlayerId p, CardId target) {
+    if (kind == TargetKind::Player) return target == playerTarget(0) || target == playerTarget(1);
     if (kind == TargetKind::PendingLink || kind == TargetKind::PreparationRoot ||
         kind == TargetKind::EnemySpellLink)
         return false;
@@ -143,6 +144,7 @@ bool Rules::targetValid(const GameState &s, TargetKind kind, PlayerId p, CardId 
     if (i == s.cards.end())
         return false;
     const auto &c = i->second;
+    if (kind == TargetKind::EnemyAshCard) return c.owner != p && c.zone == Zone::Ash && !c.faceDown;
     if ((c.base && !c.fieldOrder) || c.zone == Zone::Deck || c.zone == Zone::Hand || c.zone == Zone::Ash || c.zone == Zone::SideDeck)
         return false;
     if (kind == TargetKind::OwnAnalyzingSpell)

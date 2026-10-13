@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 
 from import_card_previews_v2 import build_catalogue
+from align_preview2_catalog import align
 
 ROOT = Path(__file__).resolve().parents[1]
 LEGACY = ROOT / "tests/fixtures/alpha-v1-production/cards.json"
@@ -124,6 +125,8 @@ def migrated_cards() -> list[dict]:
     by_id["aid"]["text"] = "立即完成解析。获得5点临时生命（不叠加，取较高值），在下次己方准备阶段清除。"
     by_id["conduit"]["text"] = "阵法附着：该阵法在抽牌阶段提供的魔素收入+2。法术附着：无额外效果。"
     by_id["uplift"]["text"] = "阵法附着：等级上限+1、环位+1、抽牌阶段魔素收入-1。法术附着：实际施法费用+1，成功发动时额外对对方造成2点力场伤害。"
+    by_id["uplift"].pop("capacityBonus", None)
+    by_id["uplift"]["ringBonus"] = 1
     by_id["instant-circuit-overload"]["text"] = "立即完成己方一张正在解析的法术；自身获得其实际解析费用等量的临时荷载，在下次己方准备阶段清除。"
     by_id["barbs"]["responses"][0]["target"] = "preparation_root"
     by_id["shield"]["responses"][0]["target"] = "enemy_spell_link"
@@ -294,9 +297,15 @@ def build() -> tuple[dict, dict, dict, dict]:
         card["illustrationId"] = card["id"] if card["id"] in {c["id"] for c in json.loads(LEGACY.read_text(encoding="utf-8"))["cards"]} else "v2-" + card["id"]
         if card["id"] == "hexagram":
             card["illustrationId"] = "balance"
+    align(cards)
+    by_id = {card["id"]: card for card in cards}
+    by_id["messy-wave"]["text"] = "计时3。首次发动时对方获得5点来源关联临时荷载；之后每个己方施法阶段对方获得3点来源关联临时荷载。这些荷载不在抽牌阶段清除，在本法术离场时清除。"
+    by_id["ankh"]["text"] = "设置时，可以将己方灰烬区一张表侧阵法卡加入副卡组。本卡进入灰烬区时背面朝上放置。"
+    for card in cards:
+        card["text"] = card["text"].replace("下一次己方准备阶段", "下一次己方抽牌阶段").replace("下次己方准备阶段", "下次己方抽牌阶段")
     # Keep the old manifest order and append reviewed new designs in source order.
-    manifest = {"format": 1, "metadata": {"rulesVersion": "2.0.0-rc.1",
-                "cardSetVersion": "2.0.0-rc.1", "baseLoadCapacity": 2, "mechanicsRevision": 2},
+    manifest = {"format": 1, "metadata": {"rulesVersion": "2.5.0",
+                "cardSetVersion": "2.5.0", "baseLoadCapacity": 2, "mechanicsRevision": 3},
                 "definitions": [{"id": c["id"], "file": f"cards/{c['type']}/{c['id']}.json"} for c in cards]}
     reviewed = json.loads((ROOT / "docs/proposals/alpha-v2/presets.json").read_text(encoding="utf-8"))
     # The runtime always supplies the canonical built-in ``default`` preset

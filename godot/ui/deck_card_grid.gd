@@ -6,9 +6,9 @@ signal adjusted(id: String, delta: int, section: String)
 
 var service: FrontendService
 var ids: Array[String] = []
-var columns: int = 6
-var rows: int = 5
-var slot_count: int = 30
+var columns: int = 10
+var rows: int = 4
+var slot_count: int = 40
 var origin: String = "built"
 var section: String = "cards"
 var selected_id: String = ""
@@ -29,16 +29,14 @@ func _draw() -> void:
 		return
 	var cell: Vector2 = size / Vector2(columns, rows)
 	for index: int in range(mini(slot_count, columns * rows)):
-		# Use the cell height efficiently: the former inset left a visibly wide
-		# gutter around every card in the six-column builder grid.
-		var area: Rect2 = Rect2(Vector2(index % columns, index / columns) * cell + Vector2.ONE, cell - Vector2.ONE * 2.0)
-		var frame: Rect2 = CardPainter.scaled_rect(area, 1.1)
-		frame.position = Vector2(
-			clampf(frame.position.x, 0.0, maxf(0.0, size.x - frame.size.x)),
-			clampf(frame.position.y, 0.0, maxf(0.0, size.y - frame.size.y)))
+		var area: Rect2 = Rect2(Vector2(index % columns, index / columns) * cell + Vector2.ONE * 2.0, (cell - Vector2.ONE * 4.0).max(Vector2.ONE))
+		var width: float = minf(area.size.x, area.size.y * 0.75)
+		var extent: Vector2 = Vector2(width, width / 0.75)
+		var frame: Rect2 = Rect2(area.get_center() - extent * 0.5, extent)
 		if index >= ids.size():
 			if origin == "built":
-				draw_texture_rect(ArtBank.texture("c2d.v2.deck.empty-slot"), frame, false)
+				draw_rect(frame, DeckTheme.BACKGROUND, true)
+				draw_rect(frame, DeckTheme.BORDER, false, 1.0)
 			continue
 		var id: String = ids[index]
 		var card: CardPresentation = service.card_by_id(id)
@@ -46,18 +44,19 @@ func _draw() -> void:
 		if origin == "pool":
 			var draft: Dictionary = service.editing_draft
 			var membership: String = "sideCards" if int(service.definitions.get(id, {}).get("type", -1)) == 3 else "cards"
-			available = service.named_copies(id) < 3 and DeckUi.total(draft.get(membership, {})) < (10 if membership == "sideCards" else 40)
-		CardPainter.paint(self, card, frame, "builder", selected_id == id)
+			available = service.named_copies(id, membership) < 3 and DeckUi.total(draft.get(membership, {})) < (10 if membership == "sideCards" else 40)
+		DeckCardPainter.paint(self, card, frame, selected_id == id)
 		if origin == "pool":
 			var count: int = int(service.editing_draft.get("cards", {}).get(id, 0)) + int(service.editing_draft.get("sideCards", {}).get(id, 0))
-			var badge: Rect2 = Rect2(frame.end - Vector2(64, 26), Vector2(64, 26))
-			draw_texture_rect(ArtBank.texture("c2d.v2.deck.quantity-badge"), badge, false)
-			draw_string(Typography.HEADING, badge.position + Vector2(19, 18), "%d/3" % count, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, CardPainter.PAPER)
+			var artwork: Rect2 = DeckCardPainter.artwork_rect(frame)
+			var badge: Rect2 = Rect2(artwork.end.x - 28.0, artwork.position.y + 1.0, 28.0, 16.0)
+			draw_rect(badge, DeckTheme.HOVER, true)
+			draw_string(Typography.BODY, badge.position + Vector2(3, 12), "%d/3" % count, HORIZONTAL_ALIGNMENT_LEFT, -1, 10, DeckTheme.TEXT)
 			if not available:
-				draw_rect(frame, Color(0.02, 0.05, 0.09, 0.4))
+				draw_rect(frame, Color(0.04, 0.07, 0.10, 0.38))
 		_hits.append({"id": id, "rect": frame})
 	if _drop_active:
-		draw_style_box(ArtBank.box("c2d.v2.deck.drop-highlight", 0), Rect2(Vector2.ZERO, size))
+		draw_rect(Rect2(Vector2.ZERO, size).grow(-2), DeckTheme.ACCENT, false, 2.0)
 
 func id_at(point: Vector2) -> String:
 	for hit: Dictionary in _hits:
@@ -82,10 +81,13 @@ func _gui_input(event: InputEvent) -> void:
 		if mouse.button_index == MOUSE_BUTTON_RIGHT:
 			adjusted.emit(id, 1 if origin == "pool" else -1, section)
 		accept_event()
-	elif event.is_action_pressed(&"ui_left") or event.is_action_pressed(&"ui_right"):
+	elif event.is_action_pressed(&"ui_left") or event.is_action_pressed(&"ui_right") or event.is_action_pressed(&"ui_up") or event.is_action_pressed(&"ui_down"):
 		if ids.is_empty():
 			return
-		_keyboard_index = wrapi(_keyboard_index + (-1 if event.is_action_pressed(&"ui_left") else 1), 0, ids.size())
+		var step: int = -1 if event.is_action_pressed(&"ui_left") else 1
+		if event.is_action_pressed(&"ui_up") or event.is_action_pressed(&"ui_down"):
+			step = -columns if event.is_action_pressed(&"ui_up") else columns
+		_keyboard_index = wrapi(_keyboard_index + step, 0, ids.size())
 		inspected.emit(ids[_keyboard_index])
 		accept_event()
 	elif event.is_action_pressed(&"ui_accept") and not ids.is_empty():
@@ -96,7 +98,7 @@ func _get_drag_data(point: Vector2) -> Variant:
 	var id: String = id_at(point)
 	if id.is_empty():
 		return null
-	var preview: CardFace = CardFace.new()
+	var preview: DeckCardPainter = DeckCardPainter.new()
 	preview.custom_minimum_size = Vector2(120, 160)
 	preview.configure(service.card_by_id(id))
 	set_drag_preview(preview)
@@ -107,7 +109,7 @@ func _can_drop_data(_point: Vector2, data: Variant) -> bool:
 	if allowed and origin == "built":
 		var id: String = str(data.get("id", ""))
 		var membership: String = "sideCards" if int(service.definitions.get(id, {}).get("type", -1)) == 3 else "cards"
-		allowed = service.definitions.has(id) and service.named_copies(id) < 3 and DeckUi.total(service.editing_draft.get(membership, {})) < (10 if membership == "sideCards" else 40)
+		allowed = service.definitions.has(id) and membership == section and service.named_copies(id, membership) < 3 and DeckUi.total(service.editing_draft.get(membership, {})) < (10 if membership == "sideCards" else 40)
 	if allowed != _drop_active:
 		_drop_active = allowed
 		queue_redraw()
@@ -123,7 +125,7 @@ func _input(event: InputEvent) -> void:
 
 func _drop_data(_point: Vector2, data: Variant) -> void:
 	var payload: Dictionary = data
-	adjusted.emit(str(payload["id"]), 1 if origin == "built" else -1, str(payload["section"]))
+	adjusted.emit(str(payload["id"]), 1 if origin == "built" else -1, section if origin == "built" else str(payload["section"]))
 	_clear_drop()
 
 func _notification(what: int) -> void:

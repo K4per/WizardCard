@@ -6,13 +6,13 @@
   "level": 3,
   "body": 2,
   "rings": 3,
-  "capacity": 10,
-  "income": 1,
+  "capacity": 8,
+  "income": 2,
   "maxRank": 3,
   "baseEligible": false,
   "cost": 0,
-  "text": "该卡不能被效果破坏。",
-  "summonCondition": "【小六芒星】+2魔素。",
+  "text": "此卡不会被效果破坏。",
+  "summonCondition": "【运行之三角星】+魔素×2。",
   "recipe": [
     {
       "kind": "sacrifice_formation",

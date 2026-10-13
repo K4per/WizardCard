@@ -48,7 +48,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
                            !s.deferredPreparations.empty() || s.phaseGate))
         errors.push_back("terminal work remains");
     for (int p = 0; p < 2; ++p) {
-        if (s.players[p].mana < 0 || s.players[p].mana > 12)
+        if (s.players[p].mana < 0 || s.players[p].mana > (cat.usesAlphaV25() ? maximumMana : 12))
             errors.push_back("mana bounds");
         std::map<CardId, int> seen;
         for (auto id : s.players[p].deck) {

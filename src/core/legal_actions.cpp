@@ -130,6 +130,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
         return out;
     auto targets = [&](const CardDefinition &d) {
         std::vector<std::vector<CardId>> result;
+        if (d.target == TargetKind::Player) return std::vector<std::vector<CardId>>{{playerTarget(0)}, {playerTarget(1)}};
         if (d.target == TargetKind::None || d.target == TargetKind::Self ||
             d.target == TargetKind::Opponent) {
             result.push_back({});
@@ -159,6 +160,15 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             if (card.owner != p) continue;
             const auto &def = catalog_.at(card.definition);
             const auto name = def.name + " #" + std::to_string(id);
+            std::vector<CardId> spellCosts{0};
+            if (std::find(def.traits.begin(), def.traits.end(), "discard_spell_search") != def.traits.end()) {
+                spellCosts.clear();
+                for (const auto &[material, candidate] : s.cards)
+                    if (material != id && candidate.owner == p && candidate.zone == Zone::Hand &&
+                        (catalog_.at(candidate.definition).type == CardType::Analytic ||
+                         catalog_.at(candidate.definition).type == CardType::Word ||
+                         catalog_.at(candidate.definition).type == CardType::Talisman)) spellCosts.push_back(material);
+            }
             if (card.zone == Zone::SideDeck) {
                 int count = 0;
                 for (const auto &part : def.recipe)
@@ -200,7 +210,8 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                         add("设置解析法术 " + name, id, host, StartAnalysis{id, host});
                         for (const auto &ids : targets(def)) {
                             const auto target = ids.empty() ? 0 : ids.front();
-                            add("设置并发动 " + name, id, target, PreloadWord{id, true, host, target, ids});
+                            for (auto cost : spellCosts)
+                                add("设置并发动 " + name + (cost ? "；弃置 #" + std::to_string(cost) : ""), id, target, PreloadWord{id, true, host, target, ids, cost});
                         }
                     }
                     if (formation.zone == Zone::Analysis || formation.zone == Zone::Casting)
@@ -210,12 +221,12 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             if (card.faceDown || card.spell == SpellState::Ready) {
                 for (const auto &ids : targets(def)) {
                     const auto target = ids.empty() ? 0 : ids.front();
-                    if (card.faceDown) add("反转 " + name, id, target, FlipAmbush{id, target, ids});
+                    if (card.faceDown) for (auto cost : spellCosts) add("反转 " + name, id, target, FlipAmbush{id, target, ids, 0, cost});
                     else {
                         if (card.zone == Zone::Analysis)
                             add("准备施法 " + name, id, target, PrepareCast{id, target, 0, ids});
                         if (card.zone == Zone::Casting)
-                            add("发动 " + name, id, target, ActivateSpell{id, target, ids});
+                            for (auto cost : spellCosts) add("发动 " + name, id, target, ActivateSpell{id, target, ids, cost});
                     }
                 }
                 if (card.faceDown && def.type == CardType::Analytic)

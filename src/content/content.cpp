@@ -88,6 +88,8 @@ std::vector<Effect> effects(const Json &j, const std::string &path) {
         {"reduce_spell_damage", EffectKind::ReduceSpellDamage},
         {"recover_enemy_ash_spell", EffectKind::RecoverEnemyAshSpell},
         {"recover_formation", EffectKind::RecoverFormation},
+        {"destroy_enemy_analysis", EffectKind::DestroyEnemyAnalysis},
+        {"shield_for_turn", EffectKind::ShieldForTurn},
         {"reveal_all_ambush", EffectKind::RevealAllAmbush}};
     for (const auto &e : j) {
         const auto p = path + "/" + std::to_string(n++);
@@ -154,7 +156,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         {"pending_link", TargetKind::PendingLink},
         {"preparation_root", TargetKind::PreparationRoot},
         {"own_analyzing_spell", TargetKind::OwnAnalyzingSpell},
-        {"enemy_spell_link", TargetKind::EnemySpellLink}};
+        {"enemy_spell_link", TargetKind::EnemySpellLink}, {"player", TargetKind::Player}, {"enemy_ash_card", TargetKind::EnemyAshCard}};
     std::size_t n = 0;
     std::set<std::string> cardNumbers;
     for (const auto &card : j.at("cards")) {
@@ -311,7 +313,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 "host_cast_life_for_temporary", "host_evocation_damage_plus_one",
                 "distinct_host_schools", "host_fire_only", "clear_load_on_analysis",
                 "ping_on_spell_leave", "ash_evocation_discount", "return_formation_from_ash",
-                "self_ambush_on_leave"};
+                "self_ambush_on_leave", "inspect_enemy_ambush", "discard_spell_search", "end_phase_start"};
             if (!card.at("traits").is_array())
                 fail(p + "/traits", "expected trait array");
             for (const auto &value : card.at("traits")) {

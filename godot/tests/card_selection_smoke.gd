@@ -91,6 +91,30 @@ func _run() -> void:
 	service.match_snapshot["revision"] = "9007199254740996"
 	page._pick_action_target("35")
 	_expect(service.confirmations == 2 and page.canvas.target_ids.is_empty(), "a revision change cancels board selection before any stale action is submitted")
+	var healing_actions: Array[Dictionary] = [
+		{"id": "heal-own", "source": "33", "command": {"type": 17, "card": "33", "target": "1073741825"}},
+		{"id": "heal-other", "source": "33", "command": {"type": 17, "card": "33", "target": "1073741826"}}
+	]
+	page._select_card(MatchProjection.card(service.match_snapshot, "33"))
+	page._choose_action_group(healing_actions)
+	await process_frame
+	await process_frame
+	_expect(page._action_popup.visible and page.canvas.target_ids.is_empty(), "player targets appear as selectable legal commands without nonexistent card hitboxes")
+	_expect((page._action_list.get_child(0) as Button).text.contains("己方玩家") and (page._action_list.get_child(1) as Button).text.contains("对方玩家"), "healing targets identify each player")
+	_click((page._action_list.get_child(1) as Button).get_global_rect().get_center())
+	await process_frame
+	_expect(service.selected_actions.back() == "heal-other" and service.confirmations == 3, "player target choice submits the exact native action")
+	service.match_snapshot["cards"].append(_card("90", "灰烬中的火球术", 1, 6))
+	page._select_card(MatchProjection.card(service.match_snapshot, "33"))
+	var ash_actions: Array[Dictionary] = [{"id": "recover-ash", "source": "33", "command": {"type": 17, "card": "33", "target": "90"}}]
+	page._choose_action_group(ash_actions)
+	await process_frame
+	await process_frame
+	_expect(page._action_popup.visible and page.canvas.target_ids.is_empty(), "ash targets remain selectable through labeled commands")
+	_expect((page._action_list.get_child(0) as Button).text.contains("灰烬中的火球术"), "ash target retains its card identity")
+	_click((page._action_list.get_child(0) as Button).get_global_rect().get_center())
+	await process_frame
+	_expect(service.selected_actions.back() == "recover-ash" and service.confirmations == 4, "ash target submits its exact legal command")
 	page.queue_free()
 	await process_frame
 	print("Card selection smoke: %s" % ("PASS" if failures == 0 else "FAIL"))

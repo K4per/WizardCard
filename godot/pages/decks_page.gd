@@ -22,6 +22,8 @@ var _delete_id: String = ""
 var _page_index: int = 0
 
 func _ready() -> void:
+	theme = DeckTheme.create()
+	resized.connect(queue_redraw)
 	_title = %Title
 	_description = %Description
 	_new = %New
@@ -34,7 +36,10 @@ func _ready() -> void:
 	_notice = %Notice
 	_back = %Back
 	_dialog = %Dialog
-	DeckUi.compact_field(_preset)
+	DeckTheme.field(_preset)
+	_description.add_theme_color_override(&"font_color", DeckTheme.MUTED)
+	_notice.add_theme_color_override(&"font_color", DeckTheme.MUTED)
+	_count.add_theme_color_override(&"font_color", DeckTheme.MUTED)
 	_new.pressed.connect(_create)
 	_copy.pressed.connect(_copy_preset)
 	_previous.pressed.connect(_turn_page.bind(-1))
@@ -48,6 +53,9 @@ func _ready() -> void:
 		button.pressed.connect(_request_delete.bind(index))
 		_delete_buttons.append(button)
 	_dialog.chosen.connect(_delete_confirmed)
+
+func _draw() -> void:
+	draw_rect(Rect2(Vector2.ZERO, size), DeckTheme.BACKGROUND)
 
 func configure(value: FrontendService) -> void:
 	service = value

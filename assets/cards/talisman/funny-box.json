@@ -10,13 +10,13 @@
   "cost": 4,
   "castCost": 0,
   "analysisTurns": 0,
-  "target": "self",
+  "target": "enemy_ash_card",
   "effects": [
     {
       "kind": "recover_enemy_ash_spell"
     }
   ],
-  "text": "将对方灰烬区一张等级低于5的解析法术盖伏在己方一个有合法空环位的阵法上。",
+  "text": "选择对方灰烬区一张5级及以下解析法术，将其在己方有合法空环位的阵法上盖伏。",
   "responseOnly": false,
   "number": "040004",
   "illustrationId": "v2-funny-box"

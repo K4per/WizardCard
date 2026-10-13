@@ -28,6 +28,7 @@ struct PreloadWord {
     bool release{};
     CardId formation{}, target{};
     std::vector<CardId> targets;
+    CardId discard{}; // Optional executable spell cost, such as true-strike.
 };
 struct AttachSeal {
     CardId card{}, host{};
@@ -68,10 +69,12 @@ struct FlipAmbush {
     CardId card{}, target{};
     std::vector<CardId> targets;
     DecisionId decision{};
+    CardId discard{};
 };
 struct ActivateSpell {
     CardId card{}, target{};
     std::vector<CardId> targets;
+    CardId discard{};
 };
 // Confirms a private side-deck entity; both confirmations reveal the formations together.
 struct SelectInitialFormation { CardId card{}; };

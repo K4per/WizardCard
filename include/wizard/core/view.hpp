@@ -31,6 +31,7 @@ struct CardView {
     int effectiveRings{}, occupiedRings{}, turnsToReady{};
     bool hidden{};
     int effectiveCastCost{};
+    int effectiveSettingCost{};
 };
 // Session-owned projection. The rule kernel never derives elapsed wall time.
 struct MatchClockView {

@@ -53,6 +53,10 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         break;
     case EffectKind::GrantResistance:
         break; // Successful release installs the passive resistance on the active spell.
+    case EffectKind::ShieldForTurn:
+        s.players[p].damageReduction = std::max(s.players[p].damageReduction, e.amount);
+        s.players[p].forceDamageReduction = std::max(s.players[p].forceDamageReduction, 2 * e.amount);
+        break;
     case EffectKind::AddSourceTemporary:
         s.temporary.push_back({s.nextLoad++, p, t.source, e.amount, 0, false, true});
         ResourceRules::increasedLoad(s, cat, p, e.amount);
@@ -70,6 +74,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         auto &c = s.cards.at(t.targetCard);
         if (c.zone == Zone::Analysis && !c.base && cat.at(c.definition).type == CardType::Analytic) {
             c.faceDown = true;
+            c.publiclyRevealed = false;
             c.ambushedTurn = s.globalTurn;
             c.spell = SpellState::None;
             c.analysisStarted = s.players[c.owner].ownTurn;
@@ -110,12 +115,16 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::SearchSameSchool:
     case EffectKind::RecoverEnemyAshSpell:
     case EffectKind::RecoverFormation:
+    case EffectKind::DestroyEnemyAnalysis:
         throw std::logic_error("content effect requires a decision");
     case EffectKind::CounterSpell: {
         if (s.chain)
             for (auto &l : s.chain->links)
                 if (l.id == t.targetLink) {
-                    const int burden = l.castCost;
+                    const auto sourceDefinition = s.cards.find(l.item.source);
+                    const int burden = cat.usesAlphaV25() && sourceDefinition != s.cards.end()
+                        ? (cat.at(sourceDefinition->second.definition).type == CardType::Talisman ? 0 :
+                           cat.at(sourceDefinition->second.definition).cost) : l.castCost;
                     l.canceled = true;
                     const auto source = l.item.source;
                     StateMaintenance::leave(s, source, &cat);
@@ -133,7 +142,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         break;
     }
     case EffectKind::GainMana: {
-        s.players[t.owner].mana = std::min(12, s.players[t.owner].mana + e.amount);
+        s.players[t.owner].mana = std::min(cat.usesAlphaV25() ? maximumMana : 12, s.players[t.owner].mana + e.amount);
         const auto batch = s.nextBatch++;
         for (const auto &[id, c] : s.cards)
             if (c.owner == t.owner &&
@@ -290,6 +299,9 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::ReduceSpellDamage:
         message = "降低目标法术伤害";
         break;
+    case EffectKind::ShieldForTurn:
+        message = "本回合获得护盾减伤";
+        break;
     case EffectKind::RevealAllAmbush:
         message = "揭示场上所有盖伏法术";
         break;
@@ -302,6 +314,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::SearchSameSchool:
     case EffectKind::RecoverEnemyAshSpell:
     case EffectKind::RecoverFormation:
+    case EffectKind::DestroyEnemyAnalysis:
         message = "选择卡牌效果";
         break;
     case EffectKind::NegateLink:

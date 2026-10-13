@@ -59,13 +59,15 @@ input hitboxes or submit commands in the editor.
 
 ## Match interaction
 
-Each player has five permanent vertical analysis lanes. A lane contains one
-formation slot and a horizontal spell region, divided according to the
-projected ring count. Opponent lanes, piles and casting cards are centrally
+Each player has five permanent vertical body slots. A formation occupies
+consecutive slots equal to its projected body: body 2 spans two and body 4 spans
+four. Its ring cells use the entire span; remaining slots stay empty. Opponent
+slots, piles and casting cards are centrally
 symmetric. The two casting tracks are compact and placed at the center.
 
-The field fills the viewport. The top HUD displays turn, acting player, phase
-and parallel player status. Phase switching sits to the right of own casting.
+The field fills the viewport. Own player status sits in the lower-left corner;
+opponent status stays at the top. Turn, acting player and phase appear directly
+above phase switching, to the right of own casting.
 During Main it offers Cast or End; End skips Cast while retaining required
 responses and end-of-turn decisions. Every choice comes from legal actions.
 
@@ -74,7 +76,12 @@ button per operation. Placement highlights projected legal formations; clicking
 a formation submits that exact action. Return decisions highlight formations
 and empty rings directly. Targets and materials are selected on the field.
 Submission preserves exact string generation/revision IDs.
-Available-card highlights come from `snapshot.actions[].source`.
+Available-card highlights come from `snapshot.actions[].source`: setting,
+attachment and activation use gold; covering uses bright blue. A legal formation
+setting action also lights the side deck. Both highlights can coexist. Attached
+runes occupy inspectable small squares beside their host. Card costs at the
+upper right use native effective values; analytic spells show setting/casting
+costs, while talismans show only the casting cost and cover for free.
 GDScript does not derive legality or pay costs. Unknown cards discard identity
 before rendering, details and drag previews.
 
@@ -85,7 +92,10 @@ the hand. Response choices use explicit confirm and pass buttons. Collapsing a
 tray restores the hand while its rule decision remains pending; the hand button
 reopens it. Mandatory decisions cannot be skipped. A compact hand toggle and
 right click control the fan; rotated card hit tests use inverse transforms. Hand
-cards remain inside the canvas at supported viewport sizes.
+cards remain inside the canvas at supported viewport sizes. Fan end cards have
+matching bounds, hover lifts and straightens the card, and opponent backs use
+the same size and style. Facedown cards show no name on the field; projected
+identity controls whether their full details can be inspected.
 
 Matches use simple color panels, borders and text. Artwork remains available
 for other pages and provenance, but is not used for the match field, cards or

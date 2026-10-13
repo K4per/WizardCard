@@ -1,6 +1,9 @@
 class_name FieldPresentation
 extends Resource
 
+const LEGAL_GOLD: int = 1
+const LEGAL_AMBUSH: int = 2
+
 var viewer: int = 0
 var own_formations: Array[FormationPresentation] = []
 var opponent_formations: Array[FormationPresentation] = []
@@ -27,7 +30,9 @@ var phase_label: String = ""
 var global_turn: String = "0"
 var opening: bool = false
 var opponent_hand_count: int = 0
-var legal_cards: Dictionary[String, int] = {} # 1: setup, 2: spell activation/response
+var legal_cards: Dictionary[String, int] = {} # Operation flags; a card may support both.
+var can_set_formation: bool = false
+var attachments: Dictionary[String, Array] = {}
 var clock_remaining: Array[int] = [0, 0]
 var clock_running: Array[bool] = [false, false]
 var clock_available: bool = false

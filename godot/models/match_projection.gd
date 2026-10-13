@@ -35,12 +35,20 @@ static func field(snapshot: Dictionary) -> FieldPresentation:
 		result.clock_remaining[player] = int(remaining[player]) if remaining.size() > player else 0
 		result.clock_running[player] = bool(clock.get("running", false)) and (bool(running_players[player]) if running_players.size() > player else running_player == player)
 	for action: Dictionary in snapshot.get("actions", []):
+		var command: Dictionary = action.get("command", {})
+		var operation: int = int(command.get("type", -1))
+		if operation in [0, 18]:
+			result.can_set_formation = true
 		var source: String = str(action.get("source", "0"))
 		if source.is_empty() or source == "0":
 			continue
-		var command: Dictionary = action.get("command", {})
-		var activation: bool = int(command.get("type", -1)) in [3, 12, 16, 17]
-		result.legal_cards[source] = maxi(result.legal_cards.get(source, 0), 2 if activation else 1)
+		var highlight: int = 0
+		if operation == 15:
+			highlight = FieldPresentation.LEGAL_AMBUSH
+		elif operation in [0, 2, 3, 4, 5, 6, 12, 16, 17, 18]:
+			highlight = FieldPresentation.LEGAL_GOLD
+		if highlight != 0:
+			result.legal_cards[source] = int(result.legal_cards.get(source, 0)) | highlight
 	var formations: Dictionary[String, FormationPresentation] = {}
 	var rows: Array = (snapshot.get("cards", []) as Array).duplicate()
 	rows.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
@@ -60,6 +68,7 @@ static func field(snapshot: Dictionary) -> FieldPresentation:
 			continue
 		var formation: FormationPresentation = FormationPresentation.new()
 		formation.card = CardPresentation.from_projection(row)
+		formation.body_size = maxi(1, int(definition.get("body", 1)))
 		formation.ring_count = int(row.get("effectiveRings", definition.get("rings", 0)))
 		formations[formation.card.instance_id] = formation
 		if int(row.get("owner", -1)) == viewer:
@@ -72,6 +81,12 @@ static func field(snapshot: Dictionary) -> FieldPresentation:
 		var zone: int = int(row.get("zone", -1))
 		if zone == 1 and is_own:
 			result.hand.append(card)
+		elif zone == 7:
+			var host: String = str(row.get("host", "0"))
+			if host != "0" and not host.is_empty():
+				if not result.attachments.has(host):
+					result.attachments[host] = []
+				result.attachments[host].append(card)
 		elif zone in [3, 4] and not formations.has(card.instance_id):
 			var host: String = str(row.get("host", "0"))
 			if formations.has(host):
@@ -110,6 +125,8 @@ static func card(snapshot: Dictionary, id: String) -> CardPresentation:
 static func card_name(snapshot: Dictionary, id: String) -> String:
 	if id.is_empty() or id == "0":
 		return "无"
+	if id in ["1073741825", "1073741826"]:
+		return "己方玩家" if id == str(1073741825 + int(snapshot.get("viewer", 0))) else "对方玩家"
 	var value: CardPresentation = card(snapshot, id)
 	return value.title if value != null else "公开对象"
 

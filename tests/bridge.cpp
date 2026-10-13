@@ -1,4 +1,5 @@
 #include "wizard/bridge.hpp"
+#include "wizard/network.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
 #include <fstream>
@@ -146,6 +147,46 @@ TEST_CASE("bridge whitelist excludes private cards hidden definitions seed and w
     REQUIRE(hiddenDto.at("ringIndex") == 3);
     REQUIRE(hiddenDto.at("fieldOrder") == "9");
     REQUIRE(bridge::viewDto(view).dump().find("must not leak") == std::string::npos);
+}
+TEST_CASE("dynamic setting and casting fees survive local bridge and LAN projections", "[preview2][costs]") {
+    GameView view; CardView card;
+    card.instance.id = 42;
+    card.instance.definition = "sunburst";
+    card.definition.id = "sunburst";
+    card.effectiveSettingCost = 17;
+    card.effectiveCastCost = 2;
+    view.cards.push_back(card);
+    const auto dto = bridge::viewDto(view).at("cards").at(0);
+    REQUIRE(dto.at("effectiveSettingCost") == 17);
+    REQUIRE(dto.at("effectiveCastCost") == 2);
+    CardCatalog catalog; catalog.cards.emplace(card.definition.id, card.definition);
+    const auto decoded = net::decodeView(net::encodeView(view), catalog);
+    REQUIRE(decoded.cards.at(0).effectiveSettingCost == 17);
+    REQUIRE(decoded.cards.at(0).effectiveCastCost == 2);
+    view.cards.at(0).hidden = true;
+    const auto hidden = bridge::viewDto(view).at("cards").at(0);
+    REQUIRE_FALSE(hidden.contains("effectiveSettingCost"));
+    REQUIRE_FALSE(hidden.contains("effectiveCastCost"));
+}
+TEST_CASE("shown concealed card remains inspectable and facedown after LAN transport", "[preview2][privacy]") {
+    GameView view; CardView card;
+    card.instance.id = 42;
+    card.instance.definition = "fireball";
+    card.instance.faceDown = true;
+    card.instance.publiclyRevealed = true;
+    card.definition.id = "fireball";
+    card.definition.name = "火球术";
+    card.definition.text = "对对方玩家造成10点火焰伤害。";
+    view.cards.push_back(card);
+    CardCatalog catalog; catalog.cards.emplace(card.definition.id, card.definition);
+    const auto decoded = net::decodeView(net::encodeView(view), catalog);
+    REQUIRE(decoded.cards.at(0).instance.publiclyRevealed);
+    REQUIRE(decoded.cards.at(0).instance.faceDown);
+    REQUIRE_FALSE(decoded.cards.at(0).hidden);
+    const auto dto = bridge::viewDto(decoded).at("cards").at(0);
+    REQUIRE(dto.at("faceDown") == true);
+    REQUIRE(dto.at("definition").at("name") == "火球术");
+    REQUIRE(dto.at("definition").at("text") == card.definition.text);
 }
 TEST_CASE("bridge AI exposes only human projection and rejects stale plans") {
     Fixture f; REQUIRE(f.bridge.release().at("ok") == true);

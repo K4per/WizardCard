@@ -22,6 +22,9 @@ const RARITY_LABELS: Dictionary[String, String] = {
 @export var speed: int = 1
 @export var status: String = ""
 @export var hidden: bool = false
+@export var face_down: bool = false
+@export var setting_cost: int = 0
+@export var cast_cost: int = 0
 @export var illustration_id: String = ""
 @export var metadata_text: String = ""
 @export var preview: bool = false
@@ -39,7 +42,9 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 	var type_index: int = int(data.get("type", 1))
 	card.type_key = ["incantation", "analysis", "incantation", "formation", "rune", "talisman"][clampi(type_index, 0, 5)]
 	card.type_label = str(data.get("typeLabel", ["行动（旧版）", "解析", "言灵", "阵法", "符文", "咒符"][clampi(type_index, 0, 5)]))
-	card.primary_value = str(data.get("cost", 0))
+	card.setting_cost = int(data.get("cost", 0)) if type_index != 5 else 0
+	card.cast_cost = int(data.get("cost", 0)) if type_index in [2, 5] else int(data.get("castCost", 0))
+	card._update_cost_label()
 	card.secondary_value = str(data.get("level", data.get("rank", 0)))
 	var lines: Array[String] = []
 	if not card.number.is_empty():
@@ -54,7 +59,7 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 		var schools: Dictionary[String, String] = {"abjuration": "防护", "conjuration": "咒法", "divination": "预言", "enchantment": "惑控", "evocation": "塑能", "illusion": "幻术", "necromancy": "死灵", "transmutation": "变化"}
 		if not school.is_empty():
 			lines.append("学派：" + schools.get(school, school))
-		lines.append("设置费用：%d　施法费用：%d" % [int(data.get("cost", 0)), int(data.get("castCost", 0))])
+		lines.append(card.cost_detail())
 		lines.append("解析时间：%d　速度：%d" % [int(data.get("analysisTurns", 0)), card.speed])
 	card.metadata_text = "\n".join(lines)
 	return card
@@ -105,6 +110,7 @@ static func anonymous(id: String = "") -> CardPresentation:
 	card.title = "盖伏卡"
 	card.type_key = ""
 	card.hidden = true
+	card.face_down = true
 	return card
 
 static func from_projection(data: Dictionary) -> CardPresentation:
@@ -113,6 +119,12 @@ static func from_projection(data: Dictionary) -> CardPresentation:
 		return anonymous(str(data.get("id", "")))
 	var card: CardPresentation = from_definition(data.get("definition", {}))
 	card.instance_id = str(data.get("id", ""))
+	card.face_down = bool(data.get("faceDown", false))
+	var original_cost_detail: String = card.cost_detail()
+	card.setting_cost = int(data.get("effectiveSettingCost", card.setting_cost))
+	card.cast_cost = int(data.get("effectiveCastCost", card.cast_cost))
+	card._update_cost_label()
+	card.metadata_text = card.metadata_text.replace(original_cost_detail, card.cost_detail())
 	card.status = str(data.get("statusLabel", ""))
 	if card.status.is_empty():
 		if bool(data.get("faceDown", false)):
@@ -128,3 +140,13 @@ static func from_projection(data: Dictionary) -> CardPresentation:
 	if not card.status.is_empty():
 		card.metadata_text += "\n状态：" + card.status
 	return card
+
+func _update_cost_label() -> void:
+	primary_value = "%d/%d" % [setting_cost, cast_cost] if type_key == "analysis" else str(cast_cost if type_key in ["incantation", "talisman"] else setting_cost)
+
+func cost_detail() -> String:
+	if type_key == "talisman":
+		return "施法费用：%d（盖伏免费）" % cast_cost
+	if type_key == "incantation":
+		return "施法费用：%d" % cast_cost
+	return "设置费用：%d　施法费用：%d" % [setting_cost, cast_cost]

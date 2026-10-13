@@ -17,10 +17,10 @@
       "damageType": "thunder"
     },
     {
-      "kind": "conceal_enemy_spell"
+      "kind": "destroy_enemy_analysis"
     }
   ],
-  "text": "对对方玩家造成8点雷鸣伤害。可以将对方解析区一张法术盖伏。",
+  "text": "对对方玩家造成8点雷鸣伤害。那之后，可以销毁对方解析区一张解析法术。",
   "level": 3,
   "number": "020010",
   "illustrationId": "lightning-bolt"

@@ -5,28 +5,41 @@ var service: FrontendService
 var draft: Dictionary = {}
 
 func _ready() -> void:
-	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	for state: StringName in [&"normal", &"hover", &"pressed", &"disabled"]:
-		var skin: StyleBoxTexture = ArtBank.box("c2d.v2.deck.list-entry", 0)
-		if state == &"hover":
-			skin.modulate_color = Color(1.1, 1.15, 1.15)
-		add_theme_stylebox_override(state, skin)
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	custom_minimum_size.y = 68
 	resized.connect(queue_redraw)
 
 func _draw() -> void:
 	if service == null or draft.is_empty():
 		return
+	var thumbnail: Rect2 = Rect2(12, 8, 56, maxf(0.0, size.y - 16))
 	var side: Dictionary = draft.get("sideCards", {})
-	var cover_id: String = str(side.keys()[0]) if not side.is_empty() else ""
-	var cover: CardPresentation = service.card_by_id(cover_id)
-	CardPainter.paint(self, cover, Rect2(24, 8, size.y * 0.6, size.y - 16), "builder")
-	var left: float = size.y * 0.6 + 48
-	var title: String = CardPainter.shortened(str(draft.get("name", "未命名卡组")), size.x - left - 28, 20, Typography.HEADING)
-	draw_string(Typography.HEADING, Vector2(left, size.y * 0.43), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, CardPainter.PAPER)
-	var main: int = DeckUi.total(draft.get("cards", {}))
-	var side_count: int = DeckUi.total(draft.get("sideCards", {}))
+	var main_cards: Dictionary = draft.get("cards", {})
+	var cover_id: String = str(side.keys()[0]) if not side.is_empty() else str(main_cards.keys()[0]) if not main_cards.is_empty() else ""
+	draw_rect(thumbnail, DeckTheme.BACKGROUND)
+	if not cover_id.is_empty() and service.definitions.has(cover_id):
+		var cover: CardPresentation = service.card_by_id(cover_id)
+		var image: Texture2D = ArtBank.texture("illustration." + cover.art_id())
+		if image != null:
+			var image_scale: float = minf(thumbnail.size.x / image.get_width(), thumbnail.size.y / image.get_height())
+			var extent: Vector2 = image.get_size() * image_scale
+			draw_texture_rect(image, Rect2(thumbnail.get_center() - extent * 0.5, extent), false)
+	var left: float = thumbnail.end.x + 16
+	var available_width: float = maxf(0.0, size.x - left - 16)
+	var title: String = _fit_text(str(draft.get("name", "未命名卡组")), available_width, 18)
+	draw_string(Typography.BODY, Vector2(left, size.y * 0.42), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, DeckTheme.TEXT)
+	var main_count: int = DeckUi.total(main_cards)
+	var side_count: int = DeckUi.total(side)
 	var problems: Array = draft.get("problems", [])
-	var subtitle: String = "主卡组 %d / 40 · 副卡组 %d / 10 · %s" % [main, side_count, "构筑检查通过" if problems.is_empty() else "草稿 · 点击编辑"]
+	var subtitle: String = "主卡组 %d / 40    副卡组 %d / 10    %s" % [main_count, side_count, "可用于对局" if problems.is_empty() else "草稿 · 点击编辑"]
 	if int(draft.get("format", 1)) == 1:
 		subtitle = "旧版草稿 · 点击按新规则编辑"
-	draw_string(Typography.BODY, Vector2(left, size.y * 0.78), CardPainter.shortened(subtitle, size.x - left - 28, 14), HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("a8c4bc"))
+	draw_string(Typography.BODY, Vector2(left, size.y * 0.75), _fit_text(subtitle, available_width, 14), HORIZONTAL_ALIGNMENT_LEFT, -1, 14, DeckTheme.MUTED)
+
+func _fit_text(value: String, width: float, font_size: int) -> String:
+	if Typography.BODY.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x <= width:
+		return value
+	var shortened: String = value
+	while not shortened.is_empty() and Typography.BODY.get_string_size(shortened + "…", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > width:
+		shortened = shortened.left(shortened.length() - 1)
+	return shortened + "…"

@@ -10,7 +10,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Payment, turn, paid, load, canceled)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CardInstance, id, definition, owner, zone, spell, host, sourceFormation,
                                    targetCard, targetPlayer, base, analysisStarted, remaining, analysisLoad,
                                    castLoad, canceledTurn, payments, targets, settingPaid, concentrationCost,
-                                   faceDown, ambushedTurn, quickAnalysisTurn, analysisProgress, fieldOrder,
+                                   faceDown, publiclyRevealed, ambushedTurn, quickAnalysisTurn, analysisProgress, fieldOrder,
                                    ringIndex, wasAmbushed, sourceRingIndex)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLoad, id, owner, source, amount, expiryTurn, independent,
                                    sourceBound)
@@ -97,7 +97,8 @@ Json encodeView(const GameView &v) {
                               {"effectiveRings", c.effectiveRings},
                               {"occupiedRings", c.occupiedRings},
                               {"turnsToReady", c.turnsToReady},
-                              {"effectiveCastCost", c.effectiveCastCost}});
+                              {"effectiveCastCost", c.effectiveCastCost},
+                              {"effectiveSettingCost", c.effectiveSettingCost}});
     j["actions"] = Json::array();
     for (const auto &a : v.actions)
         j["actions"].push_back({{"label", a.label},
@@ -162,6 +163,7 @@ GameView decodeView(const Json &raw, const CardCatalog &catalog) {
         c.occupiedRings = x.at("occupiedRings");
         c.turnsToReady = x.at("turnsToReady");
         c.effectiveCastCost = x.at("effectiveCastCost");
+        c.effectiveSettingCost = x.at("effectiveSettingCost");
         v.cards.push_back(std::move(c));
     }
     for (const auto &x : j.at("actions"))

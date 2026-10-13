@@ -74,6 +74,7 @@ Json viewDto(const GameView &v) {
             card["effectiveRings"] = c.effectiveRings;
             card["occupiedRings"] = c.occupiedRings;
             card["effectiveCastCost"] = c.effectiveCastCost;
+            card["effectiveSettingCost"] = c.effectiveSettingCost;
             card["analysisLoad"] = i.analysisLoad;
             card["castLoad"] = i.castLoad;
         }

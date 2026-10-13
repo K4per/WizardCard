@@ -47,6 +47,7 @@ var field: FieldPresentation = FieldPresentation.new()
 var privacy: bool = false
 var hand_collapsed: bool = false
 var _card_hits: Array[Dictionary] = []
+var _opponent_hand_hits: Array[Dictionary] = []
 var _ring_hits: Array[Dictionary] = []
 var _zone_hits: Array[Dictionary] = []
 var _hover_id: String = ""
@@ -111,6 +112,7 @@ func configure(value: FieldPresentation) -> void:
 	_drag_active = false
 	_keyboard_index = -1
 	_card_hits.clear()
+	_opponent_hand_hits.clear()
 	_ring_hits.clear()
 	_zone_hits.clear()
 	_clear_hover()
@@ -129,6 +131,7 @@ func set_privacy(enabled: bool) -> void:
 	_dragged = null
 	_drag_active = false
 	_card_hits.clear()
+	_opponent_hand_hits.clear()
 	_ring_hits.clear()
 	_zone_hits.clear()
 	_keyboard_index = -1
@@ -144,6 +147,7 @@ func _clear_hover() -> void:
 
 func _draw() -> void:
 	_card_hits.clear()
+	_opponent_hand_hits.clear()
 	_ring_hits.clear()
 	_zone_hits.clear()
 	if size.x < 1.0 or size.y < 1.0:
@@ -221,17 +225,29 @@ func _draw_piles(own: bool) -> void:
 		_zone_hits.append({"kind": kinds[index], "owner": field.viewer if own else 1 - field.viewer, "rect": rect})
 		draw_rect(rect, Color("20303e"), true)
 		draw_rect(rect, Color("78919f"), false, 1)
+		if own and kinds[index] == "side_deck" and field.can_set_formation:
+			_draw_glow(rect, Color("f2cb62"))
 		_draw_label(names[index], Rect2(rect.position + Vector2(4, 10), Vector2(rect.size.x - 8, 24)), 17, Color("e4edf0"), true)
 		_draw_label(str(counts[index]), Rect2(rect.position + Vector2(4, 36), Vector2(rect.size.x - 8, 32)), 25, Color("e4edf0"), true)
 
 func _draw_opponent_hand() -> void:
-	var count: int = mini(field.opponent_hand_count, 16)
-	var extent: Vector2 = Vector2(34, 46)
-	var band: Rect2 = _scene_region("OpponentHand", Rect2(0, 2, size.x, 46))
-	for index: int in range(count):
-		var rect: Rect2 = Rect2(Vector2(band.get_center().x - (count * 22 + 12) * 0.5 + index * 22, band.position.y), extent)
-		draw_rect(rect, Color("20303e"), true)
-		draw_rect(rect, Color("78919f"), false, 1)
+	var count: int = maxi(0, field.opponent_hand_count)
+	var extent: Vector2 = _hand_card_size(size.y * layout.hand_height_ratio)
+	var stride: float = _hand_stride(extent.x, count)
+	var start_x: float = (size.x - (count - 1) * stride) * 0.5
+	# Derive the opponent silhouette from the same fan, then rotate the whole
+	# fan around the field center. No private card ID or definition is needed.
+	var mirror: Transform2D = Transform2D(PI, size)
+	var card: CardPresentation = CardPresentation.anonymous()
+	var rect: Rect2 = Rect2(-extent * 0.5, extent)
+	var band: Rect2 = _mirror(_hand_band(extent))
+	_scene_region("OpponentHand", band)
+	for index: int in _fan_draw_order(count):
+		var pose: Transform2D = mirror * _hand_pose(index, count, start_x, stride, extent, false)
+		_opponent_hand_hits.append({"pose": pose, "rect": pose * rect, "local_rect": rect})
+		draw_set_transform_matrix(pose)
+		_draw_simple_card(card, rect)
+	draw_set_transform_matrix(Transform2D.IDENTITY)
 
 func _draw_editor_preview() -> void:
 	# Editor-only silhouettes use no native service, player data or input hitboxes.
@@ -250,7 +266,7 @@ func _draw_editor_preview() -> void:
 	var stride: float = _hand_stride(extent.x, preview_hand_count)
 	var total: float = extent.x + (preview_hand_count - 1) * stride
 	var start_x: float = (size.x - total + extent.x) * 0.5
-	for index: int in range(preview_hand_count):
+	for index: int in _fan_draw_order(preview_hand_count):
 		draw_set_transform_matrix(_hand_pose(index, preview_hand_count, start_x, stride, extent, false))
 		_draw_editor_card(Rect2(-extent * 0.5, extent))
 	draw_set_transform_matrix(Transform2D.IDENTITY)
@@ -282,23 +298,39 @@ func _analysis_content(region: Rect2) -> Rect2:
 		content.position.y -= minf(layout.analysis_header_height, maxf(0.0, region.size.y - region.size.y * layout.analysis_safe_margin.y * 2.0))
 	return content
 
+func _formation_slot(region: Rect2, slot: int, own: bool) -> Rect2:
+	var content: Rect2 = _analysis_content(region)
+	var count: int = maxi(1, layout.formation_slot_count)
+	var height: float = maxf(0.0, (content.size.y - layout.slot_gap * (count - 1)) / count)
+	var rect: Rect2 = Rect2(content.position + Vector2(0, slot * (height + layout.slot_gap)), Vector2(content.size.x, height))
+	if not own:
+		rect.position = content.end - (rect.end - content.position)
+	return rect
+
 func _draw_formations(formations: Array[FormationPresentation], region: Rect2, _start: int, own: bool) -> void:
 	draw_rect(region, Color("20303e"), true)
-	var content: Rect2 = _analysis_content(region)
 	var slot_count: int = maxi(1, layout.formation_slot_count)
-	var rows: int = mini(maxi(1, layout.formation_rows), slot_count)
-	var columns: int = maxi(1, ceili(float(slot_count) / rows))
-	var cell: Vector2 = Vector2((content.size.x - layout.slot_gap * (columns - 1)) / columns, (content.size.y - layout.slot_gap * (rows - 1)) / rows)
-	for slot: int in range(layout.formation_slot_count):
-		var cluster: Rect2 = Rect2(content.position + Vector2(slot % columns, slot / columns) * (cell + Vector2.ONE * layout.slot_gap), cell)
-		if not own:
-			cluster.position = content.end - (cluster.end - content.position)
+	# Controls can briefly have a tiny size while a page enters the tree.
+	# Wait for layout instead of forming negative rectangles during that frame.
+	if _analysis_content(region).size.y <= layout.slot_gap * (slot_count - 1) + slot_count * 10.0:
+		return
+	var slot: int = 0
+	for formation: FormationPresentation in formations:
+		var span: int = maxi(1, formation.body_size)
+		# The native engine admits at most five total body units. Never shrink a
+		# formation to make an invalid projection appear to fit an occupied slot.
+		if slot + span > slot_count:
+			break
+		var cluster: Rect2 = _formation_slot(region, slot, own).merge(_formation_slot(region, slot + span - 1, own))
 		draw_rect(cluster, Color("152632"), true)
 		draw_rect(cluster, Color("465e6c"), false, 1)
-		if slot < formations.size():
-			_draw_formation_cluster(formations[slot], cluster, own)
-		else:
-			_draw_empty_formation_lane(cluster, slot, own)
+		_draw_formation_cluster(formation, cluster, own)
+		slot += span
+	for empty_slot: int in range(slot, slot_count):
+		var empty: Rect2 = _formation_slot(region, empty_slot, own)
+		draw_rect(empty, Color("152632"), true)
+		draw_rect(empty, Color("465e6c"), false, 1)
+		_draw_empty_formation_lane(empty, empty_slot, own)
 	var inset: Vector2 = region.size * layout.analysis_safe_margin
 	var header_position: Vector2 = region.position + inset if own else Vector2(region.position.x + inset.x, region.end.y - inset.y - 24)
 	_draw_label(("我方" if own else "对手") + " · 解析区（%d槽）" % layout.formation_slot_count, Rect2(header_position, Vector2(region.size.x - inset.x * 2, 24)), 16, Color("b7c6ce"))
@@ -309,11 +341,10 @@ func _draw_formation_cluster(formation: FormationPresentation, region: Rect2, ow
 	var host_width: float = maxf(48.0, region.size.x * layout.formation_slot_width_ratio)
 	var host_rect: Rect2 = Rect2(region.position + Vector2.ONE * padding, Vector2(host_width, region.size.y - padding * 2))
 	var grid: Rect2 = Rect2(host_rect.end.x + padding, region.position.y + padding, region.size.x - host_width - padding * 3, region.size.y - padding * 2)
-	# Every formation row owns a horizontal ring lane.  The lane remains a
-	# single row even when a formation has many spell positions, matching the
-	# tabletop layout and keeping each slot independent.
-	var columns: int = maxi(1, count)
-	var rows: int = 1
+	# A formation occupies consecutive body slots. Distribute its actual rings
+	# within that entire span instead of giving every formation a fixed row.
+	var rows: int = mini(maxi(1, formation.body_size), maxi(1, count))
+	var columns: int = maxi(1, ceili(float(count) / rows))
 	var gap: float = 3.0
 	var extent: Vector2 = Vector2((grid.size.x - gap * (columns - 1)) / columns, (grid.size.y - gap * (rows - 1)) / rows)
 	if not own:
@@ -329,10 +360,10 @@ func _draw_formation_cluster(formation: FormationPresentation, region: Rect2, ow
 			draw_rect(ring_rect, Color(0.49, 0.86, 0.61, 0.22), true)
 			draw_rect(ring_rect.grow(-1), Color("82db9d"), false, 2)
 		if formation.occupants.has(ring):
-			_draw_card(formation.occupants[ring], ring_rect)
+			_draw_card(formation.occupants[ring], ring_rect, not own)
 		else:
 			_draw_label(str(ring + 1), ring_rect, 11, Color("77929f"), true)
-	_draw_card(formation.card, host_rect)
+	_draw_card(formation.card, host_rect, not own)
 
 func _draw_empty_formation_lane(region: Rect2, slot: int, own: bool) -> void:
 	var padding: float = 4.0
@@ -351,17 +382,11 @@ func _draw_empty_formation_lane(region: Rect2, slot: int, own: bool) -> void:
 func _draw_editor_analysis(region: Rect2, own: bool) -> void:
 	# Editor preview mirrors the runtime lane structure but never creates card
 	# hitboxes.  This keeps scene authorship predictable while still showing all
-	# five editable rows in the inspector.
+	# five body slots in the inspector.
 	draw_rect(region, Color("20303e"), true)
-	var content: Rect2 = _analysis_content(region)
 	var slot_count: int = maxi(1, layout.formation_slot_count)
-	var rows: int = mini(maxi(1, layout.formation_rows), slot_count)
-	var columns: int = maxi(1, ceili(float(slot_count) / rows))
-	var cell: Vector2 = Vector2((content.size.x - layout.slot_gap * (columns - 1)) / columns, (content.size.y - layout.slot_gap * (rows - 1)) / rows)
 	for slot: int in range(slot_count):
-		var row: Rect2 = Rect2(content.position + Vector2(slot % columns, slot / columns) * (cell + Vector2.ONE * layout.slot_gap), cell)
-		if not own:
-			row.position = content.end - (row.end - content.position)
+		var row: Rect2 = _formation_slot(region, slot, own)
 		var host_width: float = maxf(48.0, row.size.x * layout.formation_slot_width_ratio)
 		var host: Rect2 = Rect2(row.position + Vector2(5, 5), Vector2(host_width, maxf(1.0, row.size.y - 10)))
 		var lane: Rect2 = Rect2(host.end.x + 5, row.position.y + 5, maxf(1.0, row.size.x - host_width - 15), maxf(1.0, row.size.y - 10))
@@ -378,10 +403,31 @@ func _draw_editor_analysis(region: Rect2, own: bool) -> void:
 				ring_x = lane.end.x - side - ring * (side + gap)
 			_draw_editor_card(Rect2(ring_x, lane.position.y, side, lane.size.y))
 
-func _draw_card(card: CardPresentation, rect: Rect2, _view: String = "field") -> void:
+func _draw_card(card: CardPresentation, rect: Rect2, mirrored: bool = false) -> void:
 	_card_hits.append({"rect": rect, "card": card})
 	_draw_simple_card(card, rect, card.instance_id == _hover_id or card.instance_id == selected_id)
 	_draw_legal_highlight(card, rect)
+	_draw_attachment_boxes(card, rect, mirrored)
+
+func _draw_attachment_boxes(host: CardPresentation, rect: Rect2, mirrored: bool) -> void:
+	var cards: Array = field.attachments.get(host.instance_id, [])
+	if cards.is_empty():
+		return
+	var side: float = minf(clampf(rect.size.y * 0.45, 8.0, 13.0), minf(rect.size.x, rect.size.y) - 2.0)
+	if side <= 0.0:
+		return
+	var gap: float = 2.0
+	var stride: float = minf(side + gap, maxf(0.0, (rect.size.x - side - 2.0) / maxi(1, cards.size() - 1)))
+	for index: int in range(cards.size()):
+		var card: CardPresentation = cards[index] as CardPresentation
+		var box: Rect2 = Rect2(rect.position.x + 1.0 + index * stride, rect.end.y - side - 1.0, side, side)
+		if mirrored:
+			box.position = rect.end - (box.end - rect.position)
+		_card_hits.append({"rect": box, "card": card})
+		draw_rect(box, Color("453658"), true)
+		draw_rect(box, Color("cbb2ec") if card.instance_id == _hover_id or card.instance_id == selected_id else Color("aa8fd0"), false, 1.0)
+		_draw_label("符", box.grow(-1), maxi(6, int(side - 2.0)), Color("ecdef9"), true)
+		_draw_legal_highlight(card, box)
 
 func _draw_simple_card(card: CardPresentation, rect: Rect2, highlighted: bool = false) -> void:
 	SimpleCardPainter.paint(self, card, rect, highlighted)
@@ -394,9 +440,14 @@ func _draw_legal_highlight(card: CardPresentation, rect: Rect2) -> void:
 		return
 	var availability: int = field.legal_cards.get(card.instance_id, 0)
 	if availability > 0 and not card.hidden:
-		var color: Color = Color("e5c773") if availability == 2 else Color("7ec5e3")
-		draw_rect(rect.grow(4), Color(color, 0.16), false, 7)
-		draw_rect(rect.grow(2), color, false, 2)
+		if availability & FieldPresentation.LEGAL_GOLD:
+			_draw_glow(rect, Color("f2cb62"))
+		if availability & FieldPresentation.LEGAL_AMBUSH:
+			_draw_glow(rect.grow(3 if availability & FieldPresentation.LEGAL_GOLD else 0), Color("40c7ff"))
+
+func _draw_glow(rect: Rect2, color: Color) -> void:
+	draw_rect(rect.grow(4), Color(color, 0.24), false, 7)
+	draw_rect(rect.grow(2), color, false, 2)
 
 func _draw_casting(cards: Array[CardPresentation], _slots: int, region: Rect2, own: bool) -> void:
 	if greybox:
@@ -419,7 +470,7 @@ func _draw_casting(cards: Array[CardPresentation], _slots: int, region: Rect2, o
 		var x: float = start_x + index * (card_width + gap)
 		if not own:
 			x = region.end.x - (start_x - region.position.x) - card_width - index * (card_width + gap)
-		_draw_card(cards[index], Rect2(Vector2(x, region.position.y + (region.size.y - card_height) * 0.5), Vector2(card_width, card_height)))
+		_draw_card(cards[index], Rect2(Vector2(x, region.position.y + (region.size.y - card_height) * 0.5), Vector2(card_width, card_height)), not own)
 
 func _visible_groups(_region: Rect2) -> int:
 	return layout.formation_slot_count
@@ -436,15 +487,26 @@ func _draw_hand(height: float) -> void:
 	var stride: float = _hand_stride(width, count)
 	var total: float = width + (count - 1) * stride
 	var start_x: float = (size.x - total + width) * 0.5
-	var selected_index: int = -1
-	for index: int in range(count):
-		if field.hand[index].instance_id == selected_id:
-			selected_index = index
+	var raised_index: int = -1
+	for index: int in _fan_draw_order(count):
+		if field.hand[index].instance_id == _hover_id:
+			raised_index = index
 		else:
 			_draw_hand_card(index, start_x, stride, extent, false)
 	# A raised card is painted last so neighbours cannot cover its face or hit area.
-	if selected_index >= 0:
-		_draw_hand_card(selected_index, start_x, stride, extent, true)
+	if raised_index >= 0:
+		_draw_hand_card(raised_index, start_x, stride, extent, true)
+
+func _fan_draw_order(count: int) -> Array[int]:
+	var indices: Array[int] = []
+	# Paint from both ends toward the center, so endpoint overlaps are mirror
+	# images instead of exposing an entire card at only the right edge.
+	for depth: int in range(ceili(count * 0.5)):
+		indices.append(depth)
+		var opposite: int = count - 1 - depth
+		if opposite != depth:
+			indices.append(opposite)
+	return indices
 
 func _hand_card_size(height: float) -> Vector2:
 	var card_height: float = minf(layout.hand_max_height, height)
@@ -457,16 +519,19 @@ func _hand_pose(index: int, count: int, start_x: float, stride: float, extent: V
 	var fraction: float = (2.0 * index / (count - 1) - 1.0) if count > 1 else 0.0
 	var angle: float = deg_to_rad(minf(layout.fan_max_angle, (count - 1) * layout.fan_angle_per_card) * fraction)
 	var arch: float = layout.fan_arch_ratio if count > 1 else 0.0
-	var band: Rect2 = _scene_region("OwnHand", Rect2(0, size.y - extent.y, size.x, extent.y))
+	var band: Rect2 = _hand_band(extent)
 	var center: Vector2 = Vector2(start_x + index * stride, band.end.y - extent.y * (0.5 + arch) - layout.hand_bottom_margin + fraction * fraction * extent.y * layout.fan_edge_drop_ratio)
 	if raised:
-		center += Vector2(0, -extent.y * layout.selected_raise_ratio).rotated(angle)
+		center.y -= extent.y * layout.hover_raise_ratio
 		angle *= 0.2
 	# A rotated Rect2 can extend past its unrotated center by a larger amount
 	# than either half dimension. Clamp the transformed bounding box so every
 	# real hit rectangle stays inside the full-screen field at every viewport.
 	center = _clamp_hand_center(center, angle, extent)
 	return Transform2D(angle, center)
+
+func _hand_band(extent: Vector2) -> Rect2:
+	return _scene_region("OwnHand", Rect2(0, size.y - extent.y, size.x, extent.y))
 
 func _clamp_hand_center(center: Vector2, angle: float, extent: Vector2) -> Vector2:
 	var cosine: float = absf(cos(angle))
@@ -483,23 +548,37 @@ func _draw_hand_card(index: int, start_x: float, stride: float, extent: Vector2,
 	var card: CardPresentation = field.hand[index]
 	var pose: Transform2D = _hand_pose(index, field.hand.size(), start_x, stride, extent, raised)
 	var rect: Rect2 = Rect2(-extent * 0.5, extent)
-	_card_hits.append({"rect": pose * rect, "card": card, "pose": pose, "local_rect": rect})
+	var rest_pose: Transform2D = _hand_pose(index, field.hand.size(), start_x, stride, extent, false)
+	# Keep the resting footprint responsive while the hovered card lifts. This
+	# prevents raising it away from a stationary pointer and toggling hover.
+	_card_hits.append({"rect": pose * rect, "rest_rect": rest_pose * rect, "card": card, "pose": pose, "rest_pose": rest_pose, "local_rect": rect})
 	draw_set_transform_matrix(pose)
 	draw_rect(Rect2(rect.position + Vector2(3, 5), rect.size), Color(0, 0, 0, 0.3))
-	_draw_simple_card(card, rect, raised or card.instance_id == _hover_id)
+	_draw_simple_card(card, rect, raised or card.instance_id == selected_id)
 	_draw_legal_highlight(card, rect)
 	draw_set_transform_matrix(Transform2D.IDENTITY)
 
+func _opponent_hand_at(point: Vector2) -> bool:
+	for hit: Dictionary in _opponent_hand_hits:
+		var pose: Transform2D = hit["pose"]
+		if (hit["rect"] as Rect2).has_point(point) and (hit["local_rect"] as Rect2).has_point(pose.affine_inverse() * point):
+			return true
+	return false
+
 func card_at(point: Vector2) -> CardPresentation:
+	if _opponent_hand_at(point):
+		return null
 	for index: int in range(_card_hits.size() - 1, -1, -1):
 		var hit: Dictionary = _card_hits[index]
 		var rect: Rect2 = hit["rect"]
-		if not rect.has_point(point):
+		var rest_rect: Rect2 = hit.get("rest_rect", rect)
+		if not rect.has_point(point) and not rest_rect.has_point(point):
 			continue
 		if hit.has("pose"):
 			var pose: Transform2D = hit["pose"]
+			var rest_pose: Transform2D = hit.get("rest_pose", pose)
 			var local_rect: Rect2 = hit["local_rect"]
-			if not local_rect.has_point(pose.affine_inverse() * point):
+			if not local_rect.has_point(pose.affine_inverse() * point) and not local_rect.has_point(rest_pose.affine_inverse() * point):
 				continue
 		return hit["card"] as CardPresentation
 	return null
@@ -521,6 +600,11 @@ func _gui_input(event: InputEvent) -> void:
 		queue_redraw()
 	elif event is InputEventMouseButton:
 		var mouse: InputEventMouseButton = event
+		if mouse.button_index == MOUSE_BUTTON_LEFT and _opponent_hand_at(mouse.position):
+			_dragged = null
+			_drag_active = false
+			accept_event()
+			return
 		if mouse.pressed and mouse.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			_scroll_formations(mouse.position, -1 if mouse.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
 		elif mouse.pressed and mouse.button_index == MOUSE_BUTTON_RIGHT:

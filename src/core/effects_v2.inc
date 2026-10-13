@@ -27,6 +27,7 @@ void returnToHand(GameState &s, const CardCatalog &catalog, CardId id) {
     card.analysisProgress = card.remaining = 0;
     card.ringIndex = -1;
     card.faceDown = false;
+    card.publiclyRevealed = false;
     card.wasAmbushed = false;
     card.ambushedTurn = 0;
     card.canceledTurn = -1;
@@ -49,6 +50,12 @@ bool GameEngine::contentEffectV2() {
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
     const auto owner = f.item.owner;
+    if (e.kind == EffectKind::SearchSameSchool && f.clearRemaining < 0 && !f.item.targetCards.empty()) {
+        const auto &source = catalog_.at(s.cards.at(f.item.source).definition);
+        if (hasTrait(source, "discard_spell_search")) f.clearRemaining = static_cast<int>(f.item.targetCards.front());
+    }
+    if (e.kind == EffectKind::RecoverEnemyAshSpell && f.clearRemaining < 0 && f.item.targetCard)
+        f.clearRemaining = static_cast<int>(f.item.targetCard);
     std::vector<CardId> choices;
     bool optional = true;
     if (e.kind == EffectKind::ChooseDamage) {
@@ -67,6 +74,7 @@ bool GameEngine::contentEffectV2() {
     case EffectKind::SearchSameSchool:
     case EffectKind::RecoverEnemyAshSpell:
     case EffectKind::RecoverFormation:
+    case EffectKind::DestroyEnemyAnalysis:
         break;
     default:
         return false;
@@ -79,14 +87,16 @@ bool GameEngine::contentEffectV2() {
             eligible = card.owner != owner && card.zone == Zone::Analysis && !card.faceDown &&
                        definition.type == CardType::Analytic &&
                        (card.spell == SpellState::Analyzing || card.spell == SpellState::Ready);
-            optional = false;
+            break;
+        case EffectKind::DestroyEnemyAnalysis:
+            eligible = card.owner != owner && card.zone == Zone::Analysis &&
+                       definition.type == CardType::Analytic && !protectedFromEffect(definition);
             break;
         case EffectKind::ConcealEnemySpell:
             eligible = card.owner != owner && card.zone == Zone::Analysis && !card.faceDown && isSpell(definition);
             break;
         case EffectKind::RevealEnemyAmbush:
             eligible = card.owner != owner && card.zone == Zone::Analysis && card.faceDown && isSpell(definition);
-            optional = false;
             break;
         case EffectKind::ReturnEnemyAnalysis:
             eligible = card.owner != owner && card.zone == Zone::Analysis &&
@@ -117,7 +127,7 @@ bool GameEngine::contentEffectV2() {
             optional = false;
             if (f.clearRemaining < 0) {
                 eligible = card.owner != owner && card.zone == Zone::Ash && !card.faceDown &&
-                           definition.type == CardType::Analytic && definition.rank < 5;
+                           definition.type == CardType::Analytic && definition.rank <= 5;
                 if (eligible)
                     eligible = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &item) {
                         const auto &host = item.second;
@@ -140,7 +150,7 @@ bool GameEngine::contentEffectV2() {
         default:
             break;
         }
-        if (eligible && !hasTrait(definition, "effect_immune"))
+        if (eligible && ((e.kind == EffectKind::RecoverEnemyAshSpell && f.clearRemaining >= 0) || !hasTrait(definition, "effect_immune")))
             choices.push_back(id);
     }
     if (choices.empty()) {
@@ -173,14 +183,18 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
     auto &card = s.cards.at(selected);
     const auto &definition = catalog_.at(card.definition);
     switch (e.kind) {
+    case EffectKind::DestroyEnemyAnalysis:
+        StateMaintenance::leave(s, selected, &catalog_);
+        break;
     case EffectKind::DelayEnemyAnalysis:
-        card.analysisProgress -= std::max(1, e.amount);
+        card.analysisProgress = std::max(0, card.analysisProgress - std::max(1, e.amount));
         card.analysisStarted += std::max(1, e.amount);
         if (definition.analysisTurns > card.analysisProgress)
             card.spell = SpellState::Analyzing;
         break;
     case EffectKind::ConcealEnemySpell:
         card.faceDown = true;
+        card.publiclyRevealed = false;
         card.ambushedTurn = s.globalTurn;
         card.analysisProgress = 0;
         card.analysisLoad = card.castLoad = 0;
@@ -192,6 +206,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
         break;
     case EffectKind::RevealEnemyAmbush:
         // Showing a card communicates its identity without flipping or starting analysis.
+        card.publiclyRevealed = true;
         s.events.push_back({"show_card", "展示盖伏法术：" + definition.name, -1, selected});
         break;
     case EffectKind::ReturnEnemyAnalysis:
@@ -236,6 +251,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
             spell.spell = SpellState::None;
             spell.ringIndex = Rules::freeRing(s, catalog_, selected);
             spell.faceDown = true;
+            spell.publiclyRevealed = false;
             spell.wasAmbushed = true;
             spell.ambushedTurn = s.globalTurn;
             spell.fieldOrder = s.nextFieldOrder++;

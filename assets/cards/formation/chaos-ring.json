@@ -11,7 +11,7 @@
   "maxRank": 3,
   "baseEligible": false,
   "cost": 0,
-  "text": "该法阵不能同时解析相同派系的法术。",
+  "text": "此阵法不能同时解析相同学派法术。",
   "summonCondition": "已解析的不同派系法术×2。",
   "recipe": [
     {

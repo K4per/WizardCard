@@ -51,6 +51,9 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
         deck.erase(std::remove(deck.begin(), deck.end(), source), deck.end());
         c.zone = Zone::Ash;
         c.spell = SpellState::None;
+        c.stormPoints = 0;
+        c.stormReleaseProgress = 0;
+        c.stormAbilityTurn = -1;
         c.host = 0;
         c.analysisLoad = 0;
         c.castLoad = 0;

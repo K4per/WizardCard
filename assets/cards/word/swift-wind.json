@@ -20,6 +20,9 @@
   "tags": [
     "风暴"
   ],
+  "traits": [
+    "requires_storm_formation"
+  ],
   "number": "030010",
   "illustrationId": "swift-wind"
 }

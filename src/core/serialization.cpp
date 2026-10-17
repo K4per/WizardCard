@@ -48,7 +48,9 @@ std::string GameEngine::stateKey(bool logical) const {
           << c.remaining << ',' << c.analysisLoad << ',' << c.castLoad << ',' << c.canceledTurn << ','
           << c.settingPaid << ',' << c.concentrationCost << ',' << c.faceDown << ','
           << (logical ? (c.faceDown && c.ambushedTurn == s.globalTurn) : c.ambushedTurn) << ','
-          << c.quickAnalysisTurn << ':';
+          << c.quickAnalysisTurn;
+        if (catalog_.usesAlphaV25()) o << ',' << c.stormAbilityTurn;
+        o << ':';
         if (catalog_.usesAlphaV2())
             o << "v2:" << c.analysisProgress << ',' << c.fieldOrder << ',' << c.ringIndex << ','
               << c.wasAmbushed << ',' << c.sourceRingIndex << ':';
@@ -58,6 +60,8 @@ std::string GameEngine::stateKey(bool logical) const {
         o << ':';
         for (auto target : c.targets)
             o << target << ',';
+        if (catalog_.usesAlphaV25() && (c.stormPoints != 0 || c.stormReleaseProgress != 0))
+            o << "storm:" << c.stormPoints << ',' << c.stormReleaseProgress << ';';
         o << ';';
     }
     for (const auto &t : s.temporary)
@@ -95,7 +99,9 @@ std::string GameEngine::stateKey(bool logical) const {
     }
     if (s.effect) {
         o << 'E' << s.effect->cursor << ',' << static_cast<int>(s.effect->after) << ','
-          << s.effect->clearRemaining << ',' << linkId(s.effect->link) << ';';
+          << s.effect->clearRemaining;
+        if (catalog_.usesAlphaV25()) o << ',' << s.effect->resolvedCount;
+        o << ',' << linkId(s.effect->link) << ';';
         trigger(s.effect->item);
     }
     if (s.chain) {

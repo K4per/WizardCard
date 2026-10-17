@@ -1,8 +1,8 @@
 # 巫师牌 / WizardCard
 
-**2.5.0-preview.3**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序版本为 `2.5.0-preview.3`，规则与正式卡池版本为 `2.5.0`。
+**2.5.0-preview.3-hotfix.1**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序版本为 `2.5.0-preview.3-hotfix.1`，规则与正式卡池版本为 `2.5.0`。
 
-正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.5](docs/alpha-v2.5-rules.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本轮变化和验证结果见[发行说明](docs/releases/2.5.0-preview.3.md)与[交付报告](docs/reports/2.5.0-preview.3.md)。旧版文档与兼容夹具保留在源码仓库中，用于历史验证。
+正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.5](docs/alpha-v2.5-rules.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本轮变化和验证结果见[hotfix 发行说明](docs/releases/2.5.0-preview.3-hotfix.1.md)与[交付报告](docs/reports/2.5.0-preview.3-hotfix.1.md)。旧版文档与兼容夹具保留在源码仓库中，用于历史验证。
 
 ## 运行便携包
 
@@ -28,7 +28,7 @@ Windows x64 便携包解压后运行 `WizardCard.exe`。保留同级 `WizardCard
 
 ## 卡组构筑
 
-主卡组固定40张，包含解析、言灵、咒符和符文；副卡组固定10张阵法。主、副卡组分别限制同名最多3张，副卡组必须包含可用于开局选择的等级1阵法。正式卡池45种：13张阵法、17张解析法术、7张言灵法术、5张咒符法术和3张符文。
+主卡组固定40张，包含解析、言灵、咒符和符文；副卡组固定10张阵法。主、副卡组分别限制同名最多3张，副卡组必须包含可用于开局选择的等级1阵法。正式卡池62种：15张阵法、22张解析法术、12张言灵法术、8张咒符法术和5张符文。
 
 从卡组列表新建草稿、复制预设或修改自建卡组。构筑页采用与对局同色的深蓝灰三栏布局：左侧插画与完整详情，中间同时显示40张主卡组和10张副卡组，右侧卡池与搜索筛选。保留卡牌插画，取消装饰背景、卡框和按钮素材。右键卡池加入一张，右键已构筑卡牌移除一张，也可拖动到另一栏增减；悬停或点击查看完整详情，Esc 或右键取消拖动。
 
@@ -38,7 +38,7 @@ Windows x64 便携包解压后运行 `WizardCard.exe`。保留同级 `WizardCard
 
 设置包含总音量、音效音量、窗口/无边框/全屏、分辨率、精简动态效果、自动阶段推进及场地背景。支持1280×720、1600×1000、1920×1080；修改后显式保存。无强制选择的非主要阶段可自动推进，主要阶段仍需显式结束。
 
-Godot 默认数据目录为 `user://alpha-v2-frontend`，Windows 对应 `%APPDATA%/Godot/app_userdata/WizardCard 2.5.0-preview.3/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
+Godot 默认数据目录为 `user://alpha-v2-frontend`，Windows 对应 `%APPDATA%/Godot/app_userdata/WizardCard 2.5.0-preview.3-hotfix.1/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
 
 当前复盘格式4包含程序版本、规则版本、卡池版本、内容哈希、种子、双方实际主卡组与副卡组、开局选择命令和每一步状态摘要。对局接受操作后自动保存，也可从对局菜单手动保存；完整复盘在终局后开放。旧 preview.1 复盘因程序版本和内容哈希变化而拒绝。复盘用于完整重放，不提供中断对局存档恢复。完整离线记录包含双方私有信息，玩家投影与日志按权限过滤；哈希用于复现校验。
 
@@ -77,7 +77,7 @@ Godot 开发配置见源码中的 `godot/README.md`。使用固定引擎 `4.7.2.
 
 ## 内容与版本控制
 
-`assets/catalog.json` 与分卡 JSON 为正式内容入口，`assets/cards.json` 为一致性聚合。新效果需同步扩展规则实现、内容校验和有效回归；对局创建后冻结内容，重启加载新版本。卡池图鉴由 `tools/generate_card_catalog.py` 生成，包含45张插画和10套合法预设。
+`assets/catalog.json` 与分卡 JSON 为正式内容入口，`assets/cards.json` 为一致性聚合。新效果需同步扩展规则实现、内容校验和有效回归；对局创建后冻结内容，重启加载新版本。卡池图鉴由 `tools/generate_card_catalog.py` 生成，包含62张插画和10套合法预设。
 
 远程保留 `master` 与 `dev`：`dev` 用于开发验证，确认交付后合入 `master`，见[分支约定](docs/branching.md)。规则变更同步文档、JSON 与回归。自动验收与仍需实机确认的范围以本轮交付报告为准。
 

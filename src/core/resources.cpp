@@ -26,15 +26,37 @@ int Rules::capacity(const GameState &s, const CardCatalog &cat, PlayerId p) {
     int n = cat.baseLoadCapacity;
     for (const auto &[id, c] : s.cards)
         if (c.owner == p && c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation) {
-            n += cat.at(c.definition).capacity;
+            const auto &definition = cat.at(c.definition);
+            int capacity = definition.capacity;
+            if (definition.id == "storm-crest")
+                capacity = c.stormPoints >= 5 ? 10 : c.stormPoints >= 3 ? 8 : 5;
+            n += capacity;
             for (const auto &[sid, seal] : s.cards)
                 if (!effectImmune(cat.at(c.definition)) && seal.zone == Zone::Attached && seal.host == id)
                     n += cat.at(seal.definition).capacityBonus;
         }
     return n;
 }
+int Rules::income(const GameState &s, const CardCatalog &cat, CardId id) {
+    const auto &card = s.cards.at(id);
+    const auto &definition = cat.at(card.definition);
+    if (definition.id == "storm-crest")
+        return card.stormPoints >= 5 ? 2 : 1;
+    return definition.income;
+}
+int Rules::level(const GameState &s, const CardCatalog &cat, CardId id) {
+    const auto &card = s.cards.at(id);
+    const auto &definition = cat.at(card.definition);
+    if (definition.id == "storm-crest")
+        return card.stormPoints >= 5 ? 3 : card.stormPoints >= 3 ? 2 : 1;
+    return cat.usesAlphaV2() ? definition.level : definition.maxRank;
+}
 int Rules::rings(const GameState &s, const CardCatalog &cat, CardId id) {
-    int n = cat.at(s.cards.at(id).definition).rings;
+    const auto &card = s.cards.at(id);
+    const auto &definition = cat.at(card.definition);
+    int n = definition.rings;
+    if (definition.id == "storm-crest")
+        n = card.stormPoints >= 5 ? 3 : card.stormPoints >= 3 ? 2 : 1;
     for (const auto &[cid, c] : s.cards)
         if (!effectImmune(cat.at(s.cards.at(id).definition)) && c.zone == Zone::Attached && c.host == id)
             n += cat.at(c.definition).ringBonus;
@@ -42,7 +64,7 @@ int Rules::rings(const GameState &s, const CardCatalog &cat, CardId id) {
 }
 int Rules::maxRank(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &definition = cat.at(s.cards.at(id).definition);
-    int n = cat.usesAlphaV2() ? definition.level : definition.maxRank;
+    int n = level(s, cat, id);
     for (const auto &[cid, c] : s.cards)
         if (!effectImmune(definition) && c.zone == Zone::Attached && c.host == id)
             n += cat.at(c.definition).rankBonus;
@@ -71,7 +93,28 @@ int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     for (const auto &[sid, seal] : s.cards)
         if (seal.zone == Zone::Attached && seal.host == id)
             n += cat.at(seal.definition).castCostBonus;
+    if (d.duration > 0)
+        for (const auto &[sourceId, source] : s.cards) {
+            const auto &sourceDefinition = cat.at(source.definition);
+            if (source.owner != c.owner && source.spell == SpellState::Active &&
+                (source.zone == Zone::Analysis || source.zone == Zone::Casting) &&
+                std::find(sourceDefinition.traits.begin(), sourceDefinition.traits.end(),
+                          "surcharge_enemy_timed_cast") != sourceDefinition.traits.end())
+                n += 2;
+        }
     return std::max(0, n);
+}
+int Rules::concentrationUpkeep(const GameState &s, const CardCatalog &cat, CardId id) {
+    const auto &card = s.cards.at(id);
+    const bool doubled = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+        const auto &source = entry.second;
+        const auto &definition = cat.at(source.definition);
+        return source.owner != card.owner && source.spell == SpellState::Active &&
+            (source.zone == Zone::Analysis || source.zone == Zone::Casting) &&
+            std::find(definition.traits.begin(), definition.traits.end(),
+                      "double_enemy_concentration_upkeep") != definition.traits.end();
+    });
+    return card.concentrationCost * (doubled ? 2 : 1);
 }
 int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const Effect &e) {
     bool resistance = false;
@@ -164,7 +207,8 @@ bool Rules::linkTargetValid(const GameState &s, TargetKind kind, LinkId id) {
                    (kind == TargetKind::PendingLink ||
                     (kind == TargetKind::PreparationRoot && l.kind == LinkKind::Preparation) ||
                     (kind == TargetKind::EnemySpellLink &&
-                     (l.kind == LinkKind::Spell || l.kind == LinkKind::Response)));
+                     (l.kind == LinkKind::Spell || l.kind == LinkKind::Response ||
+                      (s.chain->window == ResponseWindow::Prepare && l.kind == LinkKind::Preparation))));
     return false;
 }
 std::vector<std::string> Rules::deckErrors(const CardCatalog &cat, const PlayerDeck &deck) {

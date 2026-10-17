@@ -5,10 +5,13 @@ namespace wizard {
 struct Rules {
     static int load(const GameState &, PlayerId);
     static int capacity(const GameState &, const CardCatalog &, PlayerId);
+    static int income(const GameState &, const CardCatalog &, CardId);
+    static int level(const GameState &, const CardCatalog &, CardId);
     static int rings(const GameState &, const CardCatalog &, CardId);
     static int maxRank(const GameState &, const CardCatalog &, CardId);
     static int analysisCost(const GameState &, const CardCatalog &, CardId, CardId);
     static int castCost(const GameState &, const CardCatalog &, CardId);
+    static int concentrationUpkeep(const GameState &, const CardCatalog &, CardId);
     static int damage(const GameState &, const CardCatalog &, PlayerId, const Effect &);
     static int occupied(const GameState &, CardId);
     static int castingCapacity(const GameState &, const CardCatalog &, PlayerId);

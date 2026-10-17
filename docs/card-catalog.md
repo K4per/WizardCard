@@ -1,6 +1,6 @@
 # 巫师牌卡池图鉴
 
-规则 2.5.0 · 卡池 2.5.0 · 45 种正式卡牌 · 10 套 40+10 预设。
+规则 2.5.0 · 卡池 2.5.0 · 62 种正式卡牌 · 10 套 40+10 预设。
 
 本页由正式定义生成。规则见 [Alpha v2.5](alpha-v2.5-rules.md)，配方与效果以卡面文字及正式规则共同为准。
 
@@ -21,6 +21,8 @@
 | 010011 | [元素之环](#elemental-ring) | 阵法 |
 | 010012 | [混沌之环](#chaos-ring) | 阵法 |
 | 010013 | [硫磺](#sulfur) | 阵法 |
+| 010014 | [风暴纹章](#storm-crest) | 阵法 |
+| 010015 | [风暴之心](#storm-heart) | 阵法 |
 | 020001 | [火球术](#fireball) | 解析法术 |
 | 020002 | [缝合生命](#mend) | 解析法术 |
 | 020003 | [碎环术](#unravel) | 解析法术 |
@@ -38,6 +40,11 @@
 | 020015 | [炽热射线](#scorching-ray) | 解析法术 |
 | 020016 | [阳炎爆](#sunburst) | 解析法术 |
 | 020017 | [治疗之环](#healing-circle) | 解析法术 |
+| 020018 | [冰风暴](#ice-storm) | 解析法术 |
+| 020019 | [切割之风](#cutting-wind) | 解析法术 |
+| 020020 | [大风暴术](#great-storm) | 解析法术 |
+| 020021 | [云雾术](#cloud-mist) | 解析法术 |
+| 020022 | [召雷术](#thunder-summon) | 解析法术 |
 | 030001 | [奥术回想](#recall) | 言灵法术 |
 | 030002 | [火花术](#spark) | 言灵法术 |
 | 030003 | [魔力扰动](#disrupt) | 言灵法术 |
@@ -45,20 +52,30 @@
 | 030005 | [克敌机先](#true-strike) | 言灵法术 |
 | 030007 | [瞬发回路过载](#instant-circuit-overload) | 言灵法术 |
 | 030008 | [奥术复苏](#arcane-recovery) | 言灵法术 |
+| 030009 | [风语术](#wind-whisper) | 言灵法术 |
+| 030010 | [极速之风](#swift-wind) | 言灵法术 |
+| 030011 | [雪雨暴](#snow-rain-storm) | 言灵法术 |
+| 030012 | [造风术](#windmaking) | 言灵法术 |
+| 030013 | [风暴导向](#storm-guidance) | 言灵法术 |
 | 040001 | [银光锐语](#barbs) | 咒符法术 |
 | 040002 | [法术反制](#counter-spell) | 咒符法术 |
 | 040003 | [护盾术](#shield) | 咒符法术 |
 | 040004 | [滑稽魔盒](#funny-box) | 咒符法术 |
 | 040005 | [避火咒](#protective-flame) | 咒符法术 |
+| 040006 | [风暴气旋](#storm-vortex) | 咒符法术 |
+| 040007 | [风击术](#wind-strike) | 咒符法术 |
+| 040008 | [大旋风术](#great-cyclone) | 咒符法术 |
 | 050001 | [奥术圆环](#ring) | 符文 |
 | 050002 | [逆三角星符](#conduit) | 符文 |
 | 050003 | [昂扬](#uplift) | 符文 |
+| 050004 | [风暴烙印](#storm-brand) | 符文 |
+| 050005 | [风暴湮灭之纹章](#storm-annihilation-crest) | 符文 |
 
 <a id="reservoir"></a>
 
 ## 010001 · 阿克乌姆之弧
 
-![阿克乌姆之弧](../godot/art/illustrations/reservoir.png)
+![阿克乌姆之弧](../godot/art/card/reservoir.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -82,7 +99,7 @@
 
 ## 010002 · 生命之五芒星
 
-![生命之五芒星](../godot/art/illustrations/pentagram-of-life.png)
+![生命之五芒星](../godot/art/card/pentagram-of-life.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -106,7 +123,7 @@
 
 ## 010003 · 恩格亚斯四角星
 
-![恩格亚斯四角星](../godot/art/illustrations/engeas-four-point-star.png)
+![恩格亚斯四角星](../godot/art/card/engeas-four-point-star.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -130,7 +147,7 @@
 
 ## 010004 · 运行之三角星
 
-![运行之三角星](../godot/art/illustrations-v2/v2-small-hexagram.png)
+![运行之三角星](../godot/art/card/triangle-star.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -154,7 +171,7 @@
 
 ## 010005 · 均衡之六芒星
 
-![均衡之六芒星](../godot/art/illustrations/balance.png)
+![均衡之六芒星](../godot/art/card/balance.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -178,7 +195,7 @@
 
 ## 010006 · 秩序之八芒星
 
-![秩序之八芒星](../godot/art/illustrations-v2/v2-octagram.png)
+![秩序之八芒星](../godot/art/card/v2-octagram.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -202,7 +219,7 @@
 
 ## 010007 · 至圣之太阳星
 
-![至圣之太阳星](../godot/art/illustrations-v2/v2-sun.png)
+![至圣之太阳星](../godot/art/card/v2-sun.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -226,7 +243,7 @@
 
 ## 010008 · 正十字
 
-![正十字](../godot/art/illustrations-v2/v2-upright-cross.png)
+![正十字](../godot/art/card/v2-upright-cross.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -250,7 +267,7 @@
 
 ## 010009 · 逆十字
 
-![逆十字](../godot/art/illustrations-v2/v2-inverted-cross.png)
+![逆十字](../godot/art/card/v2-inverted-cross.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -274,7 +291,7 @@
 
 ## 010010 · 安卡十字
 
-![安卡十字](../godot/art/illustrations-v2/v2-ankh.png)
+![安卡十字](../godot/art/card/v2-ankh.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -298,7 +315,7 @@
 
 ## 010011 · 元素之环
 
-![元素之环](../godot/art/illustrations-v2/v2-elemental-ring.png)
+![元素之环](../godot/art/card/v2-elemental-ring.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -322,7 +339,7 @@
 
 ## 010012 · 混沌之环
 
-![混沌之环](../godot/art/illustrations-v2/v2-chaos-ring.png)
+![混沌之环](../godot/art/card/v2-chaos-ring.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -346,7 +363,7 @@
 
 ## 010013 · 硫磺
 
-![硫磺](../godot/art/illustrations-v2/v2-sulfur.png)
+![硫磺](../godot/art/card/v2-sulfur.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -366,11 +383,59 @@
 
 内容 ID：`sulfur`。
 
+<a id="storm-crest"></a>
+
+## 010014 · 风暴纹章
+
+![风暴纹章](../godot/art/card/storm-crest.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 010014 |
+| 类型 | 阵法 |
+| 等级 | 1 |
+| 阵体 | 2 |
+| 荷载上限 | 5 |
+| 魔素收入 | 1 |
+| 环位 | 2 |
+| 承载位阶 | 1 |
+| 召唤条件 | 支付1魔素。 |
+
+这张卡在场上只能存在一张。阵法属性由其上的风暴点数决定：0至2点时为1级、最大解析数1、荷载上限5、魔素收入1；3至5点时为2级、最大解析数2、荷载上限8、魔素收入1；5点以上时为3级、最大解析数3、荷载上限10、魔素收入2。每发动一张风暴法术卡，获得1个风暴点数。一回合一次，移除这张卡上的2个风暴点数，从牌库将一张风暴法术卡加入手牌。
+
+
+
+内容 ID：`storm-crest`。
+
+<a id="storm-heart"></a>
+
+## 010015 · 风暴之心
+
+![风暴之心](../godot/art/card/storm-heart.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 010015 |
+| 类型 | 阵法 |
+| 等级 | 7 |
+| 阵体 | 5 |
+| 荷载上限 | 20 |
+| 魔素收入 | 7 |
+| 环位 | 5 |
+| 承载位阶 | 7 |
+| 召唤条件 | 将己方风暴纹章送入灰烬区并支付4魔素。 |
+
+这张卡被设置时，从牌库将一张大风暴术加入手牌。每发动一张风暴法术卡，获得1个风暴点数。可以移除这张卡上的1个风暴点数，代为销毁或破坏。一回合一次，移除这张卡上的2个风暴点数，并选择一项：抽1张卡；将灰烬区的一张风暴卡加入牌库并洗切。
+
+
+
+内容 ID：`storm-heart`。
+
 <a id="fireball"></a>
 
 ## 020001 · 火球术
 
-![火球术](../godot/art/illustrations/fireball.png)
+![火球术](../godot/art/card/fireball.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -394,7 +459,7 @@
 
 ## 020002 · 缝合生命
 
-![缝合生命](../godot/art/illustrations/mend.png)
+![缝合生命](../godot/art/card/mend.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -418,7 +483,7 @@
 
 ## 020003 · 碎环术
 
-![碎环术](../godot/art/illustrations/unravel.png)
+![碎环术](../godot/art/card/unravel.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -442,7 +507,7 @@
 
 ## 020004 · 炽燃结界
 
-![炽燃结界](../godot/art/illustrations/ward.png)
+![炽燃结界](../godot/art/card/ward.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -466,7 +531,7 @@
 
 ## 020005 · 紊乱波动
 
-![紊乱波动](../godot/art/illustrations/messy-wave.png)
+![紊乱波动](../godot/art/card/messy-wave.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -490,7 +555,7 @@
 
 ## 020006 · 昏昏入睡
 
-![昏昏入睡](../godot/art/illustrations/instantly-sleep.png)
+![昏昏入睡](../godot/art/card/instantly-sleep.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -514,7 +579,7 @@
 
 ## 020007 · 魔法飞弹
 
-![魔法飞弹](../godot/art/illustrations/magic-missile.png)
+![魔法飞弹](../godot/art/card/magic-missile.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -538,7 +603,7 @@
 
 ## 020008 · 支援术
 
-![支援术](../godot/art/illustrations/aid.png)
+![支援术](../godot/art/card/aid.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -562,7 +627,7 @@
 
 ## 020009 · 寒霜射线
 
-![寒霜射线](../godot/art/illustrations/ray-of-frost.png)
+![寒霜射线](../godot/art/card/ray-of-frost.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -586,7 +651,7 @@
 
 ## 020010 · 闪电束
 
-![闪电束](../godot/art/illustrations/lightning-bolt.png)
+![闪电束](../godot/art/card/lightning-bolt.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -610,7 +675,7 @@
 
 ## 020011 · 次级复原
 
-![次级复原](../godot/art/illustrations/lesser-restoration.png)
+![次级复原](../godot/art/card/lesser-restoration.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -634,7 +699,7 @@
 
 ## 020012 · 虚假生命
 
-![虚假生命](../godot/art/illustrations/false-life.png)
+![虚假生命](../godot/art/card/false-life.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -658,7 +723,7 @@
 
 ## 020013 · 繁彩球
 
-![繁彩球](../godot/art/illustrations-v2/v2-chromatic-orb.png)
+![繁彩球](../godot/art/card/v2-chromatic-orb.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -682,7 +747,7 @@
 
 ## 020014 · 曳光弹
 
-![曳光弹](../godot/art/illustrations-v2/v2-guiding-bolt.png)
+![曳光弹](../godot/art/card/v2-guiding-bolt.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -706,7 +771,7 @@
 
 ## 020015 · 炽热射线
 
-![炽热射线](../godot/art/illustrations-v2/v2-scorching-ray.png)
+![炽热射线](../godot/art/card/v2-scorching-ray.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -730,7 +795,7 @@
 
 ## 020016 · 阳炎爆
 
-![阳炎爆](../godot/art/illustrations-v2/v2-sunburst.png)
+![阳炎爆](../godot/art/card/v2-sunburst.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -754,7 +819,7 @@
 
 ## 020017 · 治疗之环
 
-![治疗之环](../godot/art/illustrations-v2/v2-healing-circle.png)
+![治疗之环](../godot/art/card/v2-healing-circle.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -774,11 +839,131 @@
 
 内容 ID：`healing-circle`。
 
+<a id="ice-storm"></a>
+
+## 020018 · 冰风暴
+
+![冰风暴](../godot/art/card/ice-storm.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 020018 |
+| 类型 | 解析法术 |
+| 学派 | 塑能 |
+| 位阶 | 4 |
+| 速度 | 1 |
+| 设置费用 | 4 |
+| 施法费用 | 1 |
+| 解析回合 | 1 |
+| 持续方式 | 通常 |
+
+对目标造成8点寒冷伤害，选择对方解析区的所有解析法术卡使解析进度+1。
+
+
+
+内容 ID：`ice-storm`。
+
+<a id="cutting-wind"></a>
+
+## 020019 · 切割之风
+
+![切割之风](../godot/art/card/cutting-wind.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 020019 |
+| 类型 | 解析法术 |
+| 学派 | 变化 |
+| 位阶 | 1 |
+| 速度 | 1 |
+| 设置费用 | 1 |
+| 施法费用 | 1 |
+| 解析回合 | 1 |
+| 持续方式 | 通常 |
+
+场上有风暴阵法卡才能设置。销毁自己场上一张空闲阵法卡，对目标造成4点挥砍伤害，外加销毁阵法等级的雷鸣伤害。
+
+
+
+内容 ID：`cutting-wind`。
+
+<a id="great-storm"></a>
+
+## 020020 · 大风暴术
+
+![大风暴术](../godot/art/card/great-storm.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 020020 |
+| 类型 | 解析法术 |
+| 学派 | 变化 |
+| 位阶 | 7 |
+| 速度 | 1 |
+| 设置费用 | 0 |
+| 施法费用 | 10 |
+| 解析回合 | 2 |
+| 持续方式 | 通常 |
+
+场上有风暴之心作为阵法才能设置。在风暴之心上的这张卡不受其他卡的效果影响；这张卡在解析区时，自己不能设置其他解析法术卡。计时。发动时，移除风暴之心上的所有风暴点数，并以移除的点数作为计时回合数；销毁对方场上所有卡，并对对方造成等同于销毁卡数量×4的挥砍伤害。计时回合中，对对方造成8点挥砍伤害，之后可以销毁对方场上一张法术卡。
+
+
+
+内容 ID：`great-storm`。
+
+<a id="cloud-mist"></a>
+
+## 020021 · 云雾术
+
+![云雾术](../godot/art/card/cloud-mist.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 020021 |
+| 类型 | 解析法术 |
+| 学派 | 变化 |
+| 位阶 | 2 |
+| 速度 | 1 |
+| 设置费用 | 2 |
+| 施法费用 | 3 |
+| 解析回合 | 1 |
+| 持续方式 | 计时 2 |
+
+计时2。最多选择场上的2张解析法术卡，被选择的卡在该法术持续时间内无法被准备。
+
+
+
+内容 ID：`cloud-mist`。
+
+<a id="thunder-summon"></a>
+
+## 020022 · 召雷术
+
+![召雷术](../godot/art/card/thunder-summon.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 020022 |
+| 类型 | 解析法术 |
+| 学派 | 塑能 |
+| 位阶 | 3 |
+| 速度 | 1 |
+| 设置费用 | 3 |
+| 施法费用 | 2 |
+| 解析回合 | 1 |
+| 持续方式 | 通常 |
+
+对目标造成9点闪电伤害，并给予对方5点荷载，对方的回合结束阶段清除。
+
+
+
+内容 ID：`thunder-summon`。
+
 <a id="recall"></a>
 
 ## 030001 · 奥术回想
 
-![奥术回想](../godot/art/illustrations/recall.png)
+![奥术回想](../godot/art/card/recall.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -800,7 +985,7 @@
 
 ## 030002 · 火花术
 
-![火花术](../godot/art/illustrations/spark.png)
+![火花术](../godot/art/card/spark.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -822,7 +1007,7 @@
 
 ## 030003 · 魔力扰动
 
-![魔力扰动](../godot/art/illustrations/disrupt.png)
+![魔力扰动](../godot/art/card/disrupt.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -844,7 +1029,7 @@
 
 ## 030004 · 心如止水
 
-![心如止水](../godot/art/illustrations/clarity.png)
+![心如止水](../godot/art/card/clarity.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -866,7 +1051,7 @@
 
 ## 030005 · 克敌机先
 
-![克敌机先](../godot/art/illustrations/true-strike.png)
+![克敌机先](../godot/art/card/true-strike.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -888,7 +1073,7 @@
 
 ## 030007 · 瞬发回路过载
 
-![瞬发回路过载](../godot/art/illustrations/instant-circuit-overload.png)
+![瞬发回路过载](../godot/art/card/instant-circuit-overload.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -910,7 +1095,7 @@
 
 ## 030008 · 奥术复苏
 
-![奥术复苏](../godot/art/illustrations/arcane-recovery.png)
+![奥术复苏](../godot/art/card/arcane-recovery.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -928,11 +1113,121 @@
 
 内容 ID：`arcane-recovery`。
 
+<a id="wind-whisper"></a>
+
+## 030009 · 风语术
+
+![风语术](../godot/art/card/wind-whisper.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 030009 |
+| 类型 | 言灵法术 |
+| 学派 | 变化 |
+| 位阶 | 1 |
+| 速度 | 2 |
+| 施法费用 | 1 |
+| 持续方式 | 通常 |
+
+场上有风暴阵法卡才能发动。从牌库将一张位阶2及以下的风暴咒符法术加入手牌。
+
+
+
+内容 ID：`wind-whisper`。
+
+<a id="swift-wind"></a>
+
+## 030010 · 极速之风
+
+![极速之风](../godot/art/card/swift-wind.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 030010 |
+| 类型 | 言灵法术 |
+| 学派 | 变化 |
+| 位阶 | 1 |
+| 速度 | 2 |
+| 施法费用 | 3 |
+| 持续方式 | 通常 |
+
+场上有风暴阵法卡才能发动。将对方一张等级2及以下的阵法卡返回副卡组。
+
+
+
+内容 ID：`swift-wind`。
+
+<a id="snow-rain-storm"></a>
+
+## 030011 · 雪雨暴
+
+![雪雨暴](../godot/art/card/snow-rain-storm.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 030011 |
+| 类型 | 言灵法术 |
+| 学派 | 变化 |
+| 位阶 | 3 |
+| 速度 | 2 |
+| 施法费用 | 3 |
+| 持续方式 | 专注 |
+
+专注2。对方使用计时法术需要支付额外的2魔素，对方维持专注所需的魔素翻倍。
+
+
+
+内容 ID：`snow-rain-storm`。
+
+<a id="windmaking"></a>
+
+## 030012 · 造风术
+
+![造风术](../godot/art/card/windmaking.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 030012 |
+| 类型 | 言灵法术 |
+| 学派 | 变化 |
+| 位阶 | 1 |
+| 速度 | 2 |
+| 施法费用 | 2 |
+| 持续方式 | 通常 |
+
+将对方一张法术卡弹回手卡。
+
+
+
+内容 ID：`windmaking`。
+
+<a id="storm-guidance"></a>
+
+## 030013 · 风暴导向
+
+![风暴导向](../godot/art/card/storm-guidance.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 030013 |
+| 类型 | 言灵法术 |
+| 学派 | 预言 |
+| 位阶 | 2 |
+| 速度 | 2 |
+| 施法费用 | 3 |
+| 持续方式 | 通常 |
+
+场上有风暴阵法卡才能发动。将场上的一张卡送入灰烬区，然后选择一项：从牌库将一张风暴法术卡加入手牌；获得2个风暴点数；从牌库将一张云雾术或召雷术加入手牌。
+
+
+
+内容 ID：`storm-guidance`。
+
 <a id="barbs"></a>
 
 ## 040001 · 银光锐语
 
-![银光锐语](../godot/art/illustrations/barbs.png)
+![银光锐语](../godot/art/card/barbs.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -955,7 +1250,7 @@
 
 ## 040002 · 法术反制
 
-![法术反制](../godot/art/illustrations/counter-spell.png)
+![法术反制](../godot/art/card/counter-spell.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -978,7 +1273,7 @@
 
 ## 040003 · 护盾术
 
-![护盾术](../godot/art/illustrations/shield.png)
+![护盾术](../godot/art/card/shield.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -1001,7 +1296,7 @@
 
 ## 040004 · 滑稽魔盒
 
-![滑稽魔盒](../godot/art/illustrations-v2/v2-funny-box.png)
+![滑稽魔盒](../godot/art/card/v2-funny-box.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -1024,7 +1319,7 @@
 
 ## 040005 · 避火咒
 
-![避火咒](../godot/art/illustrations/protective-flame.png)
+![避火咒](../godot/art/card/protective-flame.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -1043,11 +1338,80 @@
 
 内容 ID：`protective-flame`。
 
+<a id="storm-vortex"></a>
+
+## 040006 · 风暴气旋
+
+![风暴气旋](../godot/art/card/storm-vortex.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 040006 |
+| 类型 | 咒符法术 |
+| 学派 | 变化 |
+| 位阶 | 1 |
+| 速度 | 3 |
+| 盖伏费用 | 0 |
+| 施法费用 | 2 |
+| 持续方式 | 通常 |
+
+场上有风暴阵法卡才能发动。销毁对方场上一张法术卡。
+
+
+
+内容 ID：`storm-vortex`。
+
+<a id="wind-strike"></a>
+
+## 040007 · 风击术
+
+![风击术](../godot/art/card/wind-strike.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 040007 |
+| 类型 | 咒符法术 |
+| 学派 | 防护 |
+| 位阶 | 3 |
+| 速度 | 3 |
+| 盖伏费用 | 0 |
+| 施法费用 | 4 |
+| 持续方式 | 通常 |
+
+场上有风暴阵法卡才能发动。对方设置解析法术卡时才能发动，对方受到等同于那张卡位阶×2的钝击伤害；若那张卡的位阶低于风击术，销毁那张卡。
+
+
+
+内容 ID：`wind-strike`。
+
+<a id="great-cyclone"></a>
+
+## 040008 · 大旋风术
+
+![大旋风术](../godot/art/card/great-cyclone.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 040008 |
+| 类型 | 咒符法术 |
+| 学派 | 变化 |
+| 位阶 | 5 |
+| 速度 | 2 |
+| 盖伏费用 | 0 |
+| 施法费用 | 4 |
+| 持续方式 | 通常 |
+
+场上有风暴阵法卡才能发动。移除5个风暴点数，销毁对方一张阵法卡下的所有法术卡。并造成等同于销毁数量两倍的钝击伤害。
+
+
+
+内容 ID：`great-cyclone`。
+
 <a id="ring"></a>
 
 ## 050001 · 奥术圆环
 
-![奥术圆环](../godot/art/illustrations/ring.png)
+![奥术圆环](../godot/art/card/ring.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -1065,7 +1429,7 @@
 
 ## 050002 · 逆三角星符
 
-![逆三角星符](../godot/art/illustrations/conduit.png)
+![逆三角星符](../godot/art/card/conduit.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -1083,7 +1447,7 @@
 
 ## 050003 · 昂扬
 
-![昂扬](../godot/art/illustrations/uplift.png)
+![昂扬](../godot/art/card/uplift.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -1096,6 +1460,42 @@
 沸腾的魔素是一把双刃剑。
 
 内容 ID：`uplift`。
+
+<a id="storm-brand"></a>
+
+## 050004 · 风暴烙印
+
+![风暴烙印](../godot/art/card/storm-brand.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 050004 |
+| 类型 | 符文 |
+| 附着费用 | 2 |
+
+阵法附着效果：只有风暴阵法卡能够附着此卡。附着后，每释放2次风暴法术卡额外获得1个风暴点数。法术附着效果：无。
+
+
+
+内容 ID：`storm-brand`。
+
+<a id="storm-annihilation-crest"></a>
+
+## 050005 · 风暴湮灭之纹章
+
+![风暴湮灭之纹章](../godot/art/card/storm-annihilation-crest.png)
+
+| 属性 | 数值 |
+|---|---|
+| 编号 | 050005 |
+| 类型 | 符文 |
+| 附着费用 | 2 |
+
+阵法附着效果：只有风暴阵法卡能够附着此卡。附着后，可以移除2个风暴点数销毁对方场上一张空闲的阵法卡。法术附着效果：额外造成4点雷鸣伤害。
+
+
+
+内容 ID：`storm-annihilation-crest`。
 
 ## 预设牌表
 
@@ -1557,4 +1957,4 @@
 
 运行 `python tools/generate_card_catalog.py` 更新。
 
-规范化 JSON SHA256：`9676b95235338d9f4702db0102bb6b08acff64cd7f3804005581ad93b74d8d87`。
+规范化 JSON SHA256：`2a8a8c554dfec86e105cd50da6382a34f0b58acc3ea9a14f81dc1210e62b426d`。

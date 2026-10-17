@@ -103,7 +103,8 @@ void GameEngine::pump() {
                             ? (c.owner == f.item.owner && c.zone == Zone::Deck &&
                                (storm_search || storm_search_talisman
                                     ? std::find(d.tags.begin(), d.tags.end(), "风暴") != d.tags.end() &&
-                                      (!storm_search_talisman || d.type == CardType::Talisman)
+                                      (!storm_search_talisman ||
+                                       (d.type == CardType::Talisman && d.rank <= 2))
                                     : d.type == CardType::Action && (d.rarity == "common" || d.rarity == "uncommon")))
                             : (c.owner != f.item.owner && c.faceDown &&
                                (!catalog_.usesAlphaV2() || (c.zone == Zone::Analysis &&
@@ -225,7 +226,7 @@ void GameEngine::pump() {
                 finishLink(false);
                 continue;
             }
-            s.effect = EffectFrame{std::move(item), 0, AfterEffect::None, -1, link.id};
+            s.effect = EffectFrame{std::move(item), 0, AfterEffect::None, -1, 0, link.id};
             continue;
         }
         if (!s.deferredPreparations.empty()) {

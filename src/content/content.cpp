@@ -79,6 +79,7 @@ std::vector<Effect> effects(const Json &j, const std::string &path) {
         {"grant_resistance", EffectKind::GrantResistance},
         {"conceal", EffectKind::Conceal},
         {"delay_enemy_analysis", EffectKind::DelayEnemyAnalysis},
+        {"advance_all_enemy_analysis", EffectKind::AdvanceAllEnemyAnalysis},
         {"conceal_enemy_spell", EffectKind::ConcealEnemySpell},
         {"reveal_enemy_ambush", EffectKind::RevealEnemyAmbush},
         {"choose_damage", EffectKind::ChooseDamage},
@@ -90,7 +91,12 @@ std::vector<Effect> effects(const Json &j, const std::string &path) {
         {"recover_formation", EffectKind::RecoverFormation},
         {"destroy_enemy_analysis", EffectKind::DestroyEnemyAnalysis},
         {"shield_for_turn", EffectKind::ShieldForTurn},
-        {"reveal_all_ambush", EffectKind::RevealAllAmbush}};
+        {"reveal_all_ambush", EffectKind::RevealAllAmbush},
+        {"storm_guidance", EffectKind::StormGuidance},
+        {"storm_cyclone", EffectKind::StormCyclone},
+        {"cutting_wind", EffectKind::CuttingWind},
+        {"destroy_all_enemy_field", EffectKind::DestroyAllEnemyField},
+        {"lock_analysis", EffectKind::LockAnalysis}};
     for (const auto &e : j) {
         const auto p = path + "/" + std::to_string(n++);
         Effect effect{enumeration(text(e, "kind", p), names, p + "/kind"), number(e, "amount", p)};
@@ -314,7 +320,12 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 "distinct_host_schools", "host_fire_only", "clear_load_on_analysis",
                 "ping_on_spell_leave", "ash_evocation_discount", "return_formation_from_ash",
                 "self_ambush_on_leave", "inspect_enemy_ambush", "discard_spell_search", "end_phase_start",
-                "storm_search", "storm_search_talisman"};
+                "storm_search", "storm_search_talisman", "requires_storm_formation", "requires_storm_setup",
+                "surcharge_enemy_timed_cast", "double_enemy_concentration_upkeep", "storm_release_counter",
+                "storm_formation_host_only", "storm_formation_host_restriction", "thunder_damage_bonus",
+                "activate_storm_crest_destroy", "activate_storm_search", "activate_storm_heart_choice",
+                "storm_heart_upgrade", "search_great_storm_on_setup", "requires_storm_heart_setup",
+                "great_storm"};
             if (!card.at("traits").is_array())
                 fail(p + "/traits", "expected trait array");
             for (const auto &value : card.at("traits")) {

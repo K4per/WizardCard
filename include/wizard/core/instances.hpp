@@ -19,10 +19,13 @@ struct CardInstance {
     std::vector<Payment> payments;
     std::vector<CardId> targets;
     int settingPaid{}, concentrationCost{};
+    int stormPoints{};
+    int stormReleaseProgress{};
     bool faceDown{};
     bool publiclyRevealed{}; // Showing a concealed card exposes its face without flipping it.
     std::uint64_t ambushedTurn{};
     int quickAnalysisTurn{-1};
+    int stormAbilityTurn{-1};
     int analysisProgress{};
     std::uint64_t fieldOrder{};
     int ringIndex{-1};

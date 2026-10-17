@@ -77,6 +77,7 @@ Json viewDto(const GameView &v) {
             card["effectiveSettingCost"] = c.effectiveSettingCost;
             card["analysisLoad"] = i.analysisLoad;
             card["castLoad"] = i.castLoad;
+            card["stormPoints"] = i.stormPoints;
         }
         out["cards"].push_back(std::move(card));
     }

@@ -285,6 +285,9 @@ std::vector<std::string> cardTags(const CardDefinition &d) {
             case EffectKind::DelayEnemyAnalysis:
                 tags.insert("延迟解析");
                 break;
+            case EffectKind::AdvanceAllEnemyAnalysis:
+                tags.insert("延迟解析");
+                break;
             case EffectKind::RevealEnemyAmbush:
             case EffectKind::RevealAllAmbush:
                 tags.insert("揭示");

@@ -94,6 +94,14 @@ GameView GameEngine::viewFor(PlayerId p) const {
             if (def.type == CardType::Formation && c.zone == Zone::Analysis) {
                 card.effectiveRings = Rules::rings(state_, catalog_, id);
                 card.occupiedRings = Rules::occupied(state_, id);
+                card.definition.level = Rules::level(state_, catalog_, id);
+                card.definition.maxRank = Rules::maxRank(state_, catalog_, id);
+                card.definition.rings = card.effectiveRings;
+                if (def.id == "storm-crest") {
+                    card.definition.capacity = state_.cards.at(id).stormPoints >= 5 ? 10 :
+                        state_.cards.at(id).stormPoints >= 3 ? 8 : 5;
+                    card.definition.income = Rules::income(state_, catalog_, id);
+                }
             }
             if (c.spell == SpellState::Analyzing)
                 card.turnsToReady =

@@ -108,6 +108,8 @@ std::string Interaction::intent(const LegalAction &a, const std::optional<Pendin
                 return "反转埋伏卡";
             else if constexpr (std::is_same_v<T, ActivateSpell>)
                 return "释放法术";
+            else if constexpr (std::is_same_v<T, ActivateAbility>)
+                return "发动符文能力";
             else if constexpr (std::is_same_v<T, Surrender>)
                 return "投降";
             else if constexpr (std::is_same_v<T, SelectInitialFormation>)
@@ -282,6 +284,8 @@ void Interaction::offer(const LegalAction &action) {
                 else if constexpr (std::is_same_v<T, PlayAction> || std::is_same_v<T, FlipAmbush> ||
                                    std::is_same_v<T, ActivateSpell>)
                     return x.card == y.card && x.target == y.target && x.targets == y.targets;
+                else if constexpr (std::is_same_v<T, ActivateAbility>)
+                    return x.card == y.card && x.target == y.target && x.ability == y.ability;
                 else if constexpr (std::is_same_v<T, SetAmbush>)
                     return x.card == y.card && x.formation == y.formation;
                 else if constexpr (std::is_same_v<T, SelectInitialFormation>)

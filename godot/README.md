@@ -6,7 +6,7 @@ GDScript displays viewer projections and submits intents.
 
 The frontend includes menu, library, settings, deck construction, setup,
 hotseat, AI, tutorial, LAN rooms, matches, replay and a display-only field
-showcase. The official library reads the 45-card native catalogue. Historical
+showcase. The official library reads the 62-card native catalogue. Historical
 illustrated previews in `data/card-previews-v2.json` are display-only and cannot
 enter playable decks.
 

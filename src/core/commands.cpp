@@ -14,6 +14,15 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
     const auto &def = catalog_.at(c.definition);
     auto &pl = s.players[actor];
     if (catalog_.usesAlphaV2()) {
+        const bool preparationLocked = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+            const auto &cloudMist = entry.second;
+            return (cloudMist.zone == Zone::Analysis || cloudMist.zone == Zone::Casting) &&
+                cloudMist.spell == SpellState::Active && cloudMist.remaining > 0 &&
+                catalog_.at(cloudMist.definition).id == "cloud-mist" &&
+                std::find(cloudMist.targets.begin(), cloudMist.targets.end(), cmd.card) != cloudMist.targets.end();
+        });
+        if (preparationLocked)
+            return "preparation_locked: 云雾术持续期间不能准备此解析法术";
         if (def.type != CardType::Analytic || c.faceDown || cmd.discard || c.zone != Zone::Analysis || c.spell != SpellState::Ready ||
             c.canceledTurn == pl.ownTurn)
             return "not_ready: 法术未解析完成";
@@ -233,11 +242,33 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             link.item.targetPlayer = a.target == TargetKind::Player && r->target
                 ? static_cast<PlayerId>(r->target - playerTarget(0)) : a.target == TargetKind::Opponent ? 1 - actor : actor;
             link.item.effects = a.effects.empty() && catalog_.usesAlphaV2() ? def.effects : a.effects;
+            if (catalog_.usesAlphaV2() && def.id == "wind-strike") {
+                const auto target = std::find_if(s.chain->links.begin(), s.chain->links.end(),
+                    [&](const ChainLink &candidate) { return candidate.id == r->link; });
+                if (target != s.chain->links.end() && target->item.source &&
+                    s.cards.count(target->item.source)) {
+                    const auto rank = catalog_.at(s.cards.at(target->item.source).definition).rank;
+                    for (auto &effect : link.item.effects)
+                        if (effect.kind == EffectKind::Damage) {
+                            effect.amount = rank * 2;
+                            effect.recipient = EffectRecipient::Opponent;
+                        }
+                    if (rank >= def.rank)
+                        link.item.effects.erase(std::remove_if(link.item.effects.begin(), link.item.effects.end(),
+                            [](const Effect &effect) { return effect.kind == EffectKind::DestroyEnemyAnalysis; }),
+                            link.item.effects.end());
+                    link.item.targetCard = target->item.source;
+                }
+            }
             for (const auto &[sid, seal] : s.cards)
                 if (seal.zone == Zone::Attached && seal.host == c.id &&
-                    catalog_.at(seal.definition).damageBonus)
+                    catalog_.at(seal.definition).damageBonus) {
+                    const auto &sealDefinition = catalog_.at(seal.definition);
                     link.item.effects.push_back({EffectKind::Damage, catalog_.at(seal.definition).damageBonus,
-                                                 DamageType::Force, EffectRecipient::Opponent});
+                        std::find(sealDefinition.traits.begin(), sealDefinition.traits.end(),
+                                  "thunder_damage_bonus") != sealDefinition.traits.end()
+                            ? DamageType::Thunder : DamageType::Force, EffectRecipient::Opponent});
+                }
             link.item.target = a.target;
             link.item.targetLink = r->link;
             link.item.requiresSource = a.requiresSource;
@@ -335,6 +366,40 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                 s.events.push_back({"load", "清除1点荷载"});
             }
             break;
+        case DecisionKind::StormSearch: {
+            auto &deck = s.players[actor].deck;
+            deck.erase(std::find(deck.begin(), deck.end(), opt));
+            s.cards.at(opt).zone = Zone::Hand;
+            s.events.push_back({"search", "检索一张风暴法术加入手牌", actor, opt});
+            for (std::size_t size = deck.size(); size > 1; --size)
+                std::swap(deck[size - 1], deck[bounded(s, static_cast<std::uint32_t>(size))]);
+            break;
+        }
+        case DecisionKind::StormHeartChoice:
+            if (opt == 1) {
+                ResourceRules::drawOne(s, catalog_, actor);
+            } else {
+                std::vector<CardId> options;
+                for (const auto &[id, card] : s.cards)
+                    if (card.owner == actor && card.zone == Zone::Ash &&
+                        catalog_.at(card.definition).type != CardType::Formation &&
+                        std::find(catalog_.at(card.definition).tags.begin(),
+                                  catalog_.at(card.definition).tags.end(), "风暴") !=
+                            catalog_.at(card.definition).tags.end())
+                        options.push_back(id);
+                if (!options.empty()) decision(actor, DecisionKind::StormHeartRecover, std::move(options));
+            }
+            break;
+        case DecisionKind::StormHeartRecover: {
+            auto &deck = s.players[actor].deck;
+            auto &card = s.cards.at(opt);
+            card.zone = Zone::Deck;
+            deck.push_back(opt);
+            for (std::size_t size = deck.size(); size > 1; --size)
+                std::swap(deck[size - 1], deck[bounded(s, static_cast<std::uint32_t>(size))]);
+            s.events.push_back({"recover", "将一张风暴卡放回牌库并洗切", actor, opt});
+            break;
+        }
         case DecisionKind::SearchDeck: {
             auto &deck = s.players[actor].deck;
             deck.erase(std::find(deck.begin(), deck.end(), opt));
@@ -367,7 +432,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             if (!source) break;
             auto &c = s.cards.at(source);
             if (opt) {
-                const int paid = c.concentrationCost;
+                const int paid = Rules::concentrationUpkeep(s, catalog_, source);
                 s.players[actor].mana -= paid;
                 c.castLoad += paid;
                 c.payments.push_back({s.players[actor].ownTurn, paid, paid, false});
@@ -398,6 +463,11 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                     catalog_.at(s.cards.at(opt).definition).type != CardType::Formation ||
                     catalog_.at(card.definition).rank > Rules::maxRank(s, catalog_, opt) ||
                     Rules::freeRing(s, catalog_, opt) < 0) return "invalid_return";
+                if (std::find(catalog_.at(card.definition).traits.begin(),
+                              catalog_.at(card.definition).traits.end(), "requires_storm_heart_setup") !=
+                        catalog_.at(card.definition).traits.end() &&
+                    catalog_.at(s.cards.at(opt).definition).id != "storm-heart")
+                    return "invalid_return";
                 if (!Rules::canHost(s, catalog_, source, opt)) return "invalid_return";
                 const int ring = choose->ringIndex < 0 ? Rules::freeRing(s, catalog_, opt) : choose->ringIndex;
                 if (ring < 0 || ring >= Rules::rings(s, catalog_, opt)) return "invalid_return";
@@ -515,7 +585,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             if constexpr (std::is_same_v<T, Advance> || std::is_same_v<T, AdvancePhase> ||
                           std::is_same_v<T, Choose> || std::is_same_v<T, PassResponse> ||
                           std::is_same_v<T, Respond> || std::is_same_v<T, Surrender> ||
-                          std::is_same_v<T, FlipAmbush> || std::is_same_v<T, ActivateSpell> || std::is_same_v<T, Timeout> ||
+                          std::is_same_v<T, FlipAmbush> || std::is_same_v<T, ActivateSpell> ||
+                          std::is_same_v<T, ActivateAbility> || std::is_same_v<T, Timeout> ||
                           std::is_same_v<T, SelectInitialFormation>)
                 return "invalid_command";
             else {

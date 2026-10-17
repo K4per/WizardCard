@@ -76,6 +76,10 @@ struct ActivateSpell {
     std::vector<CardId> targets;
     CardId discard{};
 };
+struct ActivateAbility {
+    CardId card{}, target{};
+    std::string ability;
+};
 // Confirms a private side-deck entity; both confirmations reveal the formations together.
 struct SelectInitialFormation { CardId card{}; };
 // Authority-generated terminal event; transports must reject user-submitted timeouts.
@@ -83,7 +87,7 @@ struct Timeout {};
 using Command = std::variant<SetFormation, RemoveFormation, StartAnalysis, PrepareCast, PlayAction,
                              PreloadWord, AttachSeal, RemoveSeal, Abandon, Advance, Choose, Surrender,
                              Respond, PassResponse, AdvancePhase, SetAmbush, FlipAmbush, ActivateSpell,
-                             SelectInitialFormation, Timeout>;
+                             SelectInitialFormation, Timeout, ActivateAbility>;
 enum class DecisionKind {
     Response,
     CastOrder,
@@ -100,7 +104,10 @@ enum class DecisionKind {
     ReturnSpell,
     EffectChoice,
     DamageChoice,
-    ClearAnyLoad
+    ClearAnyLoad,
+    StormSearch,
+    StormHeartChoice,
+    StormHeartRecover
 };
 struct PendingDecision {
     DecisionId id{};

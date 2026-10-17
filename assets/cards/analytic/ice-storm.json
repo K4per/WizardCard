@@ -18,7 +18,7 @@
       "damageType": "cold"
     },
     {
-      "kind": "delay_enemy_analysis",
+      "kind": "advance_all_enemy_analysis",
       "amount": 1
     }
   ],

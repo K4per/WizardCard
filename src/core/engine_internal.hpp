@@ -1,5 +1,6 @@
 #pragma once
 #include "wizard/core/engine.hpp"
+#include <algorithm>
 namespace wizard::detail {
 std::uint32_t random32(GameState &);
 std::uint32_t bounded(GameState &, std::uint32_t);
@@ -14,4 +15,20 @@ std::vector<std::vector<CardId>> sets(const GameState &, TargetKind, int, Player
 const ResponseAbility *ability(const CardDefinition &, const std::string &);
 MatchConfig shared(std::array<std::vector<std::string>, 2>, std::uint32_t);
 Trigger snapshot(const CardInstance &, const CardDefinition &);
+inline bool hasStormFormation(const GameState &state, const CardCatalog &catalog, PlayerId owner) {
+    return std::any_of(state.cards.begin(), state.cards.end(), [&](const auto &entry) {
+        const auto &card = entry.second;
+        if (card.owner != owner || card.zone != Zone::Analysis || card.faceDown ||
+            catalog.at(card.definition).type != CardType::Formation)
+            return false;
+        const auto &tags = catalog.at(card.definition).tags;
+        return std::find(tags.begin(), tags.end(), "风暴") != tags.end();
+    });
+}
+inline bool greatStormLocksAnalysis(const GameState &state, const CardCatalog &, PlayerId owner) {
+    return std::any_of(state.cards.begin(), state.cards.end(), [&](const auto &entry) {
+        const auto &card = entry.second;
+        return card.owner == owner && card.definition == "great-storm" && card.zone == Zone::Analysis;
+    });
+}
 }

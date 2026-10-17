@@ -168,6 +168,31 @@ TEST_CASE("dynamic setting and casting fees survive local bridge and LAN project
     REQUIRE_FALSE(hidden.contains("effectiveSettingCost"));
     REQUIRE_FALSE(hidden.contains("effectiveCastCost"));
 }
+TEST_CASE("storm point counts survive network projection and appear in visible bridge snapshots", "[storm][projection]") {
+    GameView view;
+    CardView storm;
+    storm.instance.id = 42;
+    storm.instance.definition = "storm-crest";
+    storm.instance.stormPoints = 6;
+    storm.instance.stormReleaseProgress = 2;
+    storm.definition.id = "storm-crest";
+    storm.definition.name = "风暴纹章";
+    storm.definition.type = CardType::Formation;
+    storm.definition.tags = {"风暴"};
+    view.cards.push_back(storm);
+
+    CardCatalog catalog;
+    catalog.cards.emplace(storm.definition.id, storm.definition);
+    const auto decoded = net::decodeView(net::encodeView(view), catalog);
+    REQUIRE(decoded.cards.at(0).instance.stormPoints == 6);
+    REQUIRE(decoded.cards.at(0).instance.stormReleaseProgress == 2);
+    const auto visible = bridge::viewDto(decoded).at("cards").at(0);
+    REQUIRE(visible.at("stormPoints") == 6);
+
+    view.cards.at(0).hidden = true;
+    const auto hidden = bridge::viewDto(view).at("cards").at(0);
+    REQUIRE_FALSE(hidden.contains("stormPoints"));
+}
 TEST_CASE("shown concealed card remains inspectable and facedown after LAN transport", "[preview2][privacy]") {
     GameView view; CardView card;
     card.instance.id = 42;

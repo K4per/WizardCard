@@ -212,6 +212,12 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
     auto &c = it->second;
     const auto &def = catalog_.at(c.definition);
     auto &pl = s.players[actor];
+    const bool requiresStormFormation = std::find(def.traits.begin(), def.traits.end(),
+        "requires_storm_formation") != def.traits.end();
+    const bool requiresStormForSetup = std::find(def.traits.begin(), def.traits.end(),
+        "requires_storm_setup") != def.traits.end();
+    const bool requiresStormHeartSetup = std::find(def.traits.begin(), def.traits.end(),
+        "requires_storm_heart_setup") != def.traits.end();
     auto ownedFormation = [&](CardId id) {
         auto host = s.cards.find(id);
         return host != s.cards.end() && host->second.owner == actor && host->second.zone == Zone::Analysis &&
@@ -225,7 +231,9 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         return true;
     };
     auto ring = [&](CardId host, bool faceDown = false) {
-        return Rules::canHost(s, catalog_, cardId, host, faceDown) &&
+        return (!requiresStormHeartSetup ||
+                (s.cards.count(host) && catalog_.at(s.cards.at(host).definition).id == "storm-heart")) &&
+            Rules::canHost(s, catalog_, cardId, host, faceDown) &&
             Rules::freeRing(s, catalog_, host) >= 0;
     };
     auto place = [&](CardId host) {
@@ -289,6 +297,88 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         beginEffect(c.id, AfterEffect::Action);
         return {};
     }
+    if (const auto *cmd = std::get_if<ActivateAbility>(&command)) {
+        if (s.phase != Phase::Main || s.phaseStep != PhaseStep::Body || actor != s.active || s.chain || s.effect)
+            return "ability_unavailable";
+        const auto hasTrait = [&](const char *name) {
+            return std::find(def.traits.begin(), def.traits.end(), name) != def.traits.end();
+        };
+        if (cmd->ability == "storm_search" || cmd->ability == "storm_heart_choice") {
+            const bool isSearch = cmd->ability == "storm_search" && c.definition == "storm-crest" &&
+                hasTrait("activate_storm_search");
+            const bool isHeart = cmd->ability == "storm_heart_choice" && c.definition == "storm-heart" &&
+                hasTrait("activate_storm_heart_choice");
+            if (!(isSearch || isHeart) || c.zone != Zone::Analysis || def.type != CardType::Formation ||
+                c.stormPoints < 2 || c.stormAbilityTurn == pl.ownTurn)
+                return "ability_unavailable";
+            std::vector<CardId> options;
+            if (isSearch) {
+                for (auto id : pl.deck) {
+                    const auto &candidate = s.cards.at(id);
+                    const auto &candidateDefinition = catalog_.at(candidate.definition);
+                    const auto &tags = candidateDefinition.tags;
+                    const bool spell = candidateDefinition.type == CardType::Analytic ||
+                        candidateDefinition.type == CardType::Word || candidateDefinition.type == CardType::Talisman;
+                    if (candidate.zone == Zone::Deck && spell &&
+                        std::find(tags.begin(), tags.end(), "风暴") != tags.end())
+                        options.push_back(id);
+                }
+                if (options.empty()) return "ability_target";
+            } else {
+                options.push_back(1); // Draw one card.
+                const bool recoverable = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+                    const auto &candidate = entry.second;
+                    const auto &candidateDefinition = catalog_.at(candidate.definition);
+                    return candidate.owner == actor && candidate.zone == Zone::Ash &&
+                        candidateDefinition.type != CardType::Formation &&
+                        std::find(candidateDefinition.tags.begin(), candidateDefinition.tags.end(), "风暴") !=
+                            candidateDefinition.tags.end();
+                });
+                if (recoverable) options.push_back(2); // Recover a Storm card from Ash.
+            }
+            c.stormPoints -= 2;
+            c.stormAbilityTurn = pl.ownTurn;
+            decision(actor, isSearch ? DecisionKind::StormSearch : DecisionKind::StormHeartChoice,
+                     std::move(options));
+            return {};
+        }
+        if (cmd->ability != "storm_annihilation_destroy" || cmd->target == 0 || c.zone != Zone::Attached ||
+            def.type != CardType::Seal || !hasTrait("activate_storm_crest_destroy"))
+            return "ability_unavailable";
+        const auto host = s.cards.find(c.host);
+        if (host == s.cards.end() || host->second.owner != actor || host->second.zone != Zone::Analysis ||
+            catalog_.at(host->second.definition).type != CardType::Formation || host->second.stormPoints < 2 ||
+            std::find(catalog_.at(host->second.definition).tags.begin(),
+                      catalog_.at(host->second.definition).tags.end(), "风暴") ==
+                catalog_.at(host->second.definition).tags.end())
+            return "ability_cost";
+        const auto target = s.cards.find(cmd->target);
+        if (target == s.cards.end() || target->second.owner == actor || target->second.faceDown ||
+            target->second.zone != Zone::Analysis || target->second.spell != SpellState::None ||
+            catalog_.at(target->second.definition).type != CardType::Formation ||
+            Rules::occupied(s, cmd->target) != 0)
+            return "ability_target";
+        const auto &targetDefinition = catalog_.at(target->second.definition);
+        if (targetDefinition.opponentDestroyProtected ||
+            std::find(targetDefinition.traits.begin(), targetDefinition.traits.end(), "effect_immune") !=
+                targetDefinition.traits.end() ||
+            std::find(targetDefinition.traits.begin(), targetDefinition.traits.end(), "effect_indestructible") !=
+                targetDefinition.traits.end())
+            return "ability_target";
+        host->second.stormPoints -= 2;
+        auto trigger = snapshot(c, def);
+        trigger.id = s.nextTrigger++;
+        trigger.batch = s.nextBatch++;
+        trigger.targetCard = cmd->target;
+        trigger.targetPlayer = 1 - actor;
+        trigger.target = TargetKind::EnemyCard;
+        trigger.effects = {{EffectKind::Destroy, 1}};
+        ChainLink root;
+        root.kind = LinkKind::Trigger;
+        root.item = std::move(trigger);
+        startChain(ResponseWindow::Action, std::move(root), 1 - actor);
+        return {};
+    }
     if (const auto *cmd = std::get_if<SetFormation>(&command)) {
         if (s.phase != Phase::Main || c.zone != Zone::SideDeck || def.type != CardType::Formation || pl.formations)
             return "formation_limit";
@@ -311,6 +401,13 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             if (catalog_.at(s.cards.at(id).definition).type == CardType::Formation)
                 body -= catalog_.at(s.cards.at(id).definition).body;
         if (body + def.body > 5) return "formation_capacity";
+        if (std::find(def.traits.begin(), def.traits.end(), "storm_heart_upgrade") != def.traits.end()) {
+            const auto crest = std::find_if(cmd->materials.begin(), cmd->materials.end(), [&](CardId material) {
+                return s.cards.at(material).definition == "storm-crest";
+            });
+            if (crest == cmd->materials.end() || s.cards.at(*crest).stormPoints < 10)
+                return "storm_points";
+        }
         pl.mana -= fee;
         for (auto id : cmd->materials) StateMaintenance::leave(s, id, &catalog_);
         if (cmd->replace) StateMaintenance::leave(s, cmd->replace, &catalog_);
@@ -321,6 +418,19 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             auto trigger = snapshot(c, def); trigger.id = s.nextTrigger++; trigger.batch = s.nextBatch++;
             trigger.effects = {{EffectKind::RecoverFormation, 1}}; s.queue.append(std::move(trigger));
         }
+        if (std::find(def.traits.begin(), def.traits.end(), "search_great_storm_on_setup") != def.traits.end()) {
+            const auto found = std::find_if(pl.deck.begin(), pl.deck.end(), [&](CardId candidate) {
+                return s.cards.at(candidate).zone == Zone::Deck && s.cards.at(candidate).definition == "great-storm";
+            });
+            if (found != pl.deck.end()) {
+                const auto searched = *found;
+                pl.deck.erase(found);
+                s.cards.at(searched).zone = Zone::Hand;
+                for (std::size_t size = pl.deck.size(); size > 1; --size)
+                    std::swap(pl.deck[size - 1], pl.deck[bounded(s, static_cast<std::uint32_t>(size))]);
+                s.events.push_back({"search", "检索大风暴术加入手牌", actor, searched});
+            }
+        }
         actionTimingV2(); return {};
     }
     if (const auto *cmd = std::get_if<RemoveFormation>(&command)) {
@@ -329,6 +439,10 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         StateMaintenance::leave(s, cardId, &catalog_); ++pl.formations; actionTimingV2(); return {};
     }
     if (const auto *cmd = std::get_if<StartAnalysis>(&command)) {
+        if (def.type == CardType::Analytic && greatStormLocksAnalysis(s, catalog_, actor))
+            return "great_storm_lock: 大风暴术阻止设置其他解析法术";
+        if (requiresStormForSetup && !hasStormFormation(s, catalog_, actor))
+            return "storm_formation: 需要己方风暴阵法";
         if (!setupSpeed() || c.zone != Zone::Hand || def.type != CardType::Analytic || !ring(cmd->formation))
             return "ring_or_rank";
         int fee = Rules::analysisCost(s, catalog_, cardId, cmd->formation);
@@ -342,6 +456,10 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         actionTimingV2(); return {};
     }
     if (const auto *cmd = std::get_if<SetAmbush>(&command)) {
+        if (def.type == CardType::Analytic && greatStormLocksAnalysis(s, catalog_, actor))
+            return "great_storm_lock: 大风暴术阻止设置其他解析法术";
+        if (requiresStormForSetup && !hasStormFormation(s, catalog_, actor))
+            return "storm_formation: 需要己方风暴阵法";
         if (s.phase != Phase::Main || c.zone != Zone::Hand || !spellType(def.type) || !ring(cmd->formation, true))
             return "invalid_ambush";
         place(cmd->formation); c.faceDown = true; c.wasAmbushed = true;
@@ -351,9 +469,13 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         actionTimingV2(); return {};
     }
     if (const auto *cmd = std::get_if<FlipAmbush>(&command)) {
+        if ((requiresStormFormation || requiresStormForSetup) && !hasStormFormation(s, catalog_, actor))
+            return "storm_formation: 需要己方风暴阵法";
         if (cmd->decision || !c.faceDown || c.zone != Zone::Analysis || c.ambushedTurn >= s.globalTurn ||
             (actor != s.active) || !setupSpeed()) return "ambush_wait";
-        if (!Rules::canHost(s, catalog_, cardId, c.host)) return "host_restriction";
+        if (!Rules::canHost(s, catalog_, cardId, c.host) ||
+            (requiresStormHeartSetup && catalog_.at(s.cards.at(c.host).definition).id != "storm-heart"))
+            return "host_restriction";
         if (def.type == CardType::Analytic && def.speed == 1 && s.phase != Phase::Main)
             return "spell_speed";
         if (def.type == CardType::Analytic) {
@@ -383,6 +505,8 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         beginEffect(cardId, AfterEffect::Spell); return {};
     }
     if (const auto *cmd = std::get_if<PreloadWord>(&command)) {
+        if (requiresStormFormation && !hasStormFormation(s, catalog_, actor))
+            return "storm_formation: 需要己方风暴阵法";
         if (pl.blockedActionTurn == pl.ownTurn) return "blocked_incantation";
         if (!setupSpeed() || c.zone != Zone::Hand || def.type != CardType::Word || def.responseOnly ||
             !ring(cmd->formation) ||
@@ -407,13 +531,32 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         return prepare(actor, *cmd, false);
     }
     if (const auto *cmd = std::get_if<ActivateSpell>(&command)) {
+        if (requiresStormFormation && !hasStormFormation(s, catalog_, actor))
+            return "storm_formation: 需要己方风暴阵法";
         if (c.zone != Zone::Casting || c.spell != SpellState::Ready || !phaseSpeed() ||
             !validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets) || !validSpellCost(cmd->discard) || !validRecovery(cmd->target))
             return "not_ready";
+        CardId stormCostFormation = 0;
+        if (std::any_of(def.effects.begin(), def.effects.end(), [](const Effect &effect) {
+                return effect.kind == EffectKind::StormCyclone;
+            })) {
+            for (const auto &[formationId, formation] : s.cards) {
+                const auto &formationDefinition = catalog_.at(formation.definition);
+                if (formation.owner == actor && formation.zone == Zone::Analysis &&
+                    formationDefinition.type == CardType::Formation && formation.stormPoints >= 5 &&
+                    std::find(formationDefinition.tags.begin(), formationDefinition.tags.end(), "风暴") !=
+                        formationDefinition.tags.end()) {
+                    stormCostFormation = formationId;
+                    break;
+                }
+            }
+            if (!stormCostFormation) return "storm_points: 风暴点数不足";
+        }
         const int fee = Rules::castCost(s, catalog_, cardId);
         if (pl.mana < fee) return "cost: 魔素不足";
         pl.mana -= fee; c.castLoad += fee; ResourceRules::increasedLoad(s, catalog_, actor, fee);
         if (s.result != -1) return {};
+        if (stormCostFormation) s.cards.at(stormCostFormation).stormPoints -= 5;
         c.payments.push_back({pl.ownTurn, fee, fee, false});
         c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = cmd->targets;
         paySpellCost(cmd->discard);
@@ -427,6 +570,19 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             host == s.cards.end() || host->second.owner != actor || host->second.faceDown ||
             (host->second.zone != Zone::Analysis && host->second.zone != Zone::Casting) ||
             seals(s, cmd->host)) return "seal_host";
+        const auto &hostDefinition = catalog_.at(host->second.definition);
+        const auto hasTrait = [&](const char *name) {
+            return std::find(def.traits.begin(), def.traits.end(), name) != def.traits.end();
+        };
+        const bool stormFormation = hostDefinition.type == CardType::Formation &&
+            std::find(hostDefinition.tags.begin(), hostDefinition.tags.end(), "风暴") != hostDefinition.tags.end();
+        if ((hasTrait("storm_formation_host_only") && !stormFormation) ||
+            (hasTrait("storm_formation_host_restriction") &&
+             hostDefinition.type == CardType::Formation && !stormFormation) ||
+            (hasTrait("storm_formation_host_restriction") &&
+             hostDefinition.type != CardType::Formation && hostDefinition.type != CardType::Analytic &&
+             hostDefinition.type != CardType::Word && hostDefinition.type != CardType::Talisman))
+            return "seal_host";
         if (!pay(def.cost, 0)) return "cost: 魔素不足";
         c.zone = Zone::Attached; c.host = cmd->host;
         actionTimingV2(); return {};

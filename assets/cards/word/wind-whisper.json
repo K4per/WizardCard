@@ -14,7 +14,7 @@
       "kind": "search_action"
     }
   ],
-  "text": "场上有风暴阵法卡才能发动。从牌库将一张风暴的咒符法术加入手牌。",
+  "text": "场上有风暴阵法卡才能发动。从牌库将一张位阶2及以下的风暴咒符法术加入手牌。",
   "castCost": 0,
   "analysisTurns": 0,
   "tags": [
@@ -23,6 +23,7 @@
   "number": "030009",
   "illustrationId": "wind-whisper",
   "traits": [
-    "storm_search_talisman"
+    "storm_search_talisman",
+    "requires_storm_formation"
   ]
 }

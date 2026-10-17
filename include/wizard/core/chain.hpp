@@ -23,6 +23,7 @@ struct EffectFrame {
     std::size_t cursor{};
     AfterEffect after{};
     int clearRemaining{-1};
+    int resolvedCount{};
     LinkId link{};
 };
 struct ChainLink {

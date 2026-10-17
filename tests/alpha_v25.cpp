@@ -425,6 +425,32 @@ TEST_CASE("Alpha v2.5 construction requires a level one formation without a save
     REQUIRE_FALSE(Rules::deckErrors(f.catalog, f.config.players[0]).empty());
     REQUIRE_FALSE(app::constructionProblems(f.catalog, draft).empty());
 }
+TEST_CASE("storm point counts affect canonical match state and remain in public card views", "[alpha-v25][storm]") {
+    Fixture f;
+    auto withStormPoints = f.state();
+    withStormPoints.cards.at(1).stormPoints = 5;
+    const auto charged = GameEngine::scenario(f.catalog, withStormPoints);
+    const auto empty = GameEngine::scenario(f.catalog, f.state());
+    auto withReleaseProgress = f.state();
+    withReleaseProgress.cards.at(1).stormReleaseProgress = 1;
+    const auto releasing = GameEngine::scenario(f.catalog, withReleaseProgress);
+
+    REQUIRE(charged.digest() != empty.digest());
+    REQUIRE(releasing.digest() != empty.digest());
+    const auto view = charged.viewFor(0);
+    const auto card = std::find_if(view.cards.begin(), view.cards.end(), [](const CardView &item) {
+        return item.instance.id == 1;
+    });
+    REQUIRE(card != view.cards.end());
+    REQUIRE(card->instance.stormPoints == 5);
+    REQUIRE(card->instance.stormReleaseProgress == 0);
+    const auto releaseView = releasing.viewFor(0);
+    const auto releaseCard = std::find_if(releaseView.cards.begin(), releaseView.cards.end(), [](const CardView &item) {
+        return item.instance.id == 1;
+    });
+    REQUIRE(releaseCard != releaseView.cards.end());
+    REQUIRE(releaseCard->instance.stormReleaseProgress == 1);
+}
 TEST_CASE("Alpha v2.5 draw clears temporary resources before income and exhaustion only for the turn player", "[alpha-v25]") {
     Fixture f; auto s = f.state(Phase::End);
     s.players[0].temporaryLife = s.players[1].temporaryLife = 8;

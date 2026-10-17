@@ -42,6 +42,8 @@ bool GameEngine::returnSpellsV2() {
         for (const auto &[hostId, host] : s.cards)
             if (host.owner == spell.owner && host.zone == Zone::Analysis &&
                 catalog_.at(host.definition).type == CardType::Formation &&
+                (std::find(definition.traits.begin(), definition.traits.end(), "requires_storm_heart_setup") ==
+                     definition.traits.end() || catalog_.at(host.definition).id == "storm-heart") &&
                 Rules::canHost(s, catalog_, id, hostId) &&
                 Rules::freeRing(s, catalog_, hostId) >= 0)
                 options.push_back(hostId);
@@ -94,7 +96,7 @@ bool GameEngine::phaseV2() {
             for (const auto &[id, card] : s.cards)
                 if (card.owner == s.active && card.zone == Zone::Analysis &&
                     catalog_.at(card.definition).type == CardType::Formation) {
-                    income += catalog_.at(card.definition).income;
+                    income += Rules::income(s, catalog_, id);
                     for (const auto &[sealId, seal] : s.cards)
                         if (seal.zone == Zone::Attached && seal.host == id &&
                             std::find(catalog_.at(card.definition).traits.begin(), catalog_.at(card.definition).traits.end(), "effect_immune") == catalog_.at(card.definition).traits.end())
@@ -165,7 +167,7 @@ bool GameEngine::phaseV2() {
             if (next.id) {
                 s.phaseOrderCursor = next.key;
                 s.maintenanceSource = next.id;
-                const int fee = s.cards.at(next.id).concentrationCost;
+                const int fee = Rules::concentrationUpkeep(s, catalog_, next.id);
                 std::vector<std::uint32_t> options;
                 if (pl.mana >= fee) options.push_back(next.id);
                 decision(s.active, DecisionKind::Concentration, std::move(options), true);
@@ -224,10 +226,15 @@ bool GameEngine::phaseV2() {
             if (!s.durationApplied) {
                 s.durationApplied = true;
                 std::vector<CardId> expired;
-                for (auto &[id, card] : s.cards)
+                for (auto &[id, card] : s.cards) {
+                    const auto &definition = catalog_.at(card.definition);
+                    const bool ownerTurnTimer = std::find(definition.traits.begin(), definition.traits.end(),
+                                                          "great_storm") != definition.traits.end();
                     if (card.zone == Zone::Analysis && card.spell == SpellState::Active &&
-                        catalog_.at(card.definition).duration > 0 && --card.remaining <= 0)
+                        definition.duration > 0 && (!ownerTurnTimer || card.owner == s.active) &&
+                        --card.remaining <= 0)
                         expired.push_back(id);
+                }
                 for (auto id : expired) StateMaintenance::leave(s, id, &catalog_);
             }
             ++s.phaseCursor; return true;

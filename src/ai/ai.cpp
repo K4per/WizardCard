@@ -96,6 +96,7 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
         case EffectKind::Conceal:
         case EffectKind::ConcealEnemySpell:
         case EffectKind::DelayEnemyAnalysis:
+        case EffectKind::AdvanceAllEnemyAnalysis:
             score += 2;
             break;
         case EffectKind::ReturnEnemyAnalysis:

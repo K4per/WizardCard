@@ -44,9 +44,13 @@ void GameEngine::beginEffect(CardId id, AfterEffect after) {
     root.item = snapshot(c, d);
     if (after != AfterEffect::Action)
         for (const auto &[sid, seal] : state_.cards)
-            if (seal.zone == Zone::Attached && seal.host == id && catalog_.at(seal.definition).damageBonus)
+            if (seal.zone == Zone::Attached && seal.host == id && catalog_.at(seal.definition).damageBonus) {
+                const auto &sealDefinition = catalog_.at(seal.definition);
                 root.item.effects.push_back({EffectKind::Damage, catalog_.at(seal.definition).damageBonus,
-                                             DamageType::Force, EffectRecipient::Opponent});
+                    std::find(sealDefinition.traits.begin(), sealDefinition.traits.end(), "thunder_damage_bonus") !=
+                            sealDefinition.traits.end() ? DamageType::Thunder : DamageType::Force,
+                    EffectRecipient::Opponent});
+            }
     if (after == AfterEffect::Spell && !c.payments.empty())
         root.paymentIndex = static_cast<int>(c.payments.size()) - 1;
     root.item.requiresSource = after == AfterEffect::Spell;
@@ -83,6 +87,9 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
     auto a = ability(d, cmd.ability);
     if (!a)
         return "ability: 未声明该响应能力";
+    if (std::find(d.traits.begin(), d.traits.end(), "requires_storm_formation") != d.traits.end() &&
+        !hasStormFormation(s, catalog_, actor))
+        return "storm_formation: 需要己方风暴阵法";
     const bool hand = c.zone == Zone::Hand;
     const bool ambush = c.faceDown && a->fromAmbush && c.ambushedTurn < s.globalTurn;
     const bool analytic = !c.faceDown && c.zone == Zone::Analysis && c.spell == SpellState::Ready &&
@@ -129,6 +136,10 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
                  catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Word &&
                  (!catalog_.usesAlphaV2() || catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Talisman)))
                 return "target: 必须指定对手释放中的法术";
+            if (d.id == "wind-strike" &&
+                (s.chain->window != ResponseWindow::Prepare || l->kind != LinkKind::Preparation ||
+                 catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Analytic))
+                return "target: 风击术只能响应对方设置解析法术";
             if (std::any_of(a->effects.begin(), a->effects.end(), [](const Effect &effect) {
                     return effect.kind == EffectKind::ReduceSpellDamage;
                 }) && std::none_of(l->item.effects.begin(), l->item.effects.end(), [](const Effect &effect) {
@@ -228,6 +239,25 @@ void GameEngine::finishLink(bool success) {
                    (link.kind == LinkKind::Response && d.type == CardType::Word &&
                     c.zone == Zone::Resolving)) {
             if (success) {
+                if (catalog_.usesAlphaV2() && d.type != CardType::Formation &&
+                    std::find(d.tags.begin(), d.tags.end(), "风暴") != d.tags.end()) {
+                    for (auto &[formationId, formation] : s.cards) {
+                        const auto &formationDefinition = catalog_.at(formation.definition);
+                        if (formation.owner != c.owner || formation.zone != Zone::Analysis ||
+                            formationDefinition.type != CardType::Formation ||
+                            std::find(formationDefinition.tags.begin(), formationDefinition.tags.end(), "风暴") ==
+                                formationDefinition.tags.end())
+                            continue;
+                        ++formation.stormPoints;
+                        for (auto &[sealId, seal] : s.cards)
+                            if (seal.zone == Zone::Attached && seal.host == formationId &&
+                                std::find(catalog_.at(seal.definition).traits.begin(),
+                                          catalog_.at(seal.definition).traits.end(),
+                                          "storm_release_counter") != catalog_.at(seal.definition).traits.end() &&
+                                ++seal.stormReleaseProgress % 2 == 0)
+                                ++formation.stormPoints;
+                    }
+                }
                 for (const auto &[sid, seal] : s.cards)
                     if (seal.host == c.id && seal.zone == Zone::Attached) {
                         const auto &sealDef = catalog_.at(seal.definition);
@@ -256,8 +286,15 @@ void GameEngine::finishLink(bool success) {
                     c.spell = SpellState::Active;
                     c.concentrationCost = d.concentrationUpkeep >= 0 ? d.concentrationUpkeep : Rules::castCost(s, catalog_, c.id);
                 } else if (d.duration) {
-                    c.spell = SpellState::Active;
-                    c.remaining = d.duration;
+                    if (std::find(d.traits.begin(), d.traits.end(), "great_storm") != d.traits.end()) {
+                        if (c.remaining > 0)
+                            c.spell = SpellState::Active;
+                        else
+                            StateMaintenance::leave(s, c.id, &catalog_);
+                    } else {
+                        c.spell = SpellState::Active;
+                        c.remaining = d.duration;
+                    }
                 } else if (catalog_.usesAlphaV2() && d.perpetual) {
                     c.spell = SpellState::Active;
                 } else if (catalog_.usesAlphaV2()) {

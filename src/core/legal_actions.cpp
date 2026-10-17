@@ -80,10 +80,19 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             add("投降", 0, 0, Surrender{});
             return out;
         }
+        const bool stormGuidanceMode = d.kind == DecisionKind::EffectChoice && s.effect &&
+            s.effect->clearRemaining == -2 &&
+            s.effect->cursor < s.effect->item.effects.size() &&
+            s.effect->item.effects[s.effect->cursor].kind == EffectKind::StormGuidance;
         for (auto id : d.options) {
             std::string label;
             if (d.kind == DecisionKind::DamageChoice)
                 label = "选择" + damageName(static_cast<DamageType>(id - 1)) + "伤害";
+            else if (stormGuidanceMode)
+                label = id == 0xfffffff1u ? "检索一张风暴法术加入手牌"
+                    : id == 0xfffffff2u ? "使己方风暴阵法获得2点风暴点数"
+                    : id == 0xfffffff3u ? "检索云雾术或雷鸣召唤术加入手牌"
+                                        : "选择风暴导向效果";
             else if (d.kind == DecisionKind::ReturnSpell) {
                 for (int ring = 0; ring < Rules::rings(s, catalog_, id); ++ring) {
                     bool occupied = false;
@@ -101,10 +110,17 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                                        : "清除 " + catalog_.at(s.cards.at(id).definition).name + " 的1点绑定荷载";
             else if (d.kind == DecisionKind::ClearLoad)
                 label = "移除临时荷载来源 #" + std::to_string(id) + " 的1点荷载";
+            else if (d.kind == DecisionKind::StormSearch)
+                label = "将 " + catalog_.at(s.cards.at(id).definition).name + " 加入手牌";
+            else if (d.kind == DecisionKind::StormHeartChoice)
+                label = id == 1 ? "抽1张牌" : "将风暴卡放回牌库";
+            else if (d.kind == DecisionKind::StormHeartRecover)
+                label = "将 " + catalog_.at(s.cards.at(id).definition).name + " 放回牌库";
             else if (d.kind == DecisionKind::Concentration) {
                 const auto &c = s.cards.at(id);
-                label = "维持专注（魔素 " + std::to_string(c.concentrationCost) + " / 荷载 +" +
-                        std::to_string(c.concentrationCost) + "）";
+                const auto fee = Rules::concentrationUpkeep(s, catalog_, id);
+                label = "维持专注（魔素 " + std::to_string(fee) + " / 荷载 +" +
+                        std::to_string(fee) + "）";
             } else if (d.kind == DecisionKind::TriggerOrder) {
                 for (const auto &t : s.queue.items)
                     if (t.id == id)
@@ -112,8 +128,11 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             } else
                 label = "选择 " + catalog_.at(s.cards.at(id).definition).name + " #" + std::to_string(id);
             add(label,
-                (d.kind == DecisionKind::DamageChoice || d.kind == DecisionKind::ClearLoad || d.kind == DecisionKind::ClearAnyLoad || d.kind == DecisionKind::TriggerOrder ||
-                 d.kind == DecisionKind::SearchDeck)
+                (d.kind == DecisionKind::DamageChoice || d.kind == DecisionKind::ClearLoad ||
+                 d.kind == DecisionKind::ClearAnyLoad || d.kind == DecisionKind::TriggerOrder ||
+                 d.kind == DecisionKind::SearchDeck || d.kind == DecisionKind::StormSearch ||
+                 d.kind == DecisionKind::StormHeartChoice || d.kind == DecisionKind::StormHeartRecover ||
+                 stormGuidanceMode)
                     ? 0
                     : id,
                 0, Choose{d.id, id});
@@ -160,6 +179,25 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             if (card.owner != p) continue;
             const auto &def = catalog_.at(card.definition);
             const auto name = def.name + " #" + std::to_string(id);
+            if (card.zone == Zone::Analysis && card.stormPoints >= 2 &&
+                card.stormAbilityTurn != s.players[p].ownTurn &&
+                std::find(def.traits.begin(), def.traits.end(), "activate_storm_search") != def.traits.end()) {
+                const bool canSearch = std::any_of(s.players[p].deck.begin(), s.players[p].deck.end(), [&](CardId deckId) {
+                    const auto &candidate = s.cards.at(deckId);
+                    const auto &candidateDefinition = catalog_.at(candidate.definition);
+                    const bool spell = candidateDefinition.type == CardType::Analytic ||
+                        candidateDefinition.type == CardType::Word || candidateDefinition.type == CardType::Talisman;
+                    return candidate.zone == Zone::Deck && spell &&
+                        std::find(candidateDefinition.tags.begin(), candidateDefinition.tags.end(), "风暴") !=
+                            candidateDefinition.tags.end();
+                });
+                if (canSearch)
+                    add("发动风暴纹章能力 " + name, id, 0, ActivateAbility{id, 0, "storm_search"});
+            }
+            if (card.zone == Zone::Analysis && card.stormPoints >= 2 &&
+                card.stormAbilityTurn != s.players[p].ownTurn &&
+                std::find(def.traits.begin(), def.traits.end(), "activate_storm_heart_choice") != def.traits.end())
+                add("发动风暴之心能力 " + name, id, 0, ActivateAbility{id, 0, "storm_heart_choice"});
             std::vector<CardId> spellCosts{0};
             if (std::find(def.traits.begin(), def.traits.end(), "discard_spell_search") != def.traits.end()) {
                 spellCosts.clear();
@@ -235,6 +273,16 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             add("放弃 " + name, id, 0, Abandon{id});
             add("拆除符文 " + name, id, 0, RemoveSeal{id});
             add("拆除阵法 " + name, id, 0, RemoveFormation{id});
+            if (card.zone == Zone::Attached &&
+                std::find(def.traits.begin(), def.traits.end(), "activate_storm_crest_destroy") != def.traits.end() &&
+                card.host && s.cards.count(card.host) && s.cards.at(card.host).stormPoints >= 2) {
+                for (const auto &[targetId, target] : s.cards)
+                    if (target.owner != p && target.zone == Zone::Analysis && !target.faceDown &&
+                        catalog_.at(target.definition).type == CardType::Formation &&
+                        target.spell == SpellState::None && Rules::occupied(s, targetId) == 0)
+                        add("发动风暴湮灭能力 → " + catalog_.at(target.definition).name,
+                            id, targetId, ActivateAbility{id, targetId, "storm_annihilation_destroy"});
+            }
         }
         add("结束" + phaseName(s.phase) + "阶段", 0, 0, AdvancePhase{s.phaseGate});
         if (s.phase == Phase::Main)

@@ -31,8 +31,10 @@ Json encodeCommand(const Command &c) {
             if constexpr (std::is_same_v<T, PreloadWord> || std::is_same_v<T, FlipAmbush> || std::is_same_v<T, ActivateSpell>)
                 if (x.discard) j["discard"] = x.discard;
             if constexpr (std::is_same_v<T, PlayAction> || std::is_same_v<T, FlipAmbush> ||
-                          std::is_same_v<T, ActivateSpell>)
+                          std::is_same_v<T, ActivateSpell> || std::is_same_v<T, ActivateAbility>)
                 j["target"] = x.target;
+            if constexpr (std::is_same_v<T, ActivateAbility>)
+                j["ability"] = x.ability;
             if constexpr (std::is_same_v<T, PrepareCast>)
                 if (x.decision)
                     j["decision"] = x.decision;
@@ -149,6 +151,8 @@ Command decodeCommand(const Json &j) {
         return SelectInitialFormation{id("card")};
     case 19:
         return Timeout{};
+    case 20:
+        return ActivateAbility{id("card"), id("target"), j.at("ability").get<std::string>()};
     default:
         throw std::runtime_error("unknown command type");
     }

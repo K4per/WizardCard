@@ -11,7 +11,7 @@
   "target": "none",
   "effects": [
     {
-      "kind": "destroy_formation_spells"
+      "kind": "storm_cyclone"
     }
   ],
   "text": "场上有风暴阵法卡才能发动。移除5个风暴点数，销毁对方一张阵法卡下的所有法术卡。并造成等同于销毁数量两倍的钝击伤害。",
@@ -19,6 +19,9 @@
   "analysisTurns": 0,
   "tags": [
     "风暴"
+  ],
+  "traits": [
+    "requires_storm_formation"
   ],
   "number": "040008",
   "illustrationId": "great-cyclone"

@@ -26,7 +26,8 @@
         {
           "kind": "damage",
           "amount": 6,
-          "damageType": "bludgeoning"
+          "damageType": "bludgeoning",
+          "recipient": "opponent"
         },
         {
           "kind": "destroy_enemy_analysis"
@@ -34,11 +35,14 @@
       ]
     }
   ],
-  "text": "场上有风暴阵法卡才能发动。对方设置解析法术时造成伤害；若对方法术等级较低，销毁那张卡。",
+  "text": "场上有风暴阵法卡才能发动。对方设置解析法术卡时才能发动，对方受到等同于那张卡位阶×2的钝击伤害；若那张卡的位阶低于风击术，销毁那张卡。",
   "castCost": 0,
   "analysisTurns": 0,
   "tags": [
     "风暴"
+  ],
+  "traits": [
+    "requires_storm_formation"
   ],
   "number": "040007",
   "illustrationId": "wind-strike"

@@ -24,6 +24,10 @@
   "tags": [
     "风暴"
   ],
+  "traits": [
+    "surcharge_enemy_timed_cast",
+    "double_enemy_concentration_upkeep"
+  ],
   "number": "030011",
   "illustrationId": "snow-rain-storm"
 }

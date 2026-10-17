@@ -52,9 +52,9 @@ void choose(GameEngine &engine, CardId option) {
     send(engine, decision.player, Choose{decision.id, option});
 }
 }
-TEST_CASE("rc content is a numbered executable 45 card pool with legal 40 plus 10 presets", "[rc-content]") {
+TEST_CASE("rc content is a numbered executable 62 card pool with legal 40 plus 10 presets", "[rc-content]") {
     const auto content = rcContent();
-    REQUIRE(content.catalog.cards.size() == 45);
+    REQUIRE(content.catalog.cards.size() == 62);
     REQUIRE(content.catalog.alphaV2);
     REQUIRE(content.catalog.usesAlphaV25());
     REQUIRE(content.catalog.at("reservoir").name == "阿克乌姆之弧");
@@ -426,6 +426,63 @@ TEST_CASE("rc ray delay conceal and recovery resolve through explicit card choic
         REQUIRE(card.owner == 0); REQUIRE(card.zone == Zone::Analysis);
         REQUIRE(card.faceDown); REQUIRE(card.host == 1); REQUIRE(card.ringIndex == 0);
     }
+}
+TEST_CASE("storm wind whisper searches only storm talismans of rank two or less", "[rc-content][storm]") {
+    CardScenario f;
+    f.state.cards.at(1).definition = "storm-crest";
+    f.add(20, "storm-vortex", 0, Zone::Deck);
+    f.add(21, "wind-strike", 0, Zone::Deck);
+    f.add(22, "great-cyclone", 0, Zone::Deck);
+    f.add(23, "shield", 0, Zone::Deck);
+    f.add(24, "storm-guidance", 0, Zone::Deck);
+    f.content.catalog.cards.at("shield").rank = 2;
+    f.state.players[0].deck = {20, 21, 22, 23, 24};
+
+    auto engine = f.casting("wind-whisper");
+    send(engine, 0, ActivateSpell{10});
+
+    REQUIRE(engine.state().decision);
+    REQUIRE(engine.state().decision->kind == DecisionKind::SearchDeck);
+    REQUIRE(engine.state().decision->options == std::vector<std::uint32_t>{20});
+    const auto view = engine.viewFor(0);
+    REQUIRE(view.decision);
+    REQUIRE(view.decision->options == std::vector<std::uint32_t>{20});
+    choose(engine, 20);
+    REQUIRE(engine.state().cards.at(20).zone == Zone::Hand);
+    REQUIRE(engine.state().cards.at(21).zone == Zone::Deck);
+    REQUIRE(engine.state().cards.at(22).zone == Zone::Deck);
+    REQUIRE(engine.state().cards.at(23).zone == Zone::Deck);
+    REQUIRE(engine.state().cards.at(24).zone == Zone::Deck);
+}
+TEST_CASE("storm swift wind returns only a low-level enemy formation to its side deck", "[rc-content][storm]") {
+    CardScenario f;
+    f.state.cards.at(1).definition = "storm-crest";
+    f.add(20, "storm-crest", 1, Zone::Analysis);
+    f.add(21, "small-hexagram", 1, Zone::Analysis);
+    auto &attachedSpell = f.spell(23, "fireball", 1);
+    attachedSpell.host = attachedSpell.sourceFormation = 20;
+    attachedSpell.ringIndex = Rules::freeRing(f.state, f.content.catalog, 20);
+
+    auto engine = f.casting("swift-wind");
+    send(engine, 0, ActivateSpell{10});
+
+    REQUIRE(engine.state().decision);
+    REQUIRE(engine.state().decision->kind == DecisionKind::EffectChoice);
+    REQUIRE(engine.state().decision->options == std::vector<std::uint32_t>{20, 21});
+    choose(engine, 20);
+    const auto &returned = engine.state().cards.at(20);
+    REQUIRE(returned.owner == 1);
+    REQUIRE(returned.zone == Zone::SideDeck);
+    REQUIRE_FALSE(returned.base);
+    REQUIRE(engine.state().cards.at(21).zone == Zone::Analysis);
+    REQUIRE(engine.state().cards.at(2).zone == Zone::Analysis);
+    REQUIRE(engine.state().cards.at(23).zone == Zone::Ash);
+    const auto opponentView = engine.viewFor(1);
+    const auto returnedView = std::find_if(opponentView.cards.begin(), opponentView.cards.end(), [](const CardView &card) {
+        return card.instance.id == 20;
+    });
+    REQUIRE(returnedView != opponentView.cards.end());
+    REQUIRE(returnedView->instance.zone == Zone::SideDeck);
 }
 TEST_CASE("rc sunburst respects protected formations and sulfur captures departure once", "[rc-content]") {
     CardScenario f;

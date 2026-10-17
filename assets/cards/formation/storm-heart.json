@@ -11,7 +11,7 @@
   "maxRank": 7,
   "cost": 0,
   "baseEligible": false,
-  "text": "设置成功时，从牌库将一张大风暴术加入手牌。每发动一张风暴法术卡，获得1个风暴点数。",
+  "text": "这张卡被设置时，从牌库将一张大风暴术加入手牌。每发动一张风暴法术卡，获得1个风暴点数。可以移除这张卡上的1个风暴点数，代为销毁或破坏。一回合一次，移除这张卡上的2个风暴点数，并选择一项：抽1张卡；将灰烬区的一张风暴卡加入牌库并洗切。",
   "summonCondition": "将己方风暴纹章送入灰烬区并支付4魔素。",
   "recipe": [
     {
@@ -25,7 +25,10 @@
     }
   ],
   "traits": [
-    "unique"
+    "unique",
+    "activate_storm_heart_choice",
+    "storm_heart_upgrade",
+    "search_great_storm_on_setup"
   ],
   "tags": [
     "风暴"

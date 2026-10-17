@@ -18,6 +18,16 @@ const CardDefinition *effectHost(const GameState &s, const CardCatalog &cat, con
     return host != s.cards.end() && host->second.zone == Zone::Analysis
         ? &cat.at(host->second.definition) : nullptr;
 }
+bool protectedFromCardEffect(const GameState &s, const CardCatalog &cat, CardId id) {
+    const auto card = s.cards.find(id);
+    if (card == s.cards.end()) return false;
+    const auto &definition = cat.at(card->second.definition);
+    if (trait(definition, "effect_immune") || trait(definition, "effect_indestructible")) return true;
+    if (!trait(definition, "great_storm")) return false;
+    const auto host = s.cards.find(card->second.host ? card->second.host : card->second.sourceFormation);
+    return host != s.cards.end() && host->second.zone == Zone::Analysis &&
+           cat.at(host->second.definition).id == "storm-heart";
+}
 }
 void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &t, const Effect &e) {
     if (cat.usesAlphaV2() && s.result != -1)
@@ -107,6 +117,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
             }
         break;
     case EffectKind::DelayEnemyAnalysis:
+    case EffectKind::AdvanceAllEnemyAnalysis:
     case EffectKind::ConcealEnemySpell:
     case EffectKind::RevealEnemyAmbush:
     case EffectKind::ChooseDamage:
@@ -116,6 +127,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::RecoverEnemyAshSpell:
     case EffectKind::RecoverFormation:
     case EffectKind::DestroyEnemyAnalysis:
+    case EffectKind::LockAnalysis:
         throw std::logic_error("content effect requires a decision");
     case EffectKind::CounterSpell: {
         if (s.chain)
@@ -191,8 +203,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
             auto i = s.cards.find(id);
             if (i != s.cards.end() && ((i->second.owner != t.owner &&
                 cat.at(i->second.definition).opponentDestroyProtected) ||
-                (cat.usesAlphaV2() && (trait(cat.at(i->second.definition), "effect_immune") ||
-                                      trait(cat.at(i->second.definition), "effect_indestructible"))))) {
+                (cat.usesAlphaV2() && protectedFromCardEffect(s, cat, id)))) {
                 s.events.push_back({"protected", "对手效果不能销毁此卡", -1, id});
                 return;
             }
@@ -306,6 +317,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         message = "揭示场上所有盖伏法术";
         break;
     case EffectKind::DelayEnemyAnalysis:
+    case EffectKind::AdvanceAllEnemyAnalysis:
     case EffectKind::ConcealEnemySpell:
     case EffectKind::RevealEnemyAmbush:
     case EffectKind::ChooseDamage:
@@ -315,6 +327,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::RecoverEnemyAshSpell:
     case EffectKind::RecoverFormation:
     case EffectKind::DestroyEnemyAnalysis:
+    case EffectKind::LockAnalysis:
         message = "选择卡牌效果";
         break;
     case EffectKind::NegateLink:

@@ -68,6 +68,12 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
         case EffectKind::BlockActions:
             score += recipient == enemy ? 10 : -10;
             break;
+        case EffectKind::ShieldForTurn:
+            // A response-only shield is valuable before the opponent's pending
+            // action resolves; account for the damage it can absorb so the AI
+            // does not always prefer passing the response window.
+            score += owner == p ? std::max(0, e.amount) * 3.0 : -std::max(0, e.amount) * 3.0;
+            break;
         case EffectKind::GrantResistance:
             score += owner == p ? 12 : -12;
             break;

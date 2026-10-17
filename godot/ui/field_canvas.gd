@@ -430,7 +430,9 @@ func _draw_attachment_boxes(host: CardPresentation, rect: Rect2, mirrored: bool)
 		_draw_legal_highlight(card, box)
 
 func _draw_simple_card(card: CardPresentation, rect: Rect2, highlighted: bool = false) -> void:
-	SimpleCardPainter.paint(self, card, rect, highlighted)
+	# The battlefield and deck editor share one compact face, including the
+	# same illustration window, title, type and cost treatment.
+	DeckCardPainter.paint(self, card, rect, highlighted)
 
 func _draw_legal_highlight(card: CardPresentation, rect: Rect2) -> void:
 	if not target_ids.is_empty():

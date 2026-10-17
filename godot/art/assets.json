@@ -5001,7 +5001,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.aid",
-      "file": "res://art/illustrations/aid.png",
+      "file": "res://art/card/aid.png",
       "source": "assets/art/alpha-v1/aid.png",
       "sha256": "5e2bf7e1c105084e4f09fe49f2577f138f912bbf8ac7d2e4437ca74744bea585"
     },
@@ -5009,7 +5009,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.arcane-recovery",
-      "file": "res://art/illustrations/arcane-recovery.png",
+      "file": "res://art/card/arcane-recovery.png",
       "source": "assets/art/alpha-release/arcane-recovery.png",
       "sha256": "fb0fb59d214899f5c27d16ff850de09217fa15e55237e846f51bdebc088f495d"
     },
@@ -5017,7 +5017,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.balance",
-      "file": "res://art/illustrations/balance.png",
+      "file": "res://art/card/balance.png",
       "source": "assets/art/cards/balance.png",
       "sha256": "e7030ea10267d4ead61d4dda8248b35392588a4ea307241a370f4e2d3674d922"
     },
@@ -5025,7 +5025,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.barbs",
-      "file": "res://art/illustrations/barbs.png",
+      "file": "res://art/card/barbs.png",
       "source": "assets/art/cards/barbs.png",
       "sha256": "e4b384d3f6524584f26666ef4d9019313eb584d277521f3d6a6198160352f941"
     },
@@ -5033,7 +5033,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.clarity",
-      "file": "res://art/illustrations/clarity.png",
+      "file": "res://art/card/clarity.png",
       "source": "assets/art/cards/clarity.png",
       "sha256": "1d035193e1a27676239548d91111f3ea51caa36268c824c91791ae3e291ba136"
     },
@@ -5041,7 +5041,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.conduit",
-      "file": "res://art/illustrations/conduit.png",
+      "file": "res://art/card/conduit.png",
       "source": "assets/art/cards/conduit.png",
       "sha256": "a79fbf4564b60bb9d02ddc30e3753b2b7fe94d08c34d3ac37bcf04e8941b1a65"
     },
@@ -5049,7 +5049,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.counter-spell",
-      "file": "res://art/illustrations/counter-spell.png",
+      "file": "res://art/card/counter-spell.png",
       "source": "assets/art/alpha-v1/counter-spell.png",
       "sha256": "d9934023300fcd1ddfc350c9086632d3513b21a40fff91d32bc6bc9923077937"
     },
@@ -5057,7 +5057,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.disrupt",
-      "file": "res://art/illustrations/disrupt.png",
+      "file": "res://art/card/disrupt.png",
       "source": "assets/art/cards/disrupt.png",
       "sha256": "7999a07b83d160edbb5d66ef97165519851b5d480c0723c3d95b4c05fad1b505"
     },
@@ -5065,7 +5065,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.engeas-four-point-star",
-      "file": "res://art/illustrations/engeas-four-point-star.png",
+      "file": "res://art/card/engeas-four-point-star.png",
       "source": "assets/art/alpha-v1/engeas-four-point-star.png",
       "sha256": "160f0b0c332976753e446a3d63f7190d3d6a3be110c0cdd3850d451e4279dd62"
     },
@@ -5073,7 +5073,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.false-life",
-      "file": "res://art/illustrations/false-life.png",
+      "file": "res://art/card/false-life.png",
       "source": "assets/art/alpha-release/false-life.png",
       "sha256": "77ce8c29486e0b177fd7a2e518ed24fc456ce71095eee05dfc087092921476b0"
     },
@@ -5081,7 +5081,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.fireball",
-      "file": "res://art/illustrations/fireball.png",
+      "file": "res://art/card/fireball.png",
       "source": "assets/art/cards/fireball.png",
       "sha256": "17ce2e6248cb8caa16cbc1a585a0968da3f8fc1ed2b25357a2d075d4c4c8f356"
     },
@@ -5089,7 +5089,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.instant-circuit-overload",
-      "file": "res://art/illustrations/instant-circuit-overload.png",
+      "file": "res://art/card/instant-circuit-overload.png",
       "source": "assets/art/alpha-v1/instant-circuit-overload.png",
       "sha256": "d96e2ebcb7a0a582ea36e76c450917d455b23f7eefbcdc4039fc65f6181ad14a"
     },
@@ -5097,7 +5097,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.instantly-sleep",
-      "file": "res://art/illustrations/instantly-sleep.png",
+      "file": "res://art/card/instantly-sleep.png",
       "source": "assets/art/alpha-v1/instantly-sleep.png",
       "sha256": "12a441754813f76fcc40e9ad54634b46f84c91747c245322764be184e8083002"
     },
@@ -5105,7 +5105,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.lesser-restoration",
-      "file": "res://art/illustrations/lesser-restoration.png",
+      "file": "res://art/card/lesser-restoration.png",
       "source": "assets/art/alpha-release/lesser-restoration.png",
       "sha256": "7e4ae91acb40afae4a65766aadd722424cb0e612ce5df1f2c379a55f68fbeb47"
     },
@@ -5113,7 +5113,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.lightning-bolt",
-      "file": "res://art/illustrations/lightning-bolt.png",
+      "file": "res://art/card/lightning-bolt.png",
       "source": "assets/art/alpha-release/lightning-bolt.png",
       "sha256": "deabc4495bef0799371dcaa1b2cfb0fcfaecac5d19a72a61ba43c55c536f2dca"
     },
@@ -5121,7 +5121,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.magic-missile",
-      "file": "res://art/illustrations/magic-missile.png",
+      "file": "res://art/card/magic-missile.png",
       "source": "assets/art/alpha-v1/magic-missile.png",
       "sha256": "70218f5f4cc2a34a540c5086f070fde286f557d38216940f648d634c92a2475c"
     },
@@ -5129,7 +5129,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.mend",
-      "file": "res://art/illustrations/mend.png",
+      "file": "res://art/card/mend.png",
       "source": "assets/art/cards/mend.png",
       "sha256": "335c7eb5b461c29f9cc167f191613b9505cabbc14b8f4f98185142d91a3af614"
     },
@@ -5137,7 +5137,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.messy-wave",
-      "file": "res://art/illustrations/messy-wave.png",
+      "file": "res://art/card/messy-wave.png",
       "source": "assets/art/alpha-v1/messy-wave.png",
       "sha256": "93e19cd54d8688321d618dbbf32d537ed07f8176c5e2616a5ea21e057922d746"
     },
@@ -5145,7 +5145,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.pentagram-of-life",
-      "file": "res://art/illustrations/pentagram-of-life.png",
+      "file": "res://art/card/pentagram-of-life.png",
       "source": "assets/art/alpha-v1/pentagram-of-life.png",
       "sha256": "a62a70a02131145d233683fdcd0d908c68300b687e75b16b6769be2482f6d674"
     },
@@ -5153,7 +5153,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.protective-flame",
-      "file": "res://art/illustrations/protective-flame.png",
+      "file": "res://art/card/protective-flame.png",
       "source": "assets/art/alpha-v1/protective-flame.png",
       "sha256": "10844cbe89afad254b1ccd946be88cace940d4ef6ba7dfa2aed7be3bd84c6282"
     },
@@ -5161,7 +5161,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.ray-of-frost",
-      "file": "res://art/illustrations/ray-of-frost.png",
+      "file": "res://art/card/ray-of-frost.png",
       "source": "assets/art/alpha-release/ray-of-frost.png",
       "sha256": "78689ea9ade3fb05ca3def89b56c8902216e2ea2aae3c81579b894e6683363c9"
     },
@@ -5169,7 +5169,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.recall",
-      "file": "res://art/illustrations/recall.png",
+      "file": "res://art/card/recall.png",
       "source": "assets/art/cards/recall.png",
       "sha256": "1343187a17c79589fe6f83856d050489b62f169a59e3b320cb4067b037eebf6e"
     },
@@ -5177,7 +5177,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.reservoir",
-      "file": "res://art/illustrations/reservoir.png",
+      "file": "res://art/card/reservoir.png",
       "source": "assets/art/cards/reservoir.png",
       "sha256": "11ef7008b3be608d9042a7f24978955ef2cbe4ada7d4201c84bebd060b4d2d0e"
     },
@@ -5185,7 +5185,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.ring",
-      "file": "res://art/illustrations/ring.png",
+      "file": "res://art/card/ring.png",
       "source": "assets/art/cards/ring.png",
       "sha256": "2fbf807d92e1df81c8be056bf480583ea3ac4e32df81735366d8ba130d8c40fb"
     },
@@ -5193,7 +5193,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.shield",
-      "file": "res://art/illustrations/shield.png",
+      "file": "res://art/card/shield.png",
       "source": "assets/art/alpha-release/shield.png",
       "sha256": "e0b8c5bcf9c4dacb8159b5420a2e6a8f561512009434e9b50ef0f93f58adca93"
     },
@@ -5201,7 +5201,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.spark",
-      "file": "res://art/illustrations/spark.png",
+      "file": "res://art/card/spark.png",
       "source": "assets/art/cards/spark.png",
       "sha256": "29a6fe63b7b00046c1fe51aa4e047235574d40f63acc4c937dd75852d103248a"
     },
@@ -5209,7 +5209,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.true-strike",
-      "file": "res://art/illustrations/true-strike.png",
+      "file": "res://art/card/true-strike.png",
       "source": "assets/art/alpha-v1/true-strike.png",
       "sha256": "ff359f2b5a84902352655f2b9a9f87c4acc52be834575e4f6878bb433a7f4953"
     },
@@ -5217,7 +5217,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.unravel",
-      "file": "res://art/illustrations/unravel.png",
+      "file": "res://art/card/unravel.png",
       "source": "assets/art/cards/unravel.png",
       "sha256": "8f4108da181b893637407aa8232922844bc76a3a7a992ca8f27fc266d36e7d06"
     },
@@ -5225,7 +5225,7 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.uplift",
-      "file": "res://art/illustrations/uplift.png",
+      "file": "res://art/card/uplift.png",
       "source": "assets/art/alpha-v1/uplift.png",
       "sha256": "5b8b00e376be5680059acbb509826275f3e17e8410f20e67b128712ce1a76e00"
     },
@@ -5237,7 +5237,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-ankh",
-      "file": "res://art/illustrations-v2/v2-ankh.png",
+      "file": "res://art/card/v2-ankh.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-ankh.png",
       "sha256": "cc23d067f57dc3b493fe053484dfb5f02d1c223906f93fb53a301c2c54540933"
     },
@@ -5249,7 +5249,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-chaos-ring",
-      "file": "res://art/illustrations-v2/v2-chaos-ring.png",
+      "file": "res://art/card/v2-chaos-ring.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-chaos-ring.png",
       "sha256": "0e77f3a29da3416593c1fdd04f7b61508e5c1890fe89eea1517b79093316c94d"
     },
@@ -5261,7 +5261,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-chromatic-orb",
-      "file": "res://art/illustrations-v2/v2-chromatic-orb.png",
+      "file": "res://art/card/v2-chromatic-orb.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-chromatic-orb.png",
       "sha256": "93adbf724881b8c5b6e931f9fc4200644731e67680b22ed57dc87b1f7402cdc6"
     },
@@ -5273,7 +5273,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-elemental-ring",
-      "file": "res://art/illustrations-v2/v2-elemental-ring.png",
+      "file": "res://art/card/v2-elemental-ring.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-elemental-ring.png",
       "sha256": "1e8afd37f1dfac5082ab913d4d00468a3720bbf98406b84a438d41eec149153c"
     },
@@ -5285,7 +5285,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-funny-box",
-      "file": "res://art/illustrations-v2/v2-funny-box.png",
+      "file": "res://art/card/v2-funny-box.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-funny-box.png",
       "sha256": "6d352190a57ed6dbd8845d7ddf3ed03f3df32f1c3029749086832fcca92a667e"
     },
@@ -5297,7 +5297,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-guiding-bolt",
-      "file": "res://art/illustrations-v2/v2-guiding-bolt.png",
+      "file": "res://art/card/v2-guiding-bolt.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-guiding-bolt.png",
       "sha256": "ff6652261663d2fef22d2ce91a4c25c876fc1bedac1af16792e991274025a21f"
     },
@@ -5309,7 +5309,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-healing-circle",
-      "file": "res://art/illustrations-v2/v2-healing-circle.png",
+      "file": "res://art/card/v2-healing-circle.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-healing-circle.png",
       "sha256": "1a15ac106b4d1b18fd13d87b51a9e899629619bbc27bb66c181a3c01a8378480"
     },
@@ -5321,7 +5321,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-inverted-cross",
-      "file": "res://art/illustrations-v2/v2-inverted-cross.png",
+      "file": "res://art/card/v2-inverted-cross.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-inverted-cross.png",
       "sha256": "cf4c6694daf35971c2475abb4d29e2a73a0d5731d8ae44b41711caca112b0e97"
     },
@@ -5333,7 +5333,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-octagram",
-      "file": "res://art/illustrations-v2/v2-octagram.png",
+      "file": "res://art/card/v2-octagram.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-octagram.png",
       "sha256": "98a68ceb94d4ca2f5d6e99f8cd9e632ce6be6ca691a69a177b1b4400e2db9521"
     },
@@ -5345,21 +5345,21 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-scorching-ray",
-      "file": "res://art/illustrations-v2/v2-scorching-ray.png",
+      "file": "res://art/card/v2-scorching-ray.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-scorching-ray.png",
       "sha256": "7e1ce794aa3c20385aa562308023f144503bb00670b0051010a9cfe62ada5f6e"
     },
     {
       "size": [
-        1254,
-        1254
+        1278,
+        1230
       ],
       "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
-      "id": "illustration.v2-small-hexagram",
-      "file": "res://art/illustrations-v2/v2-small-hexagram.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-small-hexagram.png",
-      "sha256": "197ec673d275758c75e5bf70a321ef57cc5d09215a82ae5708d8b427a79370f4"
+      "origin": "ImageGen",
+      "id": "illustration.triangle-star",
+      "file": "res://art/card/triangle-star.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/triangle-star.png",
+      "sha256": "9b2bc41985d07277bfc6b9a9e93361a6cd83c6a79d2f6b1b1386de2f771f74af"
     },
     {
       "size": [
@@ -5369,7 +5369,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-sulfur",
-      "file": "res://art/illustrations-v2/v2-sulfur.png",
+      "file": "res://art/card/v2-sulfur.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sulfur.png",
       "sha256": "9b6cc7f788dfede0f12fcc0ad328f8bd336eafc9b4e492b785aa4279f54073f5"
     },
@@ -5381,7 +5381,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-sun",
-      "file": "res://art/illustrations-v2/v2-sun.png",
+      "file": "res://art/card/v2-sun.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sun.png",
       "sha256": "37150aa2601e55ab8432168b6e29aa72da938ab0d214abdbe22e6a69f9f00d91"
     },
@@ -5393,7 +5393,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-sunburst",
-      "file": "res://art/illustrations-v2/v2-sunburst.png",
+      "file": "res://art/card/v2-sunburst.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sunburst.png",
       "sha256": "914e3b9a02dbbc9e881d0e7fb900d18e33207ee1a86d8bed593c514f0280f2e0"
     },
@@ -5405,7 +5405,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-upright-cross",
-      "file": "res://art/illustrations-v2/v2-upright-cross.png",
+      "file": "res://art/card/v2-upright-cross.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-upright-cross.png",
       "sha256": "84e762cf541de2acae6340016b8d3ecd6b1038a7eaf084a31ddc5e02d935cd32"
     },
@@ -5417,7 +5417,7 @@
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; unchanged RGBA PNG",
       "id": "illustration.v2-void",
-      "file": "res://art/illustrations-v2/v2-void.png",
+      "file": "res://art/card/v2-void.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png",
       "sha256": "c332ad57d2a7da7f4a5ce5138f0ae5ffee739faaf8a5d5ee79a18f72963bfcbc"
     },
@@ -5425,9 +5425,213 @@
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.ward",
-      "file": "res://art/illustrations/ward.png",
+      "file": "res://art/card/ward.png",
       "source": "assets/art/cards/ward.png",
       "sha256": "e8354e351207c487312d669495d29747ea364dc49c1d2c649337c8fccbf6dc5a"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-crest",
+      "file": "res://art/card/storm-crest.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "f66a96ec1f68e84ce0766b7db7aed5223bd17183815508443844c712f19b0fff"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-heart",
+      "file": "res://art/card/storm-heart.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "c659a109e68747bdf8d17a8736651a4889eefb15caa9f77ad8b8a2f883c54623"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.wind-whisper",
+      "file": "res://art/card/wind-whisper.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "8da9ff16e0be4919b71fa2a0e0d865ae22feef61f2857b4e00922f17cd6bd140"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.swift-wind",
+      "file": "res://art/card/swift-wind.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "a98766eeeb8cfbace86a4ed1856fc7a8cfe6fb3e8e000f87556803e2823d66c3"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.snow-rain-storm",
+      "file": "res://art/card/snow-rain-storm.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "2825667347f405b87d4e3ffcb9ced142b90361719db5f7b6b54fc01c067a0e3b"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.windmaking",
+      "file": "res://art/card/windmaking.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "90fd40eb1b2278ea06e84c1799387b8133d0eb443b9ef5e0971cf3af621b1d2b"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-guidance",
+      "file": "res://art/card/storm-guidance.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "5d359735bcf81c57ce20395ae12c2e3c373b191ef9079ddedc6c1ca96410eef8"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-vortex",
+      "file": "res://art/card/storm-vortex.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "59e7036f7de4b81d30b102a3c982c31cee6295e538d2a34e0e512ec253ded5fe"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.wind-strike",
+      "file": "res://art/card/wind-strike.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "dcaba556588472b54ab940df12806ee566f173270b637b0225ee2963a81bb3e2"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.great-cyclone",
+      "file": "res://art/card/great-cyclone.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "e991574b7fc6fcfec42279a626de23e0d444edf40c98129a56eaabf84d4d8f77"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-brand",
+      "file": "res://art/card/storm-brand.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "105b40a7ce3cf18e7e545c2522f7638a36158e5908adbada53d086dd492213b1"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-annihilation-crest",
+      "file": "res://art/card/storm-annihilation-crest.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "6c172ba578164472407ac56ed64c84e749778ed4fe24e49fac24ce6b61802644"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.ice-storm",
+      "file": "res://art/card/ice-storm.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "2c69d52179ddcb31f31b09ff9c1dbe9c342524e5c8e25ef1d16d6b8911fd2a39"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.cutting-wind",
+      "file": "res://art/card/cutting-wind.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "bb2dc3714de29012fd7bc0fb5ea042df49d4014373c038a0cf33385873b3f0f7"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.great-storm",
+      "file": "res://art/card/great-storm.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "6c424004f6f566b6ff9ce6df03740be540d911000c64c8f7b2b0bb61ad693fcf"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.cloud-mist",
+      "file": "res://art/card/cloud-mist.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "a5d5e18a8697434086918b9b4f83bbd64d3e2ddd1abc69d6cd6112ffc34f47c7"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.thunder-summon",
+      "file": "res://art/card/thunder-summon.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "1843b01514637be3c030659ffe28cd74d245a62433ea123e4037d10c3182931a"
     }
   ]
 }

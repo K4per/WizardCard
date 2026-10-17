@@ -1088,7 +1088,7 @@
         "unique"
       ],
       "number": "010004",
-      "illustrationId": "v2-small-hexagram"
+      "illustrationId": "triangle-star"
     },
     {
       "id": "hexagram",
@@ -1380,6 +1380,486 @@
       ],
       "number": "010013",
       "illustrationId": "v2-sulfur"
+    },
+    {
+      "id": "storm-crest",
+      "name": "风暴纹章",
+      "type": "formation",
+      "rarity": "rare",
+      "level": 1,
+      "body": 2,
+      "rings": 2,
+      "capacity": 5,
+      "income": 1,
+      "maxRank": 1,
+      "cost": 0,
+      "baseEligible": false,
+      "text": "这张卡在场上只能存在一张。每发动一张风暴法术卡，获得1个风暴点数。",
+      "summonCondition": "支付1魔素。",
+      "recipe": [
+        {
+          "kind": "mana",
+          "amount": 1
+        }
+      ],
+      "traits": [
+        "unique"
+      ],
+      "tags": [
+        "风暴"
+      ],
+      "number": "010014",
+      "illustrationId": "storm-crest"
+    },
+    {
+      "id": "storm-heart",
+      "name": "风暴之心",
+      "type": "formation",
+      "rarity": "legendary",
+      "level": 7,
+      "body": 5,
+      "rings": 5,
+      "capacity": 20,
+      "income": 7,
+      "maxRank": 7,
+      "cost": 0,
+      "baseEligible": false,
+      "text": "设置成功时，从牌库将一张大风暴术加入手牌。每发动一张风暴法术卡，获得1个风暴点数。",
+      "summonCondition": "将己方风暴纹章送入灰烬区并支付4魔素。",
+      "recipe": [
+        {
+          "kind": "mana",
+          "amount": 4
+        },
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "storm-crest"
+        }
+      ],
+      "traits": [
+        "unique"
+      ],
+      "tags": [
+        "风暴"
+      ],
+      "number": "010015",
+      "illustrationId": "storm-heart"
+    },
+    {
+      "id": "wind-whisper",
+      "name": "风语术",
+      "type": "word",
+      "rarity": "common",
+      "cost": 1,
+      "rank": 1,
+      "level": 1,
+      "speed": 2,
+      "school": "transmutation",
+      "target": "self",
+      "effects": [
+        {
+          "kind": "search_action"
+        }
+      ],
+      "text": "场上有风暴阵法卡才能发动。从牌库将一张风暴的咒符法术加入手牌。",
+      "castCost": 0,
+      "analysisTurns": 0,
+      "tags": [
+        "风暴"
+      ],
+      "number": "030009",
+      "illustrationId": "wind-whisper",
+      "traits": [
+        "storm_search_talisman"
+      ]
+    },
+    {
+      "id": "swift-wind",
+      "name": "极速之风",
+      "type": "word",
+      "rarity": "common",
+      "cost": 3,
+      "rank": 1,
+      "level": 1,
+      "speed": 2,
+      "school": "transmutation",
+      "target": "none",
+      "effects": [
+        {
+          "kind": "return_enemy_analysis"
+        }
+      ],
+      "text": "场上有风暴阵法卡才能发动。将对方一张等级2及以下的阵法卡返回副卡组。",
+      "castCost": 0,
+      "analysisTurns": 0,
+      "tags": [
+        "风暴"
+      ],
+      "number": "030010",
+      "illustrationId": "swift-wind"
+    },
+    {
+      "id": "snow-rain-storm",
+      "name": "雪雨暴",
+      "type": "word",
+      "rarity": "common",
+      "cost": 3,
+      "rank": 3,
+      "level": 3,
+      "speed": 2,
+      "school": "transmutation",
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "temporary",
+          "amount": 2,
+          "recipient": "opponent"
+        }
+      ],
+      "text": "专注2。对方使用计时法术需要支付额外的2魔素，对方维持专注所需的魔素翻倍。",
+      "castCost": 0,
+      "analysisTurns": 0,
+      "concentration": true,
+      "concentrationUpkeep": 2,
+      "tags": [
+        "风暴"
+      ],
+      "number": "030011",
+      "illustrationId": "snow-rain-storm"
+    },
+    {
+      "id": "windmaking",
+      "name": "造风术",
+      "type": "word",
+      "rarity": "common",
+      "cost": 2,
+      "rank": 1,
+      "level": 1,
+      "speed": 2,
+      "school": "transmutation",
+      "target": "none",
+      "effects": [
+        {
+          "kind": "return_enemy_analysis"
+        }
+      ],
+      "text": "将对方一张法术卡弹回手卡。",
+      "castCost": 0,
+      "analysisTurns": 0,
+      "tags": [
+        "风暴"
+      ],
+      "number": "030012",
+      "illustrationId": "windmaking"
+    },
+    {
+      "id": "storm-guidance",
+      "name": "风暴导向",
+      "type": "word",
+      "rarity": "uncommon",
+      "cost": 3,
+      "rank": 2,
+      "level": 2,
+      "speed": 2,
+      "school": "divination",
+      "target": "self",
+      "effects": [
+        {
+          "kind": "search_action"
+        }
+      ],
+      "text": "场上有风暴阵法卡才能发动。将场上的一张卡送入灰烬区后，从牌库选择一张风暴法术或云雾术、召雷术加入手牌。",
+      "castCost": 0,
+      "analysisTurns": 0,
+      "tags": [
+        "风暴"
+      ],
+      "number": "030013",
+      "illustrationId": "storm-guidance",
+      "traits": [
+        "storm_search"
+      ]
+    },
+    {
+      "id": "storm-vortex",
+      "name": "风暴气旋",
+      "type": "talisman",
+      "rarity": "common",
+      "cost": 2,
+      "rank": 1,
+      "level": 1,
+      "speed": 3,
+      "school": "transmutation",
+      "target": "none",
+      "effects": [
+        {
+          "kind": "destroy_enemy_analysis"
+        }
+      ],
+      "text": "场上有风暴阵法卡才能发动。销毁对方场上一张法术卡。",
+      "castCost": 0,
+      "analysisTurns": 0,
+      "tags": [
+        "风暴"
+      ],
+      "number": "040006",
+      "illustrationId": "storm-vortex"
+    },
+    {
+      "id": "wind-strike",
+      "name": "风击术",
+      "type": "talisman",
+      "rarity": "rare",
+      "cost": 4,
+      "rank": 3,
+      "level": 3,
+      "speed": 3,
+      "school": "abjuration",
+      "target": "none",
+      "effects": [],
+      "responses": [
+        {
+          "id": "wind-strike",
+          "name": "风击反制",
+          "sources": [
+            "ambush"
+          ],
+          "windows": [
+            "prepare"
+          ],
+          "eventOwner": "opponent",
+          "target": "enemy_spell_link",
+          "effects": [
+            {
+              "kind": "damage",
+              "amount": 6,
+              "damageType": "bludgeoning"
+            },
+            {
+              "kind": "destroy_enemy_analysis"
+            }
+          ]
+        }
+      ],
+      "text": "场上有风暴阵法卡才能发动。对方设置解析法术时造成伤害；若对方法术等级较低，销毁那张卡。",
+      "castCost": 0,
+      "analysisTurns": 0,
+      "tags": [
+        "风暴"
+      ],
+      "number": "040007",
+      "illustrationId": "wind-strike"
+    },
+    {
+      "id": "great-cyclone",
+      "name": "大旋风术",
+      "type": "talisman",
+      "rarity": "epic",
+      "cost": 4,
+      "rank": 5,
+      "level": 5,
+      "speed": 2,
+      "school": "transmutation",
+      "target": "none",
+      "effects": [
+        {
+          "kind": "destroy_formation_spells"
+        }
+      ],
+      "text": "场上有风暴阵法卡才能发动。移除5个风暴点数，销毁对方一张阵法卡下的所有法术卡。并造成等同于销毁数量两倍的钝击伤害。",
+      "castCost": 0,
+      "analysisTurns": 0,
+      "tags": [
+        "风暴"
+      ],
+      "number": "040008",
+      "illustrationId": "great-cyclone"
+    },
+    {
+      "id": "storm-brand",
+      "name": "风暴烙印",
+      "type": "seal",
+      "rarity": "common",
+      "cost": 2,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "castCost": 0,
+      "text": "阵法附着效果：只有风暴阵法卡能够附着此卡。附着后，每释放2次风暴法术卡额外获得1个风暴点数。法术附着效果：无。",
+      "tags": [
+        "风暴"
+      ],
+      "number": "050004",
+      "illustrationId": "storm-brand"
+    },
+    {
+      "id": "storm-annihilation-crest",
+      "name": "风暴湮灭之纹章",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "castCost": 0,
+      "damageBonus": 4,
+      "text": "阵法附着效果：只有风暴阵法卡能够附着此卡。附着后，可以移除2个风暴点数销毁对方场上一张空闲的阵法卡。法术附着效果：额外造成4点雷鸣伤害。",
+      "tags": [
+        "风暴"
+      ],
+      "number": "050005",
+      "illustrationId": "storm-annihilation-crest"
+    },
+    {
+      "id": "ice-storm",
+      "name": "冰风暴",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 4,
+      "castCost": 1,
+      "rank": 4,
+      "level": 4,
+      "speed": 1,
+      "school": "evocation",
+      "analysisTurns": 1,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 8,
+          "damageType": "cold"
+        },
+        {
+          "kind": "delay_enemy_analysis",
+          "amount": 1
+        }
+      ],
+      "text": "对目标造成8点寒冷伤害，选择对方解析区的所有解析法术卡使解析进度+1。",
+      "tags": [
+        "风暴"
+      ],
+      "number": "020018",
+      "illustrationId": "ice-storm"
+    },
+    {
+      "id": "cutting-wind",
+      "name": "切割之风",
+      "type": "analytic",
+      "rarity": "common",
+      "cost": 1,
+      "castCost": 1,
+      "rank": 1,
+      "level": 1,
+      "speed": 1,
+      "school": "transmutation",
+      "analysisTurns": 1,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "optional_destroy_own_formation"
+        },
+        {
+          "kind": "damage",
+          "amount": 4,
+          "damageType": "slashing"
+        }
+      ],
+      "text": "场上有风暴阵法卡才能设置。销毁自己场上一张空闲阵法卡，对目标造成4点挥砍伤害，外加销毁阵法等级的雷鸣伤害。",
+      "tags": [
+        "风暴"
+      ],
+      "number": "020019",
+      "illustrationId": "cutting-wind"
+    },
+    {
+      "id": "great-storm",
+      "name": "大风暴术",
+      "type": "analytic",
+      "rarity": "legendary",
+      "cost": 0,
+      "castCost": 10,
+      "rank": 7,
+      "level": 7,
+      "speed": 1,
+      "school": "transmutation",
+      "analysisTurns": 2,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "destroy_enemy_analysis"
+        },
+        {
+          "kind": "damage",
+          "amount": 8,
+          "damageType": "slashing"
+        }
+      ],
+      "text": "场上有风暴之心作为阵法才能设置。计时的回合，对对方造成8点挥砍伤害；之后可以销毁对方一张法术卡。",
+      "tags": [
+        "风暴"
+      ],
+      "number": "020020",
+      "illustrationId": "great-storm"
+    },
+    {
+      "id": "cloud-mist",
+      "name": "云雾术",
+      "type": "analytic",
+      "rarity": "common",
+      "cost": 2,
+      "castCost": 3,
+      "rank": 2,
+      "level": 2,
+      "speed": 1,
+      "school": "transmutation",
+      "analysisTurns": 1,
+      "duration": 2,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "delay_enemy_analysis",
+          "amount": 1
+        }
+      ],
+      "text": "计时2。最多选择场上的2张解析法术卡，被选择的卡在该法术持续时间内无法被准备。",
+      "tags": [
+        "风暴"
+      ],
+      "number": "020021",
+      "illustrationId": "cloud-mist"
+    },
+    {
+      "id": "thunder-summon",
+      "name": "召雷术",
+      "type": "analytic",
+      "rarity": "common",
+      "cost": 3,
+      "castCost": 2,
+      "rank": 3,
+      "level": 3,
+      "speed": 1,
+      "school": "evocation",
+      "analysisTurns": 1,
+      "target": "opponent",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 9,
+          "damageType": "lightning"
+        },
+        {
+          "kind": "temporary",
+          "amount": 5,
+          "recipient": "opponent"
+        }
+      ],
+      "text": "对目标造成9点闪电伤害，并给予对方5点荷载，对方的回合结束阶段清除。",
+      "tags": [
+        "风暴"
+      ],
+      "number": "020022",
+      "illustrationId": "thunder-summon"
     }
   ]
 }

@@ -1,0 +1,30 @@
+{
+  "id": "great-storm",
+  "name": "大风暴术",
+  "type": "analytic",
+  "rarity": "legendary",
+  "cost": 0,
+  "castCost": 10,
+  "rank": 7,
+  "level": 7,
+  "speed": 1,
+  "school": "transmutation",
+  "analysisTurns": 2,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "destroy_enemy_analysis"
+    },
+    {
+      "kind": "damage",
+      "amount": 8,
+      "damageType": "slashing"
+    }
+  ],
+  "text": "场上有风暴之心作为阵法才能设置。计时的回合，对对方造成8点挥砍伤害；之后可以销毁对方一张法术卡。",
+  "tags": [
+    "风暴"
+  ],
+  "number": "020020",
+  "illustrationId": "great-storm"
+}

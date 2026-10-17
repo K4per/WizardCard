@@ -97,10 +97,14 @@ matching bounds, hover lifts and straightens the card, and opponent backs use
 the same size and style. Facedown cards show no name on the field; projected
 identity controls whether their full details can be inspected.
 
-Matches use simple color panels, borders and text. Artwork remains available
-for other pages and provenance, but is not used for the match field, cards or
-match decision controls. Settings persist `arcane`, `slate` or `ember` and
-apply the same background identifier in match and replay.
+Matches use simple color panels, borders and text around the shared compact card
+face. Battlefield cards use the same illustrated card treatment as deck
+construction; hidden or facedown projections render the anonymous cover.
+Runtime card illustrations, including the Storm series and the small hexagram,
+are stored together under `art/card/`. Collection trays for the side deck and
+ash zone use the same illustrated face and open the same card detail panel.
+Settings persist `arcane`, `slate` or `ember` and apply the same background
+identifier in match and replay.
 
 Both players privately choose a level-one formation from their own side deck
 before simultaneous reveal. Local hotseat, AI and tutorial have no clock. LAN

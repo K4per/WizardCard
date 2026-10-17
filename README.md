@@ -1,8 +1,8 @@
 # 巫师牌 / WizardCard
 
-**2.5.0-preview.2**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序版本为 `2.5.0-preview.2`，规则与正式卡池版本为 `2.5.0`。
+**2.5.0-preview.3**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序版本为 `2.5.0-preview.3`，规则与正式卡池版本为 `2.5.0`。
 
-正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.5](docs/alpha-v2.5-rules.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本轮变化和验证结果见[发行说明](docs/releases/2.5.0-preview.2.md)与[交付报告](docs/reports/2.5.0-preview.2.md)。旧版文档与兼容夹具保留在源码仓库中，用于历史验证。
+正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.5](docs/alpha-v2.5-rules.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本轮变化和验证结果见[发行说明](docs/releases/2.5.0-preview.3.md)与[交付报告](docs/reports/2.5.0-preview.3.md)。旧版文档与兼容夹具保留在源码仓库中，用于历史验证。
 
 ## 运行便携包
 
@@ -38,7 +38,7 @@ Windows x64 便携包解压后运行 `WizardCard.exe`。保留同级 `WizardCard
 
 设置包含总音量、音效音量、窗口/无边框/全屏、分辨率、精简动态效果、自动阶段推进及场地背景。支持1280×720、1600×1000、1920×1080；修改后显式保存。无强制选择的非主要阶段可自动推进，主要阶段仍需显式结束。
 
-Godot 默认数据目录为 `user://alpha-v2-frontend`，Windows 对应 `%APPDATA%/Godot/app_userdata/WizardCard 2.5.0-preview.2/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
+Godot 默认数据目录为 `user://alpha-v2-frontend`，Windows 对应 `%APPDATA%/Godot/app_userdata/WizardCard 2.5.0-preview.3/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
 
 当前复盘格式4包含程序版本、规则版本、卡池版本、内容哈希、种子、双方实际主卡组与副卡组、开局选择命令和每一步状态摘要。对局接受操作后自动保存，也可从对局菜单手动保存；完整复盘在终局后开放。旧 preview.1 复盘因程序版本和内容哈希变化而拒绝。复盘用于完整重放，不提供中断对局存档恢复。完整离线记录包含双方私有信息，玩家投影与日志按权限过滤；哈希用于复现校验。
 

@@ -186,6 +186,74 @@
     {
       "id": "sulfur",
       "file": "cards/formation/sulfur.json"
+    },
+    {
+      "id": "storm-crest",
+      "file": "cards/formation/storm-crest.json"
+    },
+    {
+      "id": "storm-heart",
+      "file": "cards/formation/storm-heart.json"
+    },
+    {
+      "id": "wind-whisper",
+      "file": "cards/word/wind-whisper.json"
+    },
+    {
+      "id": "swift-wind",
+      "file": "cards/word/swift-wind.json"
+    },
+    {
+      "id": "snow-rain-storm",
+      "file": "cards/word/snow-rain-storm.json"
+    },
+    {
+      "id": "windmaking",
+      "file": "cards/word/windmaking.json"
+    },
+    {
+      "id": "storm-guidance",
+      "file": "cards/word/storm-guidance.json"
+    },
+    {
+      "id": "storm-vortex",
+      "file": "cards/talisman/storm-vortex.json"
+    },
+    {
+      "id": "wind-strike",
+      "file": "cards/talisman/wind-strike.json"
+    },
+    {
+      "id": "great-cyclone",
+      "file": "cards/talisman/great-cyclone.json"
+    },
+    {
+      "id": "storm-brand",
+      "file": "cards/seal/storm-brand.json"
+    },
+    {
+      "id": "storm-annihilation-crest",
+      "file": "cards/seal/storm-annihilation-crest.json"
+    },
+    {
+      "id": "ice-storm",
+      "file": "cards/analytic/ice-storm.json"
+    },
+    {
+      "id": "cutting-wind",
+      "file": "cards/analytic/cutting-wind.json"
+    },
+    {
+      "id": "great-storm",
+      "file": "cards/analytic/great-storm.json"
+    },
+    {
+      "id": "cloud-mist",
+      "file": "cards/analytic/cloud-mist.json"
+    },
+    {
+      "id": "thunder-summon",
+      "file": "cards/analytic/thunder-summon.json"
     }
   ]
 }

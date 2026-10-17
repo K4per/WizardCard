@@ -15,6 +15,8 @@ func configure(value: CardPresentation) -> void:
 
 func _draw() -> void:
 	if simple_style:
-		SimpleCardPainter.paint(self, card, Rect2(Vector2.ZERO, size))
+		# Popup trays and detail panels use the same illustrated compact face as
+		# the deck editor, so selecting a pile card never loses its artwork.
+		DeckCardPainter.paint(self, card, Rect2(Vector2.ZERO, size))
 	else:
 		CardPainter.paint(self, card, Rect2(Vector2.ZERO, size), "detail")

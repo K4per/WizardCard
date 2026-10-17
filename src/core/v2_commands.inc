@@ -271,6 +271,24 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
     auto paySpellCost = [&](CardId material) {
         if (material) { StateMaintenance::leave(s, material, &catalog_); c.targets = {material}; }
     };
+    if (const auto *cmd = std::get_if<PlayAction>(&command)) {
+        if (c.zone != Zone::Hand || def.type != CardType::Action ||
+            pl.blockedActionTurn == pl.ownTurn)
+            return "invalid_action: 行动不可用";
+        if (!validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets))
+            return "target: 无效目标";
+        if (pl.mana < def.cost || Rules::load(s, actor) + def.burden > Rules::capacity(s, catalog_, actor))
+            return "cost: 魔素或荷载不足";
+        pl.mana -= def.cost;
+        ++pl.actionsPlayed;
+        c.targetCard = cmd->target;
+        c.targets = targetCards(cmd->target, cmd->targets);
+        c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
+        if (def.burden)
+            s.temporary.push_back({s.nextLoad++, actor, c.id, def.burden, pl.ownTurn});
+        beginEffect(c.id, AfterEffect::Action);
+        return {};
+    }
     if (const auto *cmd = std::get_if<SetFormation>(&command)) {
         if (s.phase != Phase::Main || c.zone != Zone::SideDeck || def.type != CardType::Formation || pl.formations)
             return "formation_limit";

@@ -1,0 +1,35 @@
+{
+  "id": "storm-heart",
+  "name": "风暴之心",
+  "type": "formation",
+  "rarity": "legendary",
+  "level": 7,
+  "body": 5,
+  "rings": 5,
+  "capacity": 20,
+  "income": 7,
+  "maxRank": 7,
+  "cost": 0,
+  "baseEligible": false,
+  "text": "设置成功时，从牌库将一张大风暴术加入手牌。每发动一张风暴法术卡，获得1个风暴点数。",
+  "summonCondition": "将己方风暴纹章送入灰烬区并支付4魔素。",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 4
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "storm-crest"
+    }
+  ],
+  "traits": [
+    "unique"
+  ],
+  "tags": [
+    "风暴"
+  ],
+  "number": "010015",
+  "illustrationId": "storm-heart"
+}

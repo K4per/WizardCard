@@ -1,0 +1,25 @@
+{
+  "id": "storm-vortex",
+  "name": "风暴气旋",
+  "type": "talisman",
+  "rarity": "common",
+  "cost": 2,
+  "rank": 1,
+  "level": 1,
+  "speed": 3,
+  "school": "transmutation",
+  "target": "none",
+  "effects": [
+    {
+      "kind": "destroy_enemy_analysis"
+    }
+  ],
+  "text": "场上有风暴阵法卡才能发动。销毁对方场上一张法术卡。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "tags": [
+    "风暴"
+  ],
+  "number": "040006",
+  "illustrationId": "storm-vortex"
+}

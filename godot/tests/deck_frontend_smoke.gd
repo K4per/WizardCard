@@ -7,6 +7,7 @@ var _capture: bool = false
 var _output: String = ""
 var _user_data: String = ""
 var _assets: String = ""
+var _official_card_count: int = 0
 
 func _initialize() -> void:
 	call_deferred(&"_run")
@@ -44,7 +45,8 @@ func _run() -> void:
 	root.add_child(_app)
 	await _settle()
 	_check(_app.service.error.is_empty(), "Native bridge initializes: " + _app.service.error)
-	_check(_app.service.cards.size() == 45, "Real native card catalogue is used")
+	_official_card_count = _app.service.cards.size()
+	_check(_official_card_count >= 45, "Real native card catalogue is used")
 	if not _app.service.error.is_empty():
 		_finish()
 		return
@@ -94,7 +96,7 @@ func _run() -> void:
 	editor._query_changed("")
 	_check(editor._pool_ids.is_empty(), "Combined name and type filters produce empty results")
 	editor._reset_query()
-	_check(editor._pool_ids.size() == 45, "Reset restores full catalogue")
+	_check(editor._pool_ids.size() == _official_card_count, "Reset restores full catalogue")
 	var main_ids: Array[String] = editor._built.ids.duplicate()
 	var side_ids: Array[String] = editor._side.ids.duplicate()
 	editor._pool_next.pressed.emit()

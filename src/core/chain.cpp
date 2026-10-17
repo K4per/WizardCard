@@ -272,7 +272,10 @@ void GameEngine::finishLink(bool success) {
             if (!success && link.paymentIndex >= 0)
                 c.payments.at(static_cast<std::size_t>(link.paymentIndex)).canceled = true;
             const auto expected = link.kind == LinkKind::Action ? Zone::Action : Zone::Resolving;
-            if (c.zone == expected)
+            // Alpha v2 actions resolve directly from hand; the legacy Action
+            // zone is intentionally invalid in that ruleset.
+            if (c.zone == expected || (catalog_.usesAlphaV2() && link.kind == LinkKind::Action &&
+                                       c.zone == Zone::Hand))
                 StateMaintenance::leave(s, c.id, &catalog_);
         }
     }

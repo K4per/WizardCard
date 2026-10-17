@@ -92,11 +92,19 @@ void GameEngine::pump() {
             }
             if (e.kind == EffectKind::SearchAction || e.kind == EffectKind::DestroyAmbush) {
                 std::vector<CardId> opts;
+                const auto &source_definition = catalog_.at(s.cards.at(f.item.source).definition);
+                const bool storm_search = std::find(source_definition.traits.begin(), source_definition.traits.end(),
+                                                    "storm_search") != source_definition.traits.end();
+                const bool storm_search_talisman = std::find(source_definition.traits.begin(), source_definition.traits.end(),
+                                                             "storm_search_talisman") != source_definition.traits.end();
                 for (const auto &[id, c] : s.cards) {
                     const auto &d = catalog_.at(c.definition);
                     if (e.kind == EffectKind::SearchAction
                             ? (c.owner == f.item.owner && c.zone == Zone::Deck &&
-                               d.type == CardType::Action && (d.rarity == "common" || d.rarity == "uncommon"))
+                               (storm_search || storm_search_talisman
+                                    ? std::find(d.tags.begin(), d.tags.end(), "风暴") != d.tags.end() &&
+                                      (!storm_search_talisman || d.type == CardType::Talisman)
+                                    : d.type == CardType::Action && (d.rarity == "common" || d.rarity == "uncommon")))
                             : (c.owner != f.item.owner && c.faceDown &&
                                (!catalog_.usesAlphaV2() || (c.zone == Zone::Analysis &&
                                 (d.type == CardType::Analytic || d.type == CardType::Word || d.type == CardType::Talisman)))))

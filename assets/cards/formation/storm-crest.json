@@ -1,0 +1,30 @@
+{
+  "id": "storm-crest",
+  "name": "风暴纹章",
+  "type": "formation",
+  "rarity": "rare",
+  "level": 1,
+  "body": 2,
+  "rings": 2,
+  "capacity": 5,
+  "income": 1,
+  "maxRank": 1,
+  "cost": 0,
+  "baseEligible": false,
+  "text": "这张卡在场上只能存在一张。每发动一张风暴法术卡，获得1个风暴点数。",
+  "summonCondition": "支付1魔素。",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 1
+    }
+  ],
+  "traits": [
+    "unique"
+  ],
+  "tags": [
+    "风暴"
+  ],
+  "number": "010014",
+  "illustrationId": "storm-crest"
+}

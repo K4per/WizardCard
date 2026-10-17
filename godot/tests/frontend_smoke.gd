@@ -8,6 +8,7 @@ var _capture: bool = false
 var _output: String = ""
 var _report: String = ""
 var _checks: int = 0
+var _official_card_count: int = 0
 
 func _initialize() -> void:
 	call_deferred(&"_run")
@@ -39,7 +40,8 @@ func _run() -> void:
 	if not _app.service.error.is_empty():
 		quit(2)
 		return
-	_check(_app.service.cards.size() == 45, "All 45 official cards must be browsable")
+	_official_card_count = _app.service.cards.size()
+	_check(_official_card_count >= 45, "The official card pool must remain browsable")
 	await _screenshot("menu")
 	var hidden: CardPresentation = CardPresentation.from_projection({"id": "private-1", "hidden": true, "definition": {"name": "secret", "id": "fireball", "type": 4, "text": "secret"}})
 	_check(hidden.hidden and hidden.title == "盖伏卡" and hidden.definition_id.is_empty() and hidden.text.is_empty() and hidden.type_key.is_empty(), "Hidden cards must discard identity before art/details")
@@ -170,7 +172,7 @@ func _run() -> void:
 		_app.navigate(&"library")
 		await _settle()
 		var tiled: LibraryPage = _app.page as LibraryPage
-		_check(tiled._grid.get_child_count() == 45, "Library lists all 45 authoritative cards at each size")
+		_check(tiled._grid.get_child_count() == _official_card_count, "Library lists all authoritative cards at each size")
 		await _screenshot("library-%dx%d" % [dimensions.x, dimensions.y])
 		var first_tile: CardTile = tiled._grid.get_child(0) as CardTile
 		first_tile.pressed.emit()
@@ -192,7 +194,7 @@ func _run() -> void:
 		tiled._kind_filter.select(0)
 		tiled._kind_filter.item_selected.emit(0)
 		await _settle()
-		_check(tiled._grid.get_child_count() == 45 and not tiled._detail.visible, "Reset type restores the unified card pool and closes stale details")
+		_check(tiled._grid.get_child_count() == _official_card_count and not tiled._detail.visible, "Reset type restores the unified card pool and closes stale details")
 	if _capture:
 		await _frame_preview()
 	_app.navigate(&"library")

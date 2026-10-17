@@ -1,0 +1,28 @@
+{
+  "id": "wind-whisper",
+  "name": "风语术",
+  "type": "word",
+  "rarity": "common",
+  "cost": 1,
+  "rank": 1,
+  "level": 1,
+  "speed": 2,
+  "school": "transmutation",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "search_action"
+    }
+  ],
+  "text": "场上有风暴阵法卡才能发动。从牌库将一张风暴的咒符法术加入手牌。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "tags": [
+    "风暴"
+  ],
+  "number": "030009",
+  "illustrationId": "wind-whisper",
+  "traits": [
+    "storm_search_talisman"
+  ]
+}

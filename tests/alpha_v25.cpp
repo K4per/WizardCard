@@ -92,6 +92,178 @@ TEST_CASE("Alpha v2.5 main phase can enter casting or skip directly to end with 
     REQUIRE(e.state().phase == Phase::Cast);
     REQUIRE(e.state().players[0].life == 34);
 }
+
+TEST_CASE("Alpha v2.5 ambush responses open on opponent action windows", "[alpha-v25][ambush]") {
+    Fixture f;
+    auto ambush = f.catalog.cards.at("spell0");
+    ambush.id = "ambush";
+    ambush.name = "盖伏响应";
+    ambush.type = CardType::Word;
+    ambush.speed = 3;
+    ambush.responseOnly = false;
+    ambush.target = TargetKind::Self;
+    ResponseAbility ability;
+    ability.id = "respond";
+    ability.fromAmbush = true;
+    ability.windows = {ResponseWindow::Action};
+    ability.effects = {{EffectKind::GainMana, 1}};
+    ambush.responses = {ability};
+    f.catalog.cards.emplace(ambush.id, ambush);
+    auto state = f.state(Phase::Main);
+    state.active = 1;
+    state.globalTurn = 2;
+    state.players[0].ownTurn = 2;
+    CardInstance hidden;
+    hidden.id = 20;
+    hidden.owner = 0;
+    hidden.definition = ambush.id;
+    hidden.zone = Zone::Analysis;
+    hidden.host = 1;
+    hidden.faceDown = hidden.wasAmbushed = true;
+    hidden.ambushedTurn = 1;
+    state.cards.emplace(hidden.id, hidden);
+    CardInstance pending;
+    pending.id = 30;
+    pending.owner = 1;
+    pending.definition = "spell0";
+    pending.zone = Zone::Hand;
+    state.cards.emplace(pending.id, pending);
+    auto e = GameEngine::scenario(f.catalog, state);
+    REQUIRE(e.submit(1, StartAnalysis{30, 2}).accepted);
+    REQUIRE(e.state().decision);
+    REQUIRE(e.state().decision->player == 0);
+    REQUIRE(std::any_of(e.viewFor(0).actions.begin(), e.viewFor(0).actions.end(), [](const LegalAction &action) {
+        const auto *respond = std::get_if<Respond>(&action.command);
+        return respond && respond->card == 20;
+    }));
+
+    auto aiState = state;
+    aiState.active = 0;
+    aiState.cards.at(20).owner = 1;
+    aiState.cards.at(20).host = 2;
+    aiState.cards.at(30).owner = 0;
+    auto ai = GameEngine::scenario(f.catalog, aiState);
+    REQUIRE(ai.submit(0, StartAnalysis{30, 1}).accepted);
+    REQUIRE(ai.state().decision);
+    REQUIRE(ai.state().decision->player == 1);
+    const auto selection = ai::choose(ai.viewFor(1), ai::Difficulty::Normal);
+    REQUIRE(selection);
+    REQUIRE(std::holds_alternative<Respond>(selection->command));
+    REQUIRE(ai.submit(1, selection->command).accepted);
+}
+
+TEST_CASE("Alpha v2.5 AI can answer an opponent cast with a facedown counter", "[alpha-v25][ambush]") {
+    Fixture f;
+    auto counter = f.catalog.cards.at("spell0");
+    counter.id = "counter";
+    counter.name = "盖伏反制";
+    counter.type = CardType::Word;
+    counter.speed = 4;
+    counter.responseOnly = true;
+    ResponseAbility ability;
+    ability.id = "counter";
+    ability.fromAmbush = true;
+    ability.windows = {ResponseWindow::Cast};
+    ability.eventOwner = EventOwner::Opponent;
+    ability.target = TargetKind::EnemySpellLink;
+    ability.effects = {{EffectKind::CounterSpell, 0}};
+    counter.responses = {ability};
+    f.catalog.cards.emplace(counter.id, counter);
+    auto state = f.state(Phase::Cast);
+    state.active = 0;
+    state.globalTurn = 2;
+    state.players[1].ownTurn = 2;
+    CardInstance hidden;
+    hidden.id = 20;
+    hidden.owner = 1;
+    hidden.definition = counter.id;
+    hidden.zone = Zone::Analysis;
+    hidden.host = 2;
+    hidden.faceDown = hidden.wasAmbushed = true;
+    hidden.ambushedTurn = 1;
+    state.cards.emplace(hidden.id, hidden);
+    CardInstance pending;
+    pending.id = 30;
+    pending.owner = 0;
+    pending.definition = "spell0";
+    pending.zone = Zone::Casting;
+    pending.spell = SpellState::Ready;
+    state.cards.emplace(pending.id, pending);
+    auto e = GameEngine::scenario(f.catalog, state);
+    REQUIRE(e.submit(0, ActivateSpell{30}).accepted);
+    REQUIRE(e.state().decision);
+    REQUIRE(e.state().decision->player == 1);
+    const auto selection = ai::choose(e.viewFor(1), ai::Difficulty::Normal);
+    REQUIRE(selection);
+    REQUIRE(std::holds_alternative<Respond>(selection->command));
+    REQUIRE(e.submit(1, selection->command).accepted);
+}
+
+TEST_CASE("Alpha v2.5 action windows let AI use a facedown shield", "[alpha-v25][ambush]") {
+    Fixture f;
+    auto shield = f.catalog.cards.at("spell0");
+    shield.id = "shield";
+    shield.name = "盖伏护盾";
+    shield.type = CardType::Word;
+    shield.cost = 1;
+    shield.speed = 2;
+    shield.target = TargetKind::Self;
+    shield.responses = {};
+    ResponseAbility response;
+    response.id = "shield";
+    response.fromAmbush = true;
+    response.windows = {ResponseWindow::Action};
+    response.target = TargetKind::Self;
+    response.effects = {{EffectKind::ShieldForTurn, 5}};
+    shield.responses = {response};
+    f.catalog.cards.emplace(shield.id, shield);
+    auto action = f.catalog.cards.at("spell0");
+    action.id = "action";
+    action.name = "对手行动";
+    action.type = CardType::Action;
+    action.cost = 1;
+    action.effects = {{EffectKind::GainMana, 1}};
+    action.responses.clear();
+    f.catalog.cards.emplace(action.id, action);
+    auto state = f.state(Phase::Main);
+    state.active = 1;
+    state.globalTurn = 2;
+    state.players[0].ownTurn = 2;
+    CardInstance hidden;
+    hidden.id = 20;
+    hidden.owner = 0;
+    hidden.definition = shield.id;
+    hidden.zone = Zone::Analysis;
+    hidden.host = 1;
+    hidden.faceDown = hidden.wasAmbushed = true;
+    hidden.ambushedTurn = 1;
+    state.cards.emplace(hidden.id, hidden);
+    CardInstance pending;
+    pending.id = 30;
+    pending.owner = 1;
+    pending.definition = action.id;
+    pending.zone = Zone::Hand;
+    state.cards.emplace(pending.id, pending);
+    auto engine = GameEngine::scenario(f.catalog, state);
+    REQUIRE(engine.submit(1, PlayAction{30}).accepted);
+    REQUIRE(engine.state().decision);
+    REQUIRE(engine.state().decision->player == 0);
+    const auto view = engine.viewFor(0);
+    REQUIRE(std::any_of(view.actions.begin(), view.actions.end(), [](const LegalAction &legal) {
+        const auto *respond = std::get_if<Respond>(&legal.command);
+        return respond && respond->card == 20;
+    }));
+    const auto selection = ai::choose(view, ai::Difficulty::Normal);
+    REQUIRE(selection);
+    REQUIRE(std::holds_alternative<Respond>(selection->command));
+    REQUIRE(engine.submit(0, selection->command).accepted);
+    for (int n = 0; engine.state().decision && n < 8; ++n)
+        REQUIRE(engine.submit(engine.state().decision->player,
+                              PassResponse{engine.state().decision->id})
+                    .accepted);
+    REQUIRE(engine.state().cards.at(30).zone == Zone::Ash);
+}
+
 TEST_CASE("Alpha v2.5 skip casting preserves main phase end response before entering end", "[alpha-v25][phase-choice]") {
     Fixture f;
     auto &spell = f.catalog.cards.at("spell0");

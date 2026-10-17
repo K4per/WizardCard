@@ -90,7 +90,7 @@ bool GameEngine::contentEffectV2() {
             break;
         case EffectKind::DestroyEnemyAnalysis:
             eligible = card.owner != owner && card.zone == Zone::Analysis &&
-                       definition.type == CardType::Analytic && !protectedFromEffect(definition);
+                       isSpell(definition) && !protectedFromEffect(definition);
             break;
         case EffectKind::ConcealEnemySpell:
             eligible = card.owner != owner && card.zone == Zone::Analysis && !card.faceDown && isSpell(definition);
@@ -100,7 +100,7 @@ bool GameEngine::contentEffectV2() {
             break;
         case EffectKind::ReturnEnemyAnalysis:
             eligible = card.owner != owner && card.zone == Zone::Analysis &&
-                       definition.type == CardType::Analytic;
+                       isSpell(definition);
             break;
         case EffectKind::DestroyFormationSpells:
             eligible = card.owner != owner && card.zone == Zone::Analysis &&

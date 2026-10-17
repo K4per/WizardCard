@@ -313,7 +313,8 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 "host_cast_life_for_temporary", "host_evocation_damage_plus_one",
                 "distinct_host_schools", "host_fire_only", "clear_load_on_analysis",
                 "ping_on_spell_leave", "ash_evocation_discount", "return_formation_from_ash",
-                "self_ambush_on_leave", "inspect_enemy_ambush", "discard_spell_search", "end_phase_start"};
+                "self_ambush_on_leave", "inspect_enemy_ambush", "discard_spell_search", "end_phase_start",
+                "storm_search", "storm_search_talisman"};
             if (!card.at("traits").is_array())
                 fail(p + "/traits", "expected trait array");
             for (const auto &value : card.at("traits")) {

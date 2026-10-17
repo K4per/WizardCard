@@ -35,7 +35,7 @@ static func paint_artwork(surface: CanvasItem, value: CardPresentation, rect: Re
 	if rect.size.x <= 0.0 or rect.size.y <= 0.0:
 		return
 	surface.draw_rect(rect, ART_FILL)
-	if value == null or value.hidden or value.art_id().is_empty():
+	if value == null or value.hidden or value.art_id().is_empty() or ArtBank.metadata("illustration." + value.art_id()).is_empty():
 		return
 	var illustration: Texture2D = ArtBank.texture("illustration." + value.art_id())
 	if illustration == null or illustration.get_width() <= 0 or illustration.get_height() <= 0:
@@ -49,6 +49,9 @@ static func paint(surface: CanvasItem, value: CardPresentation, rect: Rect2, hig
 		return
 	surface.draw_rect(rect, CARD_FILL)
 	surface.draw_rect(rect, DeckTheme.ACCENT if highlighted else DeckTheme.BORDER, false, 2.0 if highlighted else 1.0)
+	if value.hidden or value.face_down:
+		_label(surface, "盖伏", rect.grow(-4.0), maxi(10, mini(20, int(rect.size.x * 0.22))), FONT, DeckTheme.MUTED, true)
+		return
 	var artwork: Rect2 = artwork_rect(rect)
 	paint_artwork(surface, value, artwork)
 	var padding: float = artwork.position.x - rect.position.x
@@ -67,7 +70,7 @@ static func paint(surface: CanvasItem, value: CardPresentation, rect: Rect2, hig
 		costs = "附着 %d" % value.setting_cost
 	_label(surface, costs, cost_area, maxi(9, font_size - 1), FONT, DeckTheme.TEXT)
 
-static func _label(surface: CanvasItem, text: String, rect: Rect2, font_size: int, font: Font, color: Color) -> void:
+static func _label(surface: CanvasItem, text: String, rect: Rect2, font_size: int, font: Font, color: Color, centered: bool = false) -> void:
 	if rect.size.x <= 0.0 or rect.size.y <= 0.0:
 		return
 	var displayed: String = text
@@ -76,4 +79,6 @@ static func _label(surface: CanvasItem, text: String, rect: Rect2, font_size: in
 			displayed = displayed.left(displayed.length() - 1)
 		displayed += "…"
 	var baseline: float = (rect.size.y - font.get_height(font_size)) * 0.5 + font.get_ascent(font_size)
-	surface.draw_string(font, rect.position + Vector2(0.0, baseline), displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, color)
+	var width: float = rect.size.x if centered else -1.0
+	var offset: float = (rect.size.x - font.get_string_size(displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x) * 0.5 if centered else 0.0
+	surface.draw_string(font, rect.position + Vector2(offset, baseline), displayed, HORIZONTAL_ALIGNMENT_LEFT, width, font_size, color)

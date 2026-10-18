@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://pages/menu_page.gd" id="1"]
 [ext_resource type="Theme" path="res://ui/pixel_theme.tres" id="theme"]
-[ext_resource type="PackedScene" path="res://ui/common_button.tscn" id="button"]
 [ext_resource type="PackedScene" path="res://ui/menu_art_button.tscn" id="menu_button"]
 
 [node name="MenuPage" type="Control"]
@@ -30,7 +29,7 @@ theme_override_constants/separation = 12
 [node name="Logo" type="TextureRect" parent="Center/Content"]
 layout_mode = 2
 unique_name_in_owner = true
-custom_minimum_size = Vector2(850, 200)
+custom_minimum_size = Vector2(850, 120)
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
@@ -68,29 +67,15 @@ layout_mode = 2
 unique_name_in_owner = true
 text = "退出游戏"
 
-[node name="Tools" type="HBoxContainer" parent="Center/Content"]
+[node name="Replay" parent="Center/Content/ButtonsCenter/Buttons" instance=ExtResource("menu_button")]
 layout_mode = 2
 unique_name_in_owner = true
-alignment = 1
-theme_override_constants/separation = 24
+text = "对局复盘"
 
-[node name="Replay" parent="Center/Content/Tools" instance=ExtResource("button")]
-layout_mode = 2
-unique_name_in_owner = true
-text = "复盘记录"
-primary = false
-compact = false
-flat = true
-custom_minimum_size = Vector2(0, 28)
-
-[node name="Library" parent="Center/Content/Tools" instance=ExtResource("button")]
+[node name="Library" parent="Center/Content/ButtonsCenter/Buttons" instance=ExtResource("menu_button")]
 layout_mode = 2
 unique_name_in_owner = true
 text = "卡牌图鉴"
-primary = false
-compact = false
-flat = true
-custom_minimum_size = Vector2(0, 28)
 
 [node name="Status" type="Label" parent="."]
 unique_name_in_owner = true

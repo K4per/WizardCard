@@ -123,7 +123,7 @@ func _run() -> void:
 		await _settle()
 		var menu: MenuPage = _app.page as MenuPage
 		var menu_bounds: Rect2 = Rect2(Vector2.ZERO, Vector2(dimensions))
-		_check(menu._buttons.size() == 5, "Menu preserves the five product entries")
+		_check(menu._buttons.size() == 7, "Menu exposes seven large product entries")
 		for button: MenuArtButton in menu._buttons:
 			_check(menu_bounds.encloses(button.get_global_rect()), "Menu buttons fit at " + str(dimensions))
 			_check(button._has_point(button.size * 0.5) and not button._has_point(Vector2.ZERO), "Menu hit test follows the pointed silhouette")
@@ -138,7 +138,7 @@ func _run() -> void:
 				_check(menu_font.has_char(character.unicode_at(0)), "Menu Chinese glyph comes from the bundled font: " + character)
 		_check(not menu._buttons[0].disabled and not menu._buttons[1].disabled and not menu._buttons[2].disabled, "Single player, multiplayer and deck construction are enabled")
 		_check(menu._logo.texture is AtlasTexture and menu._buttons[3]._skin.texture is AtlasTexture, "Menu crops full HD alpha margins using declared texture regions")
-		_check(menu_bounds.encloses(menu._tools.get_global_rect()), "Auxiliary menu links fit at " + str(dimensions))
+		_check(menu._buttons[5].text == "对局复盘" and menu._buttons[6].text == "卡牌图鉴", "Replay and library use the large menu entries")
 		if _capture:
 			var setting_button: MenuArtButton = menu._buttons[3]
 			var pointer: InputEventMouseMotion = InputEventMouseMotion.new()

@@ -328,6 +328,13 @@ std::vector<std::string> queryCards(const CardCatalog &cat, const CardQuery &q) 
             (q.rank && d.rank != *q.rank))
             continue;
         const auto tags = cardTags(d);
+        const auto hasAll = [&](const std::vector<std::string> &values) {
+            return std::all_of(values.begin(), values.end(), [&](const std::string &value) {
+                return std::find(tags.begin(), tags.end(), value) != tags.end();
+            });
+        };
+        if (!hasAll(q.factions) || !hasAll(q.speeds) || !hasAll(q.damageTypes))
+            continue;
         if (!std::all_of(q.tags.begin(), q.tags.end(), [&](const std::string &tag) {
                 return std::find(tags.begin(), tags.end(), tag) != tags.end();
             }))

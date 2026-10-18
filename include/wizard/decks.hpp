@@ -19,6 +19,7 @@ struct CardQuery {
     std::string name, rarity;
     std::optional<CardType> type;
     std::optional<int> cost, castCost, rank;
+    std::vector<std::string> factions, speeds, damageTypes;
     std::vector<std::string> tags;
 };
 std::vector<std::string> cardTags(const CardDefinition &);

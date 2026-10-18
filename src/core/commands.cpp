@@ -26,7 +26,10 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
         if (def.type != CardType::Analytic || c.faceDown || cmd.discard || c.zone != Zone::Analysis || c.spell != SpellState::Ready ||
             c.canceledTurn == pl.ownTurn)
             return "not_ready: 法术未解析完成";
-        if (!validTargets(s, def.target, def.targetCount, actor, cmd.target, cmd.targets))
+        // Shatter Ring chooses its empty formation when it is released. The
+        // preparation announcement only opens the response window and must not
+        // capture a target that has no effect yet.
+        if (def.id != "unravel" && !validTargets(s, def.target, def.targetCount, actor, cmd.target, cmd.targets))
             return "target: 无效目标";
         if (!deferred && ((actor != s.active && (!c.wasAmbushed || c.ambushedTurn >= s.globalTurn || def.speed < 2)) ||
             (def.speed == 1 && s.phase != Phase::Main) ||
@@ -605,7 +608,6 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                     if (def.type == CardType::Analytic) {
                         if (!owned(cmd.formation, Zone::Analysis) ||
                             catalog_.at(s.cards.at(cmd.formation).definition).type != CardType::Formation ||
-                            def.rank > Rules::maxRank(s, catalog_, cmd.formation) ||
                             Rules::occupied(s, cmd.formation) >= Rules::rings(s, catalog_, cmd.formation))
                             return "ring_or_rank";
                         c.zone = Zone::Analysis;

@@ -17,6 +17,7 @@ var _detail: CardDetail
 var _rows: Array[Dictionary] = []
 var _step: int = 0
 var _path: String = ""
+var _frame_cache: Dictionary = {}
 
 func _ready() -> void:
 	_files = %Files
@@ -69,6 +70,7 @@ func _load() -> void:
 		return
 	_path = ""
 	_rows.clear()
+	_frame_cache.clear()
 	_canvas.configure(FieldPresentation.new())
 	_step = 0
 	_hide_detail()
@@ -99,11 +101,17 @@ func _viewer_changed(_index: int) -> void:
 func _show_frame() -> void:
 	if _path.is_empty():
 		return
-	var response: Dictionary = service.match_request(&"replay_frame", [_path, _step, _viewer.selected])
-	if not bool(response.get("ok", false)):
-		_notice.text = "无法显示此步骤：" + service.error
-		return
-	var frame: Dictionary = response.get("data", {})
+	var cache_key: String = "%d:%d" % [_step, _viewer.selected]
+	var frame: Dictionary
+	if _frame_cache.has(cache_key):
+		frame = _frame_cache[cache_key]
+	else:
+		var response: Dictionary = service.match_request(&"replay_frame", [_path, _step, _viewer.selected])
+		if not bool(response.get("ok", false)):
+			_notice.text = "无法显示此步骤：" + service.error
+			return
+		frame = (response.get("data", {}) as Dictionary).duplicate(true)
+		_frame_cache[cache_key] = frame
 	_canvas.configure(MatchProjection.field(frame))
 	_canvas.set_background_theme(str(service.settings.get("fieldBackground", "arcane")))
 	_hide_detail()

@@ -115,6 +115,9 @@ Json LocalSession::query(const Json &data) const {
         if (data.contains("cost")) query.cost = data.at("cost").get<int>();
         if (data.contains("castCost")) query.castCost = data.at("castCost").get<int>();
         if (data.contains("rank")) query.rank = data.at("rank").get<int>();
+        if (data.contains("faction")) query.factions = data.at("faction").get<std::vector<std::string>>();
+        if (data.contains("speed")) query.speeds = data.at("speed").get<std::vector<std::string>>();
+        if (data.contains("damageType")) query.damageTypes = data.at("damageType").get<std::vector<std::string>>();
         if (data.contains("tags")) query.tags = data.at("tags").get<std::vector<std::string>>();
         return ok({{"ids", app::queryCards(content_->catalog, query)}});
     } catch (const std::exception &e) { return fail(e.what()); }
@@ -229,7 +232,12 @@ Json LocalSession::pollNetwork() {
         auto *room = application_->network();
         if (!room) return ok({{"exists", false}, {"ended", true}, {"generation", std::to_string(generation_)}});
         const auto localPlayer = room->started() ? room->view().viewer : -1;
-        return ok({{"exists", true}, {"room", room->room()}, {"host", room->isHost()},
+        // A joining peer has no room snapshot until the TCP handshake completes.
+        // Keep the bridge shape stable so the frontend can render "connecting"
+        // instead of trying to cast JSON null to a Dictionary.
+        const auto rawRoom = room->room();
+        const Json safeRoom = rawRoom.is_object() ? rawRoom : Json::object();
+        return ok({{"exists", true}, {"room", safeRoom}, {"host", room->isHost()},
                    {"connected", room->connected()}, {"started", room->started()},
                    {"blocked", room->blocked()}, {"ended", room->ended()},
                    {"replayDelivered", room->replayDelivered()}, {"notice", room->notice()},

@@ -38,10 +38,17 @@ text = "悬停卡牌查看完整效果。"
 scroll_active = true
 selection_enabled = true
 
+[node name="Number" type="Label" parent="Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+text = ""
+
 [node name="Hint" type="Label" parent="Column"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 12
-text = "悬停查看 · 右键增减\n拖动移动卡牌"
+text = "左键加入 · 右键移出\n拖动移动卡牌"
 autowrap_mode = 3

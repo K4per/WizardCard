@@ -48,8 +48,6 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 	card._update_cost_label()
 	card.secondary_value = str(data.get("level", data.get("rank", 0)))
 	var lines: Array[String] = []
-	if not card.number.is_empty():
-		lines.append("编号：" + card.number)
 	lines.append("等级：%d" % int(data.get("level", data.get("rank", 0))))
 	if type_index == 3:
 		lines.append("阵体：%d　环位：%d" % [int(data.get("body", 0)), int(data.get("rings", 0))])
@@ -59,7 +57,7 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 		var school: String = str(data.get("school", ""))
 		var schools: Dictionary[String, String] = {"abjuration": "防护", "conjuration": "咒法", "divination": "预言", "enchantment": "惑控", "evocation": "塑能", "illusion": "幻术", "necromancy": "死灵", "transmutation": "变化"}
 		if not school.is_empty():
-			lines.append("学派：" + schools.get(school, school))
+			lines.append("派系：" + schools.get(school, school))
 		lines.append(card.cost_detail())
 		lines.append("解析时间：%d　速度：%d" % [int(data.get("analysisTurns", 0)), card.speed])
 	card.metadata_text = "\n".join(lines)
@@ -152,6 +150,8 @@ func _update_cost_label() -> void:
 	primary_value = "%d/%d" % [setting_cost, cast_cost] if type_key == "analysis" else str(cast_cost if type_key in ["incantation", "talisman"] else setting_cost)
 
 func cost_detail() -> String:
+	if type_key == "formation":
+		return ""
 	if type_key == "talisman":
 		return "施法费用：%d（盖伏免费）" % cast_cost
 	if type_key == "incantation":

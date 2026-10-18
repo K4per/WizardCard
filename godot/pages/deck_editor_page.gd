@@ -159,7 +159,7 @@ func _build_interface() -> void:
 	filters.add_theme_constant_override(&"h_separation", 6)
 	filters.add_theme_constant_override(&"v_separation", 6)
 	pool_column.add_child(filters)
-	for caption: String in ["类型", "稀有度", "费用", "施法", "位阶", "标签"]:
+	for caption: String in ["类型", "稀有度", "费用", "施法", "位阶", "派系", "速度", "伤害类型", "标签"]:
 		var filter: OptionButton = OptionButton.new()
 		filter.set_meta(&"caption", caption)
 		filter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -168,7 +168,7 @@ func _build_interface() -> void:
 		filter.add_theme_font_size_override(&"font_size", 12)
 		filters.add_child(filter)
 		_filters.append(filter)
-	_pool_hint = _label("右键加入 · 拖入对应卡组", 12)
+	_pool_hint = _label("左键加入 · 右键移出 · 拖入对应卡组", 12)
 	_pool_hint.add_theme_color_override(&"font_color", DeckTheme.MUTED)
 	pool_column.add_child(_pool_hint)
 	_pool = _grid("cards", 3, 3, "pool")
@@ -215,21 +215,37 @@ func configure(value: FrontendService) -> void:
 		_inspect(_pool_ids[0])
 
 func _build_filters() -> void:
-	_filter_values = [[null, 1, 2, 3, 4, 5], [null, "common", "uncommon", "rare", "epic", "legendary"], [null], [null], [null], [null]]
-	var types: Array[String] = ["全部", "解析", "言灵", "阵法", "符文", "咒符"]
+	_filter_values = [[null, 1, 2, 3, 4, 5], [null, "common", "uncommon", "rare", "epic", "legendary"], [null], [null], [null], [null], [null], [null], [null]]
+	var types: Array[String] = ["全部", "解析法术", "言灵法术", "阵法卡", "符文卡", "咒符法术"]
 	var rarities: Array[String] = ["全部", "普通", "罕见", "稀有", "史诗", "传说"]
+	var factions: Array[String] = []
+	var speeds: Array[String] = []
+	var damage_types: Array[String] = []
 	var tags: Array[String] = []
+	var damage_names: Array[String] = ["火焰", "寒冷", "光耀", "黯蚀", "毒素", "闪电", "心灵", "雷鸣", "力场", "挥砍", "钝击", "穿刺", "强酸"]
 	for definition: Dictionary in service.definitions.values():
 		for tag: String in definition.get("tags", []):
-			if not tags.has(tag):
+			if tag.ends_with("系") and not factions.has(tag):
+				factions.append(tag)
+			elif tag.ends_with("速") and not speeds.has(tag):
+				speeds.append(tag)
+			elif damage_names.has(tag) and not damage_types.has(tag):
+				damage_types.append(tag)
+			elif tag != "former-action" and not tags.has(tag):
 				tags.append(tag)
+	factions.sort()
+	speeds.sort()
+	damage_types.sort()
 	tags.sort()
 	for number: int in range(8):
 		_filter_values[2].append(number)
 		_filter_values[3].append(number)
 		_filter_values[4].append(number)
-	_filter_values[5].append_array(tags)
-	for index: int in range(6):
+	_filter_values[5].append_array(factions)
+	_filter_values[6].append_array(speeds)
+	_filter_values[7].append_array(damage_types)
+	_filter_values[8].append_array(tags)
+	for index: int in range(_filters.size()):
 		var filter: OptionButton = _filters[index]
 		filter.clear()
 		var caption: String = str(filter.get_meta(&"caption"))
@@ -245,12 +261,12 @@ func _query_changed(_text: String) -> void:
 	if _building or service == null:
 		return
 	var query: Dictionary = {"name": _search.text}
-	var keys: Array[String] = ["type", "rarity", "cost", "castCost", "rank", "tags"]
-	for index: int in range(6):
+	var keys: Array[String] = ["type", "rarity", "cost", "castCost", "rank", "faction", "speed", "damageType", "tags"]
+	for index: int in range(_filters.size()):
 		var selected: int = _filters[index].selected
 		if selected > 0:
 			var selected_value: Variant = _filter_values[index][selected]
-			query[keys[index]] = [selected_value] if index == 5 else selected_value
+			query[keys[index]] = [selected_value] if index in [5, 6, 7, 8] else selected_value
 	_pool_ids = service.query_cards(query)
 	_pool_page = 0
 	_refresh_pool()
@@ -302,7 +318,7 @@ func _refresh_pool() -> void:
 	if _pool_ids.is_empty():
 		_pool_hint.text = service.error if not service.error.is_empty() else "无匹配卡牌，请调整筛选"
 	else:
-		_pool_hint.text = "阵法入副卡组 · 右键或拖入"
+		_pool_hint.text = "阵法入副卡组 · 左键加入 · 右键移出"
 
 func _rename(text: String) -> void:
 	if service != null:

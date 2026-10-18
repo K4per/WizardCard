@@ -6,14 +6,17 @@ var card: CardPresentation
 var _title: Label
 var _face: DeckCardPainter
 var _body: RichTextLabel
+var _number: Label
 var _hint: Label
 
 func _ready() -> void:
 	_title = %Title
 	_face = %Face
 	_body = %Body
+	_number = %Number
 	_hint = %Hint
 	theme = DeckTheme.create()
+	_number.add_theme_color_override(&"font_color", Color("71838e"))
 	_hint.add_theme_color_override(&"font_color", DeckTheme.MUTED)
 
 func inspect(id: String) -> void:
@@ -27,16 +30,9 @@ func inspect(id: String) -> void:
 	var data: Dictionary = service.definitions.get(id, {})
 	var rarity: String = str(data.get("rarityLabel", card.rarity_text()))
 	var lines: Array[String] = [card.type_label + (" · " + rarity if not rarity.is_empty() else "")]
-	if card.type_key == "formation":
-		lines.append(card.cost_detail())
 	lines.append(card.detail_text())
-	var tags: Array = data.get("tags", [])
-	var tag_names: PackedStringArray = []
-	for value: Variant in tags:
-		tag_names.append(str(value))
-	if not tag_names.is_empty():
-		lines.append("标签：" + "、".join(tag_names))
 	if not str(data.get("flavor", "")).is_empty():
 		lines.append(str(data["flavor"]))
 	_body.text = "\n\n".join(lines)
+	_number.text = "编号：" + card.number if not card.number.is_empty() else ""
 	_body.scroll_to_line(0)

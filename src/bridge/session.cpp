@@ -266,32 +266,47 @@ Json LocalSession::replayFrame(const std::filesystem::path &path, std::size_t st
         return fail("replay_unavailable", "联机对局进行中不能打开完整复盘");
     if (viewer != 0 && viewer != 1) return fail("invalid_viewer", "复盘查看者无效");
     try {
-        auto record = readJson(path);
-        (void)replay(*content_, record); // Validate the complete recording, including the unshown suffix.
-        const auto count = record.at("commands").size();
-        if (step > count) return fail("invalid_step", "复盘位置超出范围");
-        MatchConfig config;
-        config.seed = record.at("seed").get<std::uint32_t>();
-        for (int p = 0; p < 2; ++p) {
-            const auto &player = record.at("players").at(p);
-            config.players[p].baseFormation = player.value("baseFormation", std::string{});
-            config.players[p].cards = player.at("cards").get<std::vector<std::string>>();
-            if (content_->catalog.usesAlphaV2())
-                config.players[p].sideDeck = player.at("sideDeck").get<std::vector<std::string>>();
+        const auto writeTime = std::filesystem::last_write_time(path);
+        const auto fileSize = std::filesystem::file_size(path);
+        if (!replayCacheValid_ || replayCachePath_ != path ||
+            replayCacheWriteTime_ != writeTime || replayCacheFileSize_ != fileSize) {
+            replayCacheRecord_ = readJson(path);
+            (void)replay(*content_, replayCacheRecord_); // Validate once, including the unshown suffix.
+            replayCacheConfig_ = {};
+            replayCacheConfig_.seed = replayCacheRecord_.at("seed").get<std::uint32_t>();
+            for (int p = 0; p < 2; ++p) {
+                const auto &player = replayCacheRecord_.at("players").at(p);
+                replayCacheConfig_.players[p].baseFormation = player.value("baseFormation", std::string{});
+                replayCacheConfig_.players[p].cards = player.at("cards").get<std::vector<std::string>>();
+                if (content_->catalog.usesAlphaV2())
+                    replayCacheConfig_.players[p].sideDeck = player.at("sideDeck").get<std::vector<std::string>>();
+            }
+            replayCacheEngine_ = std::make_unique<GameEngine>(content_->catalog, replayCacheConfig_);
+            replayCachePath_ = path;
+            replayCacheWriteTime_ = writeTime;
+            replayCacheFileSize_ = fileSize;
+            replayCacheStep_ = 0;
+            replayCacheValid_ = true;
         }
-        GameEngine engine(content_->catalog, config);
-        for (std::size_t i = 0; i < step; ++i) {
-            const auto &row = record.at("commands").at(i);
+        const auto count = replayCacheRecord_.at("commands").size();
+        if (step > count) return fail("invalid_step", "复盘位置超出范围");
+        if (step < replayCacheStep_) {
+            replayCacheEngine_ = std::make_unique<GameEngine>(content_->catalog, replayCacheConfig_);
+            replayCacheStep_ = 0;
+        }
+        for (std::size_t i = replayCacheStep_; i < step; ++i) {
+            const auto &row = replayCacheRecord_.at("commands").at(i);
             const auto command = decodeCommand(row.at("command"));
-            const auto result = std::holds_alternative<Timeout>(command) ? engine.timeout(row.at("actor")) :
-                engine.submit(row.at("actor"), command);
+            const auto result = std::holds_alternative<Timeout>(command) ? replayCacheEngine_->timeout(row.at("actor")) :
+                replayCacheEngine_->submit(row.at("actor"), command);
             if (!result.accepted)
                 throw std::runtime_error("复盘指令未能重放");
         }
-        auto data = viewDto(engine.viewFor(viewer));
+        replayCacheStep_ = step;
+        auto data = viewDto(replayCacheEngine_->viewFor(viewer));
         data["step"] = step;
         data["commandCount"] = count;
-        data["digest"] = engine.digest();
+        data["digest"] = replayCacheEngine_->digest();
         return ok(std::move(data));
     } catch (const std::exception &e) { return fail("invalid_replay", e.what()); }
 }

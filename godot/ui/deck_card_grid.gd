@@ -78,8 +78,10 @@ func _gui_input(event: InputEvent) -> void:
 			return
 		grab_focus()
 		inspected.emit(id)
-		if mouse.button_index == MOUSE_BUTTON_RIGHT:
-			adjusted.emit(id, 1 if origin == "pool" else -1, section)
+		if mouse.button_index == MOUSE_BUTTON_LEFT and origin == "pool":
+			adjusted.emit(id, 1, section)
+		elif mouse.button_index == MOUSE_BUTTON_RIGHT and origin != "pool":
+			adjusted.emit(id, -1, section)
 		accept_event()
 	elif event.is_action_pressed(&"ui_left") or event.is_action_pressed(&"ui_right") or event.is_action_pressed(&"ui_up") or event.is_action_pressed(&"ui_down"):
 		if ids.is_empty():

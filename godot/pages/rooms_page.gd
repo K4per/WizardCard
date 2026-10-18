@@ -115,7 +115,8 @@ func network_updated(state: Dictionary) -> void:
 			_notice.text = service.error
 		return
 	_network_buttons(service.network_available())
-	var room: Dictionary = state.get("room", {})
+	var room_value: Variant = state.get("room", {})
+	var room: Dictionary = room_value as Dictionary if room_value is Dictionary else {}
 	if bool(state.get("exists", state.has("room"))):
 		var ready: Array = room.get("ready", [false, false])
 		var host_player: int = int(room.get("hostPlayer", 0))

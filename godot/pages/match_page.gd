@@ -415,6 +415,8 @@ func _show_action_list(source: String, title: String, contextual: bool) -> void:
 	for action: Dictionary in actions:
 		if str(action.get("source", "0")) != source:
 			continue
+		if not _action_visible(action):
+			continue
 		var key: String = MatchProjection.action_group_key(action)
 		if not groups.has(key):
 			groups[key] = []
@@ -438,6 +440,16 @@ func _show_action_list(source: String, title: String, contextual: bool) -> void:
 	# Keep the clickable actions above the full-page detail input blocker too.
 	_action_popup.move_to_front()
 	_position_action_popup(contextual)
+
+func _action_visible(action: Dictionary) -> bool:
+	var command: Dictionary = action.get("command", {})
+	var type: int = int(command.get("type", -1))
+	if type == 1:
+		return false
+	# Casting is a committed phase. Returning a spell to hand here is
+	# deliberately unavailable; the card can still be abandoned in its other
+	# legal phases and through response decisions.
+	return not (type == 8 and int(service.match_snapshot.get("phase", -1)) == 3)
 
 func _position_action_popup(contextual: bool) -> void:
 	if not _action_popup.visible:

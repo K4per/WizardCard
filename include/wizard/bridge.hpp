@@ -2,6 +2,7 @@
 #include "wizard/application.hpp"
 #include "wizard/interaction.hpp"
 #include <optional>
+#include <memory>
 
 namespace wizard::bridge {
 // Engine-independent whitelist DTOs. uint64 values NEVER cross the scripting boundary as numbers.
@@ -52,6 +53,16 @@ class LocalSession {
     ui::Interaction interaction_;
     std::uint64_t interactionGeneration_{}, interactionRevision_{};
     PlayerId interactionViewer_{-1};
+    // Replay browsing keeps one validated engine and advances it between frames.
+    // Without this cache every next/previous click rebuilt the whole recording.
+    mutable std::filesystem::path replayCachePath_;
+    mutable Json replayCacheRecord_;
+    mutable MatchConfig replayCacheConfig_;
+    mutable std::unique_ptr<GameEngine> replayCacheEngine_;
+    mutable std::filesystem::file_time_type replayCacheWriteTime_{};
+    mutable std::uintmax_t replayCacheFileSize_{};
+    mutable std::size_t replayCacheStep_{};
+    mutable bool replayCacheValid_{};
     bool visibleTo(PlayerId viewer) const;
     bool current(const std::string &generation, const std::string &revision) const;
     std::string actionId(PlayerId viewer, std::size_t index) const;

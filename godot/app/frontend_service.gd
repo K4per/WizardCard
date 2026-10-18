@@ -24,6 +24,7 @@ var setup_mode: String = "ai"
 var network_active: bool = false
 var network_state: Dictionary = {}
 var _bridge: RefCounted
+var _card_cache: Dictionary[String, CardPresentation] = {}
 
 func initialize(assets: String, user_directory: String) -> bool:
 	assets_directory = assets
@@ -56,6 +57,7 @@ func initialize(assets: String, user_directory: String) -> bool:
 
 func _ingest_library(data: Dictionary) -> void:
 	cards.clear()
+	_card_cache.clear()
 	definitions.clear()
 	var rows: Array = data.get("cards", [])
 	for definition: Dictionary in rows:
@@ -169,7 +171,9 @@ func query_cards(query: Dictionary) -> Array[String]:
 
 func card_by_id(id: String) -> CardPresentation:
 	if definitions.has(id):
-		return CardPresentation.from_definition(definitions[id])
+		if not _card_cache.has(id):
+			_card_cache[id] = CardPresentation.from_definition(definitions[id])
+		return _card_cache[id]
 	var missing: CardPresentation = CardPresentation.new()
 	missing.instance_id = id
 	missing.title = "失效卡牌"

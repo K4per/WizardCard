@@ -8,6 +8,11 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
     std::vector<LegalAction> out;
     const auto &s = state_;
     auto add = [&](std::string label, CardId source, CardId target, Command cmd) {
+        // These operations are intentionally no longer exposed by the battle
+        // action surface. Keep command decoding backwards compatible for old
+        // replays, but do not offer them as new legal choices.
+        if (std::holds_alternative<RemoveFormation>(cmd))
+            return;
         auto trial = *this;
         if (trial.execute(p, cmd).empty())
             out.push_back({std::move(label), source, target, std::move(cmd)});
@@ -257,7 +262,12 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                 }
             }
             if (card.faceDown || card.spell == SpellState::Ready) {
-                for (const auto &ids : targets(def)) {
+                // Shatter Ring has no meaningful target during preparation;
+                // choose the empty enemy formation when it is released.
+                const auto prepareTargets = def.id == "unravel"
+                    ? std::vector<std::vector<CardId>>{{}}
+                    : targets(def);
+                for (const auto &ids : prepareTargets) {
                     const auto target = ids.empty() ? 0 : ids.front();
                     if (card.faceDown) for (auto cost : spellCosts) add("反转 " + name, id, target, FlipAmbush{id, target, ids, 0, cost});
                     else {

@@ -43,7 +43,7 @@ func _populate(query: String) -> void:
 	for card: CardPresentation in collection:
 		if _kind_filter.selected > 0 and card.type_key != KINDS[_kind_filter.selected]:
 			continue
-		if not query.is_empty() and not (card.title + card.type_label + card.metadata_text + card.text).contains(query):
+		if not query.is_empty() and not (card.number + card.title + card.type_label + card.metadata_text + card.text).contains(query):
 			continue
 		var tile: CardTile = CardTile.new()
 		_grid.add_child(tile)

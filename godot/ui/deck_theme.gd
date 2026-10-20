@@ -23,7 +23,7 @@ static func create() -> Theme:
 	var result: Theme = Theme.new()
 	result.default_font = Typography.BODY
 	result.default_font_size = 15
-	for kind: StringName in [&"Label", &"Button", &"OptionButton", &"LineEdit", &"CheckBox", &"PopupMenu"]:
+	for kind: StringName in [&"Label", &"Button", &"OptionButton", &"LineEdit", &"CheckBox", &"CheckButton", &"PopupMenu", &"TabBar", &"TooltipLabel"]:
 		result.set_color(&"font_color", kind, TEXT)
 		result.set_color(&"font_hover_color", kind, TEXT)
 		result.set_color(&"font_pressed_color", kind, TEXT)
@@ -33,6 +33,8 @@ static func create() -> Theme:
 		result.set_constant(&"shadow_offset_x", kind, 0)
 		result.set_constant(&"shadow_offset_y", kind, 0)
 	result.set_color(&"default_color", &"RichTextLabel", TEXT)
+	result.set_font(&"bold_font", &"RichTextLabel", Typography.HEADING)
+	result.set_stylebox(&"panel", &"TooltipPanel", box(PANEL, ACCENT, 8))
 	result.set_color(&"font_color", &"LineEdit", TEXT)
 	result.set_color(&"font_placeholder_color", &"LineEdit", MUTED)
 	result.set_color(&"caret_color", &"LineEdit", ACCENT)
@@ -71,3 +73,4 @@ static func field(control: Control) -> void:
 static func button(control: Button) -> void:
 	control.custom_minimum_size.y = 34
 	control.add_theme_font_size_override(&"font_size", 14)
+	UiFactory.bind_button(control)

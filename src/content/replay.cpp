@@ -73,7 +73,8 @@ Json MatchSession::recording() const {
 void MatchSession::save(const std::filesystem::path &path) const {
     writeJson(path, recording());
 }
-GameEngine replay(const Content &c, const Json &j) {
+GameEngine replay(const Content &c, const Json &j,
+                  const std::function<void(std::size_t, const GameEngine&)> &observer) {
     const bool newRules = c.catalog.usesAlphaV2();
     const bool v25 = c.catalog.usesAlphaV25();
     if (j.at("format") != (v25 ? 4 : newRules ? 3 : 2) ||
@@ -99,6 +100,7 @@ GameEngine replay(const Content &c, const Json &j) {
     if (!j.at("commands").is_array())
         throw std::runtime_error("invalid replay commands");
     int n = 0;
+    if (observer) observer(0, engine);
     for (const auto &row : j.at("commands")) {
         auto actor = static_cast<int>(integer(row.at("actor"), 1));
         const auto command = decodeCommand(row.at("command"));
@@ -106,6 +108,7 @@ GameEngine replay(const Content &c, const Json &j) {
         if (!result.accepted || engine.digest() != row.at("digest").get<std::string>())
             throw std::runtime_error("replay diverged at command " + std::to_string(n));
         ++n;
+        if (observer) observer(static_cast<std::size_t>(n), engine);
     }
     if (engine.digest() != j.at("finalDigest").get<std::string>())
         throw std::runtime_error("final digest mismatch");

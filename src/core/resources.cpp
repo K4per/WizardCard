@@ -1,4 +1,6 @@
 #include "wizard/core/rules.hpp"
+#include "wizard/core/sique.hpp"
+#include "wizard/core/engine.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iomanip>
@@ -73,7 +75,7 @@ int Rules::maxRank(const GameState &s, const CardCatalog &cat, CardId id) {
 int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, CardId host) {
     const auto &d = cat.at(s.cards.at(id).definition);
     const auto h = s.cards.find(host);
-    int discount = 0;
+    int discount = sique::attachedCount(s, s.cards.at(id).owner, "sique-sugar");
     if (cat.usesAlphaV2() && std::find(d.traits.begin(), d.traits.end(), "ash_evocation_discount") != d.traits.end())
         for (const auto &[cid, card] : s.cards) {
             const auto &definition = cat.at(card.definition);
@@ -89,7 +91,8 @@ int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, C
 int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
     const auto &d = cat.at(c.definition);
-    int n = d.type == CardType::Word || (cat.usesAlphaV2() && d.type == CardType::Talisman) ? d.cost : d.castCost;
+    int n = (d.type == CardType::Word || (cat.usesAlphaV2() && d.type == CardType::Talisman) ? d.cost : d.castCost)
+        - sique::attachedCount(s, c.owner, "sique-sugar");
     for (const auto &[sid, seal] : s.cards)
         if (seal.zone == Zone::Attached && seal.host == id)
             n += cat.at(seal.definition).castCostBonus;
@@ -128,7 +131,8 @@ int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const 
         }
     const int resisted = resistance ? e.amount / 2 : e.amount;
     const int reduction = e.damageType == DamageType::Force ? s.players[p].forceDamageReduction : s.players[p].damageReduction;
-    return std::max(0, resisted - reduction);
+    const int amount = std::max(0, resisted - reduction - 2 * sique::attachedCount(s, p, "sique-vinegar"));
+    return s.players[p].siqueDamageCap > 0 ? std::min(amount, s.players[p].siqueDamageCap) : amount;
 }
 int Rules::occupied(const GameState &s, CardId host) {
     int n = 0;
@@ -164,9 +168,7 @@ bool Rules::canHost(const GameState &s, const CardCatalog &cat, CardId spell, Ca
     if (faceDown) return true; // Hidden cards do not analyze; host restrictions apply when flipped.
     const auto &traits = cat.at(host->second.definition).traits;
     if (std::find(traits.begin(), traits.end(), "host_fire_only") != traits.end() &&
-        std::none_of(definition.effects.begin(), definition.effects.end(), [](const Effect &e) {
-            return e.kind == EffectKind::Damage && e.damageType == DamageType::Fire;
-        })) return false;
+        !sique::fireSpell(definition)) return false;
     if (std::find(traits.begin(), traits.end(), "distinct_host_schools") != traits.end())
         for (const auto &[id, card] : s.cards)
             if (id != spell && card.host == formation && card.zone == Zone::Analysis && !card.faceDown &&

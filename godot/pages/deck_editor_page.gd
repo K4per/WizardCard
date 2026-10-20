@@ -34,6 +34,7 @@ var _leave_quits: bool = false
 var _pool_page: int = 0
 var _pool_ids: Array[String] = []
 var _building: bool = false
+var _export_dialog: FileDialog
 
 func _ready() -> void:
 	theme = DeckTheme.create()
@@ -55,6 +56,7 @@ func _ready() -> void:
 	_notice.pressed.connect(_show_problems)
 	_dialog.chosen.connect(_dialog_chosen)
 	get_window().focus_exited.connect(_cancel_drag)
+	_pool.resized.connect(_reflow_pool)
 
 func _label(text: String, font_size: int = 15) -> Label:
 	var label: Label = Label.new()
@@ -195,6 +197,23 @@ func _build_interface() -> void:
 	_back = _button("返回卡组列表")
 	_back.custom_minimum_size.x = 160
 	footer.add_child(_back)
+	var export_button: Button = _button("导出牌组")
+	footer.add_child(export_button)
+	_export_dialog = FileDialog.new()
+	_export_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	_export_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	_export_dialog.filters = PackedStringArray(["*.json ; 巫师牌牌组"])
+	_export_dialog.current_file = "WizardCard-deck.json"
+	_export_dialog.title = "导出牌组"
+	add_child(_export_dialog)
+	export_button.pressed.connect(func() -> void: _export_dialog.popup_centered_ratio(0.7))
+	_export_dialog.file_selected.connect(_export_deck)
+
+func _export_deck(path: String) -> void:
+	if service.export_deck(path):
+		_dialog.present("导出完成", "牌组已保存到：\n" + path, ["确定"])
+	else:
+		_dialog.present("导出失败", service.error, ["确定"])
 
 func _cancel_drag() -> void:
 	if get_viewport().gui_is_dragging():
@@ -308,17 +327,29 @@ func _refresh() -> void:
 	_refresh_pool()
 
 func _refresh_pool() -> void:
-	_pool_page = clampi(_pool_page, 0, maxi(0, ceili(_pool_ids.size() / 9.0) - 1))
-	_pool.ids.assign(_pool_ids.slice(_pool_page * 9, (_pool_page + 1) * 9))
+	var page_size: int = _pool.columns * _pool.rows
+	_pool_page = clampi(_pool_page, 0, maxi(0, ceili(float(_pool_ids.size()) / page_size) - 1))
+	_pool.ids.assign(_pool_ids.slice(_pool_page * page_size, (_pool_page + 1) * page_size))
 	_pool.queue_redraw()
 	_pool_title.text = "卡池 · %d 种" % _pool_ids.size()
 	_pool_prev.disabled = _pool_page == 0
-	_pool_next.disabled = (_pool_page + 1) * 9 >= _pool_ids.size()
-	_pool_page_label.text = "%d / %d" % [_pool_page + 1, maxi(1, ceili(_pool_ids.size() / 9.0))]
+	_pool_next.disabled = (_pool_page + 1) * page_size >= _pool_ids.size()
+	_pool_page_label.text = "%d / %d" % [_pool_page + 1, maxi(1, ceili(float(_pool_ids.size()) / page_size))]
 	if _pool_ids.is_empty():
 		_pool_hint.text = service.error if not service.error.is_empty() else "无匹配卡牌，请调整筛选"
 	else:
 		_pool_hint.text = "阵法入副卡组 · 左键加入 · 右键移出"
+
+func _reflow_pool() -> void:
+	var next_rows: int = clampi(floori(_pool.size.y / 115.0), 1, 3)
+	if next_rows == _pool.rows:
+		return
+	var first_index: int = _pool_page * _pool.columns * _pool.rows
+	_pool.rows = next_rows
+	_pool.slot_count = _pool.columns * next_rows
+	_pool_page = first_index / _pool.slot_count
+	if service != null:
+		_refresh_pool()
 
 func _rename(text: String) -> void:
 	if service != null:
@@ -348,6 +379,9 @@ func _adjust(id: String, delta: int, source_section: String) -> void:
 	var count: int = int(cards.get(id, 0))
 	if delta > 0 and (service.named_copies(id, membership) >= 3 or DeckUi.total(cards) >= (10 if membership == "sideCards" else 40)):
 		_notice.text = "已达到卡组或同名份数上限"
+		UiFactory.flash(_notice, Color("f1aaa0"))
+		return
+	if delta < 0 and count == 0:
 		return
 	if count + delta <= 0:
 		cards.erase(id)
@@ -356,13 +390,19 @@ func _adjust(id: String, delta: int, source_section: String) -> void:
 	service.editing_draft[membership] = cards
 	_refresh()
 	_inspect(id)
+	_notice.text = "%s · %s · 现有 %d 张" % [service.card_by_id(id).title, "已加入" if delta > 0 else "已移出", maxi(0, count + delta)]
+	_notice.tooltip_text = _notice.text
+	_pool.flash_card(id)
+	(_side if membership == "sideCards" else _built).flash_card(id)
 
 func _save_draft() -> bool:
 	if not service.save_draft():
 		_notice.text = service.error
+		UiFactory.flash(_notice, Color("f1aaa0"))
 		return false
 	_refresh()
 	_notice.text = "卡组已保存" if service.draft_problems().is_empty() else "草稿已保存，请补齐主／副卡组"
+	UiFactory.flash(_save)
 	return true
 
 func _show_problems() -> void:

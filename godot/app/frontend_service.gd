@@ -162,6 +162,44 @@ func erase_draft(id: String) -> bool:
 	_ingest_library(response.get("data", {}))
 	return true
 
+func import_deck(path: String) -> bool:
+	var decoded: Dictionary = DeckExchange.read_document(path)
+	if decoded.has("error"):
+		error = str(decoded["error"])
+		return false
+	var candidate: Dictionary = decoded["draft"]
+	# Import creates a new local identity only after the public file has parsed.
+	var created: Dictionary = _request(&"create_construction_draft", [""])
+	if not bool(created.get("ok", false)):
+		return false
+	candidate["id"] = created["data"]["id"]
+	var checked: Dictionary = _request(&"validate_draft", [candidate])
+	if not bool(checked.get("ok", false)):
+		return false
+	var problems: Array = checked.get("data", {}).get("problems", [])
+	if not problems.is_empty():
+		error = "牌组未导入：\n" + "\n".join(problems)
+		return false
+	editing_draft = candidate
+	saved_draft = {}
+	error = ""
+	return true
+
+func export_deck(path: String) -> bool:
+	var problems: Array[String] = draft_problems()
+	if not problems.is_empty():
+		error = "牌组未导出：\n" + "\n".join(problems)
+		return false
+	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		error = "无法写入牌组文件：" + error_string(FileAccess.get_open_error())
+		return false
+	file.store_string(JSON.stringify(DeckExchange.encode(editing_draft), "\t") + "\n")
+	var result: Error = file.get_error()
+	file.close()
+	error = "" if result == OK else "牌组写入失败：" + error_string(result)
+	return result == OK
+
 func query_cards(query: Dictionary) -> Array[String]:
 	var response: Dictionary = _request(&"query_cards", [query])
 	var result: Array[String] = []

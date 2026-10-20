@@ -73,6 +73,7 @@ static func paint(surface: CanvasItem, value: CardPresentation, rect: Rect2, hig
 static func _label(surface: CanvasItem, text: String, rect: Rect2, font_size: int, font: Font, color: Color, centered: bool = false) -> void:
 	if rect.size.x <= 0.0 or rect.size.y <= 0.0:
 		return
+	font_size = Typography.fitted_size(font_size, rect.size.y, font)
 	var displayed: String = text
 	if font.get_string_size(displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > rect.size.x:
 		while not displayed.is_empty() and font.get_string_size(displayed + "…", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > rect.size.x:

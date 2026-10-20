@@ -1,8 +1,8 @@
 {
-  "rulesVersion": "2.5.0",
-  "cardSetVersion": "2.5.0",
+  "rulesVersion": "2.5.1",
+  "cardSetVersion": "2.5.1",
   "baseLoadCapacity": 2,
-  "mechanicsRevision": 3,
+  "mechanicsRevision": 4,
   "cards": [
     {
       "id": "fireball",
@@ -1893,6 +1893,529 @@
       "text": "对目标造成9点闪电伤害，并给予对方5点荷载，对方的回合结束阶段清除。",
       "number": "020022",
       "illustrationId": "thunder-summon"
+    },
+    {
+      "id": "sique-woodpile",
+      "name": "味契·柴堆",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 1,
+      "level": 1,
+      "maxRank": 1,
+      "speed": 1,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "010016",
+      "illustrationId": "sique-woodpile",
+      "body": 1,
+      "rings": 1,
+      "capacity": 5,
+      "income": 2,
+      "traits": [
+        "unique"
+      ],
+      "text": "此卡在己方场上只能存在1张。",
+      "summonCondition": "支付2魔素；己方场上只能存在1张。"
+    },
+    {
+      "id": "sique-campfire",
+      "name": "味契·篝火",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "rank": 1,
+      "level": 3,
+      "maxRank": 3,
+      "speed": 1,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "010017",
+      "illustrationId": "sique-campfire",
+      "body": 2,
+      "rings": 3,
+      "capacity": 8,
+      "income": 4,
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "sique-woodpile"
+        },
+        {
+          "kind": "discard_hand",
+          "amount": 1,
+          "fireDamage": true
+        }
+      ],
+      "text": "己方场上存在味契·魔力坩埚时，此卡不受其他卡的效果影响。此卡上设置的火焰伤害法术卡伤害+1。",
+      "summonCondition": "祭品：己方场上1张味契·柴堆；弃置手牌中1张火焰伤害法术。"
+    },
+    {
+      "id": "sique-cauldron",
+      "name": "味契·魔力坩埚",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 1,
+      "level": 5,
+      "maxRank": 5,
+      "speed": 1,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "010018",
+      "illustrationId": "sique-cauldron",
+      "body": 3,
+      "rings": 5,
+      "capacity": 11,
+      "income": 6,
+      "recipe": [
+        {
+          "kind": "discard_hand",
+          "amount": 2
+        }
+      ],
+      "traits": [
+        "sique_requires_campfire",
+        "end_phase_start"
+      ],
+      "onEnd": [
+        {
+          "kind": "sique_detach_all",
+          "amount": 0
+        }
+      ],
+      "text": "己方场上存在味契·篝火才能设置。此卡存在时，己方只能发动味契卡和火焰伤害法术卡。己方结束阶段开始时，将此卡上附着的全部符文送入灰烬区。",
+      "summonCondition": "己方场上存在味契·篝火；支付2魔素并弃置2张手牌。"
+    },
+    {
+      "id": "sique-vinegar",
+      "name": "味契·香醋",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "050006",
+      "illustrationId": "sique-vinegar",
+      "traits": [
+        "sique_cauldron_only"
+      ],
+      "onLeave": [
+        {
+          "kind": "temporary_life",
+          "amount": 4,
+          "recipient": "owner"
+        }
+      ],
+      "effects": [],
+      "text": "仅可附着于味契·魔力坩埚。己方受到的伤害降低2点。解除附着时，获得4点临时生命。"
+    },
+    {
+      "id": "sique-sugar",
+      "name": "味契·冰糖",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "050007",
+      "illustrationId": "sique-sugar",
+      "traits": [
+        "sique_cauldron_only"
+      ],
+      "onLeave": [
+        {
+          "kind": "mana",
+          "amount": 2
+        }
+      ],
+      "effects": [],
+      "text": "仅可附着于味契·魔力坩埚。己方法术的设置和发动费用-1。解除附着时，获得2点魔素。"
+    },
+    {
+      "id": "sique-salt",
+      "name": "味契·海盐",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "050008",
+      "illustrationId": "sique-salt",
+      "traits": [
+        "sique_cauldron_only"
+      ],
+      "onLeave": [
+        {
+          "kind": "sique_recover_spell",
+          "amount": 0
+        }
+      ],
+      "effects": [
+        {
+          "kind": "sique_mill_seal",
+          "amount": 0
+        }
+      ],
+      "text": "仅可附着于味契·魔力坩埚。附着时，将牌库中1张味契符文送入灰烬区。解除附着时，将灰烬区1张味契法术加入手牌。"
+    },
+    {
+      "id": "sique-chili",
+      "name": "味契·辣椒",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "050009",
+      "illustrationId": "sique-chili",
+      "traits": [
+        "sique_cauldron_only"
+      ],
+      "onLeave": [
+        {
+          "kind": "damage",
+          "amount": 4,
+          "damageType": "fire",
+          "recipient": "opponent"
+        }
+      ],
+      "effects": [],
+      "text": "仅可附着于味契·魔力坩埚。对方每抽1张牌，对其造成2点火焰伤害。解除附着时，对对方造成4点火焰伤害。"
+    },
+    {
+      "id": "sique-parsley",
+      "name": "味契·欧芹",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "050010",
+      "illustrationId": "sique-parsley",
+      "traits": [
+        "sique_cauldron_only"
+      ],
+      "onLeave": [
+        {
+          "kind": "sique_recover_seal",
+          "amount": 0
+        }
+      ],
+      "effects": [
+        {
+          "kind": "sique_mill_spell",
+          "amount": 0
+        }
+      ],
+      "text": "仅可附着于味契·魔力坩埚。附着时，将牌库中1张味契法术送入灰烬区。解除附着时，将灰烬区1张味契符文加入手牌。"
+    },
+    {
+      "id": "sique-mushroom-soup",
+      "name": "味契·奶油蘑菇浓汤",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 5,
+      "level": 5,
+      "speed": 1,
+      "castCost": 1,
+      "tags": [
+        "味契"
+      ],
+      "number": "020023",
+      "illustrationId": "sique-mushroom-soup",
+      "analysisTurns": 2,
+      "school": "abjuration",
+      "traits": [
+        "sique_detach_2"
+      ],
+      "target": "self",
+      "effects": [
+        {
+          "kind": "heal",
+          "amount": 4
+        },
+        {
+          "kind": "temporary_life",
+          "amount": 6
+        }
+      ],
+      "text": "将2张味契符文解除附着才能发动。恢复4点生命，获得6点临时生命。"
+    },
+    {
+      "id": "sique-pancakes",
+      "name": "味契·糖浆煎饼",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 5,
+      "level": 5,
+      "speed": 1,
+      "castCost": 1,
+      "tags": [
+        "味契"
+      ],
+      "number": "020024",
+      "illustrationId": "sique-pancakes",
+      "analysisTurns": 1,
+      "school": "abjuration",
+      "traits": [
+        "sique_detach_2"
+      ],
+      "target": "self",
+      "effects": [
+        {
+          "kind": "sique_damage_cap",
+          "amount": 4
+        }
+      ],
+      "text": "将2张味契符文解除附着才能发动。直到下个己方准备阶段开始时，每次受到的伤害最多为4点。"
+    },
+    {
+      "id": "sique-divine-stew",
+      "name": "味契·神恩炖肉",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 5,
+      "level": 5,
+      "speed": 1,
+      "castCost": 1,
+      "tags": [
+        "味契"
+      ],
+      "number": "020025",
+      "illustrationId": "sique-divine-stew",
+      "analysisTurns": 5,
+      "school": "necromancy",
+      "traits": [
+        "sique_detach_3"
+      ],
+      "target": "self",
+      "effects": [
+        {
+          "kind": "sique_life_payment",
+          "amount": 0
+        }
+      ],
+      "text": "将3张味契符文解除附着才能发动。这个回合，以对方生命值代替己方魔素费用。"
+    },
+    {
+      "id": "sique-ingredients",
+      "name": "味契·原料召来",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 1,
+      "level": 1,
+      "speed": 2,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "030014",
+      "illustrationId": "sique-ingredients",
+      "school": "conjuration",
+      "effects": [
+        {
+          "kind": "sique_search_pair",
+          "amount": 2
+        }
+      ],
+      "text": "将牌库中2张味契符文加入手牌。在加手回合附着其中1张时，将仍在手牌中的另1张送入灰烬区。",
+      "analysisTurns": 0
+    },
+    {
+      "id": "sique-flavor-shift",
+      "name": "味契·风味转化",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 2,
+      "rank": 5,
+      "level": 3,
+      "speed": 2,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "030015",
+      "illustrationId": "sique-flavor-shift",
+      "school": "transmutation",
+      "traits": [
+        "sique_detach_1"
+      ],
+      "effects": [
+        {
+          "kind": "sique_attach_from_deck",
+          "amount": 1
+        }
+      ],
+      "text": "将1张味契符文解除附着才能发动。将牌库中1张味契符文附着到己方味契阵法上。",
+      "analysisTurns": 0
+    },
+    {
+      "id": "sique-refire",
+      "name": "味契·烈火回炉",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 3,
+      "rank": 3,
+      "level": 1,
+      "speed": 2,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "030016",
+      "illustrationId": "sique-refire",
+      "school": "transmutation",
+      "effects": [
+        {
+          "kind": "sique_recycle",
+          "amount": 5
+        },
+        {
+          "kind": "sique_optional_draw",
+          "amount": 1
+        }
+      ],
+      "text": "将己方灰烬区最多5张味契卡返回牌库或副卡组。那之后，可以抽1张牌。",
+      "analysisTurns": 0
+    },
+    {
+      "id": "sique-boiling-surge",
+      "name": "味契·沸汤滚袭",
+      "type": "talisman",
+      "rarity": "rare",
+      "cost": 4,
+      "rank": 5,
+      "level": 5,
+      "speed": 2,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "040009",
+      "illustrationId": "sique-boiling-surge",
+      "school": "evocation",
+      "responseOnly": true,
+      "target": "enemy_spell_link",
+      "effects": [],
+      "responses": [
+        {
+          "id": "boiling_surge",
+          "name": "无效并销毁，造成10点火焰伤害",
+          "sources": [
+            "ambush",
+            "casting"
+          ],
+          "windows": [
+            "cast"
+          ],
+          "target": "enemy_spell_link",
+          "eventOwner": "opponent",
+          "effects": [
+            {
+              "kind": "sique_negate_destroy",
+              "amount": 0
+            },
+            {
+              "kind": "damage",
+              "amount": 10,
+              "damageType": "fire",
+              "recipient": "opponent"
+            }
+          ]
+        }
+      ],
+      "text": "仅可响应对方发动的将销毁味契阵法的法术。将其无效并销毁。那之后，对对方造成10点火焰伤害。",
+      "analysisTurns": 0
+    },
+    {
+      "id": "sique-aroma-lure",
+      "name": "味契·飘香诱惑",
+      "type": "talisman",
+      "rarity": "rare",
+      "cost": 4,
+      "rank": 5,
+      "level": 5,
+      "speed": 3,
+      "castCost": 0,
+      "tags": [
+        "味契"
+      ],
+      "number": "040010",
+      "illustrationId": "sique-aroma-lure",
+      "school": "enchantment",
+      "traits": [
+        "sique_requires_cauldron"
+      ],
+      "effects": [
+        {
+          "kind": "sique_shuffle_hands",
+          "amount": 0
+        }
+      ],
+      "responses": [
+        {
+          "id": "aroma_lure",
+          "name": "双方手牌返回牌库并可重抽",
+          "sources": [
+            "ambush",
+            "casting"
+          ],
+          "windows": [
+            "phase_start",
+            "phase_end",
+            "action",
+            "prepare",
+            "cast",
+            "trigger"
+          ],
+          "target": "none",
+          "effects": [
+            {
+              "kind": "sique_shuffle_hands",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "text": "己方场上存在味契·魔力坩埚才能发动。双方手牌全部返回各自牌库，然后各自可以抽取与放回数量相同的牌。",
+      "analysisTurns": 0
     }
   ]
 }

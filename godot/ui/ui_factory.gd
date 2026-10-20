@@ -3,6 +3,18 @@ extends RefCounted
 
 static var reduced_motion: bool = false
 
+static func flash(control: Control, color: Color = DeckTheme.ACCENT) -> void:
+	var previous: Tween = control.get_meta(&"feedback_tween") as Tween if control.has_meta(&"feedback_tween") else null
+	if previous != null and previous.is_valid():
+		previous.kill()
+	control.self_modulate = Color.WHITE
+	if reduced_motion:
+		return
+	control.self_modulate = color
+	var tween: Tween = control.create_tween()
+	control.set_meta(&"feedback_tween", tween)
+	tween.tween_property(control, "self_modulate", Color.WHITE, 0.22)
+
 static func label(text: String, font_size: int = 18, wrap: bool = false) -> Label:
 	var result: Label = Label.new()
 	result.text = text

@@ -697,6 +697,7 @@ TEST_CASE("counter load snapshots real prepared payment even after casting cost 
     auto e = f.engine();
     send(e, 0, AttachSeal{11, 10});
     send(e, 0, PrepareCast{10});
+    pass(e);
     send(e, 0, RemoveSeal{11});
     REQUIRE(e.state().cards.at(10).payments.back().paid == 2);
     reach(e, 0, Phase::Cast);

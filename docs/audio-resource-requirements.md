@@ -135,6 +135,6 @@ P0：完成基本操作和对局辨识；P1：补齐主要机制与当前卡池�
 ## 10. 依据
 
 - [更新记录](../CHANGELOG.md)、[阶段五报告](reports/alpha-v1.0-stage5.md)：当前AI、教学、菜单与构筑范围。
-- [术语规范](terminology.md)、[当前卡池](../assets/cards.json)：卡名、效果及规则语义。
+- [术语规范](terminology.md)、[正式卡池清单](../assets/catalog.json)：卡名、效果及规则语义。
 - [客户端](../src/client/main.cpp)、[运行层](../src/runtime/runtime.cpp)：现有确认音调用与单实例播放限制。
 - [应用设置](../include/wizard/application.hpp)：总音量、音效音量及持久化设置。

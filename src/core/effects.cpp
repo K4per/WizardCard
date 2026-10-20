@@ -1,4 +1,5 @@
 #include "wizard/core/rules.hpp"
+#include "wizard/core/sique.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iomanip>
@@ -22,7 +23,8 @@ bool protectedFromCardEffect(const GameState &s, const CardCatalog &cat, CardId 
     const auto card = s.cards.find(id);
     if (card == s.cards.end()) return false;
     const auto &definition = cat.at(card->second.definition);
-    if (trait(definition, "effect_immune") || trait(definition, "effect_indestructible")) return true;
+    if (trait(definition, "effect_immune") || trait(definition, "effect_indestructible") ||
+        sique::protectedCampfire(s, id)) return true;
     if (!trait(definition, "great_storm")) return false;
     const auto host = s.cards.find(card->second.host ? card->second.host : card->second.sourceFormation);
     return host != s.cards.end() && host->second.zone == Zone::Analysis &&
@@ -48,6 +50,9 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
             const auto source = s.cards.find(t.source);
             if (host && trait(*host, "host_evocation_damage_plus_one") && source != s.cards.end() &&
                 cat.at(source->second.definition).school == "evocation") ++adjusted.amount;
+            if (host && host->id == "sique-campfire" && source != s.cards.end() &&
+                sique::fireSpell(cat.at(source->second.definition)) && e.damageType == DamageType::Fire)
+                ++adjusted.amount;
         }
         int amount = Rules::damage(s, cat, p, adjusted);
         const int shield = std::min(amount, s.players[p].temporaryLife);
@@ -128,7 +133,32 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::RecoverFormation:
     case EffectKind::DestroyEnemyAnalysis:
     case EffectKind::LockAnalysis:
+    case EffectKind::SiqueDetachAll:
+    case EffectKind::SiqueRecoverSpell:
+    case EffectKind::SiqueRecoverSeal:
+    case EffectKind::SiqueMillSeal:
+    case EffectKind::SiqueMillSpell:
+    case EffectKind::SiqueDamageCap:
+    case EffectKind::SiqueLifePayment:
+    case EffectKind::SiqueSearchPair:
+    case EffectKind::SiqueAttachFromDeck:
+    case EffectKind::SiqueRecycle:
+    case EffectKind::SiqueOptionalDraw:
+    case EffectKind::SiqueShuffleHands:
         throw std::logic_error("content effect requires a decision");
+    case EffectKind::SiqueNegateDestroy:
+        if (s.chain) for (auto &link : s.chain->links) if (link.id == t.targetLink) {
+            const auto pending = s.cards.find(link.item.source);
+            const bool negatable = pending != s.cards.end() && pending->second.owner != t.owner &&
+                (pending->second.zone == Zone::Analysis || pending->second.zone == Zone::Casting) &&
+                protectedFromCardEffect(s, cat, link.item.source) == false;
+            if (negatable) {
+                link.canceled = true;
+                StateMaintenance::leave(s, link.item.source, &cat);
+            }
+            break;
+        }
+        break;
     case EffectKind::CounterSpell: {
         if (s.chain)
             for (auto &l : s.chain->links)
@@ -328,7 +358,22 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::RecoverFormation:
     case EffectKind::DestroyEnemyAnalysis:
     case EffectKind::LockAnalysis:
+    case EffectKind::SiqueDetachAll:
+    case EffectKind::SiqueRecoverSpell:
+    case EffectKind::SiqueRecoverSeal:
+    case EffectKind::SiqueMillSeal:
+    case EffectKind::SiqueMillSpell:
+    case EffectKind::SiqueDamageCap:
+    case EffectKind::SiqueLifePayment:
+    case EffectKind::SiqueSearchPair:
+    case EffectKind::SiqueAttachFromDeck:
+    case EffectKind::SiqueRecycle:
+    case EffectKind::SiqueOptionalDraw:
+    case EffectKind::SiqueShuffleHands:
         message = "选择卡牌效果";
+        break;
+    case EffectKind::SiqueNegateDestroy:
+        message = "无效并销毁目标法术";
         break;
     case EffectKind::NegateLink:
         message = "取消链节 #" + std::to_string(t.targetLink);

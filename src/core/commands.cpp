@@ -1,4 +1,5 @@
 #include "engine_internal.hpp"
+#include "wizard/core/sique.hpp"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
@@ -206,7 +207,9 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                          : a.preloadedCost +
                              (def.type == CardType::Word ? Rules::castCost(s, catalog_, c.id) - def.cost : 0);
             const int bound = catalog_.usesAlphaV2() ? paid : analytic || def.type == CardType::Word ? paid : 0;
-            s.players[actor].mana -= paid;
+            sique::pay(s, actor, paid);
+            StateMaintenance::check(s, catalog_);
+            if (s.result != -1) return {};
             if (r->discard)
                 StateMaintenance::leave(s, r->discard, &catalog_);
             if (a.burden)
@@ -436,7 +439,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             auto &c = s.cards.at(source);
             if (opt) {
                 const int paid = Rules::concentrationUpkeep(s, catalog_, source);
-                s.players[actor].mana -= paid;
+                sique::pay(s, actor, paid);
                 c.castLoad += paid;
                 c.payments.push_back({s.players[actor].ownTurn, paid, paid, false});
                 ResourceRules::increasedLoad(s, catalog_, actor, paid);

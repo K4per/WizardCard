@@ -75,11 +75,7 @@ func _load() -> void:
 	_step = 0
 	_hide_detail()
 	var path: String = _paths[_files.selected]
-	var verified: Dictionary = service.match_request(&"verify_replay", [path])
-	if not bool(verified.get("ok", false)):
-		_notice.text = "复盘验证失败：" + service.error
-		_update_controls()
-		return
+	# read_replay_plan validates every digest and builds the seek checkpoints.
 	var plan: Dictionary = service.match_request(&"read_replay_plan", [path])
 	if not bool(plan.get("ok", false)):
 		_notice.text = "复盘读取失败：" + service.error
@@ -111,6 +107,8 @@ func _show_frame() -> void:
 			_notice.text = "无法显示此步骤：" + service.error
 			return
 		frame = (response.get("data", {}) as Dictionary).duplicate(true)
+		if _frame_cache.size() >= 24:
+			_frame_cache.erase(_frame_cache.keys()[0])
 		_frame_cache[cache_key] = frame
 	_canvas.configure(MatchProjection.field(frame))
 	_canvas.set_background_theme(str(service.settings.get("fieldBackground", "arcane")))

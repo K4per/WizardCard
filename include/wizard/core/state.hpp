@@ -13,6 +13,8 @@ struct PlayerState {
     int temporaryLife{}, blockedActionTurn{-1};
     int exhaustion{};
     int damageReduction{}, forceDamageReduction{};
+    int siqueDamageCap{}, siqueCapUntilOwnTurn{};
+    std::uint64_t siqueLifePaymentTurn{};
 };
 enum class Flow {
     Draw,

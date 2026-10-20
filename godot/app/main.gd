@@ -47,6 +47,7 @@ func _ready() -> void:
 	if service.initialize(assets, user_directory):
 		FrontendDisplay.apply(service.settings)
 	UiFactory.reduced_motion = bool(service.settings.get("reducedMotion", false))
+	Typography.set_scale(int(service.settings.get("fontScale", Typography.DEFAULT_SCALE)))
 	_audio = MatchFeedback.new()
 	_audio.service = service
 	add_child(_audio)
@@ -65,19 +66,19 @@ func navigate(destination: StringName) -> void:
 		page.queue_free()
 	current_page = destination
 	ArtBank.trim_illustrations()
-	var background_id: String = "c2d.background.realm"
+	var background_id: String = ""
 	if destination == &"menu":
 		background_id = "c2d.v2.menu.background"
-	elif destination in [&"decks", &"deck_editor"]:
-		background_id = ""
 	_background.texture = ArtBank.texture(background_id) if not background_id.is_empty() else null
-	_dim.color = DeckTheme.BACKGROUND if destination in [&"decks", &"deck_editor"] else Color(0.031, 0.075, 0.122, 0.28)
+	_dim.color = DeckTheme.BACKGROUND
 	_dim.visible = destination != &"menu"
 	page = PAGES[destination].instantiate() as Control
+	page.theme = ArtBank.make_theme()
 	_host.add_child(page)
 	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	page.connect(&"navigation_requested", navigate)
 	page.call(&"configure", service)
+	Typography.refresh()
 	_host.modulate.a = 0.0 if not UiFactory.reduced_motion else 1.0
 	if not UiFactory.reduced_motion:
 		var tween: Tween = create_tween()

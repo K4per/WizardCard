@@ -41,12 +41,13 @@ TEST_CASE("settings serialize strictly and multiply master and sound volume") {
     Settings s;
     s.masterVolume = 50;
     s.soundVolume = 20;
+    s.fontScale = 110;
     s.width = 1920;
     s.height = 1080;
     s.automaticPhases = false;
     REQUIRE(s.effectiveSoundVolume() == 10.f);
     REQUIRE(encodeSettings(decodeSettings(encodeSettings(s))) == encodeSettings(s));
-    for (const auto *field : {"masterVolume", "soundVolume", "windowMode", "width", "height", "format"}) {
+    for (const auto *field : {"masterVolume", "soundVolume", "fontScale", "windowMode", "width", "height", "format"}) {
         auto j = encodeSettings(s);
         j[field] = -1;
         REQUIRE_THROWS(decodeSettings(j));
@@ -61,6 +62,23 @@ TEST_CASE("settings serialize strictly and multiply master and sound volume") {
     j["masterVolume"] = 101;
     REQUIRE_THROWS(decodeSettings(j));
 }
+TEST_CASE("font scale accepts supported sizes and preserves legacy settings defaults") {
+    Settings s;
+    REQUIRE(s.fontScale == 100);
+    auto j = encodeSettings(s);
+    j.erase("fontScale");
+    REQUIRE(decodeSettings(j).fontScale == 100);
+    for (const int scale : {90, 100, 110, 120}) {
+        s.fontScale = scale;
+        REQUIRE(decodeSettings(encodeSettings(s)).fontScale == scale);
+    }
+    for (const auto &invalid :
+         {Json(89), Json(121), Json(95), Json(115), Json(100.0), Json("100"), Json(true), Json(nullptr)}) {
+        j = encodeSettings(s);
+        j["fontScale"] = invalid;
+        REQUIRE_THROWS(decodeSettings(j));
+    }
+}
 TEST_CASE("menu starts without constructing a match and settings survive recreation") {
     AppFixture f;
     auto a = f.app();
@@ -73,6 +91,7 @@ TEST_CASE("menu starts without constructing a match and settings survive recreat
     Settings s;
     s.masterVolume = 0;
     s.soundVolume = 35;
+    s.fontScale = 120;
     s.windowMode = WindowMode::Borderless;
     s.width = 1280;
     s.height = 800;

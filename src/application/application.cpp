@@ -32,6 +32,7 @@ Json encodeSettings(const Settings &s) {
     return {{"format", 1},
             {"masterVolume", s.masterVolume},
             {"soundVolume", s.soundVolume},
+            {"fontScale", s.fontScale},
             {"windowMode", static_cast<int>(s.windowMode)},
             {"width", s.width},
             {"height", s.height},
@@ -45,6 +46,11 @@ Settings decodeSettings(const Json &j) {
     Settings s;
     s.masterVolume = integer(j, "masterVolume", 0, 100);
     s.soundVolume = integer(j, "soundVolume", 0, 100);
+    if (j.contains("fontScale")) {
+        s.fontScale = integer(j, "fontScale", 90, 120);
+        if (s.fontScale % 10 != 0)
+            throw std::runtime_error("设置字段无效：fontScale");
+    }
     s.windowMode = static_cast<WindowMode>(integer(j, "windowMode", 0, 2));
     s.width = static_cast<unsigned>(integer(j, "width", 960, 3840));
     s.height = static_cast<unsigned>(integer(j, "height", 600, 2160));

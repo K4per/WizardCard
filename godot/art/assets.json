@@ -23,6 +23,10 @@
     {
       "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261011/manifest.json",
       "sha256": "9b7aa5ca396fff1cc1b8b61e8ea204302a6dbf932ede268f6f3d36102aa53885"
+    },
+    {
+      "file": "assets/art/sique-20261020/manifest.json",
+      "sha256": "b8530822906f0d36568a03385ea481dbc20cb739fcc7558af75397620da6c73b"
     }
   ],
   "palette": {
@@ -5038,6 +5042,18 @@
       "sha256": "1d035193e1a27676239548d91111f3ea51caa36268c824c91791ae3e291ba136"
     },
     {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.cloud-mist",
+      "file": "res://art/card/cloud-mist.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "a5d5e18a8697434086918b9b4f83bbd64d3e2ddd1abc69d6cd6112ffc34f47c7"
+    },
+    {
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.conduit",
@@ -5052,6 +5068,18 @@
       "file": "res://art/card/counter-spell.png",
       "source": "assets/art/alpha-v1/counter-spell.png",
       "sha256": "d9934023300fcd1ddfc350c9086632d3513b21a40fff91d32bc6bc9923077937"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.cutting-wind",
+      "file": "res://art/card/cutting-wind.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "bb2dc3714de29012fd7bc0fb5ea042df49d4014373c038a0cf33385873b3f0f7"
     },
     {
       "sampling": "linear",
@@ -5084,6 +5112,42 @@
       "file": "res://art/card/fireball.png",
       "source": "assets/art/cards/fireball.png",
       "sha256": "17ce2e6248cb8caa16cbc1a585a0968da3f8fc1ed2b25357a2d075d4c4c8f356"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.great-cyclone",
+      "file": "res://art/card/great-cyclone.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "e991574b7fc6fcfec42279a626de23e0d444edf40c98129a56eaabf84d4d8f77"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.great-storm",
+      "file": "res://art/card/great-storm.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "6c424004f6f566b6ff9ce6df03740be540d911000c64c8f7b2b0bb61ad693fcf"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.ice-storm",
+      "file": "res://art/card/ice-storm.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "2c69d52179ddcb31f31b09ff9c1dbe9c342524e5c8e25ef1d16d6b8911fd2a39"
     },
     {
       "sampling": "linear",
@@ -5198,12 +5262,324 @@
       "sha256": "e0b8c5bcf9c4dacb8159b5420a2e6a8f561512009434e9b50ef0f93f58adca93"
     },
     {
+      "id": "illustration.sique-aroma-lure",
+      "sha256": "58f1ab1044a7d2143d88d5fb02264d81c5cbc3cea0369016098369d6d86f8266",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-aroma-lure.png",
+      "source": "assets/art/sique-20261020/export/sique-aroma-lure.png"
+    },
+    {
+      "id": "illustration.sique-boiling-surge",
+      "sha256": "220f0eec9d4f9d9a3c351191148df3eb9282f769880353331f2803ab36fe5f6b",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-boiling-surge.png",
+      "source": "assets/art/sique-20261020/export/sique-boiling-surge.png"
+    },
+    {
+      "id": "illustration.sique-campfire",
+      "sha256": "0989d083edd3a0dd00952e5375213af682a5bfa36fd6d958a48a445310634529",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-campfire.png",
+      "source": "assets/art/sique-20261020/export/sique-campfire.png"
+    },
+    {
+      "id": "illustration.sique-cauldron",
+      "sha256": "9bf2aab646be5c41a4dfe72cf922f2033987e7ef898042ba39870619fc19aa81",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-cauldron.png",
+      "source": "assets/art/sique-20261020/export/sique-cauldron.png"
+    },
+    {
+      "id": "illustration.sique-chili",
+      "sha256": "f937ce6c755d071c8c089f2463f418d6b4df6f793df30fb1c028af9ca611a0c2",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-chili.png",
+      "source": "assets/art/sique-20261020/export/sique-chili.png"
+    },
+    {
+      "id": "illustration.sique-divine-stew",
+      "sha256": "ecfa5946b0b1643464f6caedf048f1508bfe844d439204ae2fb00a79bcd802f4",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-divine-stew.png",
+      "source": "assets/art/sique-20261020/export/sique-divine-stew.png"
+    },
+    {
+      "id": "illustration.sique-flavor-shift",
+      "sha256": "7348a2a634a2fd313e3d766fdcf48cc894cd3cd73f25db62c30cd015a8702406",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-flavor-shift.png",
+      "source": "assets/art/sique-20261020/export/sique-flavor-shift.png"
+    },
+    {
+      "id": "illustration.sique-ingredients",
+      "sha256": "425fd4eb11085257e1279a1f9d5a5125c90c8563e34cf868b863f0c26ba0e346",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-ingredients.png",
+      "source": "assets/art/sique-20261020/export/sique-ingredients.png"
+    },
+    {
+      "id": "illustration.sique-mushroom-soup",
+      "sha256": "1f22f1a30930741e60846b4ee32f700061254ed1c760fe97e3b257b2bae98553",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-mushroom-soup.png",
+      "source": "assets/art/sique-20261020/export/sique-mushroom-soup.png"
+    },
+    {
+      "id": "illustration.sique-pancakes",
+      "sha256": "896aab19106f6889f631aa9b5ff2fd61fb19a6f7299889abde083a7307b576a8",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-pancakes.png",
+      "source": "assets/art/sique-20261020/export/sique-pancakes.png"
+    },
+    {
+      "id": "illustration.sique-parsley",
+      "sha256": "326e095ba836913685e67d9e9db7b491b7d33adb046a7bc1d2e2ed3780b02627",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-parsley.png",
+      "source": "assets/art/sique-20261020/export/sique-parsley.png"
+    },
+    {
+      "id": "illustration.sique-refire",
+      "sha256": "54978be86ca87adc1240e6f78977a26d12416e01f6cb189f8802926b3df65b05",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-refire.png",
+      "source": "assets/art/sique-20261020/export/sique-refire.png"
+    },
+    {
+      "id": "illustration.sique-salt",
+      "sha256": "9d9edc3737082e88408c5ea2d69a5aca145499bf97a9c19d302c3eb643f8753f",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-salt.png",
+      "source": "assets/art/sique-20261020/export/sique-salt.png"
+    },
+    {
+      "id": "illustration.sique-sugar",
+      "sha256": "cad8a55f66e7e51596f66bd831bf36a8a1a0397bd9cf7313cb9d419cda131959",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-sugar.png",
+      "source": "assets/art/sique-20261020/export/sique-sugar.png"
+    },
+    {
+      "id": "illustration.sique-vinegar",
+      "sha256": "1f1b0978143e5ad1d63568de35e205a4a4048fdf259eb0a23804d0b62a1a8d72",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-vinegar.png",
+      "source": "assets/art/sique-20261020/export/sique-vinegar.png"
+    },
+    {
+      "id": "illustration.sique-woodpile",
+      "sha256": "e0cb21ca35cf4ff5e94a675465a6f410ed058a9ee9e2a58f05745d8af4eab4e2",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "nearest",
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop",
+      "file": "res://art/card/sique-woodpile.png",
+      "source": "assets/art/sique-20261020/export/sique-woodpile.png"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.snow-rain-storm",
+      "file": "res://art/card/snow-rain-storm.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "2825667347f405b87d4e3ffcb9ced142b90361719db5f7b6b54fc01c067a0e3b"
+    },
+    {
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.spark",
       "file": "res://art/card/spark.png",
       "source": "assets/art/cards/spark.png",
       "sha256": "29a6fe63b7b00046c1fe51aa4e047235574d40f63acc4c937dd75852d103248a"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-annihilation-crest",
+      "file": "res://art/card/storm-annihilation-crest.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "6c172ba578164472407ac56ed64c84e749778ed4fe24e49fac24ce6b61802644"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-brand",
+      "file": "res://art/card/storm-brand.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "105b40a7ce3cf18e7e545c2522f7638a36158e5908adbada53d086dd492213b1"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-crest",
+      "file": "res://art/card/storm-crest.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "f66a96ec1f68e84ce0766b7db7aed5223bd17183815508443844c712f19b0fff"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-guidance",
+      "file": "res://art/card/storm-guidance.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "5d359735bcf81c57ce20395ae12c2e3c373b191ef9079ddedc6c1ca96410eef8"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-heart",
+      "file": "res://art/card/storm-heart.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "c659a109e68747bdf8d17a8736651a4889eefb15caa9f77ad8b8a2f883c54623"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.storm-vortex",
+      "file": "res://art/card/storm-vortex.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "59e7036f7de4b81d30b102a3c982c31cee6295e538d2a34e0e512ec253ded5fe"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.swift-wind",
+      "file": "res://art/card/swift-wind.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "a98766eeeb8cfbace86a4ed1856fc7a8cfe6fb3e8e000f87556803e2823d66c3"
+    },
+    {
+      "size": [
+        280,
+        280
+      ],
+      "sampling": "nearest",
+      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
+      "id": "illustration.thunder-summon",
+      "file": "res://art/card/thunder-summon.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
+      "sha256": "1843b01514637be3c030659ffe28cd74d245a62433ea123e4037d10c3182931a"
+    },
+    {
+      "size": [
+        1278,
+        1230
+      ],
+      "sampling": "nearest",
+      "origin": "ImageGen",
+      "id": "illustration.triangle-star",
+      "file": "res://art/card/triangle-star.png",
+      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/triangle-star.png",
+      "sha256": "9b2bc41985d07277bfc6b9a9e93361a6cd83c6a79d2f6b1b1386de2f771f74af"
     },
     {
       "sampling": "linear",
@@ -5351,18 +5727,6 @@
     },
     {
       "size": [
-        1278,
-        1230
-      ],
-      "sampling": "nearest",
-      "origin": "ImageGen",
-      "id": "illustration.triangle-star",
-      "file": "res://art/card/triangle-star.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/triangle-star.png",
-      "sha256": "9b2bc41985d07277bfc6b9a9e93361a6cd83c6a79d2f6b1b1386de2f771f74af"
-    },
-    {
-      "size": [
         1448,
         1086
       ],
@@ -5436,22 +5800,10 @@
       ],
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.storm-crest",
-      "file": "res://art/card/storm-crest.png",
+      "id": "illustration.wind-strike",
+      "file": "res://art/card/wind-strike.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "f66a96ec1f68e84ce0766b7db7aed5223bd17183815508443844c712f19b0fff"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.storm-heart",
-      "file": "res://art/card/storm-heart.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "c659a109e68747bdf8d17a8736651a4889eefb15caa9f77ad8b8a2f883c54623"
+      "sha256": "dcaba556588472b54ab940df12806ee566f173270b637b0225ee2963a81bb3e2"
     },
     {
       "size": [
@@ -5472,166 +5824,10 @@
       ],
       "sampling": "nearest",
       "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.swift-wind",
-      "file": "res://art/card/swift-wind.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "a98766eeeb8cfbace86a4ed1856fc7a8cfe6fb3e8e000f87556803e2823d66c3"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.snow-rain-storm",
-      "file": "res://art/card/snow-rain-storm.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "2825667347f405b87d4e3ffcb9ced142b90361719db5f7b6b54fc01c067a0e3b"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
       "id": "illustration.windmaking",
       "file": "res://art/card/windmaking.png",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
       "sha256": "90fd40eb1b2278ea06e84c1799387b8133d0eb443b9ef5e0971cf3af621b1d2b"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.storm-guidance",
-      "file": "res://art/card/storm-guidance.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "5d359735bcf81c57ce20395ae12c2e3c373b191ef9079ddedc6c1ca96410eef8"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.storm-vortex",
-      "file": "res://art/card/storm-vortex.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "59e7036f7de4b81d30b102a3c982c31cee6295e538d2a34e0e512ec253ded5fe"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.wind-strike",
-      "file": "res://art/card/wind-strike.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "dcaba556588472b54ab940df12806ee566f173270b637b0225ee2963a81bb3e2"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.great-cyclone",
-      "file": "res://art/card/great-cyclone.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "e991574b7fc6fcfec42279a626de23e0d444edf40c98129a56eaabf84d4d8f77"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.storm-brand",
-      "file": "res://art/card/storm-brand.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "105b40a7ce3cf18e7e545c2522f7638a36158e5908adbada53d086dd492213b1"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.storm-annihilation-crest",
-      "file": "res://art/card/storm-annihilation-crest.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "6c172ba578164472407ac56ed64c84e749778ed4fe24e49fac24ce6b61802644"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.ice-storm",
-      "file": "res://art/card/ice-storm.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "2c69d52179ddcb31f31b09ff9c1dbe9c342524e5c8e25ef1d16d6b8911fd2a39"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.cutting-wind",
-      "file": "res://art/card/cutting-wind.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "bb2dc3714de29012fd7bc0fb5ea042df49d4014373c038a0cf33385873b3f0f7"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.great-storm",
-      "file": "res://art/card/great-storm.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "6c424004f6f566b6ff9ce6df03740be540d911000c64c8f7b2b0bb61ad693fcf"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.cloud-mist",
-      "file": "res://art/card/cloud-mist.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "a5d5e18a8697434086918b9b4f83bbd64d3e2ddd1abc69d6cd6112ffc34f47c7"
-    },
-    {
-      "size": [
-        280,
-        280
-      ],
-      "sampling": "nearest",
-      "origin": "OpenAI built-in image_gen; cropped from a consistent Storm series atlas",
-      "id": "illustration.thunder-summon",
-      "file": "res://art/card/thunder-summon.png",
-      "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
-      "sha256": "1843b01514637be3c030659ffe28cd74d245a62433ea123e4037d10c3182931a"
     }
   ]
 }

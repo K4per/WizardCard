@@ -18,7 +18,7 @@ def load(path):
 def attributes(card):
     pairs = [("编号", card["number"]), ("类型", TYPES[card["type"]])]
     if card["type"] == "formation":
-        pairs += [("等级", card["level"]), ("阵体", card["body"]), ("荷载上限", card["capacity"]), ("魔素收入", card["income"]), ("环位", card["rings"]), ("承载位阶", card["maxRank"]), ("召唤条件", card.get("summonCondition", "待补充"))]
+        pairs += [("等级", card["level"]), ("阵体", card["body"]), ("荷载上限", card["capacity"]), ("魔素收入", card["income"]), ("环位", card["rings"]), ("承载位阶", card["maxRank"]), ("召唤条件", card.get("summonCondition", "—"))]
     elif card["type"] == "seal":
         pairs += [("附着费用", card["cost"])]
     else:
@@ -58,7 +58,7 @@ def main():
         assert initial["level"] == 1 and any(row["id"] == initial["id"] for row in preset["sideCards"])
     version = catalog["cardSetVersion"]
     intro = f"规则 {catalog['rulesVersion']} · 卡池 {version} · {len(cards)} 种正式卡牌 · {len(presets)} 套 40+10 预设。"
-    md = ["# 巫师牌卡池图鉴", "", intro, "", "本页由正式定义生成。规则见 [Alpha v2.5](alpha-v2.5-rules.md)，配方与效果以卡面文字及正式规则共同为准。", "", "编号前两位：01 阵法、02 解析、03 言灵、04 咒符、05 符文；后四位为该类序号。稳定内容 ID 用于存档和资源关联。", "", "| 编号 | 卡名 | 类型 |", "|---|---|---|"]
+    md = ["# 巫师牌卡池图鉴", "", intro, "", "本页由正式定义生成。规则见 [Alpha v2.5](alpha-v2.5-rules.md)，卡面召唤条件由正式字段生成，效果以正式规则为准。", "", "编号前两位：01 阵法、02 解析、03 言灵、04 咒符、05 符文；后四位为该类序号。稳定内容 ID 用于存档和资源关联。", "", "| 编号 | 卡名 | 类型 |", "|---|---|---|"]
     sections = []
     for card in cards:
         assert re.fullmatch(r"[0-9]{6}", card["number"])

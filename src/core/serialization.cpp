@@ -40,6 +40,9 @@ std::string GameEngine::stateKey(bool logical) const {
         o << ';';
         if (catalog_.usesAlphaV2()) o << "exhaustion:" << p.exhaustion << ';';
         if (p.damageReduction || p.forceDamageReduction) o << "shield:" << p.damageReduction << ',' << p.forceDamageReduction << ';';
+        if (p.siqueDamageCap || p.siqueLifePaymentTurn)
+            o << "sique:" << p.siqueDamageCap << ',' << p.siqueCapUntilOwnTurn << ','
+              << (logical ? p.siqueLifePaymentTurn == s.globalTurn : p.siqueLifePaymentTurn) << ';';
     }
     for (const auto &[id, c] : s.cards) {
         o << id << ',' << std::quoted(c.definition) << ',' << c.owner << ',' << static_cast<int>(c.zone)
@@ -55,6 +58,8 @@ std::string GameEngine::stateKey(bool logical) const {
             o << "v2:" << c.analysisProgress << ',' << c.fieldOrder << ',' << c.ringIndex << ','
               << c.wasAmbushed << ',' << c.sourceRingIndex << ':';
         if (c.publiclyRevealed) o << "shown:";
+        if (c.siquePartner) o << "pair:" << c.siquePartner << ','
+            << (logical ? c.siquePairTurn == s.globalTurn : c.siquePairTurn) << ':';
         for (const auto &pay : c.payments)
             o << pay.turn << ',' << pay.paid << ',' << pay.load << ',' << pay.canceled << '/';
         o << ':';

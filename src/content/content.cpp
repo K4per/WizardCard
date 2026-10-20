@@ -96,7 +96,20 @@ std::vector<Effect> effects(const Json &j, const std::string &path) {
         {"storm_cyclone", EffectKind::StormCyclone},
         {"cutting_wind", EffectKind::CuttingWind},
         {"destroy_all_enemy_field", EffectKind::DestroyAllEnemyField},
-        {"lock_analysis", EffectKind::LockAnalysis}};
+        {"lock_analysis", EffectKind::LockAnalysis},
+        {"sique_detach_all", EffectKind::SiqueDetachAll},
+        {"sique_recover_spell", EffectKind::SiqueRecoverSpell},
+        {"sique_recover_seal", EffectKind::SiqueRecoverSeal},
+        {"sique_mill_seal", EffectKind::SiqueMillSeal},
+        {"sique_mill_spell", EffectKind::SiqueMillSpell},
+        {"sique_damage_cap", EffectKind::SiqueDamageCap},
+        {"sique_life_payment", EffectKind::SiqueLifePayment},
+        {"sique_search_pair", EffectKind::SiqueSearchPair},
+        {"sique_attach_from_deck", EffectKind::SiqueAttachFromDeck},
+        {"sique_recycle", EffectKind::SiqueRecycle},
+        {"sique_optional_draw", EffectKind::SiqueOptionalDraw},
+        {"sique_shuffle_hands", EffectKind::SiqueShuffleHands},
+        {"sique_negate_destroy", EffectKind::SiqueNegateDestroy}};
     for (const auto &e : j) {
         const auto p = path + "/" + std::to_string(n++);
         Effect effect{enumeration(text(e, "kind", p), names, p + "/kind"), number(e, "amount", p)};
@@ -135,7 +148,7 @@ void writeJson(const std::filesystem::path &p, const Json &j) {
 CardCatalog parseCatalog(const Json &j, const std::string &source) {
     CardCatalog cat;
     const auto revision = number(j, "mechanicsRevision", source);
-    if (revision > 3)
+    if (revision > 4)
         fail(source + "/mechanicsRevision", "unsupported mechanics revision");
     cat.advancedRules = revision >= 1;
     cat.mechanicsRevision = revision;
@@ -325,7 +338,8 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 "storm_formation_host_only", "storm_formation_host_restriction", "thunder_damage_bonus",
                 "activate_storm_crest_destroy", "activate_storm_search", "activate_storm_heart_choice",
                 "storm_heart_upgrade", "search_great_storm_on_setup", "requires_storm_heart_setup",
-                "great_storm"};
+                "great_storm", "sique_cauldron_only", "sique_requires_campfire", "sique_requires_cauldron",
+                "sique_detach_1", "sique_detach_2", "sique_detach_3"};
             if (!card.at("traits").is_array())
                 fail(p + "/traits", "expected trait array");
             for (const auto &value : card.at("traits")) {

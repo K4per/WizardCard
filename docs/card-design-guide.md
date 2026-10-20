@@ -59,11 +59,33 @@
 
 ## 当前内容接口
 
-正式卡池为 [assets/cards.json](../assets/cards.json)。下面是接入参考；设计者可以只交模板中的中文设计，不必自行写 JSON。数值字段在解析层接受0–1000整数，这只是输入安全边界，不是推荐平衡数值。
+正式卡池的唯一维护来源是 [catalog.json](../assets/catalog.json) 与其中列出的 `assets/cards/<type>/<id>.json` 定义文件；`assets/cards.json` 是兼容聚合生成产物，不手工编辑。清单顺序决定规范化聚合顺序。运行 `python tools/catalog_source.py` 生成聚合文件，`python tools/catalog_source.py --check` 检查漂移；`wizard_cli validate assets` 执行规则内容校验。下面是接入参考；设计者可以只交模板中的中文设计，不必自行写 JSON。
+
+当前卡牌定义使用扁平 JSON 对象，没有单卡格式版本字段。下表覆盖正式卡池中出现的字段和解析器支持的规则字段；这是逻辑分组，不代表 JSON 嵌套层级：
+
+完整字段清单及嵌套对象结构见[正式卡牌 schema](card-schema.md)。
+
+| 分组与字段 | 主要消费者及校验 |
+|---|---|
+| 身份：`id`、`number`、`illustrationId` | 解析器检查稳定ID非空/唯一；`number` 检查六位格式、类型前缀和唯一性；存档、牌组、网络、复盘和资源映射使用 `id`，图鉴/客户端展示编号，Godot 美术清单按 `illustrationId` 关联图片 |
+| 卡面：`name`、`rarity`、`text`、`flavor`、`tags` | 解析器检查必需文字及标签数组；图鉴、构筑器、详情使用名称/稀有度/文字/风味；同名限制按名称汇总，构筑查询可筛 `tags`；卡面文字不执行规则 |
+| 分类与通用规则属性：`type`、`level`、`rank`、`school`、`speed`、`duration`、`concentration`、`perpetual`、`immediate`、`responseOnly`、`concentrationUpkeep` | 解析器检查类型、学派、位阶、速度、持续方式和类型组合；规则引擎与合法动作读取解析后的属性，客户端展示类型/学派/位阶/速度/持续方式 |
+| 阵法与符文属性：`body`、`capacity`、`income`、`rings`、`maxRank`、`baseEligible`、`baseAnalysisDiscount`、`quickRankOne`、`opponentDestroyProtected`、`recipe` | 解析器检查阵体、基础资格、配方及材料引用；规则引擎以这些数值验证设置、承载和保护，图鉴/构筑器展示属性与配方 |
+| 目标与费用：`target`、`targetCount`、`cost`、`castCost`、`analysisTurns`、`burden`、`extraDiscard` | 解析器检查目标种类、数量和数值范围；规则引擎用于合法性与支付，构筑器/详情展示费用、解析时间和目标。内容中的 `number` 不是 `id` 的替代品 |
+| 附着及费用/效果修正：`ringBonus`、`incomeBonus`、`refundSetting`、`refundCast`、`capacityBonus`、`rankBonus`、`castCostBonus`、`damageBonus` | 解析器限制字段适用的卡牌类型、正负范围及互斥关系；规则引擎在宿主、费用和效果计算中读取，客户端可展示计算结果 |
+| 防护属性：`resistances`、`immunities` | 解析器检查伤害类型数组；规则引擎在伤害结算中读取 |
+| 主效果与阶段触发：`effects`、`onDraw`、`onPrepare`、`onMain`、`onCast`、`onEnd`、`onLeave`、`onMana` | 每项都是有限效果对象数组；解析器检查效果名、参数、类型和范围，规则引擎只处理已实现机制。`onDraw` 是抽卡阶段触发，不代表每次抽到卡牌 |
+| 响应能力：`responses` | 数组项支持 `id`、`name`、`sources`、`windows`、`target`、`effects`、`eventOwner`、`phases`、`requiresSource`、`handCost`、`preloadedCost`、`burden`、`extraDiscard`、`targetCount`；解析器检查重复ID、来源/窗口/目标和效果，规则引擎再次校验响应合法性与支付。旧格式的 `hand` 来源需声明 `handCost`，当前 Alpha 规则不允许手牌响应 |
+| 配方项：`recipe` | 数组项支持 `kind`、`amount`，可选 `definition`、`school`、`readyOnly`、`distinctSchools`、`fireDamage`；解析器检查配方种类、正数数量、学派和定义引用，规则引擎验证可支付材料 |
+| 效果项：上述效果数组的每项 | `kind` 必填；`amount`、`damageType`、`recipient` 按效果使用且有范围/枚举校验。嵌套效果只用于 `responses[*].effects`，不会从描述文字推断 |
+
+清单的 `format` 是清单自身版本（当前为1），与卡池 `cardSetVersion`、规则 `rulesVersion`、解析能力 `mechanicsRevision` 分开。解析器会校验必填身份/卡面字段、版本支持、编号前缀和唯一性、枚举、数值范围、效果/响应参数、重复ID、配方引用、牌表引用及清单路径安全；加载正式内容是整体失败，不会返回部分卡池。错误应包含来源路径及字段位置。常规数值字段接受0–1000整数，带符号的 `incomeBonus` 接受-1000–1000；这是输入边界，不是推荐平衡数值。
+
+**未知字段策略：当前兼容性解析器忽略未识别字段，卡牌对象及效果/响应对象均未启用拒绝未知字段。** 因此拼错的未知键可能被忽略；新增字段必须先接入解析器、规则测试和本说明，不能仅添加 JSON。引入严格拒绝前需新增定义格式版本并核对旧正式卡池、聚合夹具及兼容导入。
 
 | 字段 | 用途 / 约束 |
 |---|---|
-| `id`、`name`、`text`、`rarity`、`type` | 必填非空文本；ID唯一且发布后稳定；类型为 `action / analytic / word / formation / seal` |
+| `id`、`name`、`text`、`rarity`、`type` | 必填非空文本；ID唯一且发布后稳定；当前类型为 `action / analytic / word / formation / seal / talisman` |
 | `rarity` | 使用 `common / uncommon / rare / epic / legendary`，分别为普通、罕见、稀有、史诗、传说 |
 | `flavor`、`tags` | 风味描述与非空设计标签；标签供构筑检索，不自动形成规则条件 |
 | `cost`、`castCost` | 基础费用 / 解析法术准备施法费用，缺省0；阵法设置用 `cost`，`body`只决定占位 |

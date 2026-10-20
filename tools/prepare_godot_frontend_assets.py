@@ -103,6 +103,7 @@ def copied_entry(asset_id: str, source: Path, relative: str, expected_hash: str 
 
 
 def synchronize() -> None:
+    previous = read_json(RUNTIME_MANIFEST) if RUNTIME_MANIFEST.exists() else {}
     original = read_json(SOURCE_MANIFEST)
     entries = []
     for asset in original["assets"]:
@@ -198,6 +199,19 @@ def synchronize() -> None:
         "palette": original["nativePalette"],
         "assets": sorted(entries, key=lambda entry: entry["id"]),
     }
+    # Later registered batches (Storm, Sique) are independent of the foundation.
+    # Preserve them when refreshing that foundation instead of dropping their IDs.
+    generated_ids = {entry["id"] for entry in manifest["assets"]}
+    for entry in previous.get("assets", []):
+        if entry["id"] not in generated_ids:
+            runtime = confined_path(ART, entry["file"].removeprefix("res://art/"))
+            if sha256(runtime) != entry["sha256"]:
+                raise ValueError("Registered supplemental asset changed: " + entry["id"])
+            manifest["assets"].append(entry)
+    known_sources = {entry["file"] for entry in manifest["additionalSourceManifests"]}
+    manifest["additionalSourceManifests"].extend(entry for entry in previous.get("additionalSourceManifests", [])
+                                                 if entry["file"] not in known_sources)
+    manifest["assets"].sort(key=lambda entry: entry["id"])
     RUNTIME_MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
                                 encoding="utf-8")
 
@@ -258,9 +272,10 @@ def verify() -> tuple[int, int]:
     missing = REQUIRED - ids
     if missing:
         raise ValueError(f"Missing frontend foundation assets: {', '.join(sorted(missing))}")
-    if len([asset_id for asset_id in ids if asset_id.startswith("illustration.") and
-            not asset_id.startswith("illustration.v2-")]) != 30:
-        raise ValueError("Runtime collection must preserve all 30 illustrations")
+    from catalog_source import load_catalog
+    for card in load_catalog()["cards"]:
+        if "illustration." + card.get("illustrationId", card["id"]) not in ids:
+            raise ValueError("Missing official card illustration: " + card["id"])
     previews = read_json(GODOT / "data/card-previews-v2.json")
     if previews.get("usage") != "illustrated-preview" or len(previews["cards"]) != 32:
         raise ValueError("Expected 32 display-only 2.0 preview cards")

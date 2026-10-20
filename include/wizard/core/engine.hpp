@@ -34,6 +34,8 @@ class GameEngine {
     bool phaseV2();
     bool returnSpellsV2();
     bool contentEffectV2();
+    bool siqueEffect();
+    bool chooseSiqueEffect(PlayerId, CardId);
     bool chooseContentEffectV2(PlayerId, DecisionKind, CardId);
     void actionTimingV2(ResponseWindow = ResponseWindow::Action);
     std::string responseSetupV2(PlayerId, const Command &);

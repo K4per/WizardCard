@@ -1,5 +1,6 @@
 // 2.0 content choices live beside EffectResolver, separate from turn scheduling.
 #include "engine_internal.hpp"
+#include "wizard/core/sique.hpp"
 
 namespace wizard {
 namespace {
@@ -20,7 +21,7 @@ bool effectImmune(const GameState &s, const CardCatalog &catalog, CardId id) {
     if (found == s.cards.end()) return false;
     const auto &card = found->second;
     const auto &definition = catalog.at(card.definition);
-    if (hasTrait(definition, "effect_immune")) return true;
+    if (hasTrait(definition, "effect_immune") || sique::protectedCampfire(s, id)) return true;
     if (!hasTrait(definition, "great_storm")) return false;
     const auto host = s.cards.find(card.host ? card.host : card.sourceFormation);
     return host != s.cards.end() && host->second.zone == Zone::Analysis &&
@@ -107,6 +108,7 @@ void returnFormationToSideDeck(GameState &s, const CardCatalog &catalog, CardId 
 } // namespace
 
 bool GameEngine::contentEffectV2() {
+    if (siqueEffect()) return true;
     auto &s = state_;
     if (!catalog_.usesAlphaV2() || !s.effect || s.effect->cursor >= s.effect->item.effects.size())
         return false;
@@ -445,6 +447,7 @@ bool GameEngine::contentEffectV2() {
 }
 
 bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId selected) {
+    if (kind == DecisionKind::EffectChoice && chooseSiqueEffect(actor, selected)) return true;
     auto &s = state_;
     if (!catalog_.usesAlphaV2() || !s.effect ||
         (kind != DecisionKind::EffectChoice && kind != DecisionKind::DamageChoice))

@@ -31,6 +31,7 @@ static func paint(surface: CanvasItem, card: CardPresentation, rect: Rect2, high
 		_label(surface, "Lv.%s" % card.secondary_value, Rect2(rect.position.x + 6, rect.end.y - 24, rect.size.x - 12, 18), maxi(9, font_size - 3), Color("b7c6ce"))
 
 static func _label(surface: CanvasItem, text: String, rect: Rect2, font_size: int, color: Color) -> void:
+	font_size = Typography.fitted_size(font_size, rect.size.y)
 	var displayed: String = text
 	while displayed.length() > 1 and Typography.BODY.get_string_size(displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > rect.size.x:
 		displayed = displayed.left(displayed.length() - 1)

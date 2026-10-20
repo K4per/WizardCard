@@ -1,12 +1,13 @@
-# Godot Alpha v2.5.0 frontend
+# Godot Alpha v2.5.1 frontend
 
 This directory contains the native bridge and Godot 4.7.2 frontend for WizardCard
-2.5.0. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
+2.5.1. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
 GDScript displays viewer projections and submits intents.
 
 The frontend includes menu, library, settings, deck construction, setup,
 hotseat, AI, tutorial, LAN rooms, matches, replay and a display-only field
-showcase. The official library reads the 62-card native catalogue. Historical
+showcase. The official library reads the 78-card native catalogue, including the
+16-card Sique series. Historical
 illustrated previews in `data/card-previews-v2.json` are display-only and cannot
 enter playable decks.
 
@@ -49,13 +50,45 @@ analysis insets, hand fan and field/pile positions. Changing these
 parameters redraws the canvas and affects match and replay rendering. Use Make
 Unique and save a separate resource for a scene-specific layout.
 
-`ui/simple_battle_theme.tres` owns battle fonts, panel styles and buttons. Match
-and replay scenes reference it directly; runtime initialization does not
-replace it. `pages/field_greybox.tscn` is the simple layout prototype.
+All business pages use the shared greybox theme from `DeckTheme` through
+`ArtBank.make_theme()`. It supplies panel styles, buttons, input fields, focus
+and disabled states; existing slider and toggle icons remain. The
+`ui/simple_battle_theme.tres` scene resource remains an editor fallback, while
+the application supplies the shared theme at runtime.
+`pages/field_greybox.tscn` is the simple layout prototype.
 
 `FieldCanvas` has a tool preview using local silhouettes and exported ring/hand
 counts. It does not initialize a native session, read player files, generate
 input hitboxes or submit commands in the editor.
+
+## Menu, settings and deck exchange
+
+The main menu keeps the existing logo on the left and seven equal primary
+buttons in a single right-hand column: single player, multiplayer, deck
+construction, card library, replay, settings and quit. Keyboard and controller
+focus follow the same order and wrap at either end. The menu background and
+button art remain in use.
+
+Settings offer 1280x720, 1600x900, 1440x900, 1600x1000, 1920x1080 and 2560x1440, preserve
+saved custom sizes and support free resizing down to 1280x720. Font sizes are
+90%, 100%, 110% and 120%, with 100% as the default. Save and apply updates the
+current UI and persists `fontScale`; old settings without the field use 100%.
+`GlobalTypography` scales inherited themes, explicit font sizes, popups, rich
+text and controls created later. Custom card drawing fits text within the card;
+full rules remain scrollable in details.
+
+Deck construction has a player-facing Import action; the editor has Export.
+Exchange files use the readable `wizardcard-deck` version 1 JSON format with a
+name and sorted stable card ID/count entries in `main` and `side`. Import
+validates the complete deck before saving: unknown cards, invalid sections,
+counts, duplicates and unsupported versions produce explicit errors without
+replacing the active draft. This public format is separate from the local
+format 3 draft described below.
+
+Adding, removing, rejecting and saving cards immediately updates counts and
+result text, with short visual feedback. Card detail panels display `number`
+while decks continue to persist stable `id` values. Card-pool rows adapt to
+available height to keep cards useful in smaller windows.
 
 ## Match interaction
 
@@ -106,6 +139,12 @@ ash zone use the same illustrated face and open the same card detail panel.
 Settings persist `arcane`, `slate` or `ember` and apply the same background
 identifier in match and replay.
 
+Short projection-based borders show entering/leaving cards, zone and state
+changes, damage and healing. They never move real cards or their hit regions,
+delay commands or replay steps, or infer rule outcomes. Privacy changes clear
+old outlines immediately. Reduced motion disables transient feedback while
+state and result text update immediately.
+
 Both players privately choose a level-one formation from their own side deck
 before simultaneous reveal. Local hotseat, AI and tutorial have no clock. LAN
 clocks are authoritative: 300 seconds, +60 at own turn start, capped at 300.
@@ -124,19 +163,32 @@ explicitly rejects 2.0.0-rc.1 recordings.
 full deterministic CLI/bridge replay, frontend, match, field and deck flows.
 Extension users run serially to avoid Windows DLL hot-reload collisions.
 
-Frontend checks cover 1280x720, 1600x1000 and 1920x1080, projected 0/1/7/12 ring
+Frontend and typography checks cover 1280x720, 1600x900, 1440x900, 1600x1000,
+1920x1080 and 2560x1440. Typography exercises all four font sizes on the menu,
+settings, deck editor, library, field and replay pages. Frontend checks cover
+projected 0/1/7/12 ring
 counts, all five formation lanes, a twenty-card hand, mouse/right-click/Escape,
 drag intents, decision locks, hidden identities, settings and deck drafts.
 Match checks exercise private opening, real viewport clicks and confirmation,
 Escape/reselection/menu, replay, AI privacy, tutorial and rooms.
 Card selection checks cover grouped operations, field targets, return rings and
-stale contexts. Tray checks cover all three sizes, field visibility, private
+stale contexts. Tray checks cover field visibility, private
 collections, collapse without submission, and explicit response pass.
+
+Additional standalone checks are `tests/deck_exchange_smoke.gd` for public deck
+round trips and invalid imports, `tests/feedback_smoke.gd` for immediate state,
+privacy and reduced-motion behavior, and `tests/network_frontend_smoke.gd` for
+three loopback create/join/start/leave cycles. Native settings tests cover font
+validation and persistence. Run these scripts serially after rebuilding and
+importing the current extension.
 
 For actual rendered screenshots, run a smoke script without `--headless` and
 append `-- --assets <directory> --user-data <isolated directory> --capture
 --output <capture directory>`. Headless success alone is not visual acceptance.
 The standalone field script accepts `--output` without `--capture`.
+`tests/typography_smoke.gd` instead accepts `--capture-output <directory>` and
+captures each checked page at 1280x720 with 120% text; its other size/font
+combinations use geometry assertions.
 
 Cold imports use `--import --frame-delay 1000` so deferred extension docs finish
 before exit, matching the upstream race in Godot #111048. This is a test harness

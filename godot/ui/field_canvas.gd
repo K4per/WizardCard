@@ -65,6 +65,10 @@ var _opponent_casting_region: Rect2
 var selected_id: String = ""
 var target_ids: Dictionary[String, bool] = {}
 var target_rings: Dictionary[String, PackedInt32Array] = {}
+var _transition: FieldTransition = FieldTransition.new()
+var _transition_strength: float = 0.0
+var _transition_tween: Tween
+var _has_projection: bool = false
 
 func set_action_targets(ids: Array[String], rings: Dictionary[String, PackedInt32Array] = {}) -> void:
 	target_ids.clear()
@@ -103,7 +107,9 @@ func _layout_resource_changed() -> void:
 	queue_redraw()
 
 func configure(value: FieldPresentation) -> void:
+	_begin_transition(value)
 	field = value
+	_has_projection = true
 	hand_collapsed = false
 	_own_start = 0
 	_opponent_start = 0
@@ -117,6 +123,22 @@ func configure(value: FieldPresentation) -> void:
 	_zone_hits.clear()
 	_clear_hover()
 
+func _begin_transition(next: FieldPresentation) -> void:
+	if _transition_tween != null and _transition_tween.is_valid():
+		_transition_tween.kill()
+	_transition_strength = 0.0
+	if not _has_projection or Engine.is_editor_hint() or UiFactory.reduced_motion or privacy:
+		_transition.clear()
+		return
+	if _transition.prepare(field, next, _card_hits):
+		_transition_strength = 1.0
+		_transition_tween = create_tween()
+		_transition_tween.tween_method(_set_transition_strength, 1.0, 0.0, 0.24)
+
+func _set_transition_strength(value: float) -> void:
+	_transition_strength = value
+	queue_redraw()
+
 func set_hand_collapsed(enabled: bool) -> void:
 	hand_collapsed = enabled
 	_dragged = null
@@ -127,6 +149,11 @@ func set_hand_collapsed(enabled: bool) -> void:
 
 func set_privacy(enabled: bool) -> void:
 	privacy = enabled
+	if enabled:
+		if _transition_tween != null and _transition_tween.is_valid():
+			_transition_tween.kill()
+		_transition.clear()
+		_transition_strength = 0.0
 	selected_id = ""
 	_dragged = null
 	_drag_active = false
@@ -179,6 +206,7 @@ func _draw() -> void:
 	_draw_piles(true)
 	_draw_opponent_hand()
 	_draw_hand(size.y * layout.hand_height_ratio)
+	_transition.paint(self, _card_hits, _own_region, _opponent_region, _transition_strength)
 	if _drag_active and _dragged != null:
 		_draw_simple_card(_dragged, Rect2(_pointer - Vector2(40, 55), Vector2(80, 110)), true)
 	layout_changed.emit()
@@ -278,6 +306,7 @@ func _draw_editor_card(rect: Rect2) -> void:
 	draw_rect(rect, Color("75919e"), false, 1)
 
 func _draw_label(text: String, rect: Rect2, font_size: int, color: Color = Color("e4edf0"), centered: bool = false) -> void:
+	font_size = Typography.fitted_size(font_size, rect.size.y)
 	var font: Font = Typography.HEADING
 	var displayed: String = text
 	while not displayed.is_empty() and font.get_string_size(displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > rect.size.x:

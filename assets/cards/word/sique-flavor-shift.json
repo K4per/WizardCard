@@ -1,0 +1,28 @@
+{
+  "id": "sique-flavor-shift",
+  "name": "味契·风味转化",
+  "type": "word",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 5,
+  "level": 3,
+  "speed": 2,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "030015",
+  "illustrationId": "sique-flavor-shift",
+  "school": "transmutation",
+  "traits": [
+    "sique_detach_1"
+  ],
+  "effects": [
+    {
+      "kind": "sique_attach_from_deck",
+      "amount": 1
+    }
+  ],
+  "text": "将1张味契符文解除附着才能发动。将牌库中1张味契符文附着到己方味契阵法上。",
+  "analysisTurns": 0
+}

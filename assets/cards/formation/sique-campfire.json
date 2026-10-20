@@ -1,0 +1,35 @@
+{
+  "id": "sique-campfire",
+  "name": "味契·篝火",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "rank": 1,
+  "level": 3,
+  "maxRank": 3,
+  "speed": 1,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "010017",
+  "illustrationId": "sique-campfire",
+  "body": 2,
+  "rings": 3,
+  "capacity": 8,
+  "income": 4,
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "sique-woodpile"
+    },
+    {
+      "kind": "discard_hand",
+      "amount": 1,
+      "fireDamage": true
+    }
+  ],
+  "text": "己方场上存在味契·魔力坩埚时，此卡不受其他卡的效果影响。此卡上设置的火焰伤害法术卡伤害+1。",
+  "summonCondition": "祭品：己方场上1张味契·柴堆；弃置手牌中1张火焰伤害法术。"
+}

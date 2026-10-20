@@ -152,6 +152,21 @@ unique_name_in_owner = true
 text = "显示"
 theme_override_font_sizes/font_size = 26
 
+[node name="TypographyGroup" type="VBoxContainer" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TypographyCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/TypographyGroup"]
+layout_mode = 2
+text = "界面字号（全局）"
+theme_override_font_sizes/font_size = 18
+
+[node name="FontScale" type="OptionButton" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/TypographyGroup"]
+layout_mode = 2
+unique_name_in_owner = true
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 42)
+
 [node name="ResolutionGroup" type="VBoxContainer" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display"]
 layout_mode = 2
 theme_override_constants/separation = 4

@@ -119,6 +119,14 @@ if(BUILD_TESTING AND GODOT_BIN)
     --output ${CMAKE_CURRENT_BINARY_DIR}/deck-frontend-smoke-output)
   set_tests_properties(godot_deck_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  foreach(smoke typography feedback deck_exchange network_frontend)
+    add_test(NAME godot_${smoke}_smoke COMMAND "${GODOT_BIN}" --headless
+      --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/${smoke}_smoke.gd --
+      --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+      --user-data ${CMAKE_CURRENT_BINARY_DIR}/${smoke}-smoke-data)
+    set_tests_properties(godot_${smoke}_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+      RUN_SERIAL TRUE TIMEOUT 120 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  endforeach()
   # Windows hot-reload copies of the same extension DLL collide across Godot
   # processes. Serialize all extension users even when ctest runs with -j.
   set_tests_properties(godot_bridge_boundary godot_bridge_replay

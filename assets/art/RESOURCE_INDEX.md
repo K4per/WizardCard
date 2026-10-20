@@ -10,7 +10,7 @@
 - [共享 UI 与设置重绘包](godot-2d-v2/ui-components-1080p-v1/README.md)：六份 1080p 透明组件、原稿、提示词、切片清单，以及设置和图鉴的实际预览。
 - [开源中文字体](fonts/noto-sans-cjk-sc/README.md)：Noto Sans CJK SC，主菜单 Black 900、标题与操作 Bold 700、正文 Regular 400；附原始字体、OFL 许可、来源哈希与实际截图。
 - [构筑与编辑重绘包](godot-2d-v2/deck-builder-1080p-v1/README.md)：七份 1080p C 版资产、原稿与提示词，保留 v1.1 三栏并支持 40 张主卡组 / 10 张副卡组，附 Godot 实际截图。
-- [全目录盘点](ART_INVENTORY.json)：逐文件位置、格式、PNG 尺寸和占用空间。盘点含源稿与副本，不能把文件数量当作独立设计数量。
+- [全目录盘点](ART_INVENTORY.json)：逐文件位置、格式、PNG 尺寸、哈希和占用空间，并单独列出 `godot/art` 运行时镜像。盘点含源稿与副本，不能把文件数量当作独立设计数量。
 - [新版全前端需求](../../docs/art-resource-requirements-godot-2d.md)：后续重绘的范围依据。
 
 ## 资源分类
@@ -27,7 +27,7 @@
 | `prototypes` | 12 | 早期样稿 | 历史归档 |
 | `ui` | 190 | 旧 UI 导出 | 旧前端兼容，暂不删除 |
 
-上述 1150 个文件为本次新菜单素材以外的美术文件盘点，包含 PNG、SVG、PXO 等，不包含 `.import`、JSON 或文档。`godot/art` 是运行时镜像，由 `godot/art/assets.json` 与同步脚本管理，不作为额外源稿重复计数。
+盘点文件包含 PNG、JPG、SVG、PXO、字体等源稿、候选和历史材料，不包含 `.import`；运行时镜像单独列在清单的 `runtimeFiles` 中。`python tools/check_art_assets.py --check` 检查清单路径、运行时清单和文件哈希，`--update-inventory` 在新增批次后刷新盘点。
 
 ## 重绘顺序
 

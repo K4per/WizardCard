@@ -1,4 +1,5 @@
 #include "engine_internal.hpp"
+#include "wizard/core/sique.hpp"
 #include <algorithm>
 #include <functional>
 #include <set>
@@ -21,10 +22,7 @@ bool materialMatches(const CardDefinition &definition, const RecipeCost &need, c
     if (!need.school.empty() && definition.school != need.school) return false;
     if (need.readyOnly && card.spell != SpellState::Ready && card.spell != SpellState::Active) return false;
     if (need.fireDamage) {
-        bool fire = false;
-        for (const auto &effect : definition.effects)
-            fire |= effect.kind == EffectKind::Damage && effect.damageType == DamageType::Fire;
-        if (!fire) return false;
+        if (!sique::fireSpell(definition)) return false;
     }
     (void)catalog;
     return true;
@@ -134,8 +132,8 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         if (!card.faceDown || card.ambushedTurn >= s.globalTurn ||
             !Rules::canHost(s, catalog_, id, card.host)) return "ambush_wait";
         const int fee = Rules::analysisCost(s, catalog_, id, card.host);
-        if (s.players[actor].mana < fee) return "cost";
-        s.players[actor].mana -= fee; card.analysisLoad += fee;
+        if (!sique::canPay(s, actor, fee)) return "cost";
+        sique::pay(s, actor, fee); card.analysisLoad += fee;
         ResourceRules::increasedLoad(s, catalog_, actor, fee);
         if (s.result != -1) return {};
         card.faceDown = false; card.settingPaid = fee; card.analysisProgress = 0;
@@ -212,6 +210,17 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
     auto &c = it->second;
     const auto &def = catalog_.at(c.definition);
     auto &pl = s.players[actor];
+    const auto activationAllowed = [&] {
+        return sique::activationAllowed(s, catalog_, actor, def) &&
+            (def.id != "sique-aroma-lure" || sique::hasFormation(s, actor, "sique-cauldron"));
+    };
+    const auto activationTargets = [&](CardId target, const std::vector<CardId> &ids) {
+        return sique::detachCost(def) ? target == 0 && sique::validDetach(s, catalog_, actor, def, ids)
+            : validTargets(s, def.target, def.targetCount, actor, target, ids);
+    };
+    const auto detach = [&](const std::vector<CardId> &ids) {
+        if (sique::detachCost(def)) for (auto id : ids) StateMaintenance::leave(s, id, &catalog_);
+    };
     const bool requiresStormFormation = std::find(def.traits.begin(), def.traits.end(),
         "requires_storm_formation") != def.traits.end();
     const bool requiresStormForSetup = std::find(def.traits.begin(), def.traits.end(),
@@ -224,8 +233,10 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             catalog_.at(host->second.definition).type == CardType::Formation;
     };
     auto pay = [&](int mana, int load) {
-        if (pl.mana < mana) return false;
-        pl.mana -= mana;
+        if (!sique::canPay(s, actor, mana)) return false;
+        sique::pay(s, actor, mana);
+        StateMaintenance::check(s, catalog_);
+        if (s.result != -1) return true;
         if (load > 0) { c.analysisLoad += load; ResourceRules::increasedLoad(s, catalog_, actor, load); }
         s.events.push_back({"pay", "支付魔素", -1, cardId, mana});
         return true;
@@ -280,14 +291,17 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         if (material) { StateMaintenance::leave(s, material, &catalog_); c.targets = {material}; }
     };
     if (const auto *cmd = std::get_if<PlayAction>(&command)) {
+        if (!activationAllowed()) return "sique_activation_restriction";
         if (c.zone != Zone::Hand || def.type != CardType::Action ||
             pl.blockedActionTurn == pl.ownTurn)
             return "invalid_action: 行动不可用";
         if (!validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets))
             return "target: 无效目标";
-        if (pl.mana < def.cost || Rules::load(s, actor) + def.burden > Rules::capacity(s, catalog_, actor))
+        if (!sique::canPay(s, actor, def.cost) || Rules::load(s, actor) + def.burden > Rules::capacity(s, catalog_, actor))
             return "cost: 魔素或荷载不足";
-        pl.mana -= def.cost;
+        sique::pay(s, actor, def.cost);
+        StateMaintenance::check(s, catalog_);
+        if (s.result != -1) return {};
         ++pl.actionsPlayed;
         c.targetCard = cmd->target;
         c.targets = targetCards(cmd->target, cmd->targets);
@@ -298,6 +312,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         return {};
     }
     if (const auto *cmd = std::get_if<ActivateAbility>(&command)) {
+        if (!activationAllowed()) return "sique_activation_restriction";
         if (s.phase != Phase::Main || s.phaseStep != PhaseStep::Body || actor != s.active || s.chain || s.effect)
             return "ability_unavailable";
         const auto hasTrait = [&](const char *name) {
@@ -380,6 +395,8 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         return {};
     }
     if (const auto *cmd = std::get_if<SetFormation>(&command)) {
+        if (def.id == "sique-cauldron" && !sique::hasFormation(s, actor, "sique-campfire"))
+            return "sique_requires_campfire";
         if (s.phase != Phase::Main || c.zone != Zone::SideDeck || def.type != CardType::Formation || pl.formations)
             return "formation_limit";
         if (cmd->replace && (!ownedFormation(cmd->replace) || cmd->replace == cardId)) return "invalid_replacement";
@@ -394,7 +411,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         int fee = def.cost;
         for (const auto &part : def.recipe)
             if (part.kind == RecipeCostKind::Mana) fee += part.amount;
-        if (pl.mana < fee) return "cost: 魔素不足";
+        if (!sique::canPay(s, actor, fee)) return "cost: 魔素不足";
         int body = usedBody(s, catalog_, actor);
         if (cmd->replace) body -= catalog_.at(s.cards.at(cmd->replace).definition).body;
         for (auto id : cmd->materials)
@@ -408,7 +425,9 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             if (crest == cmd->materials.end() || s.cards.at(*crest).stormPoints < 10)
                 return "storm_points";
         }
-        pl.mana -= fee;
+        sique::pay(s, actor, fee);
+        StateMaintenance::check(s, catalog_);
+        if (s.result != -1) return {};
         for (auto id : cmd->materials) StateMaintenance::leave(s, id, &catalog_);
         if (cmd->replace) StateMaintenance::leave(s, cmd->replace, &catalog_);
         c.zone = Zone::Analysis; c.fieldOrder = s.nextFieldOrder++;
@@ -469,6 +488,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         actionTimingV2(); return {};
     }
     if (const auto *cmd = std::get_if<FlipAmbush>(&command)) {
+        if (def.type != CardType::Analytic && !activationAllowed()) return "sique_activation_restriction";
         if ((requiresStormFormation || requiresStormForSetup) && !hasStormFormation(s, catalog_, actor))
             return "storm_formation: 需要己方风暴阵法";
         if (cmd->decision || !c.faceDown || c.zone != Zone::Analysis || c.ambushedTurn >= s.globalTurn ||
@@ -491,13 +511,14 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         }
         if (static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog_, actor))
             return "casting_capacity";
-        if (def.responseOnly || !validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets) || !validSpellCost(cmd->discard) || !validRecovery(cmd->target))
+        if (!activationAllowed() || def.responseOnly || !activationTargets(cmd->target, cmd->targets) || !validSpellCost(cmd->discard) || !validRecovery(cmd->target))
             return "target_or_response_window";
         const int fee = Rules::castCost(s, catalog_, cardId);
         if (!pay(fee, fee)) return "cost: 魔素不足";
         if (s.result != -1) return {};
+        detach(cmd->targets);
         c.settingPaid = fee; c.faceDown = false; c.zone = Zone::Casting; c.host = 0; c.ringIndex = -1;
-        c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = cmd->targets;
+        c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = sique::detachCost(def) ? std::vector<CardId>{} : cmd->targets;
         paySpellCost(cmd->discard);
         c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
         c.payments.push_back({pl.ownTurn, fee, fee, false});
@@ -505,6 +526,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         beginEffect(cardId, AfterEffect::Spell); return {};
     }
     if (const auto *cmd = std::get_if<PreloadWord>(&command)) {
+        if (!activationAllowed()) return "sique_activation_restriction";
         if (requiresStormFormation && !hasStormFormation(s, catalog_, actor))
             return "storm_formation: 需要己方风暴阵法";
         if (pl.blockedActionTurn == pl.ownTurn) return "blocked_incantation";
@@ -512,14 +534,15 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             !ring(cmd->formation) ||
             static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog_, actor))
             return "word_setup";
-        if (!validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets) || !validSpellCost(cmd->discard)) return "target_or_cost";
+        if (!activationTargets(cmd->target, cmd->targets) || !validSpellCost(cmd->discard)) return "target_or_cost";
         const int fee = Rules::castCost(s, catalog_, cardId);
         if (!pay(fee, fee)) return "cost: 魔素不足";
         if (s.result != -1) return {};
+        detach(cmd->targets);
         place(cmd->formation); c.settingPaid = fee;
         c.spell = SpellState::Ready;
         c.zone = Zone::Casting; c.host = 0; c.ringIndex = -1;
-        c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = cmd->targets;
+        c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = sique::detachCost(def) ? std::vector<CardId>{} : cmd->targets;
         paySpellCost(cmd->discard);
         c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
         c.payments.push_back({pl.ownTurn, fee, fee, false});
@@ -531,10 +554,11 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         return prepare(actor, *cmd, false);
     }
     if (const auto *cmd = std::get_if<ActivateSpell>(&command)) {
+        if (!activationAllowed()) return "sique_activation_restriction";
         if (requiresStormFormation && !hasStormFormation(s, catalog_, actor))
             return "storm_formation: 需要己方风暴阵法";
         if (c.zone != Zone::Casting || c.spell != SpellState::Ready || !phaseSpeed() ||
-            !validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets) || !validSpellCost(cmd->discard) || !validRecovery(cmd->target))
+            !activationTargets(cmd->target, cmd->targets) || !validSpellCost(cmd->discard) || !validRecovery(cmd->target))
             return "not_ready";
         CardId stormCostFormation = 0;
         if (std::any_of(def.effects.begin(), def.effects.end(), [](const Effect &effect) {
@@ -553,12 +577,13 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             if (!stormCostFormation) return "storm_points: 风暴点数不足";
         }
         const int fee = Rules::castCost(s, catalog_, cardId);
-        if (pl.mana < fee) return "cost: 魔素不足";
-        pl.mana -= fee; c.castLoad += fee; ResourceRules::increasedLoad(s, catalog_, actor, fee);
+        if (!sique::canPay(s, actor, fee)) return "cost: 魔素不足";
+        sique::pay(s, actor, fee); c.castLoad += fee; ResourceRules::increasedLoad(s, catalog_, actor, fee);
         if (s.result != -1) return {};
+        detach(cmd->targets);
         if (stormCostFormation) s.cards.at(stormCostFormation).stormPoints -= 5;
         c.payments.push_back({pl.ownTurn, fee, fee, false});
-        c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = cmd->targets;
+        c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = sique::detachCost(def) ? std::vector<CardId>{} : cmd->targets;
         paySpellCost(cmd->discard);
         c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
         castingTraitsV2(cardId);
@@ -569,8 +594,10 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         if (s.phase != Phase::Main || c.zone != Zone::Hand || def.type != CardType::Seal ||
             host == s.cards.end() || host->second.owner != actor || host->second.faceDown ||
             (host->second.zone != Zone::Analysis && host->second.zone != Zone::Casting) ||
-            seals(s, cmd->host)) return "seal_host";
+            (seals(s, cmd->host) && host->second.definition != "sique-cauldron")) return "seal_host";
         const auto &hostDefinition = catalog_.at(host->second.definition);
+        if (std::find(def.traits.begin(), def.traits.end(), "sique_cauldron_only") != def.traits.end() &&
+            hostDefinition.id != "sique-cauldron") return "seal_host";
         const auto hasTrait = [&](const char *name) {
             return std::find(def.traits.begin(), def.traits.end(), name) != def.traits.end();
         };
@@ -583,8 +610,11 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
              hostDefinition.type != CardType::Formation && hostDefinition.type != CardType::Analytic &&
              hostDefinition.type != CardType::Word && hostDefinition.type != CardType::Talisman))
             return "seal_host";
+        if (std::find(def.traits.begin(), def.traits.end(), "sique_requires_cauldron") != def.traits.end() &&
+            !sique::hasFormation(s, actor, "sique-cauldron")) return "sique_requires_cauldron";
         if (!pay(def.cost, 0)) return "cost: 魔素不足";
         c.zone = Zone::Attached; c.host = cmd->host;
+        sique::attached(s, catalog_, cardId);
         actionTimingV2(); return {};
     }
     if (const auto *cmd = std::get_if<RemoveSeal>(&command)) {

@@ -1,4 +1,5 @@
 #include "engine_internal.hpp"
+#include "wizard/core/sique.hpp"
 #include <algorithm>
 #include <limits>
 namespace wizard {
@@ -76,6 +77,10 @@ bool GameEngine::phaseV2() {
     };
     switch (s.phaseStep) {
     case PhaseStep::Enter: {
+        if (s.phase == Phase::Prepare && pl.siqueDamageCap && pl.ownTurn >= pl.siqueCapUntilOwnTurn) {
+            pl.siqueDamageCap = 0; pl.siqueCapUntilOwnTurn = 0;
+        }
+        if (pl.siqueLifePaymentTurn != s.globalTurn) pl.siqueLifePaymentTurn = 0;
         s.phaseGate = 0; s.phaseCursor = 0; s.phaseOrderCursor = 0;
         s.durationApplied = false;
         s.events.push_back({"phase_enter", "进入" + phaseName(s.phase) + "阶段"});
@@ -169,7 +174,7 @@ bool GameEngine::phaseV2() {
                 s.maintenanceSource = next.id;
                 const int fee = Rules::concentrationUpkeep(s, catalog_, next.id);
                 std::vector<std::uint32_t> options;
-                if (pl.mana >= fee) options.push_back(next.id);
+                if (sique::canPay(s, s.active, fee)) options.push_back(next.id);
                 decision(s.active, DecisionKind::Concentration, std::move(options), true);
                 return false;
             }

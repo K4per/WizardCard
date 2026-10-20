@@ -20,6 +20,7 @@ var _back: Button
 var _dialog: DeckDialog
 var _delete_id: String = ""
 var _page_index: int = 0
+var _import_dialog: FileDialog
 
 func _ready() -> void:
 	theme = DeckTheme.create()
@@ -53,6 +54,24 @@ func _ready() -> void:
 		button.pressed.connect(_request_delete.bind(index))
 		_delete_buttons.append(button)
 	_dialog.chosen.connect(_delete_confirmed)
+	var import_button: Button = Button.new()
+	import_button.text = "导入牌组"
+	DeckTheme.button(import_button)
+	_copy.get_parent().add_child(import_button)
+	_import_dialog = FileDialog.new()
+	_import_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	_import_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	_import_dialog.filters = PackedStringArray(["*.json ; 巫师牌牌组"])
+	_import_dialog.title = "导入牌组"
+	add_child(_import_dialog)
+	import_button.pressed.connect(func() -> void: _import_dialog.popup_centered_ratio(0.7))
+	_import_dialog.file_selected.connect(_import_deck)
+
+func _import_deck(path: String) -> void:
+	if service.import_deck(path):
+		navigation_requested.emit(&"deck_editor")
+	else:
+		_notice.text = service.error
 
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), DeckTheme.BACKGROUND)

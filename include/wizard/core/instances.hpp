@@ -31,6 +31,8 @@ struct CardInstance {
     int ringIndex{-1};
     int sourceRingIndex{-1};
     bool wasAmbushed{};
+    CardId siquePartner{};
+    std::uint64_t siquePairTurn{};
 };
 struct TemporaryLoad {
     std::uint32_t id{};

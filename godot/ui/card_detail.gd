@@ -31,7 +31,7 @@ func _ready() -> void:
 		_build_battle_detail()
 		return
 	custom_minimum_size.x = 340
-	add_theme_stylebox_override(&"panel", ArtBank.box("c2d.v2.ui.panel", 32))
+	add_theme_stylebox_override(&"panel", DeckTheme.box(DeckTheme.PANEL, DeckTheme.BORDER, 20))
 	var column: VBoxContainer = VBoxContainer.new()
 	add_child(column)
 	var heading: HBoxContainer = HBoxContainer.new()
@@ -157,3 +157,5 @@ func configure(value: CardPresentation) -> void:
 	if card.preview:
 		_type.text += " · 2.0"
 	_body.text = card.detail_text()
+	if not card.number.is_empty():
+		_body.text += "\n\n编号：" + card.number

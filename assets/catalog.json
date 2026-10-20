@@ -1,10 +1,10 @@
 {
   "format": 1,
   "metadata": {
-    "rulesVersion": "2.5.0",
-    "cardSetVersion": "2.5.0",
+    "rulesVersion": "2.5.1",
+    "cardSetVersion": "2.5.1",
     "baseLoadCapacity": 2,
-    "mechanicsRevision": 3
+    "mechanicsRevision": 4
   },
   "definitions": [
     {
@@ -254,6 +254,70 @@
     {
       "id": "thunder-summon",
       "file": "cards/analytic/thunder-summon.json"
+    },
+    {
+      "id": "sique-woodpile",
+      "file": "cards/formation/sique-woodpile.json"
+    },
+    {
+      "id": "sique-campfire",
+      "file": "cards/formation/sique-campfire.json"
+    },
+    {
+      "id": "sique-cauldron",
+      "file": "cards/formation/sique-cauldron.json"
+    },
+    {
+      "id": "sique-vinegar",
+      "file": "cards/seal/sique-vinegar.json"
+    },
+    {
+      "id": "sique-sugar",
+      "file": "cards/seal/sique-sugar.json"
+    },
+    {
+      "id": "sique-salt",
+      "file": "cards/seal/sique-salt.json"
+    },
+    {
+      "id": "sique-chili",
+      "file": "cards/seal/sique-chili.json"
+    },
+    {
+      "id": "sique-parsley",
+      "file": "cards/seal/sique-parsley.json"
+    },
+    {
+      "id": "sique-mushroom-soup",
+      "file": "cards/analytic/sique-mushroom-soup.json"
+    },
+    {
+      "id": "sique-pancakes",
+      "file": "cards/analytic/sique-pancakes.json"
+    },
+    {
+      "id": "sique-divine-stew",
+      "file": "cards/analytic/sique-divine-stew.json"
+    },
+    {
+      "id": "sique-ingredients",
+      "file": "cards/word/sique-ingredients.json"
+    },
+    {
+      "id": "sique-flavor-shift",
+      "file": "cards/word/sique-flavor-shift.json"
+    },
+    {
+      "id": "sique-refire",
+      "file": "cards/word/sique-refire.json"
+    },
+    {
+      "id": "sique-boiling-surge",
+      "file": "cards/talisman/sique-boiling-surge.json"
+    },
+    {
+      "id": "sique-aroma-lure",
+      "file": "cards/talisman/sique-aroma-lure.json"
     }
   ]
 }

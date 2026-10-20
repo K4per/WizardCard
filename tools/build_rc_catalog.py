@@ -304,8 +304,8 @@ def build() -> tuple[dict, dict, dict, dict]:
     for card in cards:
         card["text"] = card["text"].replace("下一次己方准备阶段", "下一次己方抽牌阶段").replace("下次己方准备阶段", "下次己方抽牌阶段")
     # Keep the old manifest order and append reviewed new designs in source order.
-    manifest = {"format": 1, "metadata": {"rulesVersion": "2.5.0",
-                "cardSetVersion": "2.5.0", "baseLoadCapacity": 2, "mechanicsRevision": 3},
+    manifest = {"format": 1, "metadata": {"rulesVersion": "2.5.1",
+                "cardSetVersion": "2.5.1", "baseLoadCapacity": 2, "mechanicsRevision": 4},
                 "definitions": [{"id": c["id"], "file": f"cards/{c['type']}/{c['id']}.json"} for c in cards]}
     reviewed = json.loads((ROOT / "docs/proposals/alpha-v2/presets.json").read_text(encoding="utf-8"))
     # The runtime always supplies the canonical built-in ``default`` preset

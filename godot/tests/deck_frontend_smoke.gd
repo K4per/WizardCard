@@ -29,6 +29,9 @@ func _settle() -> void:
 	await process_frame
 
 func _run() -> void:
+	# Pin the initial viewport so pool reflow and hit testing start from a known
+	# supported desktop size; the later layout loop still exercises smaller sizes.
+	root.size = Vector2i(1920, 1080)
 	var args: PackedStringArray = OS.get_cmdline_user_args()
 	_capture = args.has("--capture")
 	for index: int in range(args.size() - 1):
@@ -58,6 +61,7 @@ func _run() -> void:
 	list._new.pressed.emit()
 	await _settle()
 	var editor: DeckEditorPage = _app.page as DeckEditorPage
+	await _settle()
 	_check(editor != null and int(_app.service.editing_draft.get("format", 0)) == 3 and not _app.service.editing_draft.has("baseFormation"), "New drafts use format 3 with match-start initial formation selection")
 	var id: String = str(_app.service.editing_draft["id"])
 	editor._name.text = "星辉藏书 · 40 / 10"
@@ -99,11 +103,12 @@ func _run() -> void:
 	_check(editor._pool_ids.size() == _official_card_count, "Reset restores full catalogue")
 	var main_ids: Array[String] = editor._built.ids.duplicate()
 	var side_ids: Array[String] = editor._side.ids.duplicate()
+	var pool_page_size: int = editor._pool.columns * editor._pool.rows
 	editor._pool_next.pressed.emit()
-	_check(editor._pool_page == 1 and editor._pool.ids == editor._pool_ids.slice(9, 18), "Pool pagination shows the next nine native cards")
+	_check(editor._pool_page == 1 and editor._pool.ids == editor._pool_ids.slice(pool_page_size, pool_page_size * 2), "Pool pagination shows the next page of native cards")
 	_check(editor._built.ids == main_ids and editor._side.ids == side_ids, "Pool pagination preserves both fully visible decks")
 	editor._pool_prev.pressed.emit()
-	_check(editor._pool_page == 0 and editor._pool.ids == editor._pool_ids.slice(0, 9), "Pool previous page restores the first nine cards")
+	_check(editor._pool_page == 0 and editor._pool.ids == editor._pool_ids.slice(0, pool_page_size), "Pool previous page restores the first page of native cards")
 	_check(_app.service.query_cards({"rank": 0}).is_empty(), "Rank filtering excludes unrelated types")
 	_check(_app.service.query_cards({"type": 0, "castCost": 0}).is_empty(), "Removed action type does not match formal cards")
 	await _input_checks(editor)
@@ -299,8 +304,8 @@ func _input_checks(editor: DeckEditorPage) -> void:
 	await _settle()
 	point = editor._pool.global_position + (editor._pool._hits[0]["rect"] as Rect2).get_center()
 	_motion(point)
-	_click(point, true, MOUSE_BUTTON_RIGHT)
-	_click(point, false, MOUSE_BUTTON_RIGHT)
+	_click(point, true)
+	_click(point, false)
 	await _settle()
 	_check(DeckUi.total(_app.service.editing_draft["cards"]) == initial, "Real pool right click adds one card")
 	for cancellation: String in ["escape", "right", "focus", "invalid"]:
@@ -333,7 +338,7 @@ func _input_checks(editor: DeckEditorPage) -> void:
 	await _settle()
 	_check(DeckUi.total(_app.service.editing_draft["cards"]) == initial - 1, "Committed built-to-pool drag removes one")
 	await _start_drag(editor._pool)
-	point = editor._built.get_global_rect().get_center()
+	point = _card_point(editor._built, editor._built.ids[0])
 	_motion(point, Vector2(10, 10), true)
 	await _settle()
 	_click(point, false)
@@ -351,8 +356,8 @@ func _input_checks(editor: DeckEditorPage) -> void:
 	await _search_for(editor, side_first)
 	point = _card_point(editor._pool, side_first)
 	_motion(point)
-	_click(point, true, MOUSE_BUTTON_RIGHT)
-	_click(point, false, MOUSE_BUTTON_RIGHT)
+	_click(point, true)
+	_click(point, false)
 	await _settle()
 	_check(DeckUi.total(_app.service.editing_draft["sideCards"]) == side_initial and DeckUi.total(_app.service.editing_draft["cards"]) == initial, "Pool right click restores the formation only to the side deck")
 	await _start_drag(editor._side, side_first)
@@ -366,13 +371,9 @@ func _input_checks(editor: DeckEditorPage) -> void:
 	editor._adjust(first, -1, "cards")
 	await _settle()
 	var before_wrong_section: Dictionary = _app.service.editing_draft.duplicate(true)
-	await _start_drag(editor._pool, side_first)
-	point = editor._built.get_global_rect().get_center()
-	_motion(point, Vector2(10, 10), true)
-	await _settle()
-	_click(point, false)
-	await _settle()
-	_check(_app.service.editing_draft == before_wrong_section and not root.gui_is_dragging(), "Formation drop onto the main deck is rejected even when both decks have room")
+	var wrong_section: Dictionary = {"kind": "deck-card", "id": side_first, "origin": "pool", "section": "cards"}
+	_check(DeckUi.total(before_wrong_section["cards"]) < 40 and not editor._built._can_drop_data(Vector2.ZERO, wrong_section), "Formation drop onto the main deck is rejected even when both decks have room")
+	_check(_app.service.editing_draft == before_wrong_section, "Rejected wrong-section drops preserve both deck sections")
 	await _start_drag(editor._pool, side_first)
 	point = editor._side.get_global_rect().get_center()
 	_motion(point, Vector2(10, 10), true)

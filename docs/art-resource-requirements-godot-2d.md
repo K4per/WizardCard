@@ -161,7 +161,7 @@
 - 用户提供的[新版本改动报告](C:/Users/home_/Downloads/WizardCard新版本改动报告.docx)：本次新版机制与美术目标来源；原文件未修改。报告无内嵌图片。
 
 - [README](../README.md)、[联机说明](network-play.md)：当前可复用功能与Godot接入边界。
-- [卡池](../assets/cards.json)、[插图映射](../assets/art/runtime.json)：现有30种卡及保留插图入口，不代表新版机制已实现。
+- [正式卡池清单](../assets/catalog.json)、[插图映射](../assets/art/runtime.json)：设计稿记录的历史卡池与保留插图入口，不代表新版机制已实现。
 - [术语规范](terminology.md)：现有卡名参考；类型、区域、构筑、过载、枯竭和速度的新要求以报告及后续正式规则定稿为准。
 - [历史UI需求](art-resource-requirements.md)、[旧UI资源](../assets/art/ui/manifest.json)：只供结构参考，不计入新版交付。
 - [最近卡框探索](../assets/art/design/spell-layout-v1/README.md)：候选视觉参考，尚不等于新版定稿。

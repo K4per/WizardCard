@@ -15,6 +15,23 @@ var selected_id: String = ""
 var _hits: Array[Dictionary] = []
 var _drop_active: bool = false
 var _keyboard_index: int = 0
+var _feedback_id: String = ""
+var _feedback_strength: float = 0.0
+var _feedback_tween: Tween
+
+func flash_card(id: String) -> void:
+	if _feedback_tween != null and _feedback_tween.is_valid():
+		_feedback_tween.kill()
+	_feedback_id = id
+	_feedback_strength = 0.0 if UiFactory.reduced_motion else 1.0
+	queue_redraw()
+	if _feedback_strength > 0.0:
+		_feedback_tween = create_tween()
+		_feedback_tween.tween_method(_set_feedback_strength, 1.0, 0.0, 0.24)
+
+func _set_feedback_strength(value: float) -> void:
+	_feedback_strength = value
+	queue_redraw()
 
 func _ready() -> void:
 	focus_mode = Control.FOCUS_ALL
@@ -46,12 +63,16 @@ func _draw() -> void:
 			var membership: String = "sideCards" if int(service.definitions.get(id, {}).get("type", -1)) == 3 else "cards"
 			available = service.named_copies(id, membership) < 3 and DeckUi.total(draft.get(membership, {})) < (10 if membership == "sideCards" else 40)
 		DeckCardPainter.paint(self, card, frame, selected_id == id)
+		if id == _feedback_id and _feedback_strength > 0.0:
+			draw_rect(frame, Color(DeckTheme.ACCENT, _feedback_strength * 0.35), true)
 		if origin == "pool":
 			var count: int = int(service.editing_draft.get("cards", {}).get(id, 0)) + int(service.editing_draft.get("sideCards", {}).get(id, 0))
 			var artwork: Rect2 = DeckCardPainter.artwork_rect(frame)
-			var badge: Rect2 = Rect2(artwork.end.x - 28.0, artwork.position.y + 1.0, 28.0, 16.0)
+			var badge_size: int = Typography.scaled_size(10)
+			var badge_width: float = Typography.BODY.get_string_size("%d/3" % count, HORIZONTAL_ALIGNMENT_LEFT, -1, badge_size).x + 6
+			var badge: Rect2 = Rect2(artwork.end.x - badge_width, artwork.position.y + 1.0, badge_width, Typography.BODY.get_height(badge_size) + 2)
 			draw_rect(badge, DeckTheme.HOVER, true)
-			draw_string(Typography.BODY, badge.position + Vector2(3, 12), "%d/3" % count, HORIZONTAL_ALIGNMENT_LEFT, -1, 10, DeckTheme.TEXT)
+			draw_string(Typography.BODY, badge.position + Vector2(3, 1 + Typography.BODY.get_ascent(badge_size)), "%d/3" % count, HORIZONTAL_ALIGNMENT_LEFT, -1, badge_size, DeckTheme.TEXT)
 			if not available:
 				draw_rect(frame, Color(0.04, 0.07, 0.10, 0.38))
 		_hits.append({"id": id, "rect": frame})

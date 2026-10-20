@@ -7,7 +7,12 @@ using namespace wizard;
 int main(int argc,char** argv) {
     try {
         if(argc<3) { std::cout<<"wizard_cli validate|play|smoke|replay|script|ai-match|tutorial-smoke ASSETS [FILE] [SEED] [DIFFICULTY 0-2]\n"; return 1; }
-        const std::string mode=argv[1]; auto content=loadContent(argv[2]);
+        const std::string mode=argv[1];
+        if(mode=="validate-catalog") {
+            auto catalog=parseCatalog(readCatalogJson(argv[2]),argv[2]);
+            std::cout<<catalog.cards.size()<<" definitions; hash "<<catalog.contentHash<<'\n'; return 0;
+        }
+        auto content=loadContent(argv[2]);
         if(mode=="ai-match" || mode=="tutorial-smoke") return runAi(content,argv[2],argc,argv);
         if(mode=="validate") { std::cout<<content.catalog.cards.size()<<" definitions; "<<content.deck.size()<<" cards; hash "<<content.catalog.contentHash<<'\n'; return 0; }
         if(mode=="replay") { if(argc<4) return 1; auto engine=replay(content,readJson(argv[3])); std::cout<<engine.digest()<<'\n'; return 0; }

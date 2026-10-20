@@ -57,12 +57,13 @@ class LocalSession {
     // Without this cache every next/previous click rebuilt the whole recording.
     mutable std::filesystem::path replayCachePath_;
     mutable Json replayCacheRecord_;
-    mutable MatchConfig replayCacheConfig_;
     mutable std::unique_ptr<GameEngine> replayCacheEngine_;
     mutable std::filesystem::file_time_type replayCacheWriteTime_{};
     mutable std::uintmax_t replayCacheFileSize_{};
     mutable std::size_t replayCacheStep_{};
     mutable bool replayCacheValid_{};
+    mutable std::map<std::size_t, GameEngine> replayCheckpoints_;
+    void prepareReplay(const std::filesystem::path &) const;
     bool visibleTo(PlayerId viewer) const;
     bool current(const std::string &generation, const std::string &revision) const;
     std::string actionId(PlayerId viewer, std::size_t index) const;

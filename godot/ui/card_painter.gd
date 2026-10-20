@@ -31,6 +31,7 @@ static func _region(layout: Dictionary, key: String, rect: Rect2, factor: Vector
 	return Rect2(rect.position + Vector2(float(pixels[0]), float(pixels[1])) * factor, Vector2(float(pixels[2]), float(pixels[3])) * factor)
 
 static func _label(surface: CanvasItem, text: String, bounds: Rect2, font_size: int, centered: bool = false, font: Font = FONT) -> void:
+	font_size = Typography.fitted_size(font_size, bounds.size.y, font)
 	var displayed: String = shortened(text, bounds.size.x, font_size, font)
 	var width: float = font.get_string_size(displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	var offset: float = (bounds.size.x - width) * 0.5 if centered else 0.0
@@ -38,6 +39,7 @@ static func _label(surface: CanvasItem, text: String, bounds: Rect2, font_size: 
 	surface.draw_string(font, bounds.position + Vector2(offset, baseline), displayed, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, INK)
 
 static func _effect(surface: CanvasItem, text: String, bounds: Rect2, font_size: int) -> void:
+	font_size = Typography.fitted_size(font_size, bounds.size.y)
 	var line_height: float = FONT.get_height(font_size) + 1
 	var max_lines: int = maxi(1, int(bounds.size.y / line_height))
 	var lines: Array[String] = []

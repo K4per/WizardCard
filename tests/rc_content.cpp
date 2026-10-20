@@ -52,9 +52,9 @@ void choose(GameEngine &engine, CardId option) {
     send(engine, decision.player, Choose{decision.id, option});
 }
 }
-TEST_CASE("rc content is a numbered executable 62 card pool with legal 40 plus 10 presets", "[rc-content]") {
+TEST_CASE("rc content is a numbered executable 78 card pool with legal 40 plus 10 presets", "[rc-content]") {
     const auto content = rcContent();
-    REQUIRE(content.catalog.cards.size() == 62);
+    REQUIRE(content.catalog.cards.size() == 78);
     REQUIRE(content.catalog.alphaV2);
     REQUIRE(content.catalog.usesAlphaV25());
     REQUIRE(content.catalog.at("reservoir").name == "阿克乌姆之弧");

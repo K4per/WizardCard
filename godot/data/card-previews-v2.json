@@ -549,7 +549,7 @@
       "income": 1,
       "summonCondition": "2魔素。",
       "text": "该卡不能同时存在两张。",
-      "illustrationId": "v2-small-hexagram",
+      "illustrationId": "triangle-star",
       "sourceFields": {
         "阵法等级": "1",
         "阵体大小": "1",

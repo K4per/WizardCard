@@ -33,5 +33,7 @@ private:
     bool clockFrozen_{}, automaticClockPhases_{true};
     void syncClock();
 };
-GameEngine replay(const Content&,const Json&);
+// Observer runs only after each state has passed its recorded digest check.
+GameEngine replay(const Content&, const Json&,
+                  const std::function<void(std::size_t, const GameEngine&)> &observer = {});
 }

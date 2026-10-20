@@ -1,0 +1,28 @@
+{
+  "id": "sique-vinegar",
+  "name": "味契·香醋",
+  "type": "seal",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "050006",
+  "illustrationId": "sique-vinegar",
+  "traits": [
+    "sique_cauldron_only"
+  ],
+  "onLeave": [
+    {
+      "kind": "temporary_life",
+      "amount": 4,
+      "recipient": "owner"
+    }
+  ],
+  "effects": [],
+  "text": "仅可附着于味契·魔力坩埚。己方受到的伤害降低2点。解除附着时，获得4点临时生命。"
+}

@@ -101,7 +101,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
         for (const auto &[other, x] : s.cards)
             if (x.zone == Zone::Attached && x.host == id)
                 ++seals;
-        if (seals > 1)
+        if (seals > 1 && c.definition != "sique-cauldron")
             errors.push_back("multiple seals");
         if (c.zone == Zone::Casting && c.host)
             errors.push_back("casting still attached to formation");

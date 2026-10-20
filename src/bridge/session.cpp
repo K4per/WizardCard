@@ -19,6 +19,9 @@ Json LocalSession::initialize(const std::filesystem::path &assets,
                                                       app::loadPresets(content, assets), roomFactory_);
         application_ = std::move(next);
         content_ = std::move(content);
+        replayCacheValid_ = false;
+        replayCacheEngine_.reset();
+        replayCheckpoints_.clear();
         pending_.reset();
         interactionViewer_ = -1;
         ++generation_;
@@ -236,8 +239,8 @@ Json LocalSession::readReplayPlan(const std::filesystem::path &path) const {
     if (application_->network() && application_->network()->started() && application_->network()->view().result == -1)
         return fail("replay_unavailable", "联机对局进行中不能打开完整复盘");
     try {
-        const auto j = readJson(path);
-        (void)replay(*content_, j); // Validate before exporting any test sequence.
+        prepareReplay(path);
+        const auto &j = replayCacheRecord_;
         Json commands = Json::array();
         for (const auto &row : j.at("commands"))
             commands.push_back({{"actor", row.at("actor")},
@@ -252,13 +255,37 @@ Json LocalSession::verifyReplay(const std::filesystem::path &path) const {
     if (application_->network() && application_->network()->started() && application_->network()->view().result == -1)
         return fail("replay_unavailable", "联机对局进行中不能打开完整复盘");
     try {
-        const auto j = readJson(path);
-        const auto engine = replay(*content_, j);
+        prepareReplay(path);
+        const auto &j = replayCacheRecord_;
         Json digests = Json::array();
         for (const auto &row : j.at("commands")) digests.push_back(row.at("digest"));
-        return ok({{"digest", engine.digest()}, {"commandCount", j.at("commands").size()},
+        return ok({{"digest", j.at("finalDigest")}, {"commandCount", j.at("commands").size()},
                    {"digests", digests}});
     } catch (const std::exception &e) { return fail("invalid_replay", e.what()); }
+}
+void LocalSession::prepareReplay(const std::filesystem::path &path) const {
+    const auto writeTime = std::filesystem::last_write_time(path);
+    const auto fileSize = std::filesystem::file_size(path);
+    if (replayCacheValid_ && replayCachePath_ == path && replayCacheWriteTime_ == writeTime &&
+        replayCacheFileSize_ == fileSize) return;
+    replayCacheValid_ = false;
+    auto record = readJson(path);
+    const auto count = record.at("commands").size();
+    // At most 65 checkpoints, regardless of recording length. Ordinary matches
+    // need at most seven commands to seek from the preceding checkpoint.
+    const auto stride = std::max<std::size_t>(8, (count + 63) / 64);
+    std::map<std::size_t, GameEngine> checkpoints;
+    auto finalEngine = replay(*content_, record, [&](std::size_t step, const GameEngine &engine) {
+        if (step % stride == 0) checkpoints.emplace(step, engine);
+    });
+    replayCacheRecord_ = std::move(record);
+    replayCheckpoints_ = std::move(checkpoints);
+    replayCacheEngine_ = std::make_unique<GameEngine>(std::move(finalEngine));
+    replayCacheStep_ = count;
+    replayCachePath_ = path;
+    replayCacheWriteTime_ = writeTime;
+    replayCacheFileSize_ = fileSize;
+    replayCacheValid_ = true;
 }
 Json LocalSession::replayFrame(const std::filesystem::path &path, std::size_t step, PlayerId viewer) const {
     if (!content_) return fail("not_initialized", "请先加载内容");
@@ -266,33 +293,13 @@ Json LocalSession::replayFrame(const std::filesystem::path &path, std::size_t st
         return fail("replay_unavailable", "联机对局进行中不能打开完整复盘");
     if (viewer != 0 && viewer != 1) return fail("invalid_viewer", "复盘查看者无效");
     try {
-        const auto writeTime = std::filesystem::last_write_time(path);
-        const auto fileSize = std::filesystem::file_size(path);
-        if (!replayCacheValid_ || replayCachePath_ != path ||
-            replayCacheWriteTime_ != writeTime || replayCacheFileSize_ != fileSize) {
-            replayCacheRecord_ = readJson(path);
-            (void)replay(*content_, replayCacheRecord_); // Validate once, including the unshown suffix.
-            replayCacheConfig_ = {};
-            replayCacheConfig_.seed = replayCacheRecord_.at("seed").get<std::uint32_t>();
-            for (int p = 0; p < 2; ++p) {
-                const auto &player = replayCacheRecord_.at("players").at(p);
-                replayCacheConfig_.players[p].baseFormation = player.value("baseFormation", std::string{});
-                replayCacheConfig_.players[p].cards = player.at("cards").get<std::vector<std::string>>();
-                if (content_->catalog.usesAlphaV2())
-                    replayCacheConfig_.players[p].sideDeck = player.at("sideDeck").get<std::vector<std::string>>();
-            }
-            replayCacheEngine_ = std::make_unique<GameEngine>(content_->catalog, replayCacheConfig_);
-            replayCachePath_ = path;
-            replayCacheWriteTime_ = writeTime;
-            replayCacheFileSize_ = fileSize;
-            replayCacheStep_ = 0;
-            replayCacheValid_ = true;
-        }
+        prepareReplay(path);
         const auto count = replayCacheRecord_.at("commands").size();
         if (step > count) return fail("invalid_step", "复盘位置超出范围");
-        if (step < replayCacheStep_) {
-            replayCacheEngine_ = std::make_unique<GameEngine>(content_->catalog, replayCacheConfig_);
-            replayCacheStep_ = 0;
+        auto checkpoint = std::prev(replayCheckpoints_.upper_bound(step));
+        if (step < replayCacheStep_ || checkpoint->first > replayCacheStep_) {
+            replayCacheEngine_ = std::make_unique<GameEngine>(checkpoint->second);
+            replayCacheStep_ = checkpoint->first;
         }
         for (std::size_t i = replayCacheStep_; i < step; ++i) {
             const auto &row = replayCacheRecord_.at("commands").at(i);

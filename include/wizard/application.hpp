@@ -24,6 +24,7 @@ enum class Page {
 enum class WindowMode { Windowed, Borderless, Fullscreen };
 struct Settings {
     int masterVolume{80}, soundVolume{80};
+    int fontScale{100};
     WindowMode windowMode{WindowMode::Windowed};
     unsigned width{1600}, height{1000};
     bool automaticPhases{true};

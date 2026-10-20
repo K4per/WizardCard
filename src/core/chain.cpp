@@ -1,4 +1,5 @@
 #include "engine_internal.hpp"
+#include "wizard/core/sique.hpp"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
@@ -85,6 +86,9 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
     const auto &c = i->second;
     const auto &d = catalog_.at(c.definition);
     auto a = ability(d, cmd.ability);
+    if (!sique::activationAllowed(s, catalog_, actor, d) ||
+        (d.id == "sique-aroma-lure" && !sique::hasFormation(s, actor, "sique-cauldron")))
+        return "sique_activation_restriction";
     if (!a)
         return "ability: 未声明该响应能力";
     if (std::find(d.traits.begin(), d.traits.end(), "requires_storm_formation") != d.traits.end() &&
@@ -140,6 +144,8 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
                 (s.chain->window != ResponseWindow::Prepare || l->kind != LinkKind::Preparation ||
                  catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Analytic))
                 return "target: 风击术只能响应对方设置解析法术";
+            if (d.id == "sique-boiling-surge" && !sique::threatensFormation(s, catalog_, *l, actor))
+                return "target: 沸汤滚袭只能响应销毁己方味契阵法的法术";
             if (std::any_of(a->effects.begin(), a->effects.end(), [](const Effect &effect) {
                     return effect.kind == EffectKind::ReduceSpellDamage;
                 }) && std::none_of(l->item.effects.begin(), l->item.effects.end(), [](const Effect &effect) {
@@ -164,7 +170,7 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
             ? a->handCost
             : a->preloadedCost + (d.type == CardType::Word ? Rules::castCost(s, catalog_, c.id) - d.cost : 0);
     const int bound = catalog_.usesAlphaV2() ? paid : analytic || d.type == CardType::Word ? paid : 0;
-    if (paid < 0 || a->burden < 0 || s.players[actor].mana < paid ||
+    if (paid < 0 || a->burden < 0 || !sique::canPay(s, actor, paid) ||
         (!catalog_.usesAlphaV2() && Rules::load(s, actor) + bound + a->burden > Rules::capacity(s, catalog_, actor)))
         return "cost: 魔素或荷载空间不足";
     return {};

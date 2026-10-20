@@ -4,7 +4,10 @@
 Manifest order is canonical. Duplicate IDs/files, traversal and mismatched IDs
 fail the whole load. Legacy `cards.json` imports remain supported for fixtures.
 Card field validation runs through `parseCatalog` after aggregation; no partial
-catalog escapes. Content and file IO have no network or application dependency.
+catalog escapes. Unknown fields are currently ignored by the compatibility
+parser, including card and nested effect/response objects; update the parser,
+tests and `docs/card-design-guide.md` together when adding a field. Content and
+file IO have no network or application dependency.
 
 `wizard_codec` owns command encoding/decoding and integer range validation;
 variant order is the existing protocol contract. `wizard_replay` owns local
@@ -12,10 +15,24 @@ sessions and accepted-command recordings. Replays validate content versions,
 hashes and every command's digest. Existing format 2 records remain compatible
 during the engineering phase; switching rules is a separate versioned change.
 
-Edit one file under `assets/cards/<type>/<id>.json`; run
+`assets/catalog.json` and its listed files under `assets/cards/<type>/<id>.json`
+are the sole formal content sources. Edit one listed card file; run
 `python tools/catalog_source.py`, then `python tools/generate_card_catalog.py`.
 Use `python tools/catalog_source.py --check` in CI. The aggregate is generated,
-not a second editable source. Unlisted files do not enter the shipped catalog.
+not a second editable source. Unlisted files do not enter the generated catalog;
+the CMake asset-tree install must also avoid retaining unlisted source files.
+The complete current field inventory is in `docs/card-schema.md`.
+
+`catalog.json.format` versions the manifest shape, not individual card JSON.
+`rulesVersion` identifies game semantics and `cardSetVersion` identifies the
+reviewed pool; `mechanicsRevision` selects supported parser/rule capabilities.
+They are independent fields. A definition or metadata change changes the
+canonical content hash used by replay compatibility. Replay format is currently
+selected by rules capability (2/3/4), rather than independently configured.
+Developer card packs use the independently versioned format documented in
+`docs/card-pack.md`. Player deck exchange uses `wizardcard-deck` version 1;
+its public shape and validation behavior are also documented there. Local deck
+storage keeps its own outer format 1 and draft formats 1, 2 and 3.
 
 Tests: content validation, manifest rejection, all command round trips, replay
 tampering, application save failure and deterministic network replays.

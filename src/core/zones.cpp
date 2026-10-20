@@ -1,4 +1,5 @@
 #include "wizard/core/rules.hpp"
+#include "wizard/core/sique.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iomanip>
@@ -16,6 +17,9 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
             (i->second.base && (!cat || !cat->usesAlphaV2())))
             return;
         auto &c = i->second;
+        if (cat && c.zone == Zone::Attached && sique::member(cat->at(c.definition))) {
+            c.siquePartner = 0; c.siquePairTurn = 0;
+        }
         std::vector<CardId> children;
         for (const auto &[cid, x] : s.cards)
             if (x.host == source && (x.zone == Zone::Attached || x.zone == Zone::Analysis))

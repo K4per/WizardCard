@@ -52,7 +52,7 @@ func _run() -> void:
 		var frame_size: Array = frame.get("size", [0, 0])
 		_check(int(frame_size[0]) == 1086 and int(frame_size[1]) == 1448 and frame.has("runtimeLayout"), "Original AI frame and measured layout available: " + kind)
 		_check(ArtBank.metadata("c2d.card.builder." + kind).is_empty(), "Simplified runtime templates are excluded: " + kind)
-	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 1000), Vector2i(1920, 1080)]:
+	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1600, 1000), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(1440, 900)]:
 		root.size = dimensions
 		_app.navigate(&"field")
 		await _settle()
@@ -124,23 +124,42 @@ func _run() -> void:
 		var menu: MenuPage = _app.page as MenuPage
 		var menu_bounds: Rect2 = Rect2(Vector2.ZERO, Vector2(dimensions))
 		_check(menu._buttons.size() == 7, "Menu exposes seven large product entries")
-		for button: MenuArtButton in menu._buttons:
+		_check(menu._buttons.map(func(button: Button) -> String: return button.text) == ["单人游戏", "多人游戏", "卡组构筑", "卡牌图鉴", "对局复盘", "游戏设置", "退出游戏"], "Seven primary menu entries follow the approved order")
+		_check(menu_bounds.encloses(menu._logo.get_global_rect()), "Current logo stays inside the viewport")
+		_check(menu._logo.get_global_rect().end.x < menu._column.get_global_rect().position.x, "Current logo stays left of the seven primary actions")
+		for button_index: int in range(menu._buttons.size()):
+			var button: Button = menu._buttons[button_index]
+			var previous: Button = menu._buttons[posmod(button_index - 1, menu._buttons.size())]
+			var next: Button = menu._buttons[(button_index + 1) % menu._buttons.size()]
 			_check(menu_bounds.encloses(button.get_global_rect()), "Menu buttons fit at " + str(dimensions))
-			_check(button._has_point(button.size * 0.5) and not button._has_point(Vector2.ZERO), "Menu hit test follows the pointed silhouette")
-			var menu_font: Font = button.get_theme_font(&"font")
-			var menu_size: int = button.get_theme_font_size(&"font_size")
-			var skin: StyleBox = button.get_theme_stylebox(&"normal")
-			var outline: int = button.get_theme_constant(&"outline_size") * 2
-			_check(menu_font.get_font_weight() == 900, "Menu uses a real Black 900 weight, including disabled entries")
-			var text_size: Vector2 = menu_font.get_string_size(button.text, HORIZONTAL_ALIGNMENT_LEFT, -1, menu_size)
-			_check(text_size.x + outline <= button.size.x - skin.get_minimum_size().x and menu_font.get_height(menu_size) + outline <= button.size.y - skin.get_minimum_size().y, "Heavy menu text and outline fit without clipping at " + str(dimensions))
-			for character: String in button.text:
-				_check(menu_font.has_char(character.unicode_at(0)), "Menu Chinese glyph comes from the bundled font: " + character)
-		_check(not menu._buttons[0].disabled and not menu._buttons[1].disabled and not menu._buttons[2].disabled, "Single player, multiplayer and deck construction are enabled")
-		_check(menu._logo.texture is AtlasTexture and menu._buttons[3]._skin.texture is AtlasTexture, "Menu crops full HD alpha margins using declared texture regions")
-		_check(menu._buttons[5].text == "对局复盘" and menu._buttons[6].text == "卡牌图鉴", "Replay and library use the large menu entries")
+			_check(not button.disabled and button.focus_mode == Control.FOCUS_ALL, "Every primary menu entry is enabled and focusable")
+			_check(button.get_node(button.focus_previous) == previous and button.get_node(button.focus_neighbor_top) == previous and button.get_node(button.focus_next) == next and button.get_node(button.focus_neighbor_bottom) == next, "Keyboard and controller focus follow the approved menu order")
+			_check(is_equal_approx(button.global_position.x, menu._buttons[0].global_position.x) and is_equal_approx(button.size.x, menu._buttons[0].size.x), "Seven primary entries share a vertical column")
+			if button_index > 0:
+				_check(previous.get_global_rect().end.y < button.global_position.y, "Primary menu entries remain ordered without overlap")
+			if button is MenuArtButton:
+				var art_button: MenuArtButton = button as MenuArtButton
+				_check(art_button._has_point(art_button.size * 0.5) and not art_button._has_point(Vector2.ZERO), "Menu hit test follows the pointed silhouette")
+				var menu_font: Font = art_button.get_theme_font(&"font")
+				var menu_size: int = art_button.get_theme_font_size(&"font_size")
+				var skin: StyleBox = art_button.get_theme_stylebox(&"normal")
+				var outline: int = art_button.get_theme_constant(&"outline_size") * 2
+				_check(menu_font.get_font_weight() == 900, "Menu uses a real Black 900 weight, including disabled entries")
+				var text_size: Vector2 = menu_font.get_string_size(art_button.text, HORIZONTAL_ALIGNMENT_LEFT, -1, menu_size)
+				_check(text_size.x + outline <= art_button.size.x - skin.get_minimum_size().x and menu_font.get_height(menu_size) + outline <= art_button.size.y - skin.get_minimum_size().y, "Heavy menu text and outline fit without clipping at " + str(dimensions))
+				for character: String in art_button.text:
+					_check(menu_font.has_char(character.unicode_at(0)), "Menu Chinese glyph comes from the bundled font: " + character)
+		_check(menu._logo.texture is AtlasTexture and (menu._buttons[0] as MenuArtButton)._skin.texture is AtlasTexture, "Menu crops full HD alpha margins using declared texture regions")
+		_check(menu._buttons.all(func(button: Button) -> bool: return button is MenuArtButton), "Replay and library use the same primary buttons")
+		for entry: Array in [[3, &"library"], [4, &"replay"]]:
+			menu._buttons[entry[0]].pressed.emit()
+			await _settle()
+			_check(_app.current_page == entry[1], "Primary library and replay entries navigate to their pages")
+			_app.navigate(&"menu")
+			await _settle()
+			menu = _app.page as MenuPage
 		if _capture:
-			var setting_button: MenuArtButton = menu._buttons[3]
+			var setting_button: MenuArtButton = menu._buttons[5] as MenuArtButton
 			var pointer: InputEventMouseMotion = InputEventMouseMotion.new()
 			pointer.position = setting_button.get_global_rect().get_center()
 			root.push_input(pointer, true)
@@ -154,7 +173,7 @@ func _run() -> void:
 			_check(setting_button._state == "pressed", "Pressed texture takes priority over opaque focus")
 			_mouse_button(pointer.position, false)
 		else:
-			menu._buttons[3].pressed.emit()
+			menu._buttons[5].pressed.emit()
 		await _settle()
 		_check(_app.current_page == &"settings", "New menu settings entry keeps working")
 		_app.navigate(&"menu")
@@ -164,7 +183,12 @@ func _run() -> void:
 		await _settle()
 		var refined_settings: SettingsPage = _app.page as SettingsPage
 		_check(menu_bounds.encloses(refined_settings._panel.get_global_rect()), "Refined settings panel fits at " + str(dimensions))
-		for setting_control: Control in [refined_settings._master, refined_settings._sound, refined_settings._resolution, refined_settings._mode, refined_settings._reduced, refined_settings._automatic, refined_settings._save_button]:
+		var has_2k_resolution: bool = false
+		for resolution_index: int in range(refined_settings._resolution.item_count):
+			if refined_settings._resolution.get_item_text(resolution_index) == "2560 × 1440":
+				has_2k_resolution = true
+		_check(has_2k_resolution, "Resolution list includes the 2560 × 1440 option")
+		for setting_control: Control in [refined_settings._master, refined_settings._sound, refined_settings._resolution, refined_settings._mode, refined_settings._font_scale, refined_settings._reduced, refined_settings._automatic, refined_settings._save_button]:
 			_check(menu_bounds.encloses(setting_control.get_global_rect()), "Settings controls remain reachable at " + str(dimensions))
 		_check(refined_settings._master.get_theme_icon(&"grabber") is AtlasTexture and refined_settings._reduced.get_theme_icon(&"checked") is AtlasTexture, "Settings use generated gem handle and toggle sprites")
 		await _screenshot("settings-%dx%d" % [dimensions.x, dimensions.y])
@@ -208,9 +232,10 @@ func _run() -> void:
 	var long_card: CardPresentation = _app.service.cards[0].duplicate() as CardPresentation
 	long_card.title = "用于验证中文长名称和完整卡牌详情显示的测试卡牌"
 	long_card.text = "完整卡牌文本应在独立详情中滚动阅读。\n".repeat(60)
+	long_card.metadata_text = ""
 	library._show_detail(long_card)
 	await _settle()
-	_check(library._detail._title.text == long_card.title and library._detail._body.text == long_card.detail_text(), "Long name/text remain complete in details")
+	_check(library._detail._title.text == long_card.title and library._detail._body.text.contains(long_card.text) and library._detail._body.text.ends_with("编号：" + long_card.number), "Long name/text and official number remain complete in details")
 	await _screenshot("library-long-text")
 	_app.navigate(&"settings")
 	await _settle()
@@ -239,8 +264,8 @@ func _run() -> void:
 		var report_file: FileAccess = FileAccess.open(_report, FileAccess.WRITE)
 		_check(report_file != null, "Write frontend report")
 		if report_file != null:
-			report_file.store_string(JSON.stringify({"success": _failures.is_empty(), "checks": _checks, "sizes": ["1280x720", "1600x1000", "1920x1080"], "officialCards": _app.service.cards.size(), "fieldMode": "layout-fixture", "libraryMode": "authoritative", "renderer": DisplayServer.get_name(), "failures": _failures}, "\t"))
-	print("Frontend smoke: ", "PASS" if _failures.is_empty() else "FAIL", "; checks=", _checks, "; sizes=1280x720,1600x1000,1920x1080; actual cards=", _app.service.cards.size())
+			report_file.store_string(JSON.stringify({"success": _failures.is_empty(), "checks": _checks, "sizes": ["1280x720", "1600x900", "1600x1000", "1920x1080", "2560x1440", "1440x900"], "officialCards": _app.service.cards.size(), "fieldMode": "layout-fixture", "libraryMode": "authoritative", "renderer": DisplayServer.get_name(), "failures": _failures}, "\t"))
+	print("Frontend smoke: ", "PASS" if _failures.is_empty() else "FAIL", "; checks=", _checks, "; sizes=1280x720,1600x900,1600x1000,1920x1080,2560x1440,1440x900; actual cards=", _app.service.cards.size())
 	_app.queue_free()
 	await _settle()
 	quit(0 if _failures.is_empty() else 1)
@@ -507,7 +532,7 @@ func _settings_input_checks(settings: SettingsPage) -> void:
 	_mouse_button(point, true)
 	_mouse_button(point, false)
 	await _settle()
-	_check(settings._resolution.get_popup().visible, "Ornate dropdown opens the native resolution list")
+	_check(settings._resolution.get_popup().visible, "Resolution dropdown opens the native resolution list")
 	if root.size == Vector2i(1920, 1080):
 		await _screenshot("settings-dropdown-1920x1080")
 	settings._resolution.get_popup().hide()

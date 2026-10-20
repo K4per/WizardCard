@@ -25,7 +25,7 @@ def main():
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--build", type=Path, required=True)
     parser.add_argument("--configuration", default="Release")
-    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.0-preview.3-hotfix.1-windows-x64")
+    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.1-windows-x64")
     parser.add_argument("--crt", type=Path, help="Directory containing the x64 VC runtime DLLs")
     args = parser.parse_args()
     lock = json.loads((ROOT / "godot/toolchain-lock.json").read_text())
@@ -38,6 +38,11 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     if any(output.iterdir()):
         raise SystemExit("Use an empty package directory; existing artifacts are preserved")
+    if not (ROOT / "godot/bin/wizard_godot_bridge.release.dll").is_file():
+        raise SystemExit("Build the matching Release Godot bridge before packaging")
+    for name in ("wizard_cli.exe", "wizard_network_probe.exe"):
+        if not (args.build / args.configuration / name).is_file():
+            raise SystemExit(f"Missing release verification tool: {name}")
     run(args.godot, "--headless", "--path", ROOT / "godot", "--import", "--frame-delay", "1000")
     run(args.godot, "--headless", "--path", ROOT / "godot", "--export-release", "Windows Desktop", output / "WizardCard.exe")
     manifest = json.loads((ROOT / "assets/catalog.json").read_text(encoding="utf-8"))
@@ -55,8 +60,6 @@ def main():
     bridge_destination = output / "bin" / "wizard_godot_bridge.release.dll"
     bridge_destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(ROOT / "godot/bin/wizard_godot_bridge.release.dll", bridge_destination)
-    for name in ("wizard_cli.exe", "wizard_network_probe.exe"):
-        shutil.copy2(args.build / args.configuration / name, output / name)
     if args.crt:
         for file in args.crt.glob("*.dll"):
             shutil.copy2(file, output / file.name)
@@ -64,10 +67,8 @@ def main():
         shutil.copy2(ROOT / name, output / name)
     shutil.copytree(ROOT / "licenses", output / "licenses")
     (output / "docs").mkdir()
-    for name in ("alpha-v2.5-rules.md", "card-catalog.md", "card-catalog.html", "branching.md",
-                 "releases/2.5.0-preview.3.md", "reports/preview2-card-alignment.md",
-                 "reports/2.5.0-preview.3.md", "releases/2.5.0-preview.3-hotfix.1.md",
-                 "reports/2.5.0-preview.3-hotfix.1.md"):
+    for name in ("alpha-v2.5-rules.md", "card-catalog.md", "card-catalog.html", "sique-cards.md",
+                 "releases/2.5.1.md", "reports/2.5.1.md"):
         source = ROOT / "docs" / name
         if source.exists():
             destination = output / "docs" / name
@@ -83,9 +84,12 @@ def main():
         destination = output / "godot" / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / "godot" / relative, destination)
-    run(output / "wizard_cli.exe", "validate", output / "assets")
-    run(output / "wizard_cli.exe", "smoke", output / "assets", output / "verification.json", "42")
-    run(output / "wizard_cli.exe", "replay", output / "assets", output / "verification.json")
+    with tempfile.TemporaryDirectory(prefix="wizardcard-package-content-") as verification:
+        recording = Path(verification) / "verification.json"
+        cli = args.build / args.configuration / "wizard_cli.exe"
+        run(cli, "validate", output / "assets")
+        run(cli, "smoke", output / "assets", recording, "42")
+        run(cli, "replay", output / "assets", recording)
     if not bridge_destination.is_file():
         raise SystemExit("Portable package is missing bin/wizard_godot_bridge.release.dll")
     # Export exclusions can remove a global script class while editor tests still
@@ -102,8 +106,6 @@ def main():
     inventory = {str(path.relative_to(output)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
                  for path in sorted(output.rglob("*")) if path.is_file()}
     (output / "SHA256.json").write_text(json.dumps(inventory, indent=2), encoding="utf-8")
-    # ``Path.with_suffix`` would treat the release candidate's ``.1`` as the
-    # suffix and truncate the package name to ``...-rc.zip``.
     archive = output.parent / (output.name + ".zip")
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as package:
         for file in sorted(output.rglob("*")):

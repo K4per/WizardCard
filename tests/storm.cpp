@@ -6,7 +6,7 @@ using namespace wizard;
 
 namespace {
 Content stormContent() {
-    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
 }
 
 GameState stormState() {

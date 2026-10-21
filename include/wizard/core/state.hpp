@@ -13,6 +13,8 @@ struct PlayerState {
     int temporaryLife{}, blockedActionTurn{-1};
     int exhaustion{};
     int damageReduction{}, forceDamageReduction{};
+    bool nextDamageImmune{};
+    int wordLockUntilOwnDraw{};
     int siqueDamageCap{}, siqueCapUntilOwnTurn{};
     std::uint64_t siqueLifePaymentTurn{};
 };
@@ -33,6 +35,7 @@ struct GameState {
     std::array<PlayerState, 2> players;
     std::map<CardId, CardInstance> cards;
     std::vector<TemporaryLoad> temporary;
+    std::vector<TemporaryLife> temporaryLives;
     PlayerId active{}, first{};
     std::uint64_t globalTurn{1};
     Phase phase{Phase::Draw};

@@ -4,7 +4,7 @@
 using namespace wizard;
 
 TEST_CASE("ice storm advances every analyzing opponent spell", "[storm][rc-content]") {
-    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
     const auto &catalog = content.catalog;
     const auto &iceStormDefinition = catalog.at("ice-storm");
     REQUIRE(iceStormDefinition.effects.size() == 2);

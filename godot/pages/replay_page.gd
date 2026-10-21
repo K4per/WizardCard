@@ -117,7 +117,7 @@ func _show_frame() -> void:
 	_update_controls()
 
 func _command_label(command: Dictionary) -> String:
-	var kinds: Array[String] = ["设置阵法", "拆除阵法", "开始解析", "准备施法", "使用行动", "设置法术", "附着符文", "解除符文", "弃置法术", "推进阶段", "确认决策", "投降", "响应", "放弃响应", "推进阶段", "盖伏", "翻开盖伏", "发动法术", "选择初始阵法"]
+	var kinds: Array[String] = ["设置阵法", "移除阵法", "开始解析", "准备施法", "使用行动", "设置法术", "附着符文", "解除符文", "弃置法术", "推进阶段", "确认决策", "投降", "响应", "放弃响应", "推进阶段", "盖伏", "翻开盖伏", "发动法术", "选择初始阵法"]
 	var type: int = int(command.get("type", -1))
 	return kinds[type] if type >= 0 and type < kinds.size() else "执行操作"
 

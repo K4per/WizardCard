@@ -46,6 +46,7 @@ Json viewDto(const GameView &v) {
                     {"remainingMs", v.clock.remainingMs}, {"sequence", std::to_string(v.clock.sequence)}}},
                 {"players", Json::array()}, {"cards", Json::array()},
                 {"events", Json::array()}, {"loads", Json::array()}, {"triggers", Json::array()},
+                {"temporaryLives", Json::array()},
                 {"decision", nullptr}, {"chain", nullptr}};
     for (const auto &p : v.players)
         out["players"].push_back({{"life", p.life}, {"mana", p.mana}, {"load", p.load},
@@ -53,6 +54,11 @@ Json viewDto(const GameView &v) {
             {"sideDeckCount", p.sideDeckCount}, {"exhaustion", p.exhaustion},
             {"ownTurn", p.ownTurn}, {"temporaryLife", p.temporaryLife},
             {"resistances", p.resistances}, {"immunities", p.immunities}});
+    for (const auto &entry : v.temporaryLives)
+        out["temporaryLives"].push_back({{"id", std::to_string(entry.id)}, {"owner", entry.owner},
+            {"source", std::to_string(entry.source)}, {"amount", entry.amount},
+            {"expiryOwnTurn", entry.expiryOwnTurn}, {"acquiredTurn", std::to_string(entry.acquiredTurn)},
+            {"acquiredPhase", static_cast<int>(entry.acquiredPhase)}});
     for (const auto &c : v.cards) {
         const auto &i = c.instance;
         Json card = {{"id", std::to_string(i.id)}, {"owner", i.owner}, {"zone", static_cast<int>(i.zone)},

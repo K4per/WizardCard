@@ -1,5 +1,6 @@
 #include "wizard/core/rules.hpp"
 #include "wizard/core/sique.hpp"
+#include "wizard/core/arcana.hpp"
 #include "wizard/core/engine.hpp"
 #include <algorithm>
 #include <cstdlib>
@@ -83,7 +84,15 @@ int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, C
                 definition.school == "evocation" && (definition.type == CardType::Analytic ||
                     definition.type == CardType::Word || definition.type == CardType::Talisman)) ++discount;
         }
-    return std::max(0, d.cost - discount - (h != s.cards.end() && h->second.base && cat.at(h->second.definition).baseAnalysisDiscount &&
+    int surcharge = 0;
+    if (cat.usesAlphaV252() && d.duration > 0)
+        for (const auto &[sourceId, source] : s.cards)
+            if (source.owner != s.cards.at(id).owner && source.spell == SpellState::Active &&
+                (source.zone == Zone::Analysis || source.zone == Zone::Casting)) {
+                const auto &traits = cat.at(source.definition).traits;
+                if (std::find(traits.begin(), traits.end(), "surcharge_enemy_timed_cast") != traits.end()) surcharge += 2;
+            }
+    return std::max(0, d.cost + surcharge - discount - (h != s.cards.end() && h->second.base && cat.at(h->second.definition).baseAnalysisDiscount &&
                                          (d.school == "evocation" || d.school == "conjuration")
                                      ? 1
                                      : 0));
@@ -96,7 +105,7 @@ int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     for (const auto &[sid, seal] : s.cards)
         if (seal.zone == Zone::Attached && seal.host == id)
             n += cat.at(seal.definition).castCostBonus;
-    if (d.duration > 0)
+    if (!cat.usesAlphaV252() && d.duration > 0)
         for (const auto &[sourceId, source] : s.cards) {
             const auto &sourceDefinition = cat.at(source.definition);
             if (source.owner != c.owner && source.spell == SpellState::Active &&
@@ -120,6 +129,7 @@ int Rules::concentrationUpkeep(const GameState &s, const CardCatalog &cat, CardI
     return card.concentrationCost * (doubled ? 2 : 1);
 }
 int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const Effect &e) {
+    if (cat.usesAlphaV252() && s.players[p].nextDamageImmune) return 0;
     bool resistance = false;
     for (const auto &[id, c] : s.cards)
         if (c.owner == p && (c.zone == Zone::Casting || (cat.usesAlphaV2() && c.zone == Zone::Analysis)) && c.spell == SpellState::Active) {
@@ -129,9 +139,10 @@ int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const 
             resistance |=
                 std::find(d.resistances.begin(), d.resistances.end(), e.damageType) != d.resistances.end();
         }
-    const int resisted = resistance ? e.amount / 2 : e.amount;
+    const int base = arcana::active(s, cat, "arcana_strength") ? e.amount * 2 : e.amount;
+    const int resisted = resistance ? base / 2 : base;
     const int reduction = e.damageType == DamageType::Force ? s.players[p].forceDamageReduction : s.players[p].damageReduction;
-    const int amount = std::max(0, resisted - reduction - 2 * sique::attachedCount(s, p, "sique-vinegar"));
+    const int amount = std::max(0, resisted - reduction - (cat.usesAlphaV252() ? 0 : 2 * sique::attachedCount(s, p, "sique-vinegar")));
     return s.players[p].siqueDamageCap > 0 ? std::min(amount, s.players[p].siqueDamageCap) : amount;
 }
 int Rules::occupied(const GameState &s, CardId host) {
@@ -164,8 +175,14 @@ bool Rules::canHost(const GameState &s, const CardCatalog &cat, CardId spell, Ca
         host->second.zone != Zone::Analysis || host->second.faceDown ||
         cat.at(host->second.definition).type != CardType::Formation) return false;
     const auto &definition = cat.at(source->second.definition);
+    if (cat.usesAlphaV252() && std::find(definition.traits.begin(), definition.traits.end(), "unique") != definition.traits.end())
+        for (const auto &[id, card] : s.cards)
+            if (id != spell && card.owner == source->second.owner && card.definition == source->second.definition &&
+                (card.zone == Zone::Analysis || card.zone == Zone::Casting)) return false;
     if (definition.rank > maxRank(s, cat, formation)) return false;
     if (faceDown) return true; // Hidden cards do not analyze; host restrictions apply when flipped.
+    if (cat.usesAlphaV252() && std::find(definition.traits.begin(), definition.traits.end(), "sique_campfire_only") != definition.traits.end() &&
+        host->second.definition != "sique-campfire") return false;
     const auto &traits = cat.at(host->second.definition).traits;
     if (std::find(traits.begin(), traits.end(), "host_fire_only") != traits.end() &&
         !sique::fireSpell(definition)) return false;
@@ -190,7 +207,8 @@ bool Rules::targetValid(const GameState &s, TargetKind kind, PlayerId p, CardId 
         return false;
     const auto &c = i->second;
     if (kind == TargetKind::EnemyAshCard) return c.owner != p && c.zone == Zone::Ash && !c.faceDown;
-    if ((c.base && !c.fieldOrder) || c.zone == Zone::Deck || c.zone == Zone::Hand || c.zone == Zone::Ash || c.zone == Zone::SideDeck)
+    if ((c.base && !c.fieldOrder) || c.zone == Zone::Deck || c.zone == Zone::Hand || c.zone == Zone::Ash ||
+        c.zone == Zone::SideDeck || c.zone == Zone::Exile)
         return false;
     if (kind == TargetKind::OwnAnalyzingSpell)
         return c.owner == p && c.zone == Zone::Analysis && !c.faceDown && c.spell == SpellState::Analyzing;
@@ -203,14 +221,19 @@ bool Rules::targetValid(const GameState &s, TargetKind kind, PlayerId p, CardId 
 bool Rules::linkTargetValid(const GameState &s, TargetKind kind, LinkId id) {
     if (!s.chain || !id)
         return false;
-    for (const auto &l : s.chain->links)
-        if (l.id == id)
+    for (const auto &l : s.chain->links) {
+        if (l.id == id) {
+            if (l.kind == LinkKind::Setup)
+                return !l.canceled && !l.sourceLost && kind == TargetKind::EnemySpellLink &&
+                    (!s.effect || s.effect->link != id);
             return !l.canceled && l.kind != LinkKind::Phase && (!s.effect || s.effect->link != id) &&
                    (kind == TargetKind::PendingLink ||
                     (kind == TargetKind::PreparationRoot && l.kind == LinkKind::Preparation) ||
                     (kind == TargetKind::EnemySpellLink &&
                      (l.kind == LinkKind::Spell || l.kind == LinkKind::Response ||
                       (s.chain->window == ResponseWindow::Prepare && l.kind == LinkKind::Preparation))));
+        }
+    }
     return false;
 }
 std::vector<std::string> Rules::deckErrors(const CardCatalog &cat, const PlayerDeck &deck) {

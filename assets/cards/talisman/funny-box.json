@@ -16,7 +16,7 @@
       "kind": "recover_enemy_ash_spell"
     }
   ],
-  "text": "选择对方灰烬区一张5级及以下解析法术，将其在己方有合法空环位的阵法上盖伏。",
+  "text": "选择对方灰烬区1张阶级5以下的解析法术卡才能发动。将其在己方解析区盖伏。",
   "responseOnly": false,
   "number": "040004",
   "illustrationId": "v2-funny-box"

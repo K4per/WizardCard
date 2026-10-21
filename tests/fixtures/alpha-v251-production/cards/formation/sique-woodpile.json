@@ -1,0 +1,26 @@
+{
+  "id": "sique-woodpile",
+  "name": "味契·柴堆",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 1,
+  "level": 1,
+  "maxRank": 1,
+  "speed": 1,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "010016",
+  "illustrationId": "sique-woodpile",
+  "body": 1,
+  "rings": 1,
+  "capacity": 5,
+  "income": 2,
+  "traits": [
+    "unique"
+  ],
+  "text": "此卡在己方场上只能存在1张。",
+  "summonCondition": "支付2魔素；己方场上只能存在1张。"
+}

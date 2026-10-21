@@ -1,5 +1,6 @@
 #include "wizard/core/rules.hpp"
 #include "wizard/core/sique.hpp"
+#include "wizard/core/arcana.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iomanip>
@@ -13,7 +14,7 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
     std::uint32_t batch = 0;
     auto leaveOne = [&](auto &&self, CardId source) -> void {
         auto i = s.cards.find(source);
-        if (i == s.cards.end() || i->second.zone == Zone::Ash ||
+        if (i == s.cards.end() || i->second.zone == Zone::Ash || i->second.zone == Zone::Exile ||
             (i->second.base && (!cat || !cat->usesAlphaV2())))
             return;
         auto &c = i->second;
@@ -26,6 +27,14 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
                 children.push_back(cid);
         const bool publicSource = c.zone != Zone::Hand && c.zone != Zone::Deck && c.zone != Zone::SideDeck;
         const bool wasCasting = c.zone == Zone::Casting;
+        if (cat && cat->usesAlphaV252() && c.definition == "arcana-lovers" && c.remaining > 0) {
+            if (!batch) batch = s.nextBatch++;
+            Trigger trigger;
+            trigger.id = s.nextTrigger++; trigger.batch = batch;
+            trigger.owner = c.owner; trigger.source = source;
+            trigger.effects = {{EffectKind::ArcanaLovers}};
+            captured.push_back(std::move(trigger));
+        }
         if (cat && publicSource && !cat->at(c.definition).onLeave.empty()) {
             if (!batch)
                 batch = s.nextBatch++;
@@ -100,6 +109,7 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
                               s.temporary.end());
         }
         s.events.push_back({"leave", "卡牌进入灰烬区", -1, source});
+        if (cat) arcana::ashEntered(s, *cat);
     };
     leaveOne(leaveOne, id);
     // Capture one associated departure batch before mutation; publish only after

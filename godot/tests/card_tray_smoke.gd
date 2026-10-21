@@ -19,7 +19,8 @@ func _expect(condition: bool, message: String) -> void:
 		push_error("CARD_TRAY: " + message)
 
 func _card(id: String, name: String, zone: int, type: int = 3) -> Dictionary:
-	return {"id": id, "owner": 0, "zone": zone, "hidden": false, "definition": {"id": name, "name": name, "type": type, "rings": 3, "cost": 1}}
+	var art_id: String = "balance" if type == 3 else "fireball"
+	return {"id": id, "owner": 0, "zone": zone, "hidden": false, "definition": {"id": name, "illustrationId": art_id, "name": name, "type": type, "rings": 3, "cost": 1}}
 
 func _click(point: Vector2) -> void:
 	for pressed: bool in [true, false]:

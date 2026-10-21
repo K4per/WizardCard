@@ -25,7 +25,7 @@ def main():
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--build", type=Path, required=True)
     parser.add_argument("--configuration", default="Release")
-    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.1-windows-x64")
+    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.2-windows-x64")
     parser.add_argument("--crt", type=Path, help="Directory containing the x64 VC runtime DLLs")
     args = parser.parse_args()
     lock = json.loads((ROOT / "godot/toolchain-lock.json").read_text())
@@ -68,12 +68,18 @@ def main():
     shutil.copytree(ROOT / "licenses", output / "licenses")
     (output / "docs").mkdir()
     for name in ("alpha-v2.5-rules.md", "card-catalog.md", "card-catalog.html", "sique-cards.md",
-                 "releases/2.5.1.md", "reports/2.5.1.md"):
+                 "alpha-v2.5.2-ui.md", "card-migration-2.5.2.md",
+                 "releases/2.5.2.md", "reports/2.5.2.md",
+                 "reports/alpha-v2.5.2-requirements.md",
+                 "reports/alpha-v2.5.2-card-pool-migration.md", "reports/alpha-v2.5.2-card-acceptance.md"):
         source = ROOT / "docs" / name
         if source.exists():
             destination = output / "docs" / name
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, destination)
+    evidence = ROOT / "docs/reports/alpha-v2.5.2-evidence"
+    if evidence.is_dir():
+        shutil.copytree(evidence, output / "docs/reports/alpha-v2.5.2-evidence")
     # The offline catalogue uses the same relative illustration paths as the
     # repository. Copy only the official cards' runtime art beside the docs.
     art_files = {entry["id"]: entry["file"]
@@ -84,12 +90,25 @@ def main():
         destination = output / "godot" / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / "godot" / relative, destination)
-    with tempfile.TemporaryDirectory(prefix="wizardcard-package-content-") as verification:
-        recording = Path(verification) / "verification.json"
-        cli = args.build / args.configuration / "wizard_cli.exe"
-        run(cli, "validate", output / "assets")
-        run(cli, "smoke", output / "assets", recording, "42")
-        run(cli, "replay", output / "assets", recording)
+    checks = output / "package-checks"
+    checks.mkdir()
+    recording = checks / "verification.json"
+    cli = args.build / args.configuration / "wizard_cli.exe"
+    for name, command in (("validate", [cli, "validate", output / "assets"]),
+                          ("smoke", [cli, "smoke", output / "assets", recording, "42"]),
+                          ("replay", [cli, "replay", output / "assets", recording])):
+        result = subprocess.run([str(arg) for arg in command], cwd=ROOT, check=True,
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        (checks / (name + ".log")).write_text(result.stdout, encoding="utf-8")
+        print(result.stdout, end="")
+    verified = json.loads(recording.read_text(encoding="utf-8"))
+    release = {key: verified[key] for key in
+               ("programVersion", "rulesVersion", "cardSetVersion", "contentHash")}
+    release.update({"mechanicsRevision": manifest["metadata"]["mechanicsRevision"],
+                    "cardCount": len(cards), "engine": version,
+                    "catalogSha256": hashlib.sha256((output / "assets/cards.json").read_bytes()).hexdigest(),
+                    "bridgeSha256": hashlib.sha256(bridge_destination.read_bytes()).hexdigest()})
+    (output / "RELEASE.json").write_text(json.dumps(release, indent=2) + "\n", encoding="utf-8")
     if not bridge_destination.is_file():
         raise SystemExit("Portable package is missing bin/wizard_godot_bridge.release.dll")
     # Export exclusions can remove a global script class while editor tests still
@@ -101,6 +120,7 @@ def main():
                         "--", "--assets", str(output / "assets"), "--user-data", str(check_dir / "data")],
                        cwd=check_dir, check=True, timeout=45)
         diagnostics = log.read_text(encoding="utf-8", errors="replace") if log.exists() else ""
+        (checks / "startup.log").write_text(diagnostics, encoding="utf-8")
         if "Godot Engine v4.7.2" not in diagnostics or "ERROR:" in diagnostics:
             raise SystemExit("Exported package startup failed:\n" + diagnostics)
     inventory = {str(path.relative_to(output)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()

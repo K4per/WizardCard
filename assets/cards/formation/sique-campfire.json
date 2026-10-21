@@ -3,7 +3,7 @@
   "name": "味契·篝火",
   "type": "formation",
   "rarity": "rare",
-  "cost": 0,
+  "cost": 4,
   "rank": 1,
   "level": 3,
   "maxRank": 3,
@@ -17,11 +17,11 @@
   "body": 2,
   "rings": 3,
   "capacity": 8,
-  "income": 4,
+  "income": 3,
   "recipe": [
     {
       "kind": "sacrifice_formation",
-      "amount": 1,
+      "amount": 2,
       "definition": "sique-woodpile"
     },
     {
@@ -30,6 +30,6 @@
       "fireDamage": true
     }
   ],
-  "text": "己方场上存在味契·魔力坩埚时，此卡不受其他卡的效果影响。此卡上设置的火焰伤害法术卡伤害+1。",
-  "summonCondition": "祭品：己方场上1张味契·柴堆；弃置手牌中1张火焰伤害法术。"
+  "text": "己方场上存在【味契·魔力坩埚】，此卡不受其他卡的效果影响。此卡上设置的火焰伤害法术卡额外造成1点火焰伤害。",
+  "summonCondition": "【味契·柴堆】×2＋手卡的火焰伤害法术卡×1+魔素×4"
 }

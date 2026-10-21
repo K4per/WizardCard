@@ -1,0 +1,49 @@
+{
+  "id": "shield",
+  "name": "护盾术",
+  "type": "talisman",
+  "rarity": "common",
+  "cost": 3,
+  "rank": 3,
+  "speed": 2,
+  "concentration": false,
+  "school": "abjuration",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "shield_for_turn",
+      "amount": 5
+    }
+  ],
+  "responses": [
+    {
+      "id": "shield",
+      "name": "本回合护盾",
+      "sources": [
+        "ambush"
+      ],
+      "windows": [
+        "phase_start",
+        "phase_end",
+        "action",
+        "prepare",
+        "cast",
+        "trigger"
+      ],
+      "target": "self",
+      "effects": [
+        {
+          "kind": "shield_for_turn",
+          "amount": 5
+        }
+      ]
+    }
+  ],
+  "text": "此回合，每次受到伤害时降低至多5点；力场伤害降低至多10点。",
+  "castCost": 0,
+  "level": 3,
+  "responseOnly": false,
+  "analysisTurns": 0,
+  "number": "040003",
+  "illustrationId": "shield"
+}

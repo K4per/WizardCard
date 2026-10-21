@@ -1,6 +1,6 @@
 {
   "id": "wind-whisper",
-  "name": "风语术",
+  "name": "恒风·风语术",
   "type": "word",
   "rarity": "common",
   "cost": 1,
@@ -14,7 +14,7 @@
       "kind": "search_action"
     }
   ],
-  "text": "场上有风暴阵法卡才能发动。从牌库将一张位阶2及以下的风暴咒符法术加入手牌。",
+  "text": "己方场上存在【恒风】阵法卡才能发动。将1张阶级2以下的【恒风】咒符法术卡从卡组加入手卡。",
   "castCost": 0,
   "analysisTurns": 0,
   "tags": [

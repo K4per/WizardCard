@@ -11,11 +11,11 @@
       "amount": 2
     },
     {
-      "kind": "temporary",
+      "kind": "independent",
       "amount": 2
     }
   ],
-  "text": "抽两张卡，获得2点临时荷载。",
+  "text": "抽2张卡，获得2点荷载。",
   "flavor": "尚未熄灭的记忆，也能成为下一道咒文。",
   "speed": 2,
   "castCost": 0,

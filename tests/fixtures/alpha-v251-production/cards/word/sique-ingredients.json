@@ -1,0 +1,25 @@
+{
+  "id": "sique-ingredients",
+  "name": "味契·原料召来",
+  "type": "word",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 1,
+  "level": 1,
+  "speed": 2,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "030014",
+  "illustrationId": "sique-ingredients",
+  "school": "conjuration",
+  "effects": [
+    {
+      "kind": "sique_search_pair",
+      "amount": 2
+    }
+  ],
+  "text": "将牌库中2张味契符文加入手牌。在加手回合附着其中1张时，将仍在手牌中的另1张送入灰烬区。",
+  "analysisTurns": 0
+}

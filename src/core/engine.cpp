@@ -81,6 +81,8 @@ GameEngine GameEngine::scenario(CardCatalog cat, GameState state) {
     GameEngine e;
     e.catalog_ = std::move(cat);
     e.state_ = std::move(state);
+    if (e.catalog_.usesAlphaV252())
+        for (int p = 0; p < 2; ++p) ResourceRules::normalizeTemporaryLife(e.state_, p);
     if (e.catalog_.usesAlphaV2()) {
         for (const auto &[id, card] : e.state_.cards)
             e.state_.nextFieldOrder = std::max(e.state_.nextFieldOrder, card.fieldOrder + 1);

@@ -5,7 +5,7 @@
   "rarity": "uncommon",
   "cost": 3,
   "castCost": 1,
-  "rank": 1,
+  "rank": 4,
   "speed": 1,
   "school": "enchantment",
   "target": "opponent",
@@ -15,9 +15,10 @@
       "amount": 0
     }
   ],
-  "text": "对方下一个自己的回合不能从手牌发动言灵法术；已盖伏的法术不受影响。",
+  "text": "直到下个己方抽牌阶段开始时，双方言灵法术不可发动。",
   "flavor": "巫师牌安眠药。",
-  "level": 1,
+  "level": 4,
   "number": "020006",
-  "illustrationId": "instantly-sleep"
+  "illustrationId": "instantly-sleep",
+  "analysisTurns": 1
 }

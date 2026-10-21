@@ -1,0 +1,31 @@
+{
+  "id": "recall",
+  "name": "奥术回想",
+  "rarity": "common",
+  "type": "word",
+  "cost": 3,
+  "target": "self",
+  "effects": [
+    {
+      "kind": "draw",
+      "amount": 2
+    },
+    {
+      "kind": "temporary",
+      "amount": 2
+    }
+  ],
+  "text": "抽两张卡，获得2点临时荷载。",
+  "flavor": "尚未熄灭的记忆，也能成为下一道咒文。",
+  "speed": 2,
+  "castCost": 0,
+  "rank": 1,
+  "level": 1,
+  "tags": [
+    "former-action"
+  ],
+  "number": "030001",
+  "illustrationId": "recall",
+  "school": "divination",
+  "analysisTurns": 0
+}

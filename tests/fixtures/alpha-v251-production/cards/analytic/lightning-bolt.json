@@ -1,0 +1,27 @@
+{
+  "id": "lightning-bolt",
+  "name": "闪电束",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 3,
+  "castCost": 2,
+  "rank": 3,
+  "speed": 1,
+  "school": "evocation",
+  "analysisTurns": 1,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 8,
+      "damageType": "thunder"
+    },
+    {
+      "kind": "destroy_enemy_analysis"
+    }
+  ],
+  "text": "对对方玩家造成8点雷鸣伤害。那之后，可以销毁对方解析区一张解析法术。",
+  "level": 3,
+  "number": "020010",
+  "illustrationId": "lightning-bolt"
+}

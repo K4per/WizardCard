@@ -3,7 +3,7 @@
   "name": "心如止水",
   "rarity": "common",
   "type": "word",
-  "cost": 1,
+  "cost": 2,
   "target": "self",
   "effects": [
     {
@@ -13,15 +13,17 @@
       "kind": "clear_all_temporary"
     }
   ],
-  "text": "弃置一张手牌，移除自身所有的临时荷载。",
+  "text": "将1张卡从手卡送去灰烬区才能发动。清除己方全部临时荷载。",
   "flavor": "向月亮诉说吧。",
   "speed": 2,
   "castCost": 0,
-  "rank": 1,
-  "level": 1,
+  "rank": 2,
+  "level": 2,
   "tags": [
     "former-action"
   ],
   "number": "030004",
-  "illustrationId": "clarity"
+  "illustrationId": "clarity",
+  "school": "abjuration",
+  "analysisTurns": 0
 }

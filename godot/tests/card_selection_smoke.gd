@@ -22,7 +22,10 @@ func _expect(condition: bool, message: String) -> void:
 		push_error("CARD_SELECTION: " + message)
 
 func _card(id: String, name: String, type: int, zone: int) -> Dictionary:
-	return {"id": id, "owner": 0, "zone": zone, "host": "0", "hidden": false, "definition": {"id": name, "name": name, "type": type, "rings": 3, "cost": 1, "text": ""}}
+	# Synthetic identities use explicit published art so resource diagnostics stay
+	# reserved for missing resources rather than fixture-only Chinese IDs.
+	var art_id: String = "balance" if type == 3 else ("ring" if type == 4 else "fireball")
+	return {"id": id, "owner": 0, "zone": zone, "host": "0", "hidden": false, "definition": {"id": name, "illustrationId": art_id, "name": name, "type": type, "rings": 3, "cost": 1, "text": ""}}
 
 func _click(point: Vector2) -> void:
 	for pressed: bool in [true, false]:
@@ -115,6 +118,21 @@ func _run() -> void:
 	_click((page._action_list.get_child(0) as Button).get_global_rect().get_center())
 	await process_frame
 	_expect(service.selected_actions.back() == "recover-ash" and service.confirmations == 4, "ash target submits its exact legal command")
+	page._clear_card()
+	service.match_snapshot["cards"].append(_card("91", "承载法术", 1, 3).merged({"host": "34"}, true))
+	service.match_snapshot["cards"].append(_card("92", "阵法符文", 4, 7).merged({"host": "34"}, true))
+	service.match_snapshot["cards"].append(_card("93", "法术符文", 4, 7).merged({"host": "91"}, true))
+	var removal: Dictionary = {"id": "remove-formation", "source": "34", "command": {"type": 1, "card": "34"}}
+	service.match_snapshot["actions"] = [removal]
+	page._select_card(MatchProjection.card(service.match_snapshot, "34"))
+	await process_frame
+	_expect(page._action_list.get_child_count() == 1 and (page._action_list.get_child(0) as Button).text == "移除阵法", "authoritative formation removal is exposed with the approved label")
+	page._choose_action_group([removal])
+	_expect(page._confirm.visible and service.confirmations == 4, "formation removal requires explicit confirmation")
+	_expect(page._confirm.dialog_text.contains("承载法术") and page._confirm.dialog_text.contains("符文 2 张") and page._confirm.dialog_text.contains("灰烬区"), "removal confirmation explains carried spells and nested rune departures")
+	page._cancel_pending()
+	page._confirm.hide()
+	_expect(service.confirmations == 4, "cancelling formation removal never submits it")
 	page.queue_free()
 	await process_frame
 	print("Card selection smoke: %s" % ("PASS" if failures == 0 else "FAIL"))

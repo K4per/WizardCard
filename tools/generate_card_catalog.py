@@ -9,7 +9,7 @@ from catalog_source import load_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
 TYPES = {"formation": "阵法", "analytic": "解析法术", "word": "言灵法术", "talisman": "咒符法术", "seal": "符文"}
-SCHOOLS = {"evocation": "塑能", "transmutation": "变化", "conjuration": "咒法", "enchantment": "惑控", "illusion": "幻术", "abjuration": "防护", "necromancy": "死灵", "divination": "预言"}
+SCHOOLS = {"evocation": "塑能", "transmutation": "变化", "conjuration": "咒法", "enchantment": "惑控", "illusion": "幻术", "abjuration": "防护", "necromancy": "死灵", "divination": "预言", "arcana": "阿卡那"}
 PREFIXES = {"formation": "01", "analytic": "02", "word": "03", "talisman": "04", "seal": "05"}
 
 def load(path):

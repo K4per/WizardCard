@@ -1,0 +1,43 @@
+{
+  "id": "moon",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "moon",
+  "number": "010021",
+  "name": "月亮",
+  "type": "formation",
+  "text": "此卡不受其他卡的效果影响。己方不会受到来自过载的真实伤害，对方法术卡不可设置，只可盖伏。",
+  "level": 7,
+  "body": 5,
+  "rings": 7,
+  "capacity": 24,
+  "income": 8,
+  "maxRank": 7,
+  "summonCondition": "【四芒星】+【三芒星】+【二芒星】+阵体2【芒星】阵法卡×1",
+  "cost": 0,
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "small-hexagram"
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "three-star"
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "two-star"
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1
+    }
+  ],
+  "traits": [
+    "effect_immune",
+    "moon"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "id": "windmaking",
-  "name": "造风术",
+  "name": "恒风·造风术",
   "type": "word",
   "rarity": "common",
   "cost": 2,
@@ -14,7 +14,7 @@
       "kind": "return_enemy_analysis"
     }
   ],
-  "text": "将对方一张法术卡弹回手卡。",
+  "text": "将对方解析区1张法术卡弹回持有者手卡。",
   "castCost": 0,
   "analysisTurns": 0,
   "tags": [

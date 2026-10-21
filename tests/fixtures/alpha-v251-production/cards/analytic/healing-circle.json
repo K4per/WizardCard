@@ -1,0 +1,28 @@
+{
+  "id": "healing-circle",
+  "name": "治疗之环",
+  "type": "analytic",
+  "rarity": "rare",
+  "rank": 2,
+  "level": 2,
+  "speed": 1,
+  "school": "necromancy",
+  "cost": 3,
+  "castCost": 0,
+  "analysisTurns": 2,
+  "target": "self",
+  "effects": [],
+  "text": "计时3。己方结束阶段开始时，恢复2点生命值。",
+  "duration": 3,
+  "number": "020017",
+  "illustrationId": "v2-healing-circle",
+  "onEnd": [
+    {
+      "kind": "heal",
+      "amount": 2
+    }
+  ],
+  "traits": [
+    "end_phase_start"
+  ]
+}

@@ -19,6 +19,7 @@ GameView GameEngine::viewFor(PlayerId p) const {
     v.initialFormationConfirmed = {state_.initialFormations[0] != 0, state_.initialFormations[1] != 0};
     v.initialFormation = state_.initialFormations[p];
     v.globalTurn = state_.globalTurn;
+    v.temporaryLives = state_.temporaryLives;
     const bool inspectEnemyAmbush = std::any_of(state_.cards.begin(), state_.cards.end(), [&](const auto &item) {
         const auto &card = item.second;
         const auto &traits = catalog_.at(card.definition).traits;
@@ -57,13 +58,13 @@ GameView GameEngine::viewFor(PlayerId p) const {
             if (card.owner == player && card.zone == Zone::SideDeck) ++v.players[player].sideDeckCount;
     }
     for (const auto &[id, c] : state_.cards)
-        if ((c.zone != Zone::Deck ||
+        if (c.publiclyRevealed || ((c.zone != Zone::Deck ||
              (state_.decision && state_.decision->player == p &&
               (state_.decision->kind == DecisionKind::SearchDeck ||
                (catalog_.usesAlphaV2() && state_.decision->kind == DecisionKind::EffectChoice)) &&
               std::find(state_.decision->options.begin(), state_.decision->options.end(), id) !=
                   state_.decision->options.end())) &&
-            (c.zone != Zone::Hand || c.owner == p) && (c.zone != Zone::SideDeck || c.owner == p)) {
+            (c.zone != Zone::Hand || c.owner == p) && (c.zone != Zone::SideDeck || c.owner == p))) {
             const auto &def = catalog_.at(c.definition);
             CardView card{c, def};
             card.effectiveCastCost = Rules::castCost(state_, catalog_, id);

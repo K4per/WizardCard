@@ -6,7 +6,7 @@
 
 using namespace wizard;
 namespace {
-CardCatalog siqueCatalog() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog; }
+CardCatalog siqueCatalog() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production").catalog; }
 GameState siqueState(Phase phase = Phase::Main) {
     GameState s; s.phase = phase; s.phaseStep = PhaseStep::Body; s.phaseGate = 1;
     s.globalTurn = 5; s.rng = 37;

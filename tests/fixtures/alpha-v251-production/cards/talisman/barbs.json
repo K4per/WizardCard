@@ -1,0 +1,49 @@
+{
+  "id": "barbs",
+  "name": "银光锐语",
+  "rarity": "epic",
+  "type": "talisman",
+  "cost": 5,
+  "rank": 3,
+  "effects": [
+    {
+      "kind": "cancel"
+    },
+    {
+      "kind": "return_enemy_analysis"
+    }
+  ],
+  "responses": [
+    {
+      "id": "cancel_preparation",
+      "name": "银光反制",
+      "sources": [
+        "ambush"
+      ],
+      "windows": [
+        "prepare"
+      ],
+      "eventOwner": "opponent",
+      "target": "preparation_root",
+      "effects": [
+        {
+          "kind": "cancel"
+        },
+        {
+          "kind": "return_enemy_analysis"
+        }
+      ]
+    }
+  ],
+  "text": "对方准备施法时才能发动。将此次准备施法无效。那之后，可以将对方解析区一张解析法术弹回持有者手牌。",
+  "flavor": "你神奇的话语将对手的失误转变为了自己的力量。",
+  "speed": 3,
+  "school": "enchantment",
+  "responseOnly": true,
+  "castCost": 0,
+  "level": 3,
+  "analysisTurns": 0,
+  "number": "040001",
+  "illustrationId": "barbs",
+  "target": "self"
+}

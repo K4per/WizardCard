@@ -4,7 +4,11 @@ extends RefCounted
 static var _entries: Dictionary[String, Dictionary] = {}
 static var _textures: Dictionary[String, Texture2D] = {}
 static var _illustration_order: Array[String] = []
-const ILLUSTRATION_CACHE_LIMIT: int = 48
+static var _missing_logged: Dictionary[String, bool] = {}
+static var _fallback: Texture2D
+# Custom painters retain drawing commands rather than Texture2D resources.
+# Keep every illustration used by the current page alive until navigation;
+# evicting one while its drawing command remains can leave an empty art window.
 
 static func load_manifest() -> void:
 	if not _entries.is_empty():
@@ -26,15 +30,13 @@ static func metadata(id: String) -> Dictionary:
 
 static func texture(id: String) -> Texture2D:
 	if _textures.has(id):
-		if id.begins_with("illustration."):
-			_illustration_order.erase(id)
-			_illustration_order.append(id)
 		return _textures[id]
 	var entry: Dictionary = metadata(id)
 	if entry.is_empty():
-		push_error("Missing art ID: " + id)
-		return null
+		return _fallback_texture(id + " -> <not in res://art/assets.json>")
 	var resource: Texture2D = load(str(entry["file"])) as Texture2D
+	if resource == null:
+		return _fallback_texture(id + " -> " + str(entry.get("file", "")))
 	if entry.has("region"):
 		var bounds: Array = entry["region"]
 		var atlas: AtlasTexture = AtlasTexture.new()
@@ -45,12 +47,32 @@ static func texture(id: String) -> Texture2D:
 	_textures[id] = resource
 	if id.begins_with("illustration."):
 		_illustration_order.append(id)
-		while _illustration_order.size() > ILLUSTRATION_CACHE_LIMIT:
-			_textures.erase(_illustration_order.pop_front())
 	return resource
 
+static func _fallback_texture(id: String) -> Texture2D:
+	if not _missing_logged.has(id):
+		_missing_logged[id] = true
+		# A warning records the exact ID/path while keeping fixture-only cards from
+		# turning every redraw into a hard engine error.  Formal catalogue checks
+		# still fail when an entry is absent because they inspect the manifest.
+		push_warning("Missing art resource: " + id)
+	if _fallback != null:
+		return _fallback
+	var image: Image = Image.create(128, 128, false, Image.FORMAT_RGBA8)
+	image.fill(Color("352b48"))
+	for y: int in range(0, 128, 8):
+		for x: int in range(0, 128, 8):
+			if (int(x / 8) + int(y / 8)) % 2 == 0:
+				image.fill_rect(Rect2i(x, y, 8, 8), Color("4d3c62"))
+	# A conspicuous broken-image cross distinguishes this from published art.
+	for pixel: int in range(20, 108):
+		image.fill_rect(Rect2i(pixel - 2, pixel - 2, 5, 5), Color("ed8c9a"))
+		image.fill_rect(Rect2i(125 - pixel, pixel - 2, 5, 5), Color("ed8c9a"))
+	_fallback = ImageTexture.create_from_image(image)
+	return _fallback
+
 static func trim_illustrations() -> void:
-	# Nodes retain the textures they still display; page changes release unused art.
+	# Called after the old page leaves the tree, before the new page draws.
 	for id: String in _illustration_order:
 		_textures.erase(id)
 	_illustration_order.clear()

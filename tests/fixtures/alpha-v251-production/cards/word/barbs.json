@@ -1,0 +1,44 @@
+{
+  "id": "barbs",
+  "name": "银光锐语",
+  "rarity": "epic",
+  "type": "word",
+  "cost": 5,
+  "rank": 1,
+  "effects": [
+    {
+      "kind": "cancel"
+    },
+    {
+      "kind": "optional_prepare"
+    }
+  ],
+  "responses": [
+    {
+      "id": "cancel_preparation",
+      "name": "反制并准备施法",
+      "sources": [
+        "words",
+        "ambush"
+      ],
+      "windows": [
+        "prepare"
+      ],
+      "eventOwner": "opponent",
+      "target": "preparation_root",
+      "effects": [
+        {
+          "kind": "cancel"
+        },
+        {
+          "kind": "optional_prepare"
+        }
+      ]
+    }
+  ],
+  "text": "当对方宣告一张解析法术准备施法时，可以响应并取消那次准备施法。那之后，可以将自己场上一张解析完成的解析法术准备施法。",
+  "flavor": "你神奇的话语将对手的失误转变为了自己的力量。",
+  "speed": 2,
+  "school": "enchantment",
+  "responseOnly": true
+}

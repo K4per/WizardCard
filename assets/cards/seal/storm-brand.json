@@ -1,6 +1,6 @@
 {
   "id": "storm-brand",
-  "name": "风暴烙印",
+  "name": "恒风·风暴烙印",
   "type": "seal",
   "rarity": "common",
   "cost": 2,
@@ -8,7 +8,7 @@
   "level": 0,
   "speed": 1,
   "castCost": 0,
-  "text": "阵法附着效果：只有风暴阵法卡能够附着此卡。附着后，每释放2次风暴法术卡额外获得1个风暴点数。法术附着效果：无。",
+  "text": "仅可附着于【恒风】阵法卡。 附着于阵法：每发动2次【恒风】法术卡，获得1个【恒风指示物】。 附着于法术：无效果。",
   "traits": [
     "storm_release_counter",
     "storm_formation_host_only"

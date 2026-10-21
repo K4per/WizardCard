@@ -1,0 +1,27 @@
+{
+  "id": "sique-sugar",
+  "name": "味契·冰糖",
+  "type": "seal",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "050007",
+  "illustrationId": "sique-sugar",
+  "traits": [
+    "sique_cauldron_only"
+  ],
+  "onLeave": [
+    {
+      "kind": "mana",
+      "amount": 2
+    }
+  ],
+  "effects": [],
+  "text": "仅可附着于味契·魔力坩埚。己方法术的设置和发动费用-1。解除附着时，获得2点魔素。"
+}

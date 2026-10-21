@@ -1,6 +1,6 @@
 {
   "id": "ice-storm",
-  "name": "冰风暴",
+  "name": "恒风·冰风暴",
   "type": "analytic",
   "rarity": "rare",
   "cost": 4,
@@ -10,7 +10,7 @@
   "speed": 1,
   "school": "evocation",
   "analysisTurns": 1,
-  "target": "opponent",
+  "target": "player",
   "effects": [
     {
       "kind": "damage",
@@ -18,11 +18,11 @@
       "damageType": "cold"
     },
     {
-      "kind": "advance_all_enemy_analysis",
+      "kind": "delay_all_enemy_analysis",
       "amount": 1
     }
   ],
-  "text": "对目标造成8点寒冷伤害，选择对方解析区的所有解析法术卡使解析进度+1。",
+  "text": "选择1个目标才能发动。对其造成8点寒冷伤害。那之后，可以使对方解析区全部解析法术卡的解析时间+1。",
   "tags": [
     "风暴"
   ],

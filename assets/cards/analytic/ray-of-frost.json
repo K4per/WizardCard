@@ -9,7 +9,7 @@
   "speed": 1,
   "school": "evocation",
   "analysisTurns": 1,
-  "target": "opponent",
+  "target": "player",
   "effects": [
     {
       "kind": "damage",
@@ -21,7 +21,7 @@
       "amount": 1
     }
   ],
-  "text": "对对方玩家造成6点寒冷伤害。那之后，可以使对方解析区一张解析法术的解析进度-1。",
+  "text": "选择1个目标才能发动。对其造成6点寒冷伤害。那之后，可以使对方解析区1张解析法术卡的解析时间+1。",
   "level": 2,
   "number": "020009",
   "illustrationId": "ray-of-frost"

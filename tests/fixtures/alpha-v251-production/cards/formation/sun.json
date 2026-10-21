@@ -1,0 +1,34 @@
+{
+  "id": "sun",
+  "name": "至圣之太阳星",
+  "type": "formation",
+  "rarity": "legendary",
+  "level": 7,
+  "body": 4,
+  "rings": 7,
+  "capacity": 15,
+  "income": 8,
+  "maxRank": 7,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "此卡不受其他卡的效果影响。在己方阵法槽内存在时，可随时查看对方解析区盖伏法术。",
+  "summonCondition": "【生命之五芒星】+【秩序之八芒星】",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "pentagram-of-life"
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "octagram"
+    }
+  ],
+  "traits": [
+    "effect_immune",
+    "inspect_enemy_ambush"
+  ],
+  "number": "010007",
+  "illustrationId": "v2-sun"
+}

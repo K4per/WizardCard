@@ -1,0 +1,21 @@
+{
+  "id": "storm-brand",
+  "name": "风暴烙印",
+  "type": "seal",
+  "rarity": "common",
+  "cost": 2,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "castCost": 0,
+  "text": "阵法附着效果：只有风暴阵法卡能够附着此卡。附着后，每释放2次风暴法术卡额外获得1个风暴点数。法术附着效果：无。",
+  "traits": [
+    "storm_release_counter",
+    "storm_formation_host_only"
+  ],
+  "tags": [
+    "风暴"
+  ],
+  "number": "050004",
+  "illustrationId": "storm-brand"
+}

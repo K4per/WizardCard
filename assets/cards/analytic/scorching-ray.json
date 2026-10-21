@@ -10,25 +10,15 @@
   "cost": 4,
   "castCost": 2,
   "analysisTurns": 2,
-  "target": "opponent",
+  "target": "player",
   "effects": [
     {
-      "kind": "damage",
-      "amount": 5,
-      "damageType": "fire"
-    },
-    {
-      "kind": "damage",
-      "amount": 5,
-      "damageType": "fire"
-    },
-    {
-      "kind": "damage",
+      "kind": "ray_volley",
       "amount": 5,
       "damageType": "fire"
     }
   ],
-  "text": "对对方玩家造成5点火焰伤害，重复三次。",
+  "text": "选择1个目标才能发动。对其造成5点火焰伤害。重复3次，每次可以选择不同目标。",
   "number": "020015",
   "illustrationId": "v2-scorching-ray"
 }

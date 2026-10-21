@@ -5,7 +5,7 @@
   "rarity": "rare",
   "cost": 3,
   "rank": 3,
-  "level": 1,
+  "level": 3,
   "speed": 2,
   "castCost": 0,
   "tags": [
@@ -24,6 +24,6 @@
       "amount": 1
     }
   ],
-  "text": "将己方灰烬区最多5张味契卡返回牌库或副卡组。那之后，可以抽1张牌。",
+  "text": "将己方灰烬区最多5张【味契】卡返回卡组/副卡组。那之后，可以抽1张卡。",
   "analysisTurns": 0
 }

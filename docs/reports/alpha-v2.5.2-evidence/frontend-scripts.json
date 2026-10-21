@@ -1,0 +1,74 @@
+[
+  {
+    "test": "frontend",
+    "exit": 0,
+    "seconds": null,
+    "log": "output\\alpha-v2.5.2\\final-logs\\frontend.log"
+  },
+  {
+    "test": "match_frontend",
+    "exit": 0,
+    "seconds": 4.6,
+    "log": "output\\alpha-v2.5.2\\final-logs\\match_frontend.log"
+  },
+  {
+    "test": "phase_selector",
+    "exit": 0,
+    "seconds": 1.37,
+    "log": "output\\alpha-v2.5.2\\final-logs\\phase_selector.log"
+  },
+  {
+    "test": "deck_frontend",
+    "exit": 0,
+    "seconds": 6.75,
+    "log": "output\\alpha-v2.5.2\\final-logs\\deck_frontend.log"
+  },
+  {
+    "test": "typography",
+    "exit": 0,
+    "seconds": 70.99,
+    "log": "output\\alpha-v2.5.2\\final-logs\\typography.log"
+  },
+  {
+    "test": "feedback",
+    "exit": 0,
+    "seconds": 2.47,
+    "log": "output\\alpha-v2.5.2\\final-logs\\feedback.log"
+  },
+  {
+    "test": "deck_exchange",
+    "exit": 0,
+    "seconds": 1.96,
+    "log": "output\\alpha-v2.5.2\\final-logs\\deck_exchange.log"
+  },
+  {
+    "test": "network_frontend",
+    "exit": 0,
+    "seconds": 2.58,
+    "log": "output\\alpha-v2.5.2\\final-logs\\network_frontend.log"
+  },
+  {
+    "test": "card_selection",
+    "exit": 0,
+    "seconds": 1.59,
+    "log": "output\\alpha-v2.5.2\\final-logs\\card_selection.log"
+  },
+  {
+    "test": "field_v25",
+    "exit": 0,
+    "seconds": 2.05,
+    "log": "output\\alpha-v2.5.2\\final-logs\\field_v25.log"
+  },
+  {
+    "test": "card_tray",
+    "exit": 0,
+    "seconds": 1.98,
+    "log": "output\\alpha-v2.5.2\\final-logs\\card_tray.log"
+  },
+  {
+    "test": "art_residency",
+    "exit": 0,
+    "seconds": 4.09,
+    "log": "output\\alpha-v2.5.2\\final-logs\\art_residency.log"
+  }
+]

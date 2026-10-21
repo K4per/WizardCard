@@ -1,0 +1,47 @@
+{
+  "id": "arcana-devil",
+  "rarity": "rare",
+  "target": "pending_link",
+  "illustrationId": "arcana-devil",
+  "number": "020036",
+  "name": "恶魔",
+  "type": "analytic",
+  "text": "对方选择法术卡的目标时才能发动。改变对方选择的目标，获得6点荷载。每造成1次火焰伤害，此卡解析时间-1。",
+  "rank": 6,
+  "level": 6,
+  "school": "arcana",
+  "cost": 6,
+  "castCost": 6,
+  "analysisTurns": 6,
+  "speed": 4,
+  "responseOnly": true,
+  "traits": [
+    "arcana_devil"
+  ],
+  "effects": [
+    {
+      "kind": "arcana_devil",
+      "amount": 0
+    }
+  ],
+  "responses": [
+    {
+      "id": "retarget_spell",
+      "name": "改变法术目标",
+      "sources": [
+        "casting"
+      ],
+      "windows": [
+        "cast"
+      ],
+      "eventOwner": "opponent",
+      "target": "pending_link",
+      "effects": [
+        {
+          "kind": "arcana_devil",
+          "amount": 0
+        }
+      ]
+    }
+  ]
+}

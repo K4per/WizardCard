@@ -1,5 +1,6 @@
 #include "engine_internal.hpp"
 #include "wizard/core/sique.hpp"
+#include "wizard/core/arcana.hpp"
 #include <algorithm>
 #include <limits>
 namespace wizard {
@@ -77,6 +78,8 @@ bool GameEngine::phaseV2() {
     };
     switch (s.phaseStep) {
     case PhaseStep::Enter: {
+        if (catalog_.usesAlphaV252() && s.phase == Phase::End)
+            for (auto &player : s.players) player.nextDamageImmune = false;
         if (s.phase == Phase::Prepare && pl.siqueDamageCap && pl.ownTurn >= pl.siqueCapUntilOwnTurn) {
             pl.siqueDamageCap = 0; pl.siqueCapUntilOwnTurn = 0;
         }
@@ -91,11 +94,14 @@ bool GameEngine::phaseV2() {
         if (s.phase == Phase::Draw && s.phaseCursor == 0) {
             if (catalog_.usesAlphaV25()) {
                 s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &load) {
-                    return load.owner == s.active && !load.independent && !load.sourceBound;
+                    const auto source = s.cards.find(load.source);
+                    const bool endExpiry = catalog_.usesAlphaV252() && source != s.cards.end() && source->second.definition == "thunder-summon";
+                    return load.owner == s.active && !load.independent && !load.sourceBound && !endExpiry;
                 }), s.temporary.end());
                 s.events.push_back({"temporary_load_cleared", "抽牌阶段清除临时荷载", -1});
-                pl.temporaryLife = 0;
-                s.events.push_back({"temporary_life_cleared", "抽牌阶段清除临时生命", -1});
+                if (catalog_.usesAlphaV252()) ResourceRules::expireTemporaryLife(s, s.active);
+                else pl.temporaryLife = 0;
+                s.events.push_back({"temporary_life_cleared", "抽牌阶段清除到期临时生命", -1});
             }
             int income = 0;
             for (const auto &[id, card] : s.cards)
@@ -129,6 +135,14 @@ bool GameEngine::phaseV2() {
                 if (next.id) {
                     s.phaseOrderCursor = next.key;
                     const auto &def = catalog_.at(s.cards.at(next.id).definition);
+                    if (catalog_.usesAlphaV252() && s.phase == Phase::End &&
+                        std::find(def.traits.begin(), def.traits.end(), "destroy_enemy_ambush_end") != def.traits.end()) {
+                        std::vector<CardId> concealed;
+                        for (const auto &[id, card] : s.cards)
+                            if (card.owner != s.active && card.zone == Zone::Analysis && card.faceDown &&
+                                catalog_.at(card.definition).type != CardType::Formation) concealed.push_back(id);
+                        for (auto id : concealed) StateMaintenance::leave(s, id, &catalog_);
+                    }
                     triggered(next.id, s.phase == Phase::End ?
                         (std::find(def.traits.begin(), def.traits.end(), "end_phase_start") != def.traits.end() ? def.onEnd : std::vector<Effect>{}) :
                         s.phase == Phase::Draw ? def.onDraw : s.phase == Phase::Main ? def.onMain :
@@ -142,7 +156,9 @@ bool GameEngine::phaseV2() {
         if (s.phaseCursor == 0) {
             if (!catalog_.usesAlphaV25())
                 s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &load) {
-                    return load.owner == s.active && !load.independent && !load.sourceBound;
+                    const auto source = s.cards.find(load.source);
+                    const bool endExpiry = catalog_.usesAlphaV252() && source != s.cards.end() && source->second.definition == "thunder-summon";
+                    return load.owner == s.active && !load.independent && !load.sourceBound && !endExpiry;
                 }), s.temporary.end());
             ++s.phaseCursor; return true;
         }
@@ -181,6 +197,14 @@ bool GameEngine::phaseV2() {
             ++s.phaseCursor; s.phaseOrderCursor = 0; return true;
         }
         if (s.phaseCursor == 5) {
+            if (catalog_.usesAlphaV252()) {
+                std::vector<CardId> analyzing;
+                for (const auto &[id, card] : s.cards)
+                    if (card.owner == s.active && card.zone == Zone::Analysis && !card.faceDown &&
+                        card.spell == SpellState::Analyzing) analyzing.push_back(id);
+                for (auto id : analyzing) arcana::advance(s, catalog_, id, 1);
+                ++s.phaseCursor; return true;
+            }
             for (auto &[id, card] : s.cards)
                 if (card.owner == s.active && card.zone == Zone::Analysis && !card.faceDown &&
                     card.spell == SpellState::Analyzing &&
@@ -254,6 +278,12 @@ bool GameEngine::phaseV2() {
             if (hand.size() > 8) { decision(s.active, DecisionKind::Discard, std::move(hand)); return false; }
             ++s.phaseCursor; return true;
         }
+        if (catalog_.usesAlphaV252())
+            s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &load) {
+                const auto source = s.cards.find(load.source);
+                return load.owner == s.active && !load.independent && !load.sourceBound &&
+                    source != s.cards.end() && source->second.definition == "thunder-summon";
+            }), s.temporary.end());
         StateMaintenance::check(s, catalog_, true);
         if (s.result != -1) return false;
         s.phaseStep = PhaseStep::Finish; return true;

@@ -1,5 +1,6 @@
 #include "wizard/core/rules.hpp"
 #include "wizard/core/sique.hpp"
+#include "wizard/core/arcana.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iomanip>
@@ -30,6 +31,7 @@ bool protectedFromCardEffect(const GameState &s, const CardCatalog &cat, CardId 
     return host != s.cards.end() && host->second.zone == Zone::Analysis &&
            cat.at(host->second.definition).id == "storm-heart";
 }
+
 }
 void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &t, const Effect &e) {
     if (cat.usesAlphaV2() && s.result != -1)
@@ -55,16 +57,26 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
                 ++adjusted.amount;
         }
         int amount = Rules::damage(s, cat, p, adjusted);
+        if (cat.usesAlphaV252() && s.players[p].nextDamageImmune && adjusted.amount > 0) {
+            s.players[p].nextDamageImmune = false;
+            s.events.push_back({"damage_prevented", "教皇：免疫本次伤害", -1, t.source});
+        }
         const int shield = std::min(amount, s.players[p].temporaryLife);
-        s.players[p].temporaryLife -= shield;
+        ResourceRules::absorbTemporaryLife(s, p, shield);
         s.players[p].life -= amount - shield;
+        if (amount > 0 && e.damageType == DamageType::Fire) arcana::fireDamage(s, cat);
         break;
     }
     case EffectKind::AddTemporaryLife:
-        s.players[p].temporaryLife = std::max(s.players[p].temporaryLife, e.amount);
+        if (cat.usesAlphaV252()) {
+            ResourceRules::grantTemporaryLife(s, p, t.source, e.amount, s.players[p].ownTurn + 1);
+        } else {
+            s.players[p].temporaryLife = std::max(s.players[p].temporaryLife, e.amount);
+        }
         break;
     case EffectKind::BlockActions:
-        s.players[p].blockedActionTurn = s.players[p].ownTurn + 1;
+        if (cat.usesAlphaV252()) s.players[t.owner].wordLockUntilOwnDraw = s.players[t.owner].ownTurn + 1;
+        else s.players[p].blockedActionTurn = s.players[p].ownTurn + 1;
         break;
     case EffectKind::GrantResistance:
         break; // Successful release installs the passive resistance on the active spell.
@@ -78,8 +90,11 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         break;
     case EffectKind::AccelerateAnalysis: {
         auto &c = s.cards.at(t.targetCard);
-        c.spell = SpellState::Ready;
-        if (cat.usesAlphaV2()) c.analysisProgress = cat.at(c.definition).analysisTurns;
+        if (cat.usesAlphaV252()) arcana::advance(s, cat, c.id, std::max(1, e.amount));
+        else {
+            c.spell = SpellState::Ready;
+            if (cat.usesAlphaV2() && !cat.usesAlphaV252()) c.analysisProgress = cat.at(c.definition).analysisTurns;
+        }
         s.temporary.push_back(
             {s.nextLoad++, t.owner, t.source, c.settingPaid, s.players[t.owner].ownTurn + 1});
         ResourceRules::increasedLoad(s, cat, t.owner, c.settingPaid);
@@ -145,6 +160,25 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::SiqueRecycle:
     case EffectKind::SiqueOptionalDraw:
     case EffectKind::SiqueShuffleHands:
+    case EffectKind::RayVolley:
+    case EffectKind::DelayAllEnemyAnalysis:
+    case EffectKind::SiqueRoastRecover:
+    case EffectKind::SiqueBlowfire:
+    case EffectKind::SiqueBackfire:
+    case EffectKind::ClearAllAmbush:
+    case EffectKind::ArcanaFool:
+    case EffectKind::ArcanaMagician:
+    case EffectKind::ArcanaPriestess:
+    case EffectKind::ArcanaEmperor:
+    case EffectKind::PreventNextDamage:
+    case EffectKind::ArcanaLovers:
+    case EffectKind::ArcanaHermit:
+    case EffectKind::ArcanaJustice:
+    case EffectKind::ArcanaHangedMan:
+    case EffectKind::ArcanaDeath:
+    case EffectKind::ArcanaDevil:
+    case EffectKind::ArcanaTower:
+    case EffectKind::ArcanaWorld:
         throw std::logic_error("content effect requires a decision");
     case EffectKind::SiqueNegateDestroy:
         if (s.chain) for (auto &link : s.chain->links) if (link.id == t.targetLink) {
@@ -314,7 +348,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         message = "增加来源关联临时荷载";
         break;
     case EffectKind::AddTemporaryLife:
-        message = "获得临时生命之核";
+        message = "获得 " + std::to_string(e.amount) + " 点临时生命";
         break;
     case EffectKind::BlockActions:
         message = "对手下个自己的回合不能使用行动卡";
@@ -370,6 +404,25 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::SiqueRecycle:
     case EffectKind::SiqueOptionalDraw:
     case EffectKind::SiqueShuffleHands:
+    case EffectKind::RayVolley:
+    case EffectKind::DelayAllEnemyAnalysis:
+    case EffectKind::SiqueRoastRecover:
+    case EffectKind::SiqueBlowfire:
+    case EffectKind::SiqueBackfire:
+    case EffectKind::ClearAllAmbush:
+    case EffectKind::ArcanaFool:
+    case EffectKind::ArcanaMagician:
+    case EffectKind::ArcanaPriestess:
+    case EffectKind::ArcanaEmperor:
+    case EffectKind::PreventNextDamage:
+    case EffectKind::ArcanaLovers:
+    case EffectKind::ArcanaHermit:
+    case EffectKind::ArcanaJustice:
+    case EffectKind::ArcanaHangedMan:
+    case EffectKind::ArcanaDeath:
+    case EffectKind::ArcanaDevil:
+    case EffectKind::ArcanaTower:
+    case EffectKind::ArcanaWorld:
         message = "选择卡牌效果";
         break;
     case EffectKind::SiqueNegateDestroy:
@@ -385,6 +438,8 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     event.actualAmount = std::abs(s.players[p].life - previousLife);
     if (e.kind == EffectKind::Damage)
         event.actualAmount += previousTemporaryLife - s.players[p].temporaryLife;
+    if (e.kind == EffectKind::AddTemporaryLife)
+        event.actualAmount = s.players[p].temporaryLife - previousTemporaryLife;
     if (e.kind == EffectKind::Draw) {
         event.actualAmount = static_cast<int>(previousDeck - s.players[t.owner].deck.size());
         event.affectedPlayer = t.owner;

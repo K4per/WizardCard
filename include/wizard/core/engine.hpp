@@ -35,10 +35,14 @@ class GameEngine {
     bool returnSpellsV2();
     bool contentEffectV2();
     bool siqueEffect();
+    bool arcanaEffect();
+    bool chooseArcanaEffect(PlayerId, CardId);
     bool chooseSiqueEffect(PlayerId, CardId);
     bool chooseContentEffectV2(PlayerId, DecisionKind, CardId);
     void actionTimingV2(ResponseWindow = ResponseWindow::Action);
     std::string responseSetupV2(PlayerId, const Command &);
+    std::string activateSpellV252(PlayerId, CardId, CardId, const std::vector<CardId> &, CardId, bool,
+                                 DecisionId = 0);
     std::vector<LegalAction> responseSetupsV2(PlayerId, DecisionId) const;
     void analysisCompletedV2(CardId);
     void quickAnalysisV2(CardId, CardId);

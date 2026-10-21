@@ -73,10 +73,8 @@ static func paint(surface: CanvasItem, card: CardPresentation, bounds: Rect2, vi
 		surface.draw_rect(art_rect, INK)
 		var illustration: Texture2D = null
 		var illustration_id: String = card.art_id()
-		# Projections and smoke fixtures may omit illustrationId or use a card
-		# definition that has no published art. Leave the art region empty instead
-		# of asking ArtBank to log an error on every redraw.
-		if not illustration_id.is_empty() and not ArtBank.metadata("illustration." + illustration_id).is_empty():
+		# Missing declared art is rendered explicitly and diagnosed by ArtBank.
+		if not illustration_id.is_empty():
 			illustration = ArtBank.texture("illustration." + illustration_id)
 		if illustration != null:
 			var scale_factor: float = minf(art_rect.size.x / illustration.get_width(), art_rect.size.y / illustration.get_height())
@@ -128,7 +126,7 @@ static func paint(surface: CanvasItem, card: CardPresentation, bounds: Rect2, vi
 static func paint_art(surface: CanvasItem, card: CardPresentation, bounds: Rect2, highlighted: bool = false) -> void:
 	# Hidden projections never resolve an illustration ID.
 	var image: Texture2D = ArtBank.texture("c2d.card.back.ai") if card.hidden or card.face_down else null
-	if image == null and not card.art_id().is_empty() and not ArtBank.metadata("illustration." + card.art_id()).is_empty():
+	if image == null and not card.art_id().is_empty():
 		image = ArtBank.texture("illustration." + card.art_id())
 	var inner: Rect2 = bounds.grow(-bounds.size.x * 0.085)
 	surface.draw_rect(inner, INK)

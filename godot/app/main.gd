@@ -24,6 +24,7 @@ var _audio: MatchFeedback
 @onready var _background: TextureRect = %Background
 @onready var _dim: ColorRect = $Dim
 var _network_timer: Timer
+var _navigation_tween: Tween
 
 func _ready() -> void:
 	get_tree().auto_accept_quit = false
@@ -61,6 +62,9 @@ func _ready() -> void:
 func navigate(destination: StringName) -> void:
 	if not PAGES.has(destination):
 		return
+	if _navigation_tween != null and _navigation_tween.is_valid():
+		_navigation_tween.kill()
+	_navigation_tween = null
 	if is_instance_valid(page):
 		_host.remove_child(page)
 		page.queue_free()
@@ -81,9 +85,9 @@ func navigate(destination: StringName) -> void:
 	Typography.refresh()
 	_host.modulate.a = 0.0 if not UiFactory.reduced_motion else 1.0
 	if not UiFactory.reduced_motion:
-		var tween: Tween = create_tween()
-		tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		tween.tween_property(_host, "modulate:a", 1.0, 0.16)
+		_navigation_tween = create_tween()
+		_navigation_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		_navigation_tween.tween_property(_host, "modulate:a", 1.0, 0.16)
 	page_changed.emit(destination)
 
 func _input(event: InputEvent) -> void:

@@ -108,6 +108,7 @@ void returnFormationToSideDeck(GameState &s, const CardCatalog &catalog, CardId 
 } // namespace
 
 bool GameEngine::contentEffectV2() {
+    if (arcanaEffect()) return true;
     if (siqueEffect()) return true;
     auto &s = state_;
     if (!catalog_.usesAlphaV2() || !s.effect || s.effect->cursor >= s.effect->item.effects.size())
@@ -115,6 +116,24 @@ bool GameEngine::contentEffectV2() {
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
     const auto owner = f.item.owner;
+    if (e.kind == EffectKind::RayVolley) {
+        if (!f.resolvedCount) {
+            const auto trigger = f.item;
+            ++f.resolvedCount;
+            EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, e.amount, e.damageType});
+            return true;
+        }
+        if (f.resolvedCount >= 3) {
+            ++f.cursor; f.resolvedCount = 0; return true;
+        }
+        decision(owner, DecisionKind::EffectChoice, {playerTarget(0), playerTarget(1)});
+        return true;
+    }
+    if (e.kind == EffectKind::DelayAllEnemyAnalysis) {
+        decision(owner, DecisionKind::EffectChoice, {0xffffffd1u}, true);
+        return true;
+    }
+
     const auto sourceCard = s.cards.find(f.item.source);
     const bool swiftWindReturn = e.kind == EffectKind::ReturnEnemyAnalysis &&
         sourceCard != s.cards.end() && sourceCard->second.definition == "swift-wind";
@@ -195,6 +214,7 @@ bool GameEngine::contentEffectV2() {
                 card.spell != SpellState::Analyzing ||
                 effectImmune(s, catalog_, id))
                 continue;
+            if (catalog_.usesAlphaV252()) { arcana::advance(s, catalog_, id, advance); continue; }
             card.analysisProgress = std::min(definition.analysisTurns, card.analysisProgress + advance);
             if (card.analysisProgress >= definition.analysisTurns) {
                 card.spell = SpellState::Ready;
@@ -210,7 +230,7 @@ bool GameEngine::contentEffectV2() {
             std::vector<CardId> field;
             for (const auto &[id, card] : s.cards)
                 if (fieldZone(card.zone) && (!card.faceDown || card.owner == owner) &&
-                    !protectedCardFromEffect(s, catalog_, id))
+                    !(catalog_.usesAlphaV252() ? effectImmune(s, catalog_, id) : protectedCardFromEffect(s, catalog_, id)))
                     field.push_back(id);
             if (field.empty()) {
                 ++f.cursor;
@@ -239,6 +259,9 @@ bool GameEngine::contentEffectV2() {
         return true;
     }
     if (e.kind == EffectKind::StormCyclone) {
+        if (catalog_.usesAlphaV252() && f.clearRemaining == 1) {
+            decision(owner, DecisionKind::EffectChoice, {0xffffffd2u}, true); return true;
+        }
         if (f.clearRemaining < 0) {
             std::vector<CardId> formations;
             for (const auto &[id, card] : s.cards)
@@ -255,6 +278,12 @@ bool GameEngine::contentEffectV2() {
         return true;
     }
     if (e.kind == EffectKind::CuttingWind) {
+        if (catalog_.usesAlphaV252() && f.clearRemaining == -1) {
+            f.clearRemaining = -2;
+            const auto trigger = f.item;
+            EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, 4, DamageType::Slashing});
+            return true;
+        }
         if (f.clearRemaining < 0) {
             std::vector<CardId> formations;
             for (const auto &[id, card] : s.cards)
@@ -312,7 +341,9 @@ bool GameEngine::contentEffectV2() {
             f.item.targetCards.clear();
             f.resolvedCount = 0;
             for (const auto &[id, card] : s.cards)
-                if (card.owner != owner && fieldZone(card.zone)) f.item.targetCards.push_back(id);
+                if (card.owner != owner && fieldZone(card.zone) &&
+                    (!catalog_.usesAlphaV252() || (card.zone == Zone::Analysis && isSpell(catalog_.at(card.definition)))))
+                    f.item.targetCards.push_back(id);
             f.clearRemaining = 0;
         }
         while (f.clearRemaining < static_cast<int>(f.item.targetCards.size())) {
@@ -328,7 +359,7 @@ bool GameEngine::contentEffectV2() {
                 decision(found->second.owner, DecisionKind::EffectChoice, {id}, true);
                 return true;
             }
-            f.resolvedCount += fieldTreeSize(s, id);
+            f.resolvedCount += catalog_.usesAlphaV252() ? 1 : fieldTreeSize(s, id);
             StateMaintenance::leave(s, id, &catalog_);
             ++f.clearRemaining;
         }
@@ -336,9 +367,7 @@ bool GameEngine::contentEffectV2() {
         if (damage > 0)
             EffectResolver::apply(s, catalog_, f.item,
                                   {EffectKind::Damage, damage, DamageType::Slashing, EffectRecipient::Opponent});
-        ++f.cursor;
-        f.clearRemaining = -1;
-        f.resolvedCount = 0;
+        if (s.effect) { ++f.cursor; f.clearRemaining = -1; f.resolvedCount = 0; }
         return true;
     }
     std::vector<CardId> choices;
@@ -447,6 +476,8 @@ bool GameEngine::contentEffectV2() {
 }
 
 bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId selected) {
+    if ((kind == DecisionKind::EffectChoice || kind == DecisionKind::DamageChoice) &&
+        chooseArcanaEffect(actor, selected)) return true;
     if (kind == DecisionKind::EffectChoice && chooseSiqueEffect(actor, selected)) return true;
     auto &s = state_;
     if (!catalog_.usesAlphaV2() || !s.effect ||
@@ -455,6 +486,27 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
     const auto source = s.cards.find(f.item.source);
+    if (e.kind == EffectKind::RayVolley) {
+        auto trigger = f.item;
+        trigger.targetPlayer = static_cast<PlayerId>(selected - playerTarget(0));
+        ++f.resolvedCount;
+        EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, e.amount, e.damageType});
+        return true;
+    }
+    if (e.kind == EffectKind::DelayAllEnemyAnalysis) {
+        if (selected)
+            for (auto &[id, card] : s.cards)
+                if (card.owner != f.item.owner && card.zone == Zone::Analysis && !card.faceDown &&
+                    catalog_.at(card.definition).type == CardType::Analytic &&
+                    (card.spell == SpellState::Analyzing || card.spell == SpellState::Ready) &&
+                    !effectImmune(s, catalog_, id)) {
+                    --card.analysisProgress;
+                    card.spell = SpellState::Analyzing;
+                    s.events.push_back({"analysis_delayed", "冰风暴：解析时间增加一回合", -1, id});
+                }
+        ++f.cursor; return true;
+    }
+
     if (kind == DecisionKind::EffectChoice && e.kind == EffectKind::DestroyAllEnemyField &&
         f.clearRemaining >= 0 && f.clearRemaining < static_cast<int>(f.item.targetCards.size()) &&
         f.item.targetCard) {
@@ -464,7 +516,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
             heart->second.owner == actor && heart->second.stormPoints > 0 && selected == id)
             --heart->second.stormPoints;
         else if (heart != s.cards.end() && fieldZone(heart->second.zone)) {
-            f.resolvedCount += fieldTreeSize(s, id);
+            f.resolvedCount += catalog_.usesAlphaV252() ? 1 : fieldTreeSize(s, id);
             StateMaintenance::leave(s, id, &catalog_);
         }
         f.item.targetCard = 0;
@@ -491,7 +543,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
         const auto id = f.item.targetCard;
         const auto target = s.cards.find(id);
         if (target != s.cards.end() && fieldZone(target->second.zone)) {
-            f.resolvedCount += fieldTreeSize(s, id);
+            f.resolvedCount += catalog_.usesAlphaV252() ? 1 : fieldTreeSize(s, id);
             StateMaintenance::leave(s, id, &catalog_);
         }
         f.item.targetCard = 0;
@@ -565,6 +617,13 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
         return true;
     }
     if (kind == DecisionKind::EffectChoice && e.kind == EffectKind::StormCyclone) {
+        if (catalog_.usesAlphaV252() && f.clearRemaining == 1) {
+            const auto trigger = f.item; const int damage = f.resolvedCount * 2;
+            ++f.cursor; f.clearRemaining = -1; f.resolvedCount = 0;
+            if (selected) EffectResolver::apply(s, catalog_, trigger,
+                {EffectKind::Damage, damage, DamageType::Bludgeoning, EffectRecipient::Opponent});
+            return true;
+        }
         int destroyed = 0;
         std::vector<CardId> spells;
         for (const auto &[id, spell] : s.cards) {
@@ -576,9 +635,10 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
         }
         for (const auto id : spells) {
             if (!s.cards.count(id) || !fieldZone(s.cards.at(id).zone)) continue;
-            destroyed += fieldTreeSize(s, id);
+            destroyed += catalog_.usesAlphaV252() ? 1 : fieldTreeSize(s, id);
             StateMaintenance::leave(s, id, &catalog_);
         }
+        if (catalog_.usesAlphaV252()) { f.resolvedCount = destroyed; f.clearRemaining = 1; return true; }
         if (destroyed)
             EffectResolver::apply(s, catalog_, f.item,
                                   {EffectKind::Damage, destroyed * 2, DamageType::Bludgeoning,
@@ -590,12 +650,13 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
     if (kind == DecisionKind::EffectChoice && e.kind == EffectKind::CuttingWind) {
         const int rank = Rules::level(s, catalog_, selected);
         StateMaintenance::leave(s, selected, &catalog_);
-        EffectResolver::apply(s, catalog_, f.item,
+        const auto trigger = f.item;
+        ++f.cursor; f.clearRemaining = -1;
+        if (!catalog_.usesAlphaV252()) EffectResolver::apply(s, catalog_, trigger,
                               {EffectKind::Damage, 4, DamageType::Slashing, EffectRecipient::Opponent});
-        EffectResolver::apply(s, catalog_, f.item,
-                              {EffectKind::Damage, rank, DamageType::Thunder, EffectRecipient::Opponent});
-        ++f.cursor;
-        f.clearRemaining = -1;
+        if (s.result == -1) EffectResolver::apply(s, catalog_, trigger,
+                              {EffectKind::Damage, rank, DamageType::Thunder,
+                               catalog_.usesAlphaV252() ? EffectRecipient::Target : EffectRecipient::Opponent});
         return true;
     }
     if (e.kind == EffectKind::LockAnalysis) {
@@ -612,7 +673,8 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
         StateMaintenance::leave(s, selected, &catalog_);
         break;
     case EffectKind::DelayEnemyAnalysis:
-        card.analysisProgress = std::max(0, card.analysisProgress - std::max(1, e.amount));
+        card.analysisProgress = catalog_.usesAlphaV252() ? card.analysisProgress - std::max(1, e.amount) :
+            std::max(0, card.analysisProgress - std::max(1, e.amount));
         card.analysisStarted += std::max(1, e.amount);
         if (definition.analysisTurns > card.analysisProgress)
             card.spell = SpellState::Analyzing;

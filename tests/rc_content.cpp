@@ -6,7 +6,7 @@
 #include <set>
 using namespace wizard;
 namespace {
-Content rcContent() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets"); }
+Content rcContent() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production"); }
 struct CardScenario {
     Content content = rcContent();
     GameState state;
@@ -81,7 +81,7 @@ TEST_CASE("rc content is a numbered executable 78 card pool with legal 40 plus 1
         INFO(id);
         REQUIRE(illustrations.insert(card.illustrationId).second);
     }
-    const auto presets = app::loadPresets(content, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    const auto presets = app::loadPresets(content, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
     REQUIRE(presets.size() == 10);
     for (const auto &preset : presets) {
         INFO(preset.id);

@@ -35,7 +35,7 @@ static func paint_artwork(surface: CanvasItem, value: CardPresentation, rect: Re
 	if rect.size.x <= 0.0 or rect.size.y <= 0.0:
 		return
 	surface.draw_rect(rect, ART_FILL)
-	if value == null or value.hidden or value.art_id().is_empty() or ArtBank.metadata("illustration." + value.art_id()).is_empty():
+	if value == null or value.hidden or value.art_id().is_empty():
 		return
 	var illustration: Texture2D = ArtBank.texture("illustration." + value.art_id())
 	if illustration == null or illustration.get_width() <= 0 or illustration.get_height() <= 0:

@@ -145,7 +145,7 @@ static func action_group_key(action: Dictionary) -> String:
 static func action_label(snapshot: Dictionary, action: Dictionary) -> String:
 	var command: Dictionary = action.get("command", {})
 	var type: int = int(command.get("type", -1))
-	var labels: Dictionary[int, String] = {1: "拆除阵法", 2: "设置解析", 3: "准备施法", 4: "发动", 6: "附着", 7: "拆除符文", 8: "放弃", 9: "继续", 11: "投降", 12: "响应", 13: "放弃响应", 14: "切换阶段", 15: "盖伏", 16: "反转", 17: "发动", 18: "选择初始阵法"}
+	var labels: Dictionary[int, String] = {1: "移除阵法", 2: "设置解析", 3: "准备施法", 4: "发动", 6: "附着", 7: "拆除符文", 8: "放弃", 9: "继续", 11: "投降", 12: "响应", 13: "放弃响应", 14: "切换阶段", 15: "盖伏", 16: "反转", 17: "发动", 18: "选择初始阵法"}
 	if type == 0:
 		return "替换阵法" if str(command.get("replace", "0")) != "0" else "设置阵法"
 	if type == 5:
@@ -170,6 +170,35 @@ static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 	var source: String = str(action.get("source", "0"))
 	if source != "0":
 		lines[0] += " · " + card_name(snapshot, source)
+	if int(command.get("type", -1)) == 1:
+		var spells: Array[String] = []
+		var seals: int = 0
+		var departing: Array[String] = [source]
+		var cursor: int = 0
+		while cursor < departing.size():
+			var host: String = departing[cursor]
+			cursor += 1
+			for row: Dictionary in snapshot.get("cards", []):
+				var id: String = str(row.get("id", "0"))
+				var zone: int = int(row.get("zone", -1))
+				if str(row.get("host", "0")) != host or not zone in [3, 7] or departing.has(id):
+					continue
+				departing.append(id)
+				if zone == 7:
+					seals += 1
+				else:
+					spells.append(card_name(snapshot, id))
+		lines.append("免费，占用本回合一次阵法操作。")
+		if spells.is_empty() and seals == 0:
+			lines.append("离场影响：阵法进入灰烬区。")
+		else:
+			var impact: String = "离场影响：阵法及其承载对象进入灰烬区"
+			if not spells.is_empty():
+				impact += "（法术：" + "、".join(spells) + "）"
+			if seals > 0:
+				impact += "；附着符文 %d 张一并进入灰烬区" % seals
+			lines.append(impact + "。")
+		lines.append("离场效果照常结算，并重新计算环位、荷载上限和魔素收入。")
 	for entry: Array in [["formation", "环位所属阵法"], ["host", "附着宿主"], ["replace", "替换阵法"], ["target", "目标"], ["discard", "弃牌成本"]]:
 		var id: String = str(command.get(entry[0], "0"))
 		if id != "0" and not id.is_empty():
@@ -189,3 +218,25 @@ static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 				lines.append("连锁目标：" + (card_name(snapshot, link_source) if link_source != "0" else str(entry.get("kindName", "阶段"))))
 				break
 	return "\n".join(lines)
+
+static func formation_removal_unavailable(snapshot: Dictionary, id: String) -> String:
+	var viewer: int = int(snapshot.get("viewer", 0))
+	var formation: bool = false
+	for row: Dictionary in snapshot.get("cards", []):
+		if str(row.get("id", "0")) == id:
+			formation = int(row.get("owner", -1)) == viewer and int(row.get("zone", -1)) == 3 and int((row.get("definition", {}) as Dictionary).get("type", -1)) == 3
+			break
+	if not formation:
+		return ""
+	for action: Dictionary in snapshot.get("actions", []):
+		if str(action.get("source", "0")) == id and int((action.get("command", {}) as Dictionary).get("type", -1)) == 1:
+			return ""
+	if int(snapshot.get("result", -1)) != -1:
+		return "对局已结束，不能移除阵法。"
+	if bool(snapshot.get("opening", false)):
+		return "开局确认完成后，才能进行阵法操作。"
+	if int(snapshot.get("phase", -1)) != 2 or int(snapshot.get("activePlayer", -1)) != viewer:
+		return "移除阵法仅在己方主要阶段可用。"
+	if snapshot.get("decision") is Dictionary or snapshot.get("chain") is Dictionary:
+		return "请先完成当前决策或连锁，再移除阵法。"
+	return "当前没有合法移除动作；设置与移除共享本回合一次阵法操作。"

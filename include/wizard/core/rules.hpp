@@ -29,9 +29,16 @@ struct StateMaintenance {
     static void check(GameState &, const CardCatalog &, bool endCleanup = false);
 };
 struct ResourceRules {
+    // Each grant expires at the start of the recipient's indicated draw phase.
+    // Source 0 denotes a migrated aggregate with unknown historical provenance.
+    static void normalizeTemporaryLife(GameState &, PlayerId);
+    static void grantTemporaryLife(GameState &, PlayerId, CardId source, int amount, int expiryOwnTurn);
+    static void absorbTemporaryLife(GameState &, PlayerId, int amount);
+    static void clearTemporaryLife(GameState &, PlayerId, CardId source = 0);
+    static void expireTemporaryLife(GameState &, PlayerId);
     // Rules damage bypasses spell resistance, consumes temporary life first.
     // EffectResolver checks terminal state before executing the next effect.
-    static void damage(GameState &, PlayerId, int amount, const std::string &reason);
+    static void damage(GameState &, PlayerId, int amount, const std::string &reason, const CardCatalog *catalog = nullptr);
     // Call immediately after each individual positive mutation, with its gross increase.
     static void increasedLoad(GameState &, const CardCatalog &, PlayerId, int increment);
     static void drawOne(GameState &, const CardCatalog &, PlayerId);

@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "source": {
+    "files": 1466,
+    "bytes": 667089547
+  },
+  "inventory": {
+    "files": 1466,
+    "bytes": 667089547
+  },
+  "runtimeManifest": {
+    "files": 327,
+    "bytes": 153488332
+  },
+  "inventoryStale": [],
+  "inventoryUnlisted": [],
+  "runtimeErrors": [],
+  "baselineMissingFiles": [
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/design_spec.md",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/spec_lock.md",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_bingtang.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_chaidui.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_feitangzhuo.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_fengweizhuanhua.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_haixian.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_kangxingjianbing.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_lajiao.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_liehuohuilu.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_moliganguo.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_naiyoumogutang.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_ouqin.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_ruangu.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_shenenzhurou.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_xiancu.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_yinghuo.png",
+    "missing inventory file: assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_yuanliaozhaolai.png"
+  ],
+  "officialCards": 102,
+  "uniqueIllustrations": 101,
+  "contentHash": "d68b7eefca8e509a"
+}

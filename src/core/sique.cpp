@@ -26,7 +26,14 @@ bool fireSpell(const CardDefinition &d) {
             return std::any_of(ability.effects.begin(), ability.effects.end(), fire);
         }));
 }
-bool activationAllowed(const GameState &s, const CardCatalog &, PlayerId p, const CardDefinition &d) {
+bool activationAllowed(const GameState &s, const CardCatalog &cat, PlayerId p, const CardDefinition &d) {
+    if (cat.usesAlphaV252()) {
+        if (std::find(d.traits.begin(), d.traits.end(), "sique_requires_campfire") != d.traits.end() &&
+            !hasFormation(s, p, "sique-campfire")) return false;
+        if (std::find(d.traits.begin(), d.traits.end(), "sique_requires_cauldron") != d.traits.end() &&
+            !hasFormation(s, p, "sique-cauldron")) return false;
+        return !hasFormation(s, p, "sique-cauldron") || member(d);
+    }
     return !hasFormation(s, p, "sique-cauldron") || member(d) || fireSpell(d);
 }
 bool protectedCampfire(const GameState &s, CardId id) {
@@ -82,7 +89,17 @@ void pay(GameState &s, PlayerId p, int amount) {
     if (s.players[p].siqueLifePaymentTurn && s.players[p].siqueLifePaymentTurn == s.globalTurn) {
         s.players[1 - p].life -= amount;
         s.events.push_back({"life_payment", "神恩炖肉：以对方生命支付魔素费用", -1, 0, amount});
-    } else s.players[p].mana -= amount;
+    } else {
+        s.players[p].mana -= amount;
+        if (amount > 0 && std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+            const auto &card = entry.second;
+            return card.owner == p && card.definition == "arcana-temperance" && !card.faceDown &&
+                (card.zone == Zone::Analysis || card.zone == Zone::Casting) && card.spell == SpellState::Active;
+        })) {
+            s.players[p].mana = std::min(maximumMana, s.players[p].mana + 1);
+            s.events.push_back({"mana_refund", "节制：消耗魔素后获得1点魔素", -1, 0, 1});
+        }
+    }
 }
 void attached(GameState &s, const CardCatalog &cat, CardId id) {
     auto &card = s.cards.at(id);
@@ -125,7 +142,8 @@ bool siqueChoice(EffectKind kind) {
         kind == EffectKind::SiqueMillSeal || kind == EffectKind::SiqueMillSpell ||
         kind == EffectKind::SiqueSearchPair || kind == EffectKind::SiqueAttachFromDeck ||
         kind == EffectKind::SiqueRecycle || kind == EffectKind::SiqueOptionalDraw ||
-        kind == EffectKind::SiqueShuffleHands;
+        kind == EffectKind::SiqueShuffleHands || kind == EffectKind::SiqueRoastRecover ||
+        kind == EffectKind::SiqueBlowfire || kind == EffectKind::SiqueBackfire;
 }
 void shuffleSiqueDeck(GameState &s, PlayerId owner) {
     auto &deck = s.players[owner].deck;
@@ -160,6 +178,16 @@ bool GameEngine::siqueEffect() {
         finishSiqueEffect(f); return true;
     }
     if (!siqueChoice(e.kind)) return false;
+    if (e.kind == EffectKind::SiqueBackfire && f.resolvedCount >= 5) {
+        shuffleSiqueDeck(s, 1 - owner);
+        const int count = f.resolvedCount;
+        const auto trigger = f.item;
+        finishSiqueEffect(f);
+        EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
+        if (s.result == -1) EffectResolver::apply(s, catalog_, trigger,
+            {EffectKind::Heal, count * 2, DamageType::Force, EffectRecipient::Owner});
+        return true;
+    }
     if (e.kind == EffectKind::SiqueShuffleHands) {
         if (f.clearRemaining < 0) {
             f.item.targetCards = {0, 0};
@@ -188,11 +216,13 @@ bool GameEngine::siqueEffect() {
                 return entry.second.zone == Zone::Attached && entry.second.host == id;
             });
             if (card.owner == owner && card.zone == Zone::Analysis && d.type == CardType::Formation &&
-                sique::member(d) && (!occupied || d.id == "sique-cauldron")) choices.push_back(id);
+                sique::member(d) && (catalog_.usesAlphaV252() || !occupied || d.id == "sique-cauldron")) choices.push_back(id);
         }
     } else for (const auto &[id, card] : s.cards) {
         const auto &d = catalog_.at(card.definition);
-        if (card.owner != owner || !sique::member(d)) continue;
+        const bool backfire = e.kind == EffectKind::SiqueBackfire;
+        if (backfire ? card.owner == owner : card.owner != owner) continue;
+        if (!backfire && e.kind != EffectKind::SiqueBlowfire && !sique::member(d)) continue;
         const bool rune = d.type == CardType::Seal;
         bool eligible = false;
         switch (e.kind) {
@@ -203,6 +233,9 @@ bool GameEngine::siqueEffect() {
         case EffectKind::SiqueAttachFromDeck: eligible = card.zone == Zone::Deck && rune; break;
         case EffectKind::SiqueMillSpell: eligible = card.zone == Zone::Deck && sique::spell(d); break;
         case EffectKind::SiqueRecycle: eligible = card.zone == Zone::Ash; break;
+        case EffectKind::SiqueRoastRecover: eligible = card.zone == Zone::Ash; break;
+        case EffectKind::SiqueBlowfire: eligible = card.zone == Zone::Hand; break;
+        case EffectKind::SiqueBackfire: eligible = card.zone == Zone::Ash; break;
         default: break;
         }
         if (eligible) choices.push_back(id);
@@ -210,12 +243,23 @@ bool GameEngine::siqueEffect() {
     if (e.kind == EffectKind::SiqueSearchPair && f.resolvedCount >= 2) choices.clear();
     if (e.kind == EffectKind::SiqueRecycle && f.resolvedCount >= 5) choices.clear();
     if (choices.empty()) {
+        if (e.kind == EffectKind::SiqueBackfire) {
+            shuffleSiqueDeck(s, 1 - owner);
+            const int count = f.resolvedCount;
+            auto trigger = f.item;
+            finishSiqueEffect(f);
+            EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
+            if (s.result == -1) EffectResolver::apply(s, catalog_, trigger,
+                {EffectKind::Heal, count * 2, DamageType::Force, EffectRecipient::Owner});
+            return true;
+        }
         if (e.kind == EffectKind::SiqueSearchPair || e.kind == EffectKind::SiqueAttachFromDeck ||
             e.kind == EffectKind::SiqueMillSeal || e.kind == EffectKind::SiqueMillSpell ||
             e.kind == EffectKind::SiqueRecycle) shuffleSiqueDeck(s, owner);
         finishSiqueEffect(f); return true;
     }
-    decision(owner, DecisionKind::EffectChoice, std::move(choices), e.kind == EffectKind::SiqueRecycle);
+    decision(owner, DecisionKind::EffectChoice, std::move(choices), e.kind == EffectKind::SiqueRecycle ||
+        e.kind == EffectKind::SiqueRoastRecover || e.kind == EffectKind::SiqueBlowfire || e.kind == EffectKind::SiqueBackfire);
     return true;
 }
 bool GameEngine::chooseSiqueEffect(PlayerId actor, CardId selected) {
@@ -224,6 +268,31 @@ bool GameEngine::chooseSiqueEffect(PlayerId actor, CardId selected) {
     auto &f = *s.effect;
     const auto kind = f.item.effects[f.cursor].kind;
     if (!siqueChoice(kind)) return false;
+    if (kind == EffectKind::SiqueBackfire) {
+        if (!selected) {
+            const int count = f.resolvedCount;
+            const auto trigger = f.item;
+            shuffleSiqueDeck(s, 1 - actor); finishSiqueEffect(f);
+            EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
+            if (s.result == -1) EffectResolver::apply(s, catalog_, trigger,
+                {EffectKind::Heal, count * 2, DamageType::Force, EffectRecipient::Owner});
+        } else {
+            auto &card = s.cards.at(selected);
+            if (catalog_.at(card.definition).type == CardType::Formation) card.zone = Zone::SideDeck;
+            else { card.zone = Zone::Deck; s.players[card.owner].deck.push_back(selected); }
+            card.faceDown = false; card.siquePartner = 0; card.siquePairTurn = 0;
+            ++f.resolvedCount;
+        }
+        return true;
+    }
+    if (kind == EffectKind::SiqueBlowfire) {
+        const auto trigger = f.item;
+        if (selected) StateMaintenance::leave(s, selected, &catalog_);
+        finishSiqueEffect(f);
+        if (selected) EffectResolver::apply(s, catalog_, trigger,
+            {EffectKind::Damage, 4, DamageType::Fire, EffectRecipient::Opponent});
+        return true;
+    }
     if (kind == EffectKind::SiqueShuffleHands) {
         const auto count = f.item.targetCards[static_cast<std::size_t>(f.clearRemaining)];
         ++f.clearRemaining;

@@ -292,12 +292,32 @@ func _projection_reset_checks() -> void:
 func _catalogue_checks(library: LibraryPage) -> void:
 	var numbers: Dictionary[String, bool] = {}
 	var prefixes: Dictionary[String, String] = {"formation": "01", "analysis": "02", "incantation": "03", "talisman": "04", "rune": "05"}
+	var art_refs: Dictionary[String, WeakRef] = {}
 	for card: CardPresentation in _app.service.cards:
 		_check(card.number.length() == 6 and card.number.is_valid_int() and card.number.begins_with(prefixes[card.type_key]) and not numbers.has(card.number), "Each card has a unique six-digit number matching its kind: " + card.title)
 		numbers[card.number] = true
 		_check(card.rarity_text() in ["普通", "罕见", "稀有", "史诗", "传说"], "Rarity uses the Chinese display label: " + card.title)
-		_check(ArtBank.texture("illustration." + card.art_id()) != null, "Every official card resolves an illustration: " + card.title)
+		var art_id: String = "illustration." + card.art_id()
+		_check(not ArtBank.metadata(art_id).is_empty(), "Every official card has a declared illustration mapping: " + card.title)
+		var illustration: Texture2D = ArtBank.texture(art_id)
+		_check(illustration != null and illustration != ArtBank._fallback, "Every official card resolves published art rather than fallback: " + card.title)
+		art_refs[art_id] = weakref(illustration)
 		_check(ArtBank.texture(CardPainter.frame_id(card)) != null, "Every official card resolves a frame: " + card.title)
+	# Do not retain strong references in this test: custom draw commands have the
+	# same lifetime requirement even after the 49th unique card is requested.
+	for art_id: String in art_refs:
+		_check(art_refs[art_id].get_ref() != null, "All same-page illustrations stay resident: " + art_id)
+	for pass_index: int in range(3):
+		for kind_index: int in range(library.KINDS.size()):
+			library._kind_filter.select(kind_index)
+			library._kind_changed(kind_index)
+			await _settle()
+			for child: Node in library._grid.get_children():
+				var tile: CardTile = child as CardTile
+				var art_id: String = "illustration." + tile.card.art_id()
+				_check(ArtBank.texture(art_id) == art_refs[art_id].get_ref(), "Repeated filter keeps the correct texture: " + art_id)
+	library._kind_filter.select(0)
+	library._kind_changed(0)
 	library._search.text = "010001"
 	library._search.text_changed.emit("010001")
 	await _settle()

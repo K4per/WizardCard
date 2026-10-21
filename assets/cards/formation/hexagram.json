@@ -1,6 +1,6 @@
 {
   "id": "hexagram",
-  "name": "均衡之六芒星",
+  "name": "六芒星",
   "type": "formation",
   "rarity": "uncommon",
   "level": 3,
@@ -12,7 +12,7 @@
   "baseEligible": false,
   "cost": 0,
   "text": "此卡不会被效果破坏。",
-  "summonCondition": "【运行之三角星】+魔素×2。",
+  "summonCondition": "【四芒星】+魔素×2",
   "recipe": [
     {
       "kind": "sacrifice_formation",
@@ -29,5 +29,5 @@
   ],
   "flavor": "魔法界最流行的一种法阵，你几乎可以在任何一种复杂术式中看到它的身影。六芒星诉说着它的信念：秩序不偏向任何一边。",
   "number": "010005",
-  "illustrationId": "balance"
+  "illustrationId": "alpha-v252-hexagram"
 }

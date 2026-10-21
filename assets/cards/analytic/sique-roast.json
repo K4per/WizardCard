@@ -1,0 +1,34 @@
+{
+  "id": "sique-roast",
+  "rarity": "rare",
+  "target": "player",
+  "illustrationId": "sique-roast",
+  "number": "020027",
+  "name": "味契·炙烤",
+  "type": "analytic",
+  "text": "此卡仅可在【味契·篝火】上设置。选择1个目标才能发动。对其造成6点火焰伤害。那之后，可以将1张【味契】卡从灰烬区加入手卡。",
+  "rank": 3,
+  "level": 3,
+  "school": "abjuration",
+  "cost": 2,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 1,
+  "tags": [
+    "味契"
+  ],
+  "traits": [
+    "sique_campfire_only"
+  ],
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 6,
+      "damageType": "fire"
+    },
+    {
+      "kind": "sique_roast_recover",
+      "amount": 0
+    }
+  ]
+}

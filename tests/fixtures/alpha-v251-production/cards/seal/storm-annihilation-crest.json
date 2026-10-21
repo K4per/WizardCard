@@ -1,0 +1,23 @@
+{
+  "id": "storm-annihilation-crest",
+  "name": "风暴湮灭之纹章",
+  "type": "seal",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "castCost": 0,
+  "damageBonus": 4,
+  "text": "阵法附着效果：只有风暴阵法卡能够附着此卡。附着后，可以移除2个风暴点数销毁对方场上一张空闲的阵法卡。法术附着效果：额外造成4点雷鸣伤害。",
+  "traits": [
+    "storm_formation_host_restriction",
+    "thunder_damage_bonus",
+    "activate_storm_crest_destroy"
+  ],
+  "tags": [
+    "风暴"
+  ],
+  "number": "050005",
+  "illustrationId": "storm-annihilation-crest"
+}

@@ -6,7 +6,7 @@ using namespace wizard;
 
 namespace {
 Content loadStormCloudContent() {
-    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
 }
 
 CardInstance fieldCard(CardId id, const std::string &definition, PlayerId owner, Zone zone,

@@ -15,6 +15,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(CardInstance, id, definition, ow
                                    ringIndex, wasAmbushed, sourceRingIndex)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLoad, id, owner, source, amount, expiryTurn, independent,
                                    sourceBound)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLife, id, owner, source, amount, expiryOwnTurn, acquiredTurn, acquiredPhase)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PlayerView, life, mana, load, capacity, handCount, deckCount, ownTurn,
                                    actionsPlayed, temporaryLife, blockedActionTurn, resistances, immunities,
                                    sideDeckCount, exhaustion)
@@ -86,6 +87,7 @@ Json hello(const Content &c) {
 Json encodeView(const GameView &v) {
     Json j = {{"viewer", v.viewer},       {"active", v.active},       {"phase", v.phase},
               {"result", v.result},       {"players", v.players},     {"temporary", v.temporary},
+              {"temporaryLives", v.temporaryLives},
               {"phaseStep", v.phaseStep}, {"phaseGate", v.phaseGate}, {"triggers", v.triggers},
               {"opening", v.opening}, {"initialFormationConfirmed", v.initialFormationConfirmed},
               {"initialFormation", v.initialFormation}, {"globalTurn", v.globalTurn}, {"clock", v.clock}};
@@ -139,6 +141,8 @@ GameView decodeView(const Json &raw, const CardCatalog &catalog) {
         throw std::runtime_error("Invalid view");
     j.at("players").get_to(v.players);
     j.at("temporary").get_to(v.temporary);
+    if (j.contains("temporaryLives"))
+        j.at("temporaryLives").get_to(v.temporaryLives);
     j.at("phaseStep").get_to(v.phaseStep);
     j.at("phaseGate").get_to(v.phaseGate);
     j.at("triggers").get_to(v.triggers);

@@ -2,6 +2,8 @@
 #include "wizard/replay.hpp"
 #include "wizard/room.hpp"
 #include <chrono>
+#include <atomic>
+#include <future>
 #include <memory>
 
 namespace wizard::net {
@@ -145,6 +147,8 @@ class Peer : public RoomSession {
     std::uint64_t revision_{}, sentRevision_{~std::uint64_t{0}};
     std::string address_, notice_, saveError_;
     std::string outgoingReplay_, incomingReplay_;
+    std::shared_ptr<std::atomic_bool> replayValidationCanceled_;
+    std::future<Json> replayValidation_;
     std::size_t replayOffset_{}, replaySize_{};
     bool endQueued_{};
     bool replayDelivered_{};
@@ -157,6 +161,7 @@ class Peer : public RoomSession {
 
   public:
     explicit Peer(Content, std::filesystem::path);
+    ~Peer() override;
     GameView viewFor(PlayerId) const override { return view_; }
     CommandResult submit(PlayerId actor, const Command &command) override {
         if (!started() || actor != view_.viewer)

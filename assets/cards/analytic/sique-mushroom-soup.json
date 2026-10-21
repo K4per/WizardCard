@@ -16,7 +16,7 @@
   "analysisTurns": 2,
   "school": "abjuration",
   "traits": [
-    "sique_detach_2"
+    "sique_detach_1"
   ],
   "target": "self",
   "effects": [
@@ -29,5 +29,5 @@
       "amount": 6
     }
   ],
-  "text": "将2张味契符文解除附着才能发动。恢复4点生命，获得6点临时生命。"
+  "text": "将1张【味契】符文卡解除附着才能发动。恢复4点生命值，获得6点临时生命值。"
 }

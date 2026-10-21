@@ -4,8 +4,8 @@
   "rarity": "rare",
   "type": "analytic",
   "cost": 2,
-  "castCost": 0,
-  "rank": 1,
+  "castCost": 1,
+  "rank": 4,
   "target": "empty_enemy_formation",
   "effects": [
     {
@@ -15,11 +15,12 @@
       "kind": "destroy"
     }
   ],
-  "text": "指定对方场上一张没有承载法术的阵法。将己方副卡组一张阵法送入灰烬区，然后销毁目标阵法。",
+  "text": "选择对方场上1张空白阵法卡才能发动。将1张阵法卡从副卡组送去灰烬区，销毁那张空白阵法卡。",
   "flavor": "碎碎平安！",
   "speed": 1,
   "school": "transmutation",
-  "level": 1,
+  "level": 4,
   "number": "020003",
-  "illustrationId": "unravel"
+  "illustrationId": "unravel",
+  "analysisTurns": 1
 }

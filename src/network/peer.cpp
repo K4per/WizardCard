@@ -7,6 +7,9 @@ using namespace std::chrono_literals;
 Peer::Peer(Content c, std::filesystem::path path) : content_(std::move(c)), replayPath_(std::move(path)) {
     received_ = heartbeat_ = lost_ = retry_ = connecting_ = Clock::now();
 }
+Peer::~Peer() {
+    if (replayValidationCanceled_) replayValidationCanceled_->store(true);
+}
 void Peer::host(unsigned short port, const PlayerDeck &d) {
     tcp_.listen(port);
     host_ = std::make_unique<HostSession>(content_);
@@ -40,6 +43,13 @@ void Peer::tick() {
         return;
     auto now = Clock::now();
     try {
+        if (replayValidation_.valid() && replayValidation_.wait_for(0ms) == std::future_status::ready) {
+            replay_ = replayValidation_.get();
+            std::string error;
+            if (!save(error)) notice_ = error;
+            if (authenticated_ && connected_)
+                tcp_.send({{"type", "ReplayReceived"}, {"session", guest_->room().at("session")}});
+        }
         auto messages = tcp_.poll();
         if (tcp_.connected() && !connected_) {
             connected_ = true;
@@ -114,14 +124,21 @@ void Peer::tick() {
                     if (incomingReplay_.size() != replaySize_)
                         throw std::runtime_error("复盘数据不完整");
                     auto record = Json::parse(incomingReplay_);
-                    (void)replay(content_, record);
-                    replay_ = std::move(record);
                     incomingReplay_.clear();
                     replaySize_ = 0;
-                    std::string e;
-                    if (!save(e))
-                        notice_ = e;
-                    tcp_.send({{"type", "ReplayReceived"}, {"session", guest_->room().at("session")}});
+                    // Full verification can outlast a heartbeat interval. Keep the
+                    // socket/UI thread pumping, and acknowledge only verified data.
+                    if (!replayValidation_.valid() && replay_.is_null()) {
+                        replayValidationCanceled_ = std::make_shared<std::atomic_bool>(false);
+                        replayValidation_ = std::async(std::launch::async,
+                            [content = content_, record = std::move(record), canceled = replayValidationCanceled_]() {
+                                (void)replay(content, record, [canceled](std::size_t, const GameEngine &) {
+                                    if (canceled->load()) throw std::runtime_error("复盘验证已取消");
+                                });
+                                return record;
+                            });
+                    } else if (!replay_.is_null())
+                        tcp_.send({{"type", "ReplayReceived"}, {"session", guest_->room().at("session")}});
                 } else {
                     guest_->receive(j);
                     if (type == "Joined" || type == "Resumed") {
@@ -392,6 +409,7 @@ void Peer::streamReplay() {
     }
 }
 void Peer::stop() {
+    if (replayValidationCanceled_) replayValidationCanceled_->store(true);
     tcp_.close();
     ended_ = true;
     closing_ = false;

@@ -109,7 +109,27 @@ std::vector<Effect> effects(const Json &j, const std::string &path) {
         {"sique_recycle", EffectKind::SiqueRecycle},
         {"sique_optional_draw", EffectKind::SiqueOptionalDraw},
         {"sique_shuffle_hands", EffectKind::SiqueShuffleHands},
-        {"sique_negate_destroy", EffectKind::SiqueNegateDestroy}};
+        {"sique_negate_destroy", EffectKind::SiqueNegateDestroy},
+        {"sique_roast_recover", EffectKind::SiqueRoastRecover},
+        {"sique_blowfire", EffectKind::SiqueBlowfire},
+        {"sique_backfire", EffectKind::SiqueBackfire},
+        {"ray_volley", EffectKind::RayVolley},
+        {"delay_all_enemy_analysis", EffectKind::DelayAllEnemyAnalysis},
+        {"clear_all_ambush", EffectKind::ClearAllAmbush},
+        {"arcana_fool", EffectKind::ArcanaFool},
+        {"arcana_magician", EffectKind::ArcanaMagician},
+        {"arcana_priestess", EffectKind::ArcanaPriestess},
+        {"arcana_emperor", EffectKind::ArcanaEmperor},
+        {"prevent_next_damage", EffectKind::PreventNextDamage},
+        {"arcana_lovers", EffectKind::ArcanaLovers},
+        {"arcana_hermit", EffectKind::ArcanaHermit},
+        {"arcana_justice", EffectKind::ArcanaJustice},
+        {"arcana_hanged_man", EffectKind::ArcanaHangedMan},
+        {"arcana_death", EffectKind::ArcanaDeath},
+        {"arcana_devil", EffectKind::ArcanaDevil},
+        {"arcana_tower", EffectKind::ArcanaTower},
+        {"arcana_world", EffectKind::ArcanaWorld},
+        {"clear_any_load", EffectKind::ClearAnyLoad}};
     for (const auto &e : j) {
         const auto p = path + "/" + std::to_string(n++);
         Effect effect{enumeration(text(e, "kind", p), names, p + "/kind"), number(e, "amount", p)};
@@ -148,7 +168,7 @@ void writeJson(const std::filesystem::path &p, const Json &j) {
 CardCatalog parseCatalog(const Json &j, const std::string &source) {
     CardCatalog cat;
     const auto revision = number(j, "mechanicsRevision", source);
-    if (revision > 4)
+    if (revision > 5)
         fail(source + "/mechanicsRevision", "unsupported mechanics revision");
     cat.advancedRules = revision >= 1;
     cat.mechanicsRevision = revision;
@@ -339,7 +359,11 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 "activate_storm_crest_destroy", "activate_storm_search", "activate_storm_heart_choice",
                 "storm_heart_upgrade", "search_great_storm_on_setup", "requires_storm_heart_setup",
                 "great_storm", "sique_cauldron_only", "sique_requires_campfire", "sique_requires_cauldron",
-                "sique_detach_1", "sique_detach_2", "sique_detach_3"};
+                "sique_detach_1", "sique_detach_2", "sique_detach_3",
+                "opponent_spell_load_4", "sique_campfire_only", "max_two", "quick_host_analysis_1", "quick_host_analysis_2", "moon",
+                "destroy_enemy_ambush_end", "arcana_fool_condition", "arcana_priestess_cost",
+                "arcana_emperor_cost", "arcana_chariot", "arcana_strength", "arcana_hanged_cost",
+                "arcana_death", "arcana_temperance", "arcana_devil"};
             if (!card.at("traits").is_array())
                 fail(p + "/traits", "expected trait array");
             for (const auto &value : card.at("traits")) {

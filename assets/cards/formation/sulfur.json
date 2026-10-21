@@ -11,8 +11,8 @@
   "maxRank": 6,
   "baseEligible": false,
   "cost": 0,
-  "text": "此阵法只能解析火焰伤害法术。每当己方法术从施法区进入灰烬区，对对方玩家造成1点火焰伤害。",
-  "summonCondition": "已解析的火焰伤害法术×2。",
+  "text": "此阵法只能解析火焰伤害法术卡。自己的法术卡每有1张从施法区进入灰烬区，对对方玩家造成1点火焰伤害。",
+  "summonCondition": "解析完成的火焰伤害法术卡×2",
   "recipe": [
     {
       "kind": "sacrifice_spell",

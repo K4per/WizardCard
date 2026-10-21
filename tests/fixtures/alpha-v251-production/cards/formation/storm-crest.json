@@ -1,0 +1,31 @@
+{
+  "id": "storm-crest",
+  "name": "风暴纹章",
+  "type": "formation",
+  "rarity": "rare",
+  "level": 1,
+  "body": 2,
+  "rings": 2,
+  "capacity": 5,
+  "income": 1,
+  "maxRank": 1,
+  "cost": 0,
+  "baseEligible": false,
+  "text": "这张卡在场上只能存在一张。阵法属性由其上的风暴点数决定：0至2点时为1级、最大解析数1、荷载上限5、魔素收入1；3至5点时为2级、最大解析数2、荷载上限8、魔素收入1；5点以上时为3级、最大解析数3、荷载上限10、魔素收入2。每发动一张风暴法术卡，获得1个风暴点数。一回合一次，移除这张卡上的2个风暴点数，从牌库将一张风暴法术卡加入手牌。",
+  "summonCondition": "支付1魔素。",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 1
+    }
+  ],
+  "traits": [
+    "unique",
+    "activate_storm_search"
+  ],
+  "tags": [
+    "风暴"
+  ],
+  "number": "010014",
+  "illustrationId": "storm-crest"
+}

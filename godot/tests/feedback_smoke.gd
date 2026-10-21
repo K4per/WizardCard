@@ -55,6 +55,13 @@ func _run() -> void:
 	_check(canvas._transition.life[0].g > canvas._transition.life[0].r, "Healing uses a distinct feedback color")
 	canvas.set_privacy(true)
 	_check(canvas._transition_strength == 0.0 and canvas._transition.changed.is_empty() and canvas._transition.departures.is_empty(), "Privacy immediately clears all old feedback")
+	canvas.set_action_targets(["two"])
+	canvas.set_privacy(true)
+	_check(canvas.target_ids.is_empty() and canvas.target_rings.is_empty(), "Privacy discards all old target hit regions")
+	canvas._dragged = casting
+	canvas._drag_active = true
+	canvas._cancel_pointer_state()
+	_check(canvas._dragged == null and not canvas._drag_active, "Focus loss cancels drag without changing the projection")
 	canvas.set_privacy(false)
 	UiFactory.reduced_motion = true
 	canvas.configure(first)
@@ -64,6 +71,18 @@ func _run() -> void:
 	await create_timer(0.35).timeout
 	_check(is_zero_approx(canvas._transition_strength), "Feedback converges after completion")
 	canvas.queue_free()
+	await _settle()
+	var page: MatchPage = (load("res://pages/match_page.tscn") as PackedScene).instantiate() as MatchPage
+	root.add_child(page)
+	page.service = FrontendService.new()
+	page._show_cue({"cues": [{"text": "first", "duration": 0.2}]})
+	await create_timer(0.1).timeout
+	page._show_cue({"cues": [{"text": "latest", "duration": 1.5}]})
+	await create_timer(0.7).timeout
+	_check(page._cue.visible and page._cue.text == "latest" and page._cue.modulate.a > 0.99, "A superseded cue tween cannot hide the newest authoritative feedback")
+	page._clear_cue()
+	_check(not page._cue.visible and page._cue_tween == null, "Projection interruption immediately removes queued cue animation")
+	page.queue_free()
 	await _settle()
 	print(JSON.stringify({"checks": _checks, "failures": _failures}))
 	quit(0 if _failures.is_empty() else 1)

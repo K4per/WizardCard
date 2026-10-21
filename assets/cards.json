@@ -1,8 +1,8 @@
 {
-  "rulesVersion": "2.5.1",
-  "cardSetVersion": "2.5.1",
+  "rulesVersion": "2.5.2",
+  "cardSetVersion": "2.5.2",
   "baseLoadCapacity": 2,
-  "mechanicsRevision": 4,
+  "mechanicsRevision": 5,
   "cards": [
     {
       "id": "fireball",
@@ -12,7 +12,7 @@
       "cost": 3,
       "castCost": 1,
       "rank": 3,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "damage",
@@ -20,7 +20,7 @@
           "damageType": "fire"
         }
       ],
-      "text": "对对方玩家造成10点火焰伤害。",
+      "text": "选择1个目标才能发动。对其造成10点火焰伤害。",
       "flavor": "没错，这确实是经典之选。“伟大的法师都精通了火球术使用！”阿克莉娅如是说，她本人是个术士。",
       "speed": 1,
       "school": "evocation",
@@ -66,7 +66,7 @@
           ]
         }
       ],
-      "text": "对方准备施法时才能发动。将此次准备施法无效。那之后，可以将对方解析区一张解析法术弹回持有者手牌。",
+      "text": "对方准备施法时才能发动。将其取消。那之后，可以将对方解析区1张解析法术卡弹回持有者手卡。",
       "flavor": "你神奇的话语将对手的失误转变为了自己的力量。",
       "speed": 3,
       "school": "enchantment",
@@ -91,11 +91,11 @@
           "amount": 2
         },
         {
-          "kind": "temporary",
+          "kind": "independent",
           "amount": 2
         }
       ],
-      "text": "抽两张卡，获得2点临时荷载。",
+      "text": "抽2张卡，获得2点荷载。",
       "flavor": "尚未熄灭的记忆，也能成为下一道咒文。",
       "speed": 2,
       "castCost": 0,
@@ -117,7 +117,7 @@
       "cost": 1,
       "ringBonus": 1,
       "refundSetting": 1,
-      "text": "阵法附着效果：该阵法环位数+1。法术附着效果：宿主成功释放后，获得等于该法术设置时实际支付费用的魔素。",
+      "text": "附着于阵法：环位+1。 附着于法术：发动时，获得其实际设置费用的魔素。",
       "flavor": "闭合的圆，会把尚未散去的力量带回起点。",
       "speed": 1,
       "castCost": 0,
@@ -133,7 +133,7 @@
       "type": "word",
       "cost": 2,
       "rank": 1,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "damage",
@@ -141,7 +141,7 @@
           "damageType": "fire"
         }
       ],
-      "text": "对对方玩家造成3点火焰伤害。",
+      "text": "选择1个目标才能发动。对其造成3点火焰伤害。",
       "flavor": "所有魔法学徒入门必学法术之一，告别火柴第一步！",
       "speed": 2,
       "school": "evocation",
@@ -166,7 +166,7 @@
           "amount": 4
         }
       ],
-      "text": "选择己方或对方玩家，为其恢复4点生命值。",
+      "text": "选择1个目标才能发动。为其恢复4点生命值。",
       "flavor": "把你的心我的心串一串……",
       "speed": 2,
       "school": "necromancy",
@@ -181,8 +181,8 @@
       "rarity": "rare",
       "type": "analytic",
       "cost": 2,
-      "castCost": 0,
-      "rank": 1,
+      "castCost": 1,
+      "rank": 4,
       "target": "empty_enemy_formation",
       "effects": [
         {
@@ -192,13 +192,14 @@
           "kind": "destroy"
         }
       ],
-      "text": "指定对方场上一张没有承载法术的阵法。将己方副卡组一张阵法送入灰烬区，然后销毁目标阵法。",
+      "text": "选择对方场上1张空白阵法卡才能发动。将1张阵法卡从副卡组送去灰烬区，销毁那张空白阵法卡。",
       "flavor": "碎碎平安！",
       "speed": 1,
       "school": "transmutation",
-      "level": 1,
+      "level": 4,
       "number": "020003",
-      "illustrationId": "unravel"
+      "illustrationId": "unravel",
+      "analysisTurns": 1
     },
     {
       "id": "disrupt",
@@ -219,7 +220,7 @@
           "recipient": "owner"
         }
       ],
-      "text": "对方玩家获得3点临时荷载，己方玩家获得1点临时荷载。",
+      "text": "获得1点临时荷载，使对方获得3点临时荷载。",
       "flavor": "捣蛋鬼别捣蛋！",
       "speed": 2,
       "castCost": 0,
@@ -238,7 +239,7 @@
       "name": "心如止水",
       "rarity": "common",
       "type": "word",
-      "cost": 1,
+      "cost": 2,
       "target": "self",
       "effects": [
         {
@@ -248,17 +249,19 @@
           "kind": "clear_all_temporary"
         }
       ],
-      "text": "弃置一张手牌，移除自身所有的临时荷载。",
+      "text": "将1张卡从手卡送去灰烬区才能发动。清除己方全部临时荷载。",
       "flavor": "向月亮诉说吧。",
       "speed": 2,
       "castCost": 0,
-      "rank": 1,
-      "level": 1,
+      "rank": 2,
+      "level": 2,
       "tags": [
         "former-action"
       ],
       "number": "030004",
-      "illustrationId": "clarity"
+      "illustrationId": "clarity",
+      "school": "abjuration",
+      "analysisTurns": 0
     },
     {
       "id": "reservoir",
@@ -269,9 +272,9 @@
       "capacity": 15,
       "income": 0,
       "rings": 0,
-      "maxRank": 1,
+      "maxRank": 0,
       "opponentDestroyProtected": false,
-      "text": "以两张手牌为材料设置。没有环位；无特殊效果。",
+      "text": "无。",
       "flavor": "莱德·阿克乌姆在进行生命力相关的研究时发明出了这个符文，他以缺失的圆环作为法阵的基底，发现这个简洁的阵法代表着空洞的虚无。",
       "speed": 1,
       "cost": 0,
@@ -285,7 +288,7 @@
           "amount": 2
         }
       ],
-      "summonCondition": "2张手牌。",
+      "summonCondition": "手卡×2。",
       "number": "010001",
       "illustrationId": "reservoir"
     },
@@ -296,7 +299,7 @@
       "type": "seal",
       "cost": 2,
       "incomeBonus": 2,
-      "text": "阵法附着：该阵法在抽牌阶段提供的魔素收入+2。法术附着：无额外效果。",
+      "text": "附着于阵法：魔素收入+2。 附着于法术：无效果。",
       "flavor": "聚能并非环。",
       "speed": 1,
       "castCost": 0,
@@ -329,7 +332,7 @@
           "damageType": "fire"
         }
       ],
-      "text": "专注1。对对方玩家造成4点火焰伤害；成功维持专注时对对方玩家造成2点火焰伤害。",
+      "text": "专注1。发动时，对对方造成4点火焰伤害。维持专注时，对对方造成2点火焰伤害。",
       "speed": 1,
       "school": "evocation",
       "level": 2,
@@ -345,29 +348,22 @@
       "rarity": "common",
       "cost": 4,
       "castCost": 4,
-      "rank": 2,
+      "rank": 4,
       "speed": 1,
-      "analysisTurns": 1,
+      "analysisTurns": 2,
       "duration": 3,
-      "school": "evocation",
+      "school": "enchantment",
       "target": "opponent",
-      "effects": [
-        {
-          "kind": "source_temporary",
-          "amount": 5
-        }
-      ],
-      "onCast": [
-        {
-          "kind": "source_temporary",
-          "amount": 3
-        }
-      ],
-      "text": "计时3。首次发动时对方获得5点来源关联临时荷载；之后每个己方施法阶段对方获得3点来源关联临时荷载。这些荷载不在抽牌阶段清除，在本法术离场时清除。",
+      "effects": [],
+      "onCast": [],
+      "text": "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。",
       "flavor": "为什么要使用这么坏心眼的法术？",
-      "level": 2,
+      "level": 4,
       "number": "020005",
-      "illustrationId": "messy-wave"
+      "illustrationId": "messy-wave",
+      "traits": [
+        "opponent_spell_load_4"
+      ]
     },
     {
       "id": "instantly-sleep",
@@ -376,7 +372,7 @@
       "rarity": "uncommon",
       "cost": 3,
       "castCost": 1,
-      "rank": 1,
+      "rank": 4,
       "speed": 1,
       "school": "enchantment",
       "target": "opponent",
@@ -386,11 +382,12 @@
           "amount": 0
         }
       ],
-      "text": "对方下一个自己的回合不能从手牌发动言灵法术；已盖伏的法术不受影响。",
+      "text": "直到下个己方抽牌阶段开始时，双方言灵法术不可发动。",
       "flavor": "巫师牌安眠药。",
-      "level": 1,
+      "level": 4,
       "number": "020006",
-      "illustrationId": "instantly-sleep"
+      "illustrationId": "instantly-sleep",
+      "analysisTurns": 1
     },
     {
       "id": "magic-missile",
@@ -402,51 +399,19 @@
       "rank": 2,
       "speed": 2,
       "school": "evocation",
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "damage",
-          "amount": 2,
+          "amount": 4,
           "damageType": "force"
         },
         {
-          "kind": "destroy_ambush"
+          "kind": "destroy_ambush",
+          "amount": 0
         }
       ],
-      "responses": [
-        {
-          "id": "quick_cast",
-          "name": "快速释放",
-          "sources": [
-            "analysis"
-          ],
-          "windows": [
-            "phase_start",
-            "phase_end",
-            "action",
-            "prepare",
-            "cast",
-            "trigger"
-          ],
-          "target": "opponent",
-          "phases": [
-            "cast"
-          ],
-          "eventOwner": "opponent",
-          "requiresSource": true,
-          "effects": [
-            {
-              "kind": "damage",
-              "amount": 2,
-              "damageType": "force"
-            },
-            {
-              "kind": "destroy_ambush"
-            }
-          ]
-        }
-      ],
-      "text": "对对方玩家造成2点力场伤害。那之后，可以销毁对方解析区一张盖伏法术。",
+      "text": "选择1个目标才能发动。对其造成4点力场伤害。那之后，可以销毁对方解析区1张盖伏的法术卡。",
       "flavor": "折磨你的对手。",
       "level": 2,
       "analysisTurns": 1,
@@ -456,12 +421,12 @@
     {
       "id": "aid",
       "name": "支援术",
-      "type": "analytic",
+      "type": "word",
       "rarity": "common",
       "cost": 1,
-      "castCost": 1,
+      "castCost": 0,
       "rank": 1,
-      "speed": 1,
+      "speed": 2,
       "analysisTurns": 0,
       "school": "abjuration",
       "target": "self",
@@ -469,12 +434,16 @@
         {
           "kind": "temporary_life",
           "amount": 5
+        },
+        {
+          "kind": "temporary",
+          "amount": 2
         }
       ],
-      "text": "立即完成解析。获得5点临时生命（不叠加，取较高值），在下次己方抽牌阶段清除。",
+      "text": "获得5点临时生命值和2点临时荷载。",
       "flavor": "你被增强了！",
       "level": 1,
-      "number": "020008",
+      "number": "030017",
       "illustrationId": "aid"
     },
     {
@@ -511,7 +480,7 @@
           "eventOwner": "opponent"
         }
       ],
-      "text": "对方发动法术时才能发动。将其无效并销毁。那之后，获得与其原本设置费用等量的临时荷载。",
+      "text": "对方发动法术卡时才能发动。将其无效并销毁，获得其原本设置费用的临时荷载。",
       "flavor": "火球术！反制！反制你的反制！温馨提示，这种场景在奥术决斗中不会出现。",
       "castCost": 0,
       "level": 5,
@@ -535,7 +504,7 @@
           "kind": "search_same_school"
         }
       ],
-      "text": "将另一张手牌中的法术送入灰烬区作为发动成本。从牌库检索一张同学派法术加入手牌，然后洗切牌库。",
+      "text": "将1张法术卡从手卡送去灰烬区才能发动。将1张同派系的法术卡从卡组加入手卡。",
       "flavor": "魔法之洞见，它能指引你看到多远？",
       "castCost": 0,
       "level": 3,
@@ -565,30 +534,7 @@
           "kind": "grant_resistance"
         }
       ],
-      "responses": [
-        {
-          "id": "protect",
-          "name": "获得火焰抗性",
-          "sources": [
-            "ambush"
-          ],
-          "windows": [
-            "phase_start",
-            "phase_end",
-            "action",
-            "prepare",
-            "cast",
-            "trigger"
-          ],
-          "target": "self",
-          "effects": [
-            {
-              "kind": "grant_resistance"
-            }
-          ]
-        }
-      ],
-      "text": "专注2。受到的火焰伤害减半，火焰抗性不叠加。",
+      "text": "专注2。受到的火焰伤害减半，此效果不可叠加。",
       "castCost": 0,
       "level": 4,
       "analysisTurns": 0,
@@ -599,7 +545,7 @@
     },
     {
       "id": "pentagram-of-life",
-      "name": "生命之五芒星",
+      "name": "五芒星",
       "type": "formation",
       "rarity": "common",
       "cost": 0,
@@ -609,7 +555,7 @@
       "rings": 3,
       "maxRank": 5,
       "baseAnalysisDiscount": false,
-      "text": "己方准备阶段开始时，获得1点独立荷载。",
+      "text": "己方准备阶段开始时，获得1点荷载。",
       "flavor": "生命之五芒星以魔素高活跃性和高控制性著称。",
       "castCost": 0,
       "rank": 0,
@@ -628,7 +574,7 @@
           "readyOnly": true
         }
       ],
-      "summonCondition": "【均衡之六芒星】+已解析的法术。",
+      "summonCondition": "【六芒星】+解析完成的法术卡×1",
       "onPrepare": [
         {
           "kind": "independent",
@@ -636,7 +582,7 @@
         }
       ],
       "number": "010002",
-      "illustrationId": "pentagram-of-life"
+      "illustrationId": "alpha-v252-pentagram-of-life"
     },
     {
       "id": "engeas-four-point-star",
@@ -682,7 +628,7 @@
       "incomeBonus": -1,
       "castCostBonus": 1,
       "damageBonus": 2,
-      "text": "阵法附着：等级上限+1、环位+1、抽牌阶段魔素收入-1。法术附着：实际施法费用+1，成功发动时额外对对方造成2点力场伤害。",
+      "text": "附着于阵法：阵法等级+1，环位+1，魔素收入-1。 附着于法术：发动费用+1，额外造成2点力场伤害。",
       "flavor": "沸腾的魔素是一把双刃剑。",
       "castCost": 0,
       "rank": 1,
@@ -702,20 +648,22 @@
       "effects": [
         {
           "kind": "accelerate_analysis",
-          "amount": 0
+          "amount": 2
         }
       ],
-      "text": "立即完成己方一张正在解析的法术；自身获得其实际解析费用等量的临时荷载，在下次己方抽牌阶段清除。",
+      "text": "选择己方解析区1张解析法术卡才能发动。使其解析时间-2，获得其实际设置费用的临时荷载。",
       "flavor": "通过强行激发大量魔素流动，使法术的解析立即完成。铤而走险。",
       "castCost": 0,
-      "rank": 1,
+      "rank": 2,
       "speed": 2,
-      "level": 1,
+      "level": 2,
       "tags": [
         "former-action"
       ],
       "number": "030007",
-      "illustrationId": "instant-circuit-overload"
+      "illustrationId": "instant-circuit-overload",
+      "school": "conjuration",
+      "analysisTurns": 0
     },
     {
       "id": "ray-of-frost",
@@ -728,7 +676,7 @@
       "speed": 1,
       "school": "evocation",
       "analysisTurns": 1,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "damage",
@@ -740,7 +688,7 @@
           "amount": 1
         }
       ],
-      "text": "对对方玩家造成6点寒冷伤害。那之后，可以使对方解析区一张解析法术的解析进度-1。",
+      "text": "选择1个目标才能发动。对其造成6点寒冷伤害。那之后，可以使对方解析区1张解析法术卡的解析时间+1。",
       "level": 2,
       "number": "020009",
       "illustrationId": "ray-of-frost"
@@ -756,45 +704,48 @@
       "speed": 1,
       "school": "evocation",
       "analysisTurns": 1,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "damage",
           "amount": 8,
-          "damageType": "thunder"
+          "damageType": "lightning"
         },
         {
-          "kind": "destroy_enemy_analysis"
+          "kind": "destroy_enemy_analysis",
+          "amount": 0
         }
       ],
-      "text": "对对方玩家造成8点雷鸣伤害。那之后，可以销毁对方解析区一张解析法术。",
+      "text": "选择1个目标才能发动。对其造成8点闪电伤害。那之后，可以销毁对方解析区1张解析法术卡。",
       "level": 3,
       "number": "020010",
       "illustrationId": "lightning-bolt"
     },
     {
       "id": "lesser-restoration",
-      "name": "次级复原",
+      "name": "次级复原术",
       "type": "analytic",
       "rarity": "common",
-      "cost": 2,
-      "castCost": 1,
-      "rank": 1,
+      "cost": 1,
+      "castCost": 2,
+      "rank": 2,
       "speed": 1,
       "school": "abjuration",
-      "analysisTurns": 0,
-      "target": "self",
+      "analysisTurns": 1,
+      "target": "player",
       "effects": [
-        {
-          "kind": "clear_all_temporary"
-        },
         {
           "kind": "heal",
           "amount": 2
+        },
+        {
+          "kind": "clear_temporary",
+          "amount": 6,
+          "recipient": "owner"
         }
       ],
-      "text": "立即解析。清除自身所有临时荷载，然后恢复2点生命。不能清除独立或绑定荷载。",
-      "level": 1,
+      "text": "选择1个目标才能发动。为其恢复2点生命值。那之后，可以清除己方6点临时荷载。",
+      "level": 2,
       "number": "020011",
       "illustrationId": "lesser-restoration"
     },
@@ -816,7 +767,7 @@
           "amount": 6
         }
       ],
-      "text": "获得6点临时生命值（不叠加，取较高值）。",
+      "text": "获得6点临时生命值。",
       "level": 3,
       "number": "020012",
       "illustrationId": "false-life"
@@ -839,7 +790,7 @@
           "amount": 2
         }
       ],
-      "text": "获得3点魔素（不超过20），然后获得2点临时荷载，在下一次己方抽牌阶段清除。",
+      "text": "获得3点魔素和2点临时荷载。",
       "castCost": 0,
       "rank": 1,
       "level": 1,
@@ -847,7 +798,9 @@
         "former-action"
       ],
       "number": "030008",
-      "illustrationId": "arcane-recovery"
+      "illustrationId": "arcane-recovery",
+      "school": "abjuration",
+      "analysisTurns": 0
     },
     {
       "id": "shield",
@@ -866,31 +819,7 @@
           "amount": 5
         }
       ],
-      "responses": [
-        {
-          "id": "shield",
-          "name": "本回合护盾",
-          "sources": [
-            "ambush"
-          ],
-          "windows": [
-            "phase_start",
-            "phase_end",
-            "action",
-            "prepare",
-            "cast",
-            "trigger"
-          ],
-          "target": "self",
-          "effects": [
-            {
-              "kind": "shield_for_turn",
-              "amount": 5
-            }
-          ]
-        }
-      ],
-      "text": "此回合，每次受到伤害时降低至多5点；力场伤害降低至多10点。",
+      "text": "此回合，每次受到的伤害-5。若为力场伤害，则-10。",
       "castCost": 0,
       "level": 3,
       "responseOnly": false,
@@ -910,14 +839,14 @@
       "cost": 2,
       "castCost": 2,
       "analysisTurns": 1,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "choose_damage",
           "amount": 8
         }
       ],
-      "text": "对对方玩家造成8点自选伤害，从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择。",
+      "text": "选择1个目标才能发动。对其造成8点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择。",
       "number": "020013",
       "illustrationId": "v2-chromatic-orb"
     },
@@ -933,7 +862,7 @@
       "cost": 2,
       "castCost": 2,
       "analysisTurns": 1,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "damage",
@@ -944,7 +873,7 @@
           "kind": "reveal_enemy_ambush"
         }
       ],
-      "text": "对对方玩家造成8点光耀伤害。那之后，可以展示对方解析区一张盖伏法术（不反转）。",
+      "text": "选择1个目标才能发动。对其造成8点光耀伤害。那之后，可以查看对方解析区1张盖伏的法术卡。",
       "number": "020014",
       "illustrationId": "v2-guiding-bolt"
     },
@@ -960,25 +889,15 @@
       "cost": 4,
       "castCost": 2,
       "analysisTurns": 2,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
-          "kind": "damage",
-          "amount": 5,
-          "damageType": "fire"
-        },
-        {
-          "kind": "damage",
-          "amount": 5,
-          "damageType": "fire"
-        },
-        {
-          "kind": "damage",
+          "kind": "ray_volley",
           "amount": 5,
           "damageType": "fire"
         }
       ],
-      "text": "对对方玩家造成5点火焰伤害，重复三次。",
+      "text": "选择1个目标才能发动。对其造成5点火焰伤害。重复3次，每次可以选择不同目标。",
       "number": "020015",
       "illustrationId": "v2-scorching-ray"
     },
@@ -1005,7 +924,7 @@
           "kind": "destroy_formation_spells"
         }
       ],
-      "text": "对对方玩家造成15点火焰伤害。那之后，可以销毁对方一个阵法承载的所有法术。己方灰烬区每有一张塑能学派法术，此卡设置费用-1（最低0）；发动费用不变。",
+      "text": "对对方造成15点火焰伤害。那之后，可以销毁对方1张阵法卡上的全部法术卡。己方灰烬区每存在1张塑能派系法术卡，此卡的设置费用-1。",
       "traits": [
         "ash_evocation_discount"
       ],
@@ -1058,14 +977,14 @@
           "kind": "recover_enemy_ash_spell"
         }
       ],
-      "text": "选择对方灰烬区一张5级及以下解析法术，将其在己方有合法空环位的阵法上盖伏。",
+      "text": "选择对方灰烬区1张阶级5以下的解析法术卡才能发动。将其在己方解析区盖伏。",
       "responseOnly": false,
       "number": "040004",
       "illustrationId": "v2-funny-box"
     },
     {
       "id": "small-hexagram",
-      "name": "运行之三角星",
+      "name": "四芒星",
       "type": "formation",
       "rarity": "common",
       "level": 1,
@@ -1076,8 +995,8 @@
       "maxRank": 1,
       "baseEligible": true,
       "cost": 0,
-      "text": "此卡在己方阵法槽内仅可存在一张。",
-      "summonCondition": "2魔素。",
+      "text": "此卡在己方场上只能存在1张。",
+      "summonCondition": "魔素×2",
       "recipe": [
         {
           "kind": "mana",
@@ -1088,11 +1007,11 @@
         "unique"
       ],
       "number": "010004",
-      "illustrationId": "triangle-star"
+      "illustrationId": "alpha-v252-small-hexagram"
     },
     {
       "id": "hexagram",
-      "name": "均衡之六芒星",
+      "name": "六芒星",
       "type": "formation",
       "rarity": "uncommon",
       "level": 3,
@@ -1104,7 +1023,7 @@
       "baseEligible": false,
       "cost": 0,
       "text": "此卡不会被效果破坏。",
-      "summonCondition": "【运行之三角星】+魔素×2。",
+      "summonCondition": "【四芒星】+魔素×2",
       "recipe": [
         {
           "kind": "sacrifice_formation",
@@ -1121,23 +1040,23 @@
       ],
       "flavor": "魔法界最流行的一种法阵，你几乎可以在任何一种复杂术式中看到它的身影。六芒星诉说着它的信念：秩序不偏向任何一边。",
       "number": "010005",
-      "illustrationId": "balance"
+      "illustrationId": "alpha-v252-hexagram"
     },
     {
       "id": "octagram",
-      "name": "秩序之八芒星",
+      "name": "八芒星",
       "type": "formation",
       "rarity": "epic",
       "level": 6,
       "body": 2,
       "rings": 4,
       "capacity": 10,
-      "income": 4,
+      "income": 3,
       "maxRank": 6,
       "baseEligible": false,
       "cost": 0,
-      "text": "此卡不会被效果破坏。己方每有一张解析法术解析完成，清除1点荷载。",
-      "summonCondition": "【运行之三角星】+【均衡之六芒星】",
+      "text": "此卡不会被效果破坏。己方玩家每有1张解析法术卡解析完成，清除1点荷载。",
+      "summonCondition": "【四芒星】+【六芒星】",
       "recipe": [
         {
           "kind": "sacrifice_formation",
@@ -1155,23 +1074,23 @@
         "clear_load_on_analysis"
       ],
       "number": "010006",
-      "illustrationId": "v2-octagram"
+      "illustrationId": "alpha-v252-octagram"
     },
     {
       "id": "sun",
-      "name": "至圣之太阳星",
+      "name": "太阳",
       "type": "formation",
       "rarity": "legendary",
       "level": 7,
-      "body": 4,
+      "body": 5,
       "rings": 7,
-      "capacity": 15,
+      "capacity": 24,
       "income": 8,
       "maxRank": 7,
       "baseEligible": false,
       "cost": 0,
-      "text": "此卡不受其他卡的效果影响。在己方阵法槽内存在时，可随时查看对方解析区盖伏法术。",
-      "summonCondition": "【生命之五芒星】+【秩序之八芒星】",
+      "text": "此卡不受其他卡的效果影响。结束阶段，对方解析区盖伏的法术卡全部送去灰烬区。",
+      "summonCondition": "【五芒星】+【八芒星】",
       "recipe": [
         {
           "kind": "sacrifice_formation",
@@ -1186,10 +1105,10 @@
       ],
       "traits": [
         "effect_immune",
-        "inspect_enemy_ambush"
+        "destroy_enemy_ambush_end"
       ],
       "number": "010007",
-      "illustrationId": "v2-sun"
+      "illustrationId": "alpha-v252-sun"
     },
     {
       "id": "upright-cross",
@@ -1302,8 +1221,8 @@
       "maxRank": 3,
       "baseEligible": false,
       "cost": 0,
-      "text": "在此阵法上解析的塑能法术伤害+1。",
-      "summonCondition": "1魔素+已解析的【塑能】法术。",
+      "text": "在此阵法上解析的塑能法术卡伤害+1。",
+      "summonCondition": "解析完成的塑能法术卡×1＋魔素×1",
       "recipe": [
         {
           "kind": "mana",
@@ -1335,8 +1254,8 @@
       "maxRank": 3,
       "baseEligible": false,
       "cost": 0,
-      "text": "此阵法不能同时解析相同学派法术。",
-      "summonCondition": "已解析的不同派系法术×2。",
+      "text": "此阵法不可同时解析相同派系的法术卡。",
+      "summonCondition": "解析完成的不同派系法术卡×2",
       "recipe": [
         {
           "kind": "sacrifice_spell",
@@ -1364,8 +1283,8 @@
       "maxRank": 6,
       "baseEligible": false,
       "cost": 0,
-      "text": "此阵法只能解析火焰伤害法术。每当己方法术从施法区进入灰烬区，对对方玩家造成1点火焰伤害。",
-      "summonCondition": "已解析的火焰伤害法术×2。",
+      "text": "此阵法只能解析火焰伤害法术卡。自己的法术卡每有1张从施法区进入灰烬区，对对方玩家造成1点火焰伤害。",
+      "summonCondition": "解析完成的火焰伤害法术卡×2",
       "recipe": [
         {
           "kind": "sacrifice_spell",
@@ -1383,19 +1302,19 @@
     },
     {
       "id": "storm-crest",
-      "name": "风暴纹章",
+      "name": "恒风·风暴纹章",
       "type": "formation",
       "rarity": "rare",
       "level": 1,
       "body": 2,
-      "rings": 2,
+      "rings": 1,
       "capacity": 5,
       "income": 1,
       "maxRank": 1,
       "cost": 0,
       "baseEligible": false,
-      "text": "这张卡在场上只能存在一张。阵法属性由其上的风暴点数决定：0至2点时为1级、最大解析数1、荷载上限5、魔素收入1；3至5点时为2级、最大解析数2、荷载上限8、魔素收入1；5点以上时为3级、最大解析数3、荷载上限10、魔素收入2。每发动一张风暴法术卡，获得1个风暴点数。一回合一次，移除这张卡上的2个风暴点数，从牌库将一张风暴法术卡加入手牌。",
-      "summonCondition": "支付1魔素。",
+      "text": "这张卡在场上只能存在1张。 这张卡的阵法属性由这张卡上存在的【恒风指示物】决定： 【恒风指示物】为0-2时：阵法等级为1，环位为1，荷载上限为5，魔素收入为1. 【恒风指示物】为3-4时：阵法等级为2，环位为2，荷载上限为8，魔素收入为1 【恒风指示物】为5以上时，阵法等级为3，环位为3，荷载上限为10，魔素收入为2 每发动1张【恒风】法术卡，这张卡获得1【恒风指示物】 一回合一次，移除这张卡上的2【恒风指示物】，从卡组将1张【恒风】法术卡加入手牌。",
+      "summonCondition": "魔素x1",
       "recipe": [
         {
           "kind": "mana",
@@ -1414,7 +1333,7 @@
     },
     {
       "id": "storm-heart",
-      "name": "风暴之心",
+      "name": "恒风·风暴之心",
       "type": "formation",
       "rarity": "legendary",
       "level": 7,
@@ -1425,8 +1344,8 @@
       "maxRank": 7,
       "cost": 0,
       "baseEligible": false,
-      "text": "这张卡被设置时，从牌库将一张大风暴术加入手牌。每发动一张风暴法术卡，获得1个风暴点数。可以移除这张卡上的1个风暴点数，代为销毁或破坏。一回合一次，移除这张卡上的2个风暴点数，并选择一项：抽1张卡；将灰烬区的一张风暴卡加入牌库并洗切。",
-      "summonCondition": "将己方风暴纹章送入灰烬区并支付4魔素。",
+      "text": "这张卡被设置时，从卡组将1张【大风暴术】加入手卡。 每发动1张【恒风】法术卡，这张卡获得1【恒风指示物】。 可以移除这张卡上的1【恒风指示物】代为销毁/破坏。 一回合一次，移除这张卡上的2【恒风指示物】，可以选择1个效果发动 抽1张卡 选择灰烬区1张【恒风】卡加入卡组，洗切。",
+      "summonCondition": "【风暴纹章】+【恒风指示物】x 10 +【魔素】x 4",
       "recipe": [
         {
           "kind": "mana",
@@ -1452,7 +1371,7 @@
     },
     {
       "id": "wind-whisper",
-      "name": "风语术",
+      "name": "恒风·风语术",
       "type": "word",
       "rarity": "common",
       "cost": 1,
@@ -1466,7 +1385,7 @@
           "kind": "search_action"
         }
       ],
-      "text": "场上有风暴阵法卡才能发动。从牌库将一张位阶2及以下的风暴咒符法术加入手牌。",
+      "text": "己方场上存在【恒风】阵法卡才能发动。将1张阶级2以下的【恒风】咒符法术卡从卡组加入手卡。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
@@ -1481,7 +1400,7 @@
     },
     {
       "id": "swift-wind",
-      "name": "极速之风",
+      "name": "恒风·极速之风",
       "type": "word",
       "rarity": "common",
       "cost": 3,
@@ -1495,7 +1414,7 @@
           "kind": "return_enemy_analysis"
         }
       ],
-      "text": "场上有风暴阵法卡才能发动。将对方一张等级2及以下的阵法卡返回副卡组。",
+      "text": "己方场上存在【恒风】阵法卡才能发动。将对方场上1张等级2以下的阵法卡弹回副卡组。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
@@ -1509,7 +1428,7 @@
     },
     {
       "id": "snow-rain-storm",
-      "name": "雪雨暴",
+      "name": "恒风·雪雨暴",
       "type": "word",
       "rarity": "common",
       "cost": 3,
@@ -1518,14 +1437,8 @@
       "speed": 2,
       "school": "transmutation",
       "target": "opponent",
-      "effects": [
-        {
-          "kind": "temporary",
-          "amount": 2,
-          "recipient": "opponent"
-        }
-      ],
-      "text": "专注2。对方使用计时法术需要支付额外的2魔素，对方维持专注所需的魔素翻倍。",
+      "effects": [],
+      "text": "专注2。对方计时法术的设置费用+2，对方维持专注需支付的费用×2。",
       "castCost": 0,
       "analysisTurns": 0,
       "concentration": true,
@@ -1542,7 +1455,7 @@
     },
     {
       "id": "windmaking",
-      "name": "造风术",
+      "name": "恒风·造风术",
       "type": "word",
       "rarity": "common",
       "cost": 2,
@@ -1556,7 +1469,7 @@
           "kind": "return_enemy_analysis"
         }
       ],
-      "text": "将对方一张法术卡弹回手卡。",
+      "text": "将对方解析区1张法术卡弹回持有者手卡。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
@@ -1567,7 +1480,7 @@
     },
     {
       "id": "storm-guidance",
-      "name": "风暴导向",
+      "name": "恒风·风暴导向",
       "type": "word",
       "rarity": "uncommon",
       "cost": 3,
@@ -1581,7 +1494,7 @@
           "kind": "storm_guidance"
         }
       ],
-      "text": "场上有风暴阵法卡才能发动。将场上的一张卡送入灰烬区，然后选择一项：从牌库将一张风暴法术卡加入手牌；获得2个风暴点数；从牌库将一张云雾术或召雷术加入手牌。",
+      "text": "己方场上存在【恒风】阵法卡才能发动。将1张卡从场上送去灰烬区。那之后，可以选择以下1个效果适用：一.将1张 【恒风】法术卡从卡组加入手卡。二.获得2个 【恒风指示物】。三.将1张【云雾术】或【召雷术】从卡组加入手卡。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
@@ -1595,7 +1508,7 @@
     },
     {
       "id": "storm-vortex",
-      "name": "风暴气旋",
+      "name": "恒风·风暴气旋",
       "type": "talisman",
       "rarity": "common",
       "cost": 2,
@@ -1609,7 +1522,7 @@
           "kind": "destroy_enemy_analysis"
         }
       ],
-      "text": "场上有风暴阵法卡才能发动。销毁对方场上一张法术卡。",
+      "text": "己方场上存在【恒风】阵法卡才能发动。销毁对方解析区1张法术卡。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
@@ -1623,7 +1536,7 @@
     },
     {
       "id": "wind-strike",
-      "name": "风击术",
+      "name": "恒风·风击术",
       "type": "talisman",
       "rarity": "rare",
       "cost": 4,
@@ -1658,7 +1571,7 @@
           ]
         }
       ],
-      "text": "场上有风暴阵法卡才能发动。对方设置解析法术卡时才能发动，对方受到等同于那张卡位阶×2的钝击伤害；若那张卡的位阶低于风击术，销毁那张卡。",
+      "text": "己方场上存在【恒风】阵法卡，对方设置解析法术卡时才能发动。对对方造成那张解析法术卡阶级×2点钝击伤害。若此卡的阶级更高，销毁那张解析法术卡。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
@@ -1668,11 +1581,12 @@
         "requires_storm_formation"
       ],
       "number": "040007",
-      "illustrationId": "wind-strike"
+      "illustrationId": "wind-strike",
+      "responseOnly": true
     },
     {
       "id": "great-cyclone",
-      "name": "大旋风术",
+      "name": "恒风·大旋风术",
       "type": "talisman",
       "rarity": "epic",
       "cost": 4,
@@ -1686,7 +1600,7 @@
           "kind": "storm_cyclone"
         }
       ],
-      "text": "场上有风暴阵法卡才能发动。移除5个风暴点数，销毁对方一张阵法卡下的所有法术卡。并造成等同于销毁数量两倍的钝击伤害。",
+      "text": "己方场上存在【恒风】阵法卡，移除5个【恒风指示物】才能发动。销毁对方1张阵法卡上的全部法术卡。那之后，可以对对方造成销毁数量×2点钝击伤害。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
@@ -1700,7 +1614,7 @@
     },
     {
       "id": "storm-brand",
-      "name": "风暴烙印",
+      "name": "恒风·风暴烙印",
       "type": "seal",
       "rarity": "common",
       "cost": 2,
@@ -1708,7 +1622,7 @@
       "level": 0,
       "speed": 1,
       "castCost": 0,
-      "text": "阵法附着效果：只有风暴阵法卡能够附着此卡。附着后，每释放2次风暴法术卡额外获得1个风暴点数。法术附着效果：无。",
+      "text": "仅可附着于【恒风】阵法卡。 附着于阵法：每发动2次【恒风】法术卡，获得1个【恒风指示物】。 附着于法术：无效果。",
       "traits": [
         "storm_release_counter",
         "storm_formation_host_only"
@@ -1721,7 +1635,7 @@
     },
     {
       "id": "storm-annihilation-crest",
-      "name": "风暴湮灭之纹章",
+      "name": "恒风·湮灭之纹章",
       "type": "seal",
       "rarity": "rare",
       "cost": 2,
@@ -1730,7 +1644,7 @@
       "speed": 1,
       "castCost": 0,
       "damageBonus": 4,
-      "text": "阵法附着效果：只有风暴阵法卡能够附着此卡。附着后，可以移除2个风暴点数销毁对方场上一张空闲的阵法卡。法术附着效果：额外造成4点雷鸣伤害。",
+      "text": "仅可附着于【恒风】阵法卡。 附着于阵法：附着时，可以移除2个【恒风指示物】，销毁对方场上一张空闲阵法卡。 附着于法术：额外造成4点雷鸣伤害。",
       "traits": [
         "storm_formation_host_restriction",
         "thunder_damage_bonus",
@@ -1744,7 +1658,7 @@
     },
     {
       "id": "ice-storm",
-      "name": "冰风暴",
+      "name": "恒风·冰风暴",
       "type": "analytic",
       "rarity": "rare",
       "cost": 4,
@@ -1754,7 +1668,7 @@
       "speed": 1,
       "school": "evocation",
       "analysisTurns": 1,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "damage",
@@ -1762,11 +1676,11 @@
           "damageType": "cold"
         },
         {
-          "kind": "advance_all_enemy_analysis",
+          "kind": "delay_all_enemy_analysis",
           "amount": 1
         }
       ],
-      "text": "对目标造成8点寒冷伤害，选择对方解析区的所有解析法术卡使解析进度+1。",
+      "text": "选择1个目标才能发动。对其造成8点寒冷伤害。那之后，可以使对方解析区全部解析法术卡的解析时间+1。",
       "tags": [
         "风暴"
       ],
@@ -1775,7 +1689,7 @@
     },
     {
       "id": "cutting-wind",
-      "name": "切割之风",
+      "name": "恒风·切割之风",
       "type": "analytic",
       "rarity": "common",
       "cost": 1,
@@ -1785,13 +1699,13 @@
       "speed": 1,
       "school": "transmutation",
       "analysisTurns": 1,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "cutting_wind"
         }
       ],
-      "text": "场上有风暴阵法卡才能设置。销毁自己场上一张空闲阵法卡，对目标造成4点挥砍伤害，外加销毁阵法等级的雷鸣伤害。",
+      "text": "己方场上存在【恒风】阵法卡才能设置。选择1个目标才能发动。对其造成4点挥砍伤害。那之后，可以销毁己方场上1张空白阵法卡，额外造成其等级的雷鸣伤害。",
       "tags": [
         "风暴"
       ],
@@ -1803,7 +1717,7 @@
     },
     {
       "id": "great-storm",
-      "name": "大风暴术",
+      "name": "恒风·大风暴术",
       "type": "analytic",
       "rarity": "legendary",
       "cost": 0,
@@ -1812,7 +1726,7 @@
       "level": 7,
       "speed": 1,
       "school": "transmutation",
-      "analysisTurns": 2,
+      "analysisTurns": 1,
       "duration": 1,
       "target": "opponent",
       "effects": [
@@ -1831,7 +1745,7 @@
           "kind": "destroy_enemy_analysis"
         }
       ],
-      "text": "场上有风暴之心作为阵法才能设置。在风暴之心上的这张卡不受其他卡的效果影响；这张卡在解析区时，自己不能设置其他解析法术卡。计时。发动时，移除风暴之心上的所有风暴点数，并以移除的点数作为计时回合数；销毁对方场上所有卡，并对对方造成等同于销毁卡数量×4的挥砍伤害。计时回合中，对对方造成8点挥砍伤害，之后可以销毁对方场上一张法术卡。",
+      "text": "此卡仅可在【风暴之心】上设置，移除【风暴之心】上的全部【恒风指示物】才能设置。此卡不受其他卡的效果影响。此卡在己方解析区存在，己方其他解析法术卡不可设置。 计时X，X为此卡设置时移除的【恒风指示物】数量。发动时，销毁对方解析区全部法术卡，对对方造成销毁数量×4点挥砍伤害。己方结束阶段开始时，对对方造成8点挥砍伤害。那之后，可以销毁对方解析区1张法术卡。",
       "tags": [
         "风暴"
       ],
@@ -1861,7 +1775,7 @@
           "kind": "lock_analysis"
         }
       ],
-      "text": "计时2。最多选择场上的2张解析法术卡，被选择的卡在该法术持续时间内无法被准备。",
+      "text": "计时2。选择双方解析区最多2张解析法术卡，使其直到此卡离场不可准备施法。",
       "number": "020021",
       "illustrationId": "cloud-mist"
     },
@@ -1877,12 +1791,12 @@
       "speed": 1,
       "school": "evocation",
       "analysisTurns": 1,
-      "target": "opponent",
+      "target": "player",
       "effects": [
         {
           "kind": "damage",
           "amount": 9,
-          "damageType": "lightning"
+          "damageType": "thunder"
         },
         {
           "kind": "temporary",
@@ -1890,7 +1804,7 @@
           "recipient": "opponent"
         }
       ],
-      "text": "对目标造成9点闪电伤害，并给予对方5点荷载，对方的回合结束阶段清除。",
+      "text": "选择1个目标才能发动。对其造成9点雷鸣伤害，使对方获得5点荷载，对方结束阶段清除。",
       "number": "020022",
       "illustrationId": "thunder-summon"
     },
@@ -1899,7 +1813,7 @@
       "name": "味契·柴堆",
       "type": "formation",
       "rarity": "rare",
-      "cost": 2,
+      "cost": 3,
       "rank": 1,
       "level": 1,
       "maxRank": 1,
@@ -1913,19 +1827,20 @@
       "body": 1,
       "rings": 1,
       "capacity": 5,
-      "income": 2,
+      "income": 1,
       "traits": [
-        "unique"
+        "max_two"
       ],
-      "text": "此卡在己方场上只能存在1张。",
-      "summonCondition": "支付2魔素；己方场上只能存在1张。"
+      "text": "此卡在己方场上只能存在2张。",
+      "summonCondition": "魔素×3",
+      "recipe": []
     },
     {
       "id": "sique-campfire",
       "name": "味契·篝火",
       "type": "formation",
       "rarity": "rare",
-      "cost": 0,
+      "cost": 4,
       "rank": 1,
       "level": 3,
       "maxRank": 3,
@@ -1939,11 +1854,11 @@
       "body": 2,
       "rings": 3,
       "capacity": 8,
-      "income": 4,
+      "income": 3,
       "recipe": [
         {
           "kind": "sacrifice_formation",
-          "amount": 1,
+          "amount": 2,
           "definition": "sique-woodpile"
         },
         {
@@ -1952,15 +1867,15 @@
           "fireDamage": true
         }
       ],
-      "text": "己方场上存在味契·魔力坩埚时，此卡不受其他卡的效果影响。此卡上设置的火焰伤害法术卡伤害+1。",
-      "summonCondition": "祭品：己方场上1张味契·柴堆；弃置手牌中1张火焰伤害法术。"
+      "text": "己方场上存在【味契·魔力坩埚】，此卡不受其他卡的效果影响。此卡上设置的火焰伤害法术卡额外造成1点火焰伤害。",
+      "summonCondition": "【味契·柴堆】×2＋手卡的火焰伤害法术卡×1+魔素×4"
     },
     {
       "id": "sique-cauldron",
       "name": "味契·魔力坩埚",
       "type": "formation",
       "rarity": "rare",
-      "cost": 2,
+      "cost": 5,
       "rank": 1,
       "level": 5,
       "maxRank": 5,
@@ -1974,11 +1889,11 @@
       "body": 3,
       "rings": 5,
       "capacity": 11,
-      "income": 6,
+      "income": 4,
       "recipe": [
         {
           "kind": "discard_hand",
-          "amount": 2
+          "amount": 3
         }
       ],
       "traits": [
@@ -1991,8 +1906,8 @@
           "amount": 0
         }
       ],
-      "text": "己方场上存在味契·篝火才能设置。此卡存在时，己方只能发动味契卡和火焰伤害法术卡。己方结束阶段开始时，将此卡上附着的全部符文送入灰烬区。",
-      "summonCondition": "己方场上存在味契·篝火；支付2魔素并弃置2张手牌。"
+      "text": "己方场上存在【味契·篝火】才能设置。此卡只要在己方场上存在，己方仅可使用【味契】卡。己方结束阶段开始时，将此卡上附着的全部符文卡解除附着。",
+      "summonCondition": "手卡×3+魔素×5"
     },
     {
       "id": "sique-vinegar",
@@ -2019,8 +1934,14 @@
           "recipient": "owner"
         }
       ],
-      "effects": [],
-      "text": "仅可附着于味契·魔力坩埚。己方受到的伤害降低2点。解除附着时，获得4点临时生命。"
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 2,
+          "recipient": "owner"
+        }
+      ],
+      "text": "仅可附着于【味契·魔力坩埚】。解除附着时，获得4点临时生命值。 附着于阵法卡：获得2点临时生命值。 附着于法术卡：无效果。"
     },
     {
       "id": "sique-sugar",
@@ -2047,7 +1968,7 @@
         }
       ],
       "effects": [],
-      "text": "仅可附着于味契·魔力坩埚。己方法术的设置和发动费用-1。解除附着时，获得2点魔素。"
+      "text": "仅可附着于【味契·魔力坩埚】。解除附着时，获得2点魔素。 附着于阵法卡：己方法术卡的设置/发动费用-1/-1。 附着于法术卡：无效果。"
     },
     {
       "id": "sique-salt",
@@ -2079,7 +2000,7 @@
           "amount": 0
         }
       ],
-      "text": "仅可附着于味契·魔力坩埚。附着时，将牌库中1张味契符文送入灰烬区。解除附着时，将灰烬区1张味契法术加入手牌。"
+      "text": "仅可附着于【味契·魔力坩埚】。解除附着时，将1张【味契】法术卡从灰烬区加入手卡。 附着于阵法卡：附着时，将1张【味契】符文卡从卡组送去灰烬区。 附着于法术卡：无效果。"
     },
     {
       "id": "sique-chili",
@@ -2108,7 +2029,7 @@
         }
       ],
       "effects": [],
-      "text": "仅可附着于味契·魔力坩埚。对方每抽1张牌，对其造成2点火焰伤害。解除附着时，对对方造成4点火焰伤害。"
+      "text": "仅可附着于【味契·魔力坩埚】。解除附着时，对对方造成4点火焰伤害。 附着于阵法卡：对方每抽1张卡，对对方造成1点火焰伤害。 附着于法术卡：无效果。"
     },
     {
       "id": "sique-parsley",
@@ -2140,7 +2061,7 @@
           "amount": 0
         }
       ],
-      "text": "仅可附着于味契·魔力坩埚。附着时，将牌库中1张味契法术送入灰烬区。解除附着时，将灰烬区1张味契符文加入手牌。"
+      "text": "仅可附着于【味契·魔力坩埚】。解除附着时，将1张【味契】符文卡从灰烬区加入手卡。 附着于阵法卡：附着时，将1张【味契】法术卡从卡组送去灰烬区。 附着于法术卡：无效果。"
     },
     {
       "id": "sique-mushroom-soup",
@@ -2160,7 +2081,7 @@
       "analysisTurns": 2,
       "school": "abjuration",
       "traits": [
-        "sique_detach_2"
+        "sique_detach_1"
       ],
       "target": "self",
       "effects": [
@@ -2173,7 +2094,7 @@
           "amount": 6
         }
       ],
-      "text": "将2张味契符文解除附着才能发动。恢复4点生命，获得6点临时生命。"
+      "text": "将1张【味契】符文卡解除附着才能发动。恢复4点生命值，获得6点临时生命值。"
     },
     {
       "id": "sique-pancakes",
@@ -2202,7 +2123,7 @@
           "amount": 4
         }
       ],
-      "text": "将2张味契符文解除附着才能发动。直到下个己方准备阶段开始时，每次受到的伤害最多为4点。"
+      "text": "将2张【味契】符文卡解除附着才能发动。直到下个己方准备阶段开始时，每次受到的伤害最多为4点。"
     },
     {
       "id": "sique-divine-stew",
@@ -2231,7 +2152,7 @@
           "amount": 0
         }
       ],
-      "text": "将3张味契符文解除附着才能发动。这个回合，以对方生命值代替己方魔素费用。"
+      "text": "将3张【味契】符文卡解除附着才能发动。这个回合，将对方生命值作为己方费用的代替。"
     },
     {
       "id": "sique-ingredients",
@@ -2255,7 +2176,7 @@
           "amount": 2
         }
       ],
-      "text": "将牌库中2张味契符文加入手牌。在加手回合附着其中1张时，将仍在手牌中的另1张送入灰烬区。",
+      "text": "将2张【味契】符文卡从卡组加入手卡。若在加手的回合附着了其中1张，将另1张送去灰烬区。",
       "analysisTurns": 0
     },
     {
@@ -2265,7 +2186,7 @@
       "rarity": "rare",
       "cost": 2,
       "rank": 5,
-      "level": 3,
+      "level": 5,
       "speed": 2,
       "castCost": 0,
       "tags": [
@@ -2283,7 +2204,7 @@
           "amount": 1
         }
       ],
-      "text": "将1张味契符文解除附着才能发动。将牌库中1张味契符文附着到己方味契阵法上。",
+      "text": "将1张【味契】符文卡解除附着才能发动。将1张【味契】符文卡从卡组附着到己方场上1张【味契】阵法卡上。",
       "analysisTurns": 0
     },
     {
@@ -2293,7 +2214,7 @@
       "rarity": "rare",
       "cost": 3,
       "rank": 3,
-      "level": 1,
+      "level": 3,
       "speed": 2,
       "castCost": 0,
       "tags": [
@@ -2312,7 +2233,7 @@
           "amount": 1
         }
       ],
-      "text": "将己方灰烬区最多5张味契卡返回牌库或副卡组。那之后，可以抽1张牌。",
+      "text": "将己方灰烬区最多5张【味契】卡返回卡组/副卡组。那之后，可以抽1张卡。",
       "analysisTurns": 0
     },
     {
@@ -2361,7 +2282,7 @@
           ]
         }
       ],
-      "text": "仅可响应对方发动的将销毁味契阵法的法术。将其无效并销毁。那之后，对对方造成10点火焰伤害。",
+      "text": "对方发动将【味契】阵法卡销毁的法术卡时才能发动。将其无效并销毁，对对方造成10点火焰伤害。",
       "analysisTurns": 0
     },
     {
@@ -2369,7 +2290,7 @@
       "name": "味契·飘香诱惑",
       "type": "talisman",
       "rarity": "rare",
-      "cost": 4,
+      "cost": 5,
       "rank": 5,
       "level": 5,
       "speed": 3,
@@ -2389,33 +2310,689 @@
           "amount": 0
         }
       ],
+      "text": "己方场上存在【味契·魔力坩埚】才能发动。将双方手卡全部返回卡组。那之后，双方可以根据那个数量抽卡。",
+      "analysisTurns": 0
+    },
+    {
+      "id": "earthquake",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "unravel",
+      "number": "020026",
+      "name": "地震术",
+      "type": "analytic",
+      "text": "计时2。己方主要阶段开始时，将双方解析区盖伏的法术卡全部送去灰烬区。",
+      "rank": 4,
+      "level": 4,
+      "school": "transmutation",
+      "cost": 4,
+      "castCost": 0,
+      "analysisTurns": 2,
+      "speed": 1,
+      "duration": 2,
+      "effects": [],
+      "onMain": [
+        {
+          "kind": "clear_all_ambush",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "sique-roast",
+      "rarity": "rare",
+      "target": "player",
+      "illustrationId": "sique-roast",
+      "number": "020027",
+      "name": "味契·炙烤",
+      "type": "analytic",
+      "text": "此卡仅可在【味契·篝火】上设置。选择1个目标才能发动。对其造成6点火焰伤害。那之后，可以将1张【味契】卡从灰烬区加入手卡。",
+      "rank": 3,
+      "level": 3,
+      "school": "abjuration",
+      "cost": 2,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 1,
+      "tags": [
+        "味契"
+      ],
+      "traits": [
+        "sique_campfire_only"
+      ],
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 6,
+          "damageType": "fire"
+        },
+        {
+          "kind": "sique_roast_recover",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "arcana-empress",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-empress",
+      "number": "020028",
+      "name": "皇后",
+      "type": "analytic",
+      "text": "计时4。己方结束阶段开始时，恢复2点生命值，清除2点荷载。",
+      "rank": 4,
+      "level": 4,
+      "school": "arcana",
+      "cost": 4,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "duration": 4,
+      "traits": [
+        "end_phase_start"
+      ],
+      "effects": [],
+      "onEnd": [
+        {
+          "kind": "heal",
+          "amount": 2,
+          "recipient": "owner"
+        },
+        {
+          "kind": "clear_any_load",
+          "amount": 2,
+          "recipient": "owner"
+        }
+      ]
+    },
+    {
+      "id": "arcana-lovers",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-lovers",
+      "number": "020029",
+      "name": "恋人",
+      "type": "analytic",
+      "text": "发动后，此卡进入灰烬区时，对方必须将自己解析区1张法术卡送入灰烬区。",
+      "rank": 3,
+      "level": 3,
+      "school": "arcana",
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "effects": [
+        {
+          "kind": "arcana_lovers",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "arcana-chariot",
+      "rarity": "rare",
+      "target": "player",
+      "illustrationId": "arcana-chariot",
+      "number": "020030",
+      "name": "战车",
+      "type": "analytic",
+      "text": "选择一个目标才能发动。对其造成20点力场伤害。每当己方【战车】以外法术卡的解析时间-X时，此卡解析时间-1。",
+      "rank": 4,
+      "level": 4,
+      "school": "arcana",
+      "cost": 5,
+      "castCost": 0,
+      "analysisTurns": 8,
+      "speed": 1,
+      "traits": [
+        "arcana_chariot"
+      ],
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 20,
+          "damageType": "force"
+        }
+      ]
+    },
+    {
+      "id": "arcana-strength",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-strength",
+      "number": "020031",
+      "name": "力量",
+      "type": "analytic",
+      "text": "永续。此卡在己方场上仅可存在1张。双方受到的伤害×2。",
+      "rank": 6,
+      "level": 6,
+      "school": "arcana",
+      "cost": 8,
+      "castCost": 0,
+      "analysisTurns": 3,
+      "speed": 1,
+      "perpetual": true,
+      "traits": [
+        "unique",
+        "arcana_strength"
+      ],
+      "effects": []
+    },
+    {
+      "id": "arcana-hermit",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-hermit",
+      "number": "020032",
+      "name": "隐士",
+      "type": "analytic",
+      "text": "将双方解析区法术卡全部盖伏。",
+      "rank": 6,
+      "level": 6,
+      "school": "arcana",
+      "cost": 9,
+      "castCost": 0,
+      "analysisTurns": 1,
+      "speed": 2,
+      "effects": [
+        {
+          "kind": "arcana_hermit",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "arcana-hanged-man",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-hanged-man",
+      "number": "020033",
+      "name": "倒吊人",
+      "type": "analytic",
+      "text": "支付一半生命值才能发动。双方将灰烬区与卡组交换使用。",
+      "rank": 7,
+      "level": 7,
+      "school": "arcana",
+      "cost": 6,
+      "castCost": 9,
+      "analysisTurns": 1,
+      "speed": 1,
+      "traits": [
+        "arcana_hanged_cost"
+      ],
+      "effects": [
+        {
+          "kind": "arcana_hanged_man",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "arcana-death",
+      "rarity": "rare",
+      "target": "player",
+      "illustrationId": "arcana-death",
+      "number": "020034",
+      "name": "死神",
+      "type": "analytic",
+      "text": "选择一个目标才能发动。选择对其造成40点暗蚀或光耀伤害。每有1张卡进入灰烬区，此卡解析时间-1。",
+      "rank": 5,
+      "level": 5,
+      "school": "arcana",
+      "cost": 13,
+      "castCost": 0,
+      "analysisTurns": 12,
+      "speed": 2,
+      "traits": [
+        "arcana_death"
+      ],
+      "effects": [
+        {
+          "kind": "arcana_death",
+          "amount": 40
+        }
+      ]
+    },
+    {
+      "id": "arcana-temperance",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-temperance",
+      "number": "020035",
+      "name": "节制",
+      "type": "analytic",
+      "text": "专注2。每次己方消耗魔素时，获得1点魔素。",
+      "rank": 4,
+      "level": 4,
+      "school": "arcana",
+      "cost": 6,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "concentration": true,
+      "concentrationUpkeep": 2,
+      "traits": [
+        "arcana_temperance"
+      ],
+      "effects": []
+    },
+    {
+      "id": "arcana-devil",
+      "rarity": "rare",
+      "target": "pending_link",
+      "illustrationId": "arcana-devil",
+      "number": "020036",
+      "name": "恶魔",
+      "type": "analytic",
+      "text": "对方选择法术卡的目标时才能发动。改变对方选择的目标，获得6点荷载。每造成1次火焰伤害，此卡解析时间-1。",
+      "rank": 6,
+      "level": 6,
+      "school": "arcana",
+      "cost": 6,
+      "castCost": 6,
+      "analysisTurns": 6,
+      "speed": 4,
+      "responseOnly": true,
+      "traits": [
+        "arcana_devil"
+      ],
+      "effects": [
+        {
+          "kind": "arcana_devil",
+          "amount": 0
+        }
+      ],
       "responses": [
         {
-          "id": "aroma_lure",
-          "name": "双方手牌返回牌库并可重抽",
+          "id": "retarget_spell",
+          "name": "改变法术目标",
           "sources": [
-            "ambush",
             "casting"
           ],
           "windows": [
-            "phase_start",
-            "phase_end",
-            "action",
-            "prepare",
-            "cast",
-            "trigger"
+            "cast"
           ],
-          "target": "none",
+          "eventOwner": "opponent",
+          "target": "pending_link",
           "effects": [
             {
-              "kind": "sique_shuffle_hands",
+              "kind": "arcana_devil",
               "amount": 0
             }
           ]
         }
+      ]
+    },
+    {
+      "id": "arcana-tower",
+      "rarity": "rare",
+      "target": "own_card",
+      "illustrationId": "arcana-tower",
+      "number": "020037",
+      "name": "高塔",
+      "type": "analytic",
+      "text": "选择己方场上1张阵法卡才能发动。将其销毁。那之后，可以销毁对方场上1张阵法卡。",
+      "rank": 4,
+      "level": 4,
+      "school": "arcana",
+      "cost": 7,
+      "castCost": 0,
+      "analysisTurns": 1,
+      "speed": 2,
+      "effects": [
+        {
+          "kind": "arcana_tower",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "sique-blowfire",
+      "rarity": "rare",
+      "target": "opponent",
+      "illustrationId": "sique-blowfire",
+      "number": "030018",
+      "name": "味契·吹火术",
+      "type": "word",
+      "text": "己方场上存在【味契·篝火】才能发动。对对方造成3点火焰伤害。那之后，可以将1张卡从手卡送去灰烬区，额外造成4点火焰伤害。",
+      "rank": 3,
+      "level": 3,
+      "school": "transmutation",
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "tags": [
+        "味契"
       ],
-      "text": "己方场上存在味契·魔力坩埚才能发动。双方手牌全部返回各自牌库，然后各自可以抽取与放回数量相同的牌。",
-      "analysisTurns": 0
+      "traits": [
+        "sique_requires_campfire"
+      ],
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "fire"
+        },
+        {
+          "kind": "sique_blowfire",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "arcana-fool",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-fool",
+      "number": "030019",
+      "name": "愚者",
+      "type": "word",
+      "text": "己方手卡5张以上，解析区没有其他法术卡时才能发动。将手卡全部洗回卡组，抽5张卡。",
+      "rank": 1,
+      "level": 1,
+      "school": "arcana",
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "traits": [
+        "arcana_fool_condition"
+      ],
+      "effects": [
+        {
+          "kind": "arcana_fool",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "arcana-magician",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-magician",
+      "number": "030020",
+      "name": "魔术师",
+      "type": "word",
+      "text": "从卡组选择3张卡名不同的卡向对方展示。对方随机选择1张卡加入你的手卡，其余2张卡抹除。",
+      "rank": 2,
+      "level": 2,
+      "school": "arcana",
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "effects": [
+        {
+          "kind": "arcana_magician",
+          "amount": 3
+        }
+      ]
+    },
+    {
+      "id": "arcana-priestess",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-priestess",
+      "number": "030021",
+      "name": "女祭司",
+      "type": "word",
+      "text": "将己方手卡或场上1张符文卡送入灰烬区才能发动。将1张符文卡加入手牌。",
+      "rank": 3,
+      "level": 3,
+      "school": "arcana",
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "traits": [
+        "arcana_priestess_cost"
+      ],
+      "effects": [
+        {
+          "kind": "arcana_priestess",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "arcana-emperor",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-emperor",
+      "number": "030022",
+      "name": "皇帝",
+      "type": "word",
+      "text": "将解析区1张法术卡抹除才能发动。将1张法术阶级为X的法术卡加入手卡，X为抹除法术卡的法术阶级+3。",
+      "rank": 3,
+      "level": 3,
+      "school": "arcana",
+      "cost": 5,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "traits": [
+        "arcana_emperor_cost"
+      ],
+      "effects": [
+        {
+          "kind": "arcana_emperor",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "arcana-justice",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-justice",
+      "number": "030023",
+      "name": "正义",
+      "type": "word",
+      "text": "直到双方解析区法术卡数量相同，法术卡多的一方必须将解析区法术卡送去灰烬区。",
+      "rank": 5,
+      "level": 5,
+      "school": "arcana",
+      "cost": 5,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "effects": [
+        {
+          "kind": "arcana_justice",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "arcana-world",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-world",
+      "number": "030024",
+      "name": "世界",
+      "type": "word",
+      "text": "获得1点魔素。选择最多1张解析法术卡从卡组加入手卡。选择【世界】以外的最多1张言灵法术卡从卡组加入手牌。选择最多1张咒符法术卡加入手牌。选择最多1张符文卡加入手牌。",
+      "rank": 6,
+      "level": 6,
+      "school": "arcana",
+      "cost": 10,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "effects": [
+        {
+          "kind": "mana",
+          "amount": 1,
+          "recipient": "owner"
+        },
+        {
+          "kind": "arcana_world",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "sique-backfire",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "sique-backfire",
+      "number": "040011",
+      "name": "味契·回火",
+      "type": "talisman",
+      "text": "己方场上存在【味契·魔力坩埚】才能发动。将对方灰烬区最多5张卡返回卡组/副卡组，对对方造成那个数量的火焰伤害，己方恢复那个数量×2的生命值。",
+      "rank": 5,
+      "level": 5,
+      "school": "evocation",
+      "cost": 4,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "tags": [
+        "味契"
+      ],
+      "traits": [
+        "sique_requires_cauldron"
+      ],
+      "effects": [
+        {
+          "kind": "sique_backfire",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "arcana-hierophant",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "arcana-hierophant",
+      "number": "040012",
+      "name": "教皇",
+      "type": "talisman",
+      "text": "免疫己方下一次受到的伤害。双方结束阶段开始时失效。",
+      "rank": 4,
+      "level": 4,
+      "school": "arcana",
+      "cost": 6,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 3,
+      "effects": [
+        {
+          "kind": "prevent_next_damage",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "three-star",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "three-star",
+      "number": "010019",
+      "name": "三芒星",
+      "type": "formation",
+      "text": "此卡在己方场上只能存在1张。此卡上设置法术卡时，使其解析时间-1，获得1点荷载。",
+      "level": 2,
+      "body": 1,
+      "rings": 3,
+      "capacity": 5,
+      "income": 2,
+      "maxRank": 2,
+      "summonCondition": "【四芒星】+手卡×1",
+      "cost": 0,
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "small-hexagram"
+        },
+        {
+          "kind": "discard_hand",
+          "amount": 1
+        }
+      ],
+      "traits": [
+        "unique",
+        "quick_host_analysis_1"
+      ]
+    },
+    {
+      "id": "two-star",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "two-star",
+      "number": "010020",
+      "name": "二芒星",
+      "type": "formation",
+      "text": "此卡在己方场上只能存在1张。此卡上设置法术卡时，使其解析时间-2，获得2点荷载。",
+      "level": 4,
+      "body": 1,
+      "rings": 2,
+      "capacity": 5,
+      "income": 3,
+      "maxRank": 4,
+      "summonCondition": "【三芒星】+手卡×1",
+      "cost": 0,
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "three-star"
+        },
+        {
+          "kind": "discard_hand",
+          "amount": 1
+        }
+      ],
+      "traits": [
+        "unique",
+        "quick_host_analysis_2"
+      ]
+    },
+    {
+      "id": "moon",
+      "rarity": "rare",
+      "target": "none",
+      "illustrationId": "moon",
+      "number": "010021",
+      "name": "月亮",
+      "type": "formation",
+      "text": "此卡不受其他卡的效果影响。己方不会受到来自过载的真实伤害，对方法术卡不可设置，只可盖伏。",
+      "level": 7,
+      "body": 5,
+      "rings": 7,
+      "capacity": 24,
+      "income": 8,
+      "maxRank": 7,
+      "summonCondition": "【四芒星】+【三芒星】+【二芒星】+阵体2【芒星】阵法卡×1",
+      "cost": 0,
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "small-hexagram"
+        },
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "three-star"
+        },
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "two-star"
+        },
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1
+        }
+      ],
+      "traits": [
+        "effect_immune",
+        "moon"
+      ]
     }
   ]
 }

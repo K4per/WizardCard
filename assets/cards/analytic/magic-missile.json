@@ -8,51 +8,19 @@
   "rank": 2,
   "speed": 2,
   "school": "evocation",
-  "target": "opponent",
+  "target": "player",
   "effects": [
     {
       "kind": "damage",
-      "amount": 2,
+      "amount": 4,
       "damageType": "force"
     },
     {
-      "kind": "destroy_ambush"
+      "kind": "destroy_ambush",
+      "amount": 0
     }
   ],
-  "responses": [
-    {
-      "id": "quick_cast",
-      "name": "快速释放",
-      "sources": [
-        "analysis"
-      ],
-      "windows": [
-        "phase_start",
-        "phase_end",
-        "action",
-        "prepare",
-        "cast",
-        "trigger"
-      ],
-      "target": "opponent",
-      "phases": [
-        "cast"
-      ],
-      "eventOwner": "opponent",
-      "requiresSource": true,
-      "effects": [
-        {
-          "kind": "damage",
-          "amount": 2,
-          "damageType": "force"
-        },
-        {
-          "kind": "destroy_ambush"
-        }
-      ]
-    }
-  ],
-  "text": "对对方玩家造成2点力场伤害。那之后，可以销毁对方解析区一张盖伏法术。",
+  "text": "选择1个目标才能发动。对其造成4点力场伤害。那之后，可以销毁对方解析区1张盖伏的法术卡。",
   "flavor": "折磨你的对手。",
   "level": 2,
   "analysisTurns": 1,

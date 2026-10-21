@@ -30,8 +30,11 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
         // Shatter Ring chooses its empty formation when it is released. The
         // preparation announcement only opens the response window and must not
         // capture a target that has no effect yet.
-        if (def.id != "unravel" && !validTargets(s, def.target, def.targetCount, actor, cmd.target, cmd.targets))
+        if (catalog_.usesAlphaV252() && def.id == "unravel") {
+            if (cmd.target || !cmd.targets.empty()) return "target: 碎环术在发动时选择目标";
+        } else if (!validTargets(s, def.target, def.targetCount, actor, cmd.target, cmd.targets)) {
             return "target: 无效目标";
+        }
         if (!deferred && ((actor != s.active && (!c.wasAmbushed || c.ambushedTurn >= s.globalTurn || def.speed < 2)) ||
             (def.speed == 1 && s.phase != Phase::Main) ||
             (def.speed == 2 && s.phase != Phase::Main && s.phase != Phase::Cast)))
@@ -46,6 +49,7 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
             for (const auto &link : s.chain->links)
                 if (link.kind == LinkKind::Preparation && link.item.source == cmd.card) return "not_ready";
         ChainLink root; root.kind = LinkKind::Preparation; root.item = snapshot(c, def);
+        if (catalog_.usesAlphaV252() && def.id == "unravel") root.item.target = TargetKind::None;
         root.item.effects.clear(); root.item.requiresSource = true; root.speed = def.speed;
         if (deferred) s.deferredPreparations.push_back(std::move(root));
         else startChain(ResponseWindow::Prepare, std::move(root), 1 - s.active);
@@ -110,7 +114,9 @@ std::vector<PrepareCast> GameEngine::preparationsFor(PlayerId actor, DecisionId 
             std::vector<CardId> discards{0};
             if (def.extraDiscard)
                 discards = inZone(state_, actor, Zone::Hand);
-            for (const auto &targets : sets(state_, def.target, def.targetCount, actor))
+            const auto targetSets = catalog_.usesAlphaV252() && def.id == "unravel"
+                ? std::vector<std::vector<CardId>>{{}} : sets(state_, def.target, def.targetCount, actor);
+            for (const auto &targets : targetSets)
                 for (auto discard : discards) {
                     PrepareCast cmd{cid, targets.empty() ? 0 : targets.front(), discard, targets, id};
                     auto trial = *this;
@@ -192,6 +198,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             auto error = validateResponse(actor, *r);
             if (!error.empty())
                 return error;
+            if (catalog_.usesAlphaV252() && r->ability == "__activate_spell")
+                return activateSpellV252(actor, r->card, r->target, r->targets, r->discard, false, r->decision);
             auto &c = s.cards.at(r->card);
             const auto &def = catalog_.at(c.definition);
             const auto a = *ability(def, r->ability);
@@ -733,8 +741,10 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                 } else if constexpr (std::is_same_v<T, AttachSeal>) {
                     if (!owned(cmd.card, Zone::Hand) || def.type != CardType::Seal ||
                         !(owned(cmd.host, Zone::Analysis) || owned(cmd.host, Zone::Words)) ||
-                        seals(s, cmd.host) || s.cards.at(cmd.host).faceDown)
-                        return "seal_limit: 宿主不合法或已有符文";
+                        s.cards.at(cmd.host).faceDown)
+                        return "seal_host: 宿主不合法";
+                    if (!catalog_.usesAlphaV252() && seals(s, cmd.host))
+                        return "seal_limit: 宿主已有符文";
                     if (!cost(def.cost, 0))
                         return "cost: 魔素不足";
                     pay(cmd.card, def.cost);

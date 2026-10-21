@@ -1,6 +1,6 @@
 {
   "id": "wind-strike",
-  "name": "风击术",
+  "name": "恒风·风击术",
   "type": "talisman",
   "rarity": "rare",
   "cost": 4,
@@ -35,7 +35,7 @@
       ]
     }
   ],
-  "text": "场上有风暴阵法卡才能发动。对方设置解析法术卡时才能发动，对方受到等同于那张卡位阶×2的钝击伤害；若那张卡的位阶低于风击术，销毁那张卡。",
+  "text": "己方场上存在【恒风】阵法卡，对方设置解析法术卡时才能发动。对对方造成那张解析法术卡阶级×2点钝击伤害。若此卡的阶级更高，销毁那张解析法术卡。",
   "castCost": 0,
   "analysisTurns": 0,
   "tags": [
@@ -45,5 +45,6 @@
     "requires_storm_formation"
   ],
   "number": "040007",
-  "illustrationId": "wind-strike"
+  "illustrationId": "wind-strike",
+  "responseOnly": true
 }

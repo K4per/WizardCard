@@ -1,0 +1,23 @@
+{
+  "id": "arcana-strength",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "arcana-strength",
+  "number": "020031",
+  "name": "力量",
+  "type": "analytic",
+  "text": "永续。此卡在己方场上仅可存在1张。双方受到的伤害×2。",
+  "rank": 6,
+  "level": 6,
+  "school": "arcana",
+  "cost": 8,
+  "castCost": 0,
+  "analysisTurns": 3,
+  "speed": 1,
+  "perpetual": true,
+  "traits": [
+    "unique",
+    "arcana_strength"
+  ],
+  "effects": []
+}

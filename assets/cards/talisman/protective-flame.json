@@ -17,30 +17,7 @@
       "kind": "grant_resistance"
     }
   ],
-  "responses": [
-    {
-      "id": "protect",
-      "name": "获得火焰抗性",
-      "sources": [
-        "ambush"
-      ],
-      "windows": [
-        "phase_start",
-        "phase_end",
-        "action",
-        "prepare",
-        "cast",
-        "trigger"
-      ],
-      "target": "self",
-      "effects": [
-        {
-          "kind": "grant_resistance"
-        }
-      ]
-    }
-  ],
-  "text": "专注2。受到的火焰伤害减半，火焰抗性不叠加。",
+  "text": "专注2。受到的火焰伤害减半，此效果不可叠加。",
   "castCost": 0,
   "level": 4,
   "analysisTurns": 0,

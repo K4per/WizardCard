@@ -44,7 +44,7 @@ TEST_CASE("manifest rejects duplicates ID mismatch traversal and missing definit
 }
 TEST_CASE("content validation includes unknown effects duplicates references and counts") {
     const auto dir=std::filesystem::path(WIZARD_SOURCE_DIR)/"assets";auto j=readJson(dir/"cards.json");auto c=loadContent(dir);
-    REQUIRE(c.catalog.cards.size()==78);REQUIRE(c.deck.size()==40);
+    REQUIRE(c.catalog.cards.size()==102);REQUIRE(c.deck.size()==40);
     auto bad=j;bad["cards"][0]["body"]=-1;REQUIRE_THROWS_WITH(parseCatalog(bad),"cards.json/cards/0/body: expected integer in [0,1000]");
     bad=j;bad["cards"].push_back(bad["cards"][0]);REQUIRE_THROWS(parseCatalog(bad));
     bad=j;bad["cards"][1]["effects"][0]["kind"]="script";REQUIRE_THROWS(parseCatalog(bad));

@@ -15,6 +15,16 @@ std::vector<std::vector<CardId>> sets(const GameState &, TargetKind, int, Player
 const ResponseAbility *ability(const CardDefinition &, const std::string &);
 MatchConfig shared(std::array<std::vector<std::string>, 2>, std::uint32_t);
 Trigger snapshot(const CardInstance &, const CardDefinition &);
+inline bool spellSpeedAllowed(const GameState &state, const CardDefinition &definition, bool setting = false) {
+    if (state.chain) {
+        const int top = state.chain->links.back().speed;
+        return definition.speed >= 2 && top != 4 && definition.speed >= top &&
+            (definition.speed != 2 || state.phase == Phase::Main || state.phase == Phase::Cast);
+    }
+    return definition.speed >= 3 ||
+        (definition.speed == 2 && (state.phase == Phase::Main || state.phase == Phase::Cast)) ||
+        (definition.speed == 1 && state.phase == (setting ? Phase::Main : Phase::Cast));
+}
 inline bool hasStormFormation(const GameState &state, const CardCatalog &catalog, PlayerId owner) {
     return std::any_of(state.cards.begin(), state.cards.end(), [&](const auto &entry) {
         const auto &card = entry.second;

@@ -16,13 +16,13 @@ using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
 using ChainId = std::uint64_t;
 using LinkId = std::uint64_t;
-inline constexpr const char *programVersion = "2.5.1";
+inline constexpr const char *programVersion = "2.5.2";
 inline constexpr int startingLife = 40, maximumLife = 40;
 inline constexpr int maximumMana = 20;
 // Player target tokens share the existing deterministic command target field.
 inline constexpr CardId playerTarget(PlayerId player) { return 0x40000001u + static_cast<CardId>(player); }
 enum class CardType { Action, Analytic, Word, Formation, Seal, Talisman };
-enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached, Resolving, SideDeck };
+enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached, Resolving, SideDeck, Exile };
 enum class SpellState { None, Analyzing, Ready, Pending, Active, Resolved };
 enum class Phase { Draw, Prepare, Main, Cast, End };
 enum class TargetKind {
@@ -88,7 +88,11 @@ enum class EffectKind {
     LockAnalysis,
     SiqueDetachAll, SiqueRecoverSpell, SiqueRecoverSeal, SiqueMillSeal, SiqueMillSpell,
     SiqueDamageCap, SiqueLifePayment, SiqueSearchPair, SiqueAttachFromDeck,
-    SiqueRecycle, SiqueOptionalDraw, SiqueShuffleHands, SiqueNegateDestroy
+    SiqueRecycle, SiqueOptionalDraw, SiqueShuffleHands, SiqueNegateDestroy,
+    SiqueRoastRecover, SiqueBlowfire, SiqueBackfire,
+    ClearAllAmbush, ArcanaFool, ArcanaMagician, ArcanaPriestess, ArcanaEmperor,
+    PreventNextDamage, ArcanaLovers, ArcanaHermit, ArcanaJustice, ArcanaHangedMan,
+    ArcanaDeath, ArcanaDevil, ArcanaTower, ArcanaWorld, RayVolley, DelayAllEnemyAnalysis
 };
 enum class ResponseWindow { PhaseStart, PhaseEnd, Action, Prepare, Cast, Trigger };
 enum class EventOwner { Any, Self, Opponent };
@@ -119,7 +123,7 @@ enum class DamageType {
     Acid
 };
 enum class EffectRecipient { Target, Owner, Opponent };
-enum class LinkKind { Phase, Action, Preparation, Spell, Response, Trigger };
+enum class LinkKind { Phase, Action, Preparation, Spell, Response, Trigger, Setup };
 std::string fingerprint(const std::string &bytes);
 std::string damageName(DamageType);
 std::string schoolName(const std::string &);

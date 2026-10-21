@@ -147,7 +147,9 @@ void GameEngine::pump() {
                 if (opts.empty()) {
                     f.cursor = f.item.effects.size(); // dependent remainder cannot be performed
                     s.events.push_back(
-                        {"effect_incomplete", "没有可弃置手牌，后续效果不执行", -1, f.item.source});
+                        {"effect_incomplete", e.kind == EffectKind::DiscardFormation && catalog_.usesAlphaV2()
+                             ? "副卡组没有可送去灰烬区的阵法，后续效果不执行"
+                             : "没有可弃置手牌，后续效果不执行", -1, f.item.source});
                     continue;
                 }
                 decision(f.item.owner, DecisionKind::EffectDiscard, std::move(opts));
@@ -169,7 +171,7 @@ void GameEngine::pump() {
             EffectResolver::apply(s, catalog_, f.item, e);
             if (s.result != -1)
                 break; // Immediate rules damage can clear the effect frame and entire chain.
-            if (catalog_.usesAlphaV2() && e.kind == EffectKind::AccelerateAnalysis)
+            if (catalog_.usesAlphaV2() && !catalog_.usesAlphaV252() && e.kind == EffectKind::AccelerateAnalysis)
                 analysisCompletedV2(f.item.targetCard);
             ++f.cursor;
             continue;

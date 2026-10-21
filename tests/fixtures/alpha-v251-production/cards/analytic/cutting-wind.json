@@ -1,0 +1,28 @@
+{
+  "id": "cutting-wind",
+  "name": "切割之风",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 1,
+  "castCost": 1,
+  "rank": 1,
+  "level": 1,
+  "speed": 1,
+  "school": "transmutation",
+  "analysisTurns": 1,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "cutting_wind"
+    }
+  ],
+  "text": "场上有风暴阵法卡才能设置。销毁自己场上一张空闲阵法卡，对目标造成4点挥砍伤害，外加销毁阵法等级的雷鸣伤害。",
+  "tags": [
+    "风暴"
+  ],
+  "traits": [
+    "requires_storm_setup"
+  ],
+  "number": "020019",
+  "illustrationId": "cutting-wind"
+}

@@ -5,7 +5,7 @@
   "type": "word",
   "cost": 2,
   "rank": 1,
-  "target": "opponent",
+  "target": "player",
   "effects": [
     {
       "kind": "damage",
@@ -13,7 +13,7 @@
       "damageType": "fire"
     }
   ],
-  "text": "对对方玩家造成3点火焰伤害。",
+  "text": "选择1个目标才能发动。对其造成3点火焰伤害。",
   "flavor": "所有魔法学徒入门必学法术之一，告别火柴第一步！",
   "speed": 2,
   "school": "evocation",

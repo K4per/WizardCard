@@ -1,5 +1,6 @@
 #include "wizard/core/engine.hpp"
 #include "wizard/core/sique.hpp"
+#include "wizard/core/arcana.hpp"
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
@@ -9,11 +10,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
     std::vector<LegalAction> out;
     const auto &s = state_;
     auto add = [&](std::string label, CardId source, CardId target, Command cmd) {
-        // These operations are intentionally no longer exposed by the battle
-        // action surface. Keep command decoding backwards compatible for old
-        // replays, but do not offer them as new legal choices.
-        if (std::holds_alternative<RemoveFormation>(cmd))
-            return;
+        if (std::holds_alternative<RemoveFormation>(cmd) && !catalog_.usesAlphaV252()) return;
         auto trial = *this;
         if (trial.execute(p, cmd).empty())
             out.push_back({std::move(label), source, target, std::move(cmd)});
@@ -94,6 +91,8 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             std::string label;
             if (d.kind == DecisionKind::DamageChoice)
                 label = "选择" + damageName(static_cast<DamageType>(id - 1)) + "伤害";
+            else if (id == 0xffffffd1u) label = "延长对方全部解析法术的解析时间";
+            else if (id == 0xffffffd2u) label = "造成大旋风追加伤害";
             else if (id == 0xffffffe1u)
                 label = "抽取效果指定数量的牌";
             else if (stormGuidanceMode)
@@ -125,7 +124,6 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             else if (d.kind == DecisionKind::StormHeartRecover)
                 label = "将 " + catalog_.at(s.cards.at(id).definition).name + " 放回牌库";
             else if (d.kind == DecisionKind::Concentration) {
-                const auto &c = s.cards.at(id);
                 const auto fee = Rules::concentrationUpkeep(s, catalog_, id);
                 label = "维持专注（魔素 " + std::to_string(fee) + " / 荷载 +" +
                         std::to_string(fee) + "）";
@@ -140,7 +138,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                  d.kind == DecisionKind::ClearAnyLoad || d.kind == DecisionKind::TriggerOrder ||
                  d.kind == DecisionKind::SearchDeck || d.kind == DecisionKind::StormSearch ||
                  d.kind == DecisionKind::StormHeartChoice || d.kind == DecisionKind::StormHeartRecover ||
-                 stormGuidanceMode || id == 0xffffffe1u)
+                 stormGuidanceMode || id == 0xffffffe1u || id == 0xffffffd1u || id == 0xffffffd2u)
                     ? 0
                     : id,
                 0, Choose{d.id, id});
@@ -213,7 +211,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                 card.stormAbilityTurn != s.players[p].ownTurn &&
                 std::find(def.traits.begin(), def.traits.end(), "activate_storm_heart_choice") != def.traits.end())
                 add("发动风暴之心能力 " + name, id, 0, ActivateAbility{id, 0, "storm_heart_choice"});
-            std::vector<CardId> spellCosts{0};
+            std::vector<CardId> spellCosts = arcana::costOptions(s, catalog_, p, id);
             if (std::find(def.traits.begin(), def.traits.end(), "discard_spell_search") != def.traits.end()) {
                 spellCosts.clear();
                 for (const auto &[material, candidate] : s.cards)
@@ -298,7 +296,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             }
             add("放弃 " + name, id, 0, Abandon{id});
             add("拆除符文 " + name, id, 0, RemoveSeal{id});
-            add("拆除阵法 " + name, id, 0, RemoveFormation{id});
+            if (catalog_.usesAlphaV252()) add("移除阵法 " + name, id, 0, RemoveFormation{id});
             if (card.zone == Zone::Attached &&
                 std::find(def.traits.begin(), def.traits.end(), "activate_storm_crest_destroy") != def.traits.end() &&
                 card.host && s.cards.count(card.host) && s.cards.at(card.host).stormPoints >= 2) {
@@ -385,9 +383,9 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                         add("使用行动卡 " + name + " → #" + std::to_string(target), id, target,
                             PlayAction{id, target, ids});
                     }
-            } else if (c.zone == Zone::Analysis && def.type == CardType::Formation)
-                add("拆除阵法 " + name, id, 0, RemoveFormation{id});
-            else if (c.zone == Zone::Attached)
+            } else if (c.zone == Zone::Analysis && def.type == CardType::Formation) {
+                if (catalog_.usesAlphaV252()) add("移除阵法 " + name, id, 0, RemoveFormation{id});
+            } else if (c.zone == Zone::Attached)
                 add("拆除符文 " + name, id, 0, RemoveSeal{id});
             if (c.zone == Zone::Analysis && c.spell == SpellState::Ready) {
                 for (const auto &ids : targets(def)) {

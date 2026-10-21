@@ -403,7 +403,7 @@ TEST_CASE("Alpha v2.5 formation setting text derives from validated recipes and 
     const auto catalog = parseCatalog(json);
     const auto &conditions = catalog.at("small-hexagram").settingConditions;
     REQUIRE(conditions.find("支付2魔素") != std::string::npos);
-    REQUIRE(conditions.find("均衡之六芒星") != std::string::npos);
+    REQUIRE(conditions.find(catalog.at("hexagram").name) != std::string::npos);
     REQUIRE(conditions.find("已解析完成或持续生效") != std::string::npos);
     REQUIRE(conditions.find("学派互不相同") != std::string::npos);
     REQUIRE(conditions.find("火焰伤害") != std::string::npos);

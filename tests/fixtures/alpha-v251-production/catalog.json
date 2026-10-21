@@ -1,0 +1,323 @@
+{
+  "format": 1,
+  "metadata": {
+    "rulesVersion": "2.5.1",
+    "cardSetVersion": "2.5.1",
+    "baseLoadCapacity": 2,
+    "mechanicsRevision": 4
+  },
+  "definitions": [
+    {
+      "id": "fireball",
+      "file": "cards/analytic/fireball.json"
+    },
+    {
+      "id": "barbs",
+      "file": "cards/talisman/barbs.json"
+    },
+    {
+      "id": "recall",
+      "file": "cards/word/recall.json"
+    },
+    {
+      "id": "ring",
+      "file": "cards/seal/ring.json"
+    },
+    {
+      "id": "spark",
+      "file": "cards/word/spark.json"
+    },
+    {
+      "id": "mend",
+      "file": "cards/analytic/mend.json"
+    },
+    {
+      "id": "unravel",
+      "file": "cards/analytic/unravel.json"
+    },
+    {
+      "id": "disrupt",
+      "file": "cards/word/disrupt.json"
+    },
+    {
+      "id": "clarity",
+      "file": "cards/word/clarity.json"
+    },
+    {
+      "id": "reservoir",
+      "file": "cards/formation/reservoir.json"
+    },
+    {
+      "id": "conduit",
+      "file": "cards/seal/conduit.json"
+    },
+    {
+      "id": "ward",
+      "file": "cards/analytic/ward.json"
+    },
+    {
+      "id": "messy-wave",
+      "file": "cards/analytic/messy-wave.json"
+    },
+    {
+      "id": "instantly-sleep",
+      "file": "cards/analytic/instantly-sleep.json"
+    },
+    {
+      "id": "magic-missile",
+      "file": "cards/analytic/magic-missile.json"
+    },
+    {
+      "id": "aid",
+      "file": "cards/analytic/aid.json"
+    },
+    {
+      "id": "counter-spell",
+      "file": "cards/talisman/counter-spell.json"
+    },
+    {
+      "id": "true-strike",
+      "file": "cards/word/true-strike.json"
+    },
+    {
+      "id": "protective-flame",
+      "file": "cards/talisman/protective-flame.json"
+    },
+    {
+      "id": "pentagram-of-life",
+      "file": "cards/formation/pentagram-of-life.json"
+    },
+    {
+      "id": "engeas-four-point-star",
+      "file": "cards/formation/engeas-four-point-star.json"
+    },
+    {
+      "id": "uplift",
+      "file": "cards/seal/uplift.json"
+    },
+    {
+      "id": "instant-circuit-overload",
+      "file": "cards/word/instant-circuit-overload.json"
+    },
+    {
+      "id": "ray-of-frost",
+      "file": "cards/analytic/ray-of-frost.json"
+    },
+    {
+      "id": "lightning-bolt",
+      "file": "cards/analytic/lightning-bolt.json"
+    },
+    {
+      "id": "lesser-restoration",
+      "file": "cards/analytic/lesser-restoration.json"
+    },
+    {
+      "id": "false-life",
+      "file": "cards/analytic/false-life.json"
+    },
+    {
+      "id": "arcane-recovery",
+      "file": "cards/word/arcane-recovery.json"
+    },
+    {
+      "id": "shield",
+      "file": "cards/talisman/shield.json"
+    },
+    {
+      "id": "chromatic-orb",
+      "file": "cards/analytic/chromatic-orb.json"
+    },
+    {
+      "id": "guiding-bolt",
+      "file": "cards/analytic/guiding-bolt.json"
+    },
+    {
+      "id": "scorching-ray",
+      "file": "cards/analytic/scorching-ray.json"
+    },
+    {
+      "id": "sunburst",
+      "file": "cards/analytic/sunburst.json"
+    },
+    {
+      "id": "healing-circle",
+      "file": "cards/analytic/healing-circle.json"
+    },
+    {
+      "id": "funny-box",
+      "file": "cards/talisman/funny-box.json"
+    },
+    {
+      "id": "small-hexagram",
+      "file": "cards/formation/small-hexagram.json"
+    },
+    {
+      "id": "hexagram",
+      "file": "cards/formation/hexagram.json"
+    },
+    {
+      "id": "octagram",
+      "file": "cards/formation/octagram.json"
+    },
+    {
+      "id": "sun",
+      "file": "cards/formation/sun.json"
+    },
+    {
+      "id": "upright-cross",
+      "file": "cards/formation/upright-cross.json"
+    },
+    {
+      "id": "inverted-cross",
+      "file": "cards/formation/inverted-cross.json"
+    },
+    {
+      "id": "ankh",
+      "file": "cards/formation/ankh.json"
+    },
+    {
+      "id": "elemental-ring",
+      "file": "cards/formation/elemental-ring.json"
+    },
+    {
+      "id": "chaos-ring",
+      "file": "cards/formation/chaos-ring.json"
+    },
+    {
+      "id": "sulfur",
+      "file": "cards/formation/sulfur.json"
+    },
+    {
+      "id": "storm-crest",
+      "file": "cards/formation/storm-crest.json"
+    },
+    {
+      "id": "storm-heart",
+      "file": "cards/formation/storm-heart.json"
+    },
+    {
+      "id": "wind-whisper",
+      "file": "cards/word/wind-whisper.json"
+    },
+    {
+      "id": "swift-wind",
+      "file": "cards/word/swift-wind.json"
+    },
+    {
+      "id": "snow-rain-storm",
+      "file": "cards/word/snow-rain-storm.json"
+    },
+    {
+      "id": "windmaking",
+      "file": "cards/word/windmaking.json"
+    },
+    {
+      "id": "storm-guidance",
+      "file": "cards/word/storm-guidance.json"
+    },
+    {
+      "id": "storm-vortex",
+      "file": "cards/talisman/storm-vortex.json"
+    },
+    {
+      "id": "wind-strike",
+      "file": "cards/talisman/wind-strike.json"
+    },
+    {
+      "id": "great-cyclone",
+      "file": "cards/talisman/great-cyclone.json"
+    },
+    {
+      "id": "storm-brand",
+      "file": "cards/seal/storm-brand.json"
+    },
+    {
+      "id": "storm-annihilation-crest",
+      "file": "cards/seal/storm-annihilation-crest.json"
+    },
+    {
+      "id": "ice-storm",
+      "file": "cards/analytic/ice-storm.json"
+    },
+    {
+      "id": "cutting-wind",
+      "file": "cards/analytic/cutting-wind.json"
+    },
+    {
+      "id": "great-storm",
+      "file": "cards/analytic/great-storm.json"
+    },
+    {
+      "id": "cloud-mist",
+      "file": "cards/analytic/cloud-mist.json"
+    },
+    {
+      "id": "thunder-summon",
+      "file": "cards/analytic/thunder-summon.json"
+    },
+    {
+      "id": "sique-woodpile",
+      "file": "cards/formation/sique-woodpile.json"
+    },
+    {
+      "id": "sique-campfire",
+      "file": "cards/formation/sique-campfire.json"
+    },
+    {
+      "id": "sique-cauldron",
+      "file": "cards/formation/sique-cauldron.json"
+    },
+    {
+      "id": "sique-vinegar",
+      "file": "cards/seal/sique-vinegar.json"
+    },
+    {
+      "id": "sique-sugar",
+      "file": "cards/seal/sique-sugar.json"
+    },
+    {
+      "id": "sique-salt",
+      "file": "cards/seal/sique-salt.json"
+    },
+    {
+      "id": "sique-chili",
+      "file": "cards/seal/sique-chili.json"
+    },
+    {
+      "id": "sique-parsley",
+      "file": "cards/seal/sique-parsley.json"
+    },
+    {
+      "id": "sique-mushroom-soup",
+      "file": "cards/analytic/sique-mushroom-soup.json"
+    },
+    {
+      "id": "sique-pancakes",
+      "file": "cards/analytic/sique-pancakes.json"
+    },
+    {
+      "id": "sique-divine-stew",
+      "file": "cards/analytic/sique-divine-stew.json"
+    },
+    {
+      "id": "sique-ingredients",
+      "file": "cards/word/sique-ingredients.json"
+    },
+    {
+      "id": "sique-flavor-shift",
+      "file": "cards/word/sique-flavor-shift.json"
+    },
+    {
+      "id": "sique-refire",
+      "file": "cards/word/sique-refire.json"
+    },
+    {
+      "id": "sique-boiling-surge",
+      "file": "cards/talisman/sique-boiling-surge.json"
+    },
+    {
+      "id": "sique-aroma-lure",
+      "file": "cards/talisman/sique-aroma-lure.json"
+    }
+  ]
+}

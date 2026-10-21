@@ -40,6 +40,8 @@ std::string GameEngine::stateKey(bool logical) const {
         o << ';';
         if (catalog_.usesAlphaV2()) o << "exhaustion:" << p.exhaustion << ';';
         if (p.damageReduction || p.forceDamageReduction) o << "shield:" << p.damageReduction << ',' << p.forceDamageReduction << ';';
+        if (p.nextDamageImmune) o << "next_damage_immune;";
+        if (p.wordLockUntilOwnDraw) o << "word_lock:" << p.wordLockUntilOwnDraw << ';';
         if (p.siqueDamageCap || p.siqueLifePaymentTurn)
             o << "sique:" << p.siqueDamageCap << ',' << p.siqueCapUntilOwnTurn << ','
               << (logical ? p.siqueLifePaymentTurn == s.globalTurn : p.siqueLifePaymentTurn) << ';';
@@ -72,6 +74,9 @@ std::string GameEngine::stateKey(bool logical) const {
     for (const auto &t : s.temporary)
         o << 'L' << (logical ? 0 : t.id) << ',' << t.owner << ',' << t.source << ',' << t.amount << ','
           << t.expiryTurn << ',' << t.independent << ',' << t.sourceBound << ';';
+    for (const auto &t : s.temporaryLives)
+        o << 'H' << (logical ? 0 : t.id) << ',' << t.owner << ',' << t.source << ',' << t.amount << ','
+          << t.expiryOwnTurn << ',' << (logical ? 0 : t.acquiredTurn) << ',' << static_cast<int>(t.acquiredPhase) << ';';
     std::map<std::uint32_t, std::uint32_t> batches;
     std::uint32_t nextBatch = 1;
     auto trigger = [&](const Trigger &t) {

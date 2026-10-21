@@ -1,0 +1,28 @@
+{
+  "id": "storm-guidance",
+  "name": "风暴导向",
+  "type": "word",
+  "rarity": "uncommon",
+  "cost": 3,
+  "rank": 2,
+  "level": 2,
+  "speed": 2,
+  "school": "divination",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "storm_guidance"
+    }
+  ],
+  "text": "场上有风暴阵法卡才能发动。将场上的一张卡送入灰烬区，然后选择一项：从牌库将一张风暴法术卡加入手牌；获得2个风暴点数；从牌库将一张云雾术或召雷术加入手牌。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "tags": [
+    "风暴"
+  ],
+  "number": "030013",
+  "illustrationId": "storm-guidance",
+  "traits": [
+    "requires_storm_formation"
+  ]
+}

@@ -74,6 +74,19 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
         if (body > 5 || words > 3)
             errors.push_back("zone capacity");
     }
+    if (cat.usesAlphaV252()) {
+        std::set<std::uint32_t> lifeIds;
+        for (const auto &entry : s.temporaryLives)
+            if (!lifeIds.insert(entry.id).second || !entry.id || entry.owner < 0 || entry.owner > 1 || entry.amount < 0 || entry.expiryOwnTurn < 0)
+                errors.push_back("temporary life bounds");
+        for (int p = 0; p < 2; ++p) {
+            int total = 0;
+            for (const auto &entry : s.temporaryLives)
+                if (entry.owner == p) total += entry.amount;
+            if (total != s.players[p].temporaryLife)
+                errors.push_back("temporary life aggregate");
+        }
+    }
     for (const auto &[id, c] : s.cards) {
         if (c.id != id || c.owner < 0 || c.owner > 1 || c.analysisLoad < 0 || c.castLoad < 0)
             errors.push_back("instance bounds");
@@ -101,8 +114,11 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
         for (const auto &[other, x] : s.cards)
             if (x.zone == Zone::Attached && x.host == id)
                 ++seals;
-        if (seals > 1 && c.definition != "sique-cauldron")
-            errors.push_back("multiple seals");
+        if (!cat.usesAlphaV252() && c.definition != "sique-cauldron") {
+            int count = 0;
+            for (const auto &[sealId, seal] : s.cards) if (seal.zone == Zone::Attached && seal.host == id) ++count;
+            if (count > 1) errors.push_back("multiple seals");
+        }
         if (c.zone == Zone::Casting && c.host)
             errors.push_back("casting still attached to formation");
         if (cat.usesAlphaV2()) {

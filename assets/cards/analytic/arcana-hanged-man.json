@@ -1,0 +1,26 @@
+{
+  "id": "arcana-hanged-man",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "arcana-hanged-man",
+  "number": "020033",
+  "name": "倒吊人",
+  "type": "analytic",
+  "text": "支付一半生命值才能发动。双方将灰烬区与卡组交换使用。",
+  "rank": 7,
+  "level": 7,
+  "school": "arcana",
+  "cost": 6,
+  "castCost": 9,
+  "analysisTurns": 1,
+  "speed": 1,
+  "traits": [
+    "arcana_hanged_cost"
+  ],
+  "effects": [
+    {
+      "kind": "arcana_hanged_man",
+      "amount": 0
+    }
+  ]
+}

@@ -42,4 +42,13 @@ struct TemporaryLoad {
     bool independent{}; // does not expire and is excluded from temporary-load removal
     bool sourceBound{}; // loads expire only when their source leaves
 };
+struct TemporaryLife {
+    std::uint32_t id{};
+    PlayerId owner{};
+    CardId source{};
+    int amount{};
+    int expiryOwnTurn{};
+    std::uint64_t acquiredTurn{};
+    Phase acquiredPhase{Phase::Draw};
+};
 } // namespace wizard

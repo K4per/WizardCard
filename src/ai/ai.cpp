@@ -63,7 +63,7 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
         }
         case EffectKind::AddTemporaryLife:
             score +=
-                (recipient == p ? 1 : -1) * std::max(0, e.amount - v.players[recipient].temporaryLife) * 2;
+                (recipient == p ? 1 : -1) * e.amount * 2;
             break;
         case EffectKind::BlockActions:
             score += recipient == enemy ? 10 : -10;

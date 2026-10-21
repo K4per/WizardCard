@@ -16,7 +16,7 @@
       "amount": 2
     }
   ],
-  "text": "获得3点魔素（不超过20），然后获得2点临时荷载，在下一次己方抽牌阶段清除。",
+  "text": "获得3点魔素和2点临时荷载。",
   "castCost": 0,
   "rank": 1,
   "level": 1,
@@ -24,5 +24,7 @@
     "former-action"
   ],
   "number": "030008",
-  "illustrationId": "arcane-recovery"
+  "illustrationId": "arcane-recovery",
+  "school": "abjuration",
+  "analysisTurns": 0
 }

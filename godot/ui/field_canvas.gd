@@ -102,6 +102,23 @@ func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	resized.connect(queue_redraw)
 	mouse_exited.connect(_clear_hover)
+	if get_window() != null and not get_window().focus_exited.is_connected(_cancel_pointer_state):
+		get_window().focus_exited.connect(_cancel_pointer_state)
+
+func _cancel_pointer_state() -> void:
+	_dragged = null
+	_drag_active = false
+	_press_position = Vector2.ZERO
+	_keyboard_index = -1
+	queue_redraw()
+
+func _exit_tree() -> void:
+	_cancel_pointer_state()
+	if _transition_tween != null and _transition_tween.is_valid():
+		_transition_tween.kill()
+	_transition_tween = null
+	if get_window() != null and get_window().focus_exited.is_connected(_cancel_pointer_state):
+		get_window().focus_exited.disconnect(_cancel_pointer_state)
 
 func _layout_resource_changed() -> void:
 	queue_redraw()
@@ -121,12 +138,12 @@ func configure(value: FieldPresentation) -> void:
 	_opponent_hand_hits.clear()
 	_ring_hits.clear()
 	_zone_hits.clear()
+	target_ids.clear()
+	target_rings.clear()
 	_clear_hover()
 
 func _begin_transition(next: FieldPresentation) -> void:
-	if _transition_tween != null and _transition_tween.is_valid():
-		_transition_tween.kill()
-	_transition_strength = 0.0
+	stop_feedback()
 	if not _has_projection or Engine.is_editor_hint() or UiFactory.reduced_motion or privacy:
 		_transition.clear()
 		return
@@ -134,6 +151,14 @@ func _begin_transition(next: FieldPresentation) -> void:
 		_transition_strength = 1.0
 		_transition_tween = create_tween()
 		_transition_tween.tween_method(_set_transition_strength, 1.0, 0.0, 0.24)
+
+func stop_feedback() -> void:
+	if _transition_tween != null and _transition_tween.is_valid():
+		_transition_tween.kill()
+	_transition_tween = null
+	_transition.clear()
+	_transition_strength = 0.0
+	queue_redraw()
 
 func _set_transition_strength(value: float) -> void:
 	_transition_strength = value
@@ -154,6 +179,7 @@ func set_privacy(enabled: bool) -> void:
 			_transition_tween.kill()
 		_transition.clear()
 		_transition_strength = 0.0
+		clear_action_targets()
 	selected_id = ""
 	_dragged = null
 	_drag_active = false
@@ -446,10 +472,24 @@ func _draw_attachment_boxes(host: CardPresentation, rect: Rect2, mirrored: bool)
 	if side <= 0.0:
 		return
 	var gap: float = 2.0
-	var stride: float = minf(side + gap, maxf(0.0, (rect.size.x - side - 2.0) / maxi(1, cards.size() - 1)))
+	# Pack attached runes into a compact grid.  The former single-row stride
+	# compressed every box on crowded formations, making several runes overlap
+	# and leaving only the last one clickable.
+	var columns: int = mini(cards.size(), maxi(1, int(floor((rect.size.x - 2.0 + gap) / (side + gap)))))
+	var rows: int = ceili(float(cards.size()) / columns)
+	var width_side: float = (rect.size.x - 2.0 - gap * (columns - 1)) / columns
+	var height_side: float = (rect.size.y - 2.0 - gap * (rows - 1)) / rows
+	side = minf(side, minf(width_side, height_side))
+	if side < 4.0:
+		return
+	var origin: Vector2 = Vector2(rect.position.x + 1.0, rect.end.y - 1.0 - rows * side - (rows - 1) * gap)
 	for index: int in range(cards.size()):
 		var card: CardPresentation = cards[index] as CardPresentation
-		var box: Rect2 = Rect2(rect.position.x + 1.0 + index * stride, rect.end.y - side - 1.0, side, side)
+		var column: int = index % columns
+		var row: int = index / columns
+		var x: float = origin.x + column * (side + gap)
+		var y: float = origin.y + row * (side + gap)
+		var box: Rect2 = Rect2(Vector2(x, y), Vector2.ONE * side)
 		if mirrored:
 			box.position = rect.end - (box.end - rect.position)
 		_card_hits.append({"rect": box, "card": card})

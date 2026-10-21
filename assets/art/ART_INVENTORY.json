@@ -2,11 +2,11 @@
   "format": 2,
   "scope": "Authoring and candidate source files; Godot runtime mirror listed separately. No removal is implied.",
   "comparison": {
-    "previousSourceFiles": 1418,
-    "currentSourceFiles": 1452,
-    "sourceFileDelta": 34,
-    "previousBytes": 622739815,
-    "currentBytes": 671421141
+    "previousSourceFiles": 1478,
+    "currentSourceFiles": 1484,
+    "sourceFileDelta": 6,
+    "previousBytes": 687709201,
+    "currentBytes": 691416369
   },
   "sourceFiles": [
     {
@@ -351,6 +351,458 @@
         "illustration.uplift"
       ],
       "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/manifest.json",
+      "extension": ".json",
+      "bytes": 11531,
+      "sha256": "c21cf9120629470b5539b6583fe46ffc0bd6b99b4a03e78c9344d331f21c8894",
+      "category": "alpha-v252-20261021",
+      "usage": "candidate-or-legacy; verify references before removal"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/processed/sique-backfire.png",
+      "extension": ".png",
+      "bytes": 1064928,
+      "sha256": "a1384b9890a9e36bbce46fa2e055711554f56ae95223c3a6e18d30ca3adef5e9",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1280,
+        1280
+      ],
+      "runtimeAssetIds": [
+        "illustration.sique-backfire"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/processed/sique-blowfire.png",
+      "extension": ".png",
+      "bytes": 977420,
+      "sha256": "3eeb6f5c0bf4aa424be9c8b0130ac367e59b81ed283f6a80c4f7e9cbcf0f2904",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1280,
+        1280
+      ],
+      "runtimeAssetIds": [
+        "illustration.sique-blowfire"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/processed/sique-roast.png",
+      "extension": ".png",
+      "bytes": 1133219,
+      "sha256": "55a9f91e5d6f2a58e448ac099fcb3cfb9920c688c7f2dc2e8f1e4892a5e47a10",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1280,
+        1280
+      ],
+      "runtimeAssetIds": [
+        "illustration.sique-roast"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/世界.png",
+      "extension": ".png",
+      "bytes": 915942,
+      "sha256": "ea2b6a5722edcbe259691a71a916032d8c2d614523a504f24c9bec7a14bdf19d",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-world"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/倒吊人.png",
+      "extension": ".png",
+      "bytes": 555337,
+      "sha256": "1f50c2a1bd961c205f0651cc819ca7ab29eca9a62bad2c86ef4ed9db3bc7a969",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-hanged-man"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/力量.png",
+      "extension": ".png",
+      "bytes": 632281,
+      "sha256": "3f16746833a72923d779175e726ec7493722ce1f6169c31d100dcd7ad065d6f9",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-strength"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/女祭司.png",
+      "extension": ".png",
+      "bytes": 582409,
+      "sha256": "50a9745dddf95dda28e3e4fcc2be4a3375ef9d48ad8ea18b71d7607c5913fdd8",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-priestess"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/恋人.png",
+      "extension": ".png",
+      "bytes": 649707,
+      "sha256": "a3e45a1984b84e34e0470b638d8e89ea2ebf0aa481956ef6e231c107a2ab90d9",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-lovers"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/恶魔.png",
+      "extension": ".png",
+      "bytes": 573029,
+      "sha256": "0a56ecadca0c30b1d1650f669f7354870032a8e6fdd07e5e5326327edb671ba6",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-devil"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/愚者.png",
+      "extension": ".png",
+      "bytes": 822028,
+      "sha256": "94ca31f862263435e35dc60c0cca51da380983bde02c3acc9f2965cffa5d54d0",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-fool"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/战车.png",
+      "extension": ".png",
+      "bytes": 825516,
+      "sha256": "21b67fbc0573e05946828df6d74292c5b0dfa67356951cd38c96c7a0e1e88843",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-chariot"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/教皇.png",
+      "extension": ".png",
+      "bytes": 619542,
+      "sha256": "95fa1aaee4699eb4c87be7eb413b68b809f18a64e198953ea42faf88bea3aa8d",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-hierophant"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/正义.png",
+      "extension": ".png",
+      "bytes": 577407,
+      "sha256": "81ab7fe7ac52b16e3c501132b151e66d4b3215a7bd459ac4a8bccd4421f6cdc0",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-justice"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/死神.png",
+      "extension": ".png",
+      "bytes": 599585,
+      "sha256": "2ef8252929b05df4c30828b52a0dc4fa17784ba714657d9318a3d83af8b4f22f",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-death"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/皇后.png",
+      "extension": ".png",
+      "bytes": 437351,
+      "sha256": "012a4203379f148234a29da0f46eafa269ec78755cd1490947d3473375ac0279",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-empress"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/皇帝.png",
+      "extension": ".png",
+      "bytes": 714472,
+      "sha256": "4e5ce6af044467f59a72ceeff50ffda6f2de9542492a8f4f72c179f02fd110ea",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-emperor"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/节制.png",
+      "extension": ".png",
+      "bytes": 442503,
+      "sha256": "00698cccf4ca252d695d2b62c19c00be3b8608ff01d759a5b871cb0c4eb8ebd1",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-temperance"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/隐士.png",
+      "extension": ".png",
+      "bytes": 639754,
+      "sha256": "bc85f62fbebcc31cb452452823a3d33c46adef1d45439c3e4b93431f248b17f9",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-hermit"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/高塔.png",
+      "extension": ".png",
+      "bytes": 591570,
+      "sha256": "3453d4c7bcbdfcd5842d2e30bb1a9507ef673bdd87316bab7630df26974d229e",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-tower"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/arcana/魔术师.png",
+      "extension": ".png",
+      "bytes": 742839,
+      "sha256": "3f9b3a9c172239911ba49b29118c2b7a3515ff2c66d5584411755764b0f64e36",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.arcana-magician"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/asterism/三芒星.png",
+      "extension": ".png",
+      "bytes": 694375,
+      "sha256": "52626cd1822467e04ef266d41fb74cf66a979ccd425d4f780cb588814b2648da",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.three-star"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/asterism/二芒星.png",
+      "extension": ".png",
+      "bytes": 296474,
+      "sha256": "d14b4e01f01b6f80dc04c274e220e87e1c8588884a2a2d56995ae0c5709a5369",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.two-star"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/asterism/五芒星.png",
+      "extension": ".png",
+      "bytes": 630394,
+      "sha256": "0c2faded3a69d360f923fc85c61257280a5526d30e135a1a71a7fe210b38fbcd",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.alpha-v252-pentagram-of-life"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/asterism/八芒星.png",
+      "extension": ".png",
+      "bytes": 786393,
+      "sha256": "7616013f866881c1a0094f11671dc7f03827b586710ec266aff45bef8bc7324e",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.alpha-v252-octagram"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/asterism/六芒星.png",
+      "extension": ".png",
+      "bytes": 646490,
+      "sha256": "d72286c181b23800f7551d7797b9a0d1cc79fc961d2b6b420a6b0340d54829f4",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.alpha-v252-hexagram"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/asterism/四芒星.png",
+      "extension": ".png",
+      "bytes": 410771,
+      "sha256": "160f0b0c332976753e446a3d63f7190d3d6a3be110c0cdd3850d451e4279dd62",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1448,
+        1086
+      ],
+      "runtimeAssetIds": [
+        "illustration.alpha-v252-small-hexagram"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/asterism/太阳.png",
+      "extension": ".png",
+      "bytes": 1213916,
+      "sha256": "37150aa2601e55ab8432168b6e29aa72da938ab0d214abdbe22e6a69f9f00d91",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1448,
+        1086
+      ],
+      "runtimeAssetIds": [
+        "illustration.alpha-v252-sun"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/asterism/月亮.png",
+      "extension": ".png",
+      "bytes": 678035,
+      "sha256": "886a90bb05583ce9a7180f1d0edf7234fdfbd31856a7aafd95d82f01a2dcb184",
+      "category": "alpha-v252-20261021",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.moon"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/sique/sique-backfire.jpg",
+      "extension": ".jpg",
+      "bytes": 186582,
+      "sha256": "e13aa01030070b827b0258050f4ffd93b2cfcc81d37ab5b99c8e9bb4e4a024ca",
+      "category": "alpha-v252-20261021",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/sique/sique-blowfire.jpg",
+      "extension": ".jpg",
+      "bytes": 167391,
+      "sha256": "9d60bb1bcaf7a44e47be5e8a3d2870e8e260de6b63ced1a6970785d6389f1116",
+      "category": "alpha-v252-20261021",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v252-20261021/source/sique/sique-roast.jpg",
+      "extension": ".jpg",
+      "bytes": 176037,
+      "sha256": "2899b249179693f6fe8cc4995c3dbf4e92f684212e7ac45c1b5bb01edc0850dc",
+      "category": "alpha-v252-20261021",
+      "usage": "authoring-source-or-validation"
     },
     {
       "file": "assets/art/branding/icon-manifest.json",
@@ -15781,6 +16233,160 @@
       "sha256": "5e2bf7e1c105084e4f09fe49f2577f138f912bbf8ac7d2e4437ca74744bea585"
     },
     {
+      "file": "godot/art/card/alpha-v252-hexagram.png",
+      "assetId": "illustration.alpha-v252-hexagram",
+      "source": "assets/art/alpha-v252-20261021/source/asterism/六芒星.png",
+      "bytes": 646490,
+      "sha256": "d72286c181b23800f7551d7797b9a0d1cc79fc961d2b6b420a6b0340d54829f4"
+    },
+    {
+      "file": "godot/art/card/alpha-v252-octagram.png",
+      "assetId": "illustration.alpha-v252-octagram",
+      "source": "assets/art/alpha-v252-20261021/source/asterism/八芒星.png",
+      "bytes": 786393,
+      "sha256": "7616013f866881c1a0094f11671dc7f03827b586710ec266aff45bef8bc7324e"
+    },
+    {
+      "file": "godot/art/card/alpha-v252-pentagram-of-life.png",
+      "assetId": "illustration.alpha-v252-pentagram-of-life",
+      "source": "assets/art/alpha-v252-20261021/source/asterism/五芒星.png",
+      "bytes": 630394,
+      "sha256": "0c2faded3a69d360f923fc85c61257280a5526d30e135a1a71a7fe210b38fbcd"
+    },
+    {
+      "file": "godot/art/card/alpha-v252-small-hexagram.png",
+      "assetId": "illustration.alpha-v252-small-hexagram",
+      "source": "assets/art/alpha-v252-20261021/source/asterism/四芒星.png",
+      "bytes": 410771,
+      "sha256": "160f0b0c332976753e446a3d63f7190d3d6a3be110c0cdd3850d451e4279dd62"
+    },
+    {
+      "file": "godot/art/card/alpha-v252-sun.png",
+      "assetId": "illustration.alpha-v252-sun",
+      "source": "assets/art/alpha-v252-20261021/source/asterism/太阳.png",
+      "bytes": 1213916,
+      "sha256": "37150aa2601e55ab8432168b6e29aa72da938ab0d214abdbe22e6a69f9f00d91"
+    },
+    {
+      "file": "godot/art/card/arcana-chariot.png",
+      "assetId": "illustration.arcana-chariot",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/战车.png",
+      "bytes": 825516,
+      "sha256": "21b67fbc0573e05946828df6d74292c5b0dfa67356951cd38c96c7a0e1e88843"
+    },
+    {
+      "file": "godot/art/card/arcana-death.png",
+      "assetId": "illustration.arcana-death",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/死神.png",
+      "bytes": 599585,
+      "sha256": "2ef8252929b05df4c30828b52a0dc4fa17784ba714657d9318a3d83af8b4f22f"
+    },
+    {
+      "file": "godot/art/card/arcana-devil.png",
+      "assetId": "illustration.arcana-devil",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/恶魔.png",
+      "bytes": 573029,
+      "sha256": "0a56ecadca0c30b1d1650f669f7354870032a8e6fdd07e5e5326327edb671ba6"
+    },
+    {
+      "file": "godot/art/card/arcana-emperor.png",
+      "assetId": "illustration.arcana-emperor",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/皇帝.png",
+      "bytes": 714472,
+      "sha256": "4e5ce6af044467f59a72ceeff50ffda6f2de9542492a8f4f72c179f02fd110ea"
+    },
+    {
+      "file": "godot/art/card/arcana-empress.png",
+      "assetId": "illustration.arcana-empress",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/皇后.png",
+      "bytes": 437351,
+      "sha256": "012a4203379f148234a29da0f46eafa269ec78755cd1490947d3473375ac0279"
+    },
+    {
+      "file": "godot/art/card/arcana-fool.png",
+      "assetId": "illustration.arcana-fool",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/愚者.png",
+      "bytes": 822028,
+      "sha256": "94ca31f862263435e35dc60c0cca51da380983bde02c3acc9f2965cffa5d54d0"
+    },
+    {
+      "file": "godot/art/card/arcana-hanged-man.png",
+      "assetId": "illustration.arcana-hanged-man",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/倒吊人.png",
+      "bytes": 555337,
+      "sha256": "1f50c2a1bd961c205f0651cc819ca7ab29eca9a62bad2c86ef4ed9db3bc7a969"
+    },
+    {
+      "file": "godot/art/card/arcana-hermit.png",
+      "assetId": "illustration.arcana-hermit",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/隐士.png",
+      "bytes": 639754,
+      "sha256": "bc85f62fbebcc31cb452452823a3d33c46adef1d45439c3e4b93431f248b17f9"
+    },
+    {
+      "file": "godot/art/card/arcana-hierophant.png",
+      "assetId": "illustration.arcana-hierophant",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/教皇.png",
+      "bytes": 619542,
+      "sha256": "95fa1aaee4699eb4c87be7eb413b68b809f18a64e198953ea42faf88bea3aa8d"
+    },
+    {
+      "file": "godot/art/card/arcana-justice.png",
+      "assetId": "illustration.arcana-justice",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/正义.png",
+      "bytes": 577407,
+      "sha256": "81ab7fe7ac52b16e3c501132b151e66d4b3215a7bd459ac4a8bccd4421f6cdc0"
+    },
+    {
+      "file": "godot/art/card/arcana-lovers.png",
+      "assetId": "illustration.arcana-lovers",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/恋人.png",
+      "bytes": 649707,
+      "sha256": "a3e45a1984b84e34e0470b638d8e89ea2ebf0aa481956ef6e231c107a2ab90d9"
+    },
+    {
+      "file": "godot/art/card/arcana-magician.png",
+      "assetId": "illustration.arcana-magician",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/魔术师.png",
+      "bytes": 742839,
+      "sha256": "3f9b3a9c172239911ba49b29118c2b7a3515ff2c66d5584411755764b0f64e36"
+    },
+    {
+      "file": "godot/art/card/arcana-priestess.png",
+      "assetId": "illustration.arcana-priestess",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/女祭司.png",
+      "bytes": 582409,
+      "sha256": "50a9745dddf95dda28e3e4fcc2be4a3375ef9d48ad8ea18b71d7607c5913fdd8"
+    },
+    {
+      "file": "godot/art/card/arcana-strength.png",
+      "assetId": "illustration.arcana-strength",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/力量.png",
+      "bytes": 632281,
+      "sha256": "3f16746833a72923d779175e726ec7493722ce1f6169c31d100dcd7ad065d6f9"
+    },
+    {
+      "file": "godot/art/card/arcana-temperance.png",
+      "assetId": "illustration.arcana-temperance",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/节制.png",
+      "bytes": 442503,
+      "sha256": "00698cccf4ca252d695d2b62c19c00be3b8608ff01d759a5b871cb0c4eb8ebd1"
+    },
+    {
+      "file": "godot/art/card/arcana-tower.png",
+      "assetId": "illustration.arcana-tower",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/高塔.png",
+      "bytes": 591570,
+      "sha256": "3453d4c7bcbdfcd5842d2e30bb1a9507ef673bdd87316bab7630df26974d229e"
+    },
+    {
+      "file": "godot/art/card/arcana-world.png",
+      "assetId": "illustration.arcana-world",
+      "source": "assets/art/alpha-v252-20261021/source/arcana/世界.png",
+      "bytes": 915942,
+      "sha256": "ea2b6a5722edcbe259691a71a916032d8c2d614523a504f24c9bec7a14bdf19d"
+    },
+    {
       "file": "godot/art/card/arcane-recovery.png",
       "assetId": "illustration.arcane-recovery",
       "source": "assets/art/alpha-release/arcane-recovery.png",
@@ -15935,6 +16541,13 @@
       "sha256": "93e19cd54d8688321d618dbbf32d537ed07f8176c5e2616a5ea21e057922d746"
     },
     {
+      "file": "godot/art/card/moon.png",
+      "assetId": "illustration.moon",
+      "source": "assets/art/alpha-v252-20261021/source/asterism/月亮.png",
+      "bytes": 678035,
+      "sha256": "886a90bb05583ce9a7180f1d0edf7234fdfbd31856a7aafd95d82f01a2dcb184"
+    },
+    {
       "file": "godot/art/card/pentagram-of-life.png",
       "assetId": "illustration.pentagram-of-life",
       "source": "assets/art/alpha-v1/pentagram-of-life.png",
@@ -15989,6 +16602,20 @@
       "source": "assets/art/sique-20261020/export/sique-aroma-lure.png",
       "bytes": 975041,
       "sha256": "58f1ab1044a7d2143d88d5fb02264d81c5cbc3cea0369016098369d6d86f8266"
+    },
+    {
+      "file": "godot/art/card/sique-backfire.png",
+      "assetId": "illustration.sique-backfire",
+      "source": "assets/art/alpha-v252-20261021/processed/sique-backfire.png",
+      "bytes": 1064928,
+      "sha256": "a1384b9890a9e36bbce46fa2e055711554f56ae95223c3a6e18d30ca3adef5e9"
+    },
+    {
+      "file": "godot/art/card/sique-blowfire.png",
+      "assetId": "illustration.sique-blowfire",
+      "source": "assets/art/alpha-v252-20261021/processed/sique-blowfire.png",
+      "bytes": 977420,
+      "sha256": "3eeb6f5c0bf4aa424be9c8b0130ac367e59b81ed283f6a80c4f7e9cbcf0f2904"
     },
     {
       "file": "godot/art/card/sique-boiling-surge.png",
@@ -16066,6 +16693,13 @@
       "source": "assets/art/sique-20261020/export/sique-refire.png",
       "bytes": 1074328,
       "sha256": "54978be86ca87adc1240e6f78977a26d12416e01f6cb189f8802926b3df65b05"
+    },
+    {
+      "file": "godot/art/card/sique-roast.png",
+      "assetId": "illustration.sique-roast",
+      "source": "assets/art/alpha-v252-20261021/processed/sique-roast.png",
+      "bytes": 1133219,
+      "sha256": "55a9f91e5d6f2a58e448ac099fcb3cfb9920c688c7f2dc2e8f1e4892a5e47a10"
     },
     {
       "file": "godot/art/card/sique-salt.png",
@@ -16159,6 +16793,13 @@
       "sha256": "a98766eeeb8cfbace86a4ed1856fc7a8cfe6fb3e8e000f87556803e2823d66c3"
     },
     {
+      "file": "godot/art/card/three-star.png",
+      "assetId": "illustration.three-star",
+      "source": "assets/art/alpha-v252-20261021/source/asterism/三芒星.png",
+      "bytes": 694375,
+      "sha256": "52626cd1822467e04ef266d41fb74cf66a979ccd425d4f780cb588814b2648da"
+    },
+    {
       "file": "godot/art/card/thunder-summon.png",
       "assetId": "illustration.thunder-summon",
       "source": "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png",
@@ -16178,6 +16819,13 @@
       "source": "assets/art/alpha-v1/true-strike.png",
       "bytes": 924766,
       "sha256": "ff359f2b5a84902352655f2b9a9f87c4acc52be834575e4f6878bb433a7f4953"
+    },
+    {
+      "file": "godot/art/card/two-star.png",
+      "assetId": "illustration.two-star",
+      "source": "assets/art/alpha-v252-20261021/source/asterism/二芒星.png",
+      "bytes": 296474,
+      "sha256": "d14b4e01f01b6f80dc04c274e220e87e1c8588884a2a2d56995ae0c5709a5369"
     },
     {
       "file": "godot/art/card/unravel.png",
@@ -17666,6 +18314,22 @@
   ],
   "duplicateHashes": [
     {
+      "sha256": "00698cccf4ca252d695d2b62c19c00be3b8608ff01d759a5b871cb0c4eb8ebd1",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/节制.png",
+        "godot/art/card/arcana-temperance.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "012a4203379f148234a29da0f46eafa269ec78755cd1490947d3473375ac0279",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/皇后.png",
+        "godot/art/card/arcana-empress.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "02e783270972d01fe480172caf372f4e26579dcc8f3ca1ce9ae68483fa73fc7c",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_type_formation.png",
@@ -17784,6 +18448,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "0a56ecadca0c30b1d1650f669f7354870032a8e6fdd07e5e5326327edb671ba6",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/恶魔.png",
+        "godot/art/card/arcana-devil.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "0a8e42fe7c4eda753630d84e68faf21cfd26432ace6e5fb3d0c86eacbadd8d72",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_type_incantation.png",
@@ -17796,6 +18468,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_2.png",
         "godot/art/icons/c2d_icon_level_2.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "0c2faded3a69d360f923fc85c61257280a5526d30e135a1a71a7fe210b38fbcd",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/asterism/五芒星.png",
+        "godot/art/card/alpha-v252-pentagram-of-life.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -17867,6 +18547,8 @@
       "sha256": "160f0b0c332976753e446a3d63f7190d3d6a3be110c0cdd3850d451e4279dd62",
       "files": [
         "assets/art/alpha-v1/engeas-four-point-star.png",
+        "assets/art/alpha-v252-20261021/source/asterism/四芒星.png",
+        "godot/art/card/alpha-v252-small-hexagram.png",
         "godot/art/card/engeas-four-point-star.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
@@ -17992,6 +18674,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "1f50c2a1bd961c205f0651cc819ca7ab29eca9a62bad2c86ef4ed9db3bc7a969",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/倒吊人.png",
+        "godot/art/card/arcana-hanged-man.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "1f95d2be35b9bc30724e346a5cd8930b74f1b973ade66bd0ba4b450b48ce702e",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_phase_main.png",
@@ -18021,6 +18711,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_dropdown_focus.png",
         "godot/art/ui/c2d_control_dropdown_focus.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "21b67fbc0573e05946828df6d74292c5b0dfa67356951cd38c96c7a0e1e88843",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/战车.png",
+        "godot/art/card/arcana-chariot.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -18151,6 +18849,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "2ef8252929b05df4c30828b52a0dc4fa17784ba714657d9318a3d83af8b4f22f",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/死神.png",
+        "godot/art/card/arcana-death.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "2f4fdffdf9566761788aa182c89280a7396305b7a34e3d22785d4a6dea7cd2d1",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_chain_cancelled.png",
@@ -18206,6 +18912,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "3453d4c7bcbdfcd5842d2e30bb1a9507ef673bdd87316bab7630df26974d229e",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/高塔.png",
+        "godot/art/card/arcana-tower.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "3494aac08fe8daced99783da4655bef63d68b27575081792fe7a397063299718",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_rarity_legendary.png",
@@ -18250,7 +18964,9 @@
     {
       "sha256": "37150aa2601e55ab8432168b6e29aa72da938ab0d214abdbe22e6a69f9f00d91",
       "files": [
+        "assets/art/alpha-v252-20261021/source/asterism/太阳.png",
         "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sun.png",
+        "godot/art/card/alpha-v252-sun.png",
         "godot/art/card/v2-sun.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
@@ -18282,10 +18998,34 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "3eeb6f5c0bf4aa424be9c8b0130ac367e59b81ed283f6a80c4f7e9cbcf0f2904",
+      "files": [
+        "assets/art/alpha-v252-20261021/processed/sique-blowfire.png",
+        "godot/art/card/sique-blowfire.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "3f09338bf282af4b479182c7056cfbfc1978f9643ec1163172f860de2ee37b6e",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_control_slider-thumb.png",
         "godot/art/icons/c2d_icon_control_slider-thumb.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "3f16746833a72923d779175e726ec7493722ce1f6169c31d100dcd7ad065d6f9",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/力量.png",
+        "godot/art/card/arcana-strength.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "3f9b3a9c172239911ba49b29118c2b7a3515ff2c66d5584411755764b0f64e36",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/魔术师.png",
+        "godot/art/card/arcana-magician.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -18428,6 +19168,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "4e5ce6af044467f59a72ceeff50ffda6f2de9542492a8f4f72c179f02fd110ea",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/皇帝.png",
+        "godot/art/card/arcana-emperor.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "4f5558c0f5b412129c8107c49caddaa14809be3291ae833445cd346f7d35ce66",
       "files": [
         "assets/art/godot-2d-v2/deck-builder-1080p-v1/export/grid-panel-1080p.png",
@@ -18444,10 +19192,26 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "50a9745dddf95dda28e3e4fcc2be4a3375ef9d48ad8ea18b71d7607c5913fdd8",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/女祭司.png",
+        "godot/art/card/arcana-priestess.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "50b8d4349a635095077bed5b3567894d57d4a4c53075de7cbfdde567eff05c23",
       "files": [
         "assets/art/godot-2d-v2/deck-builder-1080p-v1/export/drop-highlight-1080p.png",
         "godot/art/deck-v2/drop-highlight-1080p.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "52626cd1822467e04ef266d41fb74cf66a979ccd425d4f780cb588814b2648da",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/asterism/三芒星.png",
+        "godot/art/card/three-star.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -18484,6 +19248,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_unchecked.png",
         "godot/art/ui/c2d_control_unchecked.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "55a9f91e5d6f2a58e448ac099fcb3cfb9920c688c7f2dc2e8f1e4892a5e47a10",
+      "files": [
+        "assets/art/alpha-v252-20261021/processed/sique-roast.png",
+        "godot/art/card/sique-roast.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -18824,6 +19596,14 @@
       "reason": "Same hash; retain pending purpose and visual-reference review"
     },
     {
+      "sha256": "7616013f866881c1a0094f11671dc7f03827b586710ec266aff45bef8bc7324e",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/asterism/八芒星.png",
+        "godot/art/card/alpha-v252-octagram.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "7634f2868c62ebeb396d1b0e1a1fda576ade76463a5c74f3edb0a7135194713f",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_rank_5.png",
@@ -18957,6 +19737,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "81ab7fe7ac52b16e3c501132b151e66d4b3215a7bd459ac4a8bccd4421f6cdc0",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/正义.png",
+        "godot/art/card/arcana-justice.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "82a53e567caba4de9d965c3d777e6eefd8bb61f896849071c83a851abbea7281",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_danger_disabled.png",
@@ -19017,6 +19805,14 @@
         "assets/art/godot-2d-v1/source/c-pixel-v1/svg/board/c2d_overlay_legal.svg"
       ],
       "reason": "Same hash; retain pending purpose and visual-reference review"
+    },
+    {
+      "sha256": "886a90bb05583ce9a7180f1d0edf7234fdfbd31856a7aafd95d82f01a2dcb184",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/asterism/月亮.png",
+        "godot/art/card/moon.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
     },
     {
       "sha256": "8946b26689095f4a3a03f590b690e0eb1fc2e542c7965d9759d8cb5822776147",
@@ -19174,6 +19970,22 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "94ca31f862263435e35dc60c0cca51da380983bde02c3acc9f2965cffa5d54d0",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/愚者.png",
+        "godot/art/card/arcana-fool.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "95fa1aaee4699eb4c87be7eb413b68b809f18a64e198953ea42faf88bea3aa8d",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/教皇.png",
+        "godot/art/card/arcana-hierophant.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "970f98268dd3d2961c224341c541ef758f8f6191005d911decdb4c5b393c3eb5",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_board_background.png",
@@ -19270,10 +20082,26 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "a1384b9890a9e36bbce46fa2e055711554f56ae95223c3a6e18d30ca3adef5e9",
+      "files": [
+        "assets/art/alpha-v252-20261021/processed/sique-backfire.png",
+        "godot/art/card/sique-backfire.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "a3a74458f8f488556380d871e5270512e3d9b47255cccfdb5b0508a99e50cf1d",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_secondary_hover.png",
         "godot/art/ui/c2d_button_secondary_hover.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "a3e45a1984b84e34e0470b638d8e89ea2ebf0aa481956ef6e231c107a2ab90d9",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/恋人.png",
+        "godot/art/card/arcana-lovers.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -19433,6 +20261,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_dropdown_normal.png",
         "godot/art/ui/c2d_control_dropdown_normal.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "bc85f62fbebcc31cb452452823a3d33c46adef1d45439c3e4b93431f248b17f9",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/隐士.png",
+        "godot/art/card/arcana-hermit.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -19616,6 +20452,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "d14b4e01f01b6f80dc04c274e220e87e1c8588884a2a2d56995ae0c5709a5369",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/asterism/二芒星.png",
+        "godot/art/card/two-star.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "d27cf1013e9542e8a928fe9e53e5353b599bf08ece1ab630d8ce1bc4d851d6a0",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/effects/c2d_fx_end-cleanup_reduced.png",
@@ -19652,6 +20496,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_hud_load_overload.png",
         "godot/art/board/c2d_hud_load_overload.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "d72286c181b23800f7551d7797b9a0d1cc79fc961d2b6b420a6b0340d54829f4",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/asterism/六芒星.png",
+        "godot/art/card/alpha-v252-hexagram.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -19833,6 +20685,14 @@
         "godot/art/ui/c2d_control_input_pressed.png",
         "godot/art/ui/c2d_control_tab_hover.png",
         "godot/art/ui/c2d_control_tab_pressed.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "ea2b6a5722edcbe259691a71a916032d8c2d614523a504f24c9bec7a14bdf19d",
+      "files": [
+        "assets/art/alpha-v252-20261021/source/arcana/世界.png",
+        "godot/art/card/arcana-world.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },

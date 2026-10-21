@@ -1,10 +1,10 @@
 {
   "format": 1,
   "metadata": {
-    "rulesVersion": "2.5.1",
-    "cardSetVersion": "2.5.1",
+    "rulesVersion": "2.5.2",
+    "cardSetVersion": "2.5.2",
     "baseLoadCapacity": 2,
-    "mechanicsRevision": 4
+    "mechanicsRevision": 5
   },
   "definitions": [
     {
@@ -69,7 +69,7 @@
     },
     {
       "id": "aid",
-      "file": "cards/analytic/aid.json"
+      "file": "cards/word/aid.json"
     },
     {
       "id": "counter-spell",
@@ -318,6 +318,102 @@
     {
       "id": "sique-aroma-lure",
       "file": "cards/talisman/sique-aroma-lure.json"
+    },
+    {
+      "id": "earthquake",
+      "file": "cards/analytic/earthquake.json"
+    },
+    {
+      "id": "sique-roast",
+      "file": "cards/analytic/sique-roast.json"
+    },
+    {
+      "id": "arcana-empress",
+      "file": "cards/analytic/arcana-empress.json"
+    },
+    {
+      "id": "arcana-lovers",
+      "file": "cards/analytic/arcana-lovers.json"
+    },
+    {
+      "id": "arcana-chariot",
+      "file": "cards/analytic/arcana-chariot.json"
+    },
+    {
+      "id": "arcana-strength",
+      "file": "cards/analytic/arcana-strength.json"
+    },
+    {
+      "id": "arcana-hermit",
+      "file": "cards/analytic/arcana-hermit.json"
+    },
+    {
+      "id": "arcana-hanged-man",
+      "file": "cards/analytic/arcana-hanged-man.json"
+    },
+    {
+      "id": "arcana-death",
+      "file": "cards/analytic/arcana-death.json"
+    },
+    {
+      "id": "arcana-temperance",
+      "file": "cards/analytic/arcana-temperance.json"
+    },
+    {
+      "id": "arcana-devil",
+      "file": "cards/analytic/arcana-devil.json"
+    },
+    {
+      "id": "arcana-tower",
+      "file": "cards/analytic/arcana-tower.json"
+    },
+    {
+      "id": "sique-blowfire",
+      "file": "cards/word/sique-blowfire.json"
+    },
+    {
+      "id": "arcana-fool",
+      "file": "cards/word/arcana-fool.json"
+    },
+    {
+      "id": "arcana-magician",
+      "file": "cards/word/arcana-magician.json"
+    },
+    {
+      "id": "arcana-priestess",
+      "file": "cards/word/arcana-priestess.json"
+    },
+    {
+      "id": "arcana-emperor",
+      "file": "cards/word/arcana-emperor.json"
+    },
+    {
+      "id": "arcana-justice",
+      "file": "cards/word/arcana-justice.json"
+    },
+    {
+      "id": "arcana-world",
+      "file": "cards/word/arcana-world.json"
+    },
+    {
+      "id": "sique-backfire",
+      "file": "cards/talisman/sique-backfire.json"
+    },
+    {
+      "id": "arcana-hierophant",
+      "file": "cards/talisman/arcana-hierophant.json"
+    },
+    {
+      "id": "three-star",
+      "file": "cards/formation/three-star.json"
+    },
+    {
+      "id": "two-star",
+      "file": "cards/formation/two-star.json"
+    },
+    {
+      "id": "moon",
+      "file": "cards/formation/moon.json"
     }
   ]
 }

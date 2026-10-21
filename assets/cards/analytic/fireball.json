@@ -6,7 +6,7 @@
   "cost": 3,
   "castCost": 1,
   "rank": 3,
-  "target": "opponent",
+  "target": "player",
   "effects": [
     {
       "kind": "damage",
@@ -14,7 +14,7 @@
       "damageType": "fire"
     }
   ],
-  "text": "对对方玩家造成10点火焰伤害。",
+  "text": "选择1个目标才能发动。对其造成10点火焰伤害。",
   "flavor": "没错，这确实是经典之选。“伟大的法师都精通了火球术使用！”阿克莉娅如是说，她本人是个术士。",
   "speed": 1,
   "school": "evocation",

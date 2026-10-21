@@ -1,0 +1,34 @@
+{
+  "id": "engeas-four-point-star",
+  "name": "恩格亚斯四角星",
+  "type": "formation",
+  "rarity": "epic",
+  "cost": 0,
+  "body": 1,
+  "capacity": 2,
+  "income": 3,
+  "rings": 1,
+  "maxRank": 3,
+  "quickRankOne": true,
+  "text": "每个自己的回合一次：在本阵法上开始解析的第一张位阶不超过1、需要解析时间的法术，立即完成解析。",
+  "flavor": "贤者恩格亚斯发明的精简阵法，以快速聚能和快速释放闻名。",
+  "castCost": 0,
+  "rank": 0,
+  "speed": 1,
+  "level": 3,
+  "baseEligible": false,
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 3
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "readyOnly": true
+    }
+  ],
+  "summonCondition": "3魔素+已解析的法术。",
+  "number": "010003",
+  "illustrationId": "engeas-four-point-star"
+}

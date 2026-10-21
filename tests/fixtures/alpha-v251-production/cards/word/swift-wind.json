@@ -1,0 +1,28 @@
+{
+  "id": "swift-wind",
+  "name": "极速之风",
+  "type": "word",
+  "rarity": "common",
+  "cost": 3,
+  "rank": 1,
+  "level": 1,
+  "speed": 2,
+  "school": "transmutation",
+  "target": "none",
+  "effects": [
+    {
+      "kind": "return_enemy_analysis"
+    }
+  ],
+  "text": "场上有风暴阵法卡才能发动。将对方一张等级2及以下的阵法卡返回副卡组。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "tags": [
+    "风暴"
+  ],
+  "traits": [
+    "requires_storm_formation"
+  ],
+  "number": "030010",
+  "illustrationId": "swift-wind"
+}

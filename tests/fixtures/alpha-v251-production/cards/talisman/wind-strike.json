@@ -1,0 +1,49 @@
+{
+  "id": "wind-strike",
+  "name": "风击术",
+  "type": "talisman",
+  "rarity": "rare",
+  "cost": 4,
+  "rank": 3,
+  "level": 3,
+  "speed": 3,
+  "school": "abjuration",
+  "target": "none",
+  "effects": [],
+  "responses": [
+    {
+      "id": "wind-strike",
+      "name": "风击反制",
+      "sources": [
+        "ambush"
+      ],
+      "windows": [
+        "prepare"
+      ],
+      "eventOwner": "opponent",
+      "target": "enemy_spell_link",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 6,
+          "damageType": "bludgeoning",
+          "recipient": "opponent"
+        },
+        {
+          "kind": "destroy_enemy_analysis"
+        }
+      ]
+    }
+  ],
+  "text": "场上有风暴阵法卡才能发动。对方设置解析法术卡时才能发动，对方受到等同于那张卡位阶×2的钝击伤害；若那张卡的位阶低于风击术，销毁那张卡。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "tags": [
+    "风暴"
+  ],
+  "traits": [
+    "requires_storm_formation"
+  ],
+  "number": "040007",
+  "illustrationId": "wind-strike"
+}

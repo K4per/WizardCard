@@ -48,6 +48,7 @@ struct GameView {
     std::array<PlayerView, 2> players;
     std::vector<CardView> cards;
     std::vector<TemporaryLoad> temporary;
+    std::vector<TemporaryLife> temporaryLives;
     std::optional<PendingDecision> decision;
     std::vector<GameEvent> events;
     std::vector<LegalAction> actions;

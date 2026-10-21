@@ -16,7 +16,7 @@
       "amount": 6
     }
   ],
-  "text": "获得6点临时生命值（不叠加，取较高值）。",
+  "text": "获得6点临时生命值。",
   "level": 3,
   "number": "020012",
   "illustrationId": "false-life"

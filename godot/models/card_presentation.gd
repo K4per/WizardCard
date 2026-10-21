@@ -55,7 +55,7 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 		lines.append("设置条件：" + formation_condition(data))
 	else:
 		var school: String = str(data.get("school", ""))
-		var schools: Dictionary[String, String] = {"abjuration": "防护", "conjuration": "咒法", "divination": "预言", "enchantment": "惑控", "evocation": "塑能", "illusion": "幻术", "necromancy": "死灵", "transmutation": "变化"}
+		var schools: Dictionary[String, String] = {"abjuration": "防护", "conjuration": "咒法", "divination": "预言", "enchantment": "惑控", "evocation": "塑能", "illusion": "幻术", "necromancy": "死灵", "transmutation": "变化", "arcana": "阿卡那"}
 		if not school.is_empty():
 			lines.append("派系：" + schools.get(school, school))
 		lines.append(card.cost_detail())

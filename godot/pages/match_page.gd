@@ -19,6 +19,7 @@ var _privacy_layer: ColorRect
 var _privacy_title: Label
 var _feedback: MatchFeedback
 var _cue: Label
+var _cue_tween: Tween
 var _decision: DecisionPanel
 var _shade: ColorRect
 var _selected: CardPresentation
@@ -224,6 +225,10 @@ func _refresh() -> void:
 	if snapshot.is_empty():
 		_notice.text = service.error
 		return
+	_clear_cue()
+	if not _pending.is_empty() and (str(snapshot.get("generation", "")) != _pending_generation or str(snapshot.get("revision", "")) != _pending_revision):
+		_cancel_pending()
+		_confirm.hide()
 	_restore_tray_hand()
 	_tray_action_groups.clear()
 	_phase_selector.hide()
@@ -259,6 +264,7 @@ func _refresh() -> void:
 	_update_status()
 	_hand_button.text = "▴ 手牌" if canvas.hand_collapsed else "▾ 手牌"
 	if int(snapshot.get("result", -1)) != -1:
+		canvas.stop_feedback()
 		_phase.text = "对局结束 · " + ("平局" if int(snapshot["result"]) > 1 else "玩家 %d 获胜" % [int(snapshot["result"]) + 1])
 		_notice.text = "对局已结束，可保存并查看复盘。"
 	_tutorial.visible = snapshot.get("tutorial") is Dictionary
@@ -430,8 +436,11 @@ func _show_action_list(source: String, title: String, contextual: bool) -> void:
 		button.custom_minimum_size = Vector2(196, 44)
 		button.tooltip_text = label
 		_action_list.add_child(button)
+	var unavailable: String = MatchProjection.formation_removal_unavailable(snapshot, source) if contextual else ""
 	if groups.is_empty():
-		_action_list.add_child(UiFactory.label("暂无合法操作。" if contextual else "当前没有阶段级操作。", 14, true))
+		_action_list.add_child(UiFactory.label(unavailable if not unavailable.is_empty() else ("暂无合法操作。" if contextual else "当前没有阶段级操作。"), 14, true))
+	elif not unavailable.is_empty():
+		_action_list.add_child(UiFactory.label(unavailable, 14, true))
 	_action_title.text = title
 	_action_title.visible = not contextual
 	_action_popup.reset_size()
@@ -444,8 +453,6 @@ func _show_action_list(source: String, title: String, contextual: bool) -> void:
 func _action_visible(action: Dictionary) -> bool:
 	var command: Dictionary = action.get("command", {})
 	var type: int = int(command.get("type", -1))
-	if type == 1:
-		return false
 	# Casting is a committed phase. Returning a spell to hand here is
 	# deliberately unavailable; the card can still be abandoned in its other
 	# legal phases and through response decisions.
@@ -947,6 +954,8 @@ func _commit_pending() -> void:
 	_apply_result(result)
 
 func _decision_confirmed(generation: String, revision: String, decision_id: String, selected: Array[String]) -> void:
+	if _network_waiting or _privacy_layer.visible or (service.match_mode == "network" and bool(service.network_state.get("blocked", false))):
+		return
 	if selected.size() != 1 or str(service.match_snapshot.get("generation", "")) != generation or str(service.match_snapshot.get("revision", "")) != revision:
 		_refresh()
 		return
@@ -986,8 +995,6 @@ func _apply_result(result: Dictionary) -> void:
 		_notice.text = "操作已发送，等待房主确认。"
 		_render_actions()
 		return
-	_feedback.present(data)
-	_show_cue(data)
 	if not bool(data.get("replaySaved", true)):
 		_notice.text = "复盘自动保存失败：" + str(data.get("saveError", "请手动保存"))
 	else:
@@ -995,8 +1002,13 @@ func _apply_result(result: Dictionary) -> void:
 	if service.match_mode == "hotseat":
 		_cover(-1)
 	_refresh()
+	# The authoritative projection is installed before any decorative feedback.
+	_feedback.present(data)
+	if service.match_mode != "hotseat":
+		_show_cue(data)
 
 func _show_cue(data: Dictionary) -> void:
+	_clear_cue()
 	if bool(service.settings.get("reducedMotion", false)):
 		return
 	var cues: Array = data.get("cues", [])
@@ -1009,13 +1021,29 @@ func _show_cue(data: Dictionary) -> void:
 	_cue.text = message
 	_cue.modulate.a = 1.0
 	_cue.show()
-	var tween: Tween = create_tween()
-	tween.tween_interval(minf(1.5, maxf(0.2, float(latest.get("duration", 0.7)))))
-	tween.tween_property(_cue, "modulate:a", 0.0, 0.45)
-	tween.tween_callback(_cue.hide)
+	_cue_tween = create_tween()
+	_cue_tween.tween_interval(minf(1.5, maxf(0.2, float(latest.get("duration", 0.7)))))
+	_cue_tween.tween_property(_cue, "modulate:a", 0.0, 0.45)
+	_cue_tween.tween_callback(_cue.hide)
+
+func _clear_cue() -> void:
+	if _cue_tween != null and _cue_tween.is_valid():
+		_cue_tween.kill()
+	_cue_tween = null
+	if is_instance_valid(_cue):
+		_cue.hide()
+		_cue.modulate.a = 1.0
+
+func _exit_tree() -> void:
+	_clear_cue()
+	_clear_action_targets()
+	if not _pending.is_empty():
+		_cancel_pending()
 
 func _cover(next_viewer: int) -> void:
 	_pending_viewer = next_viewer
+	_clear_cue()
+	_clear_action_targets()
 	_clear_card()
 	canvas.set_privacy(true)
 	_privacy_layer.show()
@@ -1142,6 +1170,13 @@ func network_updated(state: Dictionary) -> void:
 		_network_waiting = false
 		return
 	if bool(state.get("blocked", false)):
+		_clear_action_targets()
+		_clear_cue()
+		canvas.stop_feedback()
+		canvas._cancel_pointer_state()
+		if not _pending.is_empty():
+			_confirm.hide()
+			_cancel_pending()
 		_notice.text = str(state.get("notice", "连接中断，操作暂不可用"))
 		_reconnect.visible = not bool(state.get("host", false))
 		_force_leave.show()

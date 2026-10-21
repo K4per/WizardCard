@@ -1,0 +1,24 @@
+{
+  "id": "mend",
+  "name": "缝合生命",
+  "rarity": "common",
+  "type": "analytic",
+  "cost": 2,
+  "castCost": 1,
+  "rank": 3,
+  "target": "player",
+  "effects": [
+    {
+      "kind": "heal",
+      "amount": 4
+    }
+  ],
+  "text": "选择己方或对方玩家，为其恢复4点生命值。",
+  "flavor": "把你的心我的心串一串……",
+  "speed": 2,
+  "school": "necromancy",
+  "level": 3,
+  "analysisTurns": 1,
+  "number": "020002",
+  "illustrationId": "mend"
+}

@@ -10,14 +10,14 @@
   "cost": 2,
   "castCost": 2,
   "analysisTurns": 1,
-  "target": "opponent",
+  "target": "player",
   "effects": [
     {
       "kind": "choose_damage",
       "amount": 8
     }
   ],
-  "text": "对对方玩家造成8点自选伤害，从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择。",
+  "text": "选择1个目标才能发动。对其造成8点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择。",
   "number": "020013",
   "illustrationId": "v2-chromatic-orb"
 }

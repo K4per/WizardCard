@@ -1,0 +1,29 @@
+{
+  "id": "chaos-ring",
+  "name": "混沌之环",
+  "type": "formation",
+  "rarity": "rare",
+  "level": 3,
+  "body": 2,
+  "rings": 5,
+  "capacity": 12,
+  "income": 1,
+  "maxRank": 3,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "此阵法不能同时解析相同学派法术。",
+  "summonCondition": "已解析的不同派系法术×2。",
+  "recipe": [
+    {
+      "kind": "sacrifice_spell",
+      "amount": 2,
+      "distinctSchools": true,
+      "readyOnly": true
+    }
+  ],
+  "traits": [
+    "distinct_host_schools"
+  ],
+  "number": "010012",
+  "illustrationId": "v2-chaos-ring"
+}

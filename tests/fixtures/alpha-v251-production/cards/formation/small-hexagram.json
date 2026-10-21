@@ -1,0 +1,27 @@
+{
+  "id": "small-hexagram",
+  "name": "运行之三角星",
+  "type": "formation",
+  "rarity": "common",
+  "level": 1,
+  "body": 1,
+  "rings": 1,
+  "capacity": 5,
+  "income": 1,
+  "maxRank": 1,
+  "baseEligible": true,
+  "cost": 0,
+  "text": "此卡在己方阵法槽内仅可存在一张。",
+  "summonCondition": "2魔素。",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 2
+    }
+  ],
+  "traits": [
+    "unique"
+  ],
+  "number": "010004",
+  "illustrationId": "triangle-star"
+}

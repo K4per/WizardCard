@@ -26,7 +26,8 @@ std::string schoolName(const std::string &s) {
     const std::map<std::string, std::string> names{{"evocation", "塑能系"},   {"transmutation", "变化系"},
                                                    {"conjuration", "咒法系"}, {"enchantment", "惑控系"},
                                                    {"illusion", "幻术系"},    {"abjuration", "防护系"},
-                                                   {"necromancy", "死灵系"},  {"divination", "预言系"}};
+                                                   {"necromancy", "死灵系"},  {"divination", "预言系"},
+                                                   {"arcana", "阿卡那"}};
     auto i = names.find(s);
     return i == names.end() ? "" : i->second;
 }
@@ -35,7 +36,7 @@ std::string phaseName(Phase p) {
         static_cast<std::size_t>(p));
 }
 std::string zoneName(Zone p) {
-    return std::array<const char *, 10>{"牌库", "手牌", "行动", "解析", "言灵", "施法", "灰烬", "符文", "响应", "副卡组"}
+    return std::array<const char *, 11>{"牌库", "手牌", "行动", "解析", "言灵", "施法", "灰烬", "符文", "响应", "副卡组", "抹除"}
         .at(static_cast<std::size_t>(p));
 }
 std::string windowName(ResponseWindow p) {
@@ -43,7 +44,7 @@ std::string windowName(ResponseWindow p) {
         .at(static_cast<std::size_t>(p));
 }
 std::string linkName(LinkKind p) {
-    return std::array<const char *, 6>{"阶段", "行动宣告", "准备施法", "释放法术", "响应", "被动触发"}.at(
+    return std::array<const char *, 7>{"阶段", "行动宣告", "准备施法", "释放法术", "响应", "被动触发", "设置解析法术"}.at(
         static_cast<std::size_t>(p));
 }
 } // namespace wizard

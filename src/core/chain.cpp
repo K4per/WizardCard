@@ -1,5 +1,6 @@
 #include "engine_internal.hpp"
 #include "wizard/core/sique.hpp"
+#include "wizard/core/arcana.hpp"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
@@ -80,6 +81,11 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
     const auto &s = state_;
     if (!s.chain || s.chain->mode != ChainMode::Building || actor != s.chain->priority)
         return "priority: 当前没有响应优先权";
+    if (catalog_.usesAlphaV252() && cmd.ability == "__activate_spell") {
+        if (cmd.link) return "target: 通用发动不指定链节";
+        auto trial = *this;
+        return trial.activateSpellV252(actor, cmd.card, cmd.target, cmd.targets, cmd.discard, false, cmd.decision);
+    }
     auto i = s.cards.find(cmd.card);
     if (i == s.cards.end() || i->second.owner != actor)
         return "invalid_card: 无效响应来源";
@@ -101,7 +107,7 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
     const bool casting = !c.faceDown && c.zone == Zone::Casting && c.spell == SpellState::Ready && a->fromCasting;
     if (catalog_.usesAlphaV2()) {
         if (analytic) return "not_prepared: 解析法术须先准备至施法区";
-        if (actor != s.active && (!c.wasAmbushed || c.ambushedTurn >= s.globalTurn))
+        if (!catalog_.usesAlphaV252() && actor != s.active && (!c.wasAmbushed || c.ambushedTurn >= s.globalTurn))
             return "response_source: 对方回合仅此前盖伏来源可以响应";
         if (ambush && d.type == CardType::Analytic)
             return "not_ready: 盖伏解析法术尚未完成解析";
@@ -111,7 +117,8 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
     }
     if (catalog_.advancedRules) {
         const auto top = s.chain->links.back().speed;
-        if (hand || d.speed == 1 || top == 4 || d.speed < top)
+        if (hand || (catalog_.usesAlphaV252() ? !spellSpeedAllowed(s, d) :
+                     d.speed == 1 || top == 4 || d.speed < top))
             return "spell_speed: 当前速度或来源不能加入连锁";
         if (d.speed == 2 && s.phase != Phase::Main && s.phase != Phase::Cast)
             return "spell_speed: 二速仅可在主要或施法阶段响应";
@@ -141,7 +148,8 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
                  (!catalog_.usesAlphaV2() || catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Talisman)))
                 return "target: 必须指定对手释放中的法术";
             if (d.id == "wind-strike" &&
-                (s.chain->window != ResponseWindow::Prepare || l->kind != LinkKind::Preparation ||
+                (s.chain->window != ResponseWindow::Prepare ||
+                 l->kind != (catalog_.usesAlphaV252() ? LinkKind::Setup : LinkKind::Preparation) ||
                  catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Analytic))
                 return "target: 风击术只能响应对方设置解析法术";
             if (d.id == "sique-boiling-surge" && !sique::threatensFormation(s, catalog_, *l, actor))
@@ -152,6 +160,13 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
                     return (effect.kind == EffectKind::Damage || effect.kind == EffectKind::ChooseDamage) && effect.amount > 0;
                 }))
                 return "target: 必须指定造成伤害的法术";
+        }
+        if (d.id == "arcana-devil") {
+            const auto link = std::find_if(s.chain->links.begin(), s.chain->links.end(),
+                [&](const ChainLink &candidate) { return candidate.id == cmd.link; });
+            if (link == s.chain->links.end() || link->item.owner == actor || link->kind != LinkKind::Spell ||
+                (!link->item.targetCard && link->item.targetCards.empty()))
+                return "response_condition: 恶魔只能响应对方选择法术目标的宣告";
         }
     } else if (cmd.link || !validTargets(s, a->target, a->targetCount, actor, cmd.target, cmd.targets))
         return "target: 无效响应目标";
@@ -180,6 +195,27 @@ std::vector<Respond> GameEngine::responsesFor(PlayerId p, DecisionId decisionId)
     const auto &s = state_;
     if (!s.chain || s.chain->mode != ChainMode::Building || s.chain->priority != p)
         return out;
+    if (catalog_.usesAlphaV252()) {
+        for (const auto &[id, card] : s.cards) {
+            const auto &definition = catalog_.at(card.definition);
+            if (card.owner != p || card.faceDown || card.zone != Zone::Casting || card.spell != SpellState::Ready ||
+                definition.responseOnly) continue;
+            const auto targetSets = sique::detachCost(definition) ? sique::detachOptions(s, catalog_, p, definition)
+                : sets(s, definition.target, definition.targetCount, p);
+            std::vector<CardId> discards = arcana::costOptions(s, catalog_, p, id);
+            if (std::find(definition.traits.begin(), definition.traits.end(), "discard_spell_search") !=
+                definition.traits.end()) {
+                discards.clear();
+                for (const auto &[discard, candidate] : s.cards)
+                    if (discard != id && candidate.owner == p && candidate.zone == Zone::Hand) discards.push_back(discard);
+            }
+            for (const auto &targets : targetSets) for (auto discard : discards) {
+                const auto target = sique::detachCost(definition) || targets.empty() ? 0 : targets.front();
+                Respond response{decisionId, id, "__activate_spell", target, 0, discard, targets};
+                if (validateResponse(p, response).empty()) out.push_back(std::move(response));
+            }
+        }
+    }
     for (const auto &[id, c] : s.cards)
         if (c.owner == p && (c.zone == Zone::Hand || c.zone == Zone::Words || c.zone == Zone::Analysis ||
                             (catalog_.usesAlphaV2() && c.zone == Zone::Casting)))

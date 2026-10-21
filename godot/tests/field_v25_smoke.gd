@@ -34,12 +34,12 @@ func _body_fixture(body: int, include_small: bool) -> FieldPresentation:
 	var rows: Array[Dictionary] = []
 	for owner: int in range(2):
 		var host: String = "body-%d-player-%d" % [body, owner]
-		rows.append({"id": host, "owner": owner, "zone": 3, "fieldOrder": "1", "definition": {"id": formation_id, "name": "均衡之六芒星" if body == 2 else "至圣之太阳星", "type": 3, "body": body, "rings": ring_count}})
+		rows.append({"id": host, "owner": owner, "zone": 3, "fieldOrder": "1", "definition": {"id": formation_id, "illustrationId": "alpha-v252-" + formation_id, "name": "均衡之六芒星" if body == 2 else "至圣之太阳星", "type": 3, "body": body, "rings": ring_count}})
 		rows.append({"id": host + "-spell", "owner": owner, "zone": 3, "host": host, "ringIndex": 0, "definition": {"id": "fireball", "name": "火球术", "type": 1, "cost": 3, "castCost": 1}})
 		rows.append({"id": host + "-rune", "owner": owner, "zone": 7, "host": host, "definition": {"id": "ring", "name": "宿主符文", "type": 4}})
 		rows.append({"id": host + "-spell-rune", "owner": owner, "zone": 7, "host": host + "-spell", "definition": {"id": "ring", "name": "法术符文", "type": 4}})
 		if include_small:
-			rows.append({"id": "small-player-%d" % owner, "owner": owner, "zone": 3, "fieldOrder": "2", "definition": {"id": "small-hexagram", "name": "运行之三角星", "type": 3, "body": 1, "rings": 1}})
+			rows.append({"id": "small-player-%d" % owner, "owner": owner, "zone": 3, "fieldOrder": "2", "definition": {"id": "small-hexagram", "illustrationId": "alpha-v252-small-hexagram", "name": "运行之三角星", "type": 3, "body": 1, "rings": 1}})
 	return MatchProjection.field({"viewer": 0, "players": [{}, {}], "cards": rows})
 
 func _body_checks(canvas: FieldCanvas, body: int, include_small: bool, output: String) -> void:
@@ -116,7 +116,7 @@ func _body_checks(canvas: FieldCanvas, body: int, include_small: bool, output: S
 		root.get_texture().get_image().save_png(output.path_join("field-body-%d-%dx%d.png" % [body, root.size.x, root.size.y]))
 
 func _run() -> void:
-	var dynamic: CardPresentation = CardPresentation.from_projection({"id": "99", "definition": {"id": "sunburst", "name": "阳炎爆", "type": 1, "cost": 20, "castCost": 2}, "effectiveSettingCost": 17, "effectiveCastCost": 2})
+	var dynamic: CardPresentation = CardPresentation.from_projection({"id": "99", "definition": {"id": "sunburst", "illustrationId": "v2-sunburst", "name": "阳炎爆", "type": 1, "cost": 20, "castCost": 2}, "effectiveSettingCost": 17, "effectiveCastCost": 2})
 	_expect(dynamic.primary_value == "17/2", "analytic face uses live setting and casting costs")
 	_expect(dynamic.metadata_text.contains("设置费用：17　施法费用：2"), "details use live costs")
 	var storm: CardPresentation = CardPresentation.from_projection({"id": "42", "stormPoints": 6, "definition": {"id": "storm-crest", "name": "风暴纹章", "type": 3, "tags": ["风暴"], "body": 1, "rings": 1, "capacity": 5, "income": 1}})
@@ -204,6 +204,10 @@ func _run() -> void:
 	field.legal_cards["13"] = FieldPresentation.LEGAL_GOLD | FieldPresentation.LEGAL_AMBUSH
 	var rune: CardPresentation = attachment_projection.attachments["host"][0] as CardPresentation
 	field.attachments[formation.instance_id] = [rune]
+	for index: int in range(1, 9):
+		var extra_rune: CardPresentation = rune.duplicate() as CardPresentation
+		extra_rune.instance_id = "rune-%d" % index
+		field.attachments[formation.instance_id].append(extra_rune)
 	field.can_set_formation = true
 	field.own_deck_count = 35
 	field.opponent_deck_count = 35
@@ -220,6 +224,10 @@ func _run() -> void:
 	for index: int in range(arguments.size() - 1):
 		if arguments[index] == "--output":
 			capture_output = arguments[index + 1]
+	# The headless renderer does not emit frame_post_draw; it can perform every
+	# geometry/input assertion but must not await a screenshot callback.
+	if DisplayServer.get_name() == "headless":
+		capture_output = ""
 	for dimensions: Vector2i in [Vector2i(1280,720),Vector2i(1600,1000),Vector2i(1920,1080)]:
 		root.size = dimensions
 		await process_frame
@@ -243,6 +251,13 @@ func _run() -> void:
 		_expect((canvas.size - own_cast_rect.end).is_equal_approx(opponent_cast_rect.position), "casting cards remain center symmetric")
 		var attachment_bounds: Rect2 = canvas.card_bounds(rune)
 		_expect(attachment_bounds.has_area() and canvas.card_at(attachment_bounds.get_center()) == rune, "attached rune has a visible, selectable box on its host")
+		var rune_boxes: Array[Rect2] = []
+		for attached: CardPresentation in field.attachments[formation.instance_id]:
+			var box: Rect2 = canvas.card_bounds(attached)
+			_expect(box.has_area() and canvas.card_bounds(formation).encloses(box) and canvas.card_at(box.get_center()) == attached, "every stacked rune retains its own bounded selectable box")
+			for previous_box: Rect2 in rune_boxes:
+				_expect(not previous_box.intersects(box), "stacked rune boxes never overlap")
+			rune_boxes.append(box)
 		var hand_extent: Vector2 = canvas._hand_card_size(canvas.size.y * canvas.layout.hand_height_ratio)
 		var hand_stride: float = canvas._hand_stride(hand_extent.x, field.hand.size())
 		var hand_start: float = (canvas.size.x - (field.hand.size() - 1) * hand_stride) * 0.5

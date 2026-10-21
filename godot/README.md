@@ -1,13 +1,13 @@
-# Godot Alpha v2.5.1 frontend
+# Godot Alpha v2.5.2 frontend
 
 This directory contains the native bridge and Godot 4.7.2 frontend for WizardCard
-2.5.1. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
+2.5.2. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
 GDScript displays viewer projections and submits intents.
 
 The frontend includes menu, library, settings, deck construction, setup,
 hotseat, AI, tutorial, LAN rooms, matches, replay and a display-only field
-showcase. The official library reads the 78-card native catalogue, including the
-16-card Sique series. Historical
+showcase. The official library reads the 102-card native catalogue, including the
+19-card Sique series and 17 Arcana spells. Historical
 illustrated previews in `data/card-previews-v2.json` are display-only and cannot
 enter playable decks.
 
@@ -181,6 +181,12 @@ privacy and reduced-motion behavior, and `tests/network_frontend_smoke.gd` for
 three loopback create/join/start/leave cycles. Native settings tests cover font
 validation and persistence. Run these scripts serially after rebuilding and
 importing the current extension.
+
+`tests/art_residency_smoke.gd` checks the complete official illustration mapping,
+rejects fallback textures, and verifies that more than 48 same-page illustrations
+stay resident. Run without `--headless` and pass `--output <directory>` to capture
+all official cards in both library and deck styles. `--assets` and `--user-data`
+also accept a clean extracted release directory for package verification.
 
 For actual rendered screenshots, run a smoke script without `--headless` and
 append `-- --assets <directory> --user-data <isolated directory> --capture

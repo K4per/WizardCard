@@ -1,7 +1,7 @@
-# Godot Alpha v2.5.3 frontend
+# Godot Alpha v2.5.3-hotfix.1 frontend
 
 This directory contains the native bridge and Godot 4.7.2 frontend for WizardCard
-2.5.3. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
+2.5.3-hotfix.1. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
 GDScript displays viewer projections and submits intents.
 
 The frontend includes menu, library, settings, deck construction, setup,

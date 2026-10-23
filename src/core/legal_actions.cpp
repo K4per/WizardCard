@@ -89,8 +89,11 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             s.effect->item.effects[s.effect->cursor].kind == EffectKind::StormGuidance;
         for (auto id : d.options) {
             std::string label;
+            const bool playerChoice = id == playerTarget(0) || id == playerTarget(1);
             if (d.kind == DecisionKind::DamageChoice)
                 label = "选择" + damageName(static_cast<DamageType>(id - 1)) + "伤害";
+            else if (playerChoice)
+                label = id == playerTarget(p) ? "选择己方玩家" : "选择对方玩家";
             else if (id == 0xffffffd1u) label = "延长对方全部解析法术的解析时间";
             else if (id == 0xffffffd2u) label = "造成大旋风追加伤害";
             else if (id == 0xffffffe1u)
@@ -138,7 +141,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                  d.kind == DecisionKind::ClearAnyLoad || d.kind == DecisionKind::TriggerOrder ||
                  d.kind == DecisionKind::SearchDeck || d.kind == DecisionKind::StormSearch ||
                  d.kind == DecisionKind::StormHeartChoice || d.kind == DecisionKind::StormHeartRecover ||
-                 stormGuidanceMode || id == 0xffffffe1u || id == 0xffffffd1u || id == 0xffffffd2u)
+                 playerChoice || stormGuidanceMode || id == 0xffffffe1u || id == 0xffffffd1u || id == 0xffffffd2u)
                     ? 0
                     : id,
                 0, Choose{d.id, id});

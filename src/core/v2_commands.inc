@@ -301,6 +301,8 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
                           card.zone == Zone::Hand && def.type == CardType::Word;
     if (!catalog_.usesAlphaV252() && !analytic) return "response_source";
     if (!spell || (!handWord && card.zone != Zone::Analysis)) return "response_source";
+    if (handWord && catalog_.usesAlphaV253Hotfix1() && def.speed == 2 && actor != s.active)
+        return "spell_speed: 手牌二速言灵只能在自己的回合响应";
     if (!spellSpeedAllowed(s, def)) return "spell_speed: 咒文速度不允许当前时点";
     if (handWord) {
         const auto hasTrait = [&](const char *name) {

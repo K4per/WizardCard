@@ -67,6 +67,7 @@ struct CardCatalog {
     bool usesAlphaV25() const { return mechanicsRevision >= 3; }
     bool usesAlphaV252() const { return mechanicsRevision >= 5; }
     bool usesAlphaV253() const { return mechanicsRevision >= 6; }
+    bool usesAlphaV253Hotfix1() const { return mechanicsRevision >= 7; }
     int baseLoadCapacity{};
     const CardDefinition &at(const std::string &id) const;
 };

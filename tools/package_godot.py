@@ -25,7 +25,7 @@ def main():
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--build", type=Path, required=True)
     parser.add_argument("--configuration", default="Release")
-    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.3-windows-x64")
+    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.3-hotfix.1-windows-x64")
     parser.add_argument("--crt", type=Path, help="Directory containing the x64 VC runtime DLLs")
     args = parser.parse_args()
     lock = json.loads((ROOT / "godot/toolchain-lock.json").read_text())
@@ -63,12 +63,12 @@ def main():
     if args.crt:
         for file in args.crt.glob("*.dll"):
             shutil.copy2(file, output / file.name)
-    for name in ("LICENSE", "THIRD_PARTY_NOTICES.md", "README.md", "GLOSSARY.md"):
+    for name in ("LICENSE", "THIRD_PARTY_NOTICES.md", "README.md", "CHANGELOG.md", "GLOSSARY.md"):
         shutil.copy2(ROOT / name, output / name)
     shutil.copytree(ROOT / "licenses", output / "licenses")
     (output / "docs").mkdir()
     for name in ("alpha-v2.5-rules.md", "card-catalog.md", "card-catalog.html", "sique-cards.md",
-                 "card-migration-2.5.3.md",
+                 "card-migration-2.5.3.md", "releases/2.5.3-hotfix.1.md", "reports/2.5.3-hotfix.1.md",
                  "releases/2.5.3.md", "reports/2.5.3.md",
                  "reports/alpha-v2.5.3-requirements.md", "reports/alpha-v2.5.3-network.md",
                  "reports/alpha-v2.5.3-card-pool-migration.md", "reports/alpha-v2.5.3-card-acceptance.md",

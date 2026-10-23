@@ -1,8 +1,8 @@
 {
-  "rulesVersion": "2.5.3",
+  "rulesVersion": "2.5.3-hotfix.1",
   "cardSetVersion": "2.5.3",
   "baseLoadCapacity": 2,
-  "mechanicsRevision": 6,
+  "mechanicsRevision": 7,
   "cards": [
     {
       "id": "fireball",

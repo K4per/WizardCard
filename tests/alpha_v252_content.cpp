@@ -37,7 +37,8 @@ void choose252(GameEngine &e, CardId id) {
 }
 TEST_CASE("Alpha v2.5.3 current pool has unique executable identities and excludes unfinished drafts", "[alpha-v252][alpha-v253][content]") {
     const auto cat = currentCatalog(); REQUIRE(cat.cards.size() == 99); REQUIRE(cat.usesAlphaV253());
-    CHECK(cat.rulesVersion == "2.5.3"); CHECK(cat.cardSetVersion == "2.5.3");
+    CHECK(cat.rulesVersion == "2.5.3-hotfix.1"); CHECK(cat.cardSetVersion == "2.5.3");
+    CHECK(cat.mechanicsRevision == 7); CHECK(cat.usesAlphaV253Hotfix1());
     for (const auto *draft : {"upright-cross", "inverted-cross", "ankh"}) CHECK(cat.cards.count(draft) == 0);
     std::set<std::string> numbers;
     for (const auto &[id, d] : cat.cards) {

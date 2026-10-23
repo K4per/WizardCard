@@ -132,6 +132,98 @@ TEST_CASE("Alpha v2.5.3 hand word responses share legal generation priority spee
         }
     }
 }
+TEST_CASE("Alpha v2.5.3 hand speed two words can respond only during their owner's turn", "[alpha-v253][response]") {
+    for (const PlayerId active : {PlayerId{0}, PlayerId{1}}) {
+        auto cat = rules253(); auto s = main253(); s.active = active;
+        put253(s, 1, "hexagram", 0, Zone::Analysis);
+        put253(s, 2, "sun", 1, Zone::Analysis);
+        put253(s, 10, "disrupt", 0, Zone::Hand);
+        auto &counter = put253(s, 20, "counter-spell", 1, Zone::Analysis);
+        counter.faceDown = true; counter.host = 2; counter.ringIndex = 0;
+        counter.wasAmbushed = true; counter.ambushedTurn = 1;
+        window253(s, 0, 0);
+        auto e = GameEngine::scenario(cat, s);
+        const Command command = PreloadWord{10, true, 1, 0, {}, 0, 1};
+        const auto view = e.viewFor(0);
+        const bool offered = std::any_of(view.actions.begin(), view.actions.end(), [&](const LegalAction &a) {
+            return encodeCommand(a.command) == encodeCommand(command);
+        });
+        const auto before = e.digest();
+        const auto result = e.submit(0, command);
+        REQUIRE(offered == (active == 0));
+        REQUIRE(result.accepted == (active == 0));
+        if (active == 0) {
+            INFO(result.error); REQUIRE(e.state().chain->links.back().item.source == 10);
+        } else {
+            REQUIRE(e.digest() == before);
+            REQUIRE(std::any_of(view.actions.begin(), view.actions.end(), [](const LegalAction &a) {
+                return std::holds_alternative<PassResponse>(a.command);
+            }));
+        }
+    }
+}
+TEST_CASE("Alpha v2.5.3 scorching ray accepts player targets projected by legal actions", "[alpha-v253][scorching-ray]") {
+    for (const PlayerId owner : {PlayerId{0}, PlayerId{1}}) for (const bool crowded : {false, true}) {
+        CAPTURE(owner, crowded);
+        auto cat = rules253(); auto s = main253(); s.phase = Phase::Cast; s.active = owner;
+        put253(s, 10, "scorching-ray", owner, Zone::Casting).spell = SpellState::Ready;
+        if (crowded) {
+            s.globalTurn = 18;
+            put253(s, 1, "hexagram", owner, Zone::Analysis);
+            put253(s, 2, "sun", 1 - owner, Zone::Analysis);
+            put253(s, 11, "chromatic-orb", owner, Zone::Casting).spell = SpellState::Ready;
+            put253(s, 12, "spark", owner, Zone::Casting).spell = SpellState::Ready;
+            put253(s, 20, "mend", 1 - owner, Zone::Casting).spell = SpellState::Ready;
+            put253(s, 21, "mend", 1 - owner, Zone::Hand);
+            put253(s, 22, "arcana-death", 1 - owner, Zone::Hand);
+        }
+        auto e = GameEngine::scenario(cat, s);
+        auto passResponses = [&] {
+            for (int n = 0; e.state().decision && e.state().decision->kind == DecisionKind::Response && n < 8; ++n) {
+                const auto decision = *e.state().decision;
+                const auto responseView = e.viewFor(decision.player);
+                REQUIRE_FALSE(responseView.actions.empty());
+                send253(e, decision.player, PassResponse{decision.id});
+            }
+        };
+        const auto view = e.viewFor(owner);
+        const auto action = std::find_if(view.actions.begin(), view.actions.end(), [&](const LegalAction &a) {
+            const auto *activate = std::get_if<ActivateSpell>(&a.command);
+            return activate && activate->card == 10 && activate->target == playerTarget(1 - owner);
+        });
+        REQUIRE(action != view.actions.end());
+        REQUIRE(std::get<ActivateSpell>(action->command).targets == std::vector<CardId>{playerTarget(1 - owner)});
+        send253(e, owner, action->command);
+        passResponses();
+        REQUIRE(e.state().players[1 - owner].life == startingLife - 5);
+        for (const PlayerId target : {owner, 1 - owner}) {
+            REQUIRE(e.state().decision);
+            const auto decision = *e.state().decision;
+            REQUIRE(decision.kind == DecisionKind::EffectChoice);
+            const auto choices = e.viewFor(decision.player);
+            for (const PlayerId player : {PlayerId{0}, PlayerId{1}}) {
+                const auto option = std::find_if(choices.actions.begin(), choices.actions.end(), [&](const LegalAction &a) {
+                    const auto *choose = std::get_if<Choose>(&a.command);
+                    return choose && choose->decision == decision.id && choose->option == playerTarget(player);
+                });
+                REQUIRE(option != choices.actions.end());
+                REQUIRE(option->source == 0);
+                REQUIRE(option->label == (player == decision.player ? "选择己方玩家" : "选择对方玩家"));
+            }
+            const auto choice = std::find_if(choices.actions.begin(), choices.actions.end(), [&](const LegalAction &a) {
+                const auto *choose = std::get_if<Choose>(&a.command);
+                return choose && choose->decision == decision.id && choose->option == playerTarget(target);
+            });
+            REQUIRE(choice != choices.actions.end());
+            send253(e, decision.player, choice->command);
+        }
+        passResponses();
+        REQUIRE_FALSE(e.state().decision);
+        REQUIRE(e.state().players[owner].life == startingLife - 5);
+        REQUIRE(e.state().players[1 - owner].life == startingLife - 10);
+        REQUIRE(e.state().cards.at(10).spell == SpellState::Resolved);
+    }
+}
 TEST_CASE("Alpha v2.5.3 campfire triggers once after successful setting without adding spell damage", "[alpha-v253]") {
     auto cat = rules253(); auto s = main253();
     put253(s, 1, "sique-campfire", 0, Zone::Analysis);

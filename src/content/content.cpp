@@ -168,7 +168,7 @@ void writeJson(const std::filesystem::path &p, const Json &j) {
 CardCatalog parseCatalog(const Json &j, const std::string &source) {
     CardCatalog cat;
     const auto revision = number(j, "mechanicsRevision", source);
-    if (revision > 6)
+    if (revision > 7)
         fail(source + "/mechanicsRevision", "unsupported mechanics revision");
     cat.advancedRules = revision >= 1;
     cat.mechanicsRevision = revision;

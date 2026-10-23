@@ -209,9 +209,10 @@ void Peer::tick() {
         }
         if (guest_ && !connected_ && !ended_ && now - retry_ >= 2s) {
             if (!guest_->canResume()) {
-                if (now - connecting_ > 6s) {
+                if (!tcp_.connecting() && now - connecting_ > 6s) {
                     ended_ = true;
-                    notice_ = "连接失败，请检查房主地址、端口与防火墙";
+                    if (notice_ == "正在连接房主…")
+                        notice_ = "连接失败，请检查域名、IP 地址、端口与防火墙";
                 }
             } else if (now - lost_ <= 60s) {
                 retry_ = now;
@@ -228,6 +229,8 @@ void Peer::tick() {
         }
         notice_ = e.what();
         bool was = authenticated_;
+        if (guest_ && !guest_->canResume() && !guest_->started())
+            ended_ = true;
         if (host_ && tcp_.connected()) {
             try {
                 tcp_.send({{"type", "Error"}, {"error", notice_}});

@@ -300,9 +300,9 @@ void GameEngine::pump() {
                     if (c.owner == s.active && c.zone == Zone::Casting && c.spell == SpellState::Active &&
                         catalog_.at(c.definition).concentration) {
                         std::vector<CardId> opts;
-                        if (pl.mana >= c.concentrationCost &&
-                            Rules::load(s, s.active) + c.concentrationCost <=
-                                Rules::capacity(s, catalog_, s.active))
+                        if (ResourceRules::canPayMana(s, s.active, c.concentrationCost) &&
+                            (pl.debugInfiniteLoad || Rules::load(s, s.active) + c.concentrationCost <=
+                                Rules::capacity(s, catalog_, s.active)))
                             opts.push_back(id);
                         decision(s.active, DecisionKind::Concentration, std::move(opts), true);
                         break;

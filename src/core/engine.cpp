@@ -16,6 +16,9 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) : catalog_(st
             throw std::invalid_argument(errors.front());
     }
     state_.rng = config.seed ? config.seed : 0x9e3779b9u;
+    // Frozen rule fixtures retain their original starting resource.
+    if (!catalog_.usesAlphaV253())
+        for (auto &player : state_.players) player.mana = 1;
     state_.opening = catalog_.usesAlphaV25();
     if (state_.opening) state_.globalTurn = 0;
     CardId id = 1;

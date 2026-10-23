@@ -38,6 +38,8 @@ Json encodeCommand(const Command &c) {
             if constexpr (std::is_same_v<T, PrepareCast>)
                 if (x.decision)
                     j["decision"] = x.decision;
+            if constexpr (std::is_same_v<T, PreloadWord>)
+                if (x.decision) j["decision"] = x.decision;
             if constexpr (std::is_same_v<T, PrepareCast> || std::is_same_v<T, PlayAction> ||
                           std::is_same_v<T, Respond> || std::is_same_v<T, FlipAmbush> ||
                           std::is_same_v<T, ActivateSpell>)
@@ -110,7 +112,8 @@ Command decodeCommand(const Json &j) {
     case 5:
         return PreloadWord{id("card"), j.value("release", false),
             j.contains("formation") ? id("formation") : 0,
-            j.contains("target") ? id("target") : 0, targets, j.contains("discard") ? id("discard") : 0};
+            j.contains("target") ? id("target") : 0, targets, j.contains("discard") ? id("discard") : 0,
+            j.contains("decision") ? serial("decision") : 0};
     case 6:
         return AttachSeal{id("card"), id("host")};
     case 7:

@@ -1,0 +1,5 @@
+status: 房间已创建，等待对方连接 revision=0 result=-1
+status: 对方已加入 revision=0 result=-1
+status: 对方已断开连接 revision=11 result=-1
+status: 对方已重连 revision=11 result=-1
+{"commands":813,"digest":"97388c7b1fe16239","host":true,"reconnected":false,"result":1,"scenario":"reconnect"}

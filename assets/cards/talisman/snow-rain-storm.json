@@ -1,7 +1,7 @@
 {
   "id": "snow-rain-storm",
   "name": "恒风·雪雨暴",
-  "type": "word",
+  "type": "talisman",
   "rarity": "common",
   "cost": 3,
   "rank": 3,
@@ -22,6 +22,6 @@
     "surcharge_enemy_timed_cast",
     "double_enemy_concentration_upkeep"
   ],
-  "number": "030011",
+  "number": "040013",
   "illustrationId": "snow-rain-storm"
 }

@@ -1,0 +1,22 @@
+{
+  "status": "draft",
+  "excludedFromCatalog": [
+    "ankh",
+    "inverted-cross",
+    "upright-cross"
+  ],
+  "definitions": [
+    {
+      "id": "ankh",
+      "file": "cards/formation/ankh.json"
+    },
+    {
+      "id": "inverted-cross",
+      "file": "cards/formation/inverted-cross.json"
+    },
+    {
+      "id": "upright-cross",
+      "file": "cards/formation/upright-cross.json"
+    }
+  ]
+}

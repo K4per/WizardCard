@@ -1,0 +1,3467 @@
+{
+  "version": "2.5.3",
+  "mechanicsRevision": 6,
+  "status": "test-evidence-index-not-execution-result",
+  "cards": 99,
+  "summary": {
+    "normalFlow": 99,
+    "normal": 70,
+    "invalidTarget": 99,
+    "invalidCost": 86,
+    "invalidTiming": 99
+  },
+  "tests": {
+    "253-campfire": {
+      "file": "tests/alpha_v253_rules.cpp",
+      "line": 135,
+      "name": "Alpha v2.5.3 campfire triggers once after successful setting without adding spell damage"
+    },
+    "253-ring": {
+      "file": "tests/alpha_v253_rules.cpp",
+      "line": 181,
+      "name": "Alpha v2.5.3 elemental ring adds one per evocation damage event only"
+    },
+    "253-crest": {
+      "file": "tests/alpha_v253_rules.cpp",
+      "line": 195,
+      "name": "Alpha v2.5.3 Storm Crest confirmed counter thresholds determine all resources"
+    },
+    "253-cauldron": {
+      "file": "tests/alpha_v253_rules.cpp",
+      "line": 207,
+      "name": "Alpha v2.5.3 cauldron allows non Sique analysis and preparation but rejects activation"
+    },
+    "253-runes": {
+      "file": "tests/alpha_v253_rules.cpp",
+      "line": 165,
+      "name": "Alpha v2.5.3 cauldron rejects other runes and annihilation requires a Storm spell host"
+    },
+    "253-selections": {
+      "file": "tests/sique.cpp",
+      "line": 403,
+      "name": "Alpha 2.5.3 Sique selections require one through five cards and handle empty choices"
+    },
+    "253-flavor": {
+      "file": "tests/sique.cpp",
+      "line": 472,
+      "name": "Alpha 2.5.3 Sique flavor shift can only attach from deck to the cauldron"
+    },
+    "253-soup-sugar": {
+      "file": "tests/sique.cpp",
+      "line": 491,
+      "name": "Alpha 2.5.3 soup pays exactly one owned rune and sugar leaves for one mana"
+    },
+    "253-ingredients": {
+      "file": "tests/sique.cpp",
+      "line": 516,
+      "name": "Alpha 2.5.3 ingredients tracks the searched instances rather than matching names"
+    },
+    "253-divine-stew": {
+      "file": "tests/sique.cpp",
+      "line": 534,
+      "name": "Alpha 2.5.3 divine stew substitutes only mana at declaration and retains opponent life"
+    },
+    "253-hanged-man": {
+      "file": "tests/sique.cpp",
+      "line": 578,
+      "name": "Alpha 2.5.3 hanged man pays rounded ordinary life and exchanges only nonformations"
+    },
+    "253-magician": {
+      "file": "tests/sique.cpp",
+      "line": 606,
+      "name": "Alpha 2.5.3 magician lets the opponent choose from three revealed distinct names"
+    },
+    "253-word": {
+      "file": "tests/alpha_v253_rules.cpp",
+      "line": 72,
+      "name": "Alpha v2.5.3 hand word responses share legal generation priority speed cost and codec"
+    },
+    "pool": {
+      "file": "tests/alpha_v252_content.cpp",
+      "line": 38,
+      "name": "Alpha v2.5.3 current pool has unique executable identities and excludes unfinished drafts"
+    },
+    "arcana": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 205,
+      "name": "Alpha v2.5.2 every nonconditional Arcana source reaches normal authoritative resolution"
+    },
+    "arcana-cost": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 300,
+      "name": "Alpha v2.5.2 Arcana costs and conditions reject before payment or zone mutation"
+    },
+    "hooks": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 316,
+      "name": "Alpha v2.5.2 Arcana analysis hooks count events and preserve exile distinction"
+    },
+    "devil": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 398,
+      "name": "Alpha v2.5.2 Devil changes an opponent selected target and charges once"
+    },
+    "lovers": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 425,
+      "name": "Alpha v2.5.2 Lovers departure forces the opponent to choose one analytic-zone spell"
+    },
+    "passives": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 442,
+      "name": "Alpha v2.5.2 Hierophant absorbs one event Strength doubles damage and Temperance refunds one per payment"
+    },
+    "earthquake": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 466,
+      "name": "Alpha v2.5.2 Earthquake removes both players concealed spells on its main-phase trigger"
+    },
+    "seals": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 55,
+      "name": "Alpha v2.5.2 formations and spells accept several paid seals with individual removal"
+    },
+    "remove": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 89,
+      "name": "Alpha v2.5.2 removal is offered and shares the formation quota while cleaning hosted cards"
+    },
+    "flip": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 116,
+      "name": "Alpha v2.5.2 unconfigured Storm Vortex flips on the immediately following opponent turn"
+    },
+    "flip-denied": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 149,
+      "name": "Alpha v2.5.2 generic ambush activation keeps wait speed priority cost and exclusive conditions"
+    },
+    "wind-strike": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 367,
+      "name": "Alpha v2.5.2 Wind Strike responds only to the opponent setting an analytic spell"
+    },
+    "roast": {
+      "file": "tests/alpha_v252_content.cpp",
+      "line": 70,
+      "name": "Alpha v2.5.2 roast recovers any Sique card and enforces its campfire host"
+    },
+    "blowfire": {
+      "file": "tests/alpha_v252_content.cpp",
+      "line": 85,
+      "name": "Alpha v2.5.2 blowfire optional discard deals additional fire damage once"
+    },
+    "backfire": {
+      "file": "tests/alpha_v252_content.cpp",
+      "line": 97,
+      "name": "Alpha v2.5.2 backfire recycles opponents cards and scales damage and healing"
+    },
+    "stars": {
+      "file": "tests/alpha_v252_content.cpp",
+      "line": 110,
+      "name": "Alpha v2.5.2 new star hosts shorten analysis and add the specified independent load"
+    },
+    "moon": {
+      "file": "tests/alpha_v252_content.cpp",
+      "line": 127,
+      "name": "Alpha v2.5.2 moon blocks face up setup and prevents overload while allowing ambush"
+    },
+    "rays": {
+      "file": "tests/alpha_v252_content.cpp",
+      "line": 137,
+      "name": "Alpha v2.5.2 scorching rays choose a fresh player for each subsequent ray"
+    },
+    "ice": {
+      "file": "tests/alpha_v252_content.cpp",
+      "line": 150,
+      "name": "Alpha v2.5.2 ice storm optionally delays every enemy analysis including zero progress"
+    },
+    "circuit-sleep": {
+      "file": "tests/alpha_v252_content.cpp",
+      "line": 162,
+      "name": "Alpha v2.5.2 instant circuit advances exactly two turns and sleep locks both players"
+    },
+    "empress": {
+      "file": "tests/alpha_v252_acceptance.cpp",
+      "line": 44,
+      "name": "Alpha v2.5.2 Empress heals and clears two loads only on its owners end start"
+    },
+    "tower-protection": {
+      "file": "tests/alpha_v252_acceptance.cpp",
+      "line": 65,
+      "name": "Alpha v2.5.2 Tower respects effect indestructibility on both selected formations"
+    },
+    "vinegar": {
+      "file": "tests/alpha_v252_acceptance.cpp",
+      "line": 81,
+      "name": "Alpha v2.5.2 Vinegar grants attach and detach life without its old damage reduction"
+    },
+    "chili": {
+      "file": "tests/alpha_v252_acceptance.cpp",
+      "line": 102,
+      "name": "Alpha v2.5.2 Chili deals one damage per actual opponent draw"
+    },
+    "pool-formations": {
+      "file": "tests/alpha_v252_pool.cpp",
+      "line": 80,
+      "name": "Alpha v2.5.2 every formal formation executes its printed recipe and rejects invalid timing"
+    },
+    "pool-seals": {
+      "file": "tests/alpha_v252_pool.cpp",
+      "line": 124,
+      "name": "Alpha v2.5.2 every formal seal attaches through authority with paid cost and valid host"
+    },
+    "pool-spells": {
+      "file": "tests/alpha_v252_pool.cpp",
+      "line": 157,
+      "name": "Alpha v2.5.2 every ordinary formal spell resolves its source and meaningful effect choices"
+    },
+    "pool-responses": {
+      "file": "tests/alpha_v252_pool.cpp",
+      "line": 281,
+      "name": "Alpha v2.5.2 each conditional formal response joins its actual declared event"
+    },
+    "unravel": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 485,
+      "name": "Alpha v2.5.2 Unravel completes setup analysis targetless preparation and side deck resolution"
+    },
+    "unravel-boundaries": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 545,
+      "name": "Alpha v2.5.2 Unravel rejects occupied enemy formations before paying"
+    },
+    "unravel-invalidated": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 589,
+      "name": "Alpha v2.5.2 Unravel loses an invalidated chain target without a refund or side deck discard"
+    },
+    "response-cost": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 683,
+      "name": "Alpha v2.5.2 all five conditional responses reject unpaid fees without consuming the source"
+    },
+    "unique-strength": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 627,
+      "name": "Alpha v2.5.2 unique Strength rejects same owner setup duplicates independently for each player"
+    },
+    "sun": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 732,
+      "name": "Alpha v2.5.2 Sun clears only enemy concealed spells at its owners end start"
+    },
+    "messy-wave": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 774,
+      "name": "Alpha v2.5.2 Messy Wave adds four temporary load per opponent spell activation"
+    },
+    "snow-rain": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 797,
+      "name": "Alpha v2.5.2 Snow Rain Storm surcharges setting only and doubles actual focus upkeep"
+    },
+    "woodpile": {
+      "file": "tests/alpha_v252_rules.cpp",
+      "line": 840,
+      "name": "Alpha v2.5.2 Woodpile allows two own copies and excludes a replaced copy from that limit"
+    }
+  },
+  "rows": [
+    {
+      "id": "reservoir",
+      "number": "010001",
+      "name": "阿克乌姆之弧",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/ai.cpp",
+          "line": 112
+        },
+        {
+          "file": "tests/ai.cpp",
+          "line": 175
+        }
+      ]
+    },
+    {
+      "id": "pentagram-of-life",
+      "number": "010002",
+      "name": "五芒星",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 198
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 272
+        }
+      ]
+    },
+    {
+      "id": "engeas-four-point-star",
+      "number": "010003",
+      "name": "恩格亚斯四角星",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 302
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "id": "small-hexagram",
+      "number": "010004",
+      "name": "四芒星",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/decks.cpp",
+          "line": 8
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 95
+        }
+      ]
+    },
+    {
+      "id": "hexagram",
+      "number": "010005",
+      "name": "六芒星",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "remove"
+        ],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations",
+          "remove"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 55
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 95
+        }
+      ]
+    },
+    {
+      "id": "octagram",
+      "number": "010006",
+      "name": "八芒星",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 555
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 277
+        }
+      ]
+    },
+    {
+      "id": "sun",
+      "number": "010007",
+      "name": "太阳",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "sun"
+        ],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations",
+          "sun"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 179
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 196
+        }
+      ]
+    },
+    {
+      "id": "elemental-ring",
+      "number": "010011",
+      "name": "元素之环",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "253-ring"
+        ],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 162
+        }
+      ]
+    },
+    {
+      "id": "chaos-ring",
+      "number": "010012",
+      "name": "混沌之环",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "sulfur",
+      "number": "010013",
+      "name": "硫磺",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 487
+        }
+      ]
+    },
+    {
+      "id": "storm-crest",
+      "number": "010014",
+      "name": "恒风·风暴纹章",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "253-crest"
+        ],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/bridge.cpp",
+          "line": 171
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 430
+        }
+      ]
+    },
+    {
+      "id": "storm-heart",
+      "number": "010015",
+      "name": "恒风·风暴之心",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 180
+        },
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 318
+        }
+      ]
+    },
+    {
+      "id": "sique-woodpile",
+      "number": "010016",
+      "name": "味契·柴堆",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "woodpile"
+        ],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 63
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 331
+        }
+      ]
+    },
+    {
+      "id": "sique-campfire",
+      "number": "010017",
+      "name": "味契·篝火",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "253-campfire"
+        ],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 63
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 80
+        }
+      ]
+    },
+    {
+      "id": "sique-cauldron",
+      "number": "010018",
+      "name": "味契·魔力坩埚",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "253-cauldron"
+        ],
+        "invalidTarget": [
+          "253-runes",
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 80
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 245
+        }
+      ]
+    },
+    {
+      "id": "three-star",
+      "number": "010019",
+      "name": "三芒星",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "stars"
+        ],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "two-star",
+      "number": "010020",
+      "name": "二芒星",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "stars"
+        ],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "moon",
+      "number": "010021",
+      "name": "月亮",
+      "type": "formation",
+      "currentTests": {
+        "normalFlow": [
+          "pool-formations"
+        ],
+        "normal": [
+          "moon"
+        ],
+        "invalidTarget": [
+          "pool-formations"
+        ],
+        "invalidCost": [
+          "pool-formations"
+        ],
+        "invalidTiming": [
+          "pool-formations"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "fireball",
+      "number": "020001",
+      "name": "火球术",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/ai.cpp",
+          "line": 75
+        },
+        {
+          "file": "tests/ai.cpp",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "id": "mend",
+      "number": "020002",
+      "name": "缝合生命",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/ai.cpp",
+          "line": 102
+        },
+        {
+          "file": "tests/ai.cpp",
+          "line": 208
+        }
+      ]
+    },
+    {
+      "id": "unravel",
+      "number": "020003",
+      "name": "碎环术",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells",
+          "unravel"
+        ],
+        "invalidTarget": [
+          "pool-spells",
+          "unravel-boundaries",
+          "unravel-invalidated"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/card_updates.cpp",
+          "line": 91
+        },
+        {
+          "file": "tests/card_updates.cpp",
+          "line": 227
+        }
+      ]
+    },
+    {
+      "id": "ward",
+      "number": "020004",
+      "name": "炽燃结界",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/ai.cpp",
+          "line": 86
+        },
+        {
+          "file": "tests/ai.cpp",
+          "line": 123
+        }
+      ]
+    },
+    {
+      "id": "messy-wave",
+      "number": "020005",
+      "name": "紊乱波动",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "messy-wave"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 534
+        }
+      ]
+    },
+    {
+      "id": "instantly-sleep",
+      "number": "020006",
+      "name": "昏昏入睡",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "circuit-sleep"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "circuit-sleep",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 472
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 513
+        }
+      ]
+    },
+    {
+      "id": "magic-missile",
+      "number": "020007",
+      "name": "魔法飞弹",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 89
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 224
+        }
+      ]
+    },
+    {
+      "id": "ray-of-frost",
+      "number": "020009",
+      "name": "寒霜射线",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 89
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 145
+        }
+      ]
+    },
+    {
+      "id": "lightning-bolt",
+      "number": "020010",
+      "name": "闪电束",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 145
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 403
+        }
+      ]
+    },
+    {
+      "id": "lesser-restoration",
+      "number": "020011",
+      "name": "次级复原术",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 145
+        }
+      ]
+    },
+    {
+      "id": "false-life",
+      "number": "020012",
+      "name": "虚假生命",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 145
+        }
+      ]
+    },
+    {
+      "id": "chromatic-orb",
+      "number": "020013",
+      "name": "繁彩球",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 391
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 527
+        }
+      ]
+    },
+    {
+      "id": "guiding-bolt",
+      "number": "020014",
+      "name": "曳光弹",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 357
+        }
+      ]
+    },
+    {
+      "id": "scorching-ray",
+      "number": "020015",
+      "name": "炽热射线",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells",
+          "rays"
+        ],
+        "invalidTarget": [
+          "pool-spells",
+          "rays"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 210
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 331
+        }
+      ]
+    },
+    {
+      "id": "sunburst",
+      "number": "020016",
+      "name": "阳炎爆",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/bridge.cpp",
+          "line": 151
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 162
+        }
+      ]
+    },
+    {
+      "id": "healing-circle",
+      "number": "020017",
+      "name": "治疗之环",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal",
+        "invalidCost"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 292
+        }
+      ]
+    },
+    {
+      "id": "ice-storm",
+      "number": "020018",
+      "name": "恒风·冰风暴",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "ice",
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm_ice.cpp",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "id": "cutting-wind",
+      "number": "020019",
+      "name": "恒风·切割之风",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 295
+        }
+      ]
+    },
+    {
+      "id": "great-storm",
+      "number": "020020",
+      "name": "恒风·大风暴术",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 318
+        },
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 342
+        }
+      ]
+    },
+    {
+      "id": "cloud-mist",
+      "number": "020021",
+      "name": "云雾术",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm.cpp",
+          "line": 86
+        },
+        {
+          "file": "tests/storm_cloud_mist.cpp",
+          "line": 51
+        }
+      ]
+    },
+    {
+      "id": "thunder-summon",
+      "number": "020022",
+      "name": "召雷术",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm_cloud_mist.cpp",
+          "line": 51
+        }
+      ]
+    },
+    {
+      "id": "sique-mushroom-soup",
+      "number": "020023",
+      "name": "味契·奶油蘑菇浓汤",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "253-soup-sugar",
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "253-soup-sugar",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 50
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 176
+        }
+      ]
+    },
+    {
+      "id": "sique-pancakes",
+      "number": "020024",
+      "name": "味契·糖浆煎饼",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 50
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 113
+        }
+      ]
+    },
+    {
+      "id": "sique-divine-stew",
+      "number": "020025",
+      "name": "味契·神恩炖肉",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "253-divine-stew",
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "253-divine-stew"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 50
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 223
+        }
+      ]
+    },
+    {
+      "id": "earthquake",
+      "number": "020026",
+      "name": "地震术",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "earthquake"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "sique-roast",
+      "number": "020027",
+      "name": "味契·炙烤",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells",
+          "roast"
+        ],
+        "invalidTarget": [
+          "pool-spells",
+          "roast"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-empress",
+      "number": "020028",
+      "name": "皇后",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "empress"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "arcana",
+          "empress",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-lovers",
+      "number": "020029",
+      "name": "恋人",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "lovers"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-chariot",
+      "number": "020030",
+      "name": "战车",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "hooks",
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-strength",
+      "number": "020031",
+      "name": "力量",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "passives"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells",
+          "unique-strength"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-hermit",
+      "number": "020032",
+      "name": "隐士",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-hanged-man",
+      "number": "020033",
+      "name": "倒吊人",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "253-hanged-man",
+          "arcana"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "arcana",
+          "arcana-cost",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 578
+        }
+      ]
+    },
+    {
+      "id": "arcana-death",
+      "number": "020034",
+      "name": "死神",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "hooks"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "arcana"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-temperance",
+      "number": "020035",
+      "name": "节制",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "passives"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-devil",
+      "number": "020036",
+      "name": "恶魔",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-responses"
+        ],
+        "normal": [
+          "devil",
+          "hooks",
+          "pool-responses"
+        ],
+        "invalidTarget": [
+          "pool-responses"
+        ],
+        "invalidCost": [
+          "response-cost"
+        ],
+        "invalidTiming": [
+          "pool-responses"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-tower",
+      "number": "020037",
+      "name": "高塔",
+      "type": "analytic",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "pool-spells",
+          "tower-protection"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells",
+          "tower-protection"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "invalidCost"
+      ],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "recall",
+      "number": "030001",
+      "name": "奥术回想",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/ai.cpp",
+          "line": 102
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 89
+        }
+      ]
+    },
+    {
+      "id": "spark",
+      "number": "030002",
+      "name": "火花术",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/ai.cpp",
+          "line": 75
+        },
+        {
+          "file": "tests/ai.cpp",
+          "line": 112
+        }
+      ]
+    },
+    {
+      "id": "disrupt",
+      "number": "030003",
+      "name": "魔力扰动",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "253-word"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "253-word",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "253-word",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/card_updates.cpp",
+          "line": 394
+        },
+        {
+          "file": "tests/rules.cpp",
+          "line": 96
+        }
+      ]
+    },
+    {
+      "id": "clarity",
+      "number": "030004",
+      "name": "心如止水",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 472
+        },
+        {
+          "file": "tests/card_updates.cpp",
+          "line": 132
+        }
+      ]
+    },
+    {
+      "id": "true-strike",
+      "number": "030005",
+      "name": "克敌机先",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 122
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 180
+        }
+      ]
+    },
+    {
+      "id": "instant-circuit-overload",
+      "number": "030007",
+      "name": "瞬发回路过载",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "circuit-sleep",
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 224
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 489
+        }
+      ]
+    },
+    {
+      "id": "arcane-recovery",
+      "number": "030008",
+      "name": "奥术复苏",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal",
+        "invalidCost"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 145
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 738
+        }
+      ]
+    },
+    {
+      "id": "wind-whisper",
+      "number": "030009",
+      "name": "恒风·风语术",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 430
+        },
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 180
+        }
+      ]
+    },
+    {
+      "id": "swift-wind",
+      "number": "030010",
+      "name": "恒风·极速之风",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 457
+        }
+      ]
+    },
+    {
+      "id": "windmaking",
+      "number": "030012",
+      "name": "恒风·造风术",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 180
+        },
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 246
+        }
+      ]
+    },
+    {
+      "id": "storm-guidance",
+      "number": "030013",
+      "name": "恒风·风暴导向",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 430
+        }
+      ]
+    },
+    {
+      "id": "sique-ingredients",
+      "number": "030014",
+      "name": "味契·原料召来",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "253-ingredients"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "253-divine-stew",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 299
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 516
+        }
+      ]
+    },
+    {
+      "id": "sique-flavor-shift",
+      "number": "030015",
+      "name": "味契·风味转化",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "253-flavor"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 316
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 472
+        }
+      ]
+    },
+    {
+      "id": "sique-refire",
+      "number": "030016",
+      "name": "味契·烈火回炉",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "253-selections"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 136
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 148
+        }
+      ]
+    },
+    {
+      "id": "aid",
+      "number": "030017",
+      "name": "支援术",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 272
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 302
+        }
+      ]
+    },
+    {
+      "id": "sique-blowfire",
+      "number": "030018",
+      "name": "味契·吹火术",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "blowfire",
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "blowfire",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "blowfire",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-fool",
+      "number": "030019",
+      "name": "愚者",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "arcana-cost"
+        ],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-magician",
+      "number": "030020",
+      "name": "魔术师",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "253-magician",
+          "arcana"
+        ],
+        "invalidTarget": [
+          "253-magician",
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "arcana",
+          "arcana-cost",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 606
+        }
+      ]
+    },
+    {
+      "id": "arcana-priestess",
+      "number": "030021",
+      "name": "女祭司",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "arcana",
+          "arcana-cost",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-emperor",
+      "number": "030022",
+      "name": "皇帝",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "arcana",
+          "arcana-cost",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-justice",
+      "number": "030023",
+      "name": "正义",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "arcana-world",
+      "number": "030024",
+      "name": "世界",
+      "type": "word",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "barbs",
+      "number": "040001",
+      "name": "银光锐语",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-responses"
+        ],
+        "normal": [
+          "pool-responses"
+        ],
+        "invalidTarget": [
+          "pool-responses"
+        ],
+        "invalidCost": [
+          "response-cost"
+        ],
+        "invalidTiming": [
+          "pool-responses"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/ai.cpp",
+          "line": 86
+        },
+        {
+          "file": "tests/ai.cpp",
+          "line": 154
+        }
+      ]
+    },
+    {
+      "id": "counter-spell",
+      "number": "040002",
+      "name": "法术反制",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-responses"
+        ],
+        "normal": [
+          "pool-responses"
+        ],
+        "invalidTarget": [
+          "pool-responses"
+        ],
+        "invalidCost": [
+          "response-cost"
+        ],
+        "invalidTiming": [
+          "pool-responses"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 180
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 302
+        }
+      ]
+    },
+    {
+      "id": "shield",
+      "number": "040003",
+      "name": "护盾术",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 122
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 233
+        }
+      ]
+    },
+    {
+      "id": "funny-box",
+      "number": "040004",
+      "name": "滑稽魔盒",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 249
+        },
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 331
+        }
+      ]
+    },
+    {
+      "id": "protective-flame",
+      "number": "040005",
+      "name": "避火咒",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 224
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 249
+        }
+      ]
+    },
+    {
+      "id": "storm-vortex",
+      "number": "040006",
+      "name": "恒风·风暴气旋",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "flip"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "flip-denied",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "flip-denied",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 430
+        },
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 116
+        }
+      ]
+    },
+    {
+      "id": "wind-strike",
+      "number": "040007",
+      "name": "恒风·风击术",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-responses"
+        ],
+        "normal": [
+          "pool-responses",
+          "wind-strike"
+        ],
+        "invalidTarget": [
+          "pool-responses"
+        ],
+        "invalidCost": [
+          "response-cost"
+        ],
+        "invalidTiming": [
+          "pool-responses",
+          "wind-strike"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 430
+        },
+        {
+          "file": "tests/storm.cpp",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "id": "great-cyclone",
+      "number": "040008",
+      "name": "恒风·大旋风术",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/rc_content.cpp",
+          "line": 430
+        },
+        {
+          "file": "tests/storm_missing_effects.cpp",
+          "line": 266
+        }
+      ]
+    },
+    {
+      "id": "sique-boiling-surge",
+      "number": "040009",
+      "name": "味契·沸汤滚袭",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-responses"
+        ],
+        "normal": [
+          "pool-responses"
+        ],
+        "invalidTarget": [
+          "pool-responses"
+        ],
+        "invalidCost": [
+          "response-cost"
+        ],
+        "invalidTiming": [
+          "pool-responses"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 348
+        }
+      ]
+    },
+    {
+      "id": "sique-aroma-lure",
+      "number": "040010",
+      "name": "味契·飘香诱惑",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 371
+        }
+      ]
+    },
+    {
+      "id": "sique-backfire",
+      "number": "040011",
+      "name": "味契·回火",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "253-selections",
+          "backfire"
+        ],
+        "invalidTarget": [
+          "backfire",
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 403
+        }
+      ]
+    },
+    {
+      "id": "arcana-hierophant",
+      "number": "040012",
+      "name": "教皇",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "arcana",
+          "passives",
+          "pool-spells"
+        ],
+        "invalidTarget": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "arcana",
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "arcana",
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": []
+    },
+    {
+      "id": "snow-rain-storm",
+      "number": "040013",
+      "name": "恒风·雪雨暴",
+      "type": "talisman",
+      "currentTests": {
+        "normalFlow": [
+          "pool-spells"
+        ],
+        "normal": [
+          "snow-rain"
+        ],
+        "invalidTarget": [
+          "pool-spells"
+        ],
+        "invalidCost": [
+          "pool-spells"
+        ],
+        "invalidTiming": [
+          "pool-spells"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm_modifiers.cpp",
+          "line": 72
+        },
+        {
+          "file": "tests/storm_modifiers.cpp",
+          "line": 92
+        }
+      ]
+    },
+    {
+      "id": "ring",
+      "number": "050001",
+      "name": "奥术圆环",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-seals"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/card_updates.cpp",
+          "line": 312
+        },
+        {
+          "file": "tests/card_updates.cpp",
+          "line": 330
+        }
+      ]
+    },
+    {
+      "id": "conduit",
+      "number": "050002",
+      "name": "逆三角星符",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [
+          "seals"
+        ],
+        "invalidTarget": [
+          "pool-seals"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/card_updates.cpp",
+          "line": 91
+        },
+        {
+          "file": "tests/card_updates.cpp",
+          "line": 291
+        }
+      ]
+    },
+    {
+      "id": "uplift",
+      "number": "050003",
+      "name": "昂扬",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [
+          "seals"
+        ],
+        "invalidTarget": [
+          "pool-seals"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 534
+        },
+        {
+          "file": "tests/alpha_cards.cpp",
+          "line": 692
+        }
+      ]
+    },
+    {
+      "id": "storm-brand",
+      "number": "050004",
+      "name": "恒风·风暴烙印",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-seals"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm_modifiers.cpp",
+          "line": 123
+        },
+        {
+          "file": "tests/storm_modifiers.cpp",
+          "line": 159
+        }
+      ]
+    },
+    {
+      "id": "storm-annihilation-crest",
+      "number": "050005",
+      "name": "恒风·湮灭之纹章",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "253-runes",
+          "pool-seals"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/storm_modifiers.cpp",
+          "line": 123
+        },
+        {
+          "file": "tests/storm_modifiers.cpp",
+          "line": 260
+        }
+      ]
+    },
+    {
+      "id": "sique-vinegar",
+      "number": "050006",
+      "name": "味契·香醋",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [
+          "vinegar"
+        ],
+        "invalidTarget": [
+          "pool-seals",
+          "vinegar"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 113
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 176
+        }
+      ]
+    },
+    {
+      "id": "sique-sugar",
+      "number": "050007",
+      "name": "味契·冰糖",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [
+          "253-soup-sugar"
+        ],
+        "invalidTarget": [
+          "pool-seals"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 113
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 136
+        }
+      ]
+    },
+    {
+      "id": "sique-salt",
+      "number": "050008",
+      "name": "味契·海盐",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-seals"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 136
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 403
+        }
+      ]
+    },
+    {
+      "id": "sique-chili",
+      "number": "050009",
+      "name": "味契·辣椒",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [
+          "chili"
+        ],
+        "invalidTarget": [
+          "pool-seals"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 160
+        },
+        {
+          "file": "tests/sique.cpp",
+          "line": 176
+        }
+      ]
+    },
+    {
+      "id": "sique-parsley",
+      "number": "050010",
+      "name": "味契·欧芹",
+      "type": "seal",
+      "currentTests": {
+        "normalFlow": [
+          "pool-seals"
+        ],
+        "normal": [],
+        "invalidTarget": [
+          "pool-seals"
+        ],
+        "invalidCost": [
+          "pool-seals"
+        ],
+        "invalidTiming": [
+          "pool-seals"
+        ]
+      },
+      "missingAxes": [
+        "normal"
+      ],
+      "historicalReadingLeads": [
+        {
+          "file": "tests/sique.cpp",
+          "line": 148
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Written test references do not establish execution success.",
+    "Shared Arcana regression begins in Casting and does not test all setting costs or host restrictions.",
+    "All 99 definitions have a generic forged-ownership rejection test; it is not a substitute for invalid target, cost or timing scenarios.",
+    "Historical fixture references are reading leads only."
+  ]
+}

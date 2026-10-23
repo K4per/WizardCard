@@ -21,7 +21,7 @@
   "traits": [
     "max_two"
   ],
-  "text": "此卡在己方场上只能存在2张。",
+  "text": "此阵法卡在己方场上仅可存在2张。",
   "summonCondition": "魔素×3",
   "recipe": []
 }

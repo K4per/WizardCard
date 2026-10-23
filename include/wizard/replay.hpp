@@ -6,12 +6,19 @@
 #include <chrono>
 #include <functional>
 namespace wizard {
-struct RecordedCommand { PlayerId actor{}; Command command; std::string digest; };
+Json encodeDebugOperation(const DebugOperation &);
+DebugOperation decodeDebugOperation(const Json &);
+CommandResult applyRecordedCommand(GameEngine &, const Json &);
+struct RecordedCommand { PlayerId actor{}; Command command; std::string digest; std::optional<DebugOperation> debug; };
 class MatchSession : public Session {
 public:
     MatchSession(Content content,std::uint32_t seed);
     MatchSession(Content content,MatchConfig config);
     CommandResult submit(PlayerId,const Command&) override;
+    void enableDebug(bool enabled) { debugEnabled_ = enabled; }
+    bool debugEnabled() const { return debugEnabled_; }
+    bool canRewindPreviousTurn() const;
+    CommandResult debug(const DebugOperation &);
     GameView viewFor(PlayerId viewer) const override;
     std::uint64_t revision() const override { return commands_.size(); }
     bool started() const override { return true; }
@@ -31,6 +38,15 @@ private:
     Clock::time_point clockAt_{};
     std::array<int, 2> replenishedTurn_{};
     bool clockFrozen_{}, automaticClockPhases_{true};
+    struct TurnCheckpoint {
+        GameEngine engine;
+        std::size_t position;
+        MatchClockView clock;
+        std::array<int, 2> replenishedTurn;
+    };
+    std::vector<TurnCheckpoint> turnCheckpoints_;
+    bool debugEnabled_{};
+    void captureTurn();
     void syncClock();
 };
 // Observer runs only after each state has passed its recorded digest check.

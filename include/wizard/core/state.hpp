@@ -7,7 +7,7 @@
 
 namespace wizard {
 struct PlayerState {
-    int life{startingLife}, mana{1}, ownTurn{}, actionsPlayed{}, formations{}, sealRemovals{};
+    int life{startingLife}, mana{}, ownTurn{}, actionsPlayed{}, formations{}, sealRemovals{};
     bool drawFailed{}, surrendered{};
     std::vector<CardId> deck;
     int temporaryLife{}, blockedActionTurn{-1};
@@ -17,6 +17,7 @@ struct PlayerState {
     int wordLockUntilOwnDraw{};
     int siqueDamageCap{}, siqueCapUntilOwnTurn{};
     std::uint64_t siqueLifePaymentTurn{};
+    bool debugInfiniteLife{}, debugInfiniteMana{}, debugInfiniteLoad{};
 };
 enum class Flow {
     Draw,
@@ -62,5 +63,6 @@ struct GameState {
     std::uint64_t phaseOrderCursor{};
     bool opening{};
     std::array<CardId, 2> initialFormations{};
+    bool debugUsed{};
 };
 } // namespace wizard

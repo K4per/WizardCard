@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://pages/replay_page.gd" id="1"]
 [ext_resource type="Theme" path="res://ui/simple_battle_theme.tres" id="theme"]
 [ext_resource type="PackedScene" path="res://ui/common_button.tscn" id="button"]
 [ext_resource type="PackedScene" path="res://ui/field_canvas.tscn" id="field"]
 [ext_resource type="PackedScene" path="res://ui/card_detail.tscn" id="detail"]
+[ext_resource type="PackedScene" path="res://ui/player_status_bar.tscn" id="status"]
 
 [node name="ReplayPage" type="Control"]
 layout_mode = 3
@@ -49,6 +50,11 @@ text = "复盘记录"
 theme_override_font_sizes/font_size = 28
 size_flags_horizontal = 3
 
+[node name="StatusClearance" type="Control" parent="Margin/Column/Heading"]
+custom_minimum_size = Vector2(324, 0)
+layout_mode = 2
+mouse_filter = 2
+
 [node name="FilesRow" type="HBoxContainer" parent="Margin/Column"]
 layout_mode = 2
 
@@ -64,6 +70,11 @@ unique_name_in_owner = true
 text = "打开复盘"
 primary = true
 compact = false
+
+[node name="StatusClearance" type="Control" parent="Margin/Column/FilesRow"]
+custom_minimum_size = Vector2(324, 0)
+layout_mode = 2
+mouse_filter = 2
 
 [node name="Notice" type="Label" parent="Margin/Column"]
 layout_mode = 2
@@ -112,13 +123,43 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="OwnStatus" parent="." instance=ExtResource("status")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 12.0
+offset_top = 996.0
+offset_right = 328.0
+offset_bottom = 1068.0
+[node name="OpponentStatus" parent="." instance=ExtResource("status")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1592.0
+offset_top = 12.0
+offset_right = 1908.0
+offset_bottom = 84.0
+[node name="LogsToggle" type="Button" parent="Margin/Column/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "对局日志"
+tooltip_text = "查看此时间点以前的对局事件"
+
 [node name="Detail" parent="Margin/Column/Body" instance=ExtResource("detail")]
 layout_mode = 2
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(340, 0)
 
-[node name="Command" type="RichTextLabel" parent="Margin/Column"]
+[node name="Footer" type="HBoxContainer" parent="Margin/Column"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 72)
+
+[node name="StatusClearance" type="Control" parent="Margin/Column/Footer"]
+custom_minimum_size = Vector2(324, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Command" type="RichTextLabel" parent="Margin/Column/Footer"]
 layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 60)
+size_flags_horizontal = 3

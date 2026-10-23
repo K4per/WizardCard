@@ -200,6 +200,7 @@ bool Application::start(const MatchConfig &config, std::string &error, SessionOp
             options.mode != MatchMode::Tutorial)
             throw std::invalid_argument("无效对局模式");
         auto next = std::make_unique<MatchSession>(content_, config);
+        next->enableDebug(options.mode == MatchMode::Ai);
         auto path = directory_ / "replays" /
                     ("match-" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) +
                      "-" + std::to_string(generation_ + 1) + ".json");
@@ -260,6 +261,12 @@ CommandResult Application::submit(PlayerId actor, const Command &command, std::u
         if (mode() == MatchMode::Tutorial)
             tutorial_.observe(actor, command, match_->engine().viewFor(0), result.events);
     }
+    return result;
+}
+CommandResult Application::debug(const DebugOperation &op) {
+    if (!debugAvailable()) return {false, "调试控制台仅限本地 AI 单人对局，教学、双人、联机及观战不可用", {}, {}, "debug_unavailable"};
+    const auto result = match_->debug(op);
+    if (result.accepted) ++revision_; // Invalidates pending AI plans as well as human actions.
     return result;
 }
 bool Application::aiTurn() const {

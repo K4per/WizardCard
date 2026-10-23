@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 [ext_resource type="Script" path="res://pages/match_page.gd" id="1"]
 [ext_resource type="PackedScene" path="res://ui/field_canvas.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://ui/card_detail.tscn" id="3"]
 [ext_resource type="Theme" path="res://ui/simple_battle_theme.tres" id="theme"]
 [ext_resource type="PackedScene" path="res://ui/decision_panel.tscn" id="decision"]
+[ext_resource type="PackedScene" path="res://ui/player_status_bar.tscn" id="status"]
+[ext_resource type="PackedScene" path="res://ui/action_confirmation.tscn" id="confirm"]
 [sub_resource type="StyleBoxEmpty" id="action_unframed"]
 [node name="MatchPage" type="Control"]
 layout_mode = 3
@@ -104,32 +106,20 @@ offset_right = 1796.0
 offset_bottom = 594.0
 theme_override_font_sizes/font_size = 15
 text = "切换阶段"
-[node name="PlayerStatus" type="HBoxContainer" parent="Margin/Column"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 24
-[node name="OwnStatus" type="Label" parent="."]
+[node name="OwnStatus" parent="." instance=ExtResource("status")]
 unique_name_in_owner = true
 layout_mode = 0
-anchor_top = 1.0
-anchor_bottom = 1.0
 offset_left = 12.0
-offset_top = -82.0
-offset_right = 220.0
-offset_bottom = -8.0
-grow_vertical = 0
-theme_override_font_sizes/font_size = 16
-mouse_filter = 2
-text = "我方  生命 40\n魔素 1   荷载 0/2"
-vertical_alignment = 2
-[node name="OpponentStatus" type="Label" parent="Margin/Column/PlayerStatus"]
+offset_top = 996.0
+offset_right = 328.0
+offset_bottom = 1068.0
+[node name="OpponentStatus" parent="." instance=ExtResource("status")]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 17
-mouse_filter = 2
-horizontal_alignment = 2
-text = "对手  生命 40   魔素 1   荷载 0/2"
+layout_mode = 0
+offset_left = 1592.0
+offset_top = 12.0
+offset_right = 1908.0
+offset_bottom = 84.0
 [node name="Notice" type="Label" parent="Margin/Column"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 22)
@@ -167,12 +157,23 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -302.0
+offset_left = -430.0
 offset_top = -42.0
 offset_right = -12.0
 offset_bottom = -8.0
 grow_horizontal = 0
 mouse_filter = 2
+[node name="LogsToggle" type="Button" parent="Footer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "查看对局事件"
+text = "对局日志"
+[node name="DebugToggle" type="Button" parent="Footer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+tooltip_text = "单人调试控制台"
+text = "调试"
 [node name="HandToggle" type="Button" parent="Footer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -251,6 +252,11 @@ text = "保存复盘"
 unique_name_in_owner = true
 layout_mode = 2
 text = "查看复盘"
+[node name="MenuDebug" type="Button" parent="MatchMenu/Column"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "单人调试控制台"
 [node name="MenuReconnect" type="Button" parent="MatchMenu/Column"]
 unique_name_in_owner = true
 visible = false
@@ -302,9 +308,21 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ConfirmAction" type="ConfirmationDialog" parent="."]
+[node name="ConfirmShade" type="ColorRect" parent="."]
 unique_name_in_owner = true
-title = "确认操作"
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.015, 0.025, 0.04, 0.82)
+z_index = 39
+[node name="ConfirmAction" parent="." instance=ExtResource("confirm")]
+unique_name_in_owner = true
+z_index = 40
 [node name="ConfirmLeave" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true
 title = "结束对局"
@@ -355,6 +373,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.02, 0.04, 0.08, 0.76)
+mouse_filter = 0
+z_index = 29
 [node name="DecisionPanel" parent="." instance=ExtResource("decision")]
 unique_name_in_owner = true
 visible = false
@@ -368,3 +388,4 @@ offset_top = -300.0
 offset_right = 570.0
 offset_bottom = 300.0
 simple_style = true
+z_index = 30

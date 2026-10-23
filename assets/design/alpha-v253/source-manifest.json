@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "sources": [
+    {
+      "key": "spells",
+      "original": "E:\\Project\\WizardCard-Design\\10.22\\法术列表-共29+14+6张卡.md",
+      "snapshot": "sources/spells.md",
+      "sha256": "5517cb5b37b0799e1e4ebcbe04d64ec48e1342e69fd1aacd5a3d93eabd54b62b"
+    },
+    {
+      "key": "sique",
+      "original": "E:\\Project\\WizardCard-Design\\10.22\\【味契】系列-共19张卡.md",
+      "snapshot": "sources/sique.md",
+      "sha256": "b045a36d7890c36cb8d4e8b555587afa612ed78fcfbf642322d7fe914637e2a6"
+    },
+    {
+      "key": "storm",
+      "original": "E:\\Project\\WizardCard-Design\\10.22\\【恒风】系列-共15张卡.md",
+      "snapshot": "sources/storm.md",
+      "sha256": "3fbee0d317d216c8911aade591a295c898947d189582c7315a57289f6a8c36fc"
+    },
+    {
+      "key": "formations",
+      "original": "E:\\Project\\WizardCard-Design\\10.22\\阵法列表-共16张卡.md",
+      "snapshot": "sources/formations.md",
+      "sha256": "537eb8aa64bf466f02cf6a90406ee1ba0f994c125e711ff836f08c10294f6f63"
+    },
+    {
+      "key": "seals",
+      "original": "E:\\Project\\WizardCard-Design\\10.22\\符文列表-共3张卡.md",
+      "snapshot": "sources/seals.md",
+      "sha256": "68a4583c7b6af362cb7909d0c49c5fd3ae80bc2322575600848be28b2d71db4c"
+    },
+    {
+      "key": "rules",
+      "original": "E:\\Project\\WizardCard-Design\\10.22\\WizardCard玩家规则书.md",
+      "snapshot": "sources/rules.md",
+      "sha256": "6efacef1a6e9c1757bae3157f94deeafc9b622c356a26c335bca38b07cb3521d"
+    },
+    {
+      "key": "changes",
+      "original": "E:\\Project\\WizardCard-Design\\10.22\\10.22改动报告.md",
+      "snapshot": "sources/changes.md",
+      "sha256": "946670fade39c98149aac0f84cf4db7135079a9da52c5e88cd84089d6f0ad712"
+    },
+    {
+      "key": "requirements",
+      "original": "E:\\Project\\WizardCard-Design\\Alpha v2.5.3更新需求报告.md",
+      "snapshot": "sources/requirements.md",
+      "sha256": "5ee603384b72a890e683764ace3844cabcb01ed703b0da48c3c2b87cc29fb500"
+    }
+  ]
+}

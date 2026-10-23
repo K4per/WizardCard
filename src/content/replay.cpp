@@ -20,13 +20,14 @@ MatchConfig sharedConfig(const Content &c, std::uint32_t seed) {
 }
 MatchSession::MatchSession(Content c, std::uint32_t seed) : MatchSession(c, sharedConfig(c, seed)) {}
 MatchSession::MatchSession(Content c, MatchConfig config)
-    : content_(std::move(c)), config_(std::move(config)), engine_(content_.catalog, config_) {}
+    : content_(std::move(c)), config_(std::move(config)), engine_(content_.catalog, config_) { captureTurn(); }
 CommandResult MatchSession::submit(PlayerId p, const Command &c) {
     tick();
     auto result = engine_.submit(p, c);
     if (result.accepted) {
         commands_.push_back({p, c, engine_.digest()});
         syncClock();
+        captureTurn();
     }
     return result;
 }
@@ -49,9 +50,13 @@ Json MatchSession::recording() const {
               {"players", players},
               {"commands", Json::array()},
               {"finalDigest", engine_.digest()}};
-    for (const auto &c : commands_)
-        j["commands"].push_back(
-            {{"actor", c.actor}, {"command", encodeCommand(c.command)}, {"digest", c.digest}});
+    for (const auto &c : commands_) {
+        Json row = {{"actor", c.actor}, {"digest", c.digest}};
+        if (c.debug) row["debug"] = encodeDebugOperation(*c.debug);
+        else row["command"] = encodeCommand(c.command);
+        j["commands"].push_back(std::move(row));
+    }
+    j["containsDebugOperations"] = engine_.state().debugUsed;
     const auto &s = engine_.state();
     j["statistics"] = {{"turns", {s.players[0].ownTurn, s.players[1].ownTurn}},
                        {"result", s.result},
@@ -102,9 +107,9 @@ GameEngine replay(const Content &c, const Json &j,
     int n = 0;
     if (observer) observer(0, engine);
     for (const auto &row : j.at("commands")) {
-        auto actor = static_cast<int>(integer(row.at("actor"), 1));
-        const auto command = decodeCommand(row.at("command"));
-        auto result = std::holds_alternative<Timeout>(command) && v25 ? engine.timeout(actor) : engine.submit(actor, command);
+        if (row.contains("debug") && !j.value("containsDebugOperations", false))
+            throw std::runtime_error("debug replay operation missing debug marker");
+        const auto result = applyRecordedCommand(engine, row);
         if (!result.accepted || engine.digest() != row.at("digest").get<std::string>())
             throw std::runtime_error("replay diverged at command " + std::to_string(n));
         ++n;

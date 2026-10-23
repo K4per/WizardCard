@@ -20,6 +20,7 @@ Json LocalSession::initialize(const std::filesystem::path &assets,
         application_ = std::move(next);
         content_ = std::move(content);
         replayCacheValid_ = false;
+        replayBrowsing_ = false;
         replayCacheEngine_.reset();
         replayCheckpoints_.clear();
         pending_.reset();
@@ -80,6 +81,7 @@ Json LocalSession::start(const Json &options) {
                  static_cast<ai::Difficulty>(difficulty)});
         }
         if (!started) return fail("start_failed", error);
+        replayBrowsing_ = false;
         pending_.reset(); ++generation_;
         interactionViewer_ = -1;
         return ok({{"generation", std::to_string(generation_)},
@@ -119,6 +121,15 @@ Json LocalSession::snapshot(PlayerId viewer) const {
     data["actingPlayer"] = application_->actingPlayer();
     data["actions"] = Json::array();
     data["automaticAction"] = nullptr;
+    const bool debugAvailable = application_->debugAvailable() && !replayBrowsing_;
+    Json debugPlayers = Json::array();
+    for (const auto &p : v.players) debugPlayers.push_back({{"infiniteLife", p.infiniteLife},
+        {"infiniteMana", p.infiniteMana}, {"infiniteLoad", p.infiniteLoad}});
+    const bool canRewind = debugAvailable && application_->match().canRewindPreviousTurn();
+    data["debug"] = {{"available", debugAvailable}, {"players", debugPlayers}, {"canRewind", canRewind},
+        {"reason", !debugAvailable ? "调试控制台仅限本地 AI 单人对局；回放、教学、联机及观战不可用" :
+            canRewind ? "" : "没有可用的上一回合开始快照"}};
+    data["debug"]["used"] = application_->debugAvailable() && application_->match().engine().state().debugUsed;
     const auto automatic = ui::automaticAdvance(v, application_->settings().automaticPhases &&
         application_->mode() != app::MatchMode::Tutorial && application_->mode() != app::MatchMode::Network);
     for (std::size_t i = 0; i < v.actions.size(); ++i) {
@@ -197,6 +208,22 @@ Json LocalSession::confirmAction(const std::string &generation, const std::strin
     return accepted(application_->submit(selected.viewer, selected.command, application_->generation()), before);
 }
 Json LocalSession::cancelAction() { pending_.reset(); interaction_.cancel(); return ok(); }
+Json LocalSession::debugCommand(const Json &request) {
+    if (!application_ || !application_->debugAvailable() || replayBrowsing_)
+        return fail("debug_unavailable", "调试控制台仅限本地 AI 单人对局；回放、教学、联机及观战不可用");
+    try {
+        const auto operation = decodeDebugOperation(request);
+        const auto result = application_->debug(operation);
+        if (!result.accepted) return fail(result.errorCode, result.error);
+        pending_.reset(); interaction_.cancel();
+        std::string saveError;
+        const bool saved = application_->saveReplay(saveError);
+        return ok({{"message", result.events.empty() ? "调试操作已执行" : result.events.front().text},
+            {"parameters", encodeDebugOperation(operation)}, {"containsDebugOperations", true},
+            {"generation", std::to_string(generation_)}, {"revision", std::to_string(application_->revision())},
+            {"replaySaved", saved}, {"saveError", saveError}});
+    } catch (const std::exception &e) { return fail("invalid_debug_operation", e.what()); }
+}
 Json LocalSession::pause(bool paused) {
     if (!application_ || !application_->hasMatch()) return fail("no_match", "没有对局");
     if (paused) application_->openSettings(); else application_->closeSettings();
@@ -228,6 +255,7 @@ Json LocalSession::restart(std::uint32_t seed) {
     if (!application_) return fail("not_initialized", "请先加载内容");
     std::string error;
     if (!application_->restart(seed, error)) return fail("restart_failed", error);
+    replayBrowsing_ = false;
     ++generation_; pending_.reset(); return ok();
 }
 Json LocalSession::release() {
@@ -240,12 +268,13 @@ Json LocalSession::readReplayPlan(const std::filesystem::path &path) const {
         return fail("replay_unavailable", "联机对局进行中不能打开完整复盘");
     try {
         prepareReplay(path);
+        replayBrowsing_ = true;
         const auto &j = replayCacheRecord_;
         Json commands = Json::array();
         for (const auto &row : j.at("commands"))
-            commands.push_back({{"actor", row.at("actor")},
-                                {"command", commandDto(decodeCommand(row.at("command")))},
-                                {"digest", row.at("digest")}});
+            if (row.contains("debug")) commands.push_back(row);
+            else commands.push_back({{"actor", row.at("actor")},
+                {"command", commandDto(decodeCommand(row.at("command")))}, {"digest", row.at("digest")}});
         return ok({{"seed", j.at("seed")}, {"players", j.at("players")},
                    {"commands", commands}, {"finalDigest", j.at("finalDigest")}});
     } catch (const std::exception &e) { return fail("invalid_replay", e.what()); }
@@ -303,14 +332,19 @@ Json LocalSession::replayFrame(const std::filesystem::path &path, std::size_t st
         }
         for (std::size_t i = replayCacheStep_; i < step; ++i) {
             const auto &row = replayCacheRecord_.at("commands").at(i);
-            const auto command = decodeCommand(row.at("command"));
-            const auto result = std::holds_alternative<Timeout>(command) ? replayCacheEngine_->timeout(row.at("actor")) :
-                replayCacheEngine_->submit(row.at("actor"), command);
+            const auto result = applyRecordedCommand(*replayCacheEngine_, row);
             if (!result.accepted)
                 throw std::runtime_error("复盘指令未能重放");
         }
         replayCacheStep_ = step;
         auto data = viewDto(replayCacheEngine_->viewFor(viewer));
+        replayBrowsing_ = true;
+        data["debug"] = {{"available", false}, {"canRewind", false}, {"reason", "回放中不能调用调试操作"}};
+        data["debug"]["players"] = Json::array();
+        for (const auto &player : data.at("players"))
+            data["debug"]["players"].push_back({{"infiniteLife", player.at("infiniteLife")},
+                {"infiniteMana", player.at("infiniteMana")}, {"infiniteLoad", player.at("infiniteLoad")}});
+        data["debug"]["used"] = replayCacheEngine_->state().debugUsed;
         data["step"] = step;
         data["commandCount"] = count;
         data["digest"] = replayCacheEngine_->digest();

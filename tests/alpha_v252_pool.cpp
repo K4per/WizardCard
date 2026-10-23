@@ -118,7 +118,7 @@ TEST_CASE("Alpha v2.5.2 every formal formation executes its printed recipe and r
             REQUIRE(Rules::invariants(e.state(), cat).empty());
         }
     }
-    REQUIRE(covered == 21);
+    REQUIRE(covered == 18);
 }
 
 TEST_CASE("Alpha v2.5.2 every formal seal attaches through authority with paid cost and valid host", "[alpha-v252][pool]") {
@@ -242,7 +242,7 @@ TEST_CASE("Alpha v2.5.2 every ordinary formal spell resolves its source and mean
             REQUIRE(e.state().cards.at(10).payments.front().paid == fee);
             if (!d.effects.empty() && d.effects.front().kind == EffectKind::Damage)
                 REQUIRE(e.state().players[1].life == startingLife - d.effects.front().amount -
-                    (id == "sique-blowfire" ? 4 : id == "sique-roast" ? 1 : 0));
+                    (id == "sique-blowfire" ? 4 : 0));
             if (healing) REQUIRE(e.state().players[0].life == 30 + d.effects.front().amount);
             if (id == "scorching-ray") {
                 REQUIRE(e.state().players[1].life == startingLife - 5);
@@ -275,7 +275,7 @@ TEST_CASE("Alpha v2.5.2 every ordinary formal spell resolves its source and mean
         }
     }
     REQUIRE(covered.size() == 66);
-    REQUIRE(covered.size() + responseOnly.size() + 21 + 10 == cat.cards.size());
+    REQUIRE(covered.size() + responseOnly.size() + 18 + 10 == cat.cards.size());
 }
 
 TEST_CASE("Alpha v2.5.2 each conditional formal response joins its actual declared event", "[alpha-v252][pool]") {

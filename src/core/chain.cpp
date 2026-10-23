@@ -185,8 +185,8 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
             ? a->handCost
             : a->preloadedCost + (d.type == CardType::Word ? Rules::castCost(s, catalog_, c.id) - d.cost : 0);
     const int bound = catalog_.usesAlphaV2() ? paid : analytic || d.type == CardType::Word ? paid : 0;
-    if (paid < 0 || a->burden < 0 || !sique::canPay(s, actor, paid) ||
-        (!catalog_.usesAlphaV2() && Rules::load(s, actor) + bound + a->burden > Rules::capacity(s, catalog_, actor)))
+    if (paid < 0 || a->burden < 0 || !sique::canPay(s, actor, paid, &catalog_) ||
+        (!catalog_.usesAlphaV2() && !s.players[actor].debugInfiniteLoad && Rules::load(s, actor) + bound + a->burden > Rules::capacity(s, catalog_, actor)))
         return "cost: 魔素或荷载空间不足";
     return {};
 }

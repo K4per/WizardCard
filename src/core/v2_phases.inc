@@ -190,7 +190,7 @@ bool GameEngine::phaseV2() {
                 s.maintenanceSource = next.id;
                 const int fee = Rules::concentrationUpkeep(s, catalog_, next.id);
                 std::vector<std::uint32_t> options;
-                if (sique::canPay(s, s.active, fee)) options.push_back(next.id);
+                if (sique::canPay(s, s.active, fee, &catalog_)) options.push_back(next.id);
                 decision(s.active, DecisionKind::Concentration, std::move(options), true);
                 return false;
             }

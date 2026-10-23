@@ -35,9 +35,10 @@ void choose252(GameEngine &e, CardId id) {
     const auto d = *e.state().decision; send252(e, d.player, Choose{d.id, id}); settle252(e);
 }
 }
-TEST_CASE("Alpha v2.5.2 current pool has unique executable identities and preserves legacy IDs", "[alpha-v252][content]") {
-    const auto cat = currentCatalog(); REQUIRE(cat.cards.size() == 102); REQUIRE(cat.usesAlphaV252());
-    CHECK(cat.rulesVersion == "2.5.2"); CHECK(cat.cardSetVersion == "2.5.2");
+TEST_CASE("Alpha v2.5.3 current pool has unique executable identities and excludes unfinished drafts", "[alpha-v252][alpha-v253][content]") {
+    const auto cat = currentCatalog(); REQUIRE(cat.cards.size() == 99); REQUIRE(cat.usesAlphaV253());
+    CHECK(cat.rulesVersion == "2.5.3"); CHECK(cat.cardSetVersion == "2.5.3");
+    for (const auto *draft : {"upright-cross", "inverted-cross", "ankh"}) CHECK(cat.cards.count(draft) == 0);
     std::set<std::string> numbers;
     for (const auto &[id, d] : cat.cards) {
         DYNAMIC_SECTION(id) {
@@ -51,6 +52,20 @@ TEST_CASE("Alpha v2.5.2 current pool has unique executable identities and preser
     }
     CHECK(cat.at("aid").type == CardType::Word);
     CHECK(cat.at("engeas-four-point-star").type == CardType::Formation);
+    CHECK(cat.at("snow-rain-storm").type == CardType::Talisman);
+    CHECK(cat.at("snow-rain-storm").number == "040013");
+}
+TEST_CASE("Alpha v2.5.3 fire damage classification is independent of school and validated as a spell", "[alpha-v253][content]") {
+    const auto cat = currentCatalog();
+    REQUIRE(sique::fireSpell(cat.at("sique-backfire")));
+    auto classified = cat.at("sique-backfire"); classified.school = "transmutation";
+    REQUIRE(sique::fireSpell(classified));
+    REQUIRE_FALSE(sique::fireSpell(cat.at("sique-cauldron")));
+    auto data = readCatalogJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    for (auto &card : data["cards"]) if (card["id"] == "hexagram") {
+        card["traits"] = Json::array({"fire_damage_spell"});
+    }
+    REQUIRE_THROWS(parseCatalog(data));
 }
 TEST_CASE("Alpha v2.5.2 roast recovers any Sique card and enforces its campfire host", "[alpha-v252][content]") {
     auto cat = currentCatalog(); auto s = contentState();
@@ -63,7 +78,7 @@ TEST_CASE("Alpha v2.5.2 roast recovers any Sique card and enforces its campfire 
     CHECK_FALSE(e.submit(0, ActivateSpell{10, 999}).accepted); CHECK(e.digest() == before);
     send252(e, 0, ActivateSpell{10, playerTarget(1)}); choose252(e, 20);
     CHECK(e.state().cards.at(20).zone == Zone::Hand);
-    CHECK(e.state().players[1].life == startingLife - 7);
+    CHECK(e.state().players[1].life == startingLife - 6);
     s.cards.at(10).zone = Zone::Hand;
     CHECK_FALSE(Rules::canHost(s, cat, 10, 2)); CHECK(Rules::canHost(s, cat, 10, 1));
 }
@@ -76,7 +91,7 @@ TEST_CASE("Alpha v2.5.2 blowfire optional discard deals additional fire damage o
     auto denied = GameEngine::scenario(cat, invalid); CHECK_FALSE(denied.submit(0, ActivateSpell{10}).accepted);
     auto e = GameEngine::scenario(cat, s); send252(e, 0, ActivateSpell{10}); choose252(e, 20);
     CHECK(e.state().cards.at(20).zone == Zone::Ash);
-    CHECK(e.state().players[1].life == startingLife - 9);
+    CHECK(e.state().players[1].life == startingLife - 7);
     CHECK_FALSE(e.submit(0, ActivateSpell{10}).accepted);
 }
 TEST_CASE("Alpha v2.5.2 backfire recycles opponents cards and scales damage and healing", "[alpha-v252][content]") {

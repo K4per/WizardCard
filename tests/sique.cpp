@@ -7,6 +7,7 @@
 using namespace wizard;
 namespace {
 CardCatalog siqueCatalog() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production").catalog; }
+CardCatalog siqueProductionCatalog() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog; }
 GameState siqueState(Phase phase = Phase::Main) {
     GameState s; s.phase = phase; s.phaseStep = PhaseStep::Body; s.phaseGate = 1;
     s.globalTurn = 5; s.rng = 37;
@@ -397,4 +398,231 @@ TEST_CASE("Sique cauldron detaches all runes at own end phase start", "[sique]")
     REQUIRE(e.state().players[0].temporaryLife == 4);
     REQUIRE(e.state().players[0].mana == maximumMana);
     REQUIRE(e.state().players[1].life == 36);
+}
+
+TEST_CASE("Alpha 2.5.3 Sique selections require one through five cards and handle empty choices", "[sique][alpha-v253]") {
+    const auto cat = siqueProductionCatalog();
+    REQUIRE(cat.usesAlphaV252());
+
+    auto s = siqueState(Phase::Cast); cauldron(s);
+    siquePut(s, 20, "sique-backfire", 0, Zone::Casting, 1, SpellState::Ready);
+    siquePut(s, 30, "sique-sugar", 1, Zone::Ash);
+    auto e = GameEngine::scenario(cat, s);
+    siqueSend(e, 0, ActivateSpell{20});
+    REQUIRE(e.state().decision);
+    REQUIRE_FALSE(e.state().decision->mayPass);
+    const auto before = e.digest();
+    const auto decision = *e.state().decision;
+    REQUIRE_FALSE(e.submit(0, Choose{decision.id, 0}).accepted);
+    REQUIRE(e.digest() == before);
+    siqueChoose(e, 30);
+    REQUIRE(e.state().cards.at(30).zone == Zone::Deck);
+    REQUIRE(e.state().players[1].life == 39);
+
+    s = siqueState(); cauldron(s);
+    siquePut(s, 20, "sique-refire", 0, Zone::Hand);
+    siquePut(s, 30, "sique-sugar", 0, Zone::Ash);
+    siquePut(s, 31, "sique-salt", 0, Zone::Ash);
+    siquePut(s, 40, "spark", 0, Zone::Deck);
+    e = GameEngine::scenario(cat, s);
+    siqueSend(e, 0, PreloadWord{20, true, 1});
+    REQUIRE(e.state().decision);
+    REQUIRE_FALSE(e.state().decision->mayPass);
+    const auto firstChoice = *e.state().decision;
+    REQUIRE_FALSE(e.submit(0, Choose{firstChoice.id, 0}).accepted);
+    siqueChoose(e, 30);
+    REQUIRE(e.state().decision);
+    REQUIRE(e.state().decision->mayPass);
+    siqueChoose(e, 0);
+    REQUIRE(e.state().decision);
+    REQUIRE(e.state().decision->mayPass);
+    siqueChoose(e, 0);
+    REQUIRE_FALSE(e.state().decision);
+    REQUIRE(e.state().cards.at(30).zone == Zone::Deck);
+    REQUIRE(e.state().cards.at(31).zone == Zone::Ash);
+
+    s = siqueState(); cauldron(s);
+    siquePut(s, 20, "sique-refire", 0, Zone::Hand);
+    siquePut(s, 40, "spark", 0, Zone::Deck);
+    e = GameEngine::scenario(cat, s);
+    siqueSend(e, 0, PreloadWord{20, true, 1});
+    REQUIRE(e.state().decision);
+    REQUIRE(e.state().decision->mayPass);
+    REQUIRE(e.state().decision->options == std::vector<CardId>{0xffffffe1u});
+    siqueChoose(e, 0);
+    REQUIRE_FALSE(e.state().decision);
+
+    s = siqueState(Phase::Cast); cauldron(s); s.players[0].life = 20;
+    siquePut(s, 20, "sique-backfire", 0, Zone::Casting, 1, SpellState::Ready);
+    for (CardId id = 30; id < 36; ++id) siquePut(s, id, "sique-sugar", 1, Zone::Ash);
+    e = GameEngine::scenario(cat, s); siqueSend(e, 0, ActivateSpell{20});
+    for (CardId id = 30; id < 35; ++id) siqueChoose(e, id);
+    REQUIRE_FALSE(e.state().decision);
+    REQUIRE(e.state().cards.at(35).zone == Zone::Ash);
+    REQUIRE(e.state().players[1].life == 35);
+    REQUIRE(e.state().players[0].life == 30);
+
+    s = siqueState(Phase::Cast); cauldron(s);
+    siquePut(s, 20, "sique-backfire", 0, Zone::Casting, 1, SpellState::Ready);
+    e = GameEngine::scenario(cat, s); siqueSend(e, 0, ActivateSpell{20}); siqueSettle(e);
+    REQUIRE_FALSE(e.state().decision);
+    REQUIRE(e.state().players[1].life == startingLife);
+}
+
+TEST_CASE("Alpha 2.5.3 Sique flavor shift can only attach from deck to the cauldron", "[sique][alpha-v253]") {
+    const auto cat = siqueProductionCatalog();
+    auto s = siqueState(); cauldron(s);
+    siquePut(s, 2, "sique-campfire", 0, Zone::Analysis);
+    siquePut(s, 10, "sique-vinegar", 0, Zone::Attached, 1);
+    siquePut(s, 20, "sique-flavor-shift", 0, Zone::Hand);
+    siquePut(s, 21, "sique-sugar", 0, Zone::Deck);
+    auto e = GameEngine::scenario(cat, s);
+    siqueSend(e, 0, PreloadWord{20, true, 1, 0, {10}});
+    siqueChoose(e, 21);
+    REQUIRE(e.state().decision);
+    REQUIRE(e.state().decision->options == std::vector<CardId>{1});
+    const auto decision = *e.state().decision;
+    REQUIRE_FALSE(e.submit(0, Choose{decision.id, 2}).accepted);
+    siqueChoose(e, 1);
+    REQUIRE(e.state().cards.at(21).zone == Zone::Attached);
+    REQUIRE(e.state().cards.at(21).host == 1);
+}
+
+TEST_CASE("Alpha 2.5.3 soup pays exactly one owned rune and sugar leaves for one mana", "[sique][alpha-v253]") {
+    const auto cat = siqueProductionCatalog();
+    auto s = siqueState(Phase::Cast); cauldron(s); s.players[0].life = 20;
+    siquePut(s, 2, "hexagram", 1, Zone::Analysis);
+    siquePut(s, 10, "sique-sugar", 0, Zone::Attached, 1);
+    siquePut(s, 11, "sique-vinegar", 1, Zone::Attached, 2);
+    siquePut(s, 20, "sique-mushroom-soup", 0, Zone::Casting, 1, SpellState::Ready);
+    auto e = GameEngine::scenario(cat, s);
+    const auto before = e.digest();
+    for (const auto &ids : {std::vector<CardId>{}, std::vector<CardId>{10, 10}, std::vector<CardId>{11}}) {
+        REQUIRE_FALSE(e.submit(0, ActivateSpell{20, 0, ids}).accepted);
+        REQUIRE(e.digest() == before);
+    }
+    siqueSend(e, 0, ActivateSpell{20, 0, {10}}); siqueSettle(e);
+    REQUIRE(e.state().cards.at(10).zone == Zone::Ash);
+    REQUIRE(e.state().cards.at(11).zone == Zone::Attached);
+    REQUIRE(e.state().players[0].life == 24);
+    REQUIRE(e.state().players[0].temporaryLife == 6);
+
+    s = siqueState(); cauldron(s); s.players[0].mana = 7;
+    siquePut(s, 10, "sique-sugar", 0, Zone::Attached, 1);
+    e = GameEngine::scenario(cat, s); siqueSend(e, 0, RemoveSeal{10}); siqueSettle(e);
+    REQUIRE(e.state().players[0].mana == 8);
+}
+
+TEST_CASE("Alpha 2.5.3 ingredients tracks the searched instances rather than matching names", "[sique][alpha-v253]") {
+    const auto cat = siqueProductionCatalog(); auto s = siqueState(); cauldron(s);
+    siquePut(s, 10, "sique-ingredients", 0, Zone::Hand);
+    siquePut(s, 20, "sique-sugar", 0, Zone::Deck); siquePut(s, 21, "sique-sugar", 0, Zone::Deck);
+    siquePut(s, 22, "sique-sugar", 0, Zone::Hand);
+    auto e = GameEngine::scenario(cat, s); siqueSend(e, 0, PreloadWord{10, true, 1});
+    siqueChoose(e, 20); siqueChoose(e, 21);
+    const auto searched = e.state();
+    REQUIRE(searched.cards.at(20).zone == Zone::Hand); REQUIRE(searched.cards.at(21).zone == Zone::Hand);
+    siqueSend(e, 0, AttachSeal{20, 1}); siqueSettle(e);
+    REQUIRE(e.state().cards.at(21).zone == Zone::Ash);
+    REQUIRE(e.state().cards.at(22).zone == Zone::Hand);
+    auto later = searched; ++later.globalTurn;
+    e = GameEngine::scenario(cat, later); siqueSend(e, 0, AttachSeal{20, 1}); siqueSettle(e);
+    REQUIRE(e.state().cards.at(21).zone == Zone::Hand);
+    REQUIRE(e.state().cards.at(22).zone == Zone::Hand);
+}
+
+TEST_CASE("Alpha 2.5.3 divine stew substitutes only mana at declaration and retains opponent life", "[sique][alpha-v253]") {
+    const auto cat = siqueProductionCatalog();
+    auto s = siqueState(Phase::Cast); cauldron(s);
+    for (CardId id : {10u, 11u, 12u}) siquePut(s, id, "sique-vinegar", 0, Zone::Attached, 1);
+    siquePut(s, 20, "sique-divine-stew", 0, Zone::Casting, 1, SpellState::Ready);
+    auto e = GameEngine::scenario(cat, s);
+    siqueSend(e, 0, ActivateSpell{20, 0, {10, 11, 12}}); siqueSettle(e);
+    for (CardId id : {10u, 11u, 12u}) REQUIRE(e.state().cards.at(id).zone == Zone::Ash);
+    REQUIRE(e.state().players[0].siqueLifePaymentTurn == s.globalTurn);
+    s = e.state(); s.phase = Phase::Main; s.phaseStep = PhaseStep::Body;
+    s.players[0].mana = 0; s.players[1].life = 3; s.players[1].temporaryLife = 20;
+    siquePut(s, 21, "sique-ingredients", 0, Zone::Hand);
+    e = GameEngine::scenario(cat, s);
+    siqueSend(e, 0, PreloadWord{21, true, 1});
+    // Declaration pays exactly two ordinary life before any effect choices.
+    REQUIRE(e.state().players[1].life == 1);
+    REQUIRE(e.state().players[1].temporaryLife == 20);
+    REQUIRE(e.state().players[0].mana == 0);
+    siqueSettle(e); REQUIRE(e.state().players[1].life == 1);
+
+    s.players[1].life = 2;
+    e = GameEngine::scenario(cat, s); const auto before = e.digest();
+    REQUIRE_FALSE(e.submit(0, PreloadWord{21, true, 1}).accepted);
+    REQUIRE(e.digest() == before);
+    ++s.globalTurn; s.players[1].life = 40;
+    e = GameEngine::scenario(cat, s);
+    REQUIRE_FALSE(e.submit(0, PreloadWord{21, true, 1}).accepted);
+}
+
+TEST_CASE("Alpha 2.5.3 divine stew respects independent infinite resource switches", "[sique][alpha-v253]") {
+    const auto cat = siqueProductionCatalog(); auto s = siqueState();
+    s.players[0].mana = 0; s.players[0].siqueLifePaymentTurn = s.globalTurn;
+    s.players[1].life = 1;
+    REQUIRE_FALSE(sique::canPay(s, 0, 2, &cat));
+    s.players[1].debugInfiniteLife = true;
+    REQUIRE(sique::canPay(s, 0, 2, &cat)); sique::pay(s, 0, 2, &cat);
+    REQUIRE(s.players[1].life == 1); REQUIRE(s.players[0].mana == 0);
+    s.players[1].debugInfiniteLife = false; s.players[0].debugInfiniteMana = true;
+    REQUIRE(sique::canPay(s, 0, 2, &cat)); sique::pay(s, 0, 2, &cat);
+    REQUIRE(s.players[1].life == 1); REQUIRE(s.players[0].mana == 0);
+    s.players[0].debugInfiniteMana = false;
+    REQUIRE_FALSE(sique::canPay(s, 0, 2, &cat));
+}
+
+TEST_CASE("Alpha 2.5.3 hanged man pays rounded ordinary life and exchanges only nonformations", "[arcana][alpha-v253]") {
+    auto cat = siqueProductionCatalog(); cat.cards.at("hexagram").capacity = 50;
+    auto s = siqueState(Phase::Cast); s.players[0].life = 11; s.players[0].temporaryLife = 30;
+    siquePut(s, 1, "hexagram", 0, Zone::Analysis);
+    siquePut(s, 20, "arcana-hanged-man", 0, Zone::Casting, 1, SpellState::Ready);
+    siquePut(s, 30, "spark", 0, Zone::Deck); siquePut(s, 31, "recall", 0, Zone::Deck);
+    siquePut(s, 40, "mend", 0, Zone::Ash); siquePut(s, 41, "hexagram", 0, Zone::Ash);
+    siquePut(s, 50, "spark", 1, Zone::Deck); siquePut(s, 60, "mend", 1, Zone::Ash);
+    auto e = GameEngine::scenario(cat, s); siqueSend(e, 0, ActivateSpell{20});
+    REQUIRE(e.state().players[0].life == 5); REQUIRE(e.state().players[0].temporaryLife == 30);
+    siqueSettle(e);
+    REQUIRE(e.state().cards.at(41).zone == Zone::Ash);
+    REQUIRE(e.state().cards.at(40).zone == Zone::Deck);
+    REQUIRE(e.state().cards.at(30).zone == Zone::Ash);
+    REQUIRE(e.state().cards.at(31).zone == Zone::Ash);
+    REQUIRE(e.state().cards.at(50).zone == Zone::Ash);
+    REQUIRE(e.state().cards.at(60).zone == Zone::Deck);
+    REQUIRE(e.state().players[0].deck == std::vector<CardId>{40});
+
+    s.players[0].life = 1;
+    e = GameEngine::scenario(cat, s); siqueSend(e, 0, ActivateSpell{20});
+    REQUIRE(e.state().players[0].life == 0); REQUIRE(e.state().result == 1);
+    REQUIRE(e.state().cards.at(40).zone == Zone::Ash); // The cost ends the match before the exchange.
+    s.players[0].debugInfiniteLife = true;
+    e = GameEngine::scenario(cat, s); siqueSend(e, 0, ActivateSpell{20}); siqueSettle(e);
+    REQUIRE(e.state().players[0].life == 1); REQUIRE(e.state().players[0].temporaryLife == 30);
+}
+
+TEST_CASE("Alpha 2.5.3 magician lets the opponent choose from three revealed distinct names", "[arcana][alpha-v253]") {
+    const auto cat = siqueProductionCatalog(); auto s = siqueState(Phase::Cast);
+    siquePut(s, 1, "hexagram", 0, Zone::Analysis);
+    siquePut(s, 20, "arcana-magician", 0, Zone::Casting, 1, SpellState::Ready);
+    siquePut(s, 30, "spark", 0, Zone::Deck); siquePut(s, 31, "recall", 0, Zone::Deck);
+    siquePut(s, 32, "mend", 0, Zone::Deck); siquePut(s, 33, "spark", 0, Zone::Deck);
+    auto e = GameEngine::scenario(cat, s); siqueSend(e, 0, ActivateSpell{20});
+    siqueChoose(e, 30);
+    REQUIRE(e.state().decision);
+    REQUIRE(std::find(e.state().decision->options.begin(), e.state().decision->options.end(), 33) == e.state().decision->options.end());
+    siqueChoose(e, 31); siqueChoose(e, 32);
+    REQUIRE(e.state().decision); REQUIRE(e.state().decision->player == 1);
+    REQUIRE(e.state().decision->options == std::vector<CardId>{30, 31, 32});
+    const auto decision = *e.state().decision; const auto before = e.digest();
+    REQUIRE_FALSE(e.submit(0, Choose{decision.id, 31}).accepted);
+    REQUIRE_FALSE(e.submit(1, Choose{decision.id, 33}).accepted);
+    REQUIRE(e.digest() == before);
+    siqueChoose(e, 31);
+    REQUIRE(e.state().cards.at(31).zone == Zone::Hand);
+    REQUIRE(e.state().cards.at(30).zone == Zone::Exile);
+    REQUIRE(e.state().cards.at(32).zone == Zone::Exile);
+    REQUIRE(e.state().cards.at(33).zone == Zone::Deck);
 }

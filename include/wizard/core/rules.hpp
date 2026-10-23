@@ -29,6 +29,8 @@ struct StateMaintenance {
     static void check(GameState &, const CardCatalog &, bool endCleanup = false);
 };
 struct ResourceRules {
+    static bool canPayMana(const GameState &, PlayerId, int amount);
+    static void payMana(GameState &, PlayerId, int amount);
     // Each grant expires at the start of the recipient's indicated draw phase.
     // Source 0 denotes a migrated aggregate with unknown historical provenance.
     static void normalizeTemporaryLife(GameState &, PlayerId);

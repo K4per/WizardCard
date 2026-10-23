@@ -9,7 +9,7 @@
   "speed": 1,
   "castCost": 0,
   "damageBonus": 4,
-  "text": "仅可附着于【恒风】阵法卡。 附着于阵法：附着时，可以移除2个【恒风指示物】，销毁对方场上一张空闲阵法卡。 附着于法术：额外造成4点雷鸣伤害。",
+  "text": "仅可附着于【恒风】卡。 附着于阵法：附着时，可以移除2个【恒风指示物】，销毁对方场上1张空白阵法卡。 附着于法术：额外造成4点雷鸣伤害。",
   "traits": [
     "storm_formation_host_restriction",
     "thunder_damage_bonus",

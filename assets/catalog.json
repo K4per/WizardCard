@@ -1,10 +1,10 @@
 {
   "format": 1,
   "metadata": {
-    "rulesVersion": "2.5.2",
-    "cardSetVersion": "2.5.2",
+    "rulesVersion": "2.5.3",
+    "cardSetVersion": "2.5.3",
     "baseLoadCapacity": 2,
-    "mechanicsRevision": 5
+    "mechanicsRevision": 6
   },
   "definitions": [
     {
@@ -164,18 +164,6 @@
       "file": "cards/formation/sun.json"
     },
     {
-      "id": "upright-cross",
-      "file": "cards/formation/upright-cross.json"
-    },
-    {
-      "id": "inverted-cross",
-      "file": "cards/formation/inverted-cross.json"
-    },
-    {
-      "id": "ankh",
-      "file": "cards/formation/ankh.json"
-    },
-    {
       "id": "elemental-ring",
       "file": "cards/formation/elemental-ring.json"
     },
@@ -205,7 +193,7 @@
     },
     {
       "id": "snow-rain-storm",
-      "file": "cards/word/snow-rain-storm.json"
+      "file": "cards/talisman/snow-rain-storm.json"
     },
     {
       "id": "windmaking",

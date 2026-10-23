@@ -20,6 +20,7 @@ class LocalSession {
                       const std::string &generation, const std::string &revision);
     Json confirmAction(const std::string &generation, const std::string &revision);
     Json cancelAction();
+    Json debugCommand(const Json &);
     Json pause(bool paused);
     Json stepAi(const std::string &generation, const std::string &revision);
     Json continueTutorial(const std::string &generation, const std::string &revision);
@@ -62,6 +63,7 @@ class LocalSession {
     mutable std::uintmax_t replayCacheFileSize_{};
     mutable std::size_t replayCacheStep_{};
     mutable bool replayCacheValid_{};
+    mutable bool replayBrowsing_{};
     mutable std::map<std::size_t, GameEngine> replayCheckpoints_;
     void prepareReplay(const std::filesystem::path &) const;
     bool visibleTo(PlayerId viewer) const;

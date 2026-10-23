@@ -2,6 +2,7 @@
 #include "wizard/core/rules.hpp"
 #include "wizard/core/view.hpp"
 #include "wizard/core/config.hpp"
+#include "wizard/core/debug.hpp"
 
 namespace wizard {
 class GameEngine {
@@ -12,6 +13,8 @@ class GameEngine {
     static GameEngine scenario(CardCatalog catalog, GameState state);
     CommandResult submit(PlayerId actor, const Command &command);
     CommandResult timeout(PlayerId actor);
+    // Authority-only local tooling; session mode must be checked by the caller.
+    CommandResult debug(const DebugOperation &);
     GameView viewFor(PlayerId viewer) const;
     const GameState &state() const {
         return state_;
@@ -47,6 +50,7 @@ class GameEngine {
     void analysisCompletedV2(CardId);
     void quickAnalysisV2(CardId, CardId);
     void castingTraitsV2(CardId);
+    void settingCompletedV253(CardId, CardId);
     void pump();
     void decision(PlayerId, DecisionKind, std::vector<std::uint32_t>, bool = false);
     void enqueuePhase(bool end);

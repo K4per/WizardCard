@@ -128,6 +128,7 @@ class Tcp {
     void listen(unsigned short);
     void connect(const std::string &, unsigned short);
     bool connected() const;
+    bool connecting() const;
     bool listening() const;
     std::size_t queued() const;
     void close();

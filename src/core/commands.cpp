@@ -27,6 +27,8 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
         if (def.type != CardType::Analytic || c.faceDown || cmd.discard || c.zone != Zone::Analysis || c.spell != SpellState::Ready ||
             c.canceledTurn == pl.ownTurn)
             return "not_ready: 法术未解析完成";
+        if (catalog_.usesAlphaV253() && !Rules::canHost(s, catalog_, cmd.card, c.host))
+            return "host_restriction: 阵法等级或宿主条件不满足准备施法";
         // Shatter Ring chooses its empty formation when it is released. The
         // preparation announcement only opens the response window and must not
         // capture a target that has no effect yet.
@@ -75,11 +77,11 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
         (!def.extraDiscard && cmd.discard))
         return "extra_cost: 额外成本不合法";
     const int castFee = Rules::castCost(s, catalog_, c.id);
-    if (pl.mana < castFee || Rules::load(s, actor) + castFee > Rules::capacity(s, catalog_, actor))
+    if (!ResourceRules::canPayMana(s, actor, castFee) || (!pl.debugInfiniteLoad && Rules::load(s, actor) + castFee > Rules::capacity(s, catalog_, actor)))
         return "cost: 魔素或荷载不足";
     if (cmd.discard)
         StateMaintenance::leave(s, cmd.discard, &catalog_);
-    pl.mana -= castFee;
+    ResourceRules::payMana(s, actor, castFee);
     s.events.push_back({"pay", "准备支付 " + std::to_string(castFee) + " 魔素", -1, c.id, castFee});
     c.castLoad += castFee;
     c.payments.push_back({pl.ownTurn, castFee, castFee, false});
@@ -167,7 +169,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             return "decision_mismatch: 请完成当前玩家的选择";
         if (d.kind == DecisionKind::Response) {
             if (catalog_.usesAlphaV2() && (std::holds_alternative<PrepareCast>(command) ||
-                                          std::holds_alternative<FlipAmbush>(command)))
+                                          std::holds_alternative<FlipAmbush>(command) ||
+                                          std::holds_alternative<PreloadWord>(command)))
                 return responseSetupV2(actor, command);
             Command selected = command;
             if (auto old = std::get_if<Choose>(&selected)) {
@@ -215,7 +218,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                          : a.preloadedCost +
                              (def.type == CardType::Word ? Rules::castCost(s, catalog_, c.id) - def.cost : 0);
             const int bound = catalog_.usesAlphaV2() ? paid : analytic || def.type == CardType::Word ? paid : 0;
-            sique::pay(s, actor, paid);
+            sique::pay(s, actor, paid, &catalog_);
             StateMaintenance::check(s, catalog_);
             if (s.result != -1) return {};
             if (r->discard)
@@ -447,7 +450,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             auto &c = s.cards.at(source);
             if (opt) {
                 const int paid = Rules::concentrationUpkeep(s, catalog_, source);
-                sique::pay(s, actor, paid);
+                sique::pay(s, actor, paid, &catalog_);
                 c.castLoad += paid;
                 c.payments.push_back({s.players[actor].ownTurn, paid, paid, false});
                 ResourceRules::increasedLoad(s, catalog_, actor, paid);
@@ -537,9 +540,9 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         if (!validTargets(s, d.target, d.targetCount, actor, cmd->target, cmd->targets))
             return "target: 无效目标";
         const int fee = Rules::castCost(s, catalog_, c.id) - (d.type == CardType::Word ? d.cost : 0);
-        if (s.players[actor].mana < fee || Rules::load(s, actor) + fee > Rules::capacity(s, catalog_, actor))
+        if (!ResourceRules::canPayMana(s, actor, fee) || (!s.players[actor].debugInfiniteLoad && Rules::load(s, actor) + fee > Rules::capacity(s, catalog_, actor)))
             return "cost: 魔素或荷载不足";
-        s.players[actor].mana -= fee;
+        ResourceRules::payMana(s, actor, fee);
         c.castLoad += fee;
         c.payments.push_back({s.players[actor].ownTurn, fee, fee, false});
         s.events.push_back({"pay", "释放支付 " + std::to_string(fee) + " 魔素", -1, c.id, fee});
@@ -587,10 +590,10 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         return i != s.cards.end() && i->second.owner == actor && i->second.zone == z;
     };
     auto cost = [&](int mana, int load) {
-        return pl.mana >= mana && Rules::load(s, actor) + load <= Rules::capacity(s, catalog_, actor);
+        return ResourceRules::canPayMana(s, actor, mana) && (pl.debugInfiniteLoad || Rules::load(s, actor) + load <= Rules::capacity(s, catalog_, actor));
     };
     auto pay = [&](CardId id, int mana) {
-        pl.mana -= mana;
+        ResourceRules::payMana(s, actor, mana);
         s.events.push_back({"pay", "支付 " + std::to_string(mana) + " 魔素", -1, id, mana});
     };
     auto error = std::visit(
@@ -641,13 +644,13 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                     if (cmd.replace) {
                         if (!owned(cmd.replace, Zone::Analysis) || s.cards.at(cmd.replace).base ||
                             catalog_.at(s.cards.at(cmd.replace).definition).type != CardType::Formation ||
-                            pl.mana < 2)
+                            !ResourceRules::canPayMana(s, actor, 2))
                             return "invalid_replacement: 无法替换";
                         StateMaintenance::leave(s, cmd.replace, &catalog_);
                         pay(cmd.card, 2);
                     }
                     if (catalog_.advancedRules) {
-                        if (pl.mana < def.cost)
+                        if (!ResourceRules::canPayMana(s, actor, def.cost))
                             return "cost: 阵法设置魔素不足";
                         pay(c.id, def.cost);
                         c.settingPaid = def.cost;
@@ -655,16 +658,16 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                     c.zone = Zone::Analysis;
                     ++pl.formations;
                     if (usedBody(s, catalog_, actor) > 5 ||
-                        Rules::load(s, actor) > Rules::capacity(s, catalog_, actor))
+                        (!pl.debugInfiniteLoad && Rules::load(s, actor) > Rules::capacity(s, catalog_, actor)))
                         return "capacity: 空间或荷载不合法";
                 } else if constexpr (std::is_same_v<T, RemoveFormation>) {
                     if (!owned(cmd.card, Zone::Analysis) || c.base || def.type != CardType::Formation ||
-                        pl.formations || pl.mana < 2)
+                        pl.formations || !ResourceRules::canPayMana(s, actor, 2))
                         return "invalid_removal: 无法拆除阵法";
                     StateMaintenance::leave(s, cmd.card, &catalog_);
                     pay(cmd.card, 2);
                     ++pl.formations;
-                    if (Rules::load(s, actor) > Rules::capacity(s, catalog_, actor))
+                    if ((!pl.debugInfiniteLoad && Rules::load(s, actor) > Rules::capacity(s, catalog_, actor)))
                         return "overload: 拆除后超载";
                 } else if constexpr (std::is_same_v<T, StartAnalysis>) {
                     if (!owned(cmd.card, Zone::Hand) || def.type != CardType::Analytic ||
@@ -756,7 +759,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                     StateMaintenance::leave(s, cmd.card, &catalog_);
                     ++pl.sealRemovals;
                     if (hasOverflow(s, catalog_) ||
-                        Rules::load(s, actor) > Rules::capacity(s, catalog_, actor))
+                        (!pl.debugInfiniteLoad && Rules::load(s, actor) > Rules::capacity(s, catalog_, actor)))
                         return "capacity: 请先放弃多余法术";
                 } else if constexpr (std::is_same_v<T, Abandon>) {
                     if ((c.zone != Zone::Analysis && c.zone != Zone::Casting && c.zone != Zone::Words) ||

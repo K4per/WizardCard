@@ -24,6 +24,26 @@ void submitGuest(HostSession &host, GuestSession &guest, const Command &command)
     guest.receive(reply);
     guest.receive(host.snapshot(1 - host.player()));
 }
+unsigned short tcpTestPort(Tcp &listener) {
+    for (unsigned short port = 32500; port < 32600; ++port) {
+        try {
+            listener.listen(port);
+            return port;
+        } catch (...) {
+        }
+    }
+    return 0;
+}
+void waitForTcp(Tcp &listener, Tcp &client) {
+    auto until = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+    while ((!listener.connected() || !client.connected()) && std::chrono::steady_clock::now() < until) {
+        client.poll();
+        listener.poll();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    REQUIRE(listener.connected());
+    REQUIRE(client.connected());
+}
 struct Pair {
     Content c = content();
     HostSession host{c};
@@ -68,6 +88,81 @@ TEST_CASE("network decoder rejects invalid length JSON and receive limits") {
     std::vector<unsigned char> huge(maxReceive + 1);
     CHECK_THROWS(d.feed(huge.data(), huge.size()));
     CHECK_THROWS(frame(Json{{"data", std::string(maxMessage, 'x')}}));
+}
+TEST_CASE("network TCP accepts IPv4 DNS answers, IPv4 literals and IPv6 literals") {
+    for (const auto &address : {std::string("localhost"), std::string("127.0.0.1"), std::string("::1"),
+                               std::string("[::1]")}) {
+        Tcp listener, client;
+        const auto port = tcpTestPort(listener);
+        REQUIRE(port != 0);
+        client.connect(address, port);
+        INFO("address=" << address);
+        waitForTcp(listener, client);
+        client.close();
+        listener.close();
+    }
+}
+TEST_CASE("network DNS errors, connection refusal and send queue limits are actionable") {
+    // .invalid must fail even when a local DNS proxy synthesizes fake IPs.
+    // The malformed IPv6 name also exercises the real OS resolver error path.
+    for (const auto *address : {"wizardcard-does-not-exist.invalid", "INVALID.",
+                                "MixedCase.InVaLiD.", "not:a:valid:ipv6::g"}) {
+        Tcp client;
+        const auto start = std::chrono::steady_clock::now();
+        client.connect(address, 27861);
+        INFO("address=" << address);
+        CHECK(std::chrono::steady_clock::now() - start < std::chrono::milliseconds(100));
+        auto until = std::chrono::steady_clock::now() + std::chrono::seconds(12);
+        std::string error;
+        while (error.empty() && client.connecting() && std::chrono::steady_clock::now() < until) {
+            try {
+                client.poll();
+            } catch (const std::exception &e) {
+                error = e.what();
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+        CHECK(error.find("域名解析") != std::string::npos);
+        CHECK_FALSE(client.connected());
+        CHECK_FALSE(client.connecting());
+    }
+    {
+        Tcp reserved;
+        const auto port = tcpTestPort(reserved);
+        REQUIRE(port != 0);
+        reserved.close();
+        Tcp client;
+        client.connect("127.0.0.1", port);
+        auto until = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+        std::string error;
+        while (error.empty() && client.connecting() && std::chrono::steady_clock::now() < until) {
+            try {
+                client.poll();
+            } catch (const std::exception &e) {
+                error = e.what();
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+        CHECK(error.find("拒绝连接") != std::string::npos);
+    }
+    {
+        Tcp listener, client;
+        const auto port = tcpTestPort(listener);
+        REQUIRE(port != 0);
+        client.connect("localhost", port);
+        waitForTcp(listener, client);
+        const Json large{{"data", std::string(600 * 1024, 'x')}};
+        for (int i = 0; i < 6; ++i)
+            client.send(large);
+        std::string error;
+        try {
+            client.send(large);
+        } catch (const std::exception &e) {
+            error = e.what();
+        }
+        CHECK(error.find("4MiB") != std::string::npos);
+        CHECK(error.find("消息积压") != std::string::npos);
+    }
 }
 TEST_CASE("network exact identifiers retain values beyond double precision") {
     DecisionId id = (std::uint64_t{1} << 63) + 17;

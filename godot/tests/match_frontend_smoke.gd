@@ -377,8 +377,8 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 	if match_page._confirm.visible:
 		if not _expect(not match_page._pending.is_empty(), "single action retains a pending command for confirmation"):
 			return false
-		var confirm_button: Button = match_page._confirm.get_ok_button()
-		point = Vector2(match_page._confirm.position) + confirm_button.get_global_rect().get_center()
+		var confirm_button: Button = match_page._confirm.get_node("Column/Actions/Buttons/Confirm") as Button
+		point = confirm_button.get_global_rect().get_center()
 		_mouse_button(point, true)
 		_mouse_button(point, false)
 		await process_frame

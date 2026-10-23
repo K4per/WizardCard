@@ -24,6 +24,7 @@ struct PlayerView {
     int temporaryLife{}, blockedActionTurn{-1};
     std::vector<DamageType> resistances, immunities;
     int sideDeckCount{}, exhaustion{};
+    bool infiniteLife{}, infiniteMana{}, infiniteLoad{};
 };
 struct CardView {
     CardInstance instance;

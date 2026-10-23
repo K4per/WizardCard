@@ -11,7 +11,7 @@
   "maxRank": 3,
   "baseEligible": false,
   "cost": 0,
-  "text": "此卡不会被效果破坏。",
+  "text": "此阵法卡不会被效果销毁。",
   "summonCondition": "【四芒星】+魔素×2",
   "recipe": [
     {

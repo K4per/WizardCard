@@ -1,0 +1,3 @@
+probe normal: passed, 723 commands, digest 37941c9ac176d46e
+probe surrender: passed, 5 commands, digest 5e7ed7acb4405ac2
+probe reconnect: passed, 813 commands, digest 97388c7b1fe16239

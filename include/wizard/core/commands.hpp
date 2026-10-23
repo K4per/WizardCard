@@ -29,6 +29,7 @@ struct PreloadWord {
     CardId formation{}, target{};
     std::vector<CardId> targets;
     CardId discard{}; // Optional executable spell cost, such as true-strike.
+    DecisionId decision{}; // nonzero only when setting a word spell as a response.
 };
 struct AttachSeal {
     CardId card{}, host{};

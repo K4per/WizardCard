@@ -1,12 +1,12 @@
-# Godot Alpha v2.5.2 frontend
+# Godot Alpha v2.5.3 frontend
 
 This directory contains the native bridge and Godot 4.7.2 frontend for WizardCard
-2.5.2. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
+2.5.3. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
 GDScript displays viewer projections and submits intents.
 
 The frontend includes menu, library, settings, deck construction, setup,
 hotseat, AI, tutorial, LAN rooms, matches, replay and a display-only field
-showcase. The official library reads the 102-card native catalogue, including the
+showcase. The official library reads the 99-card native catalogue, including the
 19-card Sique series and 17 Arcana spells. Historical
 illustrated previews in `data/card-previews-v2.json` are display-only and cannot
 enter playable decks.

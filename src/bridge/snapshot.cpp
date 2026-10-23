@@ -53,7 +53,8 @@ Json viewDto(const GameView &v) {
             {"capacity", p.capacity}, {"handCount", p.handCount}, {"deckCount", p.deckCount},
             {"sideDeckCount", p.sideDeckCount}, {"exhaustion", p.exhaustion},
             {"ownTurn", p.ownTurn}, {"temporaryLife", p.temporaryLife},
-            {"resistances", p.resistances}, {"immunities", p.immunities}});
+            {"resistances", p.resistances}, {"immunities", p.immunities},
+            {"infiniteLife", p.infiniteLife}, {"infiniteMana", p.infiniteMana}, {"infiniteLoad", p.infiniteLoad}});
     for (const auto &entry : v.temporaryLives)
         out["temporaryLives"].push_back({{"id", std::to_string(entry.id)}, {"owner", entry.owner},
             {"source", std::to_string(entry.source)}, {"amount", entry.amount},

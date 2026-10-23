@@ -1,0 +1,22 @@
+适用于 .NET Framework MSBuild 版本 17.11.2+c078802d4
+
+  Checking File Globs
+  arcana.cpp
+  godot-cpp.vcxproj -> E:\Project\WizardCard\build\godot-debug\bin\libgodot-cpp.windows.template_debug.x86_64.lib
+  sique.cpp
+  zones.cpp
+  正在生成代码...
+  wizard_core.vcxproj -> E:\Project\WizardCard\build\godot-debug\Debug\wizard_core.lib
+  wizard_ai.vcxproj -> E:\Project\WizardCard\build\godot-debug\Debug\wizard_ai.lib
+  wizard_interaction.vcxproj -> E:\Project\WizardCard\build\godot-debug\Debug\wizard_interaction.lib
+  wizard_codec.vcxproj -> E:\Project\WizardCard\build\godot-debug\Debug\wizard_codec.lib
+  content.cpp
+  wizard_content.vcxproj -> E:\Project\WizardCard\build\godot-debug\Debug\wizard_content.lib
+  debug_session.cpp
+  wizard_replay.vcxproj -> E:\Project\WizardCard\build\godot-debug\Debug\wizard_replay.lib
+  wizard_network.vcxproj -> E:\Project\WizardCard\build\godot-debug\Debug\wizard_network.lib
+  wizard_application.vcxproj -> E:\Project\WizardCard\build\godot-debug\Debug\wizard_application.lib
+  session.cpp
+  wizard_bridge_model.vcxproj -> E:\Project\WizardCard\build\godot-debug\Debug\wizard_bridge_model.lib
+    正在创建库 E:/Project/WizardCard/build/godot-debug/Debug/wizard_godot_bridge.debug.lib 和对象 E:/Project/WizardCard/build/godot-debug/Debug/wizard_godot_bridge.debug.exp
+  wizard_godot_bridge.vcxproj -> E:\Project\WizardCard\godot\bin\wizard_godot_bridge.debug.dll

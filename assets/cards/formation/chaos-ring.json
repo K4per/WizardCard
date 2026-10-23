@@ -11,7 +11,7 @@
   "maxRank": 3,
   "baseEligible": false,
   "cost": 0,
-  "text": "此阵法不可同时解析相同派系的法术卡。",
+  "text": "此阵法卡上不可同时设置相同派系的法术卡。",
   "summonCondition": "解析完成的不同派系法术卡×2",
   "recipe": [
     {

@@ -168,7 +168,7 @@ void writeJson(const std::filesystem::path &p, const Json &j) {
 CardCatalog parseCatalog(const Json &j, const std::string &source) {
     CardCatalog cat;
     const auto revision = number(j, "mechanicsRevision", source);
-    if (revision > 5)
+    if (revision > 6)
         fail(source + "/mechanicsRevision", "unsupported mechanics revision");
     cat.advancedRules = revision >= 1;
     cat.mechanicsRevision = revision;
@@ -359,7 +359,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 "activate_storm_crest_destroy", "activate_storm_search", "activate_storm_heart_choice",
                 "storm_heart_upgrade", "search_great_storm_on_setup", "requires_storm_heart_setup",
                 "great_storm", "sique_cauldron_only", "sique_requires_campfire", "sique_requires_cauldron",
-                "sique_detach_1", "sique_detach_2", "sique_detach_3",
+                "sique_detach_1", "sique_detach_2", "sique_detach_3", "fire_damage_spell",
                 "opponent_spell_load_4", "sique_campfire_only", "max_two", "quick_host_analysis_1", "quick_host_analysis_2", "moon",
                 "destroy_enemy_ambush_end", "arcana_fool_condition", "arcana_priestess_cost",
                 "arcana_emperor_cost", "arcana_chariot", "arcana_strength", "arcana_hanged_cost",
@@ -372,6 +372,9 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                     fail(p + "/traits", "unknown or duplicate executable trait");
                 d.traits.push_back(value.get<std::string>());
             }
+            if (std::find(d.traits.begin(), d.traits.end(), "fire_damage_spell") != d.traits.end() &&
+                d.type != CardType::Analytic && d.type != CardType::Word && d.type != CardType::Talisman)
+                fail(p + "/traits", "fire_damage_spell requires a spell card type");
         }
         d.onDraw = effects(card.value("onDraw", Json::array()), p + "/onDraw");
         d.onMain = effects(card.value("onMain", Json::array()), p + "/onMain");

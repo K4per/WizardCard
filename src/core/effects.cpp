@@ -52,7 +52,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
             const auto source = s.cards.find(t.source);
             if (host && trait(*host, "host_evocation_damage_plus_one") && source != s.cards.end() &&
                 cat.at(source->second.definition).school == "evocation") ++adjusted.amount;
-            if (host && host->id == "sique-campfire" && source != s.cards.end() &&
+            if (!cat.usesAlphaV253() && host && host->id == "sique-campfire" && source != s.cards.end() &&
                 sique::fireSpell(cat.at(source->second.definition)) && e.damageType == DamageType::Fire)
                 ++adjusted.amount;
         }
@@ -242,7 +242,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::Draw:
         for (int k = 0; k < e.amount; ++k) {
             ResourceRules::drawOne(s, cat, t.owner);
-            if (cat.usesAlphaV2() && s.players[t.owner].life <= 0)
+            if (cat.usesAlphaV2() && !s.players[t.owner].debugInfiniteLife && s.players[t.owner].life <= 0)
                 break;
         }
         break;

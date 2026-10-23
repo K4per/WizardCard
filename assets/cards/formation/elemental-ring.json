@@ -11,7 +11,7 @@
   "maxRank": 3,
   "baseEligible": false,
   "cost": 0,
-  "text": "在此阵法上解析的塑能法术卡伤害+1。",
+  "text": "此阵法卡上设置的塑能法术卡造成的伤害+1。",
   "summonCondition": "解析完成的塑能法术卡×1＋魔素×1",
   "recipe": [
     {

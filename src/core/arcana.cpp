@@ -41,7 +41,8 @@ std::string activationError(const GameState &s, const CardCatalog &cat, PlayerId
         }
         if (hand < 5) return "arcana_fool_condition: 需要至少五张手牌";
     }
-    if (trait(d, "arcana_hanged_cost") && s.players[owner].life <= 1)
+    if (trait(d, "arcana_hanged_cost") && !s.players[owner].debugInfiniteLife &&
+        s.players[owner].life <= (cat.usesAlphaV253() ? 0 : 1))
         return "life_cost: 生命不足以支付一半生命";
     if (d.id == "arcana-magician") {
         std::set<std::string> names;
@@ -114,10 +115,11 @@ void payCost(GameState &s, const CardCatalog &cat, PlayerId owner, CardId source
         else StateMaintenance::leave(s, material, &cat);
         s.cards.at(source).targets = {material};
     }
-    if (trait(d, "arcana_hanged_cost")) {
+    if (trait(d, "arcana_hanged_cost") && !s.players[owner].debugInfiniteLife) {
         const int amount = (s.players[owner].life + 1) / 2;
         s.players[owner].life -= amount;
         s.events.push_back({"life_cost", "倒吊人：支付一半生命（向上取整）", -1, source, amount});
+        if (cat.usesAlphaV253()) StateMaintenance::check(s, cat);
     }
 }
 void advance(GameState &s, const CardCatalog &cat, CardId id, int amount) {
@@ -242,7 +244,9 @@ bool GameEngine::arcanaEffect() {
         for (PlayerId p : {0, 1}) {
             std::vector<CardId> ashes;
             for (auto &[id, card] : s.cards) if (card.owner == p && card.zone == Zone::Ash) {
-                if (catalog_.at(card.definition).type == CardType::Formation) card.zone = Zone::SideDeck;
+                if (catalog_.at(card.definition).type == CardType::Formation) {
+                    if (!catalog_.usesAlphaV253()) card.zone = Zone::SideDeck;
+                }
                 else ashes.push_back(id);
             }
             for (auto id : s.players[p].deck) {
@@ -255,6 +259,10 @@ bool GameEngine::arcanaEffect() {
         }
         s.events.push_back({"deck_ash_exchange", "倒吊人：双方交换卡组与灰烬区"});
         finish(); return true;
+    }
+    if (effect.kind == EffectKind::ArcanaMagician && catalog_.usesAlphaV253() && f.resolvedCount >= 3) {
+        decision(1 - owner, DecisionKind::EffectChoice, f.item.targetCards, false);
+        return true;
     }
     if (effect.kind == EffectKind::ArcanaTower && !f.resolvedCount) {
         const auto target = s.cards.find(f.item.targetCard);
@@ -359,10 +367,17 @@ bool GameEngine::chooseArcanaEffect(PlayerId actor, CardId selected) {
         return true;
     }
     if (e.kind == EffectKind::ArcanaMagician) {
+        if (catalog_.usesAlphaV253() && f.resolvedCount >= 3) {
+            const auto cards = f.item.targetCards;
+            for (auto id : cards)
+                if (id == selected) deckToHand(s, owner, id); else arcana::erase(s, catalog_, id);
+            shuffleArcanaDeck(s, owner); finish(); return true;
+        }
         f.item.targetCards.push_back(selected);
         s.cards.at(selected).publiclyRevealed = true;
         s.events.push_back({"reveal", "魔术师：展示候选卡牌", -1, selected});
         if (++f.resolvedCount < 3) return true;
+        if (catalog_.usesAlphaV253()) return true;
         const auto chosen = detail::bounded(s, static_cast<std::uint32_t>(f.item.targetCards.size()));
         const auto cards = f.item.targetCards;
         for (std::size_t i = 0; i < cards.size(); ++i)

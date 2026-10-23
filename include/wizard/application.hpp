@@ -124,6 +124,8 @@ class Application {
     bool startTutorial(std::string &error);
     bool restart(std::uint32_t seed, std::string &error);
     CommandResult submit(PlayerId, const Command &, std::uint64_t generation);
+    bool debugAvailable() const { return match_ && !network_ && options_.mode == MatchMode::Ai; }
+    CommandResult debug(const DebugOperation &);
     MatchMode mode() const {
         return options_.mode;
     }

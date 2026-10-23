@@ -25,7 +25,7 @@ def main():
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--build", type=Path, required=True)
     parser.add_argument("--configuration", default="Release")
-    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.2-windows-x64")
+    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.3-windows-x64")
     parser.add_argument("--crt", type=Path, help="Directory containing the x64 VC runtime DLLs")
     args = parser.parse_args()
     lock = json.loads((ROOT / "godot/toolchain-lock.json").read_text())
@@ -68,18 +68,21 @@ def main():
     shutil.copytree(ROOT / "licenses", output / "licenses")
     (output / "docs").mkdir()
     for name in ("alpha-v2.5-rules.md", "card-catalog.md", "card-catalog.html", "sique-cards.md",
-                 "alpha-v2.5.2-ui.md", "card-migration-2.5.2.md",
-                 "releases/2.5.2.md", "reports/2.5.2.md",
-                 "reports/alpha-v2.5.2-requirements.md",
-                 "reports/alpha-v2.5.2-card-pool-migration.md", "reports/alpha-v2.5.2-card-acceptance.md"):
+                 "card-migration-2.5.3.md",
+                 "releases/2.5.3.md", "reports/2.5.3.md",
+                 "reports/alpha-v2.5.3-requirements.md", "reports/alpha-v2.5.3-network.md",
+                 "reports/alpha-v2.5.3-card-pool-migration.md", "reports/alpha-v2.5.3-card-acceptance.md",
+                 "reports/alpha-v2.5.3-card-acceptance.json"):
         source = ROOT / "docs" / name
         if source.exists():
             destination = output / "docs" / name
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, destination)
-    evidence = ROOT / "docs/reports/alpha-v2.5.2-evidence"
+    evidence = ROOT / "docs/reports/alpha-v2.5.3-evidence"
     if evidence.is_dir():
-        shutil.copytree(evidence, output / "docs/reports/alpha-v2.5.2-evidence")
+        shutil.copytree(evidence, output / "docs/reports/alpha-v2.5.3-evidence")
+    # Keep the migration report's relative source and draft links usable offline.
+    shutil.copytree(ROOT / "assets/design/alpha-v253", output / "assets/design/alpha-v253")
     # The offline catalogue uses the same relative illustration paths as the
     # repository. Copy only the official cards' runtime art beside the docs.
     art_files = {entry["id"]: entry["file"]

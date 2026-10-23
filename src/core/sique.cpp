@@ -18,6 +18,8 @@ bool hasFormation(const GameState &s, PlayerId p, const std::string &definition)
     });
 }
 bool fireSpell(const CardDefinition &d) {
+    if (std::find(d.traits.begin(), d.traits.end(), "fire_damage_spell") != d.traits.end())
+        return spell(d);
     const auto fire = [](const Effect &e) {
         return e.kind == EffectKind::Damage && e.damageType == DamageType::Fire;
     };
@@ -82,15 +84,25 @@ std::vector<std::vector<CardId>> detachOptions(const GameState &s, const CardCat
     visit(visit, 0);
     return out;
 }
-bool canPay(const GameState &s, PlayerId p, int amount) {
-    return amount >= 0 && ((s.players[p].siqueLifePaymentTurn && s.players[p].siqueLifePaymentTurn == s.globalTurn) || s.players[p].mana >= amount);
-}
-void pay(GameState &s, PlayerId p, int amount) {
+bool canPay(const GameState &s, PlayerId p, int amount, const CardCatalog *cat) {
+    if (amount < 0) return false;
+    if (s.players[p].debugInfiniteMana) return true;
     if (s.players[p].siqueLifePaymentTurn && s.players[p].siqueLifePaymentTurn == s.globalTurn) {
+        // Pre-2.5.3 recordings retain their original unrestricted substitution.
+        return !cat || !cat->usesAlphaV253() || s.players[1 - p].debugInfiniteLife ||
+            s.players[1 - p].life > amount;
+    }
+    return ResourceRules::canPayMana(s, p, amount);
+}
+void pay(GameState &s, PlayerId p, int amount, const CardCatalog *cat) {
+    if (s.players[p].debugInfiniteMana) return;
+    if (s.players[p].siqueLifePaymentTurn && s.players[p].siqueLifePaymentTurn == s.globalTurn) {
+        if (s.players[1 - p].debugInfiniteLife) return;
+        if (cat && cat->usesAlphaV253() && !canPay(s, p, amount, cat)) return;
         s.players[1 - p].life -= amount;
-        s.events.push_back({"life_payment", "神恩炖肉：以对方生命支付魔素费用", -1, 0, amount});
+        s.events.push_back({"life_payment", "神恩炖肉：宣告时以对方普通生命按1:1支付魔素费用", -1, 0, amount});
     } else {
-        s.players[p].mana -= amount;
+        ResourceRules::payMana(s, p, amount);
         if (amount > 0 && std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
             const auto &card = entry.second;
             return card.owner == p && card.definition == "arcana-temperance" && !card.faceDown &&
@@ -161,6 +173,7 @@ bool GameEngine::siqueEffect() {
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
     const auto owner = f.item.owner;
+    const int maximumSelection = std::min(5, std::max(0, e.amount));
     if (e.kind == EffectKind::SiqueDamageCap) {
         s.players[owner].siqueDamageCap = e.amount;
         s.players[owner].siqueCapUntilOwnTurn = s.players[owner].ownTurn + 1;
@@ -178,14 +191,19 @@ bool GameEngine::siqueEffect() {
         finishSiqueEffect(f); return true;
     }
     if (!siqueChoice(e.kind)) return false;
-    if (e.kind == EffectKind::SiqueBackfire && f.resolvedCount >= 5) {
-        shuffleSiqueDeck(s, 1 - owner);
+    if ((e.kind == EffectKind::SiqueBackfire || e.kind == EffectKind::SiqueRecycle) &&
+        f.resolvedCount >= maximumSelection) {
+        if (e.kind == EffectKind::SiqueRecycle) shuffleSiqueDeck(s, owner);
         const int count = f.resolvedCount;
         const auto trigger = f.item;
         finishSiqueEffect(f);
-        EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
-        if (s.result == -1) EffectResolver::apply(s, catalog_, trigger,
-            {EffectKind::Heal, count * 2, DamageType::Force, EffectRecipient::Owner});
+        if (e.kind == EffectKind::SiqueBackfire) {
+            shuffleSiqueDeck(s, 1 - owner);
+            EffectResolver::apply(s, catalog_, trigger,
+                {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
+            if (s.result == -1) EffectResolver::apply(s, catalog_, trigger,
+                {EffectKind::Heal, count * 2, DamageType::Force, EffectRecipient::Owner});
+        }
         return true;
     }
     if (e.kind == EffectKind::SiqueShuffleHands) {
@@ -216,7 +234,8 @@ bool GameEngine::siqueEffect() {
                 return entry.second.zone == Zone::Attached && entry.second.host == id;
             });
             if (card.owner == owner && card.zone == Zone::Analysis && d.type == CardType::Formation &&
-                sique::member(d) && (catalog_.usesAlphaV252() || !occupied || d.id == "sique-cauldron")) choices.push_back(id);
+                sique::member(d) && (!catalog_.usesAlphaV253() || d.id == "sique-cauldron") &&
+                (catalog_.usesAlphaV252() || !occupied || d.id == "sique-cauldron")) choices.push_back(id);
         }
     } else for (const auto &[id, card] : s.cards) {
         const auto &d = catalog_.at(card.definition);
@@ -241,7 +260,8 @@ bool GameEngine::siqueEffect() {
         if (eligible) choices.push_back(id);
     }
     if (e.kind == EffectKind::SiqueSearchPair && f.resolvedCount >= 2) choices.clear();
-    if (e.kind == EffectKind::SiqueRecycle && f.resolvedCount >= 5) choices.clear();
+    if ((e.kind == EffectKind::SiqueRecycle || e.kind == EffectKind::SiqueBackfire) &&
+        f.resolvedCount >= maximumSelection) choices.clear();
     if (choices.empty()) {
         if (e.kind == EffectKind::SiqueBackfire) {
             shuffleSiqueDeck(s, 1 - owner);
@@ -258,8 +278,10 @@ bool GameEngine::siqueEffect() {
             e.kind == EffectKind::SiqueRecycle) shuffleSiqueDeck(s, owner);
         finishSiqueEffect(f); return true;
     }
-    decision(owner, DecisionKind::EffectChoice, std::move(choices), e.kind == EffectKind::SiqueRecycle ||
-        e.kind == EffectKind::SiqueRoastRecover || e.kind == EffectKind::SiqueBlowfire || e.kind == EffectKind::SiqueBackfire);
+    const bool mayStop = (e.kind == EffectKind::SiqueRecycle || e.kind == EffectKind::SiqueBackfire) &&
+        (!catalog_.usesAlphaV253() || f.resolvedCount > 0);
+    decision(owner, DecisionKind::EffectChoice, std::move(choices), mayStop ||
+        e.kind == EffectKind::SiqueRoastRecover || e.kind == EffectKind::SiqueBlowfire);
     return true;
 }
 bool GameEngine::chooseSiqueEffect(PlayerId actor, CardId selected) {

@@ -82,6 +82,7 @@ class WizardBridge : public godot::RefCounted {
         ClassDB::bind_method(D_METHOD("select_action", "viewer", "action_id", "generation", "revision"), &WizardBridge::select_action);
         ClassDB::bind_method(D_METHOD("confirm_action", "generation", "revision"), &WizardBridge::confirm_action);
         ClassDB::bind_method(D_METHOD("cancel_action"), &WizardBridge::cancel_action);
+        ClassDB::bind_method(D_METHOD("debug_command", "request"), &WizardBridge::debug_command);
         ClassDB::bind_method(D_METHOD("set_paused", "paused"), &WizardBridge::set_paused);
         ClassDB::bind_method(D_METHOD("step_ai", "generation", "revision"), &WizardBridge::step_ai);
         ClassDB::bind_method(D_METHOD("continue_tutorial", "generation", "revision"), &WizardBridge::continue_tutorial);
@@ -121,6 +122,7 @@ class WizardBridge : public godot::RefCounted {
         return bridgeCall([&] { return session_.confirmAction(utf8(generation), utf8(revision)); });
     }
     Dictionary cancel_action() { return bridgeCall([&] { return session_.cancelAction(); }); }
+    Dictionary debug_command(const Dictionary &request) { return bridgeCall([&] { return session_.debugCommand(json(request)); }); }
     Dictionary set_paused(bool paused) { return bridgeCall([&] { return session_.pause(paused); }); }
     Dictionary step_ai(const String &generation, const String &revision) {
         return bridgeCall([&] { return session_.stepAi(utf8(generation), utf8(revision)); });

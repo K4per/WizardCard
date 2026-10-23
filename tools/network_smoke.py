@@ -14,7 +14,9 @@ def main():
     parser.add_argument("--mode", choices=["probe", "client"], default="probe")
     parser.add_argument("--scenario", choices=["all", "normal", "surrender", "reconnect"], default="all")
     parser.add_argument("--port", type=int, default=32181)
-    parser.add_argument("--timeout", type=int, default=180)
+    parser.add_argument("--address", default="127.0.0.1",
+                        help="guest destination address; use localhost or ::1 to verify DNS or IPv6")
+    parser.add_argument("--timeout", type=int, default=420)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     scenarios = ["normal", "surrender", "reconnect"] if args.scenario == "all" else [args.scenario]
@@ -29,7 +31,7 @@ def main():
                 logs.append(log)
                 if args.mode == "probe":
                     command = [str(args.exe.resolve()), role, str(args.assets.resolve()),
-                               str(output.with_suffix(".json").resolve()), str(port), scenario, "127.0.0.1"]
+                               str(output.with_suffix(".json").resolve()), str(port), scenario, args.address]
                 else:
                     command = [str(args.exe.resolve()), "--assets", str(args.assets.resolve()),
                                "--user-data", str(output.resolve()), "--network-smoke", role,

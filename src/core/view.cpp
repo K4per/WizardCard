@@ -54,6 +54,9 @@ GameView GameEngine::viewFor(PlayerId p) const {
     }
     for (int player = 0; player < 2; ++player) {
         v.players[player].exhaustion = state_.players[player].exhaustion;
+        v.players[player].infiniteLife = state_.players[player].debugInfiniteLife;
+        v.players[player].infiniteMana = state_.players[player].debugInfiniteMana;
+        v.players[player].infiniteLoad = state_.players[player].debugInfiniteLoad;
         for (const auto &[id, card] : state_.cards)
             if (card.owner == player && card.zone == Zone::SideDeck) ++v.players[player].sideDeckCount;
     }

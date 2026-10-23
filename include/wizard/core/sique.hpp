@@ -14,8 +14,8 @@ bool validDetach(const GameState &, const CardCatalog &, PlayerId, const CardDef
                  const std::vector<CardId> &);
 std::vector<std::vector<CardId>> detachOptions(const GameState &, const CardCatalog &, PlayerId,
                                               const CardDefinition &);
-bool canPay(const GameState &, PlayerId, int);
-void pay(GameState &, PlayerId, int);
+bool canPay(const GameState &, PlayerId, int, const CardCatalog * = nullptr);
+void pay(GameState &, PlayerId, int, const CardCatalog * = nullptr);
 void attached(GameState &, const CardCatalog &, CardId);
 bool threatensFormation(const GameState &, const CardCatalog &, const ChainLink &, PlayerId);
 } // namespace wizard::sique

@@ -87,6 +87,19 @@ void GameEngine::analysisCompletedV2(CardId spell) {
         }
     }
 }
+void GameEngine::settingCompletedV253(CardId spell, CardId host) {
+    auto &s = state_;
+    if (!catalog_.usesAlphaV253() || s.result != -1 || !s.cards.count(host)) return;
+    const auto &formation = s.cards.at(host);
+    if (formation.definition != "sique-campfire" || formation.zone != Zone::Analysis ||
+        !sique::fireSpell(catalog_.at(s.cards.at(spell).definition))) return;
+    auto trigger = snapshot(formation, catalog_.at(formation.definition));
+    trigger.id = s.nextTrigger++;
+    trigger.batch = s.nextBatch++;
+    trigger.effects = {{EffectKind::Damage, 1, DamageType::Fire, EffectRecipient::Opponent}};
+    s.queue.append(std::move(trigger));
+    s.events.push_back({"campfire_setting", "味契·篝火：成功设置火焰伤害法术，触发1点火焰伤害", -1, host, 1});
+}
 void GameEngine::quickAnalysisV2(CardId spell, CardId host) {
     auto &s = state_;
     auto &card = s.cards.at(spell);
@@ -131,7 +144,7 @@ void GameEngine::castingTraitsV2(CardId spell) {
     if (host == s.cards.end() || host->second.zone != Zone::Analysis) return;
     const auto &traits = catalog_.at(host->second.definition).traits;
     if (std::find(traits.begin(), traits.end(), "host_cast_life_for_temporary") != traits.end()) {
-        --s.players[card.owner].life;
+        if (!s.players[card.owner].debugInfiniteLife) --s.players[card.owner].life;
         s.events.push_back({"life_loss", "逆十字：失去1点生命", -1, spell, 1});
         StateMaintenance::check(s, catalog_);
         if (s.result == -1) {
@@ -221,8 +234,8 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
         if (!stormCostFormation) return "storm_points: 风暴点数不足";
     }
     const int fee = Rules::castCost(s, catalog_, id);
-    if (!sique::canPay(s, actor, fee)) return "cost: 魔素不足";
-    sique::pay(s, actor, fee);
+    if (!sique::canPay(s, actor, fee, &catalog_)) return "cost: 魔素不足";
+    sique::pay(s, actor, fee, &catalog_);
     StateMaintenance::check(s, catalog_);
     if (s.result != -1) return {};
     card.castLoad += fee;
@@ -275,17 +288,113 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         return "priority";
     const auto *flip = std::get_if<FlipAmbush>(&command);
     const auto *prepare = std::get_if<PrepareCast>(&command);
-    const auto id = flip ? flip->card : prepare->card;
-    const auto token = flip ? flip->decision : prepare->decision;
+    const auto *word = std::get_if<PreloadWord>(&command);
+    const auto id = flip ? flip->card : prepare ? prepare->card : word->card;
+    const auto token = flip ? flip->decision : prepare ? prepare->decision : word->decision;
     if (token != s.decision->id) return "stale_decision";
     const auto found = s.cards.find(id);
     if (found == s.cards.end() || found->second.owner != actor) return "invalid_card";
     auto &card = found->second; const auto &def = catalog_.at(card.definition);
     const bool analytic = def.type == CardType::Analytic;
     const bool spell = spellType(def.type);
+    const bool handWord = word && catalog_.usesAlphaV253() && word->release &&
+                          card.zone == Zone::Hand && def.type == CardType::Word;
     if (!catalog_.usesAlphaV252() && !analytic) return "response_source";
-    if (!spell || card.zone != Zone::Analysis) return "response_source";
+    if (!spell || (!handWord && card.zone != Zone::Analysis)) return "response_source";
     if (!spellSpeedAllowed(s, def)) return "spell_speed: 咒文速度不允许当前时点";
+    if (handWord) {
+        const auto hasTrait = [&](const char *name) {
+            return std::find(def.traits.begin(), def.traits.end(), name) != def.traits.end();
+        };
+        const auto host = s.cards.find(word->formation);
+        if (def.responseOnly || s.players[actor].blockedActionTurn == s.players[actor].ownTurn ||
+            !sique::activationAllowed(s, catalog_, actor, def) ||
+            (def.id == "sique-aroma-lure" && !sique::hasFormation(s, actor, "sique-cauldron")) ||
+            !arcana::activationError(s, catalog_, actor, id, word->target).empty())
+            return "response_condition: 言灵法术当前不可发动";
+        if ((catalog_.usesAlphaV252() && sique::hasFormation(s, 1 - actor, "moon")) ||
+            (hasTrait("requires_storm_formation") && !hasStormFormation(s, catalog_, actor)) ||
+            (hasTrait("requires_storm_setup") && !hasStormFormation(s, catalog_, actor)))
+            return "setup_condition: 不满足阵法或设置条件";
+        if (host == s.cards.end() || host->second.owner != actor ||
+            !Rules::canHost(s, catalog_, id, word->formation) ||
+            Rules::freeRing(s, catalog_, word->formation) < 0 ||
+            static_cast<int>(inZone(s, actor, Zone::Casting).size()) >=
+                Rules::castingCapacity(s, catalog_, actor))
+            return "host_restriction: 没有可用的合法阵法环位";
+        const bool detachCost = sique::detachCost(def) != 0;
+        if (detachCost ? word->target != 0 || !sique::validDetach(s, catalog_, actor, def, word->targets)
+                       : !validTargets(s, def.target, def.targetCount, actor, word->target, word->targets))
+            return "target: 目标或发动材料不合法";
+        const bool searchCost = hasTrait("discard_spell_search");
+        const auto discard = s.cards.find(word->discard);
+        if (searchCost) {
+            if (!word->discard || word->discard == id || discard == s.cards.end() || discard->second.owner != actor ||
+                discard->second.zone != Zone::Hand || !spellType(catalog_.at(discard->second.definition).type))
+                return "extra_cost: 需要弃置一张法术手牌";
+            const auto &school = catalog_.at(discard->second.definition).school;
+            if (std::none_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+                    const auto &candidate = entry.second;
+                    const auto &candidateDefinition = catalog_.at(candidate.definition);
+                    return candidate.owner == actor && candidate.zone == Zone::Deck &&
+                        spellType(candidateDefinition.type) && candidateDefinition.school == school;
+                })) return "extra_cost: 没有可检索的同派系法术";
+        } else if (!arcana::validCost(s, catalog_, actor, id, word->discard))
+            return "extra_cost: 发动费用或材料不合法";
+        const int fee = Rules::castCost(s, catalog_, id);
+        if (!sique::canPay(s, actor, fee, &catalog_)) return "cost: 魔素不足";
+        sique::pay(s, actor, fee, &catalog_);
+        card.analysisLoad += fee;
+        ResourceRules::increasedLoad(s, catalog_, actor, fee);
+        if (s.result != -1) return {};
+        if (detachCost)
+            for (auto seal : word->targets) StateMaintenance::leave(s, seal, &catalog_);
+        card.sourceFormation = word->formation;
+        card.sourceRingIndex = Rules::freeRing(s, catalog_, word->formation);
+        card.fieldOrder = s.nextFieldOrder++;
+        card.settingPaid = fee;
+        card.zone = Zone::Casting;
+        card.host = 0;
+        card.ringIndex = -1;
+        card.spell = SpellState::Pending;
+        card.targetCard = word->target;
+        card.targets = detachCost ? std::vector<CardId>{} : word->targets;
+        if (searchCost) {
+            StateMaintenance::leave(s, word->discard, &catalog_);
+            card.targets = {word->discard};
+        } else arcana::payCost(s, catalog_, actor, id, word->discard);
+        card.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
+        card.payments.push_back({s.players[actor].ownTurn, fee, fee, false});
+        settingCompletedV253(id, word->formation);
+        castingTraitsV2(id);
+        if (s.result != -1) return {};
+        ChainLink link;
+        link.id = s.nextLink++;
+        link.kind = LinkKind::Spell;
+        link.speed = def.speed;
+        link.castCost = fee;
+        link.paymentIndex = static_cast<int>(card.payments.size()) - 1;
+        link.paid = fee;
+        link.addedLoad = fee;
+        link.item = snapshot(card, def);
+        link.item.requiresSource = true;
+        for (const auto &[sealId, seal] : s.cards)
+            if (seal.zone == Zone::Attached && seal.host == id && catalog_.at(seal.definition).damageBonus) {
+                const auto &sealDefinition = catalog_.at(seal.definition);
+                link.item.effects.push_back({EffectKind::Damage, sealDefinition.damageBonus,
+                    std::find(sealDefinition.traits.begin(), sealDefinition.traits.end(), "thunder_damage_bonus") !=
+                        sealDefinition.traits.end() ? DamageType::Thunder : DamageType::Force,
+                    EffectRecipient::Opponent});
+            }
+        s.chain->links.push_back(std::move(link));
+        s.chain->hadActualLinks = true;
+        s.chain->window = ResponseWindow::Cast;
+        s.chain->priority = 1 - actor;
+        s.chain->passes = 0;
+        s.events.push_back({"word_response", "手牌言灵法术设置、准备并发动", -1, id, fee});
+        s.decision.reset();
+        return {};
+    }
     if (!catalog_.usesAlphaV252() && actor != s.active &&
         (!card.wasAmbushed || card.ambushedTurn >= s.globalTurn)) return "response_source";
     if (flip) {
@@ -295,8 +404,8 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
                                                 true, token);
         if (catalog_.usesAlphaV252() && sique::hasFormation(s, 1 - actor, "moon")) return "moon_setup_restriction";
         const int fee = Rules::analysisCost(s, catalog_, id, card.host);
-        if (!sique::canPay(s, actor, fee)) return "cost";
-        sique::pay(s, actor, fee); card.analysisLoad += fee;
+        if (!sique::canPay(s, actor, fee, &catalog_)) return "cost";
+        sique::pay(s, actor, fee, &catalog_); card.analysisLoad += fee;
         ResourceRules::increasedLoad(s, catalog_, actor, fee);
         if (s.result != -1) return {};
         card.faceDown = false; card.settingPaid = fee; card.analysisProgress = 0;
@@ -364,6 +473,33 @@ std::vector<LegalAction> GameEngine::responseSetupsV2(PlayerId actor, DecisionId
                     PrepareCast{id, targets.empty() ? 0 : targets.front(), 0, targets, token});
         }
     }
+    if (catalog_.usesAlphaV253()) {
+        for (const auto &[id, card] : state_.cards) {
+            if (card.owner != actor || card.zone != Zone::Hand) continue;
+            const auto &definition = catalog_.at(card.definition);
+            if (definition.type != CardType::Word || definition.responseOnly) continue;
+            const auto targetSets = sique::detachCost(definition)
+                ? sique::detachOptions(state_, catalog_, actor, definition)
+                : sets(state_, definition.target, definition.targetCount, actor);
+            std::vector<CardId> discards{0};
+            if (std::find(definition.traits.begin(), definition.traits.end(), "discard_spell_search") !=
+                definition.traits.end()) {
+                discards.clear();
+                for (const auto &[discard, candidate] : state_.cards)
+                    if (discard != id && candidate.owner == actor && candidate.zone == Zone::Hand &&
+                        spellType(catalog_.at(candidate.definition).type)) discards.push_back(discard);
+            } else discards = arcana::costOptions(state_, catalog_, actor, id);
+            for (const auto &[host, formation] : state_.cards) {
+                if (formation.owner != actor || formation.zone != Zone::Analysis ||
+                    catalog_.at(formation.definition).type != CardType::Formation) continue;
+                for (const auto &targets : targetSets) for (auto discard : discards) {
+                    const auto target = sique::detachCost(definition) || targets.empty() ? 0 : targets.front();
+                    add("手牌发动言灵 " + definition.name + " → " + catalog_.at(formation.definition).name,
+                        id, PreloadWord{id, true, host, target, targets, discard, token});
+                }
+            }
+        }
+    }
     return out;
 }
 std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
@@ -429,8 +565,8 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             catalog_.at(host->second.definition).type == CardType::Formation;
     };
     auto pay = [&](int mana, int load) {
-        if (!sique::canPay(s, actor, mana)) return false;
-        sique::pay(s, actor, mana);
+        if (!sique::canPay(s, actor, mana, &catalog_)) return false;
+        sique::pay(s, actor, mana, &catalog_);
         StateMaintenance::check(s, catalog_);
         if (s.result != -1) return true;
         if (load > 0) { c.analysisLoad += load; ResourceRules::increasedLoad(s, catalog_, actor, load); }
@@ -498,9 +634,9 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             return "invalid_action: 行动不可用";
         if (!validTargets(s, def.target, def.targetCount, actor, cmd->target, cmd->targets))
             return "target: 无效目标";
-        if (!sique::canPay(s, actor, def.cost) || Rules::load(s, actor) + def.burden > Rules::capacity(s, catalog_, actor))
+        if (!sique::canPay(s, actor, def.cost, &catalog_) || (!pl.debugInfiniteLoad && Rules::load(s, actor) + def.burden > Rules::capacity(s, catalog_, actor)))
             return "cost: 魔素或荷载不足";
-        sique::pay(s, actor, def.cost);
+        sique::pay(s, actor, def.cost, &catalog_);
         StateMaintenance::check(s, catalog_);
         if (s.result != -1) return {};
         ++pl.actionsPlayed;
@@ -619,7 +755,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         int fee = def.cost;
         for (const auto &part : def.recipe)
             if (part.kind == RecipeCostKind::Mana) fee += part.amount;
-        if (!sique::canPay(s, actor, fee)) return "cost: 魔素不足";
+        if (!sique::canPay(s, actor, fee, &catalog_)) return "cost: 魔素不足";
         int body = usedBody(s, catalog_, actor);
         if (cmd->replace) body -= catalog_.at(s.cards.at(cmd->replace).definition).body;
         for (auto id : cmd->materials)
@@ -633,7 +769,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             if (crest == cmd->materials.end() || s.cards.at(*crest).stormPoints < 10)
                 return "storm_points";
         }
-        sique::pay(s, actor, fee);
+        sique::pay(s, actor, fee, &catalog_);
         StateMaintenance::check(s, catalog_);
         if (s.result != -1) return {};
         for (auto id : cmd->materials) StateMaintenance::leave(s, id, &catalog_);
@@ -681,6 +817,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         c.analysisStarted = pl.ownTurn; c.targetCard = cmd->target; c.targets = cmd->targets;
         if (c.spell == SpellState::Ready) analysisCompletedV2(cardId);
         quickAnalysisV2(cardId, cmd->formation);
+        settingCompletedV253(cardId, cmd->formation);
         if (catalog_.usesAlphaV252()) {
             ChainLink setup;
             setup.kind = LinkKind::Setup;
@@ -759,6 +896,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         if (s.result != -1) return {};
         detach(cmd->targets);
         place(cmd->formation); c.settingPaid = fee;
+        settingCompletedV253(cardId, cmd->formation);
         c.spell = SpellState::Ready;
         c.zone = Zone::Casting; c.host = 0; c.ringIndex = -1;
         c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = sique::detachCost(def) ? std::vector<CardId>{} : cmd->targets;
@@ -802,8 +940,8 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             if (!stormCostFormation) return "storm_points: 风暴点数不足";
         }
         const int fee = Rules::castCost(s, catalog_, cardId);
-        if (!sique::canPay(s, actor, fee)) return "cost: 魔素不足";
-        sique::pay(s, actor, fee); c.castLoad += fee; ResourceRules::increasedLoad(s, catalog_, actor, fee);
+        if (!sique::canPay(s, actor, fee, &catalog_)) return "cost: 魔素不足";
+        sique::pay(s, actor, fee, &catalog_); c.castLoad += fee; ResourceRules::increasedLoad(s, catalog_, actor, fee);
         if (s.result != -1) return {};
         detach(cmd->targets);
         if (stormCostFormation) s.cards.at(stormCostFormation).stormPoints -= 5;
@@ -815,6 +953,8 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         beginEffect(cardId, AfterEffect::Spell); return {};
     }
     if (const auto *cmd = std::get_if<AttachSeal>(&command)) {
+        if (catalog_.usesAlphaV253() && !sique::activationAllowed(s, catalog_, actor, def))
+            return "sique_attachment_restriction: 魔力坩埚存在时只能附着味契卡";
         auto host = s.cards.find(cmd->host);
         if (s.phase != Phase::Main || c.zone != Zone::Hand || def.type != CardType::Seal ||
             host == s.cards.end() || host->second.owner != actor || host->second.faceDown ||
@@ -831,6 +971,9 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         };
         const bool stormFormation = hostDefinition.type == CardType::Formation &&
             std::find(hostDefinition.tags.begin(), hostDefinition.tags.end(), "风暴") != hostDefinition.tags.end();
+        if (catalog_.usesAlphaV253() && hasTrait("storm_formation_host_restriction") &&
+            std::find(hostDefinition.tags.begin(), hostDefinition.tags.end(), "风暴") == hostDefinition.tags.end())
+            return "seal_host: 湮灭之纹章只能附着于恒风卡";
         if ((hasTrait("storm_formation_host_only") && !stormFormation) ||
             (hasTrait("storm_formation_host_restriction") &&
              hostDefinition.type == CardType::Formation && !stormFormation) ||

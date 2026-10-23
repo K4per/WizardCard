@@ -1,0 +1,158 @@
+适用于 .NET Framework MSBuild 版本 17.11.2+c078802d4
+
+cl : 命令行  warning D9025: 正在重写“/W1”(用“/w”) [E:\Project\WizardCard\build\windows\_deps\freetype-build\freetype.vcxproj]
+  unity_0_c.c
+cl : 命令行  warning D9025: 正在重写“/W1”(用“/w”) [E:\Project\WizardCard\build\windows\_deps\ogg-build\ogg.vcxproj]
+  unity_0_c.c
+  wizard_core.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_core.lib
+cl : 命令行  warning D9025: 正在重写“/W1”(用“/w”) [E:\Project\WizardCard\build\windows\_deps\sheenbidi-build\SheenBidi.vcxproj]
+  SheenBidi.c
+  Clock.cpp
+  ogg.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\ogg.lib
+  wizard_ai.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_ai.lib
+  wizard_codec.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_codec.lib
+  wizard_interaction.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_interaction.lib
+  wizard_content.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_content.lib
+cl : 命令行  warning D9025: 正在重写“/W1”(用“/w”) [E:\Project\WizardCard\build\windows\_deps\vorbis-build\lib\vorbis.vcxproj]
+  unity_0_c.c
+  wizard_replay.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_replay.lib
+cl : 命令行  warning D9025: 正在重写“/W1”(用“/w”) [E:\Project\WizardCard\build\windows\_deps\flac-build\src\libFLAC\FLAC.vcxproj]
+  unity_0_c.c
+  wizard_network.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_network.lib
+  Err.cpp
+  floor1.c
+  sharedbook.c
+  wizard_application.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_application.lib
+  vorbisenc.c
+  pfr.c
+  smooth.c
+  ftsystem.c
+  正在生成代码...
+  SheenBidi.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sheenbidi-build\SheenBidi.dir\Release\SheenBidi.lib
+  fixed.c
+  ftdebug.c
+  Sleep.cpp
+  正在生成代码...
+  fixed_intrin_sse2.c
+  String.cpp
+  fixed_intrin_ssse3.c
+  vorbis.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\vorbis.lib
+  fixed_intrin_sse42.c
+cl : 命令行  warning D9025: 正在重写“/W1”(用“/w”) [E:\Project\WizardCard\build\windows\_deps\vorbis-build\lib\vorbisfile.vcxproj]
+cl : 命令行  warning D9025: 正在重写“/W1”(用“/w”) [E:\Project\WizardCard\build\windows\_deps\vorbis-build\lib\vorbisenc.vcxproj]
+  unity_0_c.c
+  vorbisenc.c
+  format.c
+  vorbisfile.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\vorbisfile.lib
+  lpc.c
+  vorbisenc.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\vorbisenc.lib
+  metadata_object.c
+  stream_decoder.c
+  stream_encoder.c
+  window.c
+  正在生成代码...
+  TimeoutWithPredicate.cpp
+  Utils.cpp
+  freetype.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\freetype.lib
+cl : 命令行  warning D9025: 正在重写“/W1”(用“/w”) [E:\Project\WizardCard\build\windows\_deps\harfbuzz-build\harfbuzz.vcxproj]
+  harfbuzz.cc
+  Version.cpp
+  FileInputStream.cpp
+  FLAC.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\FLAC.lib
+  MemoryInputStream.cpp
+  SleepImpl.cpp
+  正在生成代码...
+  harfbuzz.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\harfbuzz.lib
+  sfml-system.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\sfml-system-s.lib
+  AudioResource.cpp
+  Clipboard.cpp
+  AudioDevice.cpp
+  Context.cpp
+  Cursor.cpp
+  Listener.cpp
+  GlContext.cpp
+  Miniaudio.cpp
+  MiniaudioUtils.cpp
+  GlResource.cpp
+  Joystick.cpp
+  Music.cpp
+  JoystickManager.cpp
+  PlaybackDevice.cpp
+  Keyboard.cpp
+  Sound.cpp
+  Mouse.cpp
+  Touch.cpp
+  Sensor.cpp
+  SensorManager.cpp
+  VideoMode.cpp
+  SoundBuffer.cpp
+  Vulkan.cpp
+  Window.cpp
+  SoundBufferRecorder.cpp
+  WindowBase.cpp
+  InputSoundFile.cpp
+  WindowImpl.cpp
+  OutputSoundFile.cpp
+  CursorImpl.cpp
+  SoundRecorder.cpp
+  ClipboardImpl.cpp
+  SoundSource.cpp
+  SoundStream.cpp
+  InputImpl.cpp
+  SoundFileFactory.cpp
+  正在生成代码...
+  正在编译...
+  JoystickImpl.cpp
+  SoundFileReaderFlac.cpp
+  SoundFileReaderMp3.cpp
+  SensorImpl.cpp
+  VideoModeImpl.cpp
+  SoundFileReaderOgg.cpp
+  VulkanImplWin32.cpp
+  SoundFileReaderWav.cpp
+  WindowImplWin32.cpp
+  正在生成代码...
+  WglContext.cpp
+  正在生成代码...
+  sfml-window.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\sfml-window-s.lib
+  BlendMode.cpp
+  Font.cpp
+  正在编译...
+  SoundFileWriterFlac.cpp
+  Glsl.cpp
+  SoundFileWriterOgg.cpp
+  GLCheck.cpp
+  GLExtensions.cpp
+  SoundFileWriterWav.cpp
+  Image.cpp
+  正在生成代码...
+  sfml-audio.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\sfml-audio-s.lib
+  RenderStates.cpp
+  RenderTexture.cpp
+  RenderTarget.cpp
+  RenderWindow.cpp
+  Shader.cpp
+  StencilMode.cpp
+  Texture.cpp
+  TextureSaver.cpp
+  Transform.cpp
+  Transformable.cpp
+  View.cpp
+  Shape.cpp
+  CircleShape.cpp
+  RectangleShape.cpp
+  正在生成代码...
+  正在编译...
+  ConvexShape.cpp
+  Sprite.cpp
+  Text.cpp
+  VertexArray.cpp
+  VertexBuffer.cpp
+  RenderTextureImplFBO.cpp
+  RenderTextureImplDefault.cpp
+  正在生成代码...
+  sfml-graphics.vcxproj -> E:\Project\WizardCard\build\windows\_deps\sfml-build\lib\Release\sfml-graphics-s.lib
+  runtime.cpp
+  wizard_runtime.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_runtime.lib
+  main.cpp
+  wizard_client.vcxproj -> E:\Project\WizardCard\build\windows\Release\wizard_client.exe

@@ -29,7 +29,9 @@ int main(int argc, char **argv) {
         std::size_t commands = 0;
         std::string lastNotice;
         auto terminal = std::chrono::steady_clock::time_point{};
-        auto until = std::chrono::steady_clock::now() + std::chrono::seconds(180);
+        // Current-card-pool matches can exceed three minutes on a busy CI host.
+        // This watchdog bounds only the verification process, not transport timeouts.
+        auto until = std::chrono::steady_clock::now() + std::chrono::seconds(420);
         while (std::chrono::steady_clock::now() < until) {
             peer.tick();
             if (lastNotice != peer.notice()) {

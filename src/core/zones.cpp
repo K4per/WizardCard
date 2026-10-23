@@ -122,11 +122,11 @@ void StateMaintenance::check(GameState &s, const CardCatalog &cat, bool endClean
         return;
     bool loses[2]{};
     for (int p = 0; p < 2; ++p)
-        loses[p] = s.players[p].life <= 0 || s.players[p].surrendered ||
+        loses[p] = (!s.players[p].debugInfiniteLife && s.players[p].life <= 0) || s.players[p].surrendered ||
                    (cat.usesAlphaV2()
-                        ? endCleanup && p == s.active && Rules::load(s, p) > Rules::capacity(s, cat, p) &&
+                        ? !s.players[p].debugInfiniteLoad && endCleanup && p == s.active && Rules::load(s, p) > Rules::capacity(s, cat, p) &&
                             Rules::load(s, p) >= 2 * Rules::capacity(s, cat, p)
-                        : s.players[p].drawFailed || Rules::load(s, p) > Rules::capacity(s, cat, p));
+                        : s.players[p].drawFailed || (!s.players[p].debugInfiniteLoad && Rules::load(s, p) > Rules::capacity(s, cat, p)));
     if (loses[0] || loses[1]) {
         s.result = loses[0] && loses[1] ? 2 : loses[0] ? 1 : 0;
         for (int p = 0; p < 2; ++p)

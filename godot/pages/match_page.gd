@@ -29,7 +29,7 @@ var _global_popup_open: bool = false
 var _auto_busy: bool = false
 var _quitting: bool = false
 var _network_waiting: bool = false
-var _confirm: ConfirmationDialog
+var _confirm: ActionConfirmation
 var _leave_dialog: ConfirmationDialog
 var _pending_generation: String = ""
 var _pending_revision: String = ""
@@ -45,8 +45,24 @@ var _reconnect: Button
 var _end_phase: Button
 var _phase_selector: PhaseSelector
 var _hand_button: Button
-var _status_own: Label
-var _status_opponent: Label
+var _status_own: PlayerStatusBar
+var _status_opponent: PlayerStatusBar
+var _logs_panel: PanelContainer
+var _logs_text: RichTextLabel
+var _log_seen: Dictionary[String, bool] = {}
+var _debug_panel: PanelContainer
+var _debug_shade: ColorRect
+var _debug_result: RichTextLabel
+var _debug_card: LineEdit
+var _debug_amount: SpinBox
+var _debug_player: OptionButton
+var _debug_operation: OptionButton
+var _debug_load_kind: OptionButton
+var _debug_life_kind: OptionButton
+var _debug_infinite_life: CheckBox
+var _debug_infinite_mana: CheckBox
+var _debug_infinite_load: CheckBox
+var _debug_rewind: Button
 var _clock_received: int = 0
 var _clock_poll_elapsed: float = 0.0
 var _hovering: bool = false
@@ -122,6 +138,8 @@ func _ready() -> void:
 	_build_decision()
 	_collection = _build_collection()
 	_collection.hide()
+	_build_logs()
+	_build_debug_console()
 	resized.connect(_layout_panels)
 	get_viewport().size_changed.connect(_layout_panels)
 	_layout_panels()
@@ -145,6 +163,9 @@ func _layout_panels() -> void:
 		available = get_viewport_rect().size
 	available.x = maxf(available.x, 320.0)
 	available.y = maxf(available.y, 240.0)
+	PlayerStatusBar.place_corners(_status_own, _status_opponent, available)
+	# A full twenty-card fan must leave both corner HUDs readable too.
+	canvas.hand_side_clearance = maxf(_status_own.size.x, _status_opponent.size.x) + 52.0
 	var tray_height: float = minf(252.0, available.y - 96.0)
 	_decision.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_decision.offset_left = 12.0
@@ -158,6 +179,14 @@ func _layout_panels() -> void:
 	_detail.offset_top = 12
 	_detail.offset_bottom = -12
 	_action_popup.custom_minimum_size.x = minf(220, available.x * 0.8)
+	if _logs_panel != null:
+		var log_width: float = minf(400.0, maxf(280.0, available.x - 24.0))
+		var log_height: float = minf(296.0, available.y - _status_own.size.y - 116.0)
+		_logs_panel.size = Vector2(log_width, log_height)
+		_logs_panel.position = Vector2(12.0, maxf(96.0, _status_own.position.y - _logs_panel.size.y - 12.0))
+	if _debug_panel != null:
+		_debug_panel.size = Vector2(minf(600.0, maxf(300.0, available.x - 32.0)), minf(660.0, maxf(320.0, available.y - 32.0)))
+		_debug_panel.position = (available - _debug_panel.size) * 0.5
 	_position_selected_actions()
 
 func _position_selected_actions() -> void:
@@ -199,9 +228,244 @@ func _build_decision() -> void:
 	_decision.confirmed.connect(_decision_confirmed)
 	_decision.hide()
 
+func _build_logs() -> void:
+	var toggle: Button = %LogsToggle
+	toggle.pressed.connect(_toggle_logs)
+	_logs_panel = PanelContainer.new()
+	_logs_panel.name = "MatchLogs"
+	_logs_panel.visible = false
+	_logs_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	_logs_panel.z_index = 12
+	add_child(_logs_panel)
+	var column: VBoxContainer = VBoxContainer.new()
+	column.add_theme_constant_override(&"separation", 6)
+	_logs_panel.add_child(column)
+	var header: HBoxContainer = HBoxContainer.new()
+	column.add_child(header)
+	var title: Label = UiFactory.label("对局日志", 16, true)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	header.add_child(title)
+	var close: Button = UiFactory.button("×", _toggle_logs)
+	close.tooltip_text = "收起日志"
+	close.custom_minimum_size = Vector2(36, 36)
+	header.add_child(close)
+	_logs_text = RichTextLabel.new()
+	_logs_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_logs_text.fit_content = false
+	_logs_text.scroll_following = true
+	_logs_text.bbcode_enabled = false
+	_logs_text.custom_minimum_size = Vector2(280, 190)
+	_logs_text.add_theme_font_size_override(&"normal_font_size", 14)
+	column.add_child(_logs_text)
+
+func _build_debug_console() -> void:
+	%MenuDebug.pressed.connect(_open_debug_console)
+	_debug_shade = ColorRect.new()
+	_debug_shade.name = "DebugShade"
+	_debug_shade.color = Color(0.015, 0.025, 0.04, 0.82)
+	_debug_shade.mouse_filter = Control.MOUSE_FILTER_STOP
+	_debug_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_debug_shade.hide()
+	_debug_shade.z_index = 20
+	add_child(_debug_shade)
+	_debug_panel = PanelContainer.new()
+	_debug_panel.name = "DebugConsole"
+	_debug_panel.visible = false
+	_debug_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	_debug_panel.z_index = 21
+	add_child(_debug_panel)
+	var outer: VBoxContainer = VBoxContainer.new()
+	outer.add_theme_constant_override(&"separation", 8)
+	_debug_panel.add_child(outer)
+	var heading: HBoxContainer = HBoxContainer.new()
+	outer.add_child(heading)
+	var title: Label = UiFactory.label("单人调试控制台", 20, true)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	heading.add_child(title)
+	var close: Button = UiFactory.button("关闭", _close_debug_console)
+	close.custom_minimum_size = Vector2(76, 42)
+	heading.add_child(close)
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	outer.add_child(scroll)
+	var content: VBoxContainer = VBoxContainer.new()
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override(&"separation", 8)
+	scroll.add_child(content)
+	_debug_player = OptionButton.new()
+	_debug_player.add_item("玩家一")
+	_debug_player.add_item("玩家二")
+	_debug_player.set_item_metadata(0, 0)
+	_debug_player.set_item_metadata(1, 1)
+	_debug_player.select(0)
+	_add_debug_row(content, "操作玩家", _debug_player)
+	_debug_operation = OptionButton.new()
+	for entry: Array in [["从虚空加入卡牌", "add_card"], ["获得魔素", "gain_mana"], ["失去魔素", "lose_mana"], ["获得生命", "gain_life"], ["失去生命", "lose_life"], ["获得临时生命", "gain_temporary_life"], ["失去临时生命", "lose_temporary_life"], ["增加荷载", "gain_load"], ["清除荷载", "clear_load"]]:
+		_debug_operation.add_item(str(entry[0]))
+		_debug_operation.set_item_metadata(_debug_operation.item_count - 1, str(entry[1]))
+	_debug_operation.item_selected.connect(_debug_operation_changed)
+	_add_debug_row(content, "操作", _debug_operation)
+	_debug_card = LineEdit.new()
+	_debug_card.placeholder_text = "卡牌 ID/名称；荷载按来源区分时填来源 ID"
+	_debug_card.custom_minimum_size.y = 42
+	_add_debug_row(content, "卡牌 / 来源", _debug_card)
+	var amount_row: HBoxContainer = HBoxContainer.new()
+	_debug_amount = SpinBox.new()
+	_debug_amount.min_value = 1
+	_debug_amount.max_value = 9999
+	_debug_amount.value = 1
+	_debug_amount.custom_minimum_size = Vector2(140, 42)
+	amount_row.add_child(_debug_amount)
+	_debug_amount.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_add_debug_row(content, "数量", amount_row)
+	_debug_load_kind = OptionButton.new()
+	for entry: Array in [["临时荷载", "temporary"], ["独立荷载", "independent"], ["绑定荷载", "bound"]]:
+		_debug_load_kind.add_item(str(entry[0]))
+		_debug_load_kind.set_item_metadata(_debug_load_kind.item_count - 1, str(entry[1]))
+	_add_debug_row(content, "荷载来源类型", _debug_load_kind)
+	var run: Button = UiFactory.button("执行调试操作", _execute_debug_operation, true)
+	run.custom_minimum_size.y = 50
+	content.add_child(run)
+	var toggles: HBoxContainer = HBoxContainer.new()
+	toggles.add_theme_constant_override(&"separation", 8)
+	content.add_child(toggles)
+	_debug_infinite_life = CheckBox.new()
+	_debug_infinite_life.text = "无限生命"
+	_debug_infinite_life.toggled.connect(_set_debug_infinite.bind("life"))
+	toggles.add_child(_debug_infinite_life)
+	_debug_infinite_mana = CheckBox.new()
+	_debug_infinite_mana.text = "无限魔素"
+	_debug_infinite_mana.toggled.connect(_set_debug_infinite.bind("mana"))
+	toggles.add_child(_debug_infinite_mana)
+	_debug_infinite_load = CheckBox.new()
+	_debug_infinite_load.text = "无限荷载上限"
+	_debug_infinite_load.toggled.connect(_set_debug_infinite.bind("load"))
+	toggles.add_child(_debug_infinite_load)
+	_debug_rewind = UiFactory.button("回到上一回合", _rewind_debug, false)
+	content.add_child(_debug_rewind)
+	_debug_result = RichTextLabel.new()
+	_debug_result.custom_minimum_size = Vector2(0, 56)
+	_debug_result.fit_content = true
+	_debug_result.bbcode_enabled = false
+	_debug_result.text = "等待调试命令。"
+	outer.add_child(_debug_result)
+	_debug_operation_changed(0)
+
+func _add_debug_row(parent: VBoxContainer, caption: String, control: Control) -> void:
+	var row: HBoxContainer = HBoxContainer.new()
+	row.add_theme_constant_override(&"separation", 10)
+	parent.add_child(row)
+	var label: Label = UiFactory.label(caption, 15, true)
+	label.custom_minimum_size.x = 112
+	row.add_child(label)
+	control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(control)
+
+func _open_debug_console() -> void:
+	if service == null or service.match_mode != "ai":
+		return
+	_close_match_menu()
+	_debug_shade.show()
+	_debug_panel.show()
+	_layout_panels()
+	_debug_panel.move_to_front()
+	_debug_card.grab_focus()
+	_refresh_debug_controls()
+
+func _close_debug_console() -> void:
+	_debug_panel.hide()
+	_debug_shade.hide()
+	canvas.grab_focus()
+
+func _debug_operation_changed(_index: int) -> void:
+	if _debug_operation == null:
+		return
+	var operation: String = str(_debug_operation.get_item_metadata(_debug_operation.selected))
+	_debug_card.editable = operation in ["add_card", "gain_load", "clear_load"]
+	_debug_card.placeholder_text = "卡牌 ID 或名称" if operation == "add_card" else "绑定荷载来源卡牌 ID" if operation in ["gain_load", "clear_load"] else "该操作不需要卡牌或来源"
+	_debug_load_kind.visible = operation in ["gain_load", "clear_load"]
+
+func _selected_debug_player() -> int:
+	return int(_debug_player.get_item_metadata(_debug_player.selected))
+
+func _execute_debug_operation() -> void:
+	if service == null or service.match_mode != "ai":
+		return
+	var operation: String = str(_debug_operation.get_item_metadata(_debug_operation.selected))
+	var command: Dictionary = {"player": _selected_debug_player(), "amount": int(_debug_amount.value)}
+	var amount: int = int(_debug_amount.value)
+	command["operation"] = operation
+	if operation in ["lose_mana", "lose_life"]:
+		command["amount"] = amount
+	elif operation in ["gain_mana", "gain_life", "gain_temporary_life", "gain_load"]:
+		command["amount"] = amount
+	if operation == "add_card":
+		command["cardId"] = _debug_card.text.strip_edges()
+	if operation in ["gain_load", "clear_load"]:
+		command["loadKind"] = str(_debug_load_kind.get_item_metadata(_debug_load_kind.selected))
+		command["sourceId"] = _debug_card.text.strip_edges()
+	_submit_debug(command)
+
+func _set_debug_infinite(enabled: bool, resource: String) -> void:
+	if service == null or service.match_mode != "ai":
+		return
+	_submit_debug({"operation": "set_infinite_" + resource, "player": _selected_debug_player(), "enabled": enabled})
+
+func _rewind_debug() -> void:
+	_submit_debug({"operation": "rewind_previous_turn"})
+
+func _submit_debug(command: Dictionary) -> void:
+	var result: Dictionary = service.match_request(&"debug_command", [command])
+	if not bool(result.get("ok", false)):
+		_debug_result.text = "失败：" + str(result.get("error", service.error))
+		return
+	var data: Dictionary = result.get("data", {}) if result.get("data", {}) is Dictionary else {}
+	_debug_result.text = str(data.get("message", "调试操作已执行。"))
+	if not data.is_empty():
+		_debug_result.text += "\n" + JSON.stringify(data)
+	var updated: Dictionary = service.snapshot()
+	if not updated.is_empty():
+		_refresh()
+		_refresh_debug_controls()
+
+func _refresh_debug_controls() -> void:
+	if _debug_panel == null or service == null:
+		return
+	var debug: Dictionary = service.match_snapshot.get("debug", {})
+	var debug_players: Array = debug.get("players", [])
+	var debug_player: Dictionary = debug_players[_selected_debug_player()] if debug_players.size() > _selected_debug_player() else {}
+	_debug_infinite_life.set_pressed_no_signal(bool(debug_player.get("infiniteLife", false)))
+	_debug_infinite_mana.set_pressed_no_signal(bool(debug_player.get("infiniteMana", false)))
+	_debug_infinite_load.set_pressed_no_signal(bool(debug_player.get("infiniteLoad", false)))
+	var available: bool = bool(debug.get("canRewind", false))
+	_debug_rewind.disabled = not available
+	_debug_rewind.tooltip_text = "回到上一回合开始时的完整状态。" if available else str(debug.get("reason", "没有可用的上一回合快照。"))
+
+func _toggle_logs() -> void:
+	if _logs_panel == null:
+		return
+	_logs_panel.visible = not _logs_panel.visible
+	if _logs_panel.visible:
+		_logs_panel.move_to_front()
+		_layout_panels()
+
+func _append_log_events(snapshot: Dictionary) -> void:
+	var generation: String = str(snapshot.get("generation", ""))
+	for event: Dictionary in snapshot.get("events", []):
+		var identifier: String = str(event.get("id", ""))
+		var text: String = str(event.get("text", ""))
+		if text.is_empty():
+			text = "对局状态已更新"
+		var key: String = generation + ":" + identifier + ":" + text
+		if _log_seen.has(key):
+			continue
+		_log_seen[key] = true
+		_logs_text.append_text(text + "\n")
+
 func configure(value: FrontendService) -> void:
 	service = value
 	%MenuSettings.text = "设置（继续计时）" if service.match_mode == "network" else "暂停 / 设置"
+	%MenuDebug.visible = service.match_mode == "ai"
 	_feedback.service = service
 	if not service.match_active:
 		_notice.text = "没有进行中的对局。"
@@ -228,7 +492,7 @@ func _refresh() -> void:
 	_clear_cue()
 	if not _pending.is_empty() and (str(snapshot.get("generation", "")) != _pending_generation or str(snapshot.get("revision", "")) != _pending_revision):
 		_cancel_pending()
-		_confirm.hide()
+		_confirm.close_popup()
 	_restore_tray_hand()
 	_tray_action_groups.clear()
 	_phase_selector.hide()
@@ -334,21 +598,27 @@ func _update_status() -> void:
 	var clock: Dictionary = snapshot.get("clock", {})
 	var remaining: Array = clock.get("remainingMs", [0, 0])
 	var running_players: Array = clock.get("runningPlayers", [])
-	var labels: Array[Label] = [_status_own, _status_opponent]
+	var bars: Array[PlayerStatusBar] = [_status_own, _status_opponent]
+	var loads: Array = snapshot.get("loads", [])
+	var cards: Array = snapshot.get("cards", [])
+	var debug: Dictionary = snapshot.get("debug", {})
+	var debug_players: Array = debug.get("players", [])
 	for index: int in range(2):
 		var player: int = service.match_viewer if index == 0 else 1 - service.match_viewer
 		var values: Dictionary = players[player]
-		var separator: String = "\n" if index == 0 else "   "
-		var text: String = "%s  生命 %d%s%s魔素 %d   荷载 %d/%d" % ["我方" if index == 0 else "对手", int(values.get("life", 0)), " (+%d)" % int(values.get("temporaryLife", 0)) if int(values.get("temporaryLife", 0)) > 0 else "", separator, int(values.get("mana", 0)), int(values.get("load", 0)), int(values.get("capacity", 0))]
+		var clock_text: String = ""
+		var clock_warning: bool = false
 		if bool(clock.get("enabled", false)) and remaining.size() > player:
 			var milliseconds: int = int(remaining[player])
 			var player_running: bool = bool(running_players[player]) if running_players.size() > player else int(clock.get("runningPlayer", -1)) == player
 			if bool(clock.get("running", false)) and player_running:
 				milliseconds -= Time.get_ticks_msec() - _clock_received
 			var seconds: int = maxi(0, ceili(float(milliseconds) / 1000.0))
-			text += separator + "%02d:%02d" % [seconds / 60, seconds % 60]
-			labels[index].modulate = Color("f0aaaa") if seconds <= 30 else Color.WHITE
-		labels[index].text = text
+			clock_text = "%02d:%02d" % [seconds / 60, seconds % 60]
+			clock_warning = seconds <= 30
+		var player_debug: Dictionary = debug_players[player] if debug_players.size() > player else {}
+		bars[index].set_status("我方" if index == 0 else "对手", player, values, loads, cards, player_debug, clock_text, clock_warning)
+	_append_log_events(snapshot)
 
 func _process(delta: float) -> void:
 	if service == null or not service.match_active:
@@ -884,7 +1154,7 @@ func dismiss_cancel() -> bool:
 		_close_match_menu()
 		return true
 	if _confirm.visible:
-		_confirm.hide()
+		_confirm.close_popup()
 		_cancel_pending()
 		return true
 	if _collection.visible:
@@ -1175,7 +1445,7 @@ func network_updated(state: Dictionary) -> void:
 		canvas.stop_feedback()
 		canvas._cancel_pointer_state()
 		if not _pending.is_empty():
-			_confirm.hide()
+			_confirm.close_popup()
 			_cancel_pending()
 		_notice.text = str(state.get("notice", "连接中断，操作暂不可用"))
 		_reconnect.visible = not bool(state.get("host", false))
@@ -1195,7 +1465,7 @@ func network_updated(state: Dictionary) -> void:
 	if not revision.is_empty() and changed:
 		_network_waiting = false
 		if not _pending.is_empty():
-			_confirm.hide()
+			_confirm.close_popup()
 			_cancel_pending()
 			_notice.text = "场地已更新，请重新选择操作。"
 		_refresh()

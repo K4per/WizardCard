@@ -129,6 +129,7 @@ int Rules::concentrationUpkeep(const GameState &s, const CardCatalog &cat, CardI
     return card.concentrationCost * (doubled ? 2 : 1);
 }
 int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const Effect &e) {
+    if (s.players[p].debugInfiniteLife) return 0;
     if (cat.usesAlphaV252() && s.players[p].nextDamageImmune) return 0;
     bool resistance = false;
     for (const auto &[id, c] : s.cards)
@@ -179,8 +180,8 @@ bool Rules::canHost(const GameState &s, const CardCatalog &cat, CardId spell, Ca
         for (const auto &[id, card] : s.cards)
             if (id != spell && card.owner == source->second.owner && card.definition == source->second.definition &&
                 (card.zone == Zone::Analysis || card.zone == Zone::Casting)) return false;
-    if (definition.rank > maxRank(s, cat, formation)) return false;
-    if (faceDown) return true; // Hidden cards do not analyze; host restrictions apply when flipped.
+    if ((!faceDown || !cat.usesAlphaV253()) && definition.rank > maxRank(s, cat, formation)) return false;
+    if (faceDown && cat.usesAlphaV253()) return true; // Restrictions apply when flipped.
     if (cat.usesAlphaV252() && std::find(definition.traits.begin(), definition.traits.end(), "sique_campfire_only") != definition.traits.end() &&
         host->second.definition != "sique-campfire") return false;
     const auto &traits = cat.at(host->second.definition).traits;

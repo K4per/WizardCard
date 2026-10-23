@@ -1,0 +1,24 @@
+[
+  {
+    "scenario": "surrender",
+    "mode": "probe",
+    "results": [
+      {
+        "commands": 13,
+        "digest": "94e63f9261cf535c",
+        "host": true,
+        "reconnected": false,
+        "result": 0,
+        "scenario": "surrender"
+      },
+      {
+        "commands": 13,
+        "digest": "94e63f9261cf535c",
+        "host": false,
+        "reconnected": false,
+        "result": 0,
+        "scenario": "surrender"
+      }
+    ]
+  }
+]

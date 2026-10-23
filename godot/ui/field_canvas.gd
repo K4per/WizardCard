@@ -46,6 +46,14 @@ var background_theme: String = "arcane"
 var field: FieldPresentation = FieldPresentation.new()
 var privacy: bool = false
 var hand_collapsed: bool = false
+## Optional presentation clearance for resource panels in the bottom-left and
+## top-right corners. It constrains only the hand fan, never board legality.
+var hand_side_clearance: float = 0.0:
+	set(value):
+		if is_equal_approx(hand_side_clearance, value):
+			return
+		hand_side_clearance = maxf(0.0, value)
+		queue_redraw()
 var _card_hits: Array[Dictionary] = []
 var _opponent_hand_hits: Array[Dictionary] = []
 var _ring_hits: Array[Dictionary] = []
@@ -584,7 +592,8 @@ func _hand_card_size(height: float) -> Vector2:
 	return Vector2(card_height * 160.0 / 224.0, card_height)
 
 func _hand_stride(width: float, count: int) -> float:
-	return maxf(0.0, minf(width * layout.hand_card_spacing_ratio, (size.x * layout.hand_width_ratio - width) / maxi(1, count - 1)))
+	var hand_width: float = minf(size.x * layout.hand_width_ratio, maxf(width, size.x - hand_side_clearance * 2.0))
+	return maxf(0.0, minf(width * layout.hand_card_spacing_ratio, (hand_width - width) / maxi(1, count - 1)))
 
 func _hand_pose(index: int, count: int, start_x: float, stride: float, extent: Vector2, raised: bool) -> Transform2D:
 	var fraction: float = (2.0 * index / (count - 1) - 1.0) if count > 1 else 0.0

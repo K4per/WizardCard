@@ -355,7 +355,7 @@ func _run() -> void:
 	_expect(not match_page._detail.visible, "hover exit closes transient details")
 	match_page._clock_received = Time.get_ticks_msec()
 	match_page._update_status()
-	_expect(match_page._status_own.text.contains("01:05"), "authoritative clock displayed")
+	_expect(match_page._status_own._name.text.contains("01:05"), "authoritative clock displayed")
 	_expect(formation.metadata_text.contains("设置条件：支付 2 魔素"), "formation condition shown")
 	for theme_id: String in ["arcane", "slate", "ember"]:
 		canvas.set_background_theme(theme_id)
@@ -364,5 +364,3 @@ func _run() -> void:
 	host.queue_free()
 	await process_frame
 	quit(0 if failures == 0 else 2)
-
-

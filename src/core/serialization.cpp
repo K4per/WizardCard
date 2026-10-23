@@ -19,6 +19,7 @@ std::string GameEngine::stateKey(bool logical) const {
     if (catalog_.usesAlphaV25())
         o << "opening:" << s.opening << ',' << s.initialFormations[0] << ',' << s.initialFormations[1] << ';';
     if (s.skipCastPhase) o << "skip_cast;";
+    if (s.debugUsed) o << "debug_used;";
     if (!logical)
         o << s.nextLoad << ',' << s.nextTrigger << ',' << s.nextBatch << ',' << s.nextDecision << ','
           << s.nextChain << ',' << s.nextLink << ',' << s.phaseGate << ';';
@@ -32,6 +33,8 @@ std::string GameEngine::stateKey(bool logical) const {
         return LinkId{0};
     };
     for (const auto &p : s.players) {
+        if (p.debugInfiniteLife || p.debugInfiniteMana || p.debugInfiniteLoad)
+            o << "debug:" << p.debugInfiniteLife << ',' << p.debugInfiniteMana << ',' << p.debugInfiniteLoad << ';';
         o << p.life << ',' << p.mana << ',' << p.ownTurn << ',' << p.actionsPlayed << ',' << p.formations
           << ',' << p.sealRemovals << ',' << p.drawFailed << ',' << p.surrendered << ',' << p.temporaryLife
           << ',' << p.blockedActionTurn << ':';

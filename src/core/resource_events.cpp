@@ -4,6 +4,12 @@
 #include <algorithm>
 
 namespace wizard {
+bool ResourceRules::canPayMana(const GameState &s, PlayerId p, int amount) {
+    return amount >= 0 && (s.players[p].debugInfiniteMana || s.players[p].mana >= amount);
+}
+void ResourceRules::payMana(GameState &s, PlayerId p, int amount) {
+    if (amount > 0 && !s.players[p].debugInfiniteMana) s.players[p].mana -= amount;
+}
 namespace {
 void syncTemporaryLife(GameState &s, PlayerId player) {
     s.players[player].temporaryLife = 0;
@@ -73,6 +79,7 @@ void ResourceRules::damage(GameState &state, PlayerId player, int amount, const 
     if (amount <= 0 || state.result != -1)
         return;
     auto &owner = state.players.at(static_cast<std::size_t>(player));
+    if (owner.debugInfiniteLife) return;
     if (catalog && catalog->usesAlphaV252()) {
         if (owner.nextDamageImmune) { owner.nextDamageImmune = false; amount = 0; }
         else if (arcana::active(state, *catalog, "arcana_strength")) amount *= 2;
@@ -89,11 +96,12 @@ void ResourceRules::damage(GameState &state, PlayerId player, int amount, const 
     state.events.push_back(std::move(event));
 }
 void ResourceRules::increasedLoad(GameState &state, const CardCatalog &catalog, PlayerId player, int increment) {
-    if (catalog.usesAlphaV2() && (state.players[0].life <= 0 || state.players[1].life <= 0)) {
+    if (catalog.usesAlphaV2() && ((!state.players[0].debugInfiniteLife && state.players[0].life <= 0) ||
+        (!state.players[1].debugInfiniteLife && state.players[1].life <= 0))) {
         StateMaintenance::check(state, catalog);
         return;
     }
-    if (catalog.usesAlphaV2() && increment > 0 && Rules::load(state, player) > Rules::capacity(state, catalog, player)) {
+    if (!state.players[player].debugInfiniteLoad && catalog.usesAlphaV2() && increment > 0 && Rules::load(state, player) > Rules::capacity(state, catalog, player)) {
         if (!catalog.usesAlphaV252() || !sique::hasFormation(state, player, "moon"))
             damage(state, player, increment * 2, "overload", &catalog);
         StateMaintenance::check(state, catalog);
@@ -101,7 +109,7 @@ void ResourceRules::increasedLoad(GameState &state, const CardCatalog &catalog, 
 }
 void ResourceRules::drawOne(GameState &state, const CardCatalog &catalog, PlayerId player) {
     auto &owner = state.players.at(static_cast<std::size_t>(player));
-    if (catalog.usesAlphaV2() && (state.result != -1 || owner.life <= 0))
+    if (catalog.usesAlphaV2() && (state.result != -1 || (!owner.debugInfiniteLife && owner.life <= 0)))
         return;
     if (owner.deck.empty()) {
         if (catalog.usesAlphaV2())

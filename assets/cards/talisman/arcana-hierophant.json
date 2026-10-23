@@ -6,7 +6,7 @@
   "number": "040012",
   "name": "教皇",
   "type": "talisman",
-  "text": "免疫己方下一次受到的伤害。双方结束阶段开始时失效。",
+  "text": "直到双方结束阶段开始时，免疫1次伤害。",
   "rank": 4,
   "level": 4,
   "school": "arcana",

@@ -13,8 +13,13 @@ void networkText(char32_t code) {
     if (code == 8) {
         if (!s.empty())
             s.pop_back();
-    } else if ((code >= U'0' && code <= U'9') || (code == U'.' && networkFocus_ == 1))
-        if (s.size() < (networkFocus_ == 1 ? 15u : 5u))
+    } else if (networkFocus_ == 1 ? ((code >= U'0' && code <= U'9') ||
+                                    (code >= U'a' && code <= U'z') ||
+                                    (code >= U'A' && code <= U'Z') ||
+                                    code == U'.' || code == U':' || code == U'%' || code == U'-' ||
+                                    code == U'[' || code == U']')
+                   : (code >= U'0' && code <= U'9'))
+        if (s.size() < (networkFocus_ == 1 ? 253u : 5u))
             s += static_cast<char>(code);
 }
 void drawNetwork(sf::RenderTarget &t) {
@@ -22,7 +27,7 @@ void drawNetwork(sf::RenderTarget &t) {
     bool room = app_.page() == app::Page::NetworkRoom;
     pageHeading(t, room ? "真人联机 · 房间" : "真人联机 · 局域网",
                 room ? "双方选择卡组并准备；更改配置会清除准备状态。"
-                     : "房主创建房间，另一位玩家输入房主的局域网或虚拟局域网IPv4地址。");
+                     : "房主创建房间，另一位玩家输入房主的域名或 IPv4/IPv6 地址。");
     if (!room) {
         label(t, "房主地址", 385, 281, 20, gold);
         box(t, networkAddressBox_, panel, networkFocus_ == 1 ? mint : gold);
@@ -31,8 +36,7 @@ void drawNetwork(sf::RenderTarget &t) {
         box(t, networkPortBox_, panel, networkFocus_ == 2 ? mint : gold);
         label(t, networkPort_ + (networkFocus_ == 2 ? "|" : ""), 545, 350, 20);
         wrapped(t, resources_,
-                "默认端口27861。创建房间时允许Windows防火墙的专用网络访问；对方使用你的网卡IPv4地址。127.0.0."
-                "1仅用于同机测试。",
+                "默认端口27861。支持域名、IPv4 和 IPv6（IPv6 可使用方括号）；127.0.0.1 仅用于同机测试。",
                 {385, 420}, 18, muted, 47);
         button(t, networkCreate_, "创建房间", true);
         button(t, networkJoin_, "加入房间", true);

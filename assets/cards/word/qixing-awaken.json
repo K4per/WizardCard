@@ -1,0 +1,25 @@
+{
+  "id": "qixing-awaken",
+  "name": "七星启曜",
+  "type": "word",
+  "rarity": "rare",
+  "cost": 3,
+  "castCost": 0,
+  "rank": 1,
+  "level": 1,
+  "speed": 2,
+  "number": "030025",
+  "illustrationId": "qixing-awaken",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [
+    {
+      "kind": "seven_stars_awakening"
+    }
+  ],
+  "text": "耀：将1张【七星】卡从卡组加入手卡，己方选择受到7点光耀伤害/获得7点荷载。 黯：将1张【七星】卡从灰烬区加入手卡。",
+  "analysisTurns": 0,
+  "school": "divination"
+}

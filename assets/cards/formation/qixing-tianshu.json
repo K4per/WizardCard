@@ -1,0 +1,32 @@
+{
+  "id": "qixing-tianshu",
+  "name": "七星·天枢",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "castCost": 0,
+  "rank": 0,
+  "level": 1,
+  "speed": 1,
+  "number": "010022",
+  "illustrationId": "qixing-tianshu",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [],
+  "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。",
+  "body": 5,
+  "rings": 1,
+  "capacity": 7,
+  "income": 1,
+  "maxRank": 1,
+  "summonCondition": "魔素×2",
+  "baseEligible": true,
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 2
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 #include "wizard/application.hpp"
 #include "wizard/command_codec.hpp"
-#include "wizard/core/sique.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
 
@@ -50,9 +50,9 @@ void advanceSique(GameEngine &e) {
 TEST_CASE("Sique pool has all sixteen numbered executable cards", "[sique][content]") {
     const auto cat = siqueCatalog();
     REQUIRE(std::count_if(cat.cards.begin(), cat.cards.end(), [](const auto &entry) {
-        return sique::member(entry.second);
+        return card_rules::member(entry.second);
     }) == 16);
-    for (const auto &[id, d] : cat.cards) if (sique::member(d)) {
+    for (const auto &[id, d] : cat.cards) if (card_rules::member(d)) {
         CAPTURE(id); REQUIRE(d.number.size() == 6); REQUIRE(d.illustrationId == id);
     }
     REQUIRE(cat.at("sique-mushroom-soup").analysisTurns == 2);
@@ -564,15 +564,15 @@ TEST_CASE("Alpha 2.5.3 divine stew respects independent infinite resource switch
     const auto cat = siqueProductionCatalog(); auto s = siqueState();
     s.players[0].mana = 0; s.players[0].siqueLifePaymentTurn = s.globalTurn;
     s.players[1].life = 1;
-    REQUIRE_FALSE(sique::canPay(s, 0, 2, &cat));
+    REQUIRE_FALSE(card_rules::canPay(s, 0, 2, &cat));
     s.players[1].debugInfiniteLife = true;
-    REQUIRE(sique::canPay(s, 0, 2, &cat)); sique::pay(s, 0, 2, &cat);
+    REQUIRE(card_rules::canPay(s, 0, 2, &cat)); card_rules::pay(s, 0, 2, &cat);
     REQUIRE(s.players[1].life == 1); REQUIRE(s.players[0].mana == 0);
     s.players[1].debugInfiniteLife = false; s.players[0].debugInfiniteMana = true;
-    REQUIRE(sique::canPay(s, 0, 2, &cat)); sique::pay(s, 0, 2, &cat);
+    REQUIRE(card_rules::canPay(s, 0, 2, &cat)); card_rules::pay(s, 0, 2, &cat);
     REQUIRE(s.players[1].life == 1); REQUIRE(s.players[0].mana == 0);
     s.players[0].debugInfiniteMana = false;
-    REQUIRE_FALSE(sique::canPay(s, 0, 2, &cat));
+    REQUIRE_FALSE(card_rules::canPay(s, 0, 2, &cat));
 }
 
 TEST_CASE("Alpha 2.5.3 hanged man pays rounded ordinary life and exchanges only nonformations", "[arcana][alpha-v253]") {

@@ -211,6 +211,8 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
                     return -100;
                 const auto *c = card(v, cmd.option);
                 switch (v.decision->kind) {
+                case DecisionKind::Payment:
+                    return cmd.option ? 25 - static_cast<int>(cmd.option) : -50;
                 case DecisionKind::SearchDeck:
                     return 20 + value(c);
                 case DecisionKind::DestroyAmbush:

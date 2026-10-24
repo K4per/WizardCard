@@ -26,7 +26,7 @@ func _run() -> void:
 	_expect(match_page._confirm is ActionConfirmation, "confirmation uses centered action popup")
 	_expect(match_page.get_node("ConfirmShade").mouse_filter == Control.MOUSE_FILTER_STOP, "confirmation shade blocks board input")
 	match_page._status_own.set_status("我方", 0, {"life": 35, "temporaryLife": 4, "mana": 7, "load": 3, "capacity": 6}, [{"owner": 0, "source": "9", "amount": 2, "sourceBound": true}], [{"id": "9", "definition": {"name": "测试阵法"}}])
-	_expect(match_page._status_own._life.text == "生命 35", "resource bar labels ordinary life")
+	_expect(match_page._status_own._life.text == "生命 35/40", "resource bar labels ordinary life and limit")
 	_expect(match_page._status_own._temporary_life.text == "临时生命 +4", "resource bar labels temporary life")
 	_expect(match_page._status_own._mana.text == "魔素 7/20", "resource bar labels mana cap")
 	_expect(match_page._status_own._load.text == "荷载 3/6", "resource bar labels load cap")

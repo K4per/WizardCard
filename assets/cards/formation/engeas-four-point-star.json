@@ -1,6 +1,6 @@
 {
   "id": "engeas-four-point-star",
-  "name": "恩格亚斯四角星",
+  "name": "恩格亚斯之星",
   "type": "formation",
   "rarity": "epic",
   "cost": 0,
@@ -10,7 +10,7 @@
   "rings": 1,
   "maxRank": 3,
   "quickRankOne": true,
-  "text": "一回合一次，此阵法卡上设置的1阶解析法术卡立即解析完成。",
+  "text": "1回合1次，此阵法卡上设置的1阶解析法术卡立即解析完成。",
   "flavor": "贤者恩格亚斯发明的精简阵法，以快速聚能和快速释放闻名。",
   "castCost": 0,
   "rank": 0,
@@ -28,7 +28,7 @@
       "readyOnly": true
     }
   ],
-  "summonCondition": "3魔素+已解析的法术。",
+  "summonCondition": "解析完成的法术卡×1+魔素×3",
   "number": "010003",
   "illustrationId": "engeas-four-point-star"
 }

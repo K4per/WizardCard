@@ -1,6 +1,6 @@
 {
   "id": "storm-brand",
-  "name": "恒风·风暴烙印",
+  "name": "风契·风暴烙印",
   "type": "seal",
   "rarity": "common",
   "cost": 2,
@@ -8,13 +8,13 @@
   "level": 0,
   "speed": 1,
   "castCost": 0,
-  "text": "仅可附着于【恒风】阵法卡。 附着于阵法：每发动2次【恒风】法术卡，获得1个【恒风指示物】。 附着于法术：无效果。",
+  "text": "仅可附着于【风契】阵法卡。 附着于阵法卡：每发动2次【风契】法术卡，获得1个【风契指示物】。 附着于法术卡：无效果。",
   "traits": [
     "storm_release_counter",
     "storm_formation_host_only"
   ],
   "tags": [
-    "风暴"
+    "风契"
   ],
   "number": "050004",
   "illustrationId": "storm-brand"

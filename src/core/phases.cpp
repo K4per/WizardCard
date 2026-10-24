@@ -102,7 +102,7 @@ void GameEngine::pump() {
                     if (e.kind == EffectKind::SearchAction
                             ? (c.owner == f.item.owner && c.zone == Zone::Deck &&
                                (storm_search || storm_search_talisman
-                                    ? std::find(d.tags.begin(), d.tags.end(), "风暴") != d.tags.end() &&
+                                    ? detail::stormTags(d.tags) &&
                                       (!storm_search_talisman ||
                                        (d.type == CardType::Talisman && d.rank <= 2))
                                     : d.type == CardType::Action && (d.rarity == "common" || d.rarity == "uncommon")))
@@ -181,7 +181,7 @@ void GameEngine::pump() {
             if (chain.mode == ChainMode::Building) {
                 auto responses = responsesFor(chain.priority, s.nextDecision);
                 auto setups = catalog_.usesAlphaV2() ? responseSetupsV2(chain.priority, s.nextDecision) : std::vector<LegalAction>{};
-                if (responses.empty() && setups.empty()) {
+                if (responses.empty() && setups.empty() && (!catalog_.usesCardRules() || chain.links.back().speed == 4)) {
                     passResponse();
                     continue;
                 }

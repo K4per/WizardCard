@@ -16,7 +16,7 @@ using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
 using ChainId = std::uint64_t;
 using LinkId = std::uint64_t;
-inline constexpr const char *programVersion = "2.5.3-hotfix.1";
+inline constexpr const char *programVersion = "2.5.4";
 inline constexpr int startingLife = 40, maximumLife = 40;
 inline constexpr int maximumMana = 20;
 // Player target tokens share the existing deterministic command target field.
@@ -92,7 +92,10 @@ enum class EffectKind {
     SiqueRoastRecover, SiqueBlowfire, SiqueBackfire,
     ClearAllAmbush, ArcanaFool, ArcanaMagician, ArcanaPriestess, ArcanaEmperor,
     PreventNextDamage, ArcanaLovers, ArcanaHermit, ArcanaJustice, ArcanaHangedMan,
-    ArcanaDeath, ArcanaDevil, ArcanaTower, ArcanaWorld, RayVolley, DelayAllEnemyAnalysis
+    ArcanaDeath, ArcanaDevil, ArcanaTower, ArcanaWorld, RayVolley, DelayAllEnemyAnalysis,
+    ChangeLifeLimit, BloodDamage, BloodSearch, BloodHeartSeal, BloodClot,
+    SevenAwakening, SevenUpgrade, SevenInsight, SevenShift, SevenRuin, SevenPunishment,
+    SevenReturn, SevenGaze, SevenSetup, SevenKaiyang, BloodTube
 };
 enum class ResponseWindow { PhaseStart, PhaseEnd, Action, Prepare, Cast, Trigger };
 enum class EventOwner { Any, Self, Opponent };

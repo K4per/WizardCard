@@ -1,6 +1,7 @@
 // 2.0 content choices live beside EffectResolver, separate from turn scheduling.
 #include "engine_internal.hpp"
-#include "wizard/core/sique.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
 
 namespace wizard {
 namespace {
@@ -21,8 +22,10 @@ bool effectImmune(const GameState &s, const CardCatalog &catalog, CardId id) {
     if (found == s.cards.end()) return false;
     const auto &card = found->second;
     const auto &definition = catalog.at(card.definition);
-    if (hasTrait(definition, "effect_immune") || sique::protectedCampfire(s, id)) return true;
+    if (card_rules::effectImmune(s, catalog, id) || hasTrait(definition, "effect_immune") ||
+        card_rules::protectedFormation(s, id)) return true;
     if (!hasTrait(definition, "great_storm")) return false;
+    if (catalog.usesCardRules()) return true;
     const auto host = s.cards.find(card.host ? card.host : card.sourceFormation);
     return host != s.cards.end() && host->second.zone == Zone::Analysis &&
            catalog.at(host->second.definition).id == "storm-heart";
@@ -62,6 +65,7 @@ void shuffleDeck(GameState &s, PlayerId owner) {
         std::swap(deck[size - 1], deck[detail::bounded(s, static_cast<std::uint32_t>(size))]);
 }
 void returnToHand(GameState &s, const CardCatalog &catalog, CardId id) {
+    if (catalog.usesCardRules()) { card_rules::returnCard(s, catalog, id, true); return; }
     auto &card = s.cards.at(id);
     std::vector<CardId> attachments;
     for (const auto &[childId, child] : s.cards)
@@ -108,8 +112,7 @@ void returnFormationToSideDeck(GameState &s, const CardCatalog &catalog, CardId 
 } // namespace
 
 bool GameEngine::contentEffectV2() {
-    if (arcanaEffect()) return true;
-    if (siqueEffect()) return true;
+    if (cardEffect()) return true;
     auto &s = state_;
     if (!catalog_.usesAlphaV2() || !s.effect || s.effect->cursor >= s.effect->item.effects.size())
         return false;
@@ -171,7 +174,8 @@ bool GameEngine::contentEffectV2() {
             ++f.cursor;
             f.clearRemaining = -1;
         } else {
-            decision(owner, DecisionKind::EffectChoice, std::move(choices), true);
+            decision(owner, DecisionKind::EffectChoice, std::move(choices),
+                     !catalog_.usesCardRules() || !cloudMist.targets.empty());
         }
         return true;
     }
@@ -187,8 +191,7 @@ bool GameEngine::contentEffectV2() {
             if (found == s.cards.end() || found->second.owner != owner || found->second.zone != Zone::Deck)
                 continue;
             const auto &definition = catalog_.at(found->second.definition);
-            const bool stormTagged = std::find(definition.tags.begin(), definition.tags.end(), "风暴") !=
-                                     definition.tags.end();
+            const bool stormTagged = detail::stormTags(definition.tags);
             const bool eligible = stormTalismanSearch
                 ? definition.type == CardType::Talisman && definition.rank <= 2 && stormTagged
                 : stormSpellSearch
@@ -214,7 +217,7 @@ bool GameEngine::contentEffectV2() {
                 card.spell != SpellState::Analyzing ||
                 effectImmune(s, catalog_, id))
                 continue;
-            if (catalog_.usesAlphaV252()) { arcana::advance(s, catalog_, id, advance); continue; }
+            if (catalog_.usesAlphaV252()) { card_rules::advanceAnalysis(s, catalog_, id, advance); continue; }
             card.analysisProgress = std::min(definition.analysisTurns, card.analysisProgress + advance);
             if (card.analysisProgress >= definition.analysisTurns) {
                 card.spell = SpellState::Ready;
@@ -240,13 +243,12 @@ bool GameEngine::contentEffectV2() {
         } else if (f.clearRemaining == -2) {
             std::vector<std::uint32_t> modes{0xfffffff1u, 0xfffffff3u};
             if (detail::hasStormFormation(s, catalog_, owner)) modes.insert(modes.begin() + 1, 0xfffffff2u);
-            decision(owner, DecisionKind::EffectChoice, std::move(modes));
+            decision(owner, DecisionKind::EffectChoice, std::move(modes), catalog_.usesCardRules());
         } else if (f.clearRemaining == -3 || f.clearRemaining == -4) {
             std::vector<CardId> deck;
             for (const auto id : s.players[owner].deck) {
                 const auto &definition = catalog_.at(s.cards.at(id).definition);
-                const bool stormSpell = std::find(definition.tags.begin(), definition.tags.end(), "风暴") !=
-                                            definition.tags.end() && isSpell(definition);
+                const bool stormSpell = detail::stormTags(definition.tags) && isSpell(definition);
                 const bool supportingSpell = definition.id == "cloud-mist" || definition.id == "thunder-summon";
                 if (f.clearRemaining == -3 ? stormSpell : supportingSpell) deck.push_back(id);
             }
@@ -329,7 +331,7 @@ bool GameEngine::contentEffectV2() {
     }
     if (e.kind == EffectKind::DestroyAllEnemyField) {
         if (f.clearRemaining < 0) {
-            if (sourceCard != s.cards.end() && sourceCard->second.definition == "great-storm") {
+            if (!catalog_.usesCardRules() && sourceCard != s.cards.end() && sourceCard->second.definition == "great-storm") {
                 const auto heartId = sourceCard->second.sourceFormation;
                 auto heart = s.cards.find(heartId);
                 if (heart != s.cards.end() && heart->second.definition == "storm-heart" &&
@@ -407,7 +409,9 @@ bool GameEngine::contentEffectV2() {
         case EffectKind::DestroyEnemyAnalysis:
             eligible = card.owner != owner && fieldZone(card.zone) &&
                        isSpell(definition) && !protectedCardFromEffect(s, catalog_, id) &&
-                       (!windStrikeDestroy || id == f.item.targetCard);
+                       (!windStrikeDestroy || id == f.item.targetCard) &&
+                       (!catalog_.usesCardRules() || sourceCard == s.cards.end() ||
+                        sourceCard->second.definition != "great-storm" || card.zone == Zone::Analysis);
             break;
         case EffectKind::ConcealEnemySpell:
             eligible = card.owner != owner && card.zone == Zone::Analysis && !card.faceDown && isSpell(definition);
@@ -477,8 +481,7 @@ bool GameEngine::contentEffectV2() {
 
 bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId selected) {
     if ((kind == DecisionKind::EffectChoice || kind == DecisionKind::DamageChoice) &&
-        chooseArcanaEffect(actor, selected)) return true;
-    if (kind == DecisionKind::EffectChoice && chooseSiqueEffect(actor, selected)) return true;
+        chooseCardEffect(actor, selected)) return true;
     auto &s = state_;
     if (!catalog_.usesAlphaV2() || !s.effect ||
         (kind != DecisionKind::EffectChoice && kind != DecisionKind::DamageChoice))
@@ -553,17 +556,22 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
     if (kind == DecisionKind::EffectChoice && e.kind == EffectKind::StormGuidance) {
         if (f.clearRemaining == -1) {
             StateMaintenance::leave(s, selected, &catalog_);
-            f.clearRemaining = -2;
+            if (catalog_.usesCardRules() && s.cards.at(selected).zone != Zone::Ash) {
+                ++f.cursor; f.clearRemaining = -1;
+            } else f.clearRemaining = -2;
             return true;
         }
         if (f.clearRemaining == -2) {
+            if (!selected && catalog_.usesCardRules()) {
+                ++f.cursor; f.clearRemaining = -1; return true;
+            }
             if (selected == 0xfffffff1u || selected == 0xfffffff3u) {
                 const bool stormSearch = selected == 0xfffffff1u;
                 std::vector<CardId> cards;
                 for (const auto id : s.players[actor].deck) {
                     const auto &definition = catalog_.at(s.cards.at(id).definition);
                     const bool isStormSpell = isSpell(definition) &&
-                        std::find(definition.tags.begin(), definition.tags.end(), "风暴") != definition.tags.end();
+                        detail::stormTags(definition.tags);
                     const bool isAuxiliary = definition.id == "cloud-mist" || definition.id == "thunder-summon";
                     if (stormSearch ? isStormSpell : isAuxiliary) cards.push_back(id);
                 }
@@ -580,9 +588,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
                 for (auto &[id, formation] : s.cards)
                     if (formation.owner == actor && formation.zone == Zone::Analysis &&
                         catalog_.at(formation.definition).type == CardType::Formation &&
-                        std::find(catalog_.at(formation.definition).tags.begin(),
-                                  catalog_.at(formation.definition).tags.end(), "风暴") !=
-                            catalog_.at(formation.definition).tags.end()) {
+                        detail::stormTags(catalog_.at(formation.definition).tags)) {
                         formation.stormPoints += 2;
                         break;
                     }

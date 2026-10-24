@@ -1,5 +1,5 @@
 #include "wizard/application.hpp"
-#include "wizard/core/sique.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <set>
 using namespace wizard;
@@ -58,10 +58,10 @@ TEST_CASE("Alpha v2.5.3 current pool has unique executable identities and exclud
 }
 TEST_CASE("Alpha v2.5.3 fire damage classification is independent of school and validated as a spell", "[alpha-v253][content]") {
     const auto cat = currentCatalog();
-    REQUIRE(sique::fireSpell(cat.at("sique-backfire")));
+    REQUIRE(card_rules::isFireSpell(cat.at("sique-backfire")));
     auto classified = cat.at("sique-backfire"); classified.school = "transmutation";
-    REQUIRE(sique::fireSpell(classified));
-    REQUIRE_FALSE(sique::fireSpell(cat.at("sique-cauldron")));
+    REQUIRE(card_rules::isFireSpell(classified));
+    REQUIRE_FALSE(card_rules::isFireSpell(cat.at("sique-cauldron")));
     auto data = readCatalogJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     for (auto &card : data["cards"]) if (card["id"] == "hexagram") {
         card["traits"] = Json::array({"fire_damage_spell"});

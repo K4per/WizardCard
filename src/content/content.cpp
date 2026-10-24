@@ -129,10 +129,30 @@ std::vector<Effect> effects(const Json &j, const std::string &path) {
         {"arcana_devil", EffectKind::ArcanaDevil},
         {"arcana_tower", EffectKind::ArcanaTower},
         {"arcana_world", EffectKind::ArcanaWorld},
+        {"change_life_limit", EffectKind::ChangeLifeLimit},
+        {"blood_pact_damage", EffectKind::BloodDamage},
+        {"blood_pact_search", EffectKind::BloodSearch},
+        {"blood_pact_clot", EffectKind::BloodClot},
+        {"blood_heart_seal", EffectKind::BloodHeartSeal},
+        {"blood_tube", EffectKind::BloodTube},
+        {"seven_stars_awakening", EffectKind::SevenAwakening},
+        {"seven_stars_insight", EffectKind::SevenInsight},
+        {"seven_stars_shift", EffectKind::SevenShift},
+        {"seven_stars_ruin", EffectKind::SevenRuin},
+        {"seven_stars_gaze", EffectKind::SevenGaze},
+        {"seven_stars_return", EffectKind::SevenReturn},
         {"clear_any_load", EffectKind::ClearAnyLoad}};
     for (const auto &e : j) {
         const auto p = path + "/" + std::to_string(n++);
-        Effect effect{enumeration(text(e, "kind", p), names, p + "/kind"), number(e, "amount", p)};
+        const auto kind = enumeration(text(e, "kind", p), names, p + "/kind");
+        int amount = 0;
+        if (kind == EffectKind::ChangeLifeLimit) {
+            if (!e.contains("amount") || !e["amount"].is_number_integer() ||
+                e["amount"].get<std::int64_t>() < -1000 || e["amount"].get<std::int64_t>() > 1000)
+                fail(p + "/amount", "expected signed life limit change in [-1000,1000]");
+            amount = e["amount"].get<int>();
+        } else amount = number(e, "amount", p);
+        Effect effect{kind, amount};
         effect.damageType = damageType(e.value("damageType", std::string("force")), p + "/damageType");
         effect.recipient =
             enumeration(e.value("recipient", std::string("target")),
@@ -168,7 +188,7 @@ void writeJson(const std::filesystem::path &p, const Json &j) {
 CardCatalog parseCatalog(const Json &j, const std::string &source) {
     CardCatalog cat;
     const auto revision = number(j, "mechanicsRevision", source);
-    if (revision > 7)
+    if (revision > 8)
         fail(source + "/mechanicsRevision", "unsupported mechanics revision");
     cat.advancedRules = revision >= 1;
     cat.mechanicsRevision = revision;
@@ -262,7 +282,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 {"mana", RecipeCostKind::Mana},
                 {"sacrifice_formation", RecipeCostKind::SacrificeFormation},
                 {"sacrifice_spell", RecipeCostKind::SacrificeSpell},
-                {"discard_hand", RecipeCostKind::DiscardHand}};
+                {"discard_hand", RecipeCostKind::DiscardHand}, {"life", RecipeCostKind::Life}};
             for (const auto &row : card.at("recipe")) {
                 const auto rp = p + "/recipe/" + std::to_string(d.recipe.size());
                 RecipeCost cost;
@@ -363,7 +383,12 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 "opponent_spell_load_4", "sique_campfire_only", "max_two", "quick_host_analysis_1", "quick_host_analysis_2", "moon",
                 "destroy_enemy_ambush_end", "arcana_fool_condition", "arcana_priestess_cost",
                 "arcana_emperor_cost", "arcana_chariot", "arcana_strength", "arcana_hanged_cost",
-                "arcana_death", "arcana_temperance", "arcana_devil"};
+                "arcana_death", "arcana_temperance", "arcana_devil",
+                "blood_altar", "blood_curse", "blood_heart", "blood_heartmark", "blood_last_stand",
+                "blood_mark", "blood_offering_cost", "blood_pool", "blood_sacrifice_reward",
+                "blood_same_origin", "blood_transfusion", "blood_vein", "blood_wrist_cost",
+                "seven_stars_banner", "seven_stars_effect_only", "seven_stars_kaiyang",
+                "seven_stars_lamp", "seven_stars_yaoguang"};
             if (!card.at("traits").is_array())
                 fail(p + "/traits", "expected trait array");
             for (const auto &value : card.at("traits")) {
@@ -527,6 +552,10 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         std::vector<std::string> clauses;
         if (formation.cost) clauses.push_back("支付" + std::to_string(formation.cost) + "魔素");
         for (const auto &cost : formation.recipe) {
+            if (cost.kind == RecipeCostKind::Life) {
+                clauses.push_back("支付" + std::to_string(cost.amount) + "普通生命");
+                continue;
+            }
             if (cost.kind == RecipeCostKind::Mana) {
                 clauses.push_back("支付" + std::to_string(cost.amount) + "魔素");
                 continue;

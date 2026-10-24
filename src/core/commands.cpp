@@ -1,5 +1,6 @@
 #include "engine_internal.hpp"
-#include "wizard/core/sique.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
@@ -32,8 +33,8 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
         // Shatter Ring chooses its empty formation when it is released. The
         // preparation announcement only opens the response window and must not
         // capture a target that has no effect yet.
-        if (catalog_.usesAlphaV252() && def.id == "unravel") {
-            if (cmd.target || !cmd.targets.empty()) return "target: 碎环术在发动时选择目标";
+        if (catalog_.usesCardRules() || (catalog_.usesAlphaV252() && def.id == "unravel")) {
+            if (cmd.target || !cmd.targets.empty()) return "target: 解析法术在发动时选择目标";
         } else if (!validTargets(s, def.target, def.targetCount, actor, cmd.target, cmd.targets)) {
             return "target: 无效目标";
         }
@@ -51,7 +52,7 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
             for (const auto &link : s.chain->links)
                 if (link.kind == LinkKind::Preparation && link.item.source == cmd.card) return "not_ready";
         ChainLink root; root.kind = LinkKind::Preparation; root.item = snapshot(c, def);
-        if (catalog_.usesAlphaV252() && def.id == "unravel") root.item.target = TargetKind::None;
+        if (catalog_.usesCardRules() || (catalog_.usesAlphaV252() && def.id == "unravel")) root.item.target = TargetKind::None;
         root.item.effects.clear(); root.item.requiresSource = true; root.speed = def.speed;
         if (deferred) s.deferredPreparations.push_back(std::move(root));
         else startChain(ResponseWindow::Prepare, std::move(root), 1 - s.active);
@@ -116,7 +117,7 @@ std::vector<PrepareCast> GameEngine::preparationsFor(PlayerId actor, DecisionId 
             std::vector<CardId> discards{0};
             if (def.extraDiscard)
                 discards = inZone(state_, actor, Zone::Hand);
-            const auto targetSets = catalog_.usesAlphaV252() && def.id == "unravel"
+            const auto targetSets = catalog_.usesCardRules() || (catalog_.usesAlphaV252() && def.id == "unravel")
                 ? std::vector<std::vector<CardId>>{{}} : sets(state_, def.target, def.targetCount, actor);
             for (const auto &targets : targetSets)
                 for (auto discard : discards) {
@@ -163,6 +164,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         return {};
     }
     if (std::holds_alternative<SelectInitialFormation>(command)) return "opening_finished: 开局选择已经结束";
+    if (auto payment = paymentForCardRules(actor, command)) return *payment;
     if (s.decision) {
         const auto d = *s.decision;
         if (actor != d.player)
@@ -218,7 +220,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                          : a.preloadedCost +
                              (def.type == CardType::Word ? Rules::castCost(s, catalog_, c.id) - def.cost : 0);
             const int bound = catalog_.usesAlphaV2() ? paid : analytic || def.type == CardType::Word ? paid : 0;
-            sique::pay(s, actor, paid, &catalog_);
+            card_rules::pay(s, actor, paid, &catalog_);
             StateMaintenance::check(s, catalog_);
             if (s.result != -1) return {};
             if (r->discard)
@@ -399,10 +401,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                 std::vector<CardId> options;
                 for (const auto &[id, card] : s.cards)
                     if (card.owner == actor && card.zone == Zone::Ash &&
-                        catalog_.at(card.definition).type != CardType::Formation &&
-                        std::find(catalog_.at(card.definition).tags.begin(),
-                                  catalog_.at(card.definition).tags.end(), "风暴") !=
-                            catalog_.at(card.definition).tags.end())
+                        (catalog_.usesCardRules() || catalog_.at(card.definition).type != CardType::Formation) &&
+                        detail::stormTags(catalog_.at(card.definition).tags))
                         options.push_back(id);
                 if (!options.empty()) decision(actor, DecisionKind::StormHeartRecover, std::move(options));
             }
@@ -410,8 +410,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         case DecisionKind::StormHeartRecover: {
             auto &deck = s.players[actor].deck;
             auto &card = s.cards.at(opt);
-            card.zone = Zone::Deck;
-            deck.push_back(opt);
+            if (catalog_.usesCardRules()) card_rules::returnCard(s, catalog_, opt, false);
+            else { card.zone = Zone::Deck; deck.push_back(opt); }
             for (std::size_t size = deck.size(); size > 1; --size)
                 std::swap(deck[size - 1], deck[bounded(s, static_cast<std::uint32_t>(size))]);
             s.events.push_back({"recover", "将一张风暴卡放回牌库并洗切", actor, opt});
@@ -450,7 +450,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             auto &c = s.cards.at(source);
             if (opt) {
                 const int paid = Rules::concentrationUpkeep(s, catalog_, source);
-                sique::pay(s, actor, paid, &catalog_);
+                card_rules::pay(s, actor, paid, &catalog_);
                 c.castLoad += paid;
                 c.payments.push_back({s.players[actor].ownTurn, paid, paid, false});
                 ResourceRules::increasedLoad(s, catalog_, actor, paid);

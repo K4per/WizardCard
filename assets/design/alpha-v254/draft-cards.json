@@ -1,0 +1,9 @@
+{
+  "status": "draft",
+  "excludedFromCatalog": [
+    "ankh",
+    "inverted-cross",
+    "upright-cross"
+  ],
+  "reason": "10.24 source explicitly marks待定; empty effects are not finalized"
+}

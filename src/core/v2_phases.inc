@@ -1,6 +1,7 @@
 #include "engine_internal.hpp"
-#include "wizard/core/sique.hpp"
-#include "wizard/core/arcana.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <limits>
 namespace wizard {
@@ -99,7 +100,12 @@ bool GameEngine::phaseV2() {
                     return load.owner == s.active && !load.independent && !load.sourceBound && !endExpiry;
                 }), s.temporary.end());
                 s.events.push_back({"temporary_load_cleared", "抽牌阶段清除临时荷载", -1});
-                if (catalog_.usesAlphaV252()) ResourceRules::expireTemporaryLife(s, s.active);
+                if (catalog_.usesAlphaV252()) {
+                    const int temporaryBefore = pl.temporaryLife;
+                    ResourceRules::expireTemporaryLife(s, s.active);
+                    if (catalog_.usesCardRules())
+                        card_rules::expiredLife(s, catalog_, s.active, temporaryBefore - pl.temporaryLife);
+                }
                 else pl.temporaryLife = 0;
                 s.events.push_back({"temporary_life_cleared", "抽牌阶段清除到期临时生命", -1});
             }
@@ -190,7 +196,7 @@ bool GameEngine::phaseV2() {
                 s.maintenanceSource = next.id;
                 const int fee = Rules::concentrationUpkeep(s, catalog_, next.id);
                 std::vector<std::uint32_t> options;
-                if (sique::canPay(s, s.active, fee, &catalog_)) options.push_back(next.id);
+                if (card_rules::canPay(s, s.active, fee, &catalog_)) options.push_back(next.id);
                 decision(s.active, DecisionKind::Concentration, std::move(options), true);
                 return false;
             }
@@ -202,7 +208,7 @@ bool GameEngine::phaseV2() {
                 for (const auto &[id, card] : s.cards)
                     if (card.owner == s.active && card.zone == Zone::Analysis && !card.faceDown &&
                         card.spell == SpellState::Analyzing) analyzing.push_back(id);
-                for (auto id : analyzing) arcana::advance(s, catalog_, id, 1);
+                for (auto id : analyzing) card_rules::advanceAnalysis(s, catalog_, id, 1);
                 ++s.phaseCursor; return true;
             }
             for (auto &[id, card] : s.cards)

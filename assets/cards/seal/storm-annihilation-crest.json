@@ -1,6 +1,6 @@
 {
   "id": "storm-annihilation-crest",
-  "name": "恒风·湮灭之纹章",
+  "name": "风契·湮灭之纹章",
   "type": "seal",
   "rarity": "rare",
   "cost": 2,
@@ -9,14 +9,14 @@
   "speed": 1,
   "castCost": 0,
   "damageBonus": 4,
-  "text": "仅可附着于【恒风】卡。 附着于阵法：附着时，可以移除2个【恒风指示物】，销毁对方场上1张空白阵法卡。 附着于法术：额外造成4点雷鸣伤害。",
+  "text": "仅可附着于【风契】卡。 附着于阵法卡：附着时，可以移除2个【风契指示物】，销毁对方场上1张空白阵法卡。 附着于法术卡：额外造成4点雷鸣伤害。",
   "traits": [
     "storm_formation_host_restriction",
     "thunder_damage_bonus",
     "activate_storm_crest_destroy"
   ],
   "tags": [
-    "风暴"
+    "风契"
   ],
   "number": "050005",
   "illustrationId": "storm-annihilation-crest"

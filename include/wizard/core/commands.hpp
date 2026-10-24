@@ -108,7 +108,8 @@ enum class DecisionKind {
     ClearAnyLoad,
     StormSearch,
     StormHeartChoice,
-    StormHeartRecover
+    StormHeartRecover,
+    Payment
 };
 struct PendingDecision {
     DecisionId id{};

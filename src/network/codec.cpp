@@ -18,7 +18,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLoad, id, owner, source, amount, exp
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLife, id, owner, source, amount, expiryOwnTurn, acquiredTurn, acquiredPhase)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PlayerView, life, mana, load, capacity, handCount, deckCount, ownTurn,
                                    actionsPlayed, temporaryLife, blockedActionTurn, resistances, immunities,
-                                   sideDeckCount, exhaustion)
+                                   sideDeckCount, exhaustion, lifeLimit, sevenMode)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MatchClockView, enabled, running, remainingMs, runningPlayers, runningPlayer, sequence)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PendingDecision, id, player, kind, options, mayPass)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Trigger, id, batch, owner, source, targetCard, targetPlayer, effects,

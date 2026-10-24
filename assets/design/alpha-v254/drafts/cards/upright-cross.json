@@ -1,0 +1,32 @@
+{
+  "id": "upright-cross",
+  "name": "正十字（待定）",
+  "type": "formation",
+  "rarity": "uncommon",
+  "level": 3,
+  "body": 1,
+  "rings": 2,
+  "capacity": 5,
+  "income": 0,
+  "maxRank": 3,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "",
+  "summonCondition": "解析完成的死灵法术卡×1＋魔素×1",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 1
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "school": "necromancy"
+    }
+  ],
+  "traits": [
+    "host_heal_plus_one"
+  ],
+  "number": "010008",
+  "illustrationId": "v2-upright-cross"
+}

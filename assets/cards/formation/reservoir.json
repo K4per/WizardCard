@@ -23,7 +23,7 @@
       "amount": 2
     }
   ],
-  "summonCondition": "手卡×2。",
+  "summonCondition": "手卡×2",
   "number": "010001",
   "illustrationId": "reservoir"
 }

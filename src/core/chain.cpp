@@ -1,6 +1,6 @@
 #include "engine_internal.hpp"
-#include "wizard/core/sique.hpp"
-#include "wizard/core/arcana.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
@@ -92,8 +92,8 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
     const auto &c = i->second;
     const auto &d = catalog_.at(c.definition);
     auto a = ability(d, cmd.ability);
-    if (!sique::activationAllowed(s, catalog_, actor, d) ||
-        (d.id == "sique-aroma-lure" && !sique::hasFormation(s, actor, "sique-cauldron")))
+    if (!card_rules::activationAllowed(s, catalog_, actor, d) ||
+        (d.id == "sique-aroma-lure" && !card_rules::hasFormation(s, actor, "sique-cauldron")))
         return "sique_activation_restriction";
     if (!a)
         return "ability: 未声明该响应能力";
@@ -152,7 +152,7 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
                  l->kind != (catalog_.usesAlphaV252() ? LinkKind::Setup : LinkKind::Preparation) ||
                  catalog_.at(s.cards.at(l->item.source).definition).type != CardType::Analytic))
                 return "target: 风击术只能响应对方设置解析法术";
-            if (d.id == "sique-boiling-surge" && !sique::threatensFormation(s, catalog_, *l, actor))
+            if (d.id == "sique-boiling-surge" && !card_rules::threatensFormation(s, catalog_, *l, actor))
                 return "target: 沸汤滚袭只能响应销毁己方味契阵法的法术";
             if (std::any_of(a->effects.begin(), a->effects.end(), [](const Effect &effect) {
                     return effect.kind == EffectKind::ReduceSpellDamage;
@@ -185,7 +185,7 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
             ? a->handCost
             : a->preloadedCost + (d.type == CardType::Word ? Rules::castCost(s, catalog_, c.id) - d.cost : 0);
     const int bound = catalog_.usesAlphaV2() ? paid : analytic || d.type == CardType::Word ? paid : 0;
-    if (paid < 0 || a->burden < 0 || !sique::canPay(s, actor, paid, &catalog_) ||
+    if (paid < 0 || a->burden < 0 || !card_rules::canPay(s, actor, paid, &catalog_) ||
         (!catalog_.usesAlphaV2() && !s.players[actor].debugInfiniteLoad && Rules::load(s, actor) + bound + a->burden > Rules::capacity(s, catalog_, actor)))
         return "cost: 魔素或荷载空间不足";
     return {};
@@ -195,14 +195,20 @@ std::vector<Respond> GameEngine::responsesFor(PlayerId p, DecisionId decisionId)
     const auto &s = state_;
     if (!s.chain || s.chain->mode != ChainMode::Building || s.chain->priority != p)
         return out;
+    const auto legalResponse = [&](const Respond &r) {
+        if (!catalog_.usesCardRules()) return validateResponse(p, r).empty();
+        auto trial = *this;
+        trial.state_.decision = PendingDecision{decisionId, p, DecisionKind::Response, {}, true};
+        return trial.execute(p, r).empty();
+    };
     if (catalog_.usesAlphaV252()) {
         for (const auto &[id, card] : s.cards) {
             const auto &definition = catalog_.at(card.definition);
             if (card.owner != p || card.faceDown || card.zone != Zone::Casting || card.spell != SpellState::Ready ||
                 definition.responseOnly) continue;
-            const auto targetSets = sique::detachCost(definition) ? sique::detachOptions(s, catalog_, p, definition)
+            const auto targetSets = card_rules::detachCost(definition) ? card_rules::detachOptions(s, catalog_, p, definition)
                 : sets(s, definition.target, definition.targetCount, p);
-            std::vector<CardId> discards = arcana::costOptions(s, catalog_, p, id);
+            std::vector<CardId> discards = card_rules::costOptions(s, catalog_, p, id);
             if (std::find(definition.traits.begin(), definition.traits.end(), "discard_spell_search") !=
                 definition.traits.end()) {
                 discards.clear();
@@ -210,9 +216,9 @@ std::vector<Respond> GameEngine::responsesFor(PlayerId p, DecisionId decisionId)
                     if (discard != id && candidate.owner == p && candidate.zone == Zone::Hand) discards.push_back(discard);
             }
             for (const auto &targets : targetSets) for (auto discard : discards) {
-                const auto target = sique::detachCost(definition) || targets.empty() ? 0 : targets.front();
+                const auto target = card_rules::detachCost(definition) || targets.empty() ? 0 : targets.front();
                 Respond response{decisionId, id, "__activate_spell", target, 0, discard, targets};
-                if (validateResponse(p, response).empty()) out.push_back(std::move(response));
+                if (legalResponse(response)) out.push_back(std::move(response));
             }
         }
     }
@@ -242,7 +248,7 @@ std::vector<Respond> GameEngine::responsesFor(PlayerId p, DecisionId decisionId)
                         for (auto discard : discards) {
                             Respond r{decisionId, id,      a.id, ids.empty() ? 0 : ids.front(),
                                       link,       discard, ids};
-                            if (validateResponse(p, r).empty())
+                            if (legalResponse(r))
                                 out.push_back(std::move(r));
                         }
             }
@@ -282,13 +288,12 @@ void GameEngine::finishLink(bool success) {
                     c.zone == Zone::Resolving)) {
             if (success) {
                 if (catalog_.usesAlphaV2() && d.type != CardType::Formation &&
-                    std::find(d.tags.begin(), d.tags.end(), "风暴") != d.tags.end()) {
+                    detail::stormTags(d.tags)) {
                     for (auto &[formationId, formation] : s.cards) {
                         const auto &formationDefinition = catalog_.at(formation.definition);
                         if (formation.owner != c.owner || formation.zone != Zone::Analysis ||
                             formationDefinition.type != CardType::Formation ||
-                            std::find(formationDefinition.tags.begin(), formationDefinition.tags.end(), "风暴") ==
-                                formationDefinition.tags.end())
+                            !detail::stormTags(formationDefinition.tags))
                             continue;
                         ++formation.stormPoints;
                         for (auto &[sealId, seal] : s.cards)

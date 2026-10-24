@@ -44,6 +44,7 @@ var _force_dialog: ConfirmationDialog
 var _reconnect: Button
 var _end_phase: Button
 var _phase_selector: PhaseSelector
+var _response_mode: OptionButton
 var _hand_button: Button
 var _status_own: PlayerStatusBar
 var _status_opponent: PlayerStatusBar
@@ -93,6 +94,16 @@ func _ready() -> void:
 	_phase_selector = PhaseSelector.new()
 	add_child(_phase_selector)
 	_phase_selector.action_chosen.connect(_choose_phase_action)
+	_response_mode = OptionButton.new()
+	_response_mode.name = "ResponseMode"
+	_response_mode.add_theme_font_size_override(&"font_size", 13)
+	_response_mode.add_item("全时点", ResponseTiming.Mode.ALL)
+	_response_mode.add_item("自动时点", ResponseTiming.Mode.AUTO)
+	_response_mode.add_item("忽略时点", ResponseTiming.Mode.IGNORE)
+	_response_mode.select(ResponseTiming.Mode.AUTO)
+	_response_mode.tooltip_text = "全时点：每个可放弃响应的时点都询问。\n自动时点：有合法响应时询问，否则自动放弃。\n忽略时点：自动放弃可放弃的响应，直到切换模式。\n强制效果选择仍须完成。"
+	_response_mode.item_selected.connect(_response_mode_changed)
+	add_child(_response_mode)
 	_hand_button = %HandToggle
 	_status_own = %OwnStatus
 	_status_opponent = %OpponentStatus
@@ -205,6 +216,26 @@ func _position_phase_button() -> void:
 	_end_phase.size = Vector2(width, maxf(34, casting.size.y))
 	_phase.size = Vector2(width, 88)
 	_phase.position = Vector2(_end_phase.position.x, maxf(8, _end_phase.position.y - _phase.size.y - 8))
+	_response_mode.size = Vector2(width, 32)
+	_response_mode.position = Vector2(_phase.position.x, maxf(8, _phase.position.y - _response_mode.size.y - 6))
+
+func _current_response_mode() -> int:
+	return service.response_modes[service.match_viewer] if service != null and service.match_viewer >= 0 and service.match_viewer < service.response_modes.size() else ResponseTiming.Mode.AUTO
+
+func _response_mode_changed(index: int) -> void:
+	if service == null or service.match_viewer < 0 or service.match_viewer >= service.response_modes.size():
+		return
+	service.response_modes[service.match_viewer] = index
+	var raw: Variant = service.match_snapshot.get("decision")
+	if raw is Dictionary and int((raw as Dictionary).get("kind", -1)) == 0:
+		_clear_action_targets()
+		_action_popup.hide()
+		_detail.hide()
+		if not _pending.is_empty():
+			_confirm.close_popup()
+			_cancel_pending()
+	_render_decision()
+	_schedule_automatic()
 
 func _build_dialogs() -> void:
 	_confirm = %ConfirmAction
@@ -220,6 +251,8 @@ func _build_privacy() -> void:
 	_privacy_title = %PrivacyTitle
 	%Reveal.pressed.connect(_reveal)
 	_privacy_layer.hide()
+	_response_mode.show()
+	_response_mode.select(_current_response_mode())
 
 func _build_decision() -> void:
 	_shade = %DecisionShade
@@ -507,6 +540,8 @@ func _refresh() -> void:
 	canvas.focus_mode = Control.FOCUS_ALL
 	canvas.set_privacy(false)
 	_privacy_layer.hide()
+	_response_mode.show()
+	_response_mode.select(_current_response_mode())
 	var keep_selection: CardPresentation = null
 	if not preserved_id.is_empty():
 		keep_selection = MatchProjection.card(snapshot, preserved_id)
@@ -521,9 +556,11 @@ func _refresh() -> void:
 	_collection.hide()
 	_action_popup.hide()
 	_global_popup_open = false
-	var actor: int = int(snapshot.get("actingPlayer", 0))
+	var actor: int = int(snapshot.get("activePlayer", 0))
 	var phase: String = str(snapshot.get("phaseName", ""))
-	_phase.text = "第 %s 回合\n玩家 %d · %s" % [str(snapshot.get("globalTurn", "0")), actor + 1, phase]
+	var players: Array = snapshot.get("players", [])
+	var own_turn: String = str((players[actor] as Dictionary).get("ownTurn", "0")) if actor >= 0 and actor < players.size() else "0"
+	_phase.text = "第 %s 个己方回合\n玩家 %d · %s" % [own_turn, actor + 1, phase]
 	_clock_received = Time.get_ticks_msec()
 	_update_status()
 	_hand_button.text = "▴ 手牌" if canvas.hand_collapsed else "▾ 手牌"
@@ -975,6 +1012,11 @@ func _zone_clicked(kind: String, owner: int) -> void:
 func _open_collection(kind: String, owner: int) -> void:
 	if kind == "side_deck" and owner != service.match_viewer:
 		return
+	# Collections and mandatory choices share one tray. A collapsed rule choice
+	# still owns that tray: replacing its request would discard Confirm/Pass.
+	if service.match_snapshot.get("decision") is Dictionary or bool(service.match_snapshot.get("opening", false)):
+		_notice.text = "请先完成当前响应或选择。"
+		return
 	_clear_card()
 	_collection_kind = kind
 	var request: DecisionPresentation = DecisionPresentation.new()
@@ -1036,6 +1078,7 @@ func _collapse_tray() -> void:
 
 func _render_decision() -> void:
 	var snapshot: Dictionary = service.match_snapshot
+	_tray_action_groups.clear()
 	var raw: Variant = snapshot.get("decision")
 	if not raw is Dictionary or int(snapshot.get("result", -1)) != -1:
 		_decision.hide()
@@ -1045,6 +1088,11 @@ func _render_decision() -> void:
 	if int(decision.get("player", -1)) != service.match_viewer:
 		_decision.hide()
 		_shade.hide()
+		return
+	if not ResponseTiming.pass_action(snapshot, _current_response_mode()).is_empty():
+		_decision.hide()
+		_shade.hide()
+		_restore_tray_hand()
 		return
 	if int(decision.get("kind", -1)) == 12:
 		_render_return_selection(decision)
@@ -1058,7 +1106,7 @@ func _render_decision() -> void:
 	request.response_mode = kind == 0
 	request.docked = true
 	request.title = "%s · 玩家 %d" % [kinds[kind] if kind >= 0 and kind < kinds.size() else "请选择", service.match_viewer + 1]
-	request.description = "点击合法响应卡立即操作，或选择不响应。" if request.response_mode else "选择一项操作，再确认。目标和所需材料会显示在卡牌说明中。"
+	request.description = "选择合法响应卡并确认，或放弃响应。" if request.response_mode else "选择一项操作，再确认。目标和所需材料会显示在卡牌说明中。"
 	request.may_cancel = false
 	var response_sources: Dictionary[String, String] = {}
 	for action: Dictionary in snapshot.get("actions", []):
@@ -1321,6 +1369,7 @@ func _cover(next_viewer: int) -> void:
 	_privacy_title.text = "请将设备交给玩家 %d" % [next_viewer + 1] if next_viewer >= 0 else "正在确认下一位玩家"
 	_decision.hide()
 	_shade.hide()
+	_response_mode.hide()
 
 func _reveal() -> void:
 	if _pending_viewer < 0:
@@ -1330,25 +1379,27 @@ func _reveal() -> void:
 	_refresh()
 
 func _schedule_automatic() -> void:
-	if _auto_busy or _pending_viewer >= 0 or _privacy_layer.visible or _decision.visible or _tray_suspended or not _target_actions.is_empty():
+	if _auto_busy or _pending_viewer >= 0 or _privacy_layer.visible or _decision.visible or _tray_suspended or not _target_actions.is_empty() or _network_waiting or not _pending.is_empty():
 		return
 	var snapshot: Dictionary = service.match_snapshot
 	if int(snapshot.get("result", -1)) != -1 or bool(snapshot.get("paused", false)):
 		return
-	if bool(snapshot.get("aiTurn", false)) or snapshot.get("automaticAction") is String:
+	if bool(snapshot.get("aiTurn", false)) or snapshot.get("automaticAction") is String or not ResponseTiming.pass_action(snapshot, _current_response_mode()).is_empty():
 		_auto_busy = true
 		_automatic_step.call_deferred(str(snapshot.get("generation", "")), str(snapshot.get("revision", "")))
 
 func _automatic_step(generation: String, revision: String) -> void:
-	await get_tree().create_timer(0.3).timeout
+	var response_pass: bool = not ResponseTiming.pass_action(service.match_snapshot, _current_response_mode()).is_empty()
+	await get_tree().create_timer(0.1 if response_pass else 0.3).timeout
 	_auto_busy = false
-	if not is_inside_tree() or _privacy_layer.visible or service.match_snapshot.get("generation") != generation or service.match_snapshot.get("revision") != revision:
+	if not is_inside_tree() or _privacy_layer.visible or _network_waiting or not _pending.is_empty() or bool(service.match_snapshot.get("paused", false)) or (service.match_mode == "network" and bool(service.network_state.get("blocked", false))) or service.match_snapshot.get("generation") != generation or service.match_snapshot.get("revision") != revision:
 		return
 	var snapshot: Dictionary = service.match_snapshot
 	if bool(snapshot.get("aiTurn", false)):
 		_apply_result(service.match_request(&"step_ai", [generation, revision]))
 	else:
-		var id: String = str(snapshot.get("automaticAction", ""))
+		var pass_choice: Dictionary = ResponseTiming.pass_action(snapshot, _current_response_mode())
+		var id: String = str(pass_choice.get("id", "")) if not pass_choice.is_empty() else (str(snapshot["automaticAction"]) if snapshot.get("automaticAction") is String else "")
 		if id.is_empty():
 			return
 		var selected: Dictionary = service.match_request(&"select_action", [service.match_viewer, id, generation, revision])

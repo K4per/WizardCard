@@ -2,6 +2,10 @@
 #include "wizard/core/engine.hpp"
 #include <algorithm>
 namespace wizard::detail {
+inline bool stormTags(const std::vector<std::string> &tags) {
+    return std::find(tags.begin(), tags.end(), "风契") != tags.end() ||
+           std::find(tags.begin(), tags.end(), "风暴") != tags.end();
+}
 std::uint32_t random32(GameState &);
 std::uint32_t bounded(GameState &, std::uint32_t);
 std::vector<CardId> inZone(const GameState &, PlayerId, Zone);
@@ -32,7 +36,7 @@ inline bool hasStormFormation(const GameState &state, const CardCatalog &catalog
             catalog.at(card.definition).type != CardType::Formation)
             return false;
         const auto &tags = catalog.at(card.definition).tags;
-        return std::find(tags.begin(), tags.end(), "风暴") != tags.end();
+        return detail::stormTags(tags);
     });
 }
 inline bool greatStormLocksAnalysis(const GameState &state, const CardCatalog &, PlayerId owner) {

@@ -1,6 +1,7 @@
 #include "wizard/core/engine.hpp"
-#include "wizard/core/sique.hpp"
-#include "wizard/core/arcana.hpp"
+#include "engine_internal.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
@@ -30,6 +31,16 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
         const auto &d = *s.decision;
         if (d.player != p)
             return out;
+        if (d.kind == DecisionKind::Payment && s.payment) {
+            for (std::size_t index = 0; index < s.payment->choices.size(); ++index) {
+                const auto &choice = s.payment->choices[index];
+                const auto label = "支付 " + std::to_string(choice.mana) + " 魔素 / " +
+                    std::to_string(choice.life) + (choice.lifePlayer == p ? " 己方生命" : " 对方生命");
+                add(label, 0, 0, Choose{d.id, static_cast<CardId>(index + 1)});
+            }
+            add("取消支付", 0, 0, Choose{d.id, 0});
+            return out;
+        }
         if (d.kind == DecisionKind::Response) {
             if (catalog_.usesAlphaV2()) {
                 auto setups = responseSetupsV2(p, d.id);
@@ -188,10 +199,10 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             if (card.owner != p) continue;
             const auto &def = catalog_.at(card.definition);
             const auto name = def.name + " #" + std::to_string(id);
-            const auto activationSets = sique::detachCost(def) ? sique::detachOptions(s, catalog_, p, def) : targets(def);
+            const auto activationSets = card_rules::detachCost(def) ? card_rules::detachOptions(s, catalog_, p, def) : targets(def);
             const auto activationLabel = [&](const std::vector<CardId> &costs) {
                 std::string label;
-                if (sique::detachCost(def)) for (auto cost : costs)
+                if (card_rules::detachCost(def)) for (auto cost : costs)
                     label += "；拆卸 " + catalog_.at(s.cards.at(cost).definition).name + " #" + std::to_string(cost);
                 return label;
             };
@@ -204,8 +215,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                     const bool spell = candidateDefinition.type == CardType::Analytic ||
                         candidateDefinition.type == CardType::Word || candidateDefinition.type == CardType::Talisman;
                     return candidate.zone == Zone::Deck && spell &&
-                        std::find(candidateDefinition.tags.begin(), candidateDefinition.tags.end(), "风暴") !=
-                            candidateDefinition.tags.end();
+                        detail::stormTags(candidateDefinition.tags);
                 });
                 if (canSearch)
                     add("发动风暴纹章能力 " + name, id, 0, ActivateAbility{id, 0, "storm_search"});
@@ -214,7 +224,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                 card.stormAbilityTurn != s.players[p].ownTurn &&
                 std::find(def.traits.begin(), def.traits.end(), "activate_storm_heart_choice") != def.traits.end())
                 add("发动风暴之心能力 " + name, id, 0, ActivateAbility{id, 0, "storm_heart_choice"});
-            std::vector<CardId> spellCosts = arcana::costOptions(s, catalog_, p, id);
+            std::vector<CardId> spellCosts = card_rules::costOptions(s, catalog_, p, id);
             if (std::find(def.traits.begin(), def.traits.end(), "discard_spell_search") != def.traits.end()) {
                 spellCosts.clear();
                 for (const auto &[material, candidate] : s.cards)
@@ -226,7 +236,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             if (card.zone == Zone::SideDeck) {
                 int count = 0;
                 for (const auto &part : def.recipe)
-                    if (part.kind != RecipeCostKind::Mana) count += part.amount;
+                    if (part.kind != RecipeCostKind::Mana && part.kind != RecipeCostKind::Life) count += part.amount;
                 std::vector<CardId> pool, selected;
                 for (const auto &[materialId, material] : s.cards)
                     if (material.owner == p && (material.zone == Zone::Analysis || material.zone == Zone::Casting ||
@@ -263,7 +273,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                         add("盖伏 " + name, id, host, SetAmbush{id, host});
                         add("设置解析法术 " + name, id, host, StartAnalysis{id, host});
                         for (const auto &ids : activationSets) {
-                            const auto target = sique::detachCost(def) || ids.empty() ? 0 : ids.front();
+                            const auto target = card_rules::detachCost(def) || ids.empty() ? 0 : ids.front();
                             for (auto cost : spellCosts)
                                 add("设置并发动 " + name + (cost ? "；弃置 #" + std::to_string(cost) : "") + activationLabel(ids), id, target, PreloadWord{id, true, host, target, ids, cost});
                         }
@@ -275,7 +285,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             if (card.faceDown || card.spell == SpellState::Ready) {
                 // Shatter Ring has no meaningful target during preparation;
                 // choose the empty enemy formation when it is released.
-                const auto prepareTargets = def.id == "unravel"
+                const auto prepareTargets = catalog_.usesCardRules() || def.id == "unravel"
                     ? std::vector<std::vector<CardId>>{{}}
                     : targets(def);
                 for (const auto &ids : prepareTargets) {
@@ -286,7 +296,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                     }
                 }
                 for (const auto &ids : activationSets) {
-                    const auto target = sique::detachCost(def) || ids.empty() ? 0 : ids.front();
+                    const auto target = card_rules::detachCost(def) || ids.empty() ? 0 : ids.front();
                     for (auto cost : spellCosts) {
                         if (card.faceDown && def.type != CardType::Analytic)
                             add("反转 " + name + activationLabel(ids), id, target, FlipAmbush{id, target, ids, 0, cost});

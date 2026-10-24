@@ -1,4 +1,5 @@
 #include "wizard/core/engine.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
@@ -54,6 +55,8 @@ GameView GameEngine::viewFor(PlayerId p) const {
     }
     for (int player = 0; player < 2; ++player) {
         v.players[player].exhaustion = state_.players[player].exhaustion;
+        v.players[player].lifeLimit = card_rules::lifeLimit(state_, catalog_, player);
+        v.players[player].sevenMode = card_rules::aspectMode(state_, catalog_, player);
         v.players[player].infiniteLife = state_.players[player].debugInfiniteLife;
         v.players[player].infiniteMana = state_.players[player].debugInfiniteMana;
         v.players[player].infiniteLoad = state_.players[player].debugInfiniteLoad;

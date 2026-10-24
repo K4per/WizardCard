@@ -1,6 +1,7 @@
 #include "wizard/core/rules.hpp"
-#include "wizard/core/sique.hpp"
-#include "wizard/core/arcana.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iomanip>
@@ -24,8 +25,8 @@ bool protectedFromCardEffect(const GameState &s, const CardCatalog &cat, CardId 
     const auto card = s.cards.find(id);
     if (card == s.cards.end()) return false;
     const auto &definition = cat.at(card->second.definition);
-    if (trait(definition, "effect_immune") || trait(definition, "effect_indestructible") ||
-        sique::protectedCampfire(s, id)) return true;
+    if (card_rules::effectImmune(s, cat, id) || trait(definition, "effect_immune") || trait(definition, "effect_indestructible") ||
+        card_rules::protectedFormation(s, id)) return true;
     if (!trait(definition, "great_storm")) return false;
     const auto host = s.cards.find(card->second.host ? card->second.host : card->second.sourceFormation);
     return host != s.cards.end() && host->second.zone == Zone::Analysis &&
@@ -53,18 +54,21 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
             if (host && trait(*host, "host_evocation_damage_plus_one") && source != s.cards.end() &&
                 cat.at(source->second.definition).school == "evocation") ++adjusted.amount;
             if (!cat.usesAlphaV253() && host && host->id == "sique-campfire" && source != s.cards.end() &&
-                sique::fireSpell(cat.at(source->second.definition)) && e.damageType == DamageType::Fire)
+                card_rules::isFireSpell(cat.at(source->second.definition)) && e.damageType == DamageType::Fire)
                 ++adjusted.amount;
         }
         int amount = Rules::damage(s, cat, p, adjusted);
+        if (card_rules::damageImmune(s, cat, p)) amount = 0;
         if (cat.usesAlphaV252() && s.players[p].nextDamageImmune && adjusted.amount > 0) {
             s.players[p].nextDamageImmune = false;
             s.events.push_back({"damage_prevented", "教皇：免疫本次伤害", -1, t.source});
         }
         const int shield = std::min(amount, s.players[p].temporaryLife);
         ResourceRules::absorbTemporaryLife(s, p, shield);
-        s.players[p].life -= amount - shield;
-        if (amount > 0 && e.damageType == DamageType::Fire) arcana::fireDamage(s, cat);
+        const int actualDamage = amount - shield;
+        s.players[p].life -= actualDamage;
+        card_rules::damaged(s, cat, p, t.source, actualDamage);
+        if (amount > 0 && e.damageType == DamageType::Fire) card_rules::onFireDamage(s, cat);
         break;
     }
     case EffectKind::AddTemporaryLife:
@@ -90,7 +94,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         break;
     case EffectKind::AccelerateAnalysis: {
         auto &c = s.cards.at(t.targetCard);
-        if (cat.usesAlphaV252()) arcana::advance(s, cat, c.id, std::max(1, e.amount));
+        if (cat.usesAlphaV252()) card_rules::advanceAnalysis(s, cat, c.id, std::max(1, e.amount));
         else {
             c.spell = SpellState::Ready;
             if (cat.usesAlphaV2() && !cat.usesAlphaV252()) c.analysisProgress = cat.at(c.definition).analysisTurns;
@@ -213,8 +217,9 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     }
     case EffectKind::Heal: {
         const auto *host = cat.usesAlphaV2() ? effectHost(s, cat, t) : nullptr;
-        s.players[p].life = std::min(maximumLife, s.players[p].life + e.amount +
-            (host && trait(*host, "host_heal_plus_one") ? 1 : 0));
+        const int amount = e.amount + (host && trait(*host, "host_heal_plus_one") ? 1 : 0);
+        if (cat.usesCardRules()) card_rules::heal(s, cat, p, amount, t.source);
+        else s.players[p].life = std::min(maximumLife, s.players[p].life + amount);
         break;
     }
     case EffectKind::GainMana: {

@@ -1,6 +1,6 @@
 #include "wizard/core/rules.hpp"
-#include "wizard/core/sique.hpp"
-#include "wizard/core/arcana.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
 #include "wizard/core/engine.hpp"
 #include <algorithm>
 #include <cstdlib>
@@ -76,7 +76,7 @@ int Rules::maxRank(const GameState &s, const CardCatalog &cat, CardId id) {
 int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, CardId host) {
     const auto &d = cat.at(s.cards.at(id).definition);
     const auto h = s.cards.find(host);
-    int discount = sique::attachedCount(s, s.cards.at(id).owner, "sique-sugar");
+    int discount = card_rules::attachedCount(s, s.cards.at(id).owner, "sique-sugar");
     if (cat.usesAlphaV2() && std::find(d.traits.begin(), d.traits.end(), "ash_evocation_discount") != d.traits.end())
         for (const auto &[cid, card] : s.cards) {
             const auto &definition = cat.at(card.definition);
@@ -101,10 +101,15 @@ int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
     const auto &d = cat.at(c.definition);
     int n = (d.type == CardType::Word || (cat.usesAlphaV2() && d.type == CardType::Talisman) ? d.cost : d.castCost)
-        - sique::attachedCount(s, c.owner, "sique-sugar");
+        - card_rules::attachedCount(s, c.owner, "sique-sugar");
     for (const auto &[sid, seal] : s.cards)
-        if (seal.zone == Zone::Attached && seal.host == id)
-            n += cat.at(seal.definition).castCostBonus;
+        if (seal.zone == Zone::Attached && seal.host == id) {
+            const auto &sealDefinition = cat.at(seal.definition);
+            n += sealDefinition.castCostBonus;
+            if (cat.usesCardRules() && sealDefinition.id == "qixing-banner" &&
+                d.type != CardType::Formation)
+                n -= 3;
+        }
     if (!cat.usesAlphaV252() && d.duration > 0)
         for (const auto &[sourceId, source] : s.cards) {
             const auto &sourceDefinition = cat.at(source.definition);
@@ -140,10 +145,10 @@ int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const 
             resistance |=
                 std::find(d.resistances.begin(), d.resistances.end(), e.damageType) != d.resistances.end();
         }
-    const int base = arcana::active(s, cat, "arcana_strength") ? e.amount * 2 : e.amount;
+    const int base = card_rules::hasActiveTrait(s, cat, "arcana_strength") ? e.amount * 2 : e.amount;
     const int resisted = resistance ? base / 2 : base;
     const int reduction = e.damageType == DamageType::Force ? s.players[p].forceDamageReduction : s.players[p].damageReduction;
-    const int amount = std::max(0, resisted - reduction - (cat.usesAlphaV252() ? 0 : 2 * sique::attachedCount(s, p, "sique-vinegar")));
+    const int amount = std::max(0, resisted - reduction - (cat.usesAlphaV252() ? 0 : 2 * card_rules::attachedCount(s, p, "sique-vinegar")));
     return s.players[p].siqueDamageCap > 0 ? std::min(amount, s.players[p].siqueDamageCap) : amount;
 }
 int Rules::occupied(const GameState &s, CardId host) {
@@ -186,7 +191,7 @@ bool Rules::canHost(const GameState &s, const CardCatalog &cat, CardId spell, Ca
         host->second.definition != "sique-campfire") return false;
     const auto &traits = cat.at(host->second.definition).traits;
     if (std::find(traits.begin(), traits.end(), "host_fire_only") != traits.end() &&
-        !sique::fireSpell(definition)) return false;
+        !card_rules::isFireSpell(definition)) return false;
     if (std::find(traits.begin(), traits.end(), "distinct_host_schools") != traits.end())
         for (const auto &[id, card] : s.cards)
             if (id != spell && card.host == formation && card.zone == Zone::Analysis && !card.faceDown &&
@@ -214,8 +219,11 @@ bool Rules::targetValid(const GameState &s, TargetKind kind, PlayerId p, CardId 
     if (kind == TargetKind::OwnAnalyzingSpell)
         return c.owner == p && c.zone == Zone::Analysis && !c.faceDown && c.spell == SpellState::Analyzing;
     if (kind == TargetKind::EmptyEnemyFormation)
-        return c.owner != p && c.zone == Zone::Analysis && c.spell == SpellState::None &&
-               occupied(s, target) == 0;
+        return c.owner != p && c.zone == Zone::Analysis && !c.faceDown && !c.host &&
+               c.spell == SpellState::None && occupied(s, target) == 0 &&
+               std::none_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+                   return entry.second.host == target && entry.second.zone == Zone::Attached;
+               });
     return kind == TargetKind::AnyCard || (kind == TargetKind::EnemyCard && c.owner != p) ||
            (kind == TargetKind::OwnCard && c.owner == p);
 }

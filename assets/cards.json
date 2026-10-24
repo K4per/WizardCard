@@ -1,8 +1,8 @@
 {
-  "rulesVersion": "2.5.3-hotfix.1",
-  "cardSetVersion": "2.5.3",
+  "rulesVersion": "2.5.4",
+  "cardSetVersion": "2.5.4",
   "baseLoadCapacity": 2,
-  "mechanicsRevision": 7,
+  "mechanicsRevision": 8,
   "cards": [
     {
       "id": "fireball",
@@ -117,7 +117,7 @@
       "cost": 1,
       "ringBonus": 1,
       "refundSetting": 1,
-      "text": "无特殊效果。 附着于阵法：环位+1。 附着于法术：发动时，获得其实际设置费用的魔素。",
+      "text": "附着于阵法：环位+1。 附着于法术：发动时，获得其实际设置费用的魔素。",
       "flavor": "闭合的圆，会把尚未散去的力量带回起点。",
       "speed": 1,
       "castCost": 0,
@@ -288,7 +288,7 @@
           "amount": 2
         }
       ],
-      "summonCondition": "手卡×2。",
+      "summonCondition": "手卡×2",
       "number": "010001",
       "illustrationId": "reservoir"
     },
@@ -299,7 +299,7 @@
       "type": "seal",
       "cost": 2,
       "incomeBonus": 2,
-      "text": "无特殊效果。 附着于阵法：魔素收入+2。 附着于法术：无效果。",
+      "text": "附着于阵法：魔素收入+2。 附着于法术：无效果。",
       "flavor": "聚能并非环。",
       "speed": 1,
       "castCost": 0,
@@ -367,7 +367,7 @@
     },
     {
       "id": "instantly-sleep",
-      "name": "昏昏入睡",
+      "name": "沉默术",
       "type": "analytic",
       "rarity": "uncommon",
       "cost": 3,
@@ -586,7 +586,7 @@
     },
     {
       "id": "engeas-four-point-star",
-      "name": "恩格亚斯四角星",
+      "name": "恩格亚斯之星",
       "type": "formation",
       "rarity": "epic",
       "cost": 0,
@@ -596,7 +596,7 @@
       "rings": 1,
       "maxRank": 3,
       "quickRankOne": true,
-      "text": "一回合一次，此阵法卡上设置的1阶解析法术卡立即解析完成。",
+      "text": "1回合1次，此阵法卡上设置的1阶解析法术卡立即解析完成。",
       "flavor": "贤者恩格亚斯发明的精简阵法，以快速聚能和快速释放闻名。",
       "castCost": 0,
       "rank": 0,
@@ -614,7 +614,7 @@
           "readyOnly": true
         }
       ],
-      "summonCondition": "3魔素+已解析的法术。",
+      "summonCondition": "解析完成的法术卡×1+魔素×3",
       "number": "010003",
       "illustrationId": "engeas-four-point-star"
     },
@@ -628,7 +628,7 @@
       "incomeBonus": -1,
       "castCostBonus": 1,
       "damageBonus": 2,
-      "text": "无特殊效果。 附着于阵法：阵法等级+1，环位+1，魔素收入-1。 附着于法术：发动费用+1，额外造成2点力场伤害。",
+      "text": "附着于阵法：阵法等级+1，环位+1，魔素收入-1。 附着于法术：发动费用+1，额外造成2点力场伤害。",
       "flavor": "沸腾的魔素是一把双刃剑。",
       "castCost": 0,
       "rank": 1,
@@ -1204,7 +1204,7 @@
     },
     {
       "id": "storm-crest",
-      "name": "恒风·风暴纹章",
+      "name": "风契·风暴纹章",
       "type": "formation",
       "rarity": "rare",
       "level": 1,
@@ -1215,7 +1215,7 @@
       "maxRank": 1,
       "cost": 0,
       "baseEligible": false,
-      "text": "此阵法卡在己方场上仅可存在1张。 此阵法卡的阵法属性由此阵法卡上存在的【恒风指示物】决定： 【恒风指示物】为0-2时：阵法等级为1，环位为1，荷载上限为5，魔素收入为1。 【恒风指示物】为3-4时：阵法等级为2，环位为2，荷载上限为8，魔素收入为1。 【恒风指示物】为5以上时，阵法等级为3，环位为3，荷载上限为10，魔素收入为2。 每发动1张【恒风】法术卡，此阵法卡获得1个【恒风指示物】。 一回合一次，移除此阵法卡上的2个【恒风指示物】，从卡组将1张【恒风】法术卡加入手卡。",
+      "text": "此阵法卡在己方场上仅可存在1张。 此阵法卡的阵法属性由此阵法卡上存在的【风契指示物】决定： 【风契指示物】为0-2时：阵法等级为1，环位为1，荷载上限为5，魔素收入为1。 【风契指示物】为3-4时：阵法等级为2，环位为2，荷载上限为8，魔素收入为1。 【风契指示物】为5以上时，阵法等级为3，环位为3，荷载上限为10，魔素收入为2。 每发动1张【风契】法术卡，此阵法卡获得1个【风契指示物】。 1回合1次，移除此阵法卡上的2个【风契指示物】，从卡组将1张【风契】法术卡加入手卡。",
       "summonCondition": "魔素x1",
       "recipe": [
         {
@@ -1228,14 +1228,14 @@
         "activate_storm_search"
       ],
       "tags": [
-        "风暴"
+        "风契"
       ],
       "number": "010014",
       "illustrationId": "storm-crest"
     },
     {
       "id": "storm-heart",
-      "name": "恒风·风暴之心",
+      "name": "风契·风暴之心",
       "type": "formation",
       "rarity": "legendary",
       "level": 7,
@@ -1246,8 +1246,8 @@
       "maxRank": 7,
       "cost": 0,
       "baseEligible": false,
-      "text": "设置时，从卡组将1张【恒风·大风暴术】加入手卡。 己方每发动1张【恒风】法术卡，此阵法卡获得1个【恒风指示物】。 此阵法卡被销毁时，可以移除此阵法卡上的1个【恒风指示物】作为替代。 一回合一次，移除此阵法卡上的2个【恒风指示物】，选择以下1个效果发动： 抽1张卡。 将己方灰烬区1张【恒风】卡返回卡组。",
-      "summonCondition": "【风暴纹章】+【恒风指示物】x 10 +【魔素】x 4",
+      "text": "设置时，从卡组将1张【风契·大风暴术】加入手卡。 己方每发动1张【风契】法术卡，此阵法卡获得1个【风契指示物】。 此阵法卡被销毁时，可以移除此阵法卡上的1个【风契指示物】作为替代。 1回合1次，移除此阵法卡上的2个【风契指示物】，选择以下1个效果发动： 抽1张卡。 将己方灰烬区1张【风契】卡返回卡组。",
+      "summonCondition": "【风暴纹章】+【风契指示物】x 10 +【魔素】x 4",
       "recipe": [
         {
           "kind": "mana",
@@ -1266,14 +1266,14 @@
         "search_great_storm_on_setup"
       ],
       "tags": [
-        "风暴"
+        "风契"
       ],
       "number": "010015",
       "illustrationId": "storm-heart"
     },
     {
       "id": "wind-whisper",
-      "name": "恒风·风语术",
+      "name": "风契·风语术",
       "type": "word",
       "rarity": "common",
       "cost": 1,
@@ -1287,11 +1287,11 @@
           "kind": "search_action"
         }
       ],
-      "text": "己方场上存在【恒风】阵法卡才能发动。将1张阶级2以下的【恒风】咒符法术卡从卡组加入手卡。",
+      "text": "己方场上存在【风契】阵法卡才能发动。将1张阶级2以下的【风契】咒符法术卡从卡组加入手卡。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
-        "风暴"
+        "风契"
       ],
       "number": "030009",
       "illustrationId": "wind-whisper",
@@ -1302,7 +1302,7 @@
     },
     {
       "id": "swift-wind",
-      "name": "恒风·极速之风",
+      "name": "风契·极速之风",
       "type": "word",
       "rarity": "common",
       "cost": 3,
@@ -1316,11 +1316,11 @@
           "kind": "return_enemy_analysis"
         }
       ],
-      "text": "己方场上存在【恒风】阵法卡才能发动。将对方场上1张等级2以下的阵法卡弹回副卡组。",
+      "text": "己方场上存在【风契】阵法卡才能发动。将对方场上1张等级2以下的阵法卡弹回副卡组。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
-        "风暴"
+        "风契"
       ],
       "traits": [
         "requires_storm_formation"
@@ -1330,7 +1330,7 @@
     },
     {
       "id": "snow-rain-storm",
-      "name": "恒风·雪雨暴",
+      "name": "风契·雪雨暴",
       "type": "talisman",
       "rarity": "common",
       "cost": 3,
@@ -1346,7 +1346,7 @@
       "concentration": true,
       "concentrationUpkeep": 2,
       "tags": [
-        "风暴"
+        "风契"
       ],
       "traits": [
         "surcharge_enemy_timed_cast",
@@ -1357,7 +1357,7 @@
     },
     {
       "id": "windmaking",
-      "name": "恒风·造风术",
+      "name": "风契·造风术",
       "type": "word",
       "rarity": "common",
       "cost": 2,
@@ -1375,14 +1375,14 @@
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
-        "风暴"
+        "风契"
       ],
       "number": "030012",
       "illustrationId": "windmaking"
     },
     {
       "id": "storm-guidance",
-      "name": "恒风·风暴导向",
+      "name": "风契·风暴导向",
       "type": "word",
       "rarity": "uncommon",
       "cost": 3,
@@ -1396,11 +1396,11 @@
           "kind": "storm_guidance"
         }
       ],
-      "text": "己方场上存在【恒风】阵法卡才能发动。将1张卡从场上送去灰烬区。那之后，可以选择以下1个效果适用： 将1张 【恒风】法术卡从卡组加入手卡。 获得2个 【恒风指示物】。 将1张【云雾术】或【召雷术】从卡组加入手卡。",
+      "text": "己方场上存在【风契】阵法卡才能发动。将1张卡从场上送去灰烬区。那之后，可以选择以下1个效果适用： 将1张 【风契】法术卡从卡组加入手卡。 获得2个 【风契指示物】。 将1张【云雾术】/【召雷术】从卡组加入手卡。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
-        "风暴"
+        "风契"
       ],
       "number": "030013",
       "illustrationId": "storm-guidance",
@@ -1410,7 +1410,7 @@
     },
     {
       "id": "storm-vortex",
-      "name": "恒风·风暴气旋",
+      "name": "风契·风暴气旋",
       "type": "talisman",
       "rarity": "common",
       "cost": 2,
@@ -1424,11 +1424,11 @@
           "kind": "destroy_enemy_analysis"
         }
       ],
-      "text": "己方场上存在【恒风】阵法卡才能发动。销毁对方解析区1张法术卡。",
+      "text": "己方场上存在【风契】阵法卡才能发动。销毁对方解析区1张法术卡。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
-        "风暴"
+        "风契"
       ],
       "traits": [
         "requires_storm_formation"
@@ -1438,7 +1438,7 @@
     },
     {
       "id": "wind-strike",
-      "name": "恒风·风击术",
+      "name": "风契·风击术",
       "type": "talisman",
       "rarity": "rare",
       "cost": 4,
@@ -1473,11 +1473,11 @@
           ]
         }
       ],
-      "text": "己方场上存在【恒风】阵法卡，对方设置解析法术卡时才能发动。对对方造成那张解析法术卡阶级×2点钝击伤害。若此法术卡的阶级更高，销毁那张解析法术卡。",
+      "text": "己方场上存在【风契】阵法卡，对方设置解析法术卡时才能发动。对对方造成那张解析法术卡阶级×2点钝击伤害。若此法术卡的阶级更高，销毁那张解析法术卡。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
-        "风暴"
+        "风契"
       ],
       "traits": [
         "requires_storm_formation"
@@ -1488,7 +1488,7 @@
     },
     {
       "id": "great-cyclone",
-      "name": "恒风·大旋风术",
+      "name": "风契·大旋风术",
       "type": "talisman",
       "rarity": "epic",
       "cost": 4,
@@ -1502,11 +1502,11 @@
           "kind": "storm_cyclone"
         }
       ],
-      "text": "己方场上存在【恒风】阵法卡，移除5个【恒风指示物】才能发动。销毁对方1张阵法卡上的全部法术卡。那之后，可以对对方造成销毁数量×2点钝击伤害。",
+      "text": "己方场上存在【风契】阵法卡，移除5个【风契指示物】才能发动。销毁对方1张阵法卡上的全部法术卡。那之后，可以对对方造成销毁数量×2点钝击伤害。",
       "castCost": 0,
       "analysisTurns": 0,
       "tags": [
-        "风暴"
+        "风契"
       ],
       "traits": [
         "requires_storm_formation"
@@ -1516,7 +1516,7 @@
     },
     {
       "id": "storm-brand",
-      "name": "恒风·风暴烙印",
+      "name": "风契·风暴烙印",
       "type": "seal",
       "rarity": "common",
       "cost": 2,
@@ -1524,20 +1524,20 @@
       "level": 0,
       "speed": 1,
       "castCost": 0,
-      "text": "仅可附着于【恒风】阵法卡。 附着于阵法：每发动2次【恒风】法术卡，获得1个【恒风指示物】。 附着于法术：无效果。",
+      "text": "仅可附着于【风契】阵法卡。 附着于阵法卡：每发动2次【风契】法术卡，获得1个【风契指示物】。 附着于法术卡：无效果。",
       "traits": [
         "storm_release_counter",
         "storm_formation_host_only"
       ],
       "tags": [
-        "风暴"
+        "风契"
       ],
       "number": "050004",
       "illustrationId": "storm-brand"
     },
     {
       "id": "storm-annihilation-crest",
-      "name": "恒风·湮灭之纹章",
+      "name": "风契·湮灭之纹章",
       "type": "seal",
       "rarity": "rare",
       "cost": 2,
@@ -1546,21 +1546,21 @@
       "speed": 1,
       "castCost": 0,
       "damageBonus": 4,
-      "text": "仅可附着于【恒风】卡。 附着于阵法：附着时，可以移除2个【恒风指示物】，销毁对方场上1张空白阵法卡。 附着于法术：额外造成4点雷鸣伤害。",
+      "text": "仅可附着于【风契】卡。 附着于阵法卡：附着时，可以移除2个【风契指示物】，销毁对方场上1张空白阵法卡。 附着于法术卡：额外造成4点雷鸣伤害。",
       "traits": [
         "storm_formation_host_restriction",
         "thunder_damage_bonus",
         "activate_storm_crest_destroy"
       ],
       "tags": [
-        "风暴"
+        "风契"
       ],
       "number": "050005",
       "illustrationId": "storm-annihilation-crest"
     },
     {
       "id": "ice-storm",
-      "name": "恒风·冰风暴",
+      "name": "风契·冰风暴",
       "type": "analytic",
       "rarity": "rare",
       "cost": 4,
@@ -1584,14 +1584,14 @@
       ],
       "text": "选择1个目标才能发动。对其造成8点寒冷伤害。那之后，可以使对方解析区全部解析法术卡的解析时间+1。",
       "tags": [
-        "风暴"
+        "风契"
       ],
       "number": "020018",
       "illustrationId": "ice-storm"
     },
     {
       "id": "cutting-wind",
-      "name": "恒风·切割之风",
+      "name": "风契·切割之风",
       "type": "analytic",
       "rarity": "common",
       "cost": 1,
@@ -1607,9 +1607,9 @@
           "kind": "cutting_wind"
         }
       ],
-      "text": "己方场上存在【恒风】阵法卡才能设置。选择1个目标才能发动。对其造成4点挥砍伤害。那之后，可以销毁己方场上1张空白阵法卡，额外造成其等级的雷鸣伤害。",
+      "text": "己方场上存在【风契】阵法卡才能设置。选择1个目标才能发动。对其造成4点挥砍伤害。那之后，可以销毁己方场上1张空白阵法卡，额外造成其等级的雷鸣伤害。",
       "tags": [
-        "风暴"
+        "风契"
       ],
       "traits": [
         "requires_storm_setup"
@@ -1619,7 +1619,7 @@
     },
     {
       "id": "great-storm",
-      "name": "恒风·大风暴术",
+      "name": "风契·大风暴术",
       "type": "analytic",
       "rarity": "legendary",
       "cost": 0,
@@ -1647,9 +1647,9 @@
           "kind": "destroy_enemy_analysis"
         }
       ],
-      "text": "此法术卡仅可在【风暴之心】上设置，移除【风暴之心】上的全部【恒风指示物】才能设置。此法术卡不受其他卡的效果影响。此法术卡在己方解析区存在，己方其他解析法术卡不可设置。 计时X，X为此法术卡设置时移除的【恒风指示物】数量。发动时，销毁对方解析区全部法术卡，对对方造成销毁数量×4点挥砍伤害。己方结束阶段开始时，对对方造成8点挥砍伤害。那之后，可以销毁对方解析区1张法术卡。",
+      "text": "此法术卡仅可在【风暴之心】上设置，移除【风暴之心】上的全部【风契指示物】才能设置。此法术卡不受其他卡的效果影响。此法术卡只要在己方解析区存在，己方其他解析法术卡不可设置。 计时X，X为此法术卡设置时移除的【风契指示物】数量。发动时，销毁对方解析区全部法术卡，对对方造成销毁数量×4点挥砍伤害。己方结束阶段开始时，对对方造成8点挥砍伤害。那之后，可以销毁对方解析区1张法术卡。",
       "tags": [
-        "风暴"
+        "风契"
       ],
       "traits": [
         "requires_storm_heart_setup",
@@ -1677,7 +1677,7 @@
           "kind": "lock_analysis"
         }
       ],
-      "text": "计时2。选择双方解析区最多2张解析法术卡，使其直到此法术卡离场不可准备施法。",
+      "text": "计时2。选择双方解析区1至2张解析法术卡，使其直到此法术卡离场不可准备施法。",
       "number": "020021",
       "illustrationId": "cloud-mist"
     },
@@ -1769,7 +1769,7 @@
           "fireDamage": true
         }
       ],
-      "text": "己方场上存在【味契·魔力坩埚】时，此卡不受其他卡的效果影响。其上成功设置火焰伤害法术时，对对方造成1点火焰伤害。",
+      "text": "己方场上存在【味契·魔力坩埚】，此阵法卡不受其他卡的效果影响。此阵法卡上设置火焰伤害法术卡时，对对方造成1点火焰伤害。",
       "summonCondition": "【味契·柴堆】×2＋手卡的火焰伤害法术卡×1+魔素×4"
     },
     {
@@ -1808,7 +1808,7 @@
           "amount": 0
         }
       ],
-      "text": "己方场上存在【味契·篝火】才能设置。此卡存在期间，己方只能发动或附着【味契】卡；其他解析法术仍可设置和准备施法。己方结束阶段开始时，将此卡上附着的全部符文送去灰烬区。",
+      "text": "己方场上存在【味契·篝火】才能设置。此阵法卡只要在己方场上存在，己方仅可发动/附着【味契】卡。己方结束阶段开始时，将此阵法卡上附着的符文卡全部送去灰烬区。",
       "summonCondition": "手卡×3+魔素×5"
     },
     {
@@ -1996,7 +1996,7 @@
           "amount": 6
         }
       ],
-      "text": "将己方场上1张【味契】符文送去灰烬区才能发动。恢复4点生命并获得6点临时生命。"
+      "text": "将1张【味契】符文卡从己方场上送去灰烬区才能发动。恢复4点生命值，获得6点临时生命值。"
     },
     {
       "id": "sique-pancakes",
@@ -2025,7 +2025,7 @@
           "amount": 4
         }
       ],
-      "text": "将己方场上2张不同的【味契】符文送去灰烬区才能发动。直到下个己方准备阶段开始时，每次受到的伤害至多为4。"
+      "text": "将2张【味契】符文卡从己方场上送去灰烬区才能发动。直到下个己方准备阶段开始时，每次受到的伤害最多4点。"
     },
     {
       "id": "sique-divine-stew",
@@ -2035,7 +2035,7 @@
       "cost": 2,
       "rank": 5,
       "level": 5,
-      "speed": 1,
+      "speed": 2,
       "castCost": 1,
       "tags": [
         "味契"
@@ -2054,7 +2054,7 @@
           "amount": 0
         }
       ],
-      "text": "将己方场上3张不同的【味契】符文送去灰烬区才能发动。本回合仅以对方普通生命替代己方魔素费用，按1:1在宣告时支付；对方至少保留1点普通生命。"
+      "text": "将3张【味契】符文卡从己方场上送去灰烬区才能发动。此回合，将对方生命值作为己方费用支付的替代。"
     },
     {
       "id": "sique-ingredients",
@@ -2106,7 +2106,7 @@
           "amount": 1
         }
       ],
-      "text": "将己方场上1张【味契】符文送去灰烬区才能发动。从卡组选择1张【味契】符文，附着到己方【味契·魔力坩埚】。",
+      "text": "将1张【味契】符文卡从己方场上送去灰烬区才能发动。将1张【味契】符文卡从卡组附着到己方场上的【味契·魔力坩埚】上。",
       "analysisTurns": 0
     },
     {
@@ -2135,7 +2135,7 @@
           "amount": 1
         }
       ],
-      "text": "将己方灰烬区1至5张【味契】卡按类型返回主卡组或副卡组，之后可以抽1张卡。没有合法卡时跳过返回。",
+      "text": "将己方灰烬区1至5张【味契】卡返回卡组/副卡组。那之后，可以抽1张卡。",
       "analysisTurns": 0
     },
     {
@@ -2212,7 +2212,7 @@
           "amount": 0
         }
       ],
-      "text": "己方场上存在【味契·魔力坩埚】才能发动。双方手牌返回各自卡组并洗牌，双方分别可以抽取各自返回数量的卡牌。",
+      "text": "己方场上存在【味契·魔力坩埚】才能发动。将双方手卡全部返回卡组。那之后，双方可以根据返回数量抽卡。",
       "analysisTurns": 0
     },
     {
@@ -2251,7 +2251,7 @@
       "text": "此法术卡仅可在【味契·篝火】上设置。选择1个目标才能发动。对其造成6点火焰伤害。那之后，可以将1张【味契】卡从己方灰烬区加入手卡。",
       "rank": 3,
       "level": 3,
-      "school": "abjuration",
+      "school": "evocation",
       "cost": 2,
       "castCost": 2,
       "analysisTurns": 1,
@@ -2339,7 +2339,7 @@
       "number": "020030",
       "name": "战车",
       "type": "analytic",
-      "text": "选择1个目标才能发动。对其造成20点力场伤害。每当己方【战车】以外的解析法术卡的解析时间-X时，此法术卡的解析时间-1。",
+      "text": "选择1个目标才能发动。对其造成20点力场伤害。此法术卡在己方解析区存在，每当己方【战车】以外的解析法术卡的解析时间-X时，此法术卡的解析时间-1。",
       "rank": 4,
       "level": 4,
       "school": "arcana",
@@ -2412,7 +2412,7 @@
       "number": "020033",
       "name": "倒吊人",
       "type": "analytic",
-      "text": "宣告发动时，以普通生命为基数支付向上取整的一半生命。结算时双方分别交换各自灰烬区与卡组中的非阵法卡，阵法卡留在原区域；交换后的卡组洗牌。",
+      "text": "支付一半生命值才能发动。双方将灰烬区与卡组中阵法卡以外的卡交换。",
       "rank": 7,
       "level": 7,
       "school": "arcana",
@@ -2438,7 +2438,7 @@
       "number": "020034",
       "name": "死神",
       "type": "analytic",
-      "text": "选择1个目标才能发动。选择对其造成40点暗蚀或光耀伤害。每有1张卡送去己方灰烬区，此法术卡的解析时间-1。",
+      "text": "选择1个目标才能发动。选择对其造成40点暗蚀/光耀伤害。此法术卡在己方解析区存在，每有1张卡送去己方灰烬区，此法术卡的解析时间-1。",
       "rank": 5,
       "level": 5,
       "school": "arcana",
@@ -2560,7 +2560,7 @@
       "text": "己方场上存在【味契·篝火】才能发动。对对方造成3点火焰伤害。那之后，可以将1张卡从手卡送去灰烬区，额外造成4点火焰伤害。",
       "rank": 3,
       "level": 3,
-      "school": "transmutation",
+      "school": "evocation",
       "cost": 3,
       "castCost": 0,
       "analysisTurns": 0,
@@ -2617,7 +2617,7 @@
       "number": "030020",
       "name": "魔术师",
       "type": "word",
-      "text": "从卡组选择3张卡名不同的卡向对方展示。对方从中选择1张卡加入己方手卡，其余2张卡抹除。",
+      "text": "从卡组选择3张卡名不同的卡向对方展示。对方从中选择1张卡加入己方手卡，其他2张卡抹除。",
       "rank": 2,
       "level": 2,
       "school": "arcana",
@@ -2640,7 +2640,7 @@
       "number": "030021",
       "name": "女祭司",
       "type": "word",
-      "text": "将己方手卡或场上1张符文卡送去灰烬区才能发动。将1张符文卡加入手卡。",
+      "text": "将己方手卡/场上1张符文卡送去灰烬区才能发动。将1张符文卡加入手卡。",
       "rank": 3,
       "level": 3,
       "school": "arcana",
@@ -2715,7 +2715,7 @@
       "number": "030024",
       "name": "世界",
       "type": "word",
-      "text": "获得1点魔素。选择最多1张解析法术卡从卡组加入手卡。选择【世界】以外的最多1张言灵法术卡从卡组加入手卡。选择最多1张咒符法术卡加入手卡。选择最多1张符文卡加入手卡。",
+      "text": "获得1点魔素。选择1张解析法术卡从卡组加入手卡。选择【世界】以外的1张言灵法术卡从卡组加入手卡。选择1张咒符法术卡加入手卡。选择1张符文卡加入手卡。",
       "rank": 6,
       "level": 6,
       "school": "arcana",
@@ -2743,7 +2743,7 @@
       "number": "040011",
       "name": "味契·回火",
       "type": "talisman",
-      "text": "己方场上存在【味契·魔力坩埚】才能发动。将对方灰烬区1至5张卡按类型返回主卡组或副卡组，对对方造成返回数量的火焰伤害，己方恢复返回数量×2的生命。没有合法卡时跳过返回且数量为0。",
+      "text": "己方场上存在【味契·魔力坩埚】才能发动。将对方灰烬区1至5张卡返回卡组/副卡组，对对方造成返回数量的火焰伤害，己方恢复返回数量×2的生命值。",
       "rank": 5,
       "level": 5,
       "school": "evocation",
@@ -2896,6 +2896,1102 @@
         "effect_immune",
         "moon"
       ]
+    },
+    {
+      "id": "qixing-tianshu",
+      "name": "七星·天枢",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 1,
+      "speed": 1,
+      "number": "010022",
+      "illustrationId": "qixing-tianshu",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [],
+      "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。",
+      "body": 5,
+      "rings": 1,
+      "capacity": 7,
+      "income": 1,
+      "maxRank": 1,
+      "summonCondition": "魔素×2",
+      "baseEligible": true,
+      "recipe": [
+        {
+          "kind": "mana",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": "qixing-tianxuan",
+      "name": "七星·天璇",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 2,
+      "speed": 1,
+      "number": "010023",
+      "illustrationId": "qixing-tianxuan",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [],
+      "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。设置时，将1张【七星星移】从卡组加入手卡。",
+      "body": 5,
+      "rings": 1,
+      "capacity": 7,
+      "income": 2,
+      "maxRank": 2,
+      "summonCondition": "通过【七星】卡的效果才能设置",
+      "baseEligible": false,
+      "traits": [
+        "seven_stars_effect_only"
+      ],
+      "recipe": []
+    },
+    {
+      "id": "qixing-tianji",
+      "name": "七星·天玑",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 3,
+      "speed": 1,
+      "number": "010024",
+      "illustrationId": "qixing-tianji",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [],
+      "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。设置时，将1张【七星星移】从己方灰烬区加入手卡。",
+      "body": 5,
+      "rings": 2,
+      "capacity": 14,
+      "income": 3,
+      "maxRank": 3,
+      "summonCondition": "通过【七星】卡的效果才能设置",
+      "baseEligible": false,
+      "traits": [
+        "seven_stars_effect_only"
+      ],
+      "recipe": []
+    },
+    {
+      "id": "qixing-tianquan",
+      "name": "七星·天权",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 4,
+      "speed": 1,
+      "number": "010025",
+      "illustrationId": "qixing-tianquan",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [],
+      "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。设置时，将1张【七星】卡从卡组加入手卡。",
+      "body": 5,
+      "rings": 2,
+      "capacity": 14,
+      "income": 4,
+      "maxRank": 4,
+      "summonCondition": "通过【七星】卡的效果才能设置",
+      "baseEligible": false,
+      "traits": [
+        "seven_stars_effect_only"
+      ],
+      "recipe": []
+    },
+    {
+      "id": "qixing-yuheng",
+      "name": "七星·玉衡",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 5,
+      "speed": 1,
+      "number": "010026",
+      "illustrationId": "qixing-yuheng",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [],
+      "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。设置时，将1张【七星】卡从灰烬区加入手卡。",
+      "body": 5,
+      "rings": 3,
+      "capacity": 21,
+      "income": 5,
+      "maxRank": 5,
+      "summonCondition": "通过【七星】卡的效果才能设置",
+      "baseEligible": false,
+      "traits": [
+        "seven_stars_effect_only"
+      ],
+      "recipe": []
+    },
+    {
+      "id": "qixing-kaiyang",
+      "name": "七星·开阳",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 6,
+      "speed": 1,
+      "number": "010027",
+      "illustrationId": "qixing-kaiyang",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [],
+      "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。可以将手卡全部送去灰烬区，将此阵法卡替换为【七星·瑶光】。",
+      "body": 5,
+      "rings": 3,
+      "capacity": 21,
+      "income": 6,
+      "maxRank": 6,
+      "summonCondition": "通过【七星】卡的效果才能设置",
+      "baseEligible": false,
+      "traits": [
+        "seven_stars_effect_only",
+        "seven_stars_kaiyang"
+      ],
+      "recipe": []
+    },
+    {
+      "id": "qixing-yaoguang",
+      "name": "七星·瑶光",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 7,
+      "speed": 1,
+      "number": "010028",
+      "illustrationId": "qixing-yaoguang",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [],
+      "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。此阵法卡以外的【七星】卡不受其他卡的效果影响。设置时，将己方生命值恢复至上限，魔素变为0，抽5张卡。",
+      "body": 5,
+      "rings": 5,
+      "capacity": 28,
+      "income": 7,
+      "maxRank": 7,
+      "summonCondition": "通过【七星·开阳】的效果才能设置",
+      "baseEligible": false,
+      "traits": [
+        "seven_stars_effect_only",
+        "seven_stars_yaoguang"
+      ],
+      "recipe": []
+    },
+    {
+      "id": "qixing-banner",
+      "name": "七星星帜",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "number": "050011",
+      "illustrationId": "qixing-banner",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [],
+      "text": "附着于阵法：此阵法卡被销毁时，可以将此符文卡解除附着作为替代。 附着于法术：发动费用-3。",
+      "traits": [
+        "seven_stars_banner"
+      ]
+    },
+    {
+      "id": "qixing-lamp",
+      "name": "七星灯盏",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 7,
+      "castCost": 7,
+      "rank": 7,
+      "level": 7,
+      "speed": 1,
+      "number": "020038",
+      "illustrationId": "qixing-lamp",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [],
+      "text": "计时7。自己场上有【瑶光】存在才能发动。发动后，此法术卡只要在己方场上存在，己方不会受到伤害。此法术卡离场时，己方败北。",
+      "analysisTurns": 7,
+      "school": "necromancy",
+      "traits": [
+        "seven_stars_lamp"
+      ],
+      "duration": 7
+    },
+    {
+      "id": "qixing-ruin",
+      "name": "七星归墟",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 7,
+      "castCost": 20,
+      "rank": 7,
+      "level": 7,
+      "speed": 1,
+      "number": "020039",
+      "illustrationId": "qixing-ruin",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [
+        {
+          "kind": "seven_stars_ruin",
+          "amount": 20
+        }
+      ],
+      "text": "耀：对双方造成20点光耀伤害。 黯：对双方造成20点暗蚀伤害。",
+      "analysisTurns": 4,
+      "school": "evocation"
+    },
+    {
+      "id": "qixing-awaken",
+      "name": "七星启曜",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 3,
+      "castCost": 0,
+      "rank": 1,
+      "level": 1,
+      "speed": 2,
+      "number": "030025",
+      "illustrationId": "qixing-awaken",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [
+        {
+          "kind": "seven_stars_awakening"
+        }
+      ],
+      "text": "耀：将1张【七星】卡从卡组加入手卡，己方选择受到7点光耀伤害/获得7点荷载。 黯：将1张【七星】卡从灰烬区加入手卡。",
+      "analysisTurns": 0,
+      "school": "divination"
+    },
+    {
+      "id": "qixing-divination",
+      "name": "七星遥鉴",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 3,
+      "castCost": 0,
+      "rank": 1,
+      "level": 1,
+      "speed": 2,
+      "number": "030026",
+      "illustrationId": "qixing-divination",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [
+        {
+          "kind": "seven_stars_insight"
+        }
+      ],
+      "text": "耀：将1张卡从手卡送去灰烬区才能发动。将己方场上1张【七星】阵法卡替换为更高1级的【七星】阵法卡。 黯：查看己方卡组最上方的7张卡，将其中1张【七星】卡加入手卡，其余卡返回卡组最下方。",
+      "analysisTurns": 0,
+      "school": "divination"
+    },
+    {
+      "id": "qixing-shift",
+      "name": "七星星移",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 3,
+      "castCost": 0,
+      "rank": 1,
+      "level": 1,
+      "speed": 2,
+      "number": "030027",
+      "illustrationId": "qixing-shift",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [
+        {
+          "kind": "seven_stars_shift"
+        }
+      ],
+      "text": "耀：支付7点生命值才能发动。发动后，己方【七星】卡耀/黯效果交换适用。 黯：将1张卡从手卡送去灰烬区才能发动。将己方场上1张【七星】阵法卡替换为更高1级的【七星】阵法卡。",
+      "analysisTurns": 0,
+      "school": "transmutation"
+    },
+    {
+      "id": "qixing-gaze",
+      "name": "七星的注视",
+      "type": "talisman",
+      "rarity": "rare",
+      "cost": 5,
+      "castCost": 0,
+      "rank": 5,
+      "level": 5,
+      "speed": 2,
+      "number": "040014",
+      "illustrationId": "qixing-gaze",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [
+        {
+          "kind": "seven_stars_gaze"
+        }
+      ],
+      "text": "对方连锁【七星】卡的发动把法术卡发动时才能发动。将其无效并盖伏。",
+      "analysisTurns": 0,
+      "school": "abjuration",
+      "responseOnly": true,
+      "responses": [
+        {
+          "id": "seven_stars_gaze",
+          "name": "无效并盖伏连锁法术",
+          "sources": [
+            "ambush"
+          ],
+          "windows": [
+            "cast"
+          ],
+          "eventOwner": "any",
+          "target": "enemy_spell_link",
+          "effects": [
+            {
+              "kind": "seven_stars_gaze"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "qixing-punishment",
+      "name": "七星惩戒",
+      "type": "talisman",
+      "rarity": "rare",
+      "cost": 5,
+      "castCost": 0,
+      "rank": 5,
+      "level": 5,
+      "speed": 3,
+      "number": "040015",
+      "illustrationId": "qixing-punishment",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [
+        {
+          "kind": "seven_stars_ruin",
+          "amount": 12,
+          "recipient": "opponent"
+        }
+      ],
+      "text": "耀：对对方造成12点光耀伤害。 黯：对对方造成12点暗蚀伤害。",
+      "analysisTurns": 0,
+      "school": "evocation"
+    },
+    {
+      "id": "qixing-return",
+      "name": "七星归迹",
+      "type": "talisman",
+      "rarity": "rare",
+      "cost": 7,
+      "castCost": 0,
+      "rank": 3,
+      "level": 3,
+      "speed": 2,
+      "number": "040016",
+      "illustrationId": "qixing-return",
+      "target": "none",
+      "tags": [
+        "七星"
+      ],
+      "effects": [
+        {
+          "kind": "seven_stars_return",
+          "amount": 7
+        }
+      ],
+      "text": "选择己方灰烬区1至7张【七星】卡才能发动。将其返回卡组/副卡组。",
+      "analysisTurns": 0,
+      "school": "transmutation"
+    },
+    {
+      "id": "blood-altar",
+      "name": "血契·祭坛",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 2,
+      "speed": 1,
+      "number": "010029",
+      "illustrationId": "blood-altar",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "此阵法卡在己方场上存在，己方设置/发动法术卡时，可以将每2点生命值作为1点费用支付的替代。",
+      "body": 1,
+      "rings": 2,
+      "capacity": 6,
+      "income": 1,
+      "maxRank": 2,
+      "summonCondition": "魔素×3",
+      "baseEligible": false,
+      "traits": [
+        "blood_altar"
+      ],
+      "recipe": [
+        {
+          "kind": "mana",
+          "amount": 3
+        }
+      ]
+    },
+    {
+      "id": "blood-transfusion",
+      "name": "血契·输血管",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 1,
+      "speed": 1,
+      "number": "010030",
+      "illustrationId": "blood-transfusion",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "此阵法卡在己方场上仅可存在1张。己方准备阶段开始时，可以支付2点生命值，获得2点魔素。",
+      "body": 1,
+      "rings": 1,
+      "capacity": 4,
+      "income": 0,
+      "maxRank": 1,
+      "summonCondition": "魔素×3",
+      "baseEligible": true,
+      "traits": [
+        "unique",
+        "blood_transfusion"
+      ],
+      "recipe": [
+        {
+          "kind": "mana",
+          "amount": 3
+        }
+      ]
+    },
+    {
+      "id": "blood-sacrificial-table",
+      "name": "血契·祭品台",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 3,
+      "speed": 1,
+      "number": "010031",
+      "illustrationId": "blood-sacrificial-table",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "己方回合首次支付生命值时，抽1张卡。",
+      "body": 1,
+      "rings": 2,
+      "capacity": 7,
+      "income": 1,
+      "maxRank": 3,
+      "summonCondition": "魔素×4＋生命值×5",
+      "baseEligible": false,
+      "traits": [
+        "blood_sacrifice_reward"
+      ],
+      "recipe": [
+        {
+          "kind": "mana",
+          "amount": 4
+        },
+        {
+          "kind": "life",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "blood-pool",
+      "name": "血契·血池",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 4,
+      "speed": 1,
+      "number": "010032",
+      "illustrationId": "blood-pool",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "设置时，己方生命值上限-5。此阵法卡在己方场上存在，己方设置/发动法术卡时，可以将每1点生命值作为1点费用支付的替代。己方临时生命值清除时，为己方恢复等量生命值。",
+      "body": 2,
+      "rings": 3,
+      "capacity": 9,
+      "income": 2,
+      "maxRank": 4,
+      "summonCondition": "【血契·祭坛】＋魔素×3",
+      "baseEligible": false,
+      "traits": [
+        "blood_pool"
+      ],
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "blood-altar"
+        },
+        {
+          "kind": "mana",
+          "amount": 3
+        }
+      ]
+    },
+    {
+      "id": "blood-heart",
+      "name": "血契·心脏",
+      "type": "formation",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 0,
+      "level": 6,
+      "speed": 1,
+      "number": "010033",
+      "illustrationId": "blood-heart",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "设置时，己方生命值上限-5。此阵法卡在己方场上存在，己方设置/发动法术卡时，可以将每1点生命值作为1点费用支付的替代。己方【血契】法术卡造成伤害时，为己方恢复等量生命值。",
+      "body": 3,
+      "rings": 4,
+      "capacity": 12,
+      "income": 3,
+      "maxRank": 6,
+      "summonCondition": "【血契·血池】＋魔素×5",
+      "baseEligible": false,
+      "traits": [
+        "blood_heart"
+      ],
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "blood-pool"
+        },
+        {
+          "kind": "mana",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "blood-mark",
+      "name": "血契·血印",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "number": "050012",
+      "illustrationId": "blood-mark",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "附着于阵法：魔素收入+2，己方生命值上限-6。 附着于法术：无效果。",
+      "traits": [
+        "blood_mark"
+      ],
+      "incomeBonus": 2
+    },
+    {
+      "id": "blood-vein",
+      "name": "血契·血脉",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 4,
+      "castCost": 0,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "number": "050013",
+      "illustrationId": "blood-vein",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "附着于阵法：己方设置/发动法术卡时，可以将每1点生命值作为1点费用支付的替代。 附着于法术：无效果。",
+      "traits": [
+        "blood_vein"
+      ]
+    },
+    {
+      "id": "blood-curse",
+      "name": "血契·血咒",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "number": "050014",
+      "illustrationId": "blood-curse",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "支付2点生命值才能附着。 附着于阵法：阵法等级+1，环位+1。 附着于法术：发动时，为己方恢复4点生命值。",
+      "traits": [
+        "blood_curse"
+      ],
+      "rankBonus": 1,
+      "ringBonus": 1
+    },
+    {
+      "id": "blood-heartmark",
+      "name": "血契·心印",
+      "type": "seal",
+      "rarity": "rare",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 1,
+      "level": 0,
+      "speed": 1,
+      "number": "050015",
+      "illustrationId": "blood-heartmark",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "附着于阵法：无效果。 附着于法术：发动时，可以支付2点生命值，造成的伤害+8。",
+      "traits": [
+        "blood_heartmark"
+      ]
+    },
+    {
+      "id": "blood-blade",
+      "name": "血契·血刃",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 1,
+      "castCost": 1,
+      "rank": 2,
+      "level": 2,
+      "speed": 1,
+      "number": "020040",
+      "illustrationId": "blood-blade",
+      "target": "player",
+      "tags": [
+        "血契"
+      ],
+      "effects": [
+        {
+          "kind": "blood_pact_damage",
+          "amount": 4,
+          "damageType": "necrotic"
+        }
+      ],
+      "text": "选择1个目标才能发动。对其造成己方已减少生命值上限等量的暗蚀伤害，最多4点。",
+      "analysisTurns": 1,
+      "school": "evocation"
+    },
+    {
+      "id": "blood-debt",
+      "name": "血契·血债",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 3,
+      "castCost": 0,
+      "rank": 4,
+      "level": 4,
+      "speed": 1,
+      "number": "020041",
+      "illustrationId": "blood-debt",
+      "target": "player",
+      "tags": [
+        "血契"
+      ],
+      "effects": [
+        {
+          "kind": "blood_pact_damage",
+          "amount": 8,
+          "damageType": "necrotic"
+        },
+        {
+          "kind": "blood_pact_search"
+        }
+      ],
+      "text": "选择1个目标才能发动。对其造成己方已减少生命值上限等量的暗蚀伤害，最多8点。那之后，可以将1张【血契·血偿】从卡组加入手卡。",
+      "analysisTurns": 2,
+      "school": "evocation"
+    },
+    {
+      "id": "blood-renewal",
+      "name": "血契·续命",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 2,
+      "castCost": 0,
+      "rank": 4,
+      "level": 4,
+      "speed": 1,
+      "number": "020042",
+      "illustrationId": "blood-renewal",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "计时3。己方结束阶段开始时，回复1点生命值，己方生命值上限+2。",
+      "analysisTurns": 2,
+      "school": "abjuration",
+      "duration": 3,
+      "traits": [
+        "end_phase_start"
+      ],
+      "onEnd": [
+        {
+          "kind": "heal",
+          "amount": 1,
+          "recipient": "owner"
+        },
+        {
+          "kind": "change_life_limit",
+          "amount": 2,
+          "recipient": "owner"
+        }
+      ]
+    },
+    {
+      "id": "blood-repayment",
+      "name": "血契·血偿",
+      "type": "analytic",
+      "rarity": "rare",
+      "cost": 5,
+      "castCost": 0,
+      "rank": 6,
+      "level": 6,
+      "speed": 1,
+      "number": "020043",
+      "illustrationId": "blood-repayment",
+      "target": "player",
+      "tags": [
+        "血契"
+      ],
+      "effects": [
+        {
+          "kind": "blood_pact_damage",
+          "amount": 16,
+          "damageType": "necrotic"
+        },
+        {
+          "kind": "blood_pact_search"
+        }
+      ],
+      "text": "选择1个目标才能发动。对其造成己方已减少生命值上限等量的暗蚀伤害，最多16点。那之后，可以将1张【血契·血债】从卡组加入手卡。",
+      "analysisTurns": 2,
+      "school": "necromancy"
+    },
+    {
+      "id": "blood-letting",
+      "name": "血契·放血",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 1,
+      "level": 1,
+      "speed": 2,
+      "number": "030028",
+      "illustrationId": "blood-letting",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [
+        {
+          "kind": "change_life_limit",
+          "amount": -6,
+          "recipient": "owner"
+        },
+        {
+          "kind": "mana",
+          "amount": 6,
+          "recipient": "owner"
+        }
+      ],
+      "text": "己方生命值上限-6，获得6点魔素。",
+      "analysisTurns": 0,
+      "school": "evocation"
+    },
+    {
+      "id": "blood-wrist",
+      "name": "血契·割腕",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 1,
+      "level": 1,
+      "speed": 2,
+      "number": "030029",
+      "illustrationId": "blood-wrist",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [
+        {
+          "kind": "draw",
+          "amount": 2,
+          "recipient": "owner"
+        }
+      ],
+      "text": "支付4点生命值才能发动。抽2张卡。",
+      "analysisTurns": 0,
+      "school": "necromancy",
+      "traits": [
+        "blood_wrist_cost"
+      ]
+    },
+    {
+      "id": "blood-offering",
+      "name": "血契·祭品",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 2,
+      "level": 2,
+      "speed": 2,
+      "number": "030030",
+      "illustrationId": "blood-offering",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [
+        {
+          "kind": "blood_pact_search"
+        }
+      ],
+      "text": "支付1点生命值才能发动。将1张【血契】卡从卡组加入手卡。",
+      "analysisTurns": 0,
+      "school": "conjuration",
+      "traits": [
+        "blood_offering_cost"
+      ]
+    },
+    {
+      "id": "blood-last-stand",
+      "name": "血契·背水",
+      "type": "word",
+      "rarity": "rare",
+      "cost": 0,
+      "castCost": 0,
+      "rank": 2,
+      "level": 2,
+      "speed": 2,
+      "number": "030031",
+      "illustrationId": "blood-last-stand",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [
+        {
+          "kind": "mana",
+          "amount": 2,
+          "recipient": "owner"
+        },
+        {
+          "kind": "draw",
+          "amount": 2,
+          "recipient": "owner"
+        }
+      ],
+      "text": "己方生命值为15以下才能发动。获得2点魔素，抽2张卡。",
+      "analysisTurns": 0,
+      "school": "conjuration",
+      "traits": [
+        "blood_last_stand"
+      ]
+    },
+    {
+      "id": "blood-coagulation",
+      "name": "血契·凝血",
+      "type": "talisman",
+      "rarity": "rare",
+      "cost": 3,
+      "castCost": 0,
+      "rank": 3,
+      "level": 3,
+      "speed": 2,
+      "number": "040017",
+      "illustrationId": "blood-coagulation",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [
+        {
+          "kind": "blood_pact_clot",
+          "amount": 4
+        }
+      ],
+      "text": "己方受到伤害时才能发动。免疫此次伤害。那之后，己方生命值上限-4，抽1张卡。",
+      "analysisTurns": 0,
+      "school": "abjuration",
+      "responseOnly": true,
+      "responses": [
+        {
+          "id": "blood_clot",
+          "name": "免疫此次伤害",
+          "sources": [
+            "ambush"
+          ],
+          "windows": [
+            "cast",
+            "trigger"
+          ],
+          "eventOwner": "opponent",
+          "target": "none",
+          "effects": [
+            {
+              "kind": "blood_pact_clot",
+              "amount": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blood-rain",
+      "name": "血契·血雨",
+      "type": "talisman",
+      "rarity": "rare",
+      "cost": 3,
+      "castCost": 0,
+      "rank": 3,
+      "level": 3,
+      "speed": 2,
+      "number": "040018",
+      "illustrationId": "blood-rain",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [
+        {
+          "kind": "change_life_limit",
+          "amount": -4,
+          "recipient": "owner"
+        },
+        {
+          "kind": "damage",
+          "amount": 12,
+          "damageType": "necrotic",
+          "recipient": "opponent"
+        }
+      ],
+      "text": "己方生命值上限-4，对对方造成12点暗蚀伤害。",
+      "analysisTurns": 0,
+      "school": "evocation"
+    },
+    {
+      "id": "blood-same-origin",
+      "name": "血契·同源",
+      "type": "talisman",
+      "rarity": "rare",
+      "cost": 1,
+      "castCost": 0,
+      "rank": 4,
+      "level": 4,
+      "speed": 4,
+      "number": "040019",
+      "illustrationId": "blood-same-origin",
+      "target": "none",
+      "tags": [
+        "血契"
+      ],
+      "effects": [],
+      "text": "永续。每次对方恢复生命值时，为己方恢复等量生命值。",
+      "analysisTurns": 0,
+      "school": "abjuration",
+      "traits": [
+        "blood_same_origin"
+      ],
+      "perpetual": true
     }
   ]
 }

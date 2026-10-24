@@ -1,6 +1,6 @@
 {
   "id": "snow-rain-storm",
-  "name": "恒风·雪雨暴",
+  "name": "风契·雪雨暴",
   "type": "talisman",
   "rarity": "common",
   "cost": 3,
@@ -16,7 +16,7 @@
   "concentration": true,
   "concentrationUpkeep": 2,
   "tags": [
-    "风暴"
+    "风契"
   ],
   "traits": [
     "surcharge_enemy_timed_cast",

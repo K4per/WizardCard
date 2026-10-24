@@ -1,6 +1,7 @@
 #include "wizard/core/rules.hpp"
-#include "wizard/core/sique.hpp"
-#include "wizard/core/arcana.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 
 namespace wizard {
@@ -78,14 +79,15 @@ void ResourceRules::expireTemporaryLife(GameState &s, PlayerId player) {
 void ResourceRules::damage(GameState &state, PlayerId player, int amount, const std::string &reason, const CardCatalog *catalog) {
     if (amount <= 0 || state.result != -1)
         return;
+    if (catalog && card_rules::damageImmune(state, *catalog, player)) return;
     auto &owner = state.players.at(static_cast<std::size_t>(player));
     if (owner.debugInfiniteLife) return;
     if (catalog && catalog->usesAlphaV252()) {
         if (owner.nextDamageImmune) { owner.nextDamageImmune = false; amount = 0; }
-        else if (arcana::active(state, *catalog, "arcana_strength")) amount *= 2;
+        else if (card_rules::hasActiveTrait(state, *catalog, "arcana_strength")) amount *= 2;
     }
     if (!catalog || !catalog->usesAlphaV252())
-        amount = std::max(0, amount - 2 * sique::attachedCount(state, player, "sique-vinegar"));
+        amount = std::max(0, amount - 2 * card_rules::attachedCount(state, player, "sique-vinegar"));
     if (owner.siqueDamageCap) amount = std::min(amount, owner.siqueDamageCap);
     const auto shield = std::min(owner.temporaryLife, amount);
     ResourceRules::absorbTemporaryLife(state, player, shield);
@@ -102,7 +104,7 @@ void ResourceRules::increasedLoad(GameState &state, const CardCatalog &catalog, 
         return;
     }
     if (!state.players[player].debugInfiniteLoad && catalog.usesAlphaV2() && increment > 0 && Rules::load(state, player) > Rules::capacity(state, catalog, player)) {
-        if (!catalog.usesAlphaV252() || !sique::hasFormation(state, player, "moon"))
+        if (!catalog.usesAlphaV252() || !card_rules::hasFormation(state, player, "moon"))
             damage(state, player, increment * 2, "overload", &catalog);
         StateMaintenance::check(state, catalog);
     }

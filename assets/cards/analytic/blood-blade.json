@@ -1,0 +1,27 @@
+{
+  "id": "blood-blade",
+  "name": "血契·血刃",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 1,
+  "castCost": 1,
+  "rank": 2,
+  "level": 2,
+  "speed": 1,
+  "number": "020040",
+  "illustrationId": "blood-blade",
+  "target": "player",
+  "tags": [
+    "血契"
+  ],
+  "effects": [
+    {
+      "kind": "blood_pact_damage",
+      "amount": 4,
+      "damageType": "necrotic"
+    }
+  ],
+  "text": "选择1个目标才能发动。对其造成己方已减少生命值上限等量的暗蚀伤害，最多4点。",
+  "analysisTurns": 1,
+  "school": "evocation"
+}

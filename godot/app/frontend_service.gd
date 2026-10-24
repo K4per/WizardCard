@@ -17,6 +17,7 @@ var match_active: bool = false
 var match_mode: String = ""
 var match_viewer: int = 0
 var match_snapshot: Dictionary = {}
+var response_modes: Array[int] = [ResponseTiming.Mode.AUTO, ResponseTiming.Mode.AUTO]
 var last_replay_path: String = ""
 var assets_directory: String = ""
 var user_directory: String = ""
@@ -245,6 +246,7 @@ func start_match(options: Dictionary) -> bool:
 		return false
 	match_mode = str(options.get("mode", "hotseat"))
 	match_viewer = 0
+	response_modes = [ResponseTiming.Mode.AUTO, ResponseTiming.Mode.AUTO]
 	match_snapshot.clear()
 	match_active = true
 	last_replay_path = ""
@@ -304,6 +306,8 @@ func poll_network() -> Dictionary:
 	network_state = response.get("data", {})
 	network_active = bool(network_state.get("exists", network_state.has("room")))
 	if network_active and bool(network_state.get("started", false)):
+		if not match_active:
+			response_modes = [ResponseTiming.Mode.AUTO, ResponseTiming.Mode.AUTO]
 		match_active = true
 		match_mode = "network"
 		match_viewer = int(network_state.get("viewer", 0))

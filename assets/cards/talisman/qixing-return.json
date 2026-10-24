@@ -1,0 +1,26 @@
+{
+  "id": "qixing-return",
+  "name": "七星归迹",
+  "type": "talisman",
+  "rarity": "rare",
+  "cost": 7,
+  "castCost": 0,
+  "rank": 3,
+  "level": 3,
+  "speed": 2,
+  "number": "040016",
+  "illustrationId": "qixing-return",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [
+    {
+      "kind": "seven_stars_return",
+      "amount": 7
+    }
+  ],
+  "text": "选择己方灰烬区1至7张【七星】卡才能发动。将其返回卡组/副卡组。",
+  "analysisTurns": 0,
+  "school": "transmutation"
+}

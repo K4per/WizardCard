@@ -18,6 +18,20 @@ struct PlayerState {
     int siqueDamageCap{}, siqueCapUntilOwnTurn{};
     std::uint64_t siqueLifePaymentTurn{};
     bool debugInfiniteLife{}, debugInfiniteMana{}, debugInfiniteLoad{};
+    int lifeLimit{maximumLife}; // One-time changes; continuous modifiers are derived from field sources.
+    std::uint64_t firstLifePaymentTurn{};
+    int sevenShiftUntilOwnTurn{};
+    bool sevenShifted{};
+};
+struct PaymentChoice {
+    int mana{}, life{}, lifePlayer{-1};
+};
+struct PendingPayment {
+    PlayerId player{};
+    Command command;
+    std::optional<PendingDecision> previousDecision;
+    std::vector<PaymentChoice> choices;
+    std::string key;
 };
 enum class Flow {
     Draw,
@@ -64,5 +78,7 @@ struct GameState {
     bool opening{};
     std::array<CardId, 2> initialFormations{};
     bool debugUsed{};
+    std::optional<PendingPayment> payment;
+    std::optional<PaymentChoice> selectedPayment;
 };
 } // namespace wizard

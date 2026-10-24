@@ -1,5 +1,5 @@
 #include "wizard/application.hpp"
-#include "wizard/core/sique.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
 #include <set>
@@ -220,7 +220,7 @@ TEST_CASE("Alpha v2.5.2 every ordinary formal spell resolves its source and mean
             poolCard(s, 84, "fireball", 0, Zone::Ash);
             poolCard(s, 85, "sique-sugar", 1, Zone::Ash);
             poolCard(s, 86, "fireball", 1, Zone::Ash);
-            for (int n = 0; n < sique::detachCost(d); ++n) {
+            for (int n = 0; n < card_rules::detachCost(d); ++n) {
                 const CardId seal = static_cast<CardId>(30 + n);
                 poolCard(s, seal, n == 0 ? "sique-vinegar" : n == 1 ? "sique-sugar" : "sique-chili", 0, Zone::Attached, 1);
                 targets.push_back(seal);
@@ -255,7 +255,7 @@ TEST_CASE("Alpha v2.5.2 every ordinary formal spell resolves its source and mean
                 REQUIRE_FALSE(e.state().effect);
                 poolReject(e, 0, command);
             }
-            for (int n = 0; n < sique::detachCost(d); ++n)
+            for (int n = 0; n < card_rules::detachCost(d); ++n)
                 REQUIRE(e.state().cards.at(static_cast<CardId>(30 + n)).zone == Zone::Ash);
             if (id == "instant-circuit-overload") REQUIRE(e.state().cards.at(13).analysisProgress == 2);
             if (id == "sique-pancakes") REQUIRE(e.state().players[0].siqueDamageCap == 4);

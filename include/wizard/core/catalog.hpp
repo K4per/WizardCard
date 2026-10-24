@@ -21,7 +21,7 @@ struct ResponseAbility {
     std::vector<Phase> phases;
     bool fromCasting{};
 };
-enum class RecipeCostKind { Mana, SacrificeFormation, SacrificeSpell, DiscardHand };
+enum class RecipeCostKind { Mana, SacrificeFormation, SacrificeSpell, DiscardHand, Life };
 struct RecipeCost {
     RecipeCostKind kind{RecipeCostKind::Mana};
     int amount{};
@@ -68,6 +68,7 @@ struct CardCatalog {
     bool usesAlphaV252() const { return mechanicsRevision >= 5; }
     bool usesAlphaV253() const { return mechanicsRevision >= 6; }
     bool usesAlphaV253Hotfix1() const { return mechanicsRevision >= 7; }
+    bool usesCardRules() const { return mechanicsRevision >= 8; }
     int baseLoadCapacity{};
     const CardDefinition &at(const std::string &id) const;
 };

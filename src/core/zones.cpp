@@ -1,6 +1,6 @@
 #include "wizard/core/rules.hpp"
-#include "wizard/core/sique.hpp"
-#include "wizard/core/arcana.hpp"
+#include "wizard/core/card_rules.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <iomanip>
@@ -18,7 +18,7 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
             (i->second.base && (!cat || !cat->usesAlphaV2())))
             return;
         auto &c = i->second;
-        if (cat && c.zone == Zone::Attached && sique::member(cat->at(c.definition))) {
+        if (cat && c.zone == Zone::Attached && card_rules::member(cat->at(c.definition), "味契")) {
             c.siquePartner = 0; c.siquePairTurn = 0;
         }
         std::vector<CardId> children;
@@ -27,6 +27,11 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
                 children.push_back(cid);
         const bool publicSource = c.zone != Zone::Hand && c.zone != Zone::Deck && c.zone != Zone::SideDeck;
         const bool wasCasting = c.zone == Zone::Casting;
+        if (cat && cat->usesCardRules() && c.definition == "qixing-lamp" &&
+            (c.zone == Zone::Analysis || c.zone == Zone::Casting) && c.spell == SpellState::Active) {
+            s.players[c.owner].surrendered = true;
+            s.events.push_back({"seven_lamp_defeat", "已发动的七星灯盏离场：己方败北", -1, source});
+        }
         if (cat && cat->usesAlphaV252() && c.definition == "arcana-lovers" && c.remaining > 0) {
             if (!batch) batch = s.nextBatch++;
             Trigger trigger;
@@ -109,7 +114,7 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
                               s.temporary.end());
         }
         s.events.push_back({"leave", "卡牌进入灰烬区", -1, source});
-        if (cat) arcana::ashEntered(s, *cat);
+        if (cat) card_rules::onAshEntered(s, *cat, c.owner);
     };
     leaveOne(leaveOne, id);
     // Capture one associated departure batch before mutation; publish only after

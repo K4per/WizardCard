@@ -53,6 +53,7 @@ Json viewDto(const GameView &v) {
             {"capacity", p.capacity}, {"handCount", p.handCount}, {"deckCount", p.deckCount},
             {"sideDeckCount", p.sideDeckCount}, {"exhaustion", p.exhaustion},
             {"ownTurn", p.ownTurn}, {"temporaryLife", p.temporaryLife},
+            {"lifeLimit", p.lifeLimit}, {"sevenMode", p.sevenMode},
             {"resistances", p.resistances}, {"immunities", p.immunities},
             {"infiniteLife", p.infiniteLife}, {"infiniteMana", p.infiniteMana}, {"infiniteLoad", p.infiniteLoad}});
     for (const auto &entry : v.temporaryLives)

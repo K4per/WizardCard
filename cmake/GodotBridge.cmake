@@ -112,6 +112,12 @@ if(BUILD_TESTING AND GODOT_BIN)
     --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/card_tray_smoke.gd)
   set_tests_properties(godot_card_tray_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  foreach(smoke response_collection response_timing)
+    add_test(NAME godot_${smoke}_smoke COMMAND "${GODOT_BIN}" --headless
+      --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/${smoke}_smoke.gd)
+    set_tests_properties(godot_${smoke}_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+      RUN_SERIAL TRUE TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  endforeach()
   add_test(NAME godot_deck_frontend_smoke COMMAND "${GODOT_BIN}" --headless
     --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/deck_frontend_smoke.gd --
     --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets

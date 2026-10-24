@@ -147,6 +147,13 @@ func _show_frame() -> void:
 	_update_logs(frame)
 	_hide_detail()
 	_command.text = "对局开始" if _step == 0 else "步骤 %d · 玩家 %d\n%s" % [_step, int(_rows[_step - 1].get("actor", 0)) + 1, _command_label(_rows[_step - 1].get("command", {}))]
+	var active: int = int(frame.get("activePlayer", 0))
+	var players: Array = frame.get("players", [])
+	var turn: int = int((players[active] as Dictionary).get("ownTurn", 0)) if active >= 0 and active < players.size() else 0
+	var timing: String = "玩家 %d · 第 %d 个己方回合 · %s" % [active + 1, turn, str(frame.get("phaseName", ""))]
+	if frame.get("chain") is Dictionary:
+		timing += " · " + str((frame["chain"] as Dictionary).get("windowName", "响应时点"))
+	_command.text = timing + "\n" + _command.text
 	_update_controls()
 
 func _update_status(frame: Dictionary) -> void:

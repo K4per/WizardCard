@@ -1,0 +1,25 @@
+{
+  "id": "qixing-shift",
+  "name": "七星星移",
+  "type": "word",
+  "rarity": "rare",
+  "cost": 3,
+  "castCost": 0,
+  "rank": 1,
+  "level": 1,
+  "speed": 2,
+  "number": "030027",
+  "illustrationId": "qixing-shift",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [
+    {
+      "kind": "seven_stars_shift"
+    }
+  ],
+  "text": "耀：支付7点生命值才能发动。发动后，己方【七星】卡耀/黯效果交换适用。 黯：将1张卡从手卡送去灰烬区才能发动。将己方场上1张【七星】阵法卡替换为更高1级的【七星】阵法卡。",
+  "analysisTurns": 0,
+  "school": "transmutation"
+}

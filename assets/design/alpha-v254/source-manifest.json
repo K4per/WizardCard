@@ -1,0 +1,59 @@
+{
+  "format": 1,
+  "sources": [
+    {
+      "key": "spells",
+      "original": "E:\\Project\\WizardCard-Design\\10.24\\法术卡列表-共29+14+6张卡.md",
+      "snapshot": "sources/spells.md",
+      "sha256": "5e968cd2c2f0949c96a742ae6e518fec6f37def54f99cbab96a09a7c809c7d92"
+    },
+    {
+      "key": "seals",
+      "original": "E:\\Project\\WizardCard-Design\\10.24\\符文卡列表-共3张卡.md",
+      "snapshot": "sources/seals.md",
+      "sha256": "c0a3884c6ab5c9e73cb6fe9b251429fe8e794a2e8add54eb0a039e894755554e"
+    },
+    {
+      "key": "formations",
+      "original": "E:\\Project\\WizardCard-Design\\10.24\\阵法卡列表-共16张卡.md",
+      "snapshot": "sources/formations.md",
+      "sha256": "d3c07cdc25f26643f951541695ccc63db9b3d9e92c3b936705e2953471ce5a43"
+    },
+    {
+      "key": "sique",
+      "original": "E:\\Project\\WizardCard-Design\\10.24\\【味契】系列-共19张卡.md",
+      "snapshot": "sources/sique.md",
+      "sha256": "95e741db3d7308244557955657f782a42f5e984e4d186d761c22e86d68e02ae4"
+    },
+    {
+      "key": "storm",
+      "original": "E:\\Project\\WizardCard-Design\\10.24\\【风契】系列-共15张卡.md",
+      "snapshot": "sources/storm.md",
+      "sha256": "911d0af3f0db0782a8dd659e357fe70416e8a753fe9dd76daeb7debfb301de71"
+    },
+    {
+      "key": "qixing",
+      "original": "E:\\Project\\WizardCard-Design\\10.24\\【七星】系列.md",
+      "snapshot": "sources/qixing.md",
+      "sha256": "81819bbaf3f695e184a2ec5287729058940152eed2b5abd117fe29373b83f554"
+    },
+    {
+      "key": "blood",
+      "original": "E:\\Project\\WizardCard-Design\\10.24\\【血契】系列.md",
+      "snapshot": "sources/blood.md",
+      "sha256": "fa879fc861fdfd3fcdec9d082fb3f5d764619beacd102d5d0dc6a08dd7722988"
+    },
+    {
+      "key": "changes",
+      "original": "E:\\Project\\WizardCard-Design\\10.24\\10.24改动报告.md",
+      "snapshot": "sources/changes.md",
+      "sha256": "f5859bdea6c53700dce4d23e09c29efdd075173c4938ed2549fe31d43a904424"
+    },
+    {
+      "key": "requirements",
+      "original": "E:\\Project\\WizardCard-Design\\Alpha v2.5.4更新需求报告.md",
+      "snapshot": "sources/requirements.md",
+      "sha256": "56aeef24173aeff728c1d324f843d6ed4e6256ac223010d499e4afabea0f85c2"
+    }
+  ]
+}

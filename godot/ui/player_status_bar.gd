@@ -77,12 +77,13 @@ static func place_corners(own: PlayerStatusBar, opponent: PlayerStatusBar, viewp
 func set_status(player_name: String, player_index: int, values: Dictionary, loads: Array = [], cards: Array = [], debug: Dictionary = {}, clock_text: String = "", clock_warning: bool = false) -> void:
 	if not is_node_ready():
 		return
-	_name.text = player_name + (" · " + clock_text if not clock_text.is_empty() else "")
+	var seven_mode: int = int(values.get("sevenMode", 0))
+	_name.text = player_name + (" · 耀" if seven_mode == 1 else (" · 黯" if seven_mode == 2 else "")) + (" · " + clock_text if not clock_text.is_empty() else "")
 	_name.add_theme_color_override(&"font_color", Color("f0aaaa") if clock_warning else Color("e7e6da"))
 	var unlimited_life: bool = bool(debug.get("infiniteLife", values.get("infiniteLife", false)))
 	var unlimited_mana: bool = bool(debug.get("infiniteMana", values.get("infiniteMana", false)))
 	var unlimited_capacity: bool = bool(debug.get("infiniteLoad", values.get("infiniteLoad", false)))
-	_life.text = "生命 " + ("∞" if unlimited_life else str(int(values.get("life", 0))))
+	_life.text = "生命 %s/%d" % ["∞" if unlimited_life else str(int(values.get("life", 0))), int(values.get("lifeLimit", 40))]
 	_temporary_life.text = "临时生命 +%d" % int(values.get("temporaryLife", 0))
 	_mana.text = "魔素 %s/%d" % ["∞" if unlimited_mana else str(int(values.get("mana", 0))), 20]
 	_load.text = "荷载 %d/%s" % [int(values.get("load", 0)), "∞" if unlimited_capacity else str(int(values.get("capacity", 0)))]
@@ -106,6 +107,6 @@ func set_status(player_name: String, player_index: int, values: Dictionary, load
 		var kind: String = "独立荷载" if bool(entry.get("independent", false)) else ("绑定荷载" if bool(entry.get("sourceBound", false)) else "临时荷载")
 		details.append("%s · %s · %d" % [kind, source_name, int(entry.get("amount", 0))])
 	_load.tooltip_text = "荷载来源：\n" + ("\n".join(details) if not details.is_empty() else "暂无额外荷载来源")
-	_life.tooltip_text = "当前生命，不含临时生命。"
+	_life.tooltip_text = "当前生命 / 生命上限，不含临时生命。"
 	_temporary_life.tooltip_text = "临时生命；己方抽卡阶段清除。"
 	_mana.tooltip_text = "当前魔素 / 上限 20。"

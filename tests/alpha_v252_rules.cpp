@@ -1,6 +1,6 @@
 #include "wizard/application.hpp"
 #include "wizard/command_codec.hpp"
-#include "wizard/core/arcana.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
 
@@ -324,12 +324,12 @@ TEST_CASE("Alpha v2.5.2 Arcana analysis hooks count events and preserve exile di
     put(state, 13, "fireball", 0, Zone::Analysis, 1, SpellState::Analyzing).ringIndex = 3;
     put(state, 20, "spark", 1, Zone::Hand);
     put(state, 21, "spark", 1, Zone::Hand);
-    arcana::advance(state, cat, 13, 5);
+    card_rules::advanceAnalysis(state, cat, 13, 5);
     REQUIRE(state.cards.at(10).analysisProgress == 1);
     StateMaintenance::leave(state, 20, &cat);
     REQUIRE(state.cards.at(11).analysisProgress == 1);
     REQUIRE(state.cards.at(10).analysisProgress == 2);
-    arcana::erase(state, cat, 21);
+    card_rules::eraseCard(state, cat, 21);
     REQUIRE(state.cards.at(21).zone == Zone::Exile);
     REQUIRE(state.cards.at(11).analysisProgress == 1);
     Trigger damage; damage.owner = 1; damage.targetPlayer = 0;

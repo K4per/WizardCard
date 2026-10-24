@@ -1,0 +1,25 @@
+{
+  "id": "qixing-divination",
+  "name": "七星遥鉴",
+  "type": "word",
+  "rarity": "rare",
+  "cost": 3,
+  "castCost": 0,
+  "rank": 1,
+  "level": 1,
+  "speed": 2,
+  "number": "030026",
+  "illustrationId": "qixing-divination",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [
+    {
+      "kind": "seven_stars_insight"
+    }
+  ],
+  "text": "耀：将1张卡从手卡送去灰烬区才能发动。将己方场上1张【七星】阵法卡替换为更高1级的【七星】阵法卡。 黯：查看己方卡组最上方的7张卡，将其中1张【七星】卡加入手卡，其余卡返回卡组最下方。",
+  "analysisTurns": 0,
+  "school": "divination"
+}

@@ -1,6 +1,6 @@
 {
   "id": "ice-storm",
-  "name": "恒风·冰风暴",
+  "name": "风契·冰风暴",
   "type": "analytic",
   "rarity": "rare",
   "cost": 4,
@@ -24,7 +24,7 @@
   ],
   "text": "选择1个目标才能发动。对其造成8点寒冷伤害。那之后，可以使对方解析区全部解析法术卡的解析时间+1。",
   "tags": [
-    "风暴"
+    "风契"
   ],
   "number": "020018",
   "illustrationId": "ice-storm"

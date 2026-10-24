@@ -9,7 +9,7 @@
   "text": "此法术卡仅可在【味契·篝火】上设置。选择1个目标才能发动。对其造成6点火焰伤害。那之后，可以将1张【味契】卡从己方灰烬区加入手卡。",
   "rank": 3,
   "level": 3,
-  "school": "abjuration",
+  "school": "evocation",
   "cost": 2,
   "castCost": 2,
   "analysisTurns": 1,

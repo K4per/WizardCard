@@ -33,6 +33,8 @@ std::string GameEngine::stateKey(bool logical) const {
         return LinkId{0};
     };
     for (const auto &p : s.players) {
+        if (catalog_.usesCardRules())
+            o << "v254:" << p.lifeLimit << ',' << p.firstLifePaymentTurn << ',' << p.sevenShifted << ',' << p.sevenShiftUntilOwnTurn << ';';
         if (p.debugInfiniteLife || p.debugInfiniteMana || p.debugInfiniteLoad)
             o << "debug:" << p.debugInfiniteLife << ',' << p.debugInfiniteMana << ',' << p.debugInfiniteLoad << ';';
         o << p.life << ',' << p.mana << ',' << p.ownTurn << ',' << p.actionsPlayed << ',' << p.formations
@@ -138,6 +140,11 @@ std::string GameEngine::stateKey(bool logical) const {
         o << 'D' << d.id << ',' << d.player << ',' << static_cast<int>(d.kind) << ',' << d.mayPass << ':';
         for (auto id : d.options)
             o << id << ',';
+    }
+    if (s.payment) {
+        o << "payment:" << s.payment->player << ',' << s.payment->key << ':';
+        for (const auto &choice : s.payment->choices) o << choice.mana << ',' << choice.life << ',' << choice.lifePlayer << ';';
+        if (s.payment->previousDecision) o << "previous:" << s.payment->previousDecision->id;
     }
     return o.str();
 }

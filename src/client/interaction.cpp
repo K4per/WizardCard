@@ -133,6 +133,7 @@ std::string Interaction::intent(const LegalAction &a, const std::optional<Pendin
                     return "销毁此阵法";
                 case DecisionKind::EffectPrepare:
                 case DecisionKind::Concentration:
+                case DecisionKind::Payment:
                     return a.label;
                 case DecisionKind::Overflow:
                     return "移除多余法术";

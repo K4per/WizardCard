@@ -1,0 +1,31 @@
+{
+  "id": "qixing-kaiyang",
+  "name": "七星·开阳",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "castCost": 0,
+  "rank": 0,
+  "level": 6,
+  "speed": 1,
+  "number": "010027",
+  "illustrationId": "qixing-kaiyang",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [],
+  "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。可以将手卡全部送去灰烬区，将此阵法卡替换为【七星·瑶光】。",
+  "body": 5,
+  "rings": 3,
+  "capacity": 21,
+  "income": 6,
+  "maxRank": 6,
+  "summonCondition": "通过【七星】卡的效果才能设置",
+  "baseEligible": false,
+  "traits": [
+    "seven_stars_effect_only",
+    "seven_stars_kaiyang"
+  ],
+  "recipe": []
+}

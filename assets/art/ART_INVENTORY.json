@@ -2,11 +2,11 @@
   "format": 2,
   "scope": "Authoring and candidate source files; Godot runtime mirror listed separately. No removal is implied.",
   "comparison": {
-    "previousSourceFiles": 1478,
-    "currentSourceFiles": 1484,
-    "sourceFileDelta": 6,
-    "previousBytes": 687709201,
-    "currentBytes": 691416369
+    "previousSourceFiles": 1521,
+    "currentSourceFiles": 1521,
+    "sourceFileDelta": 0,
+    "previousBytes": 705309553,
+    "currentBytes": 705309553
   },
   "sourceFiles": [
     {
@@ -187,10 +187,7 @@
         1448,
         1086
       ],
-      "runtimeAssetIds": [
-        "illustration.engeas-four-point-star"
-      ],
-      "usage": "registered-runtime-source"
+      "usage": "candidate-or-legacy; verify references before removal"
     },
     {
       "file": "assets/art/alpha-v1/export.py",
@@ -803,6 +800,712 @@
       "sha256": "2899b249179693f6fe8cc4995c3dbf4e92f684212e7ac45c1b5bb01edc0850dc",
       "category": "alpha-v252-20261021",
       "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-awaken.png",
+      "extension": ".png",
+      "bytes": 1622520,
+      "sha256": "1a6a74bced096731b13d8f49d91b26f68a4340d740d2ed7da532d1b42ec979ef",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-awaken"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-banner.png",
+      "extension": ".png",
+      "bytes": 1128225,
+      "sha256": "ea2fb51130a8b5a9c800796d1c23acf9863873e267eb47483451ccf82da6a05c",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-banner"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-divination.png",
+      "extension": ".png",
+      "bytes": 636291,
+      "sha256": "30f977116fe4299aa2e9f4fc85201ea383ce3b8a053201d34c13118dfbaeff40",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-divination"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-gaze.png",
+      "extension": ".png",
+      "bytes": 908364,
+      "sha256": "e7d9c30aca745894a10de36a04ed2d62c16ca09a626dde25c52da2b3c4b3b7c8",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-gaze"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-kaiyang.png",
+      "extension": ".png",
+      "bytes": 1396721,
+      "sha256": "7b3944f2740aa7847424325de265485761401dfa5098dce132deadd2837a5f12",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-kaiyang"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-lamp.png",
+      "extension": ".png",
+      "bytes": 1064834,
+      "sha256": "c3b44ffaa52591c0193762b3327b4fbd0844408adee0f3f0e52af0c7bb83931d",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-lamp"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-punishment.png",
+      "extension": ".png",
+      "bytes": 933682,
+      "sha256": "d8c9f6cfc9600040f9aaef5d9286891602978975ff70ca5f2f6a74bc3c86f969",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-punishment"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-return.png",
+      "extension": ".png",
+      "bytes": 735496,
+      "sha256": "7e120ac291ed7ab698c5d006e9e307acadb043ee8af6c398263304bc7d942c4c",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-return"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-ruin.png",
+      "extension": ".png",
+      "bytes": 509378,
+      "sha256": "2551ebcb418353a23aad0dbb5714a5762e2224fe23e72b14ddc2dede92e92072",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-ruin"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-shift.png",
+      "extension": ".png",
+      "bytes": 1085822,
+      "sha256": "4475cc421a3c0b9e24235ddf49c4ed1cd762f3b91ec2919d2c5a9779499779b5",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-shift"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianji.png",
+      "extension": ".png",
+      "bytes": 1914326,
+      "sha256": "b687d65e8125f5032152daa2363ecbe73b79017c116fe7296e8c3ffea62a63b0",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-tianji"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianquan.png",
+      "extension": ".png",
+      "bytes": 1108296,
+      "sha256": "d8d2f8813b2455701c9811883830d937184c2f06d0d18ef37e8f716ba0a1fa0d",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-tianquan"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianshu.png",
+      "extension": ".png",
+      "bytes": 1944630,
+      "sha256": "d56dfd4cf1a5f671a100422f8594e9afa0301ec726fd0deefaf9cc5222aeaad3",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-tianshu"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianxuan.png",
+      "extension": ".png",
+      "bytes": 1177793,
+      "sha256": "0c1785c180ae76aa3434a0908f738cb670375af6fdc9f24d00e8d470726a4cff",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-tianxuan"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-yaoguang.png",
+      "extension": ".png",
+      "bytes": 1904108,
+      "sha256": "516fe3ab393ecaa3833d0a7f670571e8bb533b33b15956dce2dd3e56b3f6057b",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-yaoguang"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/export/qixing/qixing-yuheng.png",
+      "extension": ".png",
+      "bytes": 1005506,
+      "sha256": "86d4b250a2784931f07fe8593b510db8b00092a388ba73c8f3bd936988668023",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1536,
+        1536
+      ],
+      "runtimeAssetIds": [
+        "illustration.qixing-yuheng"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/manifest.json",
+      "extension": ".json",
+      "bytes": 18197,
+      "sha256": "adcfd2182115e430247ed28478e7565b37a206de4a8c551457d7e46db83b4465",
+      "category": "alpha-v254-20261024",
+      "usage": "candidate-or-legacy; verify references before removal"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星·天权.jpg",
+      "extension": ".jpg",
+      "bytes": 169142,
+      "sha256": "adfe693d9aa90307c2de8b172ac92b9377d62061c8edca06401d83ba463791c9",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星·天枢.jpg",
+      "extension": ".jpg",
+      "bytes": 352979,
+      "sha256": "68117da168587730d9dc155d95d094db9b41a4e619c0a26701c17251eb457176",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星·天玑.jpg",
+      "extension": ".jpg",
+      "bytes": 364698,
+      "sha256": "42275c78a4233ba3b791354a7d2c88d5deda47eebb2fed88dc35548bb497d903",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星·天璇.jpg",
+      "extension": ".jpg",
+      "bytes": 275392,
+      "sha256": "43d5271879185864ccc9f85a523c8dcebe004b255cd9fc1ebfae2c670101ffe3",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星·开阳.jpg",
+      "extension": ".jpg",
+      "bytes": 270254,
+      "sha256": "bff70da7cf7d4294336c1b86c93014e17029f71f0d3ca7a418dedc62dcbc0fe6",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星·玉衡.jpg",
+      "extension": ".jpg",
+      "bytes": 191595,
+      "sha256": "566de99b771338dc66b680c6a6362a54d06c1bb8fc3644aa026aac2e8171f9cc",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星·瑶光.jpg",
+      "extension": ".jpg",
+      "bytes": 339516,
+      "sha256": "929cdbd35c84c5f22fc2814d5c411efcb5062befab42668d7ae2f01552146a7f",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星启曜.jpg",
+      "extension": ".jpg",
+      "bytes": 218286,
+      "sha256": "6891658381a39d9464fdd43c49fde45e14fb17e8c962705822581f6907bd2bdc",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星归墟.jpg",
+      "extension": ".jpg",
+      "bytes": 117792,
+      "sha256": "904fa302ff3696524be5cf13ae574d99090915d018ee3aa1e6d8d92ea1450c12",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星归迹.jpg",
+      "extension": ".jpg",
+      "bytes": 162918,
+      "sha256": "f174a7df23984f6209c17ca499418d84513e596fe1ec44e59bcd3220ad8b491d",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星惩戒.jpg",
+      "extension": ".jpg",
+      "bytes": 158618,
+      "sha256": "1849ae227fd12ff4162d5ce2c7a0f2bb982c80984260bce9a2d55b6ec37ec25a",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星星帜.jpg",
+      "extension": ".jpg",
+      "bytes": 199195,
+      "sha256": "35247b12bde0db0d2d695ce2be755c82034733e105b01133490ece855e48002f",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星星移.jpg",
+      "extension": ".jpg",
+      "bytes": 250776,
+      "sha256": "cd5aeb19586cc288e7053a768f24edfabc9f37c81e0311c5977baaf91f06f199",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星灯盏.jpg",
+      "extension": ".jpg",
+      "bytes": 201632,
+      "sha256": "26097aaaaf3643ab1aabdf08c98bd1f53330c24c3d99c0378e33aa842c2b4acf",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星的注视.jpg",
+      "extension": ".jpg",
+      "bytes": 155647,
+      "sha256": "5087d7d0362770543500c210399c364d9fba081ed1aa315fc695e9b3420cde0a",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/七星卡图/七星遥鉴.jpg",
+      "extension": ".jpg",
+      "bytes": 114774,
+      "sha256": "f96b20614fdc8dd9465028c8edddbc4697f279b9abab45513b2c9ffcffb6b2df",
+      "category": "alpha-v254-20261024",
+      "usage": "authoring-source-or-validation"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/卡图替换/地震术.png",
+      "extension": ".png",
+      "bytes": 812212,
+      "sha256": "4d665186efce61db9cc91f324b6024cd87fa8bb2f00e3fe9581e170cc06b7948",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.earthquake"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/卡图替换/恩格亚斯之星.png",
+      "extension": ".png",
+      "bytes": 451064,
+      "sha256": "511ba94e72c3a3342520f5d94e68116c7cca660d0a56c5faad9451c7b4de8fc9",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.engeas-four-point-star"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·凝血.png",
+      "extension": ".png",
+      "bytes": 622462,
+      "sha256": "b13b1094bf063c26b6cc12c8d4216914577915d05c88ee384424d25d9e5f6975",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-coagulation"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·割腕.png",
+      "extension": ".png",
+      "bytes": 591667,
+      "sha256": "70126fda050d989f8c125b59946073f23cc55d3d88b1437a965b36b960a83582",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-wrist"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·同源.png",
+      "extension": ".png",
+      "bytes": 785701,
+      "sha256": "17152ec1a98026b794c2abd8ddc8b75fec728535623d1c1d2453f980077be483",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-same-origin"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·心印.png",
+      "extension": ".png",
+      "bytes": 689723,
+      "sha256": "5a0557ab6b7e9ff2a011e19b75c113e3dc81c446dfba4c63630fa59be681085a",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-heartmark"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·心脏.png",
+      "extension": ".png",
+      "bytes": 1106945,
+      "sha256": "2140e9c0e16dfc72a774d02999836a8b185d3555d8c2e75ff942cb0be717585e",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-heart"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·放血.png",
+      "extension": ".png",
+      "bytes": 502694,
+      "sha256": "a6d86ea331bb1312bafb9f0007f19b12b8954e3c45ea9b0eb22395994c03ed3e",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-letting"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭品.png",
+      "extension": ".png",
+      "bytes": 626557,
+      "sha256": "aa93e39dcb627906d4ca0f9d12ccf5972ceb5aeff7e6ea745e02e25b73a0b66d",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-offering"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭品台.png",
+      "extension": ".png",
+      "bytes": 986915,
+      "sha256": "52bd53431982eded94a0521bb86ea6662ba3018fa4f62e4cbe98e6b5dc83beb8",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-sacrificial-table"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭坛.png",
+      "extension": ".png",
+      "bytes": 835454,
+      "sha256": "297386e3acf12a1a4225e93b8bdaa449990682eff3481e09bffff8d7dc9d9d27",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-altar"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·续命.png",
+      "extension": ".png",
+      "bytes": 772344,
+      "sha256": "6ab2ec9b8114b0a7cb56bcb15c00e76682b8c826f037670f60bcd027b768a7bc",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-renewal"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·背水.png",
+      "extension": ".png",
+      "bytes": 442705,
+      "sha256": "1d872fb7364a146bbe6b83bb77b703db2af88bb465a4cf8626ae46fc964238fc",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-last-stand"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血债.png",
+      "extension": ".png",
+      "bytes": 694909,
+      "sha256": "bce2007bd34d4435de29ff09435431ccc456210e35223aab94bb8c9338bcff5f",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-debt"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血偿.png",
+      "extension": ".png",
+      "bytes": 835579,
+      "sha256": "5971d5cdabf5818fc5c8416d1cca1ca65d70e7026a2f74c8b89dc5467c4bc35c",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-repayment"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血刃.png",
+      "extension": ".png",
+      "bytes": 453552,
+      "sha256": "3bb89d9f9833410d1dc9174596f8e3205eb319b46d28ac5caa40dc8727398390",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-blade"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血印.png",
+      "extension": ".png",
+      "bytes": 538512,
+      "sha256": "d2a460ccd9970212bad42d05382a691777a01e819f57b582691d170c625efd0c",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-mark"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血咒.png",
+      "extension": ".png",
+      "bytes": 857401,
+      "sha256": "8b0ee1add183b214da9f9e25b7ff4b0cda7d8e20360b9673893a96ab1ba86a19",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-curse"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血池.png",
+      "extension": ".png",
+      "bytes": 874396,
+      "sha256": "53b669a028a9988fdcf33120a7b9521e0c3746c01d6e80bbc74779a8175e49fb",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-pool"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血脉.png",
+      "extension": ".png",
+      "bytes": 621564,
+      "sha256": "2be630609f6e0c326ff5d19d55947473cc5bc7d126b988c44281ddd05f79e7c4",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-vein"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血雨.png",
+      "extension": ".png",
+      "bytes": 449668,
+      "sha256": "b34979eb8b7e7690a00642dd56af54ec2ce2e66fd0afb9d61d254b6d78436b91",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-rain"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v254-20261024/source/血契卡图/血契·输血管.png",
+      "extension": ".png",
+      "bytes": 1030579,
+      "sha256": "a04a26f28eea13849620abafb3a7516cb4812c8ebec26a2f302dd0c9ed535915",
+      "category": "alpha-v254-20261024",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.blood-transfusion"
+      ],
+      "usage": "registered-runtime-source"
     },
     {
       "file": "assets/art/branding/icon-manifest.json",
@@ -11829,214 +12532,6 @@
       "usage": "registered-runtime-source"
     },
     {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/design_spec.md",
-      "extension": ".md",
-      "bytes": 3717,
-      "sha256": "0f5f584354494892883aaf0034143d3bcd6d4bfa97fd33d2141c9ea6f62468a7",
-      "category": "godot-2d-v2",
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/spec_lock.md",
-      "extension": ".md",
-      "bytes": 2310,
-      "sha256": "b90cdf3aab420a5bdb73866d406751d7753713225712f76139420f5e075b9567",
-      "category": "godot-2d-v2",
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_bingtang.png",
-      "extension": ".png",
-      "bytes": 1356183,
-      "sha256": "4f0d52645995ac1edfe412b34c2302705bdf7e482b97612240136fd697ffa59f",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_chaidui.png",
-      "extension": ".png",
-      "bytes": 1682513,
-      "sha256": "268358228e6e154472a40805f7e6b3a567b75e8f72fbca52e8745ea8f284b52a",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_feitangzhuo.png",
-      "extension": ".png",
-      "bytes": 1452833,
-      "sha256": "61e5567f384c96203a0304d4b5c6e51411ba4fc4d733adc6e9268395098a9a49",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_fengweizhuanhua.png",
-      "extension": ".png",
-      "bytes": 1297777,
-      "sha256": "1ed5dfa0e67bc3315b93276c4f28c01947b4dc7675fdc7b0ff65548ab932423d",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_haixian.png",
-      "extension": ".png",
-      "bytes": 1773387,
-      "sha256": "e05770d6057d925347c4dff3e425496b2e18416c7d0b6126aa65a08050b9ba6b",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_kangxingjianbing.png",
-      "extension": ".png",
-      "bytes": 1521070,
-      "sha256": "c338b331f0b6653f053a871e2b2d6e85f71e90ae3790080d876fe90b2add44b4",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_lajiao.png",
-      "extension": ".png",
-      "bytes": 1423567,
-      "sha256": "64fb4d907fd21c9a0fd3aa49a2700b5b838fa59d97bc91a93f31a86ba5f39d2b",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_liehuohuilu.png",
-      "extension": ".png",
-      "bytes": 1245646,
-      "sha256": "fb1882acb40a4f54e8729a17e259809cf6abeb66866719aa391d093fa429bae4",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_moliganguo.png",
-      "extension": ".png",
-      "bytes": 1992135,
-      "sha256": "a681421c62bb1b2ae183f3648bebdc25d9ca9962e02cd76b9e952a916c3ed100",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_naiyoumogutang.png",
-      "extension": ".png",
-      "bytes": 1863582,
-      "sha256": "354cd8eb300f0257145a12bcb7682d9b7976dafcaa26866de41ab29c5e99c01a",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_ouqin.png",
-      "extension": ".png",
-      "bytes": 1600023,
-      "sha256": "07b8c18ae9721465baa218402236b87fb3f63e6c759d2ffeb601ae5b13c00ff8",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_ruangu.png",
-      "extension": ".png",
-      "bytes": 1458618,
-      "sha256": "8b5d5ea2c117f903d33870d9888ca7940000fe09a8531f2ecde406c0e68acc16",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_shenenzhurou.png",
-      "extension": ".png",
-      "bytes": 1754731,
-      "sha256": "32582b8bc01a55c3d09bf7e1ab01d7a4ebf281ef3fbec4a7704b83814fb962fc",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_xiancu.png",
-      "extension": ".png",
-      "bytes": 1016062,
-      "sha256": "16d963f8c08593e59623492a0d3b9e9c95f911bd0a0195a4c8b4dcffbb9ec5f1",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_yinghuo.png",
-      "extension": ".png",
-      "bytes": 1770641,
-      "sha256": "d1a298e883522f7b41b48324cbc8dd4a7ba484ad7631cf261e79c6a6fcfec280",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
-      "file": "assets/art/godot-2d-v2/card-illustrations-v2-20261019/weqi_yuanliaozhaolai.png",
-      "extension": ".png",
-      "bytes": 1112027,
-      "sha256": "1f92aab552ca8208cb0fe7b66452ad885bc0455702ca2af0a6369226715dbc5a",
-      "category": "godot-2d-v2",
-      "size": [
-        1254,
-        1254
-      ],
-      "usage": "candidate-or-legacy; verify references before removal"
-    },
-    {
       "file": "assets/art/godot-2d-v2/deck-builder-1080p-v1/README.md",
       "extension": ".md",
       "bytes": 2734,
@@ -16450,13 +16945,6 @@
       "sha256": "7999a07b83d160edbb5d66ef97165519851b5d480c0723c3d95b4c05fad1b505"
     },
     {
-      "file": "godot/art/card/engeas-four-point-star.png",
-      "assetId": "illustration.engeas-four-point-star",
-      "source": "assets/art/alpha-v1/engeas-four-point-star.png",
-      "bytes": 410771,
-      "sha256": "160f0b0c332976753e446a3d63f7190d3d6a3be110c0cdd3850d451e4279dd62"
-    },
-    {
       "file": "godot/art/card/false-life.png",
       "assetId": "illustration.false-life",
       "source": "assets/art/alpha-release/false-life.png",
@@ -16975,6 +17463,146 @@
       "sha256": "90fd40eb1b2278ea06e84c1799387b8133d0eb443b9ef5e0971cf3af621b1d2b"
     },
     {
+      "file": "godot/art/cards/blood-altar.png",
+      "assetId": "illustration.blood-altar",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭坛.png",
+      "bytes": 835454,
+      "sha256": "297386e3acf12a1a4225e93b8bdaa449990682eff3481e09bffff8d7dc9d9d27"
+    },
+    {
+      "file": "godot/art/cards/blood-blade.png",
+      "assetId": "illustration.blood-blade",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血刃.png",
+      "bytes": 453552,
+      "sha256": "3bb89d9f9833410d1dc9174596f8e3205eb319b46d28ac5caa40dc8727398390"
+    },
+    {
+      "file": "godot/art/cards/blood-coagulation.png",
+      "assetId": "illustration.blood-coagulation",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·凝血.png",
+      "bytes": 622462,
+      "sha256": "b13b1094bf063c26b6cc12c8d4216914577915d05c88ee384424d25d9e5f6975"
+    },
+    {
+      "file": "godot/art/cards/blood-curse.png",
+      "assetId": "illustration.blood-curse",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血咒.png",
+      "bytes": 857401,
+      "sha256": "8b0ee1add183b214da9f9e25b7ff4b0cda7d8e20360b9673893a96ab1ba86a19"
+    },
+    {
+      "file": "godot/art/cards/blood-debt.png",
+      "assetId": "illustration.blood-debt",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血债.png",
+      "bytes": 694909,
+      "sha256": "bce2007bd34d4435de29ff09435431ccc456210e35223aab94bb8c9338bcff5f"
+    },
+    {
+      "file": "godot/art/cards/blood-heart.png",
+      "assetId": "illustration.blood-heart",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·心脏.png",
+      "bytes": 1106945,
+      "sha256": "2140e9c0e16dfc72a774d02999836a8b185d3555d8c2e75ff942cb0be717585e"
+    },
+    {
+      "file": "godot/art/cards/blood-heartmark.png",
+      "assetId": "illustration.blood-heartmark",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·心印.png",
+      "bytes": 689723,
+      "sha256": "5a0557ab6b7e9ff2a011e19b75c113e3dc81c446dfba4c63630fa59be681085a"
+    },
+    {
+      "file": "godot/art/cards/blood-last-stand.png",
+      "assetId": "illustration.blood-last-stand",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·背水.png",
+      "bytes": 442705,
+      "sha256": "1d872fb7364a146bbe6b83bb77b703db2af88bb465a4cf8626ae46fc964238fc"
+    },
+    {
+      "file": "godot/art/cards/blood-letting.png",
+      "assetId": "illustration.blood-letting",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·放血.png",
+      "bytes": 502694,
+      "sha256": "a6d86ea331bb1312bafb9f0007f19b12b8954e3c45ea9b0eb22395994c03ed3e"
+    },
+    {
+      "file": "godot/art/cards/blood-mark.png",
+      "assetId": "illustration.blood-mark",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血印.png",
+      "bytes": 538512,
+      "sha256": "d2a460ccd9970212bad42d05382a691777a01e819f57b582691d170c625efd0c"
+    },
+    {
+      "file": "godot/art/cards/blood-offering.png",
+      "assetId": "illustration.blood-offering",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭品.png",
+      "bytes": 626557,
+      "sha256": "aa93e39dcb627906d4ca0f9d12ccf5972ceb5aeff7e6ea745e02e25b73a0b66d"
+    },
+    {
+      "file": "godot/art/cards/blood-pool.png",
+      "assetId": "illustration.blood-pool",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血池.png",
+      "bytes": 874396,
+      "sha256": "53b669a028a9988fdcf33120a7b9521e0c3746c01d6e80bbc74779a8175e49fb"
+    },
+    {
+      "file": "godot/art/cards/blood-rain.png",
+      "assetId": "illustration.blood-rain",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血雨.png",
+      "bytes": 449668,
+      "sha256": "b34979eb8b7e7690a00642dd56af54ec2ce2e66fd0afb9d61d254b6d78436b91"
+    },
+    {
+      "file": "godot/art/cards/blood-renewal.png",
+      "assetId": "illustration.blood-renewal",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·续命.png",
+      "bytes": 772344,
+      "sha256": "6ab2ec9b8114b0a7cb56bcb15c00e76682b8c826f037670f60bcd027b768a7bc"
+    },
+    {
+      "file": "godot/art/cards/blood-repayment.png",
+      "assetId": "illustration.blood-repayment",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血偿.png",
+      "bytes": 835579,
+      "sha256": "5971d5cdabf5818fc5c8416d1cca1ca65d70e7026a2f74c8b89dc5467c4bc35c"
+    },
+    {
+      "file": "godot/art/cards/blood-sacrificial-table.png",
+      "assetId": "illustration.blood-sacrificial-table",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭品台.png",
+      "bytes": 986915,
+      "sha256": "52bd53431982eded94a0521bb86ea6662ba3018fa4f62e4cbe98e6b5dc83beb8"
+    },
+    {
+      "file": "godot/art/cards/blood-same-origin.png",
+      "assetId": "illustration.blood-same-origin",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·同源.png",
+      "bytes": 785701,
+      "sha256": "17152ec1a98026b794c2abd8ddc8b75fec728535623d1c1d2453f980077be483"
+    },
+    {
+      "file": "godot/art/cards/blood-transfusion.png",
+      "assetId": "illustration.blood-transfusion",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·输血管.png",
+      "bytes": 1030579,
+      "sha256": "a04a26f28eea13849620abafb3a7516cb4812c8ebec26a2f302dd0c9ed535915"
+    },
+    {
+      "file": "godot/art/cards/blood-vein.png",
+      "assetId": "illustration.blood-vein",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·血脉.png",
+      "bytes": 621564,
+      "sha256": "2be630609f6e0c326ff5d19d55947473cc5bc7d126b988c44281ddd05f79e7c4"
+    },
+    {
+      "file": "godot/art/cards/blood-wrist.png",
+      "assetId": "illustration.blood-wrist",
+      "source": "assets/art/alpha-v254-20261024/source/血契卡图/血契·割腕.png",
+      "bytes": 591667,
+      "sha256": "70126fda050d989f8c125b59946073f23cc55d3d88b1437a965b36b960a83582"
+    },
+    {
       "file": "godot/art/cards/c2d_card_back_ai.png",
       "assetId": "c2d.card.back.ai",
       "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_back_ai.png",
@@ -17057,6 +17685,132 @@
       "source": "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_rarity_uncommon.png",
       "bytes": 588,
       "sha256": "0c99417b8d8986d4d0e7f37f7fd1f300bcf23ad7e110c4fa9b7c4b0f94e4bfe8"
+    },
+    {
+      "file": "godot/art/cards/earthquake.png",
+      "assetId": "illustration.earthquake",
+      "source": "assets/art/alpha-v254-20261024/source/卡图替换/地震术.png",
+      "bytes": 812212,
+      "sha256": "4d665186efce61db9cc91f324b6024cd87fa8bb2f00e3fe9581e170cc06b7948"
+    },
+    {
+      "file": "godot/art/cards/engeas-four-point-star.png",
+      "assetId": "illustration.engeas-four-point-star",
+      "source": "assets/art/alpha-v254-20261024/source/卡图替换/恩格亚斯之星.png",
+      "bytes": 451064,
+      "sha256": "511ba94e72c3a3342520f5d94e68116c7cca660d0a56c5faad9451c7b4de8fc9"
+    },
+    {
+      "file": "godot/art/cards/qixing-awaken.png",
+      "assetId": "illustration.qixing-awaken",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-awaken.png",
+      "bytes": 1622520,
+      "sha256": "1a6a74bced096731b13d8f49d91b26f68a4340d740d2ed7da532d1b42ec979ef"
+    },
+    {
+      "file": "godot/art/cards/qixing-banner.png",
+      "assetId": "illustration.qixing-banner",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-banner.png",
+      "bytes": 1128225,
+      "sha256": "ea2fb51130a8b5a9c800796d1c23acf9863873e267eb47483451ccf82da6a05c"
+    },
+    {
+      "file": "godot/art/cards/qixing-divination.png",
+      "assetId": "illustration.qixing-divination",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-divination.png",
+      "bytes": 636291,
+      "sha256": "30f977116fe4299aa2e9f4fc85201ea383ce3b8a053201d34c13118dfbaeff40"
+    },
+    {
+      "file": "godot/art/cards/qixing-gaze.png",
+      "assetId": "illustration.qixing-gaze",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-gaze.png",
+      "bytes": 908364,
+      "sha256": "e7d9c30aca745894a10de36a04ed2d62c16ca09a626dde25c52da2b3c4b3b7c8"
+    },
+    {
+      "file": "godot/art/cards/qixing-kaiyang.png",
+      "assetId": "illustration.qixing-kaiyang",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-kaiyang.png",
+      "bytes": 1396721,
+      "sha256": "7b3944f2740aa7847424325de265485761401dfa5098dce132deadd2837a5f12"
+    },
+    {
+      "file": "godot/art/cards/qixing-lamp.png",
+      "assetId": "illustration.qixing-lamp",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-lamp.png",
+      "bytes": 1064834,
+      "sha256": "c3b44ffaa52591c0193762b3327b4fbd0844408adee0f3f0e52af0c7bb83931d"
+    },
+    {
+      "file": "godot/art/cards/qixing-punishment.png",
+      "assetId": "illustration.qixing-punishment",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-punishment.png",
+      "bytes": 933682,
+      "sha256": "d8c9f6cfc9600040f9aaef5d9286891602978975ff70ca5f2f6a74bc3c86f969"
+    },
+    {
+      "file": "godot/art/cards/qixing-return.png",
+      "assetId": "illustration.qixing-return",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-return.png",
+      "bytes": 735496,
+      "sha256": "7e120ac291ed7ab698c5d006e9e307acadb043ee8af6c398263304bc7d942c4c"
+    },
+    {
+      "file": "godot/art/cards/qixing-ruin.png",
+      "assetId": "illustration.qixing-ruin",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-ruin.png",
+      "bytes": 509378,
+      "sha256": "2551ebcb418353a23aad0dbb5714a5762e2224fe23e72b14ddc2dede92e92072"
+    },
+    {
+      "file": "godot/art/cards/qixing-shift.png",
+      "assetId": "illustration.qixing-shift",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-shift.png",
+      "bytes": 1085822,
+      "sha256": "4475cc421a3c0b9e24235ddf49c4ed1cd762f3b91ec2919d2c5a9779499779b5"
+    },
+    {
+      "file": "godot/art/cards/qixing-tianji.png",
+      "assetId": "illustration.qixing-tianji",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianji.png",
+      "bytes": 1914326,
+      "sha256": "b687d65e8125f5032152daa2363ecbe73b79017c116fe7296e8c3ffea62a63b0"
+    },
+    {
+      "file": "godot/art/cards/qixing-tianquan.png",
+      "assetId": "illustration.qixing-tianquan",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianquan.png",
+      "bytes": 1108296,
+      "sha256": "d8d2f8813b2455701c9811883830d937184c2f06d0d18ef37e8f716ba0a1fa0d"
+    },
+    {
+      "file": "godot/art/cards/qixing-tianshu.png",
+      "assetId": "illustration.qixing-tianshu",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianshu.png",
+      "bytes": 1944630,
+      "sha256": "d56dfd4cf1a5f671a100422f8594e9afa0301ec726fd0deefaf9cc5222aeaad3"
+    },
+    {
+      "file": "godot/art/cards/qixing-tianxuan.png",
+      "assetId": "illustration.qixing-tianxuan",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianxuan.png",
+      "bytes": 1177793,
+      "sha256": "0c1785c180ae76aa3434a0908f738cb670375af6fdc9f24d00e8d470726a4cff"
+    },
+    {
+      "file": "godot/art/cards/qixing-yaoguang.png",
+      "assetId": "illustration.qixing-yaoguang",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-yaoguang.png",
+      "bytes": 1904108,
+      "sha256": "516fe3ab393ecaa3833d0a7f670571e8bb533b33b15956dce2dd3e56b3f6057b"
+    },
+    {
+      "file": "godot/art/cards/qixing-yuheng.png",
+      "assetId": "illustration.qixing-yuheng",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-yuheng.png",
+      "bytes": 1005506,
+      "sha256": "86d4b250a2784931f07fe8593b510db8b00092a388ba73c8f3bd936988668023"
     },
     {
       "file": "godot/art/deck-v2/background-1080p.png",
@@ -18472,6 +19226,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "0c1785c180ae76aa3434a0908f738cb670375af6fdc9f24d00e8d470726a4cff",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-tianxuan.png",
+        "godot/art/cards/qixing-tianxuan.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "0c2faded3a69d360f923fc85c61257280a5526d30e135a1a71a7fe210b38fbcd",
       "files": [
         "assets/art/alpha-v252-20261021/source/asterism/五芒星.png",
@@ -18548,8 +19310,15 @@
       "files": [
         "assets/art/alpha-v1/engeas-four-point-star.png",
         "assets/art/alpha-v252-20261021/source/asterism/四芒星.png",
-        "godot/art/card/alpha-v252-small-hexagram.png",
-        "godot/art/card/engeas-four-point-star.png"
+        "godot/art/card/alpha-v252-small-hexagram.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "17152ec1a98026b794c2abd8ddc8b75fec728535623d1c1d2453f980077be483",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·同源.png",
+        "godot/art/cards/blood-same-origin.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -18607,6 +19376,14 @@
       "reason": "Same hash; retain pending purpose and visual-reference review"
     },
     {
+      "sha256": "1a6a74bced096731b13d8f49d91b26f68a4340d740d2ed7da532d1b42ec979ef",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-awaken.png",
+        "godot/art/cards/qixing-awaken.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "1adb0cce52b27f02c0bf66f31c412abe52fc967eef719b49b7484640b724a722",
       "files": [
         "assets/art/ui/icons/log.png",
@@ -18646,6 +19423,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_checkbox_normal.png",
         "godot/art/ui/c2d_control_checkbox_normal.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "1d872fb7364a146bbe6b83bb77b703db2af88bb465a4cf8626ae46fc964238fc",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·背水.png",
+        "godot/art/cards/blood-last-stand.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -18715,6 +19500,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "2140e9c0e16dfc72a774d02999836a8b185d3555d8c2e75ff942cb0be717585e",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·心脏.png",
+        "godot/art/cards/blood-heart.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "21b67fbc0573e05946828df6d74292c5b0dfa67356951cd38c96c7a0e1e88843",
       "files": [
         "assets/art/alpha-v252-20261021/source/arcana/战车.png",
@@ -18752,6 +19545,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_drag_legal-drop.png",
         "godot/art/board/c2d_drag_legal-drop.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "2551ebcb418353a23aad0dbb5714a5762e2224fe23e72b14ddc2dede92e92072",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-ruin.png",
+        "godot/art/cards/qixing-ruin.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -18808,6 +19609,14 @@
       "reason": "Same hash; retain pending purpose and visual-reference review"
     },
     {
+      "sha256": "297386e3acf12a1a4225e93b8bdaa449990682eff3481e09bffff8d7dc9d9d27",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭坛.png",
+        "godot/art/cards/blood-altar.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "299423af2d9a184e0231e7c3f2c6db4a2f2a9da650ecced5353d3d0854282fb9",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_detail_analysis_ai.png",
@@ -18829,6 +19638,14 @@
       "files": [
         "assets/art/godot-2d-v2/deck-builder-1080p-v1/export/background-1080p.png",
         "godot/art/deck-v2/background-1080p.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "2be630609f6e0c326ff5d19d55947473cc5bc7d126b988c44281ddd05f79e7c4",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·血脉.png",
+        "godot/art/cards/blood-vein.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -18892,6 +19709,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_state_sustained.png",
         "godot/art/icons/c2d_icon_state_sustained.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "30f977116fe4299aa2e9f4fc85201ea383ce3b8a053201d34c13118dfbaeff40",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-divination.png",
+        "godot/art/cards/qixing-divination.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -18988,6 +19813,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "3bb89d9f9833410d1dc9174596f8e3205eb319b46d28ac5caa40dc8727398390",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·血刃.png",
+        "godot/art/cards/blood-blade.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "3e5cc11025b43c3fb54f279bd3ac9284e5fa2fafa2a0801c725e9a72d75f94a5",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_input_focus.png",
@@ -19060,6 +19893,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_secondary_focus.png",
         "godot/art/ui/c2d_button_secondary_focus.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "4475cc421a3c0b9e24235ddf49c4ed1cd762f3b91ec2919d2c5a9779499779b5",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-shift.png",
+        "godot/art/cards/qixing-shift.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -19158,6 +19999,14 @@
       "reason": "Same hash; retain pending purpose and visual-reference review"
     },
     {
+      "sha256": "4d665186efce61db9cc91f324b6024cd87fa8bb2f00e3fe9581e170cc06b7948",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/卡图替换/地震术.png",
+        "godot/art/cards/earthquake.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "4d9efd66250dd39d2a8336c2f12d2152cec87a6942596b64f672186bea86c9db",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_attribute_capacity.png",
@@ -19208,6 +20057,22 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "511ba94e72c3a3342520f5d94e68116c7cca660d0a56c5faad9451c7b4de8fc9",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/卡图替换/恩格亚斯之星.png",
+        "godot/art/cards/engeas-four-point-star.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "516fe3ab393ecaa3833d0a7f670571e8bb533b33b15956dce2dd3e56b3f6057b",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-yaoguang.png",
+        "godot/art/cards/qixing-yaoguang.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "52626cd1822467e04ef266d41fb74cf66a979ccd425d4f780cb588814b2648da",
       "files": [
         "assets/art/alpha-v252-20261021/source/asterism/三芒星.png",
@@ -19232,6 +20097,22 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_primary_pressed.png",
         "godot/art/ui/c2d_button_primary_pressed.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "52bd53431982eded94a0521bb86ea6662ba3018fa4f62e4cbe98e6b5dc83beb8",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭品台.png",
+        "godot/art/cards/blood-sacrificial-table.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "53b669a028a9988fdcf33120a7b9521e0c3746c01d6e80bbc74779a8175e49fb",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·血池.png",
+        "godot/art/cards/blood-pool.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -19384,6 +20265,22 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "5971d5cdabf5818fc5c8416d1cca1ca65d70e7026a2f74c8b89dc5467c4bc35c",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·血偿.png",
+        "godot/art/cards/blood-repayment.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "5a0557ab6b7e9ff2a011e19b75c113e3dc81c446dfba4c63630fa59be681085a",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·心印.png",
+        "godot/art/cards/blood-heartmark.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "5b5bac3b8b7229d3b85b6fe99618464b2da7658faf40ae3ed20351b351dec762",
       "files": [
         "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_control_spinner.svg",
@@ -19506,6 +20403,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "6ab2ec9b8114b0a7cb56bcb15c00e76682b8c826f037670f60bcd027b768a7bc",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·续命.png",
+        "godot/art/cards/blood-renewal.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "6cbbb3132200fe70afc433497b858e2f574381e17d47699d0c9ebf366684aa9d",
       "files": [
         "assets/art/design/v1/previews/flow_06_words_03.png",
@@ -19526,6 +20431,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_speed_3.png",
         "godot/art/icons/c2d_icon_speed_3.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "70126fda050d989f8c125b59946073f23cc55d3d88b1437a965b36b960a83582",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·割腕.png",
+        "godot/art/cards/blood-wrist.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -19688,6 +20601,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "7b3944f2740aa7847424325de265485761401dfa5098dce132deadd2837a5f12",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-kaiyang.png",
+        "godot/art/cards/qixing-kaiyang.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "7c21f68d2d48c87ec1a252acc325e79f5100943b05787064922435e8fcf7f856",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_rank_7.png",
@@ -19703,6 +20624,14 @@
         "assets/art/ui/icons/success.png"
       ],
       "reason": "Same hash; retain pending purpose and visual-reference review"
+    },
+    {
+      "sha256": "7e120ac291ed7ab698c5d006e9e307acadb043ee8af6c398263304bc7d942c4c",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-return.png",
+        "godot/art/cards/qixing-return.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
     },
     {
       "sha256": "7e1ce794aa3c20385aa562308023f144503bb00670b0051010a9cfe62ada5f6e",
@@ -19791,6 +20720,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "86d4b250a2784931f07fe8593b510db8b00092a388ba73c8f3bd936988668023",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-yuheng.png",
+        "godot/art/cards/qixing-yuheng.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "87ea47a647a49cecf72243bc090f2c6e4016550356137edeecdae4648f57f943",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_secondary_pressed.png",
@@ -19836,6 +20773,14 @@
       "files": [
         "assets/art/godot-2d-v2/ui-components-1080p-v1/export/toggle-off-1080p.png",
         "godot/art/ui-v2/toggle-off-1080p.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "8b0ee1add183b214da9f9e25b7ff4b0cda7d8e20360b9673893a96ab1ba86a19",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·血咒.png",
+        "godot/art/cards/blood-curse.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -20074,6 +21019,14 @@
       "reason": "Same hash; retain pending purpose and visual-reference review"
     },
     {
+      "sha256": "a04a26f28eea13849620abafb3a7516cb4812c8ebec26a2f302dd0c9ed535915",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·输血管.png",
+        "godot/art/cards/blood-transfusion.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "a061b8799b8fcf08ece0d711d4a8dca26633a477838386408b2e3f91e0893a39",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_3.png",
@@ -20148,10 +21101,26 @@
       "reason": "Same hash; retain pending purpose and visual-reference review"
     },
     {
+      "sha256": "a6d86ea331bb1312bafb9f0007f19b12b8954e3c45ea9b0eb22395994c03ed3e",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·放血.png",
+        "godot/art/cards/blood-letting.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "a79fbf4564b60bb9d02ddc30e3753b2b7fe94d08c34d3ac37bcf04e8941b1a65",
       "files": [
         "assets/art/cards/conduit.png",
         "godot/art/card/conduit.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "aa93e39dcb627906d4ca0f9d12ccf5972ceb5aeff7e6ea745e02e25b73a0b66d",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭品.png",
+        "godot/art/cards/blood-offering.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -20196,6 +21165,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "b13b1094bf063c26b6cc12c8d4216914577915d05c88ee384424d25d9e5f6975",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·凝血.png",
+        "godot/art/cards/blood-coagulation.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "b1b582b81d3121d785dc1a3115a9707b96ca8cd4586257e6d91042b0b05d14e3",
       "files": [
         "assets/art/godot-2d-v2/main-menu-1080p-v1/export/button-focus-1080p.png",
@@ -20214,6 +21191,14 @@
         "assets/art/godot-2d-v1/source/c-pixel-v1/svg/icons/c2d_icon_phase_cast.svg"
       ],
       "reason": "Same hash; retain pending purpose and visual-reference review"
+    },
+    {
+      "sha256": "b34979eb8b7e7690a00642dd56af54ec2ce2e66fd0afb9d61d254b6d78436b91",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·血雨.png",
+        "godot/art/cards/blood-rain.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
     },
     {
       "sha256": "b43c1bc14eca8fad1eab8f2973ccb30a27426317837b88036f923dc7b377543c",
@@ -20249,6 +21234,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "b687d65e8125f5032152daa2363ecbe73b79017c116fe7296e8c3ffea62a63b0",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-tianji.png",
+        "godot/art/cards/qixing-tianji.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "b8992e03277d28f909cec37fed754daaeb5a6bcf46859e378394b9566ece920e",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_type_rune.png",
@@ -20269,6 +21262,14 @@
       "files": [
         "assets/art/alpha-v252-20261021/source/arcana/隐士.png",
         "godot/art/card/arcana-hermit.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "bce2007bd34d4435de29ff09435431ccc456210e35223aab94bb8c9338bcff5f",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·血债.png",
+        "godot/art/cards/blood-debt.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -20319,6 +21320,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_zone_analysis-row.png",
         "godot/art/board/c2d_zone_analysis-row.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "c3b44ffaa52591c0193762b3327b4fbd0844408adee0f3f0e52af0c7bb83931d",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-lamp.png",
+        "godot/art/cards/qixing-lamp.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -20468,10 +21477,26 @@
       "reason": "Same hash; retain pending purpose and visual-reference review"
     },
     {
+      "sha256": "d2a460ccd9970212bad42d05382a691777a01e819f57b582691d170c625efd0c",
+      "files": [
+        "assets/art/alpha-v254-20261024/source/血契卡图/血契·血印.png",
+        "godot/art/cards/blood-mark.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "d31deafa6068c59997b7fbea7e7bdffb9f72289ae4d59743fcfbfcf38191ca6d",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_speed_1.png",
         "godot/art/icons/c2d_icon_speed_1.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "d56dfd4cf1a5f671a100422f8594e9afa0301ec726fd0deefaf9cc5222aeaad3",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-tianshu.png",
+        "godot/art/cards/qixing-tianshu.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -20516,6 +21541,22 @@
         "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_tab_pressed.svg"
       ],
       "reason": "Same hash; retain pending purpose and visual-reference review"
+    },
+    {
+      "sha256": "d8c9f6cfc9600040f9aaef5d9286891602978975ff70ca5f2f6a74bc3c86f969",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-punishment.png",
+        "godot/art/cards/qixing-punishment.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "d8d2f8813b2455701c9811883830d937184c2f06d0d18ef37e8f716ba0a1fa0d",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-tianquan.png",
+        "godot/art/cards/qixing-tianquan.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
     },
     {
       "sha256": "d96e2ebcb7a0a582ea36e76c450917d455b23f7eefbcdc4039fc65f6181ad14a",
@@ -20659,6 +21700,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "e7d9c30aca745894a10de36a04ed2d62c16ca09a626dde25c52da2b3c4b3b7c8",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-gaze.png",
+        "godot/art/cards/qixing-gaze.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "e7da391a4728e8ed3057a5a0ef310800e207aa0d1837dd7d0537d9cb182dd3f3",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_rarity_common.png",
@@ -20693,6 +21742,14 @@
       "files": [
         "assets/art/alpha-v252-20261021/source/arcana/世界.png",
         "godot/art/card/arcana-world.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "ea2fb51130a8b5a9c800796d1c23acf9863873e267eb47483451ccf82da6a05c",
+      "files": [
+        "assets/art/alpha-v254-20261024/export/qixing/qixing-banner.png",
+        "godot/art/cards/qixing-banner.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },

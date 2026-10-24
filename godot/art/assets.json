@@ -34,7 +34,7 @@
     },
     {
       "file": "assets/art/alpha-v254-20261024/manifest.json",
-      "sha256": "f56c02147c895451be22af95440607375361fed59bcbd0d5dbc8fe5028fb8c83"
+      "sha256": "adcfd2182115e430247ed28478e7565b37a206de4a8c551457d7e46db83b4465"
     }
   ],
   "palette": {
@@ -5786,210 +5786,242 @@
     {
       "id": "illustration.qixing-awaken",
       "cardId": "qixing-awaken",
-      "file": "res://art/cards/qixing-awaken.jpg",
-      "sha256": "6891658381a39d9464fdd43c49fde45e14fb17e8c962705822581f6907bd2bdc",
+      "file": "res://art/cards/qixing-awaken.png",
+      "sha256": "1a6a74bced096731b13d8f49d91b26f68a4340d740d2ed7da532d1b42ec979ef",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星启曜.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-awaken.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-awaken.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-banner",
       "cardId": "qixing-banner",
-      "file": "res://art/cards/qixing-banner.jpg",
-      "sha256": "35247b12bde0db0d2d695ce2be755c82034733e105b01133490ece855e48002f",
+      "file": "res://art/cards/qixing-banner.png",
+      "sha256": "ea2fb51130a8b5a9c800796d1c23acf9863873e267eb47483451ccf82da6a05c",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星星帜.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-banner.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-banner.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-divination",
       "cardId": "qixing-divination",
-      "file": "res://art/cards/qixing-divination.jpg",
-      "sha256": "f96b20614fdc8dd9465028c8edddbc4697f279b9abab45513b2c9ffcffb6b2df",
+      "file": "res://art/cards/qixing-divination.png",
+      "sha256": "30f977116fe4299aa2e9f4fc85201ea383ce3b8a053201d34c13118dfbaeff40",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星遥鉴.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-divination.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-divination.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-gaze",
       "cardId": "qixing-gaze",
-      "file": "res://art/cards/qixing-gaze.jpg",
-      "sha256": "5087d7d0362770543500c210399c364d9fba081ed1aa315fc695e9b3420cde0a",
+      "file": "res://art/cards/qixing-gaze.png",
+      "sha256": "e7d9c30aca745894a10de36a04ed2d62c16ca09a626dde25c52da2b3c4b3b7c8",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星的注视.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-gaze.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-gaze.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-kaiyang",
       "cardId": "qixing-kaiyang",
-      "file": "res://art/cards/qixing-kaiyang.jpg",
-      "sha256": "bff70da7cf7d4294336c1b86c93014e17029f71f0d3ca7a418dedc62dcbc0fe6",
+      "file": "res://art/cards/qixing-kaiyang.png",
+      "sha256": "7b3944f2740aa7847424325de265485761401dfa5098dce132deadd2837a5f12",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星·开阳.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-kaiyang.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-kaiyang.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-lamp",
       "cardId": "qixing-lamp",
-      "file": "res://art/cards/qixing-lamp.jpg",
-      "sha256": "26097aaaaf3643ab1aabdf08c98bd1f53330c24c3d99c0378e33aa842c2b4acf",
+      "file": "res://art/cards/qixing-lamp.png",
+      "sha256": "c3b44ffaa52591c0193762b3327b4fbd0844408adee0f3f0e52af0c7bb83931d",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星灯盏.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-lamp.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-lamp.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-punishment",
       "cardId": "qixing-punishment",
-      "file": "res://art/cards/qixing-punishment.jpg",
-      "sha256": "1849ae227fd12ff4162d5ce2c7a0f2bb982c80984260bce9a2d55b6ec37ec25a",
+      "file": "res://art/cards/qixing-punishment.png",
+      "sha256": "d8c9f6cfc9600040f9aaef5d9286891602978975ff70ca5f2f6a74bc3c86f969",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星惩戒.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-punishment.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-punishment.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-return",
       "cardId": "qixing-return",
-      "file": "res://art/cards/qixing-return.jpg",
-      "sha256": "f174a7df23984f6209c17ca499418d84513e596fe1ec44e59bcd3220ad8b491d",
+      "file": "res://art/cards/qixing-return.png",
+      "sha256": "7e120ac291ed7ab698c5d006e9e307acadb043ee8af6c398263304bc7d942c4c",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星归迹.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-return.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-return.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-ruin",
       "cardId": "qixing-ruin",
-      "file": "res://art/cards/qixing-ruin.jpg",
-      "sha256": "904fa302ff3696524be5cf13ae574d99090915d018ee3aa1e6d8d92ea1450c12",
+      "file": "res://art/cards/qixing-ruin.png",
+      "sha256": "2551ebcb418353a23aad0dbb5714a5762e2224fe23e72b14ddc2dede92e92072",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星归墟.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-ruin.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-ruin.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-shift",
       "cardId": "qixing-shift",
-      "file": "res://art/cards/qixing-shift.jpg",
-      "sha256": "cd5aeb19586cc288e7053a768f24edfabc9f37c81e0311c5977baaf91f06f199",
+      "file": "res://art/cards/qixing-shift.png",
+      "sha256": "4475cc421a3c0b9e24235ddf49c4ed1cd762f3b91ec2919d2c5a9779499779b5",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星星移.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-shift.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-shift.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-tianji",
       "cardId": "qixing-tianji",
-      "file": "res://art/cards/qixing-tianji.jpg",
-      "sha256": "42275c78a4233ba3b791354a7d2c88d5deda47eebb2fed88dc35548bb497d903",
+      "file": "res://art/cards/qixing-tianji.png",
+      "sha256": "b687d65e8125f5032152daa2363ecbe73b79017c116fe7296e8c3ffea62a63b0",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星·天玑.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianji.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianji.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-tianquan",
       "cardId": "qixing-tianquan",
-      "file": "res://art/cards/qixing-tianquan.jpg",
-      "sha256": "adfe693d9aa90307c2de8b172ac92b9377d62061c8edca06401d83ba463791c9",
+      "file": "res://art/cards/qixing-tianquan.png",
+      "sha256": "d8d2f8813b2455701c9811883830d937184c2f06d0d18ef37e8f716ba0a1fa0d",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星·天权.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianquan.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianquan.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-tianshu",
       "cardId": "qixing-tianshu",
-      "file": "res://art/cards/qixing-tianshu.jpg",
-      "sha256": "68117da168587730d9dc155d95d094db9b41a4e619c0a26701c17251eb457176",
+      "file": "res://art/cards/qixing-tianshu.png",
+      "sha256": "d56dfd4cf1a5f671a100422f8594e9afa0301ec726fd0deefaf9cc5222aeaad3",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星·天枢.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianshu.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianshu.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-tianxuan",
       "cardId": "qixing-tianxuan",
-      "file": "res://art/cards/qixing-tianxuan.jpg",
-      "sha256": "43d5271879185864ccc9f85a523c8dcebe004b255cd9fc1ebfae2c670101ffe3",
+      "file": "res://art/cards/qixing-tianxuan.png",
+      "sha256": "0c1785c180ae76aa3434a0908f738cb670375af6fdc9f24d00e8d470726a4cff",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星·天璇.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianxuan.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-tianxuan.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-yaoguang",
       "cardId": "qixing-yaoguang",
-      "file": "res://art/cards/qixing-yaoguang.jpg",
-      "sha256": "929cdbd35c84c5f22fc2814d5c411efcb5062befab42668d7ae2f01552146a7f",
+      "file": "res://art/cards/qixing-yaoguang.png",
+      "sha256": "516fe3ab393ecaa3833d0a7f670571e8bb533b33b15956dce2dd3e56b3f6057b",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星·瑶光.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-yaoguang.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-yaoguang.png",
+      "transparent": true
     },
     {
       "id": "illustration.qixing-yuheng",
       "cardId": "qixing-yuheng",
-      "file": "res://art/cards/qixing-yuheng.jpg",
-      "sha256": "566de99b771338dc66b680c6a6362a54d06c1bb8fc3644aa026aac2e8171f9cc",
+      "file": "res://art/cards/qixing-yuheng.png",
+      "sha256": "86d4b250a2784931f07fe8593b510db8b00092a388ba73c8f3bd936988668023",
       "size": [
         1536,
         1536
       ],
       "sampling": "linear",
-      "origin": "User-supplied 10.24 artwork; original bytes preserved",
-      "source": "assets/art/alpha-v254-20261024/source/七星卡图/七星·玉衡.jpg"
+      "origin": "User-supplied Qixing JPEG; edge-connected matte removal to RGBA PNG",
+      "source": "assets/art/alpha-v254-20261024/export/qixing/qixing-yuheng.png",
+      "authoringSource": "assets/art/alpha-v254-20261024/export/qixing/qixing-yuheng.png",
+      "transparent": true
     },
     {
       "sampling": "linear",

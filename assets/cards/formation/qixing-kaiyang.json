@@ -15,7 +15,7 @@
     "七星"
   ],
   "effects": [],
-  "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。可以将手卡全部送去灰烬区，将此阵法卡替换为【七星·瑶光】。",
+  "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。己方准备阶段开始时，可以将手卡全部送去灰烬区，将此阵法卡替换为【七星·瑶光】。",
   "body": 5,
   "rings": 3,
   "capacity": 21,
@@ -26,6 +26,11 @@
   "traits": [
     "seven_stars_effect_only",
     "seven_stars_kaiyang"
+  ],
+  "onPrepare": [
+    {
+      "kind": "seven_kaiyang"
+    }
   ],
   "recipe": []
 }

@@ -166,7 +166,8 @@ std::vector<CardId> formationUpgradeSources(const GameState &s, const CardCatalo
 }
 void queueFormationSetup(GameState &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
-    if (!cat.usesCardRules() || !sevenFormation(c, cat) || c.definition == "qixing-tianshu" || c.definition == "qixing-kaiyang") return;
+    if (!cat.usesCardRules() || !sevenFormation(c, cat) || c.definition == "qixing-tianshu" ||
+        c.definition == "qixing-kaiyang") return;
     auto trigger = detail::snapshot(c, cat.at(c.definition));
     trigger.id = s.nextTrigger++; trigger.batch = s.nextBatch++;
     trigger.effects = {{EffectKind::SevenSetup}};
@@ -257,22 +258,9 @@ void concealGaze(GameState &s, const CardCatalog &cat, CardId target, CardId hos
 }
 std::optional<std::string> GameEngine::sevenAbility(PlayerId actor, const ActivateAbility &cmd) {
     if (cmd.ability != "seven_kaiyang") return std::nullopt;
-    auto &s = state_;
-    const auto found = s.cards.find(cmd.card);
-    if (!catalog_.usesCardRules() || found == s.cards.end() || found->second.owner != actor ||
-        found->second.definition != "qixing-kaiyang" || found->second.zone != Zone::Analysis ||
-        s.phase != Phase::Main || s.phaseStep != PhaseStep::Body || actor != s.active || s.chain || s.effect || cmd.target)
-        return "seven_kaiyang_unavailable";
-    const auto sources = card_rules::formationUpgradeSources(s, catalog_, actor, true);
-    if (std::find(sources.begin(), sources.end(), cmd.card) == sources.end()) return "seven_upgrade_target";
-    std::vector<CardId> hand;
-    for (const auto &[id, card] : s.cards) if (card.owner == actor && card.zone == Zone::Hand) hand.push_back(id);
-    for (auto id : hand) StateMaintenance::leave(s, id, &catalog_);
-    auto trigger = detail::snapshot(found->second, catalog_.at(found->second.definition));
-    trigger.effects = {{EffectKind::SevenKaiyang}};
-    ChainLink root; root.kind = LinkKind::Trigger; root.item = std::move(trigger);
-    startChain(ResponseWindow::Action, std::move(root), 1 - actor);
-    return std::string{};
+    (void)actor;
+    (void)cmd;
+    return "seven_kaiyang_prepare_only";
 }
 bool GameEngine::resolveFormationEffect() {
     auto &s = state_;
@@ -350,7 +338,7 @@ bool GameEngine::resolveFormationEffect() {
         auto options = f.clearRemaining < 0 ? card_rules::formationUpgradeSources(s, catalog_, owner, kaiyang)
                                            : upgrades(s, catalog_, owner, static_cast<CardId>(f.clearRemaining), kaiyang);
         if (options.empty()) { finishSeven(f); return true; }
-        decision(owner, DecisionKind::EffectChoice, std::move(options)); return true;
+        decision(owner, DecisionKind::EffectChoice, std::move(options), kaiyang && f.clearRemaining < 0); return true;
     }
     if (effect.kind == EffectKind::SevenInsight && mode == 2) {
         if (f.clearRemaining < 0) {
@@ -381,12 +369,12 @@ bool GameEngine::resolveFormationEffect() {
     }
     if (effect.kind == EffectKind::SevenAwakening || effect.kind == EffectKind::SevenSetup) {
         const bool setup = effect.kind == EffectKind::SevenSetup;
-        const bool ash = setup ? sourceName == "qixing-tianji" || sourceName == "qixing-yuheng" : mode == 2;
+        const bool ash = setup ? sourceName == "qixing-tianquan" || sourceName == "qixing-yuheng" : mode == 2;
         if (!setup && !mode) { finishSeven(f); return true; }
         for (const auto &[id, card] : s.cards) {
             if (card.owner != owner || card.zone != (ash ? Zone::Ash : Zone::Deck)) continue;
             const auto &d = catalog_.at(card.definition);
-            const bool shiftOnly = setup && (sourceName == "qixing-tianxuan" || sourceName == "qixing-tianji");
+            const bool shiftOnly = setup && (sourceName == "qixing-tianxuan" || sourceName == "qixing-tianquan");
             if (shiftOnly ? d.id == "qixing-shift" : card_rules::member(d, "七星")) options.push_back(id);
         }
         if (options.empty()) { finishSeven(f); return true; }
@@ -423,8 +411,20 @@ bool GameEngine::chooseFormationEffect(PlayerId actor, CardId selected) {
         const auto options = f.clearRemaining < 0
             ? card_rules::formationUpgradeSources(s, catalog_, owner, kaiyang)
             : upgrades(s, catalog_, owner, static_cast<CardId>(f.clearRemaining), kaiyang);
+        if (kaiyang && !selected && f.clearRemaining < 0) {
+            finishSeven(f);
+            return true;
+        }
         if (!listed(options)) return false;
-        if (f.clearRemaining < 0) f.clearRemaining = static_cast<int>(selected);
+        if (f.clearRemaining < 0) {
+            f.clearRemaining = static_cast<int>(selected);
+            if (kaiyang) {
+                std::vector<CardId> hand;
+                for (const auto &[id, card] : s.cards)
+                    if (card.owner == owner && card.zone == Zone::Hand) hand.push_back(id);
+                for (auto id : hand) StateMaintenance::leave(s, id, &catalog_);
+            }
+        }
         else {
             const auto old = static_cast<CardId>(f.clearRemaining);
             finishSeven(f); replaceSeven(s, catalog_, old, selected);
@@ -460,8 +460,8 @@ bool GameEngine::chooseFormationEffect(PlayerId actor, CardId selected) {
     if (kind == EffectKind::SevenAwakening || kind == EffectKind::SevenSetup) {
         if (!s.cards.count(selected)) return false;
         const bool setup = kind == EffectKind::SevenSetup;
-        const bool ash = setup ? sourceName == "qixing-tianji" || sourceName == "qixing-yuheng" : mode == 2;
-        const bool shiftOnly = setup && (sourceName == "qixing-tianxuan" || sourceName == "qixing-tianji");
+        const bool ash = setup ? sourceName == "qixing-tianquan" || sourceName == "qixing-yuheng" : mode == 2;
+        const bool shiftOnly = setup && (sourceName == "qixing-tianxuan" || sourceName == "qixing-tianquan");
         const auto card = s.cards.find(selected);
         if (card == s.cards.end() || card->second.owner != owner || card->second.zone != (ash ? Zone::Ash : Zone::Deck) ||
             (shiftOnly ? card->second.definition != "qixing-shift" : !card_rules::member(catalog_.at(card->second.definition), "七星")))

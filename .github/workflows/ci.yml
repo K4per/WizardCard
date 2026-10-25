@@ -38,11 +38,11 @@ jobs:
       - run: build/windows/Release/wizard_cli.exe ai-match assets build/windows/ai-replay.json 42 2
       - run: build/windows/Release/wizard_cli.exe tutorial-smoke assets build/windows/tutorial-replay.json
       - run: cmake --install build/windows --config Release --prefix dist/WizardCard
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
           name: windows-package
           path: dist/WizardCard
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
           name: reference-replay
           path: |
@@ -66,7 +66,7 @@ jobs:
       - run: cmake --build --preset headless --parallel 4
       - run: ctest --preset headless
       - run: python tools/network_smoke.py --exe build/headless/wizard_network_probe --output build/network-ci
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
           name: linux-core-cli
           path: build/headless/wizard_cli
@@ -106,7 +106,7 @@ jobs:
     needs: [windows, linux-core]
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v8
         with:
           name: reference-replay
           path: build/reference

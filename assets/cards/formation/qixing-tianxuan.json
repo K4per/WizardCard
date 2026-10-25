@@ -21,10 +21,17 @@
   "capacity": 7,
   "income": 2,
   "maxRank": 2,
-  "summonCondition": "通过【七星】卡的效果才能设置",
+  "summonCondition": "【七星·天枢】＋魔素×2",
   "baseEligible": false,
-  "traits": [
-    "seven_stars_effect_only"
-  ],
-  "recipe": []
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "qixing-tianshu"
+    },
+    {
+      "kind": "mana",
+      "amount": 2
+    }
+  ]
 }

@@ -222,9 +222,11 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
                     l.canceled = true;
                     const auto source = l.item.source;
                     StateMaintenance::leave(s, source, &cat);
-                    s.temporary.push_back(
-                        {s.nextLoad++, t.owner, t.source, burden, s.players[t.owner].ownTurn + 1});
-                    ResourceRules::increasedLoad(s, cat, t.owner, burden);
+                    if (!cat.usesAlphaV255()) {
+                        s.temporary.push_back(
+                            {s.nextLoad++, t.owner, t.source, burden, s.players[t.owner].ownTurn + 1});
+                        ResourceRules::increasedLoad(s, cat, t.owner, burden);
+                    }
                     break;
                 }
         break;
@@ -373,7 +375,9 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         message = "对手下个自己的回合不能使用行动卡";
         break;
     case EffectKind::CounterSpell:
-        message = "无效并销毁目标法术，承担下个自己的结束阶段清除的荷载";
+        message = cat.usesAlphaV255()
+            ? "无效并销毁目标法术，支付其实际设置与发动费用"
+            : "无效并销毁目标法术，承担下个自己的结束阶段清除的荷载";
         break;
     case EffectKind::SearchAction:
         message = "检索行动卡";

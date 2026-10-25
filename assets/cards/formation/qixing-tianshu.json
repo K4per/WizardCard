@@ -21,12 +21,12 @@
   "capacity": 7,
   "income": 1,
   "maxRank": 1,
-  "summonCondition": "魔素×2",
+  "summonCondition": "手卡×1",
   "baseEligible": true,
   "recipe": [
     {
-      "kind": "mana",
-      "amount": 2
+      "kind": "discard_hand",
+      "amount": 1
     }
   ]
 }

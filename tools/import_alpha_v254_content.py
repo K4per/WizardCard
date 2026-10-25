@@ -51,12 +51,12 @@ ALIASES.update({"沉默术": "instantly-sleep", "奥术圆环": "ring", "三芒�
 # ChangeLifeLimit is signed; the loader permits negative amounts only for this
 # effect. A recipe life cost is paid directly and is never a damage event.
 CAPABILITIES = {
-    "qixing-tianshu": {"recipe": [{"kind": "mana", "amount": 2}]},
-    "qixing-tianxuan": {"traits": ["seven_stars_effect_only"], "recipe": []},
+    "qixing-tianshu": {"recipe": [{"kind": "discard_hand", "amount": 1}]},
+    "qixing-tianxuan": {"recipe": [{"kind": "sacrifice_formation", "amount": 1, "definition": "qixing-tianshu"}, {"kind": "mana", "amount": 2}]},
     "qixing-tianji": {"traits": ["seven_stars_effect_only"], "recipe": []},
     "qixing-tianquan": {"traits": ["seven_stars_effect_only"], "recipe": []},
     "qixing-yuheng": {"traits": ["seven_stars_effect_only"], "recipe": []},
-    "qixing-kaiyang": {"traits": ["seven_stars_effect_only", "seven_stars_kaiyang"], "recipe": []},
+    "qixing-kaiyang": {"traits": ["seven_stars_effect_only", "seven_stars_kaiyang"], "onPrepare": [{"kind": "seven_kaiyang"}], "recipe": []},
     "qixing-yaoguang": {"traits": ["seven_stars_effect_only", "seven_stars_yaoguang"], "recipe": []},
     "qixing-banner": {"traits": ["seven_stars_banner"]},
     "qixing-lamp": {"traits": ["seven_stars_lamp"], "duration": 7},

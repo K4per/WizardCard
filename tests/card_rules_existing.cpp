@@ -252,7 +252,7 @@ TEST_CASE("Alpha v2.5.5 Counter Spell uses actual linked setting and activation 
     CHECK(e.state().players[1].mana == 0);
     settle254(e);
     CHECK(e.state().cards.at(10).zone == Zone::Ash);
-    REQUIRE(std::any_of(e.state().temporary.begin(), e.state().temporary.end(), [](const TemporaryLoad &load) {
+    CHECK(std::none_of(e.state().temporary.begin(), e.state().temporary.end(), [](const TemporaryLoad &load) {
         return load.owner == 1 && load.amount == 2;
     }));
 
@@ -278,15 +278,12 @@ TEST_CASE("Alpha v2.5.5 Kaiyang replaces to Yaoguang after discarding hand and l
     for (CardId id = 20; id < 25; ++id) deck254(s, id, "spark");
     for (CardId id = 30; id < 35; ++id) deck254(s, id, "spark");
     auto e = GameEngine::scenario(cat, s);
-    send254(e, 0, ActivateAbility{1, 0, "seven_kaiyang"});
-    CHECK(e.state().cards.at(10).zone == Zone::Ash);
-    CHECK(e.state().cards.at(11).zone == Zone::Ash);
-    settle254(e);
-    CHECK(e.state().cards.at(1).zone == Zone::Ash);
-    CHECK(e.state().cards.at(3).zone == Zone::Ash);
-    CHECK(e.state().cards.at(2).zone == Zone::Analysis);
-    CHECK(e.state().players[0].life == maximumLife);
-    CHECK(e.state().players[0].mana == 0);
+    CHECK_FALSE(e.submit(0, ActivateAbility{1, 0, "seven_kaiyang"}).accepted);
+    CHECK(e.state().cards.at(1).zone == Zone::Analysis);
+    CHECK(e.state().cards.at(3).zone == Zone::Attached);
+    CHECK(e.state().cards.at(2).zone == Zone::SideDeck);
+    CHECK(e.state().cards.at(10).zone == Zone::Hand);
+    CHECK(e.state().cards.at(11).zone == Zone::Hand);
 }
 
 TEST_CASE("Alpha v2.5.4 Great Storm removes and snapshots counters when set", "[alpha-v254][existing][storm]") {

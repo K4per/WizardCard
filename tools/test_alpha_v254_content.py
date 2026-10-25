@@ -64,7 +64,7 @@ class Alpha254ContentTests(unittest.TestCase):
             with self.subTest(card_id=card_id):
                 # Tianshu's common aspect provider is recognized by series and
                 # formation type; other new mechanics have explicit capabilities.
-                self.assertTrue(card_id == "qixing-tianshu" or card.get("effects") or card.get("traits"))
+                self.assertTrue(card_id == "qixing-tianshu" or card.get("effects") or card.get("traits") or card.get("recipe"))
                 self.assertEqual(card["tags"], ["七星" if card_id.startswith("qixing-") else "血契"])
                 self.assertTrue(card["number"].startswith(migration.PREFIXES[card["type"]]))
         self.assertEqual(self.catalog["rulesVersion"], "2.5.5")

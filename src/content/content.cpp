@@ -141,6 +141,7 @@ std::vector<Effect> effects(const Json &j, const std::string &path) {
         {"seven_stars_ruin", EffectKind::SevenRuin},
         {"seven_stars_gaze", EffectKind::SevenGaze},
         {"seven_stars_return", EffectKind::SevenReturn},
+        {"seven_kaiyang", EffectKind::SevenKaiyang},
         {"clear_any_load", EffectKind::ClearAnyLoad}};
     for (const auto &e : j) {
         const auto p = path + "/" + std::to_string(n++);

@@ -98,6 +98,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             s.effect->clearRemaining == -2 &&
             s.effect->cursor < s.effect->item.effects.size() &&
             s.effect->item.effects[s.effect->cursor].kind == EffectKind::StormGuidance;
+        constexpr CardId takeDamage = 0xffffffb1u, takeLoad = 0xffffffb2u;
         for (auto id : d.options) {
             std::string label;
             const bool playerChoice = id == playerTarget(0) || id == playerTarget(1);
@@ -107,6 +108,8 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                 label = id == playerTarget(p) ? "选择己方玩家" : "选择对方玩家";
             else if (id == 0xffffffd1u) label = "延长对方全部解析法术的解析时间";
             else if (id == 0xffffffd2u) label = "造成大旋风追加伤害";
+            else if (id == takeDamage) label = "受到7点光耀伤害";
+            else if (id == takeLoad) label = "获得7点独立荷载";
             else if (id == 0xffffffe1u)
                 label = "抽取效果指定数量的牌";
             else if (stormGuidanceMode)
@@ -152,7 +155,8 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                  d.kind == DecisionKind::ClearAnyLoad || d.kind == DecisionKind::TriggerOrder ||
                  d.kind == DecisionKind::SearchDeck || d.kind == DecisionKind::StormSearch ||
                  d.kind == DecisionKind::StormHeartChoice || d.kind == DecisionKind::StormHeartRecover ||
-                 playerChoice || stormGuidanceMode || id == 0xffffffe1u || id == 0xffffffd1u || id == 0xffffffd2u)
+                 playerChoice || stormGuidanceMode || id == 0xffffffe1u || id == 0xffffffd1u || id == 0xffffffd2u ||
+                 id == takeDamage || id == takeLoad)
                     ? 0
                     : id,
                 0, Choose{d.id, id});

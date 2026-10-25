@@ -32,6 +32,7 @@ Json cardDefinitionDto(const CardDefinition &d) {
             {"body", d.body}, {"capacity", d.capacity}, {"income", d.income}, {"rings", d.rings},
             {"maxRank", d.maxRank}, {"baseEligible", d.baseEligible}, {"concentration", d.concentration},
             {"level", d.level}, {"perpetual", d.perpetual}, {"illustrationId", d.illustrationId},
+            {"dynamicCost", d.dynamicCost},
             {"recipe", recipe}, {"settingConditions", d.settingConditions}};
 }
 Json viewDto(const GameView &v) {

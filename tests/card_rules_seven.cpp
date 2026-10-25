@@ -146,7 +146,13 @@ TEST_CASE("2.5.4 seven awakening bright price is chosen and dark retrieval retur
         auto s = sevenState(); putSeven(s, 1, "qixing-tianshu", 0, Zone::Analysis);
         putSeven(s, 10, "qixing-awaken", 0, Zone::Casting, 1, SpellState::Ready);
         putSeven(s, 20, "qixing-banner", 0, Zone::Deck);
-        auto e = GameEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 20); chooseSeven(e, 0xffffffb1u);
+        auto e = GameEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 20);
+        const auto view = e.viewFor(0);
+        REQUIRE(std::any_of(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
+            const auto *choice = std::get_if<Choose>(&action.command);
+            return choice && choice->option == 0xffffffb1u;
+        }));
+        chooseSeven(e, 0xffffffb1u);
         CHECK(e.state().players[0].life == 33); CHECK(e.state().cards.at(20).zone == Zone::Hand);
     }
     SECTION("bright load") {

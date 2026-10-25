@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FORMAT = "wizardcard.card-pack"
 VERSION = 1
 MAX_BYTES = 256 * 1024 * 1024
-CARD_FIELDS = set("id name rarity type number illustrationId text flavor target cost castCost rank analysisTurns duration burden extraDiscard concentrationUpkeep body capacity income rings maxRank ringBonus refundCast baseEligible immediate concentration perpetual recipe opponentDestroyProtected incomeBonus school speed capacityBonus rankBonus castCostBonus damageBonus responseOnly baseAnalysisDiscount quickRankOne resistances immunities refundSetting targetCount tags traits effects onPrepare onEnd onDraw onMain onCast onLeave onMana responses level".split())
+CARD_FIELDS = set("id name rarity type number illustrationId text flavor target cost castCost rank analysisTurns duration burden extraDiscard concentrationUpkeep body capacity income rings maxRank ringBonus refundCast baseEligible immediate concentration perpetual recipe opponentDestroyProtected incomeBonus school speed capacityBonus rankBonus castCostBonus damageBonus responseOnly dynamicCost baseAnalysisDiscount quickRankOne resistances immunities refundSetting targetCount tags traits effects onPrepare onEnd onDraw onMain onCast onLeave onMana responses level".split())
 CARD_FIELDS.add("summonCondition")  # Legacy display-only condition retained for roundtrips.
 EFFECT_FIELDS = {"kind", "amount", "damageType", "recipient"}
 RECIPE_FIELDS = {"kind", "amount", "definition", "school", "readyOnly", "distinctSchools", "fireDamage"}

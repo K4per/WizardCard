@@ -318,6 +318,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         d.castCostBonus = number(card, "castCostBonus", p);
         d.damageBonus = number(card, "damageBonus", p);
         d.responseOnly = boolean(card, "responseOnly", p);
+        d.dynamicCost = boolean(card, "dynamicCost", p);
         d.baseAnalysisDiscount = boolean(card, "baseAnalysisDiscount", p);
         d.quickRankOne = boolean(card, "quickRankOne", p);
         for (const auto *key : {"resistances", "immunities"}) {

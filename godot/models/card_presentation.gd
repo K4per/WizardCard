@@ -25,6 +25,7 @@ const RARITY_LABELS: Dictionary[String, String] = {
 @export var face_down: bool = false
 @export var setting_cost: int = 0
 @export var cast_cost: int = 0
+@export var dynamic_cost: bool = false
 @export var illustration_id: String = ""
 @export var metadata_text: String = ""
 @export var preview: bool = false
@@ -53,6 +54,7 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 	card.type_label = str(data.get("typeLabel", ["行动（旧版）", "解析", "言灵", "阵法", "符文", "咒符"][clampi(type_index, 0, 5)]))
 	card.setting_cost = int(data.get("cost", 0)) if type_index != 5 else 0
 	card.cast_cost = int(data.get("cost", 0)) if type_index in [2, 5] else int(data.get("castCost", 0))
+	card.dynamic_cost = bool(data.get("dynamicCost", false))
 	card._update_cost_label()
 	card.secondary_value = str(data.get("level", data.get("rank", 0)))
 	var lines: Array[String] = []
@@ -95,9 +97,10 @@ static func from_preview_definition(data: Dictionary) -> CardPresentation:
 		lines.append("召唤条件：" + str(data["summonCondition"]))
 	else:
 		var costs: Array = data["costParts"]
-		card.primary_value = str(int(costs[0]))
+		var cost_text: String = str(data["costText"])
+		card.primary_value = cost_text if cost_text == "X" else str(int(costs[0]))
 		lines.append("学派：" + str(data["school"]))
-		lines.append("费用：" + str(data["costText"]))
+		lines.append("费用：" + cost_text)
 		lines.append("解析时间：%d    速度：%d" % [int(data["analysisTurns"]), card.speed])
 	card.metadata_text = "\n".join(lines)
 	return card
@@ -157,13 +160,16 @@ static func from_projection(data: Dictionary) -> CardPresentation:
 	return card
 
 func _update_cost_label() -> void:
+	if dynamic_cost:
+		primary_value = "X"
+		return
 	primary_value = "%d/%d" % [setting_cost, cast_cost] if type_key == "analysis" else str(cast_cost if type_key in ["incantation", "talisman"] else setting_cost)
 
 func cost_detail() -> String:
 	if type_key == "formation":
 		return ""
 	if type_key == "talisman":
-		return "施法费用：%d（盖伏免费）" % cast_cost
+		return "施法费用：%s（盖伏免费）" % ("X" if dynamic_cost else str(cast_cost))
 	if type_key == "incantation":
-		return "施法费用：%d" % cast_cost
+		return "施法费用：%s" % ("X" if dynamic_cost else str(cast_cost))
 	return "设置费用：%d　施法费用：%d" % [setting_cost, cast_cost]

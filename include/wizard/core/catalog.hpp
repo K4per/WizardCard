@@ -47,7 +47,7 @@ struct CardDefinition {
     std::vector<Effect> onDraw, onMain, onCast, onLeave, onMana;
     std::string school;
     int speed{1}, capacityBonus{}, rankBonus{}, castCostBonus{}, damageBonus{};
-    bool responseOnly{}, baseAnalysisDiscount{}, quickRankOne{};
+    bool responseOnly{}, dynamicCost{}, baseAnalysisDiscount{}, quickRankOne{};
     std::vector<DamageType> resistances, immunities;
     std::string number, illustrationId;
     int level{1};

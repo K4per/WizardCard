@@ -133,6 +133,10 @@ func _run() -> void:
 	_expect(not hidden_storm.detail_text().contains("风暴点数"), "hidden storm card details do not reveal point counts")
 	var talisman: CardPresentation = CardPresentation.from_definition({"type": 5, "cost": 5, "castCost": 0})
 	_expect(talisman.primary_value == "5" and talisman.metadata_text.contains("施法费用：5（盖伏免费）") and not talisman.metadata_text.contains("设置费用"), "talisman has only a casting cost")
+	var dynamic_talisman: CardPresentation = CardPresentation.from_definition({"type": 5, "cost": 5, "dynamicCost": true})
+	_expect(dynamic_talisman.primary_value == "X" and dynamic_talisman.metadata_text.contains("施法费用：X（盖伏免费）"), "dynamic talisman cost is shown as X")
+	var preview_dynamic_talisman: CardPresentation = CardPresentation.from_preview_definition({"id": "v2-counter-spell", "name": "法术反制", "typeKey": "talisman", "typeLabel": "咒符法术", "level": 5, "school": "防护", "costText": "X", "costParts": [5], "analysisTurns": 0, "speed": 4, "text": "", "illustrationId": "counter-spell", "summonCondition": ""})
+	_expect(preview_dynamic_talisman.primary_value == "X" and preview_dynamic_talisman.metadata_text.contains("费用：X"), "preview talisman cost is shown as X")
 	var covered: CardPresentation = CardPresentation.from_projection({"id": "98", "faceDown": true, "definition": {"type": 1, "name": "火球术", "cost": 3}})
 	_expect(covered.face_down and not covered.hidden and covered.title == "火球术", "own facedown card retains inspectable identity with covered face")
 	var highlight_projection: FieldPresentation = MatchProjection.field({"viewer": 0, "players": [{}, {}], "cards": [], "actions": [

@@ -31,7 +31,7 @@ fields observed in the 78-card formal pool or supported by the parser:
 | Card face | `name`, `rarity`, `text`, `flavor`, `tags` |
 | Classification and timing | `type`, `level`, `rank`, `school`, `speed`, `duration`, `concentration`, `perpetual`, `immediate`, `responseOnly`, `concentrationUpkeep` |
 | Formation and attachment rules | `body`, `capacity`, `income`, `rings`, `maxRank`, `baseEligible`, `baseAnalysisDiscount`, `quickRankOne`, `opponentDestroyProtected`, `recipe`, `traits`, `summonCondition` |
-| Targets and costs | `target`, `targetCount`, `cost`, `castCost`, `analysisTurns`, `burden`, `extraDiscard` |
+| Targets and costs | `target`, `targetCount`, `cost`, `castCost`, `dynamicCost`, `analysisTurns`, `burden`, `extraDiscard` |
 | Attachment modifiers | `ringBonus`, `incomeBonus`, `refundSetting`, `refundCast`, `capacityBonus`, `rankBonus`, `castCostBonus`, `damageBonus` |
 | Damage protection | `resistances`, `immunities` |
 | Effects and triggers | `effects`, `onDraw`, `onPrepare`, `onMain`, `onCast`, `onEnd`, `onLeave`, `onMana` |

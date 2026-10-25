@@ -28,7 +28,7 @@ def attributes(card):
         else:
             if card["type"] == "talisman":
                 pairs.append(("盖伏费用", 0))
-            pairs.append(("施法费用", card["cost"]))
+            pairs.append(("施法费用", "X" if card.get("dynamicCost") else card["cost"]))
         pairs.append(("持续方式", "专注" if card.get("concentration") else "永续" if card.get("perpetual") else "计时 " + str(card["duration"]) if card.get("duration") else "通常"))
     return pairs
 

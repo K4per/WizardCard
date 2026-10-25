@@ -92,7 +92,7 @@ jobs:
           cmake -S . -B build/godot-debug -G 'Visual Studio 17 2022' -A x64 -DWIZARD_BUILD_CLIENT=OFF -DWIZARD_BUILD_GODOT=ON -DGODOTCPP_TARGET=template_debug "-DGODOT_BIN=$editor"
       - run: cmake --build build/godot-debug --config Release --target wizard_godot_bridge wizard_cli --parallel 4
       - run: ctest --test-dir build/godot-debug -C Release -R godot_ --output-on-failure
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: godot-bridge-evidence
@@ -110,7 +110,7 @@ jobs:
         with:
           name: reference-replay
           path: build/reference
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v8
         with:
           name: linux-core-cli
           path: build/headless

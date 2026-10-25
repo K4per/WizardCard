@@ -55,6 +55,7 @@ TEST_CASE("Alpha v2.5.5 current pool has unique executable identities and exclud
     CHECK(cat.at("engeas-four-point-star").type == CardType::Formation);
     CHECK(cat.at("snow-rain-storm").type == CardType::Talisman);
     CHECK(cat.at("snow-rain-storm").number == "040013");
+    CHECK(cat.at("counter-spell").dynamicCost);
 }
 TEST_CASE("Alpha v2.5.3 fire damage classification is independent of school and validated as a spell", "[alpha-v253][content]") {
     const auto cat = currentCatalog();

@@ -8,6 +8,7 @@
   "speed": 4,
   "school": "abjuration",
   "responseOnly": true,
+  "dynamicCost": true,
   "effects": [
     {
       "kind": "counter_spell"

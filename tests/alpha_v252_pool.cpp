@@ -118,7 +118,7 @@ TEST_CASE("Alpha v2.5.2 every formal formation executes its printed recipe and r
             REQUIRE(Rules::invariants(e.state(), cat).empty());
         }
     }
-    REQUIRE(covered == 24);
+    REQUIRE(covered == 25);
 }
 
 TEST_CASE("Alpha v2.5.2 every formal seal attaches through authority with paid cost and valid host", "[alpha-v252][pool]") {

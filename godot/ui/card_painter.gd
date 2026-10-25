@@ -1,7 +1,7 @@
 class_name CardPainter
 extends RefCounted
 
-const FONT: Font = Typography.BODY
+static var FONT: Font = Typography.BODY
 const PAPER: Color = Color("f6eed8")
 const INK: Color = Color("08131f")
 

@@ -1,8 +1,8 @@
 class_name DeckCardPainter
 extends Control
 
-const FONT: Font = Typography.BODY
-const TITLE_FONT: Font = Typography.HEADING
+static var FONT: Font = Typography.BODY
+static var TITLE_FONT: Font = Typography.HEADING
 const CARD_FILL: Color = DeckTheme.CONTROL
 const ART_FILL: Color = DeckTheme.BACKGROUND
 

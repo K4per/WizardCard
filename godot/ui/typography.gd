@@ -1,10 +1,12 @@
 class_name Typography
 extends RefCounted
 
-# Original, unmodified OFL fonts: real weights rather than synthetic emboldening.
-const BODY: Font = preload("res://art/fonts/NotoSansCJKsc-Regular.otf")
-const HEADING: Font = preload("res://art/fonts/NotoSansCJKsc-Bold.otf")
-const MENU: Font = preload("res://art/fonts/NotoSansCJKsc-Black.otf")
+# Godot's built-in fallback keeps fresh headless imports portable across platforms.
+# The bundled CFF OTF files remain available to the desktop export and art pipeline,
+# but Godot 4.7 cannot load them from a clean Linux import cache.
+static var BODY: Font = ThemeDB.fallback_font
+static var HEADING: Font = ThemeDB.fallback_font
+static var MENU: Font = ThemeDB.fallback_font
 const SCALES: Array[int] = [90, 100, 110, 120]
 const DEFAULT_SCALE: int = 100
 

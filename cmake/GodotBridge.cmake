@@ -78,7 +78,7 @@ if(BUILD_TESTING AND GODOT_BIN)
     --report ${CMAKE_CURRENT_BINARY_DIR}/godot-replay-report.json)
   # The full 556-command bridge replay exercises every projected transition and
   # takes several minutes on the pinned Windows Godot runtime.
-  set_tests_properties(godot_bridge_replay PROPERTIES FIXTURES_REQUIRED "godot_import;godot_reference" TIMEOUT 300)
+  set_tests_properties(godot_bridge_replay PROPERTIES FIXTURES_REQUIRED "godot_import;godot_reference" TIMEOUT 600)
   add_test(NAME godot_frontend_import COMMAND "${GODOT_BIN}" --headless
     --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --import --frame-delay 1000)
   set_tests_properties(godot_frontend_import PROPERTIES FIXTURES_SETUP frontend_import

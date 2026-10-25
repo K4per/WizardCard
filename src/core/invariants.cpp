@@ -57,10 +57,10 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
                 errors.push_back("deck membership");
         }
         int body = 0, words = 0, concentration = 0;
-        for (const auto &[id, c] : s.cards)
-            if (c.owner == p) {
-                if (c.zone == Zone::Deck && seen[id] != 1)
-                    errors.push_back("missing deck card");
+        for (const auto &[id, c] : s.cards) {
+            if (c.owner == p && c.zone == Zone::Deck && seen[id] != 1)
+                errors.push_back("missing deck card");
+            if (controllerOf(c) == p) {
                 if (c.zone == Zone::Words)
                     ++words;
                 if ((c.zone == Zone::Casting || (cat.usesAlphaV2() && c.zone == Zone::Analysis)) && c.spell == SpellState::Active &&
@@ -69,6 +69,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
                 if (c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation)
                     body += cat.at(c.definition).body;
             }
+        }
         if (concentration > 1)
             errors.push_back("multiple concentration spells");
         if (body > 5 || words > 3)
@@ -88,7 +89,8 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
         }
     }
     for (const auto &[id, c] : s.cards) {
-        if (c.id != id || c.owner < 0 || c.owner > 1 || c.analysisLoad < 0 || c.castLoad < 0)
+        if (c.id != id || c.owner < 0 || c.owner > 1 || c.controller < -1 || c.controller > 1 ||
+            c.analysisLoad < 0 || c.castLoad < 0)
             errors.push_back("instance bounds");
         if (!cat.usesAlphaV2() && c.base && c.zone != Zone::Analysis)
             errors.push_back("base protection");
@@ -96,7 +98,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
             errors.push_back("ash residue");
         if (c.host) {
             auto h = s.cards.find(c.host);
-            if (h == s.cards.end() || h->second.owner != c.owner ||
+            if (h == s.cards.end() || controllerOf(h->second) != controllerOf(c) ||
                 (h->second.zone != Zone::Analysis && h->second.zone != Zone::Casting &&
                  h->second.zone != Zone::Words && h->second.zone != Zone::Resolving))
                 errors.push_back("host relation");

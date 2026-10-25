@@ -22,7 +22,7 @@ std::uint32_t bounded(GameState &s, std::uint32_t n) {
 std::vector<CardId> inZone(const GameState &s, PlayerId p, Zone z) {
     std::vector<CardId> out;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p && c.zone == z)
+        if (controllerOf(c) == p && c.zone == z)
             out.push_back(id);
     return out;
 }
@@ -110,7 +110,7 @@ MatchConfig shared(std::array<std::vector<std::string>, 2> decks, std::uint32_t 
 }
 Trigger snapshot(const CardInstance &c, const CardDefinition &d) {
     Trigger t;
-    t.owner = c.owner;
+    t.owner = controllerOf(c);
     t.source = c.id;
     t.targetCard = c.targetCard;
     t.targetPlayer = d.target == TargetKind::Player && c.targetCard ? static_cast<PlayerId>(c.targetCard - playerTarget(0)) : c.targetPlayer;

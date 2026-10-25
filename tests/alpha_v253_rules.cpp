@@ -306,7 +306,7 @@ TEST_CASE("Alpha v2.5.3 cauldron allows non Sique analysis and preparation but r
     s = e.state(); s.cards.at(10).spell = SpellState::Ready;
     s.cards.at(10).analysisProgress = cat.at("fireball").analysisTurns;
     e = GameEngine::scenario(cat, s);
-    send253(e, 0, PrepareCast{10, playerTarget(1)}); settle253(e);
+    send253(e, 0, PrepareCast{10}); settle253(e);
     REQUIRE(e.state().cards.at(10).zone == Zone::Casting);
     s = e.state(); s.phase = Phase::Cast;
     e = GameEngine::scenario(cat, s);

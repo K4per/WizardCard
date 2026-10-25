@@ -12,7 +12,7 @@ OrderedCard nextFieldCard(const GameState &state, const CardCatalog &catalog, Pl
                           bool formation, std::uint64_t after, bool anyPersistent = false) {
     OrderedCard result{std::numeric_limits<std::uint64_t>::max(), 0};
     for (const auto &[id, card] : state.cards) {
-        if (card.owner != owner || card.zone != Zone::Analysis) continue;
+        if (controllerOf(card) != owner || card.zone != Zone::Analysis) continue;
         const auto &def = catalog.at(card.definition);
         if (formation != (def.type == CardType::Formation)) continue;
         if (!formation && (card.faceDown || card.spell != SpellState::Active || (!anyPersistent && !def.perpetual) || !card.host)) continue;
@@ -33,7 +33,7 @@ bool GameEngine::returnSpellsV2() {
         const auto &spell = s.cards.at(id);
         const auto host = s.cards.find(spell.sourceFormation);
         const auto formationOrder = host == s.cards.end() ? spell.fieldOrder : host->second.fieldOrder;
-        return std::make_tuple(spell.owner != s.active, formationOrder, spell.sourceRingIndex, spell.fieldOrder, id);
+        return std::make_tuple(controllerOf(spell) != s.active, formationOrder, spell.sourceRingIndex, spell.fieldOrder, id);
     };
     std::sort(pending.begin(), pending.end(), [&](CardId a, CardId b) { return order(a) < order(b); });
     for (const auto id : pending) {
@@ -43,7 +43,7 @@ bool GameEngine::returnSpellsV2() {
         if (!(definition.perpetual || definition.concentration || definition.duration > 0)) continue;
         std::vector<std::uint32_t> options;
         for (const auto &[hostId, host] : s.cards)
-            if (host.owner == spell.owner && host.zone == Zone::Analysis &&
+            if (controllerOf(host) == controllerOf(spell) && host.zone == Zone::Analysis &&
                 catalog_.at(host.definition).type == CardType::Formation &&
                 (std::find(definition.traits.begin(), definition.traits.end(), "requires_storm_heart_setup") ==
                      definition.traits.end() || catalog_.at(host.definition).id == "storm-heart") &&
@@ -58,7 +58,7 @@ bool GameEngine::returnSpellsV2() {
             return true;
         }
         s.maintenanceSource = id;
-        decision(spell.owner, DecisionKind::ReturnSpell, std::move(options));
+        decision(controllerOf(spell), DecisionKind::ReturnSpell, std::move(options));
         return true;
     }
     s.returnRequested = false;
@@ -111,7 +111,7 @@ bool GameEngine::phaseV2() {
             }
             int income = 0;
             for (const auto &[id, card] : s.cards)
-                if (card.owner == s.active && card.zone == Zone::Analysis &&
+                if (controllerOf(card) == s.active && card.zone == Zone::Analysis &&
                     catalog_.at(card.definition).type == CardType::Formation) {
                     income += Rules::income(s, catalog_, id);
                     for (const auto &[sealId, seal] : s.cards)
@@ -145,7 +145,7 @@ bool GameEngine::phaseV2() {
                         std::find(def.traits.begin(), def.traits.end(), "destroy_enemy_ambush_end") != def.traits.end()) {
                         std::vector<CardId> concealed;
                         for (const auto &[id, card] : s.cards)
-                            if (card.owner != s.active && card.zone == Zone::Analysis && card.faceDown &&
+                            if (controllerOf(card) != s.active && card.zone == Zone::Analysis && card.faceDown &&
                                 catalog_.at(card.definition).type != CardType::Formation) concealed.push_back(id);
                         for (auto id : concealed) StateMaintenance::leave(s, id, &catalog_);
                     }
@@ -185,7 +185,7 @@ bool GameEngine::phaseV2() {
         if (s.phaseCursor == 4) {
             OrderedCard next{std::numeric_limits<std::uint64_t>::max(), 0};
             for (const auto &[id, card] : s.cards)
-                if (card.owner == s.active && card.zone == Zone::Analysis && card.spell == SpellState::Active &&
+                if (controllerOf(card) == s.active && card.zone == Zone::Analysis && card.spell == SpellState::Active &&
                     catalog_.at(card.definition).concentration && card.host) {
                     const auto key = (s.cards.at(card.host).fieldOrder << 16) +
                                      static_cast<std::uint64_t>(card.ringIndex + 1);
@@ -206,13 +206,13 @@ bool GameEngine::phaseV2() {
             if (catalog_.usesAlphaV252()) {
                 std::vector<CardId> analyzing;
                 for (const auto &[id, card] : s.cards)
-                    if (card.owner == s.active && card.zone == Zone::Analysis && !card.faceDown &&
+                    if (controllerOf(card) == s.active && card.zone == Zone::Analysis && !card.faceDown &&
                         card.spell == SpellState::Analyzing) analyzing.push_back(id);
                 for (auto id : analyzing) card_rules::advanceAnalysis(s, catalog_, id, 1);
                 ++s.phaseCursor; return true;
             }
             for (auto &[id, card] : s.cards)
-                if (card.owner == s.active && card.zone == Zone::Analysis && !card.faceDown &&
+                if (controllerOf(card) == s.active && card.zone == Zone::Analysis && !card.faceDown &&
                     card.spell == SpellState::Analyzing &&
                     ++card.analysisProgress >= catalog_.at(card.definition).analysisTurns) {
                     card.spell = SpellState::Ready;
@@ -266,7 +266,7 @@ bool GameEngine::phaseV2() {
                     const bool ownerTurnTimer = std::find(definition.traits.begin(), definition.traits.end(),
                                                           "great_storm") != definition.traits.end();
                     if (card.zone == Zone::Analysis && card.spell == SpellState::Active &&
-                        definition.duration > 0 && (!ownerTurnTimer || card.owner == s.active) &&
+                        definition.duration > 0 && (!ownerTurnTimer || controllerOf(card) == s.active) &&
                         --card.remaining <= 0)
                         expired.push_back(id);
                 }
@@ -301,7 +301,7 @@ bool GameEngine::phaseV2() {
             s.skipCastPhase = false;
             pl.actionsPlayed = 0; pl.formations = 0; pl.sealRemovals = 0;
             for (auto &[id, card] : s.cards)
-                if (card.owner == s.active) card.canceledTurn = -1;
+                if (controllerOf(card) == s.active) card.canceledTurn = -1;
             ++s.globalTurn; s.active = 1 - s.active; ++s.players[s.active].ownTurn;
             s.phase = Phase::Draw;
         } else s.phase = s.phase == Phase::Main && s.skipCastPhase ? Phase::End :

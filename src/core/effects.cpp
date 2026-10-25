@@ -32,6 +32,18 @@ bool protectedFromCardEffect(const GameState &s, const CardCatalog &cat, CardId 
     return host != s.cards.end() && host->second.zone == Zone::Analysis &&
            cat.at(host->second.definition).id == "storm-heart";
 }
+int actualLinkedSpellCost(const GameState &s, const ChainLink &link) {
+    const auto source = s.cards.find(link.item.source);
+    if (source == s.cards.end()) return std::max(0, link.castCost);
+    const auto &card = source->second;
+    const int setting = std::max(0, card.settingPaid);
+    int activation = 0;
+    if (link.paymentIndex >= 0 && static_cast<std::size_t>(link.paymentIndex) < card.payments.size())
+        activation = card.payments[static_cast<std::size_t>(link.paymentIndex)].paid;
+    else if (!card.payments.empty())
+        activation = card.payments.back().paid;
+    return setting + std::max(0, activation);
+}
 
 }
 void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &t, const Effect &e) {
@@ -202,9 +214,11 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
             for (auto &l : s.chain->links)
                 if (l.id == t.targetLink) {
                     const auto sourceDefinition = s.cards.find(l.item.source);
-                    const int burden = cat.usesAlphaV25() && sourceDefinition != s.cards.end()
-                        ? (cat.at(sourceDefinition->second.definition).type == CardType::Talisman ? 0 :
-                           cat.at(sourceDefinition->second.definition).cost) : l.castCost;
+                    const int burden = cat.usesAlphaV255()
+                        ? actualLinkedSpellCost(s, l)
+                        : cat.usesAlphaV25() && sourceDefinition != s.cards.end()
+                            ? (cat.at(sourceDefinition->second.definition).type == CardType::Talisman ? 0 :
+                               cat.at(sourceDefinition->second.definition).cost) : l.castCost;
                     l.canceled = true;
                     const auto source = l.item.source;
                     StateMaintenance::leave(s, source, &cat);

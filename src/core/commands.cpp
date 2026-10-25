@@ -10,7 +10,7 @@ using namespace detail;
 std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool deferred) {
     auto &s = state_;
     auto i = s.cards.find(cmd.card);
-    if (i == s.cards.end() || i->second.owner != actor)
+    if (i == s.cards.end() || controllerOf(i->second) != actor)
         return "invalid_card: 无效法术";
     auto &c = i->second;
     const auto &def = catalog_.at(c.definition);
@@ -112,7 +112,7 @@ std::string GameEngine::prepare(PlayerId actor, const PrepareCast &cmd, bool def
 std::vector<PrepareCast> GameEngine::preparationsFor(PlayerId actor, DecisionId id) const {
     std::vector<PrepareCast> out;
     for (const auto &[cid, c] : state_.cards)
-        if (c.owner == actor && c.zone == Zone::Analysis && c.spell == SpellState::Ready) {
+        if (controllerOf(c) == actor && c.zone == Zone::Analysis && c.spell == SpellState::Ready) {
             const auto &def = catalog_.at(c.definition);
             std::vector<CardId> discards{0};
             if (def.extraDiscard)
@@ -153,7 +153,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         if (!choice) return "opening_required: 请先确认初始阵法";
         if (s.initialFormations[actor]) return "initial_confirmed: 初始阵法已确认";
         const auto found = s.cards.find(choice->card);
-        if (found == s.cards.end() || found->second.owner != actor || found->second.zone != Zone::SideDeck)
+        if (found == s.cards.end() || controllerOf(found->second) != actor || found->second.zone != Zone::SideDeck)
             return "invalid_initial: 初始阵法必须来自自己的副卡组";
         const auto &definition = catalog_.at(found->second.definition);
         if (definition.type != CardType::Formation || definition.level != 1)
@@ -211,7 +211,9 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             const bool hand = c.zone == Zone::Hand;
             const bool analytic = c.zone == Zone::Analysis && !c.faceDown;
             const bool ambush = c.faceDown;
-            const int paid = catalog_.usesAlphaV2()
+            const int paid = catalog_.usesAlphaV255() && def.id == "counter-spell"
+                ? detail::linkedSpellCost(s, r->link)
+                : catalog_.usesAlphaV2()
                 ? Rules::castCost(s, catalog_, c.id) +
                       (ambush && def.type == CardType::Analytic ? def.cost : 0)
                 : analytic ? Rules::castCost(s, catalog_, c.id)
@@ -248,7 +250,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             link.id = s.nextLink++;
             link.kind = catalog_.usesAlphaV2() || analytic ? LinkKind::Spell : LinkKind::Response;
             link.speed = catalog_.advancedRules ? def.speed : 0;
-            link.castCost = Rules::castCost(s, catalog_, c.id);
+            link.castCost = catalog_.usesAlphaV255() && def.id == "counter-spell"
+                ? paid : Rules::castCost(s, catalog_, c.id);
             link.ability = a.id;
             link.paymentIndex = static_cast<int>(c.payments.size()) - 1;
             link.paid = paid;
@@ -326,12 +329,15 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             return "decision_mismatch: 请指定完整的准备施法操作";
         if (!(opt == 0 && d.mayPass) && std::find(d.options.begin(), d.options.end(), opt) == d.options.end())
             return "invalid_option: 无效选择";
-        s.decision.reset();
-        s.events.push_back({"choice", "玩家 " + std::to_string(actor + 1) + " 完成选择"});
         if (catalog_.usesAlphaV2() && (d.kind == DecisionKind::EffectChoice || d.kind == DecisionKind::DamageChoice)) {
-            chooseContentEffectV2(actor, d.kind, opt);
+            if (!chooseContentEffectV2(actor, d.kind, opt))
+                return "invalid_option: 选择已失效";
+            s.decision.reset();
+            s.events.push_back({"choice", "玩家 " + std::to_string(actor + 1) + " 完成选择"});
             return {};
         }
+        s.decision.reset();
+        s.events.push_back({"choice", "玩家 " + std::to_string(actor + 1) + " 完成选择"});
         switch (d.kind) {
         case DecisionKind::CastOrder:
             if (opt)
@@ -526,7 +532,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             s.effect || !s.queue.items.empty())
             return "wrong_phase: 当前不能主动释放";
         auto it = s.cards.find(cmd->card);
-        if (it == s.cards.end() || it->second.owner != actor)
+        if (it == s.cards.end() || controllerOf(it->second) != actor)
             return "invalid_card";
         auto &c = it->second;
         const auto &d = catalog_.at(c.definition);
@@ -560,7 +566,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             s.phaseStep != PhaseStep::Body || s.chain || s.effect || !s.queue.items.empty())
             return "wrong_phase: 当前不能反转";
         auto it = s.cards.find(cmd->card);
-        if (it == s.cards.end() || it->second.owner != actor || !it->second.faceDown ||
+        if (it == s.cards.end() || controllerOf(it->second) != actor || !it->second.faceDown ||
             it->second.ambushedTurn >= s.globalTurn)
             return "ambush_turn: 埋伏卡须等到下一个全局回合才能反转";
         auto &c = it->second;
@@ -587,7 +593,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
     auto &pl = s.players[actor];
     auto owned = [&](CardId id, Zone z) {
         auto i = s.cards.find(id);
-        return i != s.cards.end() && i->second.owner == actor && i->second.zone == z;
+        return i != s.cards.end() && controllerOf(i->second) == actor && i->second.zone == z;
     };
     auto cost = [&](int mana, int load) {
         return ResourceRules::canPayMana(s, actor, mana) && (pl.debugInfiniteLoad || Rules::load(s, actor) + load <= Rules::capacity(s, catalog_, actor));
@@ -608,7 +614,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                 return "invalid_command";
             else {
                 auto i = s.cards.find(cmd.card);
-                if (i == s.cards.end() || i->second.owner != actor)
+                if (i == s.cards.end() || controllerOf(i->second) != actor)
                     return "invalid_card: 不是自己的卡牌";
                 auto &c = i->second;
                 const auto &def = catalog_.at(c.definition);
@@ -754,6 +760,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                     c.zone = Zone::Attached;
                     c.host = cmd.host;
                 } else if constexpr (std::is_same_v<T, RemoveSeal>) {
+                    if (catalog_.usesAlphaV255())
+                        return "seal_limit: 符文只能因效果或宿主离场解除";
                     if (!owned(cmd.card, Zone::Attached) || pl.sealRemovals)
                         return "seal_limit: 无法主动拆除符文";
                     StateMaintenance::leave(s, cmd.card, &catalog_);

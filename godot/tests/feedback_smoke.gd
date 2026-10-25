@@ -84,5 +84,17 @@ func _run() -> void:
 	_check(not page._cue.visible and page._cue_tween == null, "Projection interruption immediately removes queued cue animation")
 	page.queue_free()
 	await _settle()
+	var feedback: MatchFeedback = MatchFeedback.new()
+	root.add_child(feedback)
+	feedback.service = FrontendService.new()
+	feedback.service.assets_directory = ProjectSettings.globalize_path("res://../assets")
+	feedback.service.settings = {"masterVolume": 80, "soundVolume": 80, "responseTimingSound": false}
+	feedback.present({"sounds": [{"file": "response.mp3", "gain": 1.0}]})
+	_check(not feedback._last_played.has("response.mp3"), "Response popup sound is disabled by the presentation setting")
+	feedback.service.settings["responseTimingSound"] = true
+	feedback.present({"sounds": [{"file": "response.mp3", "gain": 1.0}]})
+	_check(feedback._last_played.has("response.mp3"), "Response popup sound can be restored independently")
+	feedback.queue_free()
+	await _settle()
 	print(JSON.stringify({"checks": _checks, "failures": _failures}))
 	quit(0 if _failures.is_empty() else 1)

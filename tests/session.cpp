@@ -26,12 +26,18 @@ TEST_CASE("local session interface preserves revision projection and rejected co
         REQUIRE(session.submit(player, choice->command).accepted);
         REQUIRE(session.revision() == static_cast<std::uint64_t>(player + 1));
     }
+    while (local.engine().state().decision) {
+        const auto pending = *local.engine().state().decision;
+        REQUIRE(pending.kind == DecisionKind::Response);
+        REQUIRE(session.submit(pending.player, PassResponse{pending.id}).accepted);
+    }
     const auto started = session.viewFor(0);
     REQUIRE_FALSE(started.opening);
+    const auto startedRevision = session.revision();
     REQUIRE_FALSE(session.submit(started.active, AdvancePhase{started.phaseGate + 1}).accepted);
-    REQUIRE(session.revision() == 2);
+    REQUIRE(session.revision() == startedRevision);
     REQUIRE(session.submit(started.active, AdvancePhase{started.phaseGate}).accepted);
-    REQUIRE(session.revision() == 3);
+    REQUIRE(session.revision() == startedRevision + 1);
     REQUIRE(replay(content, local.recording()).digest() == local.engine().digest());
 }
 TEST_CASE("injected room sessions preserve pending authority privacy and polling while settings are open") {

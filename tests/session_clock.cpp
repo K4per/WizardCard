@@ -57,6 +57,11 @@ TEST_CASE("LAN clock replenishes the turn player caps at 300 seconds and exclude
         REQUIRE(accepted);
     }
     REQUIRE(session.engine().state().phase == Phase::Main);
+    while (session.engine().state().decision) {
+        const auto pending = *session.engine().state().decision;
+        REQUIRE(pending.kind == DecisionKind::Response);
+        REQUIRE(session.submit(pending.player, PassResponse{pending.id}).accepted);
+    }
     REQUIRE(session.viewFor(active).clock.runningPlayer == active);
     now += std::chrono::seconds(7); session.tick();
     REQUIRE(session.viewFor(active).clock.remainingMs[active] == 263000);

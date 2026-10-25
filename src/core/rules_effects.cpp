@@ -249,7 +249,7 @@ void concealGaze(GameState &s, const CardCatalog &cat, CardId target, CardId hos
     card.publiclyRevealed = false; card.ambushedTurn = s.globalTurn;
     card.spell = SpellState::None; card.analysisProgress = card.remaining = 0;
     card.castLoad = 0; card.targetCard = 0; card.targets.clear(); card.targetPlayer = -1;
-    card.canceledTurn = -1; card.analysisStarted = s.players[card.owner].ownTurn;
+    card.canceledTurn = -1; card.analysisStarted = s.players[controllerOf(card)].ownTurn;
     for (auto &payment : card.payments) payment.canceled = true;
     s.events.push_back({"conceal", "七星的注视：无效法术并重新盖伏", -1, target});
     (void)cat;
@@ -338,11 +338,11 @@ bool GameEngine::resolveFormationEffect() {
         }
         std::vector<CardId> hosts;
         for (const auto &[hostId, host] : s.cards)
-            if (host.owner == target->second.owner && host.zone == Zone::Analysis &&
+            if (controllerOf(host) == controllerOf(target->second) && host.zone == Zone::Analysis &&
                 catalog_.at(host.definition).type == CardType::Formation &&
                 Rules::canHost(s, catalog_, id, hostId, true) && Rules::freeRing(s, catalog_, hostId) >= 0) hosts.push_back(hostId);
         if (hosts.empty()) { finishSeven(f); StateMaintenance::leave(s, id, &catalog_); return true; }
-        decision(target->second.owner, DecisionKind::EffectChoice, std::move(hosts)); return true;
+        decision(controllerOf(target->second), DecisionKind::EffectChoice, std::move(hosts)); return true;
     }
     if ((effect.kind == EffectKind::SevenInsight && mode == 1) ||
         (effect.kind == EffectKind::SevenShift && mode == 2) || effect.kind == EffectKind::SevenUpgrade || effect.kind == EffectKind::SevenKaiyang) {
@@ -361,7 +361,8 @@ bool GameEngine::resolveFormationEffect() {
             f.clearRemaining = 0;
         }
         std::vector<CardId> options;
-        for (auto id : f.item.targetCards) if (card_rules::member(catalog_.at(s.cards.at(id).definition), "七星")) options.push_back(id);
+        for (auto id : f.item.targetCards)
+            if (s.cards.count(id) && card_rules::member(catalog_.at(s.cards.at(id).definition), "七星")) options.push_back(id);
         if (options.empty()) { bottomViewed(s, owner, f.item.targetCards, 0); finishSeven(f); return true; }
         decision(owner, DecisionKind::EffectChoice, std::move(options)); return true;
     }
@@ -400,14 +401,29 @@ bool GameEngine::chooseFormationEffect(PlayerId actor, CardId selected) {
     const auto kind = f.item.effects[f.cursor].kind;
     if (!sevenKind(kind)) return false;
     const auto owner = f.item.owner;
+    const auto source = s.cards.find(f.item.source);
+    const auto sourceName = source == s.cards.end() ? std::string{} : source->second.definition;
     const int mode = card_rules::aspectMode(s, catalog_, owner);
+    const auto listed = [&](const std::vector<CardId> &ids) {
+        return std::find(ids.begin(), ids.end(), selected) != ids.end();
+    };
     if (kind == EffectKind::SevenGaze) {
         const auto id = f.item.targetCard;
+        const auto target = s.cards.find(selected);
+        if (!s.cards.count(id) || target == s.cards.end() || controllerOf(target->second) != owner || target->second.zone != Zone::Analysis ||
+            target->second.faceDown || catalog_.at(target->second.definition).type != CardType::Formation ||
+            !Rules::canHost(s, catalog_, id, selected, true) || Rules::freeRing(s, catalog_, selected) < 0)
+            return false;
         const int ring = Rules::freeRing(s, catalog_, selected);
         concealGaze(s, catalog_, id, selected, ring); finishSeven(f); return true;
     }
     if ((kind == EffectKind::SevenInsight && mode == 1) || (kind == EffectKind::SevenShift && mode == 2) ||
         kind == EffectKind::SevenUpgrade || kind == EffectKind::SevenKaiyang) {
+        const bool kaiyang = kind == EffectKind::SevenKaiyang;
+        const auto options = f.clearRemaining < 0
+            ? card_rules::formationUpgradeSources(s, catalog_, owner, kaiyang)
+            : upgrades(s, catalog_, owner, static_cast<CardId>(f.clearRemaining), kaiyang);
+        if (!listed(options)) return false;
         if (f.clearRemaining < 0) f.clearRemaining = static_cast<int>(selected);
         else {
             const auto old = static_cast<CardId>(f.clearRemaining);
@@ -416,10 +432,17 @@ bool GameEngine::chooseFormationEffect(PlayerId actor, CardId selected) {
         return true;
     }
     if (kind == EffectKind::SevenInsight) {
+        if (!selected || !listed(f.item.targetCards)) return false;
+        if (!s.cards.count(selected)) return false;
         bottomViewed(s, owner, f.item.targetCards, selected); finishSeven(f); return true;
     }
     if (kind == EffectKind::SevenReturn) {
         if (selected) {
+            std::vector<CardId> options;
+            for (const auto &[id, card] : s.cards)
+                if (card.owner == owner && card.zone == Zone::Ash && card_rules::member(catalog_.at(card.definition), "七星"))
+                    options.push_back(id);
+            if (!listed(options)) return false;
             const auto zone = s.cards.at(selected).zone;
             card_rules::returnCard(s, catalog_, selected, false);
             if (zone == Zone::Ash || zone == Zone::Deck) ++f.resolvedCount;
@@ -428,12 +451,21 @@ bool GameEngine::chooseFormationEffect(PlayerId actor, CardId selected) {
         return true;
     }
     if (kind == EffectKind::SevenAwakening && f.resolvedCount == 1) {
+        if (selected != takeDamage && selected != takeLoad) return false;
         const auto trigger = f.item; finishSeven(f);
         if (selected == takeDamage) EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, 7, DamageType::Radiant, EffectRecipient::Owner});
         else if (selected == takeLoad) EffectResolver::apply(s, catalog_, trigger, {EffectKind::AddIndependent, 7, DamageType::Force, EffectRecipient::Owner});
         StateMaintenance::check(s, catalog_); return true;
     }
     if (kind == EffectKind::SevenAwakening || kind == EffectKind::SevenSetup) {
+        if (!s.cards.count(selected)) return false;
+        const bool setup = kind == EffectKind::SevenSetup;
+        const bool ash = setup ? sourceName == "qixing-tianji" || sourceName == "qixing-yuheng" : mode == 2;
+        const bool shiftOnly = setup && (sourceName == "qixing-tianxuan" || sourceName == "qixing-tianji");
+        const auto card = s.cards.find(selected);
+        if (card == s.cards.end() || card->second.owner != owner || card->second.zone != (ash ? Zone::Ash : Zone::Deck) ||
+            (shiftOnly ? card->second.definition != "qixing-shift" : !card_rules::member(catalog_.at(card->second.definition), "七星")))
+            return false;
         const bool fromDeck = s.cards.at(selected).zone == Zone::Deck;
         card_rules::returnCard(s, catalog_, selected, true);
         if (fromDeck) shuffleSevenDeck(s, owner);
@@ -759,7 +791,7 @@ bool GameEngine::resolveSpellEffect() {
     }
     if (effect.kind == EffectKind::ArcanaTower && !f.resolvedCount) {
         const auto target = s.cards.find(f.item.targetCard);
-        if (target == s.cards.end() || target->second.owner != owner || target->second.zone != Zone::Analysis ||
+        if (target == s.cards.end() || controllerOf(target->second) != owner || target->second.zone != Zone::Analysis ||
             catalog_.at(target->second.definition).type != CardType::Formation || immune(s, catalog_, target->first)) {
             finish(); return true;
         }
@@ -797,15 +829,15 @@ bool GameEngine::resolveSpellEffect() {
         if (counts[0] == counts[1]) { finish(); return true; }
         chooser = counts[0] > counts[1] ? 0 : 1;
         for (const auto &[id, c] : s.cards)
-            if (c.owner == chooser && c.zone == Zone::Analysis && card_rules::isSpell(catalog_.at(c.definition))) options.push_back(id);
+            if (controllerOf(c) == chooser && c.zone == Zone::Analysis && card_rules::isSpell(catalog_.at(c.definition))) options.push_back(id);
     } else if (effect.kind == EffectKind::ArcanaLovers) {
         chooser = 1 - owner;
         for (const auto &[id, c] : s.cards)
-            if (c.owner == chooser && c.zone == Zone::Analysis && card_rules::isSpell(catalog_.at(c.definition))) options.push_back(id);
+            if (controllerOf(c) == chooser && c.zone == Zone::Analysis && card_rules::isSpell(catalog_.at(c.definition))) options.push_back(id);
     } else if (effect.kind == EffectKind::ArcanaTower) {
         optional = true;
         for (const auto &[id, c] : s.cards)
-            if (c.owner != owner && c.zone == Zone::Analysis && catalog_.at(c.definition).type == CardType::Formation &&
+            if (controllerOf(c) != owner && c.zone == Zone::Analysis && catalog_.at(c.definition).type == CardType::Formation &&
                 !immune(s, catalog_, id) && !card_rules::protectedFormation(s, id) &&
                 !catalog_.at(c.definition).opponentDestroyProtected &&
                 std::find(catalog_.at(c.definition).traits.begin(), catalog_.at(c.definition).traits.end(),
@@ -1037,7 +1069,7 @@ void attached(GameState &s, const CardCatalog &cat, CardId id) {
     auto &card = s.cards.at(id);
     if (card.siquePairTurn == s.globalTurn && card.siquePartner) {
         const auto partner = s.cards.find(card.siquePartner);
-        if (partner != s.cards.end() && partner->second.zone == Zone::Hand && partner->second.owner == card.owner)
+        if (partner != s.cards.end() && partner->second.zone == Zone::Hand && controllerOf(partner->second) == controllerOf(card))
             StateMaintenance::leave(s, partner->first, &cat);
     }
     const auto &def = cat.at(card.definition);

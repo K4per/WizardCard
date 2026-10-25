@@ -26,7 +26,7 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) : catalog_(st
         if (!state_.opening) {
             CardInstance base;
             base.id = id++; base.definition = config.players[p].baseFormation;
-            base.owner = p; base.base = true; base.zone = Zone::Analysis;
+            base.owner = p; base.controller = p; base.base = true; base.zone = Zone::Analysis;
             if (catalog_.usesAlphaV2()) base.fieldOrder = state_.nextFieldOrder++;
             state_.cards.emplace(base.id, base);
         }
@@ -34,13 +34,14 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) : catalog_(st
         for (const auto &key : config.players[p].sideDeck) {
             if (!state_.opening && !selected && key == config.players[p].baseFormation) { selected = true; continue; }
             CardInstance c;
-            c.id = id++; c.owner = p; c.definition = key; c.zone = Zone::SideDeck;
+            c.id = id++; c.owner = p; c.controller = p; c.definition = key; c.zone = Zone::SideDeck;
             state_.cards.emplace(c.id, c);
         }
         for (const auto &key : config.players[p].cards) {
             CardInstance c;
             c.id = id++;
             c.owner = p;
+            c.controller = p;
             c.definition = key;
             state_.cards.emplace(c.id, c);
             state_.players[p].deck.push_back(c.id);

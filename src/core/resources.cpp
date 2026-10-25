@@ -18,7 +18,7 @@ bool effectImmune(const CardDefinition &definition) {
 int Rules::load(const GameState &s, PlayerId p) {
     int n = 0;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p)
+        if (controllerOf(c) == p)
             n += c.analysisLoad + c.castLoad;
     for (const auto &t : s.temporary)
         if (t.owner == p)
@@ -28,7 +28,7 @@ int Rules::load(const GameState &s, PlayerId p) {
 int Rules::capacity(const GameState &s, const CardCatalog &cat, PlayerId p) {
     int n = cat.baseLoadCapacity;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p && c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation) {
+        if (controllerOf(c) == p && c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation) {
             const auto &definition = cat.at(c.definition);
             int capacity = definition.capacity;
             if (definition.id == "storm-crest")
@@ -76,7 +76,7 @@ int Rules::maxRank(const GameState &s, const CardCatalog &cat, CardId id) {
 int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, CardId host) {
     const auto &d = cat.at(s.cards.at(id).definition);
     const auto h = s.cards.find(host);
-    int discount = card_rules::attachedCount(s, s.cards.at(id).owner, "sique-sugar");
+    int discount = card_rules::attachedCount(s, controllerOf(s.cards.at(id)), "sique-sugar");
     if (cat.usesAlphaV2() && std::find(d.traits.begin(), d.traits.end(), "ash_evocation_discount") != d.traits.end())
         for (const auto &[cid, card] : s.cards) {
             const auto &definition = cat.at(card.definition);
@@ -87,7 +87,7 @@ int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, C
     int surcharge = 0;
     if (cat.usesAlphaV252() && d.duration > 0)
         for (const auto &[sourceId, source] : s.cards)
-            if (source.owner != s.cards.at(id).owner && source.spell == SpellState::Active &&
+            if (controllerOf(source) != controllerOf(s.cards.at(id)) && source.spell == SpellState::Active &&
                 (source.zone == Zone::Analysis || source.zone == Zone::Casting)) {
                 const auto &traits = cat.at(source.definition).traits;
                 if (std::find(traits.begin(), traits.end(), "surcharge_enemy_timed_cast") != traits.end()) surcharge += 2;
@@ -101,7 +101,7 @@ int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
     const auto &d = cat.at(c.definition);
     int n = (d.type == CardType::Word || (cat.usesAlphaV2() && d.type == CardType::Talisman) ? d.cost : d.castCost)
-        - card_rules::attachedCount(s, c.owner, "sique-sugar");
+        - card_rules::attachedCount(s, controllerOf(c), "sique-sugar");
     for (const auto &[sid, seal] : s.cards)
         if (seal.zone == Zone::Attached && seal.host == id) {
             const auto &sealDefinition = cat.at(seal.definition);
@@ -113,7 +113,7 @@ int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     if (!cat.usesAlphaV252() && d.duration > 0)
         for (const auto &[sourceId, source] : s.cards) {
             const auto &sourceDefinition = cat.at(source.definition);
-            if (source.owner != c.owner && source.spell == SpellState::Active &&
+            if (controllerOf(source) != controllerOf(c) && source.spell == SpellState::Active &&
                 (source.zone == Zone::Analysis || source.zone == Zone::Casting) &&
                 std::find(sourceDefinition.traits.begin(), sourceDefinition.traits.end(),
                           "surcharge_enemy_timed_cast") != sourceDefinition.traits.end())
@@ -126,7 +126,7 @@ int Rules::concentrationUpkeep(const GameState &s, const CardCatalog &cat, CardI
     const bool doubled = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
         const auto &source = entry.second;
         const auto &definition = cat.at(source.definition);
-        return source.owner != card.owner && source.spell == SpellState::Active &&
+        return controllerOf(source) != controllerOf(card) && source.spell == SpellState::Active &&
             (source.zone == Zone::Analysis || source.zone == Zone::Casting) &&
             std::find(definition.traits.begin(), definition.traits.end(),
                       "double_enemy_concentration_upkeep") != definition.traits.end();
@@ -138,7 +138,7 @@ int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const 
     if (cat.usesAlphaV252() && s.players[p].nextDamageImmune) return 0;
     bool resistance = false;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p && (c.zone == Zone::Casting || (cat.usesAlphaV2() && c.zone == Zone::Analysis)) && c.spell == SpellState::Active) {
+        if (controllerOf(c) == p && (c.zone == Zone::Casting || (cat.usesAlphaV2() && c.zone == Zone::Analysis)) && c.spell == SpellState::Active) {
             const auto &d = cat.at(c.definition);
             if (std::find(d.immunities.begin(), d.immunities.end(), e.damageType) != d.immunities.end())
                 return 0;
@@ -161,7 +161,7 @@ int Rules::occupied(const GameState &s, CardId host) {
 int Rules::castingCapacity(const GameState &s, const CardCatalog &cat, PlayerId player) {
     int count = 0;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == player && c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation)
+        if (controllerOf(c) == player && c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation)
             count += rings(s, cat, id);
     return count;
 }
@@ -177,13 +177,13 @@ int Rules::freeRing(const GameState &s, const CardCatalog &cat, CardId host) {
 }
 bool Rules::canHost(const GameState &s, const CardCatalog &cat, CardId spell, CardId formation, bool faceDown) {
     const auto source = s.cards.find(spell), host = s.cards.find(formation);
-    if (source == s.cards.end() || host == s.cards.end() || source->second.owner != host->second.owner ||
+    if (source == s.cards.end() || host == s.cards.end() || controllerOf(source->second) != controllerOf(host->second) ||
         host->second.zone != Zone::Analysis || host->second.faceDown ||
         cat.at(host->second.definition).type != CardType::Formation) return false;
     const auto &definition = cat.at(source->second.definition);
     if (cat.usesAlphaV252() && std::find(definition.traits.begin(), definition.traits.end(), "unique") != definition.traits.end())
         for (const auto &[id, card] : s.cards)
-            if (id != spell && card.owner == source->second.owner && card.definition == source->second.definition &&
+            if (id != spell && controllerOf(card) == controllerOf(source->second) && card.definition == source->second.definition &&
                 (card.zone == Zone::Analysis || card.zone == Zone::Casting)) return false;
     if ((!faceDown || !cat.usesAlphaV253()) && definition.rank > maxRank(s, cat, formation)) return false;
     if (faceDown && cat.usesAlphaV253()) return true; // Restrictions apply when flipped.
@@ -217,15 +217,15 @@ bool Rules::targetValid(const GameState &s, TargetKind kind, PlayerId p, CardId 
         c.zone == Zone::SideDeck || c.zone == Zone::Exile)
         return false;
     if (kind == TargetKind::OwnAnalyzingSpell)
-        return c.owner == p && c.zone == Zone::Analysis && !c.faceDown && c.spell == SpellState::Analyzing;
+        return controllerOf(c) == p && c.zone == Zone::Analysis && !c.faceDown && c.spell == SpellState::Analyzing;
     if (kind == TargetKind::EmptyEnemyFormation)
-        return c.owner != p && c.zone == Zone::Analysis && !c.faceDown && !c.host &&
+        return controllerOf(c) != p && c.zone == Zone::Analysis && !c.faceDown && !c.host &&
                c.spell == SpellState::None && occupied(s, target) == 0 &&
                std::none_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
                    return entry.second.host == target && entry.second.zone == Zone::Attached;
                });
-    return kind == TargetKind::AnyCard || (kind == TargetKind::EnemyCard && c.owner != p) ||
-           (kind == TargetKind::OwnCard && c.owner == p);
+    return kind == TargetKind::AnyCard || (kind == TargetKind::EnemyCard && controllerOf(c) != p) ||
+           (kind == TargetKind::OwnCard && controllerOf(c) == p);
 }
 bool Rules::linkTargetValid(const GameState &s, TargetKind kind, LinkId id) {
     if (!s.chain || !id)

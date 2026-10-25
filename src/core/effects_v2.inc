@@ -74,6 +74,7 @@ void returnToHand(GameState &s, const CardCatalog &catalog, CardId id) {
     for (auto child : attachments)
         StateMaintenance::leave(s, child, &catalog);
     card.zone = Zone::Hand;
+    card.controller = card.owner;
     card.host = card.sourceFormation = 0;
     card.spell = SpellState::None;
     card.analysisLoad = card.castLoad = 0;
@@ -99,6 +100,7 @@ void returnFormationToSideDeck(GameState &s, const CardCatalog &catalog, CardId 
     StateMaintenance::leave(s, id, &catalog);
     auto &card = s.cards.at(id);
     card.zone = Zone::SideDeck;
+    card.controller = card.owner;
     card.base = false;
     card.host = card.sourceFormation = 0;
     card.spell = SpellState::None;
@@ -212,7 +214,7 @@ bool GameEngine::contentEffectV2() {
         const int advance = std::max(1, e.amount);
         for (auto &[id, card] : s.cards) {
             const auto &definition = catalog_.at(card.definition);
-            if (card.owner == owner || card.zone != Zone::Analysis || card.faceDown ||
+            if (controllerOf(card) == owner || card.zone != Zone::Analysis || card.faceDown ||
                 definition.type != CardType::Analytic ||
                 card.spell != SpellState::Analyzing ||
                 effectImmune(s, catalog_, id))
@@ -232,7 +234,7 @@ bool GameEngine::contentEffectV2() {
         if (f.clearRemaining == -1) {
             std::vector<CardId> field;
             for (const auto &[id, card] : s.cards)
-                if (fieldZone(card.zone) && (!card.faceDown || card.owner == owner) &&
+                if (fieldZone(card.zone) && (!card.faceDown || controllerOf(card) == owner) &&
                     !(catalog_.usesAlphaV252() ? effectImmune(s, catalog_, id) : protectedCardFromEffect(s, catalog_, id)))
                     field.push_back(id);
             if (field.empty()) {
@@ -267,7 +269,7 @@ bool GameEngine::contentEffectV2() {
         if (f.clearRemaining < 0) {
             std::vector<CardId> formations;
             for (const auto &[id, card] : s.cards)
-                if (card.owner != owner && card.zone == Zone::Analysis && !card.faceDown &&
+                if (controllerOf(card) != owner && card.zone == Zone::Analysis && !card.faceDown &&
                     catalog_.at(card.definition).type == CardType::Formation &&
                     !protectedCardFromEffect(s, catalog_, id) && formationHasSpells(s, catalog_, id))
                     formations.push_back(id);
@@ -289,7 +291,7 @@ bool GameEngine::contentEffectV2() {
         if (f.clearRemaining < 0) {
             std::vector<CardId> formations;
             for (const auto &[id, card] : s.cards)
-                if (card.owner == owner && card.zone == Zone::Analysis && !card.faceDown && !card.base &&
+                if (controllerOf(card) == owner && card.zone == Zone::Analysis && !card.faceDown && !card.base &&
                     catalog_.at(card.definition).type == CardType::Formation &&
                     !protectedCardFromEffect(s, catalog_, id) && !formationHasSpells(s, catalog_, id) &&
                     Rules::occupied(s, id) == 0)
@@ -318,7 +320,7 @@ bool GameEngine::contentEffectV2() {
             }
             if (target->second.definition == "storm-heart" && target->second.stormPoints > 0) {
                 f.item.targetCard = id;
-                decision(target->second.owner, DecisionKind::EffectChoice, {id}, true);
+                decision(controllerOf(target->second), DecisionKind::EffectChoice, {id}, true);
                 return true;
             }
             StateMaintenance::leave(s, id, &catalog_);
@@ -343,7 +345,7 @@ bool GameEngine::contentEffectV2() {
             f.item.targetCards.clear();
             f.resolvedCount = 0;
             for (const auto &[id, card] : s.cards)
-                if (card.owner != owner && fieldZone(card.zone) &&
+                if (controllerOf(card) != owner && fieldZone(card.zone) &&
                     (!catalog_.usesAlphaV252() || (card.zone == Zone::Analysis && isSpell(catalog_.at(card.definition)))))
                     f.item.targetCards.push_back(id);
             f.clearRemaining = 0;
@@ -402,38 +404,38 @@ bool GameEngine::contentEffectV2() {
         bool eligible = false;
         switch (e.kind) {
         case EffectKind::DelayEnemyAnalysis:
-            eligible = card.owner != owner && card.zone == Zone::Analysis && !card.faceDown &&
+            eligible = controllerOf(card) != owner && card.zone == Zone::Analysis && !card.faceDown &&
                        definition.type == CardType::Analytic &&
                        (card.spell == SpellState::Analyzing || card.spell == SpellState::Ready);
             break;
         case EffectKind::DestroyEnemyAnalysis:
-            eligible = card.owner != owner && fieldZone(card.zone) &&
+            eligible = controllerOf(card) != owner && fieldZone(card.zone) &&
                        isSpell(definition) && !protectedCardFromEffect(s, catalog_, id) &&
                        (!windStrikeDestroy || id == f.item.targetCard) &&
                        (!catalog_.usesCardRules() || sourceCard == s.cards.end() ||
                         sourceCard->second.definition != "great-storm" || card.zone == Zone::Analysis);
             break;
         case EffectKind::ConcealEnemySpell:
-            eligible = card.owner != owner && card.zone == Zone::Analysis && !card.faceDown && isSpell(definition);
+            eligible = controllerOf(card) != owner && card.zone == Zone::Analysis && !card.faceDown && isSpell(definition);
             break;
         case EffectKind::RevealEnemyAmbush:
-            eligible = card.owner != owner && card.zone == Zone::Analysis && card.faceDown && isSpell(definition);
+            eligible = controllerOf(card) != owner && card.zone == Zone::Analysis && card.faceDown && isSpell(definition);
             break;
         case EffectKind::ReturnEnemyAnalysis:
-            eligible = card.owner != owner && fieldZone(card.zone) &&
+            eligible = controllerOf(card) != owner && fieldZone(card.zone) &&
                        (swiftWindReturn
                             ? definition.type == CardType::Formation && definition.level <= 2
                             : isSpell(definition));
             break;
         case EffectKind::DestroyFormationSpells:
-            eligible = card.owner != owner && card.zone == Zone::Analysis &&
+            eligible = controllerOf(card) != owner && card.zone == Zone::Analysis &&
                        definition.type == CardType::Formation && !protectedCardFromEffect(s, catalog_, id) &&
                        formationHasSpells(s, catalog_, id);
             break;
         case EffectKind::SearchSameSchool:
             optional = false;
             if (f.clearRemaining < 0)
-                eligible = card.owner == owner && card.zone == Zone::Analysis && !card.faceDown && isSpell(definition);
+                eligible = controllerOf(card) == owner && card.zone == Zone::Analysis && !card.faceDown && isSpell(definition);
             else {
                 const auto &material = catalog_.at(s.cards.at(static_cast<CardId>(f.clearRemaining)).definition);
                 eligible = card.owner == owner && card.zone == Zone::Deck && isSpell(definition) &&
@@ -448,7 +450,7 @@ bool GameEngine::contentEffectV2() {
                 if (eligible)
                     eligible = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &item) {
                         const auto &host = item.second;
-                        return host.owner == owner && host.zone == Zone::Analysis && !host.faceDown &&
+                        return controllerOf(host) == owner && host.zone == Zone::Analysis && !host.faceDown &&
                                catalog_.at(host.definition).type == CardType::Formation &&
                                Rules::maxRank(s, catalog_, host.id) >= definition.rank &&
                                Rules::freeRing(s, catalog_, host.id) >= 0;
@@ -499,7 +501,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
     if (e.kind == EffectKind::DelayAllEnemyAnalysis) {
         if (selected)
             for (auto &[id, card] : s.cards)
-                if (card.owner != f.item.owner && card.zone == Zone::Analysis && !card.faceDown &&
+                if (controllerOf(card) != f.item.owner && card.zone == Zone::Analysis && !card.faceDown &&
                     catalog_.at(card.definition).type == CardType::Analytic &&
                     (card.spell == SpellState::Analyzing || card.spell == SpellState::Ready) &&
                     !effectImmune(s, catalog_, id)) {
@@ -586,7 +588,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
             }
             if (selected == 0xfffffff2u) {
                 for (auto &[id, formation] : s.cards)
-                    if (formation.owner == actor && formation.zone == Zone::Analysis &&
+                    if (controllerOf(formation) == actor && formation.zone == Zone::Analysis &&
                         catalog_.at(formation.definition).type == CardType::Formation &&
                         detail::stormTags(catalog_.at(formation.definition).tags)) {
                         formation.stormPoints += 2;
@@ -635,7 +637,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
         for (const auto &[id, spell] : s.cards) {
             const bool hosted = (spell.zone == Zone::Analysis && spell.host == selected) ||
                                 (spell.zone == Zone::Casting && spell.sourceFormation == selected);
-            if (hosted && spell.owner != actor && isSpell(catalog_.at(spell.definition)) &&
+            if (hosted && controllerOf(spell) != actor && isSpell(catalog_.at(spell.definition)) &&
                 !protectedCardFromEffect(s, catalog_, id))
                 spells.push_back(id);
         }
@@ -695,7 +697,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
         s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(),
             [&](const TemporaryLoad &load) { return load.source == selected && load.sourceBound; }), s.temporary.end());
         card.spell = SpellState::None;
-        card.analysisStarted = s.players[card.owner].ownTurn;
+        card.analysisStarted = s.players[controllerOf(card)].ownTurn;
         break;
     case EffectKind::RevealEnemyAmbush:
         // Showing a card communicates its identity without flipping or starting analysis.
@@ -740,7 +742,9 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, CardId
             return true;
         } else {
             auto &spell = s.cards.at(static_cast<CardId>(f.clearRemaining));
-            spell.owner = actor;
+            // Funny Box changes control, while the card's owner remains the
+            // opponent so that later departure returns it to the owner's ash.
+            spell.controller = actor;
             spell.zone = Zone::Analysis;
             spell.host = selected;
             spell.sourceFormation = selected;

@@ -45,6 +45,7 @@ TEST_CASE("settings serialize strictly and multiply master and sound volume") {
     s.width = 1920;
     s.height = 1080;
     s.automaticPhases = false;
+    s.responseTimingSound = true;
     REQUIRE(s.effectiveSoundVolume() == 10.f);
     REQUIRE(encodeSettings(decodeSettings(encodeSettings(s))) == encodeSettings(s));
     for (const auto *field : {"masterVolume", "soundVolume", "fontScale", "windowMode", "width", "height", "format"}) {
@@ -60,6 +61,9 @@ TEST_CASE("settings serialize strictly and multiply master and sound volume") {
     REQUIRE_THROWS(decodeSettings(j));
     j = encodeSettings(s);
     j["masterVolume"] = 101;
+    REQUIRE_THROWS(decodeSettings(j));
+    j = encodeSettings(s);
+    j["responseTimingSound"] = 1;
     REQUIRE_THROWS(decodeSettings(j));
 }
 TEST_CASE("font scale accepts supported sizes and preserves legacy settings defaults") {

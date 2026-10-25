@@ -1,4 +1,4 @@
-"""Check source coverage, stable migration and supplied-art integrity for 2.5.4."""
+"""Check source coverage, stable migration and supplied-art integrity for 2.5.5."""
 from __future__ import annotations
 
 from collections import Counter
@@ -28,7 +28,12 @@ class Alpha254ContentTests(unittest.TestCase):
         for card_id, old in self.previous.items():
             with self.subTest(card_id=card_id):
                 self.assertEqual(self.cards[card_id]["number"], old["number"])
-                self.assertEqual(self.cards[card_id]["illustrationId"], old["illustrationId"])
+                # The 2.5.5 brief explicitly replaces the earthquake artwork;
+                # the card identity remains stable while its illustration ID changes.
+                if card_id == "earthquake":
+                    self.assertEqual(self.cards[card_id]["illustrationId"], "earthquake")
+                else:
+                    self.assertEqual(self.cards[card_id]["illustrationId"], old["illustrationId"])
 
     def test_explicit_renames_and_source_corrections(self):
         self.assertEqual(self.cards["instantly-sleep"]["name"], "沉默术")
@@ -62,9 +67,9 @@ class Alpha254ContentTests(unittest.TestCase):
                 self.assertTrue(card_id == "qixing-tianshu" or card.get("effects") or card.get("traits"))
                 self.assertEqual(card["tags"], ["七星" if card_id.startswith("qixing-") else "血契"])
                 self.assertTrue(card["number"].startswith(migration.PREFIXES[card["type"]]))
-        self.assertEqual(self.catalog["rulesVersion"], "2.5.4")
-        self.assertEqual(self.catalog["cardSetVersion"], "2.5.4")
-        self.assertEqual(self.catalog["mechanicsRevision"], 8)
+        self.assertEqual(self.catalog["rulesVersion"], "2.5.5")
+        self.assertEqual(self.catalog["cardSetVersion"], "2.5.5")
+        self.assertEqual(self.catalog["mechanicsRevision"], 9)
 
     def test_all_38_supplied_illustrations_retain_original_bytes(self):
         sources = migration.read_json(migration.ART / "manifest.json")["assets"]
@@ -83,7 +88,8 @@ class Alpha254ContentTests(unittest.TestCase):
         self.assertEqual(migration.read_json(migration.ROOT / "assets/cards.json"), self.catalog)
         for source in migration.read_json(migration.SNAPSHOT / "source-manifest.json")["sources"]:
             with self.subTest(source=source["key"]):
-                self.assertEqual(migration.sha256(migration.SNAPSHOT / source["snapshot"]), source["sha256"])
+                content = (migration.SNAPSHOT / source["snapshot"]).read_bytes().replace(b"\r\n", b"\n")
+                self.assertEqual(migration.hashlib.sha256(content).hexdigest(), source["sha256"])
 
 
 if __name__ == "__main__":

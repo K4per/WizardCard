@@ -7,7 +7,7 @@
 namespace wizard {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Effect, kind, amount, damageType, recipient)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Payment, turn, paid, load, canceled)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(CardInstance, id, definition, owner, zone, spell, host, sourceFormation,
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(CardInstance, id, definition, owner, controller, zone, spell, host, sourceFormation,
                                    targetCard, targetPlayer, base, analysisStarted, remaining, analysisLoad,
                                    castLoad, canceledTurn, payments, targets, settingPaid, concentrationCost, stormPoints,
                                    stormReleaseProgress,

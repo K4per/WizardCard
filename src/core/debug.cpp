@@ -36,7 +36,7 @@ CommandResult GameEngine::debug(const DebugOperation &op) {
             return rejected("卡牌实例 ID 已耗尽");
         CardInstance card;
         card.id = s.cards.empty() ? 1 : s.cards.rbegin()->first + 1;
-        card.owner = op.player; card.zone = Zone::Hand; card.definition = definition->id;
+        card.owner = op.player; card.controller = op.player; card.zone = Zone::Hand; card.definition = definition->id;
         changedCard = card.id; s.cards.emplace(card.id, card);
         text = "从虚空加入手牌：" + definition->name + " #" + std::to_string(card.id) + "（不计抽牌）";
     } else if (op.operation == "gain_mana" || op.operation == "lose_mana") {

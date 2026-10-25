@@ -409,6 +409,7 @@ TEST_CASE("Alpha 2.5.3 Sique selections require one through five cards and handl
     siquePut(s, 30, "sique-sugar", 1, Zone::Ash);
     auto e = GameEngine::scenario(cat, s);
     siqueSend(e, 0, ActivateSpell{20});
+    siqueSettle(e);
     REQUIRE(e.state().decision);
     REQUIRE_FALSE(e.state().decision->mayPass);
     const auto before = e.digest();
@@ -426,6 +427,7 @@ TEST_CASE("Alpha 2.5.3 Sique selections require one through five cards and handl
     siquePut(s, 40, "spark", 0, Zone::Deck);
     e = GameEngine::scenario(cat, s);
     siqueSend(e, 0, PreloadWord{20, true, 1});
+    siqueSettle(e);
     REQUIRE(e.state().decision);
     REQUIRE_FALSE(e.state().decision->mayPass);
     const auto firstChoice = *e.state().decision;
@@ -446,11 +448,9 @@ TEST_CASE("Alpha 2.5.3 Sique selections require one through five cards and handl
     siquePut(s, 40, "spark", 0, Zone::Deck);
     e = GameEngine::scenario(cat, s);
     siqueSend(e, 0, PreloadWord{20, true, 1});
-    REQUIRE(e.state().decision);
-    REQUIRE(e.state().decision->mayPass);
-    REQUIRE(e.state().decision->options == std::vector<CardId>{0xffffffe1u});
-    siqueChoose(e, 0);
+    siqueSettle(e);
     REQUIRE_FALSE(e.state().decision);
+    REQUIRE(e.state().cards.at(40).zone == Zone::Deck);
 
     s = siqueState(Phase::Cast); cauldron(s); s.players[0].life = 20;
     siquePut(s, 20, "sique-backfire", 0, Zone::Casting, 1, SpellState::Ready);
@@ -509,7 +509,7 @@ TEST_CASE("Alpha 2.5.3 soup pays exactly one owned rune and sugar leaves for one
 
     s = siqueState(); cauldron(s); s.players[0].mana = 7;
     siquePut(s, 10, "sique-sugar", 0, Zone::Attached, 1);
-    e = GameEngine::scenario(cat, s); siqueSend(e, 0, RemoveSeal{10}); siqueSettle(e);
+    e = GameEngine::scenario(cat, s); siqueSend(e, 0, RemoveFormation{1}); siqueSettle(e);
     REQUIRE(e.state().players[0].mana == 8);
 }
 
@@ -546,6 +546,9 @@ TEST_CASE("Alpha 2.5.3 divine stew substitutes only mana at declaration and reta
     e = GameEngine::scenario(cat, s);
     siqueSend(e, 0, PreloadWord{21, true, 1});
     // Declaration pays exactly two ordinary life before any effect choices.
+    REQUIRE(e.state().decision);
+    REQUIRE(e.state().decision->kind == DecisionKind::Payment);
+    siqueChoose(e, 1);
     REQUIRE(e.state().players[1].life == 1);
     REQUIRE(e.state().players[1].temporaryLife == 20);
     REQUIRE(e.state().players[0].mana == 0);
@@ -564,15 +567,15 @@ TEST_CASE("Alpha 2.5.3 divine stew respects independent infinite resource switch
     const auto cat = siqueProductionCatalog(); auto s = siqueState();
     s.players[0].mana = 0; s.players[0].siqueLifePaymentTurn = s.globalTurn;
     s.players[1].life = 1;
-    REQUIRE_FALSE(card_rules::canPay(s, 0, 2, &cat));
+    REQUIRE(card_rules::paymentChoices(s, cat, 0, 2).empty());
     s.players[1].debugInfiniteLife = true;
-    REQUIRE(card_rules::canPay(s, 0, 2, &cat)); card_rules::pay(s, 0, 2, &cat);
+    REQUIRE_FALSE(card_rules::paymentChoices(s, cat, 0, 2).empty());
     REQUIRE(s.players[1].life == 1); REQUIRE(s.players[0].mana == 0);
     s.players[1].debugInfiniteLife = false; s.players[0].debugInfiniteMana = true;
-    REQUIRE(card_rules::canPay(s, 0, 2, &cat)); card_rules::pay(s, 0, 2, &cat);
+    REQUIRE_FALSE(card_rules::paymentChoices(s, cat, 0, 2).empty());
     REQUIRE(s.players[1].life == 1); REQUIRE(s.players[0].mana == 0);
     s.players[0].debugInfiniteMana = false;
-    REQUIRE_FALSE(card_rules::canPay(s, 0, 2, &cat));
+    REQUIRE(card_rules::paymentChoices(s, cat, 0, 2).empty());
 }
 
 TEST_CASE("Alpha 2.5.3 hanged man pays rounded ordinary life and exchanges only nonformations", "[arcana][alpha-v253]") {

@@ -2,6 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 #include <chrono>
+#include <algorithm>
 using namespace wizard;
 TEST_CASE("manifest preserves canonical card order hash and legacy imports") {
     const auto assets = std::filesystem::path(WIZARD_SOURCE_DIR) / "assets";
@@ -44,7 +45,7 @@ TEST_CASE("manifest rejects duplicates ID mismatch traversal and missing definit
 }
 TEST_CASE("content validation includes unknown effects duplicates references and counts") {
     const auto dir=std::filesystem::path(WIZARD_SOURCE_DIR)/"assets";auto j=readJson(dir/"cards.json");auto c=loadContent(dir);
-    REQUIRE(c.catalog.cards.size()==99);REQUIRE(c.deck.size()==40);
+    REQUIRE(c.catalog.cards.size()==135);REQUIRE(c.deck.size()==40);
     for (const auto *draft : {"upright-cross", "inverted-cross", "ankh"})
         REQUIRE(c.catalog.cards.count(draft) == 0);
     auto bad=j;bad["cards"][0]["body"]=-1;REQUIRE_THROWS_WITH(parseCatalog(bad),"cards.json/cards/0/body: expected integer in [0,1000]");
@@ -68,7 +69,7 @@ TEST_CASE("replay detects incompatible content versions and tampering") {
         }
     }
     p = session.engine().state().active;
-    REQUIRE(session.submit(p,AdvancePhase{session.engine().state().phaseGate}).accepted);REQUIRE(session.submit(1-p,Surrender{}).accepted);
+    REQUIRE(session.submit(p, Surrender{}).accepted);
     auto j=session.recording();REQUIRE(replay(c,j).digest()==session.engine().digest());
     j["contentHash"]="changed";REQUIRE_THROWS(replay(c,j));j=session.recording();j["commands"][0]["digest"]="wrong";REQUIRE_THROWS(replay(c,j));
 }

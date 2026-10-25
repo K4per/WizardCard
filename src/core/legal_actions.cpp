@@ -21,7 +21,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
     if (s.opening) {
         if (!s.initialFormations[p])
             for (const auto &[id, card] : s.cards)
-                if (card.owner == p && card.zone == Zone::SideDeck &&
+                if (controllerOf(card) == p && card.zone == Zone::SideDeck &&
                     catalog_.at(card.definition).type == CardType::Formation && catalog_.at(card.definition).level == 1)
                     add("选择初始阵法 " + catalog_.at(card.definition).name, id, 0, SelectInitialFormation{id});
         add("投降", 0, 0, Surrender{});
@@ -196,7 +196,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
     };
     if (catalog_.usesAlphaV2()) {
         for (const auto &[id, card] : s.cards) {
-            if (card.owner != p) continue;
+            if (controllerOf(card) != p) continue;
             const auto &def = catalog_.at(card.definition);
             const auto name = def.name + " #" + std::to_string(id);
             const auto activationSets = card_rules::detachCost(def) ? card_rules::detachOptions(s, catalog_, p, def) : targets(def);
@@ -228,7 +228,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             if (std::find(def.traits.begin(), def.traits.end(), "discard_spell_search") != def.traits.end()) {
                 spellCosts.clear();
                 for (const auto &[material, candidate] : s.cards)
-                    if (material != id && candidate.owner == p && candidate.zone == Zone::Hand &&
+                    if (material != id && controllerOf(candidate) == p && candidate.zone == Zone::Hand &&
                         (catalog_.at(candidate.definition).type == CardType::Analytic ||
                          catalog_.at(candidate.definition).type == CardType::Word ||
                          catalog_.at(candidate.definition).type == CardType::Talisman)) spellCosts.push_back(material);
@@ -239,7 +239,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                     if (part.kind != RecipeCostKind::Mana && part.kind != RecipeCostKind::Life) count += part.amount;
                 std::vector<CardId> pool, selected;
                 for (const auto &[materialId, material] : s.cards)
-                    if (material.owner == p && (material.zone == Zone::Analysis || material.zone == Zone::Casting ||
+                        if (controllerOf(material) == p && (material.zone == Zone::Analysis || material.zone == Zone::Casting ||
                         material.zone == Zone::Hand) && !material.faceDown)
                         pool.push_back(materialId);
                 auto choose = [&](auto &&self, std::size_t pos) -> void {
@@ -255,7 +255,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                         };
                         add_formation(0);
                         for (const auto &[host, formation] : s.cards)
-                            if (formation.owner == p && formation.zone == Zone::Analysis &&
+                            if (controllerOf(formation) == p && formation.zone == Zone::Analysis &&
                                 catalog_.at(formation.definition).type == CardType::Formation)
                                 add_formation(host);
                         return;
@@ -268,7 +268,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             }
             if (card.zone == Zone::Hand) {
                 for (const auto &[host, formation] : s.cards) {
-                    if (formation.owner != p) continue;
+                    if (controllerOf(formation) != p) continue;
                     if (formation.zone == Zone::Analysis && catalog_.at(formation.definition).type == CardType::Formation) {
                         add("盖伏 " + name, id, host, SetAmbush{id, host});
                         add("设置解析法术 " + name, id, host, StartAnalysis{id, host});
@@ -308,13 +308,13 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                     add("反转 " + name, id, 0, FlipAmbush{id});
             }
             add("放弃 " + name, id, 0, Abandon{id});
-            add("拆除符文 " + name, id, 0, RemoveSeal{id});
+            if (!catalog_.usesAlphaV255()) add("拆除符文 " + name, id, 0, RemoveSeal{id});
             if (catalog_.usesAlphaV252()) add("移除阵法 " + name, id, 0, RemoveFormation{id});
             if (card.zone == Zone::Attached &&
                 std::find(def.traits.begin(), def.traits.end(), "activate_storm_crest_destroy") != def.traits.end() &&
                 card.host && s.cards.count(card.host) && s.cards.at(card.host).stormPoints >= 2) {
                 for (const auto &[targetId, target] : s.cards)
-                    if (target.owner != p && target.zone == Zone::Analysis && !target.faceDown &&
+                    if (controllerOf(target) != p && target.zone == Zone::Analysis && !target.faceDown &&
                         catalog_.at(target.definition).type == CardType::Formation &&
                         target.spell == SpellState::None && Rules::occupied(s, targetId) == 0)
                         add("发动风暴湮灭能力 → " + catalog_.at(target.definition).name,
@@ -329,7 +329,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
     }
     if (catalog_.advancedRules) {
         for (const auto &[id, c] : s.cards)
-            if (c.owner == p) {
+            if (controllerOf(c) == p) {
                 const auto &def = catalog_.at(c.definition);
                 if (!c.faceDown &&
                     (c.zone == Zone::Words || (c.zone == Zone::Analysis && c.spell == SpellState::Ready))) {
@@ -354,7 +354,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
         return out;
     }
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p) {
+        if (controllerOf(c) == p) {
             const auto &def = catalog_.at(c.definition);
             const auto name = def.name + " #" + std::to_string(id);
             if (c.zone == Zone::Hand) {
@@ -363,7 +363,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                         add("埋伏 " + name, id, 0, SetAmbush{id, 0});
                     if (def.type == CardType::Analytic)
                         for (const auto &[host, h] : s.cards)
-                            if (h.owner == p && h.zone == Zone::Analysis &&
+                            if (controllerOf(h) == p && h.zone == Zone::Analysis &&
                                 catalog_.at(h.definition).type == CardType::Formation)
                                 add("埋伏 " + name + " → " + catalog_.at(h.definition).name, id, host,
                                     SetAmbush{id, host});
@@ -371,13 +371,13 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                 if (def.type == CardType::Formation) {
                     add("设置阵法 " + name, id, 0, SetFormation{id, 0});
                     for (const auto &[other, h] : s.cards)
-                        if (h.owner == p && h.zone == Zone::Analysis &&
+                        if (controllerOf(h) == p && h.zone == Zone::Analysis &&
                             catalog_.at(h.definition).type == CardType::Formation && !h.base)
                             add("替换阵法 " + catalog_.at(h.definition).name + " #" + std::to_string(other),
                                 id, other, SetFormation{id, other});
                 } else if (def.type == CardType::Analytic || def.type == CardType::Seal) {
                     for (const auto &[host, h] : s.cards)
-                        if (h.owner == p && (h.zone == Zone::Analysis ||
+                        if (controllerOf(h) == p && (h.zone == Zone::Analysis ||
                                              (def.type == CardType::Seal && h.zone == Zone::Words))) {
                             const auto hostName =
                                 catalog_.at(h.definition).name + " #" + std::to_string(host);
@@ -399,7 +399,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             } else if (c.zone == Zone::Analysis && def.type == CardType::Formation) {
                 if (catalog_.usesAlphaV252()) add("移除阵法 " + name, id, 0, RemoveFormation{id});
             } else if (c.zone == Zone::Attached)
-                add("拆除符文 " + name, id, 0, RemoveSeal{id});
+                if (!catalog_.usesAlphaV255()) add("拆除符文 " + name, id, 0, RemoveSeal{id});
             if (c.zone == Zone::Analysis && c.spell == SpellState::Ready) {
                 for (const auto &ids : targets(def)) {
                     auto target = ids.empty() ? 0 : ids.front();
@@ -407,7 +407,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                     if (def.extraDiscard) {
                         discards.clear();
                         for (const auto &[discard, h] : s.cards)
-                            if (h.owner == p && h.zone == Zone::Hand)
+                            if (controllerOf(h) == p && h.zone == Zone::Hand)
                                 discards.push_back(discard);
                     }
                     for (auto discard : discards) {

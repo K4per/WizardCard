@@ -25,6 +25,8 @@ func present(data: Dictionary) -> void:
 func _play_file(file_name: String, gain: float, cooldown_seconds: float) -> void:
 	if service == null or file_name.get_file() != file_name or not file_name.ends_with(".mp3"):
 		return
+	if file_name == "response.mp3" and not bool(service.settings.get("responseTimingSound", false)):
+		return
 	var master: float = float(service.settings.get("masterVolume", 80)) / 100.0
 	var sound: float = float(service.settings.get("soundVolume", 80)) / 100.0
 	if master <= 0 or sound <= 0:

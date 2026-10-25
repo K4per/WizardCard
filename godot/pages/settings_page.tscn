@@ -232,6 +232,14 @@ text = "自动通过无操作阶段"
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 60)
 
+[node name="ResponseSound" type="CheckButton" parent="Margin/Column/Scroll/Center/Panel/Options/Toggles"]
+layout_mode = 2
+unique_name_in_owner = true
+text = "时点弹出音效"
+tooltip_text = "开启后，在有可响应时播放提示音；规则时点和优先权不受影响。"
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 60)
+
 [node name="Footer" type="HBoxContainer" parent="Margin/Column/Scroll/Center/Panel/Options"]
 layout_mode = 2
 

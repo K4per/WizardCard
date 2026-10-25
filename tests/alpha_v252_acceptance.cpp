@@ -94,7 +94,7 @@ TEST_CASE("Alpha v2.5.2 Vinegar grants attach and detach life without its old da
     EffectResolver::apply(damaged, cat, damage, {EffectKind::Damage, 5});
     CHECK(damaged.players[0].temporaryLife == 0);
     CHECK(damaged.players[0].life == startingLife - 3);
-    acceptanceSend(e, 0, RemoveSeal{10}); acceptanceSettle(e);
+    acceptanceSend(e, 0, RemoveFormation{1}); acceptanceSettle(e);
     CHECK(e.state().cards.at(10).zone == Zone::Ash);
     CHECK(e.state().players[0].temporaryLife == 6);
 }

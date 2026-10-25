@@ -8,6 +8,7 @@ var _master: HSlider
 var _sound: HSlider
 var _reduced: CheckButton
 var _automatic: CheckButton
+var _response_sound: CheckButton
 var _resolution: OptionButton
 var _font_scale: OptionButton
 var _mode: OptionButton
@@ -29,6 +30,7 @@ func _ready() -> void:
 	_sound = %Sound
 	_reduced = %Reduced
 	_automatic = %Automatic
+	_response_sound = %ResponseSound
 	_resolution = %Resolution
 	_font_scale = %FontScale
 	_mode = %Mode
@@ -65,6 +67,7 @@ func configure(value: FrontendService) -> void:
 	_sound.value = int(service.settings.get("soundVolume", 80))
 	_font_scale.select(Typography.SCALES.find(int(service.settings.get("fontScale", Typography.DEFAULT_SCALE))))
 	_reduced.button_pressed = bool(service.settings.get("reducedMotion", false))
+	_response_sound.button_pressed = bool(service.settings.get("responseTimingSound", false))
 	_automatic.button_pressed = bool(service.settings.get("automaticPhases", true))
 	_mode.select(int(service.settings.get("windowMode", 0)))
 	_background.select(maxi(0, ["arcane", "slate", "ember"].find(str(service.settings.get("fieldBackground", "arcane")))))
@@ -78,7 +81,7 @@ func configure(value: FrontendService) -> void:
 
 func save() -> void:
 	var dimensions: Vector2i = RESOLUTIONS[_resolution.selected] if _resolution.selected < RESOLUTIONS.size() else _resolution.get_item_metadata(_resolution.selected)
-	var next: Dictionary = {"format": 1, "masterVolume": int(_master.value), "soundVolume": int(_sound.value), "windowMode": _mode.selected, "width": dimensions.x, "height": dimensions.y, "automaticPhases": _automatic.button_pressed, "reducedMotion": _reduced.button_pressed, "fieldBackground": ["arcane", "slate", "ember"][_background.selected], "fontScale": Typography.SCALES[_font_scale.selected]}
+	var next: Dictionary = {"format": 1, "masterVolume": int(_master.value), "soundVolume": int(_sound.value), "windowMode": _mode.selected, "width": dimensions.x, "height": dimensions.y, "automaticPhases": _automatic.button_pressed, "reducedMotion": _reduced.button_pressed, "responseTimingSound": _response_sound.button_pressed, "fieldBackground": ["arcane", "slate", "ember"][_background.selected], "fontScale": Typography.SCALES[_font_scale.selected]}
 	if not service.apply_settings(next):
 		_notice.text = service.error
 		return

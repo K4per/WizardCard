@@ -167,7 +167,7 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
     } else if (s.chain || s.decision || s.effect || actor != s.active || s.phaseStep != PhaseStep::Body)
         return "priority: 当前没有行动权";
     const auto found = s.cards.find(id);
-    if (found == s.cards.end() || found->second.owner != actor) return "invalid_card";
+    if (found == s.cards.end() || controllerOf(found->second) != actor) return "invalid_card";
     auto &card = found->second;
     const auto &def = catalog_.at(card.definition);
     if (!spellType(def.type)) return "invalid_spell";
@@ -293,7 +293,7 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
     const auto token = flip ? flip->decision : prepare ? prepare->decision : word->decision;
     if (token != s.decision->id) return "stale_decision";
     const auto found = s.cards.find(id);
-    if (found == s.cards.end() || found->second.owner != actor) return "invalid_card";
+    if (found == s.cards.end() || controllerOf(found->second) != actor) return "invalid_card";
     auto &card = found->second; const auto &def = catalog_.at(card.definition);
     const bool analytic = def.type == CardType::Analytic;
     const bool spell = spellType(def.type);
@@ -538,7 +538,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         else return item.card;
     }, command);
     auto it = s.cards.find(cardId);
-    if (it == s.cards.end() || it->second.owner != actor) return "invalid_card";
+    if (it == s.cards.end() || controllerOf(it->second) != actor) return "invalid_card";
     auto &c = it->second;
     const auto &def = catalog_.at(c.definition);
     auto &pl = s.players[actor];
@@ -753,13 +753,13 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         if (catalog_.usesAlphaV252() && std::find(def.traits.begin(), def.traits.end(), "max_two") != def.traits.end()) {
             int count = 0;
             for (const auto &[id, other] : s.cards)
-                if (other.owner == actor && other.zone == Zone::Analysis && other.definition == c.definition &&
+                if (controllerOf(other) == actor && other.zone == Zone::Analysis && other.definition == c.definition &&
                     id != cmd->replace && std::find(cmd->materials.begin(), cmd->materials.end(), id) == cmd->materials.end()) ++count;
             if (count >= 2) return "formation_copy_limit: 此阵法最多存在两张";
         }
         if (std::find(def.traits.begin(), def.traits.end(), "unique") != def.traits.end())
             for (const auto &[id, other] : s.cards)
-                if (other.owner == actor && other.zone == Zone::Analysis && other.definition == c.definition &&
+                if (controllerOf(other) == actor && other.zone == Zone::Analysis && other.definition == c.definition &&
                     id != cmd->replace && std::find(cmd->materials.begin(), cmd->materials.end(), id) == cmd->materials.end())
                     return "unique_formation";
         if (std::find(cmd->materials.begin(), cmd->materials.end(), cmd->replace) != cmd->materials.end())
@@ -1020,6 +1020,8 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         actionTimingV2(); return {};
     }
     if (const auto *cmd = std::get_if<RemoveSeal>(&command)) {
+        if (catalog_.usesAlphaV255())
+            return "seal_limit: 符文只能因效果或宿主离场解除";
         if (s.phase != Phase::Main || c.zone != Zone::Attached || pl.sealRemovals) return "seal_limit";
         StateMaintenance::leave(s, cmd->card, &catalog_); ++pl.sealRemovals;
         actionTimingV2(); return {};

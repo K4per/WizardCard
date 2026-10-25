@@ -1,8 +1,8 @@
 # 巫师牌 / WizardCard
 
-**Alpha v2.5.4**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序与规则版本为 `2.5.4`，卡池版本为 `2.5.4`，机制修订为 `8`。
+**Alpha v2.5.5**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序与规则版本为 `2.5.5`，卡池版本为 `2.5.5`，机制修订为 `9`。
 
-正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.5.4](docs/alpha-v2.5-rules.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本次规则修正和验证结果见[2.5.4发行说明](docs/releases/2.5.4.md)与[交付报告](docs/reports/2.5.4.md)；旧版文档与兼容夹具保留在源码仓库中，用于历史验证。
+正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.5.5](docs/alpha-v2.5-rules.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本次规则修正和验证结果见[2.5.5发行说明](docs/releases/2.5.5.md)与[交付报告](docs/reports/2.5.5.md)；旧版文档与兼容夹具保留在源码仓库中，用于历史验证。
 
 ## 运行便携包
 

@@ -53,7 +53,7 @@ std::vector<CardId> poolMaterials(GameState &s, const CardDefinition &d) {
     CardId id = 20;
     int spellIndex = 0;
     for (const auto &recipe : d.recipe) {
-        if (recipe.kind == RecipeCostKind::Mana) continue;
+        if (recipe.kind == RecipeCostKind::Mana || recipe.kind == RecipeCostKind::Life) continue;
         for (int n = 0; n < recipe.amount; ++n, ++id) {
             std::string material = recipe.definition;
             Zone zone = Zone::Hand;
@@ -81,7 +81,7 @@ TEST_CASE("Alpha v2.5.2 every formal formation executes its printed recipe and r
     const auto cat = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog;
     int covered = 0;
     for (const auto &[id, d] : cat.cards) {
-        if (d.type != CardType::Formation) continue;
+        if (d.type != CardType::Formation || poolTrait(d, "seven_stars_effect_only")) continue;
         INFO(id);
         {
             ++covered;
@@ -118,7 +118,7 @@ TEST_CASE("Alpha v2.5.2 every formal formation executes its printed recipe and r
             REQUIRE(Rules::invariants(e.state(), cat).empty());
         }
     }
-    REQUIRE(covered == 18);
+    REQUIRE(covered == 24);
 }
 
 TEST_CASE("Alpha v2.5.2 every formal seal attaches through authority with paid cost and valid host", "[alpha-v252][pool]") {
@@ -151,16 +151,22 @@ TEST_CASE("Alpha v2.5.2 every formal seal attaches through authority with paid c
             REQUIRE(Rules::invariants(e.state(), cat).empty());
         }
     }
-    REQUIRE(covered == 10);
+    REQUIRE(covered == 15);
 }
 
 TEST_CASE("Alpha v2.5.2 every ordinary formal spell resolves its source and meaningful effect choices", "[alpha-v252][pool]") {
     const auto cat = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog;
     const std::set<std::string> responseOnly{
-        "barbs", "counter-spell", "wind-strike", "sique-boiling-surge", "arcana-devil"};
+        "barbs", "counter-spell", "wind-strike", "sique-boiling-surge", "arcana-devil",
+        "qixing-gaze", "blood-coagulation"};
+    const std::set<std::string> sevenSpellCoverage{
+        "qixing-awaken", "qixing-divination", "qixing-lamp", "qixing-punishment",
+        "qixing-return", "qixing-ruin", "qixing-shift"};
     std::set<std::string> covered;
     for (const auto &[id, d] : cat.cards) {
-        if (d.type == CardType::Formation || d.type == CardType::Seal || responseOnly.count(id)) continue;
+        if (d.type == CardType::Formation || d.type == CardType::Seal || responseOnly.count(id) ||
+            sevenSpellCoverage.count(id) ||
+            std::find(d.traits.begin(), d.traits.end(), "blood_last_stand") != d.traits.end()) continue;
         INFO(id);
         {
             covered.insert(id);
@@ -274,8 +280,8 @@ TEST_CASE("Alpha v2.5.2 every ordinary formal spell resolves its source and mean
             REQUIRE(Rules::invariants(e.state(), cat).empty());
         }
     }
-    REQUIRE(covered.size() == 66);
-    REQUIRE(covered.size() + responseOnly.size() + 18 + 10 == cat.cards.size());
+    REQUIRE(covered.size() == 75);
+    REQUIRE(covered.size() + responseOnly.size() + sevenSpellCoverage.size() + 1 + 30 + 15 == cat.cards.size());
 }
 
 TEST_CASE("Alpha v2.5.2 each conditional formal response joins its actual declared event", "[alpha-v252][pool]") {
@@ -306,7 +312,7 @@ TEST_CASE("Alpha v2.5.2 each conditional formal response joins its actual declar
             } else poolCard(eventState, 20, id == "sique-boiling-surge" ? "unravel" : "spark", 0, Zone::Casting, 2, SpellState::Ready);
             e = GameEngine::scenario(cat, eventState);
             if (id == "wind-strike") poolSend(e, 0, StartAnalysis{20, 2});
-            else if (id == "barbs") poolSend(e, 0, PrepareCast{20, playerTarget(1), 0, {playerTarget(1)}});
+            else if (id == "barbs") poolSend(e, 0, PrepareCast{20});
             else poolSend(e, 0, ActivateSpell{20, id == "sique-boiling-surge" ? 1 : playerTarget(1),
                 {id == "sique-boiling-surge" ? 1 : playerTarget(1)}});
             REQUIRE(e.state().decision);

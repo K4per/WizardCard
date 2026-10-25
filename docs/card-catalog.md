@@ -1,6 +1,6 @@
 # 巫师牌卡池图鉴
 
-规则 2.5.4 · 卡池 2.5.4 · 135 种正式卡牌 · 10 套 40+10 预设。
+规则 2.5.5 · 卡池 2.5.5 · 135 种正式卡牌 · 10 套 40+10 预设。
 
 本页由正式定义生成。规则见 [Alpha v2.5](alpha-v2.5-rules.md)，卡面召唤条件由正式字段生成，效果以正式规则为准。
 
@@ -580,7 +580,7 @@
 
 ## 010022 · 七星·天枢
 
-![七星·天枢](../godot/art/cards/qixing-tianshu.jpg)
+![七星·天枢](../godot/art/cards/qixing-tianshu.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -604,7 +604,7 @@
 
 ## 010023 · 七星·天璇
 
-![七星·天璇](../godot/art/cards/qixing-tianxuan.jpg)
+![七星·天璇](../godot/art/cards/qixing-tianxuan.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -628,7 +628,7 @@
 
 ## 010024 · 七星·天玑
 
-![七星·天玑](../godot/art/cards/qixing-tianji.jpg)
+![七星·天玑](../godot/art/cards/qixing-tianji.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -652,7 +652,7 @@
 
 ## 010025 · 七星·天权
 
-![七星·天权](../godot/art/cards/qixing-tianquan.jpg)
+![七星·天权](../godot/art/cards/qixing-tianquan.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -676,7 +676,7 @@
 
 ## 010026 · 七星·玉衡
 
-![七星·玉衡](../godot/art/cards/qixing-yuheng.jpg)
+![七星·玉衡](../godot/art/cards/qixing-yuheng.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -700,7 +700,7 @@
 
 ## 010027 · 七星·开阳
 
-![七星·开阳](../godot/art/cards/qixing-kaiyang.jpg)
+![七星·开阳](../godot/art/cards/qixing-kaiyang.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -724,7 +724,7 @@
 
 ## 010028 · 七星·瑶光
 
-![七星·瑶光](../godot/art/cards/qixing-yaoguang.jpg)
+![七星·瑶光](../godot/art/cards/qixing-yaoguang.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -1444,7 +1444,7 @@
 
 ## 020026 · 地震术
 
-![地震术](../godot/art/card/unravel.png)
+![地震术](../godot/art/cards/earthquake.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -1732,7 +1732,7 @@
 
 ## 020038 · 七星灯盏
 
-![七星灯盏](../godot/art/cards/qixing-lamp.jpg)
+![七星灯盏](../godot/art/cards/qixing-lamp.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -1756,7 +1756,7 @@
 
 ## 020039 · 七星归墟
 
-![七星归墟](../godot/art/cards/qixing-ruin.jpg)
+![七星归墟](../godot/art/cards/qixing-ruin.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -2360,7 +2360,7 @@
 
 ## 030025 · 七星启曜
 
-![七星启曜](../godot/art/cards/qixing-awaken.jpg)
+![七星启曜](../godot/art/cards/qixing-awaken.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -2382,7 +2382,7 @@
 
 ## 030026 · 七星遥鉴
 
-![七星遥鉴](../godot/art/cards/qixing-divination.jpg)
+![七星遥鉴](../godot/art/cards/qixing-divination.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -2404,7 +2404,7 @@
 
 ## 030027 · 七星星移
 
-![七星星移](../godot/art/cards/qixing-shift.jpg)
+![七星星移](../godot/art/cards/qixing-shift.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -2550,7 +2550,7 @@
 | 施法费用 | 5 |
 | 持续方式 | 通常 |
 
-对方发动法术卡时才能发动。将其无效并销毁，获得其原本设置费用的临时荷载。
+对方发动法术卡时才能发动。将其无效并销毁。X为被连锁法术卡的实际设置费用与实际发动费用之和；支付X，并获得等于X的临时荷载。
 
 火球术！反制！反制你的反制！温馨提示，这种场景在奥术决斗中不会出现。
 
@@ -2813,7 +2813,7 @@
 
 ## 040014 · 七星的注视
 
-![七星的注视](../godot/art/cards/qixing-gaze.jpg)
+![七星的注视](../godot/art/cards/qixing-gaze.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -2836,7 +2836,7 @@
 
 ## 040015 · 七星惩戒
 
-![七星惩戒](../godot/art/cards/qixing-punishment.jpg)
+![七星惩戒](../godot/art/cards/qixing-punishment.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -2859,7 +2859,7 @@
 
 ## 040016 · 七星归迹
 
-![七星归迹](../godot/art/cards/qixing-return.jpg)
+![七星归迹](../godot/art/cards/qixing-return.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -3131,7 +3131,7 @@
 
 ## 050011 · 七星星帜
 
-![七星星帜](../godot/art/cards/qixing-banner.jpg)
+![七星星帜](../godot/art/cards/qixing-banner.png)
 
 | 属性 | 数值 |
 |---|---|
@@ -3677,4 +3677,4 @@
 
 运行 `python tools/generate_card_catalog.py` 更新。
 
-规范化 JSON SHA256：`813a0fa1fcda5bbc611e60c84dccaee1c3a3edb44141d530eeca6dc4b20d079d`。
+规范化 JSON SHA256：`21ce99f3198b455cad67edcf785b7761c33150a7aeaee5a71c999cfe75d8db1e`。

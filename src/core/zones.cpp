@@ -68,6 +68,7 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
         auto &deck = s.players[c.owner].deck;
         deck.erase(std::remove(deck.begin(), deck.end(), source), deck.end());
         c.zone = Zone::Ash;
+        c.controller = c.owner;
         c.spell = SpellState::None;
         c.stormPoints = 0;
         c.stormReleaseProgress = 0;

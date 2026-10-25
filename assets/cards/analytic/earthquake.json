@@ -2,7 +2,7 @@
   "id": "earthquake",
   "rarity": "rare",
   "target": "none",
-  "illustrationId": "unravel",
+  "illustrationId": "earthquake",
   "number": "020026",
   "name": "地震术",
   "type": "analytic",

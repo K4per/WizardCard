@@ -113,6 +113,9 @@ static func paint(surface: CanvasItem, card: CardPresentation, bounds: Rect2, vi
 			if card.speed > 0:
 				_label(surface, "%d速" % card.speed, _region(layout, "speed", rect, factor), font_size, true)
 			var effect: String = card.text
+			var token: String = card.token_label()
+			if not token.is_empty():
+				effect = token + "\n" + effect
 			if not card.status.is_empty():
 				effect = card.status + "\n" + effect
 			_effect(surface, effect, _region(layout, "effect", rect, factor), maxi(8, font_size - 1))

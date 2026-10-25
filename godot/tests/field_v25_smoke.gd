@@ -121,6 +121,14 @@ func _run() -> void:
 	_expect(dynamic.metadata_text.contains("设置费用：17　施法费用：2"), "details use live costs")
 	var storm: CardPresentation = CardPresentation.from_projection({"id": "42", "stormPoints": 6, "definition": {"id": "storm-crest", "name": "风暴纹章", "type": 3, "tags": ["风暴"], "body": 1, "rings": 1, "capacity": 5, "income": 1}})
 	_expect(storm.detail_text().contains("风暴点数：6"), "visible storm card details show its projected point count")
+	var wind: CardPresentation = CardPresentation.from_projection({"id": "44", "stormPoints": 0, "definition": {"id": "storm-crest", "name": "风契·风暴纹章", "type": 3, "tags": ["风契"], "body": 2, "rings": 1, "capacity": 5, "income": 1}})
+	_expect(wind.wind_contract and wind.token_label() == "风契指示物：0" and wind.detail_text().contains("风契指示物：0"), "wind-contract formations expose an explicit zero token count")
+	var blood_snapshot: Dictionary = {"cards": [
+		{"id": "spell", "owner": 0, "zone": 5, "definition": {"id": "scorching-ray", "type": 1, "effects": [{"kind": "ray_volley"}]}},
+		{"id": "rune", "owner": 0, "zone": 7, "host": "spell", "definition": {"id": "blood-heartmark", "type": 4, "traits": ["blood_heartmark"]}}
+	]}
+	var blood_action: Dictionary = {"source": "spell", "command": {"type": 17, "card": "spell"}}
+	_expect(MatchProjection.blood_heartmark_hint(blood_snapshot, blood_action).contains("支付 2 点生命值"), "blood-heartmark hint comes from the projected legal spell action")
 	var hidden_storm: CardPresentation = CardPresentation.from_projection({"id": "43", "hidden": true, "stormPoints": 99, "definition": {"id": "storm-crest", "tags": ["风暴"]}})
 	_expect(not hidden_storm.detail_text().contains("风暴点数"), "hidden storm card details do not reveal point counts")
 	var talisman: CardPresentation = CardPresentation.from_definition({"type": 5, "cost": 5, "castCost": 0})

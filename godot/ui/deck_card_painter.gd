@@ -58,6 +58,11 @@ static func paint(surface: CanvasItem, value: CardPresentation, rect: Rect2, hig
 	var font_size: int = clampi(roundi(rect.size.x * 0.1), 10, 16)
 	var title_area: Rect2 = Rect2(rect.position + Vector2(padding, 1.0), Vector2(artwork.size.x, artwork.position.y - rect.position.y - 2.0))
 	_label(surface, value.title, title_area, font_size, TITLE_FONT, DeckTheme.TEXT)
+	var token: String = value.token_label()
+	if not token.is_empty() and artwork.size.y >= 28.0:
+		var token_area: Rect2 = Rect2(artwork.position + Vector2(3.0, artwork.size.y - 22.0), Vector2(artwork.size.x - 6.0, 19.0))
+		surface.draw_rect(token_area, Color(0.02, 0.07, 0.10, 0.86), true)
+		_label(surface, token, token_area, maxi(8, font_size - 2), FONT, DeckTheme.TEXT, true)
 	var footer_height: float = maxf(0.0, rect.end.y - padding - artwork.end.y)
 	var line_height: float = footer_height * 0.5
 	var type_area: Rect2 = Rect2(Vector2(artwork.position.x, artwork.end.y), Vector2(artwork.size.x, line_height))

@@ -52,7 +52,9 @@ std::string GameEngine::stateKey(bool logical) const {
               << (logical ? p.siqueLifePaymentTurn == s.globalTurn : p.siqueLifePaymentTurn) << ';';
     }
     for (const auto &[id, c] : s.cards) {
-        o << id << ',' << std::quoted(c.definition) << ',' << c.owner << ',' << static_cast<int>(c.zone)
+        o << id << ',' << std::quoted(c.definition) << ',' << c.owner << ',';
+        if (catalog_.usesAlphaV255()) o << controllerOf(c) << ',';
+        o << static_cast<int>(c.zone)
           << ',' << static_cast<int>(c.spell) << ',' << c.host << ',' << c.sourceFormation << ','
           << c.targetCard << ',' << c.targetPlayer << ',' << c.base << ',' << c.analysisStarted << ','
           << c.remaining << ',' << c.analysisLoad << ',' << c.castLoad << ',' << c.canceledTurn << ','

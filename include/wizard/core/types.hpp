@@ -16,7 +16,7 @@ using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
 using ChainId = std::uint64_t;
 using LinkId = std::uint64_t;
-inline constexpr const char *programVersion = "2.5.4";
+inline constexpr const char *programVersion = "2.5.5";
 inline constexpr int startingLife = 40, maximumLife = 40;
 inline constexpr int maximumMana = 20;
 // Player target tokens share the existing deterministic command target field.

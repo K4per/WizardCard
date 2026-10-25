@@ -11,6 +11,11 @@ CardCatalog catalog254() {
     cat.mechanicsRevision = 8;
     return cat;
 }
+CardCatalog catalog255() {
+    auto cat = catalog254();
+    cat.mechanicsRevision = 9;
+    return cat;
+}
 GameState state254(Phase phase = Phase::Main) {
     GameState s; s.phase = phase; s.phaseStep = PhaseStep::Body;
     s.phaseGate = 1; s.globalTurn = 5; s.rng = 149;
@@ -177,6 +182,111 @@ TEST_CASE("Alpha v2.5.4 Storm Guidance allows declining its dependent followup",
     REQUIRE(e.state().decision); REQUIRE(e.state().decision->mayPass);
     send254(e, 0, Choose{e.state().decision->id, 0}); pass254(e);
     REQUIRE(e.state().cards.at(1).stormPoints == 1);
+}
+
+TEST_CASE("Alpha v2.5.5 removes manual rune actions but host departure still clears runes", "[alpha-v255][ownership]") {
+    auto cat = catalog255(); auto s = state254();
+    put254(s, 1, "sun", 0, Zone::Analysis);
+    put254(s, 2, "ring", 0, Zone::Attached, 1);
+    auto e = GameEngine::scenario(cat, s);
+    const auto before = e.digest();
+    REQUIRE_FALSE(e.submit(0, RemoveSeal{2}).accepted);
+    REQUIRE(e.digest() == before);
+    const auto view = e.viewFor(0);
+    REQUIRE(std::none_of(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
+        return std::holds_alternative<RemoveSeal>(action.command);
+    }));
+    StateMaintenance::leave(s, 1, &cat);
+    CHECK(s.cards.at(1).zone == Zone::Ash);
+    CHECK(s.cards.at(2).zone == Zone::Ash);
+}
+
+TEST_CASE("Alpha v2.5.5 Funny Box borrows an enemy spell but ash stays with its owner", "[alpha-v255][ownership]") {
+    auto cat = catalog255(); auto s = state254();
+    s.players[0].mana = 20;
+    put254(s, 1, "sun", 0, Zone::Analysis);
+    put254(s, 10, "funny-box", 0, Zone::Casting, 0, SpellState::Ready);
+    put254(s, 20, "fireball", 1, Zone::Ash);
+    auto e = GameEngine::scenario(cat, s);
+    send254(e, 0, ActivateSpell{10, 20});
+    for (int i = 0; e.state().decision && i < 20; ++i) {
+        const auto d = *e.state().decision;
+        if (d.kind == DecisionKind::Response) send254(e, d.player, PassResponse{d.id});
+        else send254(e, d.player, Choose{d.id, d.options.front()});
+    }
+    REQUIRE_FALSE(e.state().decision);
+    REQUIRE(e.state().cards.at(20).zone == Zone::Analysis);
+    CHECK(e.state().cards.at(20).owner == 1);
+    CHECK(controllerOf(e.state().cards.at(20)) == 0);
+    const auto borrowed = e.viewFor(0);
+    const auto projection = std::find_if(borrowed.cards.begin(), borrowed.cards.end(), [](const CardView &card) {
+        return card.instance.id == 20;
+    });
+    REQUIRE(projection != borrowed.cards.end());
+    CHECK(projection->instance.owner == 1);
+    CHECK(controllerOf(projection->instance) == 0);
+    send254(e, 0, Abandon{20});
+    CHECK(e.state().cards.at(20).zone == Zone::Ash);
+    CHECK(e.state().cards.at(20).owner == 1);
+    CHECK(controllerOf(e.state().cards.at(20)) == 1);
+}
+
+TEST_CASE("Alpha v2.5.5 Counter Spell uses actual linked setting and activation payments", "[alpha-v255][cost]") {
+    auto cat = catalog255(); auto s = state254(Phase::Cast);
+    s.phase = Phase::Cast; s.flow = Flow::Cast;
+    s.players[0].mana = 20; s.players[1].mana = 2;
+    put254(s, 1, "sun", 0, Zone::Analysis);
+    auto &spell = put254(s, 10, "fireball", 0, Zone::Casting, 0, SpellState::Ready);
+    spell.settingPaid = 2;
+    put254(s, 11, "qixing-banner", 0, Zone::Attached, 10);
+    put254(s, 3, "sun", 1, Zone::Analysis);
+    auto &counter = put254(s, 20, "counter-spell", 1, Zone::Analysis, 3);
+    counter.faceDown = true; counter.wasAmbushed = true; counter.ambushedTurn = s.globalTurn - 1;
+    auto e = GameEngine::scenario(cat, s);
+    send254(e, 0, ActivateSpell{10, playerTarget(1)});
+    REQUIRE(e.state().decision);
+    const auto responseWindow = *e.state().decision;
+    REQUIRE(responseWindow.kind == DecisionKind::Response);
+    const auto link = e.state().chain->links.back().id;
+    send254(e, 1, Respond{responseWindow.id, 20, "counter_cast", 0, link});
+    CHECK(e.state().players[1].mana == 0);
+    settle254(e);
+    CHECK(e.state().cards.at(10).zone == Zone::Ash);
+    REQUIRE(std::any_of(e.state().temporary.begin(), e.state().temporary.end(), [](const TemporaryLoad &load) {
+        return load.owner == 1 && load.amount == 2;
+    }));
+
+    s.players[1].mana = 1;
+    e = GameEngine::scenario(cat, s);
+    send254(e, 0, ActivateSpell{10, playerTarget(1)});
+    REQUIRE(e.state().decision);
+    const auto insufficient = *e.state().decision;
+    const auto before = e.digest();
+    REQUIRE_FALSE(e.submit(1, Respond{insufficient.id, 20, "counter_cast", 0, e.state().chain->links.back().id}).accepted);
+    CHECK(e.digest() == before);
+    CHECK(e.state().chain->links.size() == 1);
+}
+
+TEST_CASE("Alpha v2.5.5 Kaiyang replaces to Yaoguang after discarding hand and leaves old attachments", "[alpha-v255][seven]") {
+    auto cat = catalog255(); auto s = state254();
+    s.players[0].life = 20;
+    put254(s, 1, "qixing-kaiyang", 0, Zone::Analysis);
+    put254(s, 2, "qixing-yaoguang", 0, Zone::SideDeck);
+    put254(s, 3, "qixing-banner", 0, Zone::Attached, 1);
+    put254(s, 10, "spark", 0, Zone::Hand);
+    put254(s, 11, "mend", 0, Zone::Hand);
+    for (CardId id = 20; id < 25; ++id) deck254(s, id, "spark");
+    for (CardId id = 30; id < 35; ++id) deck254(s, id, "spark");
+    auto e = GameEngine::scenario(cat, s);
+    send254(e, 0, ActivateAbility{1, 0, "seven_kaiyang"});
+    CHECK(e.state().cards.at(10).zone == Zone::Ash);
+    CHECK(e.state().cards.at(11).zone == Zone::Ash);
+    settle254(e);
+    CHECK(e.state().cards.at(1).zone == Zone::Ash);
+    CHECK(e.state().cards.at(3).zone == Zone::Ash);
+    CHECK(e.state().cards.at(2).zone == Zone::Analysis);
+    CHECK(e.state().players[0].life == maximumLife);
+    CHECK(e.state().players[0].mana == 0);
 }
 
 TEST_CASE("Alpha v2.5.4 Great Storm removes and snapshots counters when set", "[alpha-v254][existing][storm]") {

@@ -337,7 +337,8 @@ TEST_CASE("preview2 funny box selects an eligible ash spell before paying and in
     REQUIRE_FALSE(engine.submit(0, ActivateSpell{10, 21}).accepted);
     REQUIRE(engine.digest() == original);
     send(engine, 0, ActivateSpell{10, 20}); choose(engine, 1);
-    REQUIRE(engine.state().cards.at(20).owner == 0);
+    REQUIRE(engine.state().cards.at(20).owner == 1);
+    REQUIRE(engine.state().cards.at(20).controller == 0);
     REQUIRE(engine.state().cards.at(20).faceDown);
 }
 TEST_CASE("preview2 sun ignores attached rune modifiers including income", "[preview2][card-sync]") {
@@ -423,7 +424,7 @@ TEST_CASE("rc ray delay conceal and recovery resolve through explicit card choic
         auto engine = f.casting("funny-box");
         send(engine, 0, ActivateSpell{10, 20}); choose(engine, 1);
         const auto &card = engine.state().cards.at(20);
-        REQUIRE(card.owner == 0); REQUIRE(card.zone == Zone::Analysis);
+        REQUIRE(card.owner == 1); REQUIRE(card.controller == 0); REQUIRE(card.zone == Zone::Analysis);
         REQUIRE(card.faceDown); REQUIRE(card.host == 1); REQUIRE(card.ringIndex == 0);
     }
 }

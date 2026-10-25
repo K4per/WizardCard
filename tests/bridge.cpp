@@ -282,6 +282,11 @@ TEST_CASE("bridge interaction reuses target and confirmation without mutation or
         v = f.actingView();
     }
     REQUIRE(v.at("phase") == static_cast<int>(Phase::Main));
+    while (!v.at("actions").empty() && v.at("actions").at(0).at("source") == "0") {
+        REQUIRE(f.select(v).at("ok") == true);
+        REQUIRE(f.confirm(v).at("ok") == true);
+        v = f.actingView();
+    }
     auto request = [&](Json command) { return f.bridge.interact(v.at("viewer"), command, v.at("generation"), v.at("revision")); };
     REQUIRE(request(Json{{"operation", "select"}, {"card", "4294967297"}}).at("ok") == false);
     REQUIRE(request(Json{{"operation", "select"}, {"card", "1x"}}).at("ok") == false);

@@ -188,7 +188,7 @@ func _run() -> void:
 			if refined_settings._resolution.get_item_text(resolution_index) == "2560 × 1440":
 				has_2k_resolution = true
 		_check(has_2k_resolution, "Resolution list includes the 2560 × 1440 option")
-		for setting_control: Control in [refined_settings._master, refined_settings._sound, refined_settings._resolution, refined_settings._mode, refined_settings._font_scale, refined_settings._reduced, refined_settings._automatic, refined_settings._save_button]:
+		for setting_control: Control in [refined_settings._master, refined_settings._sound, refined_settings._resolution, refined_settings._mode, refined_settings._font_scale, refined_settings._reduced, refined_settings._automatic, refined_settings._response_sound, refined_settings._save_button]:
 			_check(menu_bounds.encloses(setting_control.get_global_rect()), "Settings controls remain reachable at " + str(dimensions))
 		_check(refined_settings._master.get_theme_icon(&"grabber") is AtlasTexture and refined_settings._reduced.get_theme_icon(&"checked") is AtlasTexture, "Settings use generated gem handle and toggle sprites")
 		await _screenshot("settings-%dx%d" % [dimensions.x, dimensions.y])
@@ -242,6 +242,7 @@ func _run() -> void:
 	var settings: SettingsPage = _app.page as SettingsPage
 	settings._master.value = 37
 	settings._reduced.button_pressed = true
+	settings._response_sound.button_pressed = true
 	# Headless checks persist without changing the physical desktop mode.
 	if not _capture:
 		settings.save()
@@ -254,7 +255,7 @@ func _run() -> void:
 		_check(not user_directory.is_empty(), "Smoke tests must use an isolated user directory")
 		var assets: String = ProjectSettings.globalize_path("res://").path_join("../assets").simplify_path()
 		_check(next_service.initialize(assets, user_directory), "Reopen native settings")
-		_check(int(next_service.settings.get("masterVolume", 0)) == 37 and bool(next_service.settings.get("reducedMotion", false)), "Settings persist across service instances")
+		_check(int(next_service.settings.get("masterVolume", 0)) == 37 and bool(next_service.settings.get("reducedMotion", false)) and bool(next_service.settings.get("responseTimingSound", false)), "Settings persist across service instances")
 		next_service.release()
 	await _screenshot("settings")
 	_app.navigate(&"menu")

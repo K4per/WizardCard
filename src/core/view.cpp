@@ -24,14 +24,14 @@ GameView GameEngine::viewFor(PlayerId p) const {
     const bool inspectEnemyAmbush = std::any_of(state_.cards.begin(), state_.cards.end(), [&](const auto &item) {
         const auto &card = item.second;
         const auto &traits = catalog_.at(card.definition).traits;
-        return card.owner == p && card.zone == Zone::Analysis && !card.faceDown &&
+        return controllerOf(card) == p && card.zone == Zone::Analysis && !card.faceDown &&
             std::find(traits.begin(), traits.end(), "inspect_enemy_ambush") != traits.end();
     });
     for (int i = 0; i < 2; ++i) {
         const auto &pl = state_.players[i];
         int hand = 0;
         for (const auto &[id, c] : state_.cards)
-            if (c.owner == i && c.zone == Zone::Hand)
+            if (controllerOf(c) == i && c.zone == Zone::Hand)
                 ++hand;
         v.players[i] = {pl.life,
                         pl.mana,
@@ -44,7 +44,7 @@ GameView GameEngine::viewFor(PlayerId p) const {
                         pl.temporaryLife,
                         pl.blockedActionTurn};
         for (const auto &[id, c] : state_.cards)
-            if (c.owner == i && (c.zone == Zone::Casting || (catalog_.usesAlphaV2() && c.zone == Zone::Analysis)) &&
+            if (controllerOf(c) == i && (c.zone == Zone::Casting || (catalog_.usesAlphaV2() && c.zone == Zone::Analysis)) &&
                 !c.faceDown && c.spell == SpellState::Active) {
                 const auto &d = catalog_.at(c.definition);
                 v.players[i].resistances.insert(v.players[i].resistances.end(), d.resistances.begin(),
@@ -61,7 +61,7 @@ GameView GameEngine::viewFor(PlayerId p) const {
         v.players[player].infiniteMana = state_.players[player].debugInfiniteMana;
         v.players[player].infiniteLoad = state_.players[player].debugInfiniteLoad;
         for (const auto &[id, card] : state_.cards)
-            if (card.owner == player && card.zone == Zone::SideDeck) ++v.players[player].sideDeckCount;
+            if (controllerOf(card) == player && card.zone == Zone::SideDeck) ++v.players[player].sideDeckCount;
     }
     for (const auto &[id, c] : state_.cards)
         if (c.publiclyRevealed || ((c.zone != Zone::Deck ||
@@ -70,7 +70,7 @@ GameView GameEngine::viewFor(PlayerId p) const {
                (catalog_.usesAlphaV2() && state_.decision->kind == DecisionKind::EffectChoice)) &&
               std::find(state_.decision->options.begin(), state_.decision->options.end(), id) !=
                   state_.decision->options.end())) &&
-            (c.zone != Zone::Hand || c.owner == p) && (c.zone != Zone::SideDeck || c.owner == p))) {
+            (c.zone != Zone::Hand || controllerOf(c) == p) && (c.zone != Zone::SideDeck || controllerOf(c) == p))) {
             const auto &def = catalog_.at(c.definition);
             CardView card{c, def};
             card.effectiveCastCost = Rules::castCost(state_, catalog_, id);
@@ -81,11 +81,12 @@ GameView GameEngine::viewFor(PlayerId p) const {
                 card.effectiveSettingCost = Rules::analysisCost(state_, catalog_, id,
                     c.zone == Zone::Analysis ? c.host : 0);
             }
-            if (c.faceDown && c.owner != p && !c.publiclyRevealed && !(inspectEnemyAmbush && c.zone == Zone::Analysis)) {
+            if (c.faceDown && controllerOf(c) != p && !c.publiclyRevealed && !(inspectEnemyAmbush && c.zone == Zone::Analysis)) {
                 card.hidden = true;
                 card.instance = {};
                 card.instance.id = id;
                 card.instance.owner = c.owner;
+                card.instance.controller = controllerOf(c);
                 card.instance.zone = c.zone;
                 card.instance.host = c.host;
                 card.instance.ringIndex = c.ringIndex;
@@ -112,8 +113,8 @@ GameView GameEngine::viewFor(PlayerId p) const {
             }
             if (c.spell == SpellState::Analyzing)
                 card.turnsToReady =
-                    std::max(0, def.analysisTurns - (catalog_.usesAlphaV2() ? c.analysisProgress :
-                        state_.players[c.owner].ownTurn - c.analysisStarted));
+                        std::max(0, def.analysisTurns - (catalog_.usesAlphaV2() ? c.analysisProgress :
+                        state_.players[controllerOf(c)].ownTurn - c.analysisStarted));
             v.cards.push_back(std::move(card));
         }
     if (state_.decision && state_.decision->player == p)

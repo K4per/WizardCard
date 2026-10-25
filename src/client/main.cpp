@@ -161,7 +161,10 @@ private:
     std::filesystem::path assets_;Content content_;app::Application app_;Resources resources_;
     ui::MatchPresentation presentation_;float visualClock_{};bool smokeDriver_{};
     std::vector<Rect> uiButtonHits_;
-    void cue(ui::SoundId id){resources_.play(assets_/"audio"/ui::soundFile(id),ui::soundGain(id),ui::soundPriority(id),ui::soundCooldown(id));}
+    void cue(ui::SoundId id){
+        if(id==ui::SoundId::ResponseOpen && !app_.settings().responseTimingSound)return;
+        resources_.play(assets_/"audio"/ui::soundFile(id),ui::soundGain(id),ui::soundPriority(id),ui::soundCooldown(id));
+    }
     std::map<std::uint64_t,Rect> motionOrigins_;
     std::map<std::string,SkinPart> skin_;std::set<std::string> missingArt_;
     ui::HandOrder handOrder_;sf::Vector2f pointer_{-100,-100},pressPoint_;bool mouseDown_{},dragging_{};CardId pressedCard_{};float edgeScroll_{};

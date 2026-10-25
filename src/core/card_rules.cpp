@@ -139,6 +139,7 @@ void returnCard(GameState &s, const CardCatalog &cat, CardId id, bool hand) {
     deck.erase(std::remove(deck.begin(), deck.end(), id), deck.end());
     const bool formation = cat.at(c.definition).type == CardType::Formation;
     c.zone = formation ? Zone::SideDeck : hand ? Zone::Hand : Zone::Deck;
+    c.controller = owner;
     c.host = c.sourceFormation = 0;
     c.spell = SpellState::None;
     c.analysisLoad = c.castLoad = c.analysisProgress = c.remaining = 0;

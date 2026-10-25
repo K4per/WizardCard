@@ -10,6 +10,9 @@ struct CardInstance {
     CardId id{};
     std::string definition;
     PlayerId owner{};
+    // The original owner never changes when an effect temporarily controls a card.
+    // -1 keeps hand-authored/legacy scenarios compatible; gameplay treats it as owner.
+    PlayerId controller{-1};
     Zone zone{Zone::Deck};
     SpellState spell{};
     CardId host{}, sourceFormation{}, targetCard{};
@@ -34,6 +37,9 @@ struct CardInstance {
     CardId siquePartner{};
     std::uint64_t siquePairTurn{};
 };
+inline PlayerId controllerOf(const CardInstance &card) {
+    return card.controller < 0 ? card.owner : card.controller;
+}
 struct TemporaryLoad {
     std::uint32_t id{};
     PlayerId owner{};

@@ -87,7 +87,7 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
         return trial.activateSpellV252(actor, cmd.card, cmd.target, cmd.targets, cmd.discard, false, cmd.decision);
     }
     auto i = s.cards.find(cmd.card);
-    if (i == s.cards.end() || i->second.owner != actor)
+    if (i == s.cards.end() || controllerOf(i->second) != actor)
         return "invalid_card: 无效响应来源";
     const auto &c = i->second;
     const auto &d = catalog_.at(c.definition);
@@ -173,11 +173,13 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
     auto discard = s.cards.find(cmd.discard);
     if (a->extraDiscard) {
         if (a->extraDiscard != 1 || cmd.discard == cmd.card || discard == s.cards.end() ||
-            discard->second.owner != actor || discard->second.zone != Zone::Hand)
+            controllerOf(discard->second) != actor || discard->second.zone != Zone::Hand)
             return "extra_cost: 需要另一张手牌";
     } else if (cmd.discard)
         return "extra_cost: 无需弃牌";
-    const int paid = catalog_.usesAlphaV2()
+    const int paid = catalog_.usesAlphaV255() && d.id == "counter-spell"
+        ? detail::linkedSpellCost(s, cmd.link)
+        : catalog_.usesAlphaV2()
         ? (d.type == CardType::Analytic && ambush ? d.cost : 0) + Rules::castCost(s, catalog_, c.id)
         : analytic ? Rules::castCost(s, catalog_, c.id)
         : ambush ? d.cost
@@ -204,7 +206,7 @@ std::vector<Respond> GameEngine::responsesFor(PlayerId p, DecisionId decisionId)
     if (catalog_.usesAlphaV252()) {
         for (const auto &[id, card] : s.cards) {
             const auto &definition = catalog_.at(card.definition);
-            if (card.owner != p || card.faceDown || card.zone != Zone::Casting || card.spell != SpellState::Ready ||
+            if (controllerOf(card) != p || card.faceDown || card.zone != Zone::Casting || card.spell != SpellState::Ready ||
                 definition.responseOnly) continue;
             const auto targetSets = card_rules::detachCost(definition) ? card_rules::detachOptions(s, catalog_, p, definition)
                 : sets(s, definition.target, definition.targetCount, p);
@@ -213,7 +215,7 @@ std::vector<Respond> GameEngine::responsesFor(PlayerId p, DecisionId decisionId)
                 definition.traits.end()) {
                 discards.clear();
                 for (const auto &[discard, candidate] : s.cards)
-                    if (discard != id && candidate.owner == p && candidate.zone == Zone::Hand) discards.push_back(discard);
+                    if (discard != id && controllerOf(candidate) == p && candidate.zone == Zone::Hand) discards.push_back(discard);
             }
             for (const auto &targets : targetSets) for (auto discard : discards) {
                 const auto target = card_rules::detachCost(definition) || targets.empty() ? 0 : targets.front();
@@ -223,7 +225,7 @@ std::vector<Respond> GameEngine::responsesFor(PlayerId p, DecisionId decisionId)
         }
     }
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p && (c.zone == Zone::Hand || c.zone == Zone::Words || c.zone == Zone::Analysis ||
+        if (controllerOf(c) == p && (c.zone == Zone::Hand || c.zone == Zone::Words || c.zone == Zone::Analysis ||
                             (catalog_.usesAlphaV2() && c.zone == Zone::Casting)))
             for (const auto &a : catalog_.at(c.definition).responses) {
                 if ((c.zone == Zone::Hand && !a.fromHand) ||

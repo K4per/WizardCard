@@ -38,6 +38,7 @@ Json encodeSettings(const Settings &s) {
             {"height", s.height},
             {"automaticPhases", s.automaticPhases},
             {"reducedMotion", s.reducedMotion},
+            {"responseTimingSound", s.responseTimingSound},
             {"fieldBackground", s.fieldBackground}};
 }
 Settings decodeSettings(const Json &j) {
@@ -61,6 +62,11 @@ Settings decodeSettings(const Json &j) {
         if (!j.at("reducedMotion").is_boolean())
             throw std::runtime_error("动画设置无效");
         s.reducedMotion = j.at("reducedMotion").get<bool>();
+    }
+    if (j.contains("responseTimingSound")) {
+        if (!j.at("responseTimingSound").is_boolean())
+            throw std::runtime_error("时点音效设置无效");
+        s.responseTimingSound = j.at("responseTimingSound").get<bool>();
     }
     s.fieldBackground = j.value("fieldBackground", std::string("arcane"));
     if (s.fieldBackground != "arcane" && s.fieldBackground != "slate" && s.fieldBackground != "ember")

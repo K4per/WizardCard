@@ -170,6 +170,9 @@ static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 	var source: String = str(action.get("source", "0"))
 	if source != "0":
 		lines[0] += " · " + card_name(snapshot, source)
+	var blood_hint: String = blood_heartmark_hint(snapshot, action)
+	if not blood_hint.is_empty():
+		lines.append(blood_hint)
 	if int(command.get("type", -1)) == 1:
 		var spells: Array[String] = []
 		var seals: int = 0
@@ -218,6 +221,44 @@ static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 				lines.append("连锁目标：" + (card_name(snapshot, link_source) if link_source != "0" else str(entry.get("kindName", "阶段"))))
 				break
 	return "\n".join(lines)
+
+static func blood_heartmark_hint(snapshot: Dictionary, action: Dictionary) -> String:
+	# The native legal action remains the authority. This only projects a hint
+	# when that exact spell action has an attached rune with the declared trait.
+	var command: Dictionary = action.get("command", {})
+	var command_type: int = int(command.get("type", -1))
+	if command_type not in [4, 12, 17]:
+		return ""
+	var source: String = str(action.get("source", command.get("card", "0")))
+	if source.is_empty() or source == "0":
+		return ""
+	var source_definition: Dictionary = {}
+	for row: Dictionary in snapshot.get("cards", []):
+		if str(row.get("id", "")) == source:
+			source_definition = row.get("definition", {}) as Dictionary
+			break
+	if source_definition.is_empty() or not _definition_deals_damage(source_definition):
+		return ""
+	for row: Dictionary in snapshot.get("cards", []):
+		if str(row.get("host", "0")) != source or int(row.get("zone", -1)) != 7:
+			continue
+		var rune_definition: Dictionary = row.get("definition", {}) as Dictionary
+		var traits: Array = rune_definition.get("traits", []) as Array
+		if traits.has("blood_heartmark"):
+			return "血契·心印：可选支付 2 点生命值，造成的伤害 +8；放弃后仍可发动基础法术。"
+	return ""
+
+static func _definition_deals_damage(definition: Dictionary) -> bool:
+	for effect: Dictionary in definition.get("effects", []):
+		var kind: String = str(effect.get("kind", ""))
+		if kind in ["damage", "blood_damage", "ray_volley"] or effect.has("damageType"):
+			return true
+	for ability: Dictionary in definition.get("responses", []):
+		for effect: Dictionary in ability.get("effects", []):
+			var kind: String = str(effect.get("kind", ""))
+			if kind in ["damage", "blood_damage", "ray_volley"] or effect.has("damageType"):
+				return true
+	return false
 
 static func formation_removal_unavailable(snapshot: Dictionary, id: String) -> String:
 	var viewer: int = int(snapshot.get("viewer", 0))

@@ -29,6 +29,14 @@ const RARITY_LABELS: Dictionary[String, String] = {
 @export var metadata_text: String = ""
 @export var preview: bool = false
 @export var storm_points: int = 0
+@export var wind_contract: bool = false
+
+func token_label() -> String:
+	if wind_contract:
+		return "风契指示物：%d" % storm_points
+	if storm_points != 0:
+		return "风暴点数：%d" % storm_points
+	return ""
 
 static func from_definition(data: Dictionary) -> CardPresentation:
 	var card: CardPresentation = CardPresentation.new()
@@ -121,15 +129,17 @@ static func from_projection(data: Dictionary) -> CardPresentation:
 	card.face_down = bool(data.get("faceDown", false))
 	var definition_data: Dictionary = data.get("definition", {}) as Dictionary
 	var card_tags: Array = definition_data.get("tags", []) as Array
-	if card_tags.has("风暴"):
+	card.wind_contract = card_tags.has("风契")
+	if card_tags.has("风暴") or card.wind_contract:
 		card.storm_points = int(data.get("stormPoints", 0))
 	var original_cost_detail: String = card.cost_detail()
 	card.setting_cost = int(data.get("effectiveSettingCost", card.setting_cost))
 	card.cast_cost = int(data.get("effectiveCastCost", card.cast_cost))
 	card._update_cost_label()
 	card.metadata_text = card.metadata_text.replace(original_cost_detail, card.cost_detail())
-	if card_tags.has("风暴"):
-		card.metadata_text += "\n风暴点数：%d" % card.storm_points
+	var token_text: String = card.token_label()
+	if not token_text.is_empty():
+		card.metadata_text += "\n" + token_text
 	card.status = str(data.get("statusLabel", ""))
 	if card.status.is_empty():
 		if bool(data.get("faceDown", false)):

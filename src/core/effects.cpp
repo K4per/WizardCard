@@ -11,8 +11,8 @@
 
 namespace wizard {
 namespace {
-bool trait(const CardDefinition &d, const char *name) {
-    return std::find(d.traits.begin(), d.traits.end(), name) != d.traits.end();
+bool trait(const CardDefinition &d, Capability capability) {
+    return hasCapability(d, capability);
 }
 const CardDefinition *effectHost(const GameState &s, const CardCatalog &cat, const Trigger &t) {
     auto source = s.cards.find(t.source);
@@ -25,12 +25,12 @@ bool protectedFromCardEffect(const GameState &s, const CardCatalog &cat, CardId 
     const auto card = s.cards.find(id);
     if (card == s.cards.end()) return false;
     const auto &definition = cat.at(card->second.definition);
-    if (card_rules::effectImmune(s, cat, id) || trait(definition, "effect_immune") || trait(definition, "effect_indestructible") ||
-        card_rules::protectedFormation(s, id)) return true;
-    if (!trait(definition, "great_storm")) return false;
+    if (card_rules::effectImmune(s, cat, id) || trait(definition, Capability::EffectImmune) || trait(definition, Capability::EffectIndestructible) ||
+        card_rules::protectedFormation(s, cat, id)) return true;
+    if (!trait(definition, Capability::GreatStorm)) return false;
     const auto host = s.cards.find(card->second.host ? card->second.host : card->second.sourceFormation);
     return host != s.cards.end() && host->second.zone == Zone::Analysis &&
-           cat.at(host->second.definition).id == "storm-heart";
+           hasCapability(cat.at(host->second.definition), Capability::StormHeart);
 }
 int actualLinkedSpellCost(const GameState &s, const ChainLink &link) {
     const auto source = s.cards.find(link.item.source);
@@ -46,8 +46,8 @@ int actualLinkedSpellCost(const GameState &s, const ChainLink &link) {
 }
 
 }
-void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &t, const Effect &e) {
-    if (cat.usesAlphaV2() && s.result != -1)
+void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Trigger &t, const Effect &e) {
+    if (s.result != -1)
         return;
     int p = t.targetPlayer >= 0 ? t.targetPlayer : t.owner;
     if (e.recipient == EffectRecipient::Owner)
@@ -60,18 +60,16 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     switch (e.kind) {
     case EffectKind::Damage: {
         auto adjusted = e;
-        if (cat.usesAlphaV2()) {
+        {
             const auto *host = effectHost(s, cat, t);
             const auto source = s.cards.find(t.source);
-            if (host && trait(*host, "host_evocation_damage_plus_one") && source != s.cards.end() &&
+            if (host && trait(*host, Capability::HostEvocationDamagePlusOne) && source != s.cards.end() &&
                 cat.at(source->second.definition).school == "evocation") ++adjusted.amount;
-            if (!cat.usesAlphaV253() && host && host->id == "sique-campfire" && source != s.cards.end() &&
-                card_rules::isFireSpell(cat.at(source->second.definition)) && e.damageType == DamageType::Fire)
-                ++adjusted.amount;
+
         }
         int amount = Rules::damage(s, cat, p, adjusted);
         if (card_rules::damageImmune(s, cat, p)) amount = 0;
-        if (cat.usesAlphaV252() && s.players[p].nextDamageImmune && adjusted.amount > 0) {
+        if (s.players[p].nextDamageImmune && adjusted.amount > 0) {
             s.players[p].nextDamageImmune = false;
             s.events.push_back({"damage_prevented", "教皇：免疫本次伤害", -1, t.source});
         }
@@ -84,15 +82,12 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         break;
     }
     case EffectKind::AddTemporaryLife:
-        if (cat.usesAlphaV252()) {
+        {
             ResourceRules::grantTemporaryLife(s, p, t.source, e.amount, s.players[p].ownTurn + 1);
-        } else {
-            s.players[p].temporaryLife = std::max(s.players[p].temporaryLife, e.amount);
         }
         break;
     case EffectKind::BlockActions:
-        if (cat.usesAlphaV252()) s.players[t.owner].wordLockUntilOwnDraw = s.players[t.owner].ownTurn + 1;
-        else s.players[p].blockedActionTurn = s.players[p].ownTurn + 1;
+        s.players[t.owner].wordLockUntilOwnDraw = s.players[t.owner].ownTurn + 1;
         break;
     case EffectKind::GrantResistance:
         break; // Successful release installs the passive resistance on the active spell.
@@ -106,11 +101,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         break;
     case EffectKind::AccelerateAnalysis: {
         auto &c = s.cards.at(t.targetCard);
-        if (cat.usesAlphaV252()) card_rules::advanceAnalysis(s, cat, c.id, std::max(1, e.amount));
-        else {
-            c.spell = SpellState::Ready;
-            if (cat.usesAlphaV2() && !cat.usesAlphaV252()) c.analysisProgress = cat.at(c.definition).analysisTurns;
-        }
+        card_rules::advanceAnalysis(s, cat, c.id, std::max(1, e.amount));
         s.temporary.push_back(
             {s.nextLoad++, t.owner, t.source, c.settingPaid, s.players[t.owner].ownTurn + 1});
         ResourceRules::increasedLoad(s, cat, t.owner, c.settingPaid);
@@ -213,33 +204,22 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         if (s.chain)
             for (auto &l : s.chain->links)
                 if (l.id == t.targetLink) {
-                    const auto sourceDefinition = s.cards.find(l.item.source);
-                    const int burden = cat.usesAlphaV255()
-                        ? actualLinkedSpellCost(s, l)
-                        : cat.usesAlphaV25() && sourceDefinition != s.cards.end()
-                            ? (cat.at(sourceDefinition->second.definition).type == CardType::Talisman ? 0 :
-                               cat.at(sourceDefinition->second.definition).cost) : l.castCost;
                     l.canceled = true;
                     const auto source = l.item.source;
                     StateMaintenance::leave(s, source, &cat);
-                    if (!cat.usesAlphaV255()) {
-                        s.temporary.push_back(
-                            {s.nextLoad++, t.owner, t.source, burden, s.players[t.owner].ownTurn + 1});
-                        ResourceRules::increasedLoad(s, cat, t.owner, burden);
-                    }
+
                     break;
                 }
         break;
     }
     case EffectKind::Heal: {
-        const auto *host = cat.usesAlphaV2() ? effectHost(s, cat, t) : nullptr;
-        const int amount = e.amount + (host && trait(*host, "host_heal_plus_one") ? 1 : 0);
-        if (cat.usesCardRules()) card_rules::heal(s, cat, p, amount, t.source);
-        else s.players[p].life = std::min(maximumLife, s.players[p].life + amount);
+        const auto *host = effectHost(s, cat, t);
+        const int amount = e.amount + (host && trait(*host, Capability::HostHealPlusOne) ? 1 : 0);
+        card_rules::heal(s, cat, p, amount, t.source);
         break;
     }
     case EffectKind::GainMana: {
-        s.players[t.owner].mana = std::min(cat.usesAlphaV25() ? maximumMana : 12, s.players[t.owner].mana + e.amount);
+        s.players[t.owner].mana = std::min(maximumMana, s.players[t.owner].mana + e.amount);
         const auto batch = s.nextBatch++;
         for (const auto &[id, c] : s.cards)
             if (c.owner == t.owner &&
@@ -263,7 +243,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::Draw:
         for (int k = 0; k < e.amount; ++k) {
             ResourceRules::drawOne(s, cat, t.owner);
-            if (cat.usesAlphaV2() && !s.players[t.owner].debugInfiniteLife && s.players[t.owner].life <= 0)
+            if (!s.players[t.owner].debugInfiniteLife && s.players[t.owner].life <= 0)
                 break;
         }
         break;
@@ -286,9 +266,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
     case EffectKind::Destroy: {
         auto destroy = [&](CardId id) {
             auto i = s.cards.find(id);
-            if (i != s.cards.end() && ((i->second.owner != t.owner &&
-                cat.at(i->second.definition).opponentDestroyProtected) ||
-                (cat.usesAlphaV2() && protectedFromCardEffect(s, cat, id)))) {
+            if (i != s.cards.end() && (i->second.owner != t.owner && cat.at(i->second.definition).opponentDestroyProtected || protectedFromCardEffect(s, cat, id))) {
                 s.events.push_back({"protected", "对手效果不能销毁此卡", -1, id});
                 return;
             }
@@ -375,7 +353,7 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         message = "对手下个自己的回合不能使用行动卡";
         break;
     case EffectKind::CounterSpell:
-        message = cat.usesAlphaV255()
+        message = true
             ? "无效并销毁目标法术，支付其实际设置与发动费用"
             : "无效并销毁目标法术，承担下个自己的结束阶段清除的荷载";
         break;
@@ -468,8 +446,6 @@ void EffectResolver::apply(GameState &s, const CardCatalog &cat, const Trigger &
         event.affectedPlayer = t.owner;
     }
     s.events.push_back(std::move(event));
-    if (cat.usesAlphaV2())
-        StateMaintenance::check(s, cat);
+    StateMaintenance::check(s, cat);
 }
 } // namespace wizard
-#include "effects_v2.inc"

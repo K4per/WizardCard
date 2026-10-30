@@ -15,15 +15,16 @@ CommandResult GameEngine::debug(const DebugOperation &op) {
         op.operation == "gain_load" || op.operation == "clear_load";
     if (numeric && (op.amount <= 0 || op.amount > 1000000)) return rejected("数量必须为 1 至 1000000 的整数");
     GameEngine next = *this;
+    next.state_.events.clear();
     auto &s = next.state_;
     auto &p = s.players[op.player];
     CardId changedCard{};
     std::string text;
     if (op.operation == "add_card") {
         const CardDefinition *definition = nullptr;
-        const auto found = catalog_.cards.find(op.cardId);
-        if (found != catalog_.cards.end()) definition = &found->second;
-        else for (const auto &[id, d] : catalog_.cards) if (d.name == op.cardId) {
+        const auto found = catalog().cards.find(op.cardId);
+        if (found != catalog().cards.end()) definition = &found->second;
+        else for (const auto &[id, d] : catalog().cards) if (d.name == op.cardId) {
             if (definition) return rejected("卡名不唯一，请使用卡牌 ID");
             definition = &d;
         }
@@ -41,7 +42,7 @@ CommandResult GameEngine::debug(const DebugOperation &op) {
         text = "从虚空加入手牌：" + definition->name + " #" + std::to_string(card.id) + "（不计抽牌）";
     } else if (op.operation == "gain_mana" || op.operation == "lose_mana") {
         const int before = p.mana;
-        p.mana = op.operation == "gain_mana" ? std::min(catalog_.usesAlphaV25() ? maximumMana : 12, p.mana + op.amount) :
+        p.mana = op.operation == "gain_mana" ? std::min(maximumMana, p.mana + op.amount) :
             std::max(0, p.mana - op.amount);
         text = "魔素 " + std::to_string(before) + " → " + std::to_string(p.mana);
     } else if (op.operation == "gain_life" || op.operation == "lose_life") {
@@ -103,17 +104,18 @@ CommandResult GameEngine::debug(const DebugOperation &op) {
     s.debugUsed = true;
     s.events.push_back({"debug", "[调试] 玩家 " + std::to_string(op.player + 1) + "：" + text +
         "；命令=" + op.operation + "；数量=" + std::to_string(op.amount), -1, changedCard, op.amount});
-    if (op.operation == "gain_load") ResourceRules::increasedLoad(s, catalog_, op.player, op.amount);
+    if (op.operation == "gain_load") ResourceRules::increasedLoad(s, catalog(), op.player, op.amount);
     // Direct console changes are literal; infinite switches only alter rule judgments.
     // Disabling capacity immunity resumes the ordinary current-state overload check immediately.
     if (op.operation == "set_infinite_load" && !op.enabled) {
-        const int excess = std::max(0, Rules::load(s, op.player) - Rules::capacity(s, catalog_, op.player));
-        if (excess) ResourceRules::damage(s, op.player, excess * 2, "overload", &catalog_);
-        StateMaintenance::check(s, catalog_, true);
-    } else StateMaintenance::check(s, catalog_);
-    const auto errors = Rules::invariants(s, catalog_);
+        const int excess = std::max(0, Rules::load(s, op.player) - Rules::capacity(s, catalog(), op.player));
+        if (excess) ResourceRules::damage(s, op.player, excess * 2, "overload", &catalog());
+        StateMaintenance::check(s, catalog(), true);
+    } else StateMaintenance::check(s, catalog());
+    const auto errors = Rules::invariants(s, catalog());
     if (!errors.empty()) return rejected("调试操作破坏规则状态：" + errors.front());
     std::vector<GameEvent> events(s.events.begin() + static_cast<std::ptrdiff_t>(start), s.events.end());
+    next.state_.events.clear();
     *this = std::move(next);
     return {true, {}, std::move(events), state_.decision, {}};
 }

@@ -7,7 +7,7 @@ using namespace wizard;
 using namespace wizard::app;
 namespace {
 struct AppFixture {
-    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     std::filesystem::path directory;
     AppFixture() {
         static std::atomic<unsigned> serial{};
@@ -22,12 +22,11 @@ struct AppFixture {
     }
     Application app() {
         return Application(content, directory,
-                           loadPresets(content, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production"));
+                           loadPresets(content, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets"));
     }
     MatchConfig config() {
         MatchConfig c;
-        for (auto &p : c.players)
-            p.cards = content.deck;
+        for (auto &p : c.players) { p.cards = content.deck; p.sideDeck = content.sideDeck; }
         return c;
     }
 };
@@ -180,7 +179,7 @@ TEST_CASE("illegal match configuration or unavailable replay directory never cre
     REQUIRE_FALSE(a.start(f.config(), error));
     REQUIRE_FALSE(a.hasMatch());
 }
-TEST_CASE("match settings pause all submissions and retain decision gate and digest") {
+TEST_CASE("match settings pause all submissions and retain decision gate and digest", "[legacy]") {
     AppFixture f;
     auto a = f.app();
     start(a, f.config());

@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include "wizard/command_codec.hpp"
 #include <catch2/catch_test_macros.hpp>
@@ -6,9 +7,9 @@
 using namespace wizard;
 namespace {
 Content stormContent() {
-    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
+    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
 }
-CardInstance &put(GameState &state, CardId id, const std::string &definition, PlayerId owner,
+CardInstance &put(MutationContext &state, CardId id, const std::string &definition, PlayerId owner,
                   Zone zone, CardId host = 0, SpellState spell = SpellState::None) {
     CardInstance card;
     card.id = id;
@@ -22,8 +23,8 @@ CardInstance &put(GameState &state, CardId id, const std::string &definition, Pl
     state.cards.emplace(id, std::move(card));
     return state.cards.at(id);
 }
-GameState stateAt(Phase phase, PlayerId active = 0) {
-    GameState state;
+MutationContext stateAt(Phase phase, PlayerId active = 0) {
+    MutationContext state;
     state.phase = phase;
     state.phaseStep = PhaseStep::Body;
     state.phaseGate = 1;
@@ -34,12 +35,12 @@ GameState stateAt(Phase phase, PlayerId active = 0) {
     state.players[0].ownTurn = state.players[1].ownTurn = 2;
     return state;
 }
-void send(GameEngine &engine, PlayerId player, const Command &command) {
+void send(test::ObservedEngine &engine, PlayerId player, const Command &command) {
     const auto result = engine.submit(player, command);
     INFO(result.error);
     REQUIRE(result.accepted);
 }
-void passResponses(GameEngine &engine) {
+void passResponses(test::ObservedEngine &engine) {
     for (int count = 0; count < 16 && engine.state().decision; ++count) {
         const auto decision = *engine.state().decision;
         REQUIRE(decision.kind == DecisionKind::Response);
@@ -47,7 +48,7 @@ void passResponses(GameEngine &engine) {
     }
     REQUIRE_FALSE(engine.state().decision);
 }
-void advanceToConcentration(GameEngine &engine) {
+void advanceToConcentration(test::ObservedEngine &engine) {
     for (int count = 0; count < 32; ++count) {
         if (engine.state().decision) {
             const auto decision = *engine.state().decision;
@@ -61,7 +62,7 @@ void advanceToConcentration(GameEngine &engine) {
     }
     FAIL("concentration upkeep decision was not reached");
 }
-bool hasAbility(const GameView &view, CardId source, const std::string &ability) {
+bool hasAbility(const test::ObservedView &view, CardId source, const std::string &ability) {
     return std::any_of(view.actions.begin(), view.actions.end(), [&](const LegalAction &action) {
         const auto *use = std::get_if<ActivateAbility>(&action.command);
         return use && use->card == source && use->ability == ability;
@@ -69,7 +70,7 @@ bool hasAbility(const GameView &view, CardId source, const std::string &ability)
 }
 }
 
-TEST_CASE("Snow-Rain Storm adds two mana to an opponent's timed spell activation", "[storm][storm-modifiers]") {
+TEST_CASE("Snow-Rain Storm adds two mana to an opponent's timed spell activation", "[storm][storm-modifiers][legacy]") {
     auto content = stormContent();
     auto state = stateAt(Phase::Cast, 1);
     put(state, 1, "storm-crest", 0, Zone::Analysis);
@@ -81,7 +82,7 @@ TEST_CASE("Snow-Rain Storm adds two mana to an opponent's timed spell activation
     timed.spell = SpellState::Ready;
     timed.sourceFormation = 2;
     const auto before = state.players[1].mana;
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 1, ActivateSpell{11});
 
@@ -106,7 +107,7 @@ TEST_CASE("Snow-Rain Storm doubles an opponent's concentration upkeep", "[storm]
     focus.concentrationCost = 3;
     auto &draw = put(state, 20, "wind-whisper", 1, Zone::Deck);
     state.players[1].deck.push_back(draw.id);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     advanceToConcentration(engine);
     const auto decision = *engine.state().decision;
@@ -120,7 +121,7 @@ TEST_CASE("Snow-Rain Storm doubles an opponent's concentration upkeep", "[storm]
     REQUIRE(engine.state().cards.at(11).payments.back().paid == 6);
 }
 
-TEST_CASE("Storm seals enforce Storm formation hosts and the Annihilation Crest still attaches to spells", "[storm][storm-modifiers]") {
+TEST_CASE("Storm seals enforce Storm formation hosts and the Annihilation Crest still attaches to spells", "[storm][storm-modifiers][legacy]") {
     auto content = stormContent();
     auto state = stateAt(Phase::Main);
     put(state, 1, "storm-crest", 0, Zone::Analysis);
@@ -130,7 +131,7 @@ TEST_CASE("Storm seals enforce Storm formation hosts and the Annihilation Crest 
     auto &spell = put(state, 20, "cloud-mist", 0, Zone::Casting);
     spell.spell = SpellState::Ready;
     spell.sourceFormation = 1;
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     REQUIRE_FALSE(engine.submit(0, AttachSeal{10, 2}).accepted);
     REQUIRE_FALSE(engine.submit(0, AttachSeal{10, 20}).accepted);
@@ -151,7 +152,7 @@ TEST_CASE("Storm seals enforce Storm formation hosts and the Annihilation Crest 
     hostSpell.spell = SpellState::Ready;
     hostSpell.sourceFormation = 1;
     put(crestState, 11, "storm-annihilation-crest", 0, Zone::Hand);
-    auto crestEngine = GameEngine::scenario(content.catalog, std::move(crestState));
+    auto crestEngine = test::ObservedEngine::scenario(content.catalog, std::move(crestState));
     send(crestEngine, 0, AttachSeal{11, 20});
     REQUIRE(crestEngine.state().cards.at(11).zone == Zone::Attached);
 }
@@ -174,7 +175,7 @@ TEST_CASE("Storm Brand grants an extra point on every second successful Storm sp
     first.spell = SpellState::Ready;
     auto &second = put(state, 21, testSpell.id, 0, Zone::Casting);
     second.spell = SpellState::Ready;
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 0, ActivateSpell{20});
     passResponses(engine);
@@ -194,7 +195,7 @@ TEST_CASE("Storm Crest searches a Storm spell once per turn for two Storm points
     crest.stormPoints = 4;
     auto &spell = put(state, 20, "wind-whisper", 0, Zone::Deck);
     state.players[0].deck.push_back(spell.id);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
     REQUIRE(hasAbility(engine.viewFor(0), 1, "storm_search"));
 
     send(engine, 0, ActivateAbility{1, 0, "storm_search"});
@@ -216,12 +217,12 @@ TEST_CASE("Storm Heart's once-per-turn choice recovers a Storm card to the shuff
     heart.stormPoints = 4;
     put(state, 2, "small-hexagram", 1, Zone::Analysis);
     put(state, 20, "wind-whisper", 0, Zone::Ash);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 0, ActivateAbility{1, 0, "storm_heart_choice"});
     const auto firstDecision = *engine.state().decision;
     REQUIRE(firstDecision.kind == DecisionKind::StormHeartChoice);
-    REQUIRE(firstDecision.options == std::vector<std::uint32_t>{1, 2});
+    REQUIRE(firstDecision.options == std::vector<ChoiceValue>{ChoiceValue::mode(ChoiceMode::HeartDraw), ChoiceValue::mode(ChoiceMode::HeartRecover)});
     send(engine, 0, Choose{firstDecision.id, 2});
     const auto recoverDecision = *engine.state().decision;
     REQUIRE(recoverDecision.kind == DecisionKind::StormHeartRecover);
@@ -245,11 +246,11 @@ TEST_CASE("Storm Heart requires ten Storm points to upgrade and searches Great S
         state.players[0].deck.push_back(20);
         return state;
     };
-    auto insufficient = GameEngine::scenario(content.catalog, setup(9));
+    auto insufficient = test::ObservedEngine::scenario(content.catalog, setup(9));
     REQUIRE_FALSE(insufficient.submit(0, SetFormation{10, 0, {1}}).accepted);
     REQUIRE(insufficient.state().cards.at(10).zone == Zone::SideDeck);
 
-    auto engine = GameEngine::scenario(content.catalog, setup(10));
+    auto engine = test::ObservedEngine::scenario(content.catalog, setup(10));
     send(engine, 0, SetFormation{10, 0, {1}});
 
     REQUIRE(engine.state().cards.at(10).zone == Zone::Analysis);
@@ -265,7 +266,7 @@ TEST_CASE("Storm Annihilation Crest destroys an idle enemy formation for two Sto
     put(state, 2, "small-hexagram", 1, Zone::Analysis);
     auto &seal = put(state, 10, "storm-annihilation-crest", 0, Zone::Attached);
     seal.host = 1;
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
     REQUIRE(hasAbility(engine.viewFor(0), 10, "storm_annihilation_destroy"));
     const ActivateAbility command{10, 2, "storm_annihilation_destroy"};
     REQUIRE(std::get<ActivateAbility>(decodeCommand(encodeCommand(command))).ability == command.ability);
@@ -288,7 +289,7 @@ TEST_CASE("Storm Annihilation Crest adds thunder damage to its attached spell", 
     auto &seal = put(state, 10, "storm-annihilation-crest", 0, Zone::Attached);
     seal.host = 20;
     state.players[1].forceDamageReduction = 4;
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 0, ActivateSpell{20});
     passResponses(engine);

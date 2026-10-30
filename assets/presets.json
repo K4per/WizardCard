@@ -2,7 +2,7 @@
   {
     "id": "analysis-practice",
     "name": "解析练习",
-    "description": "",
+    "description": "优先解析火球术与炽燃结界，用逆三角星扩展魔素收入，练习费用和环位管理。",
     "baseFormation": "small-hexagram",
     "cards": [
       {
@@ -128,7 +128,7 @@
   {
     "id": "counter-load",
     "name": "言灵与荷载",
-    "description": "",
+    "description": "先建立荷载空间，再用银光锐语反制对方准备；魔力扰动持续施压，练习响应时机。",
     "baseFormation": "small-hexagram",
     "cards": [
       {
@@ -254,7 +254,7 @@
   {
     "id": "concentration-practice",
     "name": "专注练习",
-    "description": "",
+    "description": "用炽燃结界练习专注维持与持续伤害，保留魔素和荷载空间，火球术负责收尾。",
     "baseFormation": "small-hexagram",
     "cards": [
       {
@@ -380,7 +380,7 @@
   {
     "id": "quick-circuit",
     "name": "速解与支援",
-    "description": "",
+    "description": "用恩格亚斯四角星快速解析，保留魔法飞弹与支援术应对关键时点。",
     "baseFormation": "small-hexagram",
     "cards": [
       {
@@ -514,7 +514,7 @@
   {
     "id": "source-load",
     "name": "持续荷载与防护",
-    "description": "",
+    "description": "扩展荷载空间和收入后释放紊乱波动持续施压，用避火咒与法术反制保护节奏。",
     "baseFormation": "small-hexagram",
     "cards": [
       {
@@ -648,7 +648,7 @@
   {
     "id": "pentagram-evocation",
     "name": "五芒星塑能",
-    "description": "",
+    "description": "五芒星降低塑能解析费用，以寒霜射线、火球术和闪电束形成伤害曲线。",
     "baseFormation": "small-hexagram",
     "cards": [
       {
@@ -782,7 +782,7 @@
   {
     "id": "fortress-sustain",
     "name": "防护与续航",
-    "description": "",
+    "description": "用护盾和虚假生命延缓伤害，炽燃结界持续压制，次级复原处理临时荷载。",
     "baseFormation": "small-hexagram",
     "cards": [
       {
@@ -908,7 +908,7 @@
   {
     "id": "word-tempo",
     "name": "言灵与节奏",
-    "description": "",
+    "description": "言灵先设置再择机发动，用护盾和银光锐语响应，配合检索和低费法术施压。",
     "baseFormation": "small-hexagram",
     "cards": [
       {
@@ -1034,7 +1034,7 @@
   {
     "id": "default-legacy",
     "name": "默认预设（旧版）",
-    "description": "",
+    "description": "保留基础牌表，适合熟悉当前 2.5.5 费用、荷载与阶段时序。",
     "baseFormation": "small-hexagram",
     "cards": [
       {

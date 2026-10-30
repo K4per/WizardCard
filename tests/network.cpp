@@ -3,6 +3,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
 #include <chrono>
+#include <random>
 #include <thread>
 using namespace wizard;
 using namespace wizard::net;
@@ -11,11 +12,11 @@ Content content() {
     return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
 }
 Command initialAction(const GameView &view) {
-    const auto choice = std::find_if(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
-        return std::holds_alternative<SelectInitialFormation>(action.command);
+    const auto choice = std::find_if(view.cards.begin(), view.cards.end(), [&](const CardView &card) {
+        return card.instance.owner == view.viewer && card.instance.zone == Zone::SideDeck;
     });
-    REQUIRE(choice != view.actions.end());
-    return choice->command;
+    REQUIRE(choice != view.cards.end());
+    return SelectInitialFormation{choice->instance.id};
 }
 void submitGuest(HostSession &host, GuestSession &guest, const Command &command) {
     const auto reply = host.receive(guest.command(command));
@@ -25,7 +26,10 @@ void submitGuest(HostSession &host, GuestSession &guest, const Command &command)
     guest.receive(host.snapshot(1 - host.player()));
 }
 unsigned short tcpTestPort(Tcp &listener) {
-    for (unsigned short port = 32500; port < 32600; ++port) {
+    static std::mt19937 random(std::random_device{}());
+    const auto first = static_cast<unsigned short>(49152 + random() % 16384);
+    for (unsigned short offset = 0; offset < 512; ++offset) {
+        const auto port = static_cast<unsigned short>(49152 + (first - 49152 + offset) % 16384);
         try {
             listener.listen(port);
             return port;
@@ -181,7 +185,7 @@ TEST_CASE("network handshake keeps program diagnostic and rejects content mismat
     j["program"] = "future-godot-client";
     CHECK(h.receive(j).at("type") == "Joined");
     CHECK_THROWS(h.receive(j));
-    for (const char *k : {"protocol", "rules", "cards", "hash"}) {
+    for (const char *k : {"protocol", "rules", "mechanics", "cards", "hash"}) {
         HostSession other(c);
         auto wrong = hello(c);
         wrong[k] = "different";
@@ -199,7 +203,7 @@ TEST_CASE("network guest view contains no opponent hand deck seed or digest") {
     }
     CHECK_FALSE(raw.contains("seed"));
     CHECK_FALSE(raw.contains("digest"));
-    for (const auto &e : v.events)
+    for (const auto &e : p.host.eventsSince(1, 0, 0).events)
         CHECK((e.audience == -1 || e.audience == 1));
 }
 TEST_CASE("network opening keeps confirmed choices private across resume and reveals both together") {
@@ -216,7 +220,7 @@ TEST_CASE("network opening keeps confirmed choices private across resume and rev
         return card.instance.owner == 1;
     }));
     REQUIRE(hostWaiting.players[1].sideDeckCount == 10);
-    REQUIRE(hostWaiting.events.empty());
+    REQUIRE(p.host.eventsSince(0, 0, 0).events.empty());
     p.host.freeze(true);
     p.guest.receive(p.host.receive(p.guest.resume()));
     REQUIRE(p.guest.view().initialFormation == guestId);
@@ -230,7 +234,9 @@ TEST_CASE("network opening keeps confirmed choices private across resume and rev
     REQUIRE_FALSE(p.guest.view().opening);
     REQUIRE(p.guest.view().players[0].handCount == 5);
     REQUIRE(p.guest.view().players[1].handCount == 5);
-    REQUIRE(std::count_if(p.guest.view().events.begin(), p.guest.view().events.end(), [](const GameEvent &event) {
+    p.guest.receive(p.host.eventUpdate(1, 0, 0));
+    const auto events = p.guest.eventsSince(0, 0);
+    REQUIRE(std::count_if(events.events.begin(), events.events.end(), [](const GameEvent &event) {
         return event.kind == "initial_formation";
     }) == 2);
     REQUIRE(replay(p.c, p.host.recording()).digest() == p.host.recording().at("finalDigest"));
@@ -321,15 +327,30 @@ TEST_CASE("network memory sessions run a complete match with matching replay") {
         const auto actor = hv.opening
             ? (!hv.initialFormationConfirmed[0] ? 0 : !hv.initialFormationConfirmed[1] ? 1 : hv.active)
             : (hv.decision ? hv.viewer : gv.decision ? gv.viewer :
-               !hv.actions.empty() ? hv.viewer : !gv.actions.empty() ? gv.viewer : hv.active);
+               hv.actionSummary.actionable ? hv.viewer : gv.actionSummary.actionable ? gv.viewer : hv.active);
         const auto &v = actor == hv.viewer ? hv : gv;
-        auto selection = ai::choose(v, ai::Difficulty::Normal);
+        ActionIntent intent;
+        std::optional<Command> selection = v.actionSummary.safeAdvance;
+        for (int depth = 0; !selection && depth < 32; ++depth) {
+            const auto options = p.host.queryActions(actor, 1, p.host.revision(), intent);
+            REQUIRE(options.error.empty());
+            if (options.complete) { selection = options.complete; break; }
+            REQUIRE_FALSE(options.options.empty());
+            auto choice = options.options.begin();
+            if (options.field == ActionField::Operation) {
+                choice = std::find_if(options.options.begin(), options.options.end(), [](const ActionOption &o) {
+                    return o.value != std::to_string(static_cast<unsigned>(CommandKind::Surrender));
+                });
+                REQUIRE(choice != options.options.end());
+            }
+            intent.selections.push_back({options.field, choice->value});
+        }
         REQUIRE(selection);
-        REQUIRE_FALSE(std::holds_alternative<Surrender>(selection->command));
+        REQUIRE_FALSE(std::holds_alternative<Surrender>(*selection));
         if (actor == hv.viewer)
-            REQUIRE(p.host.submit(selection->command).accepted);
+            REQUIRE(p.host.submit(*selection).accepted);
         else {
-            auto command = p.guest.command(selection->command);
+            auto command = p.guest.command(*selection);
             auto result = p.host.receive(command);
             REQUIRE(result.at("type") == "Accepted");
             p.guest.receive(result);
@@ -394,7 +415,7 @@ TEST_CASE("network real TCP peers support settings independent progress and term
 TEST_CASE("network v2.5 recordings require the matching program and format") {
     Pair p;
     auto j = p.host.recording();
-    REQUIRE(j.at("format") == 4);
+    REQUIRE(j.at("format") == 5);
     auto wrongFormat = j; wrongFormat["format"] = 3;
     CHECK_THROWS(replay(p.c, wrongFormat));
     j["programVersion"] = "1.0.0-alpha";
@@ -408,18 +429,26 @@ TEST_CASE("network bounded event history keeps stable IDs and only consumes new 
     h.receive(hello(c));
     h.ready();
     h.receive({{"type", "Ready"}, {"session", h.session()}});
-    auto v = h.view();
-    v.events.resize(600);
-    auto raw = encodeView(v);
-    auto before = decodeView(raw, c.catalog);
-    CHECK(before.eventBase == 88);
+    EventBatch initial{1, 88, 600, true, {}};
+    initial.events.resize(512);
+    auto raw = encodeEvents(initial);
+    auto before = decodeEvents(raw);
+    CHECK(before.base == 88);
     CHECK(before.events.size() == 512);
     CHECK(raw.at("events")[0].at("id") == "89");
-    v.events.push_back({"command", "new"});
-    auto after = decodeView(encodeView(v), c.catalog);
-    CHECK(firstNewEvent(before, after) == 511);
-    CHECK(after.events.back().text == "new");
-    CHECK(encodeView(after) == encodeView(v));
+    GuestSession guest(c);
+    // Use a separate host because h already has an authenticated guest.
+    HostSession eventHost(c);
+    guest.receive(eventHost.receive(hello(c)));
+    guest.receive({{"type", "EventBatch"}, {"session", eventHost.session()}, {"revision", "0"}, {"batch", raw}});
+    EventBatch appended{1, 600, 601, false, {{"command", "new"}}};
+    guest.receive({{"type", "EventBatch"}, {"session", eventHost.session()}, {"revision", "0"}, {"batch", encodeEvents(appended)}});
+    const auto delta = guest.eventsSince(1, 600);
+    REQUIRE(delta.events.size() == 1); CHECK(delta.events.back().text == "new");
+    CHECK_FALSE(delta.reset);
+    const auto reset = guest.eventsSince(1, 88);
+    REQUIRE(reset.reset); CHECK(reset.events.size() == 512); CHECK(reset.base == 89);
+    CHECK(encodeEvents(decodeEvents(encodeEvents(reset))) == encodeEvents(reset));
 }
 TEST_CASE("network rejects excessive JSON nesting before parsing") {
     std::string s = "{\"a\":" + std::string(70, '[') + "0" + std::string(70, ']') + "}";

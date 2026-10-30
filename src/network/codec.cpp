@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <charconv>
 #include <iomanip>
+#include <limits>
 #include <random>
 #include <sstream>
 namespace wizard {
@@ -20,6 +21,8 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PlayerView, life, mana, load, capacity, handC
                                    actionsPlayed, temporaryLife, blockedActionTurn, resistances, immunities,
                                    sideDeckCount, exhaustion, lifeLimit, sevenMode)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MatchClockView, enabled, running, remainingMs, runningPlayers, runningPlayer, sequence)
+void to_json(Json &j, const ChoiceValue &value) { j = encodeChoice(value); }
+void from_json(const Json &j, ChoiceValue &value) { value = decodeChoice(j); }
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PendingDecision, id, player, kind, options, mayPass)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Trigger, id, batch, owner, source, targetCard, targetPlayer, effects,
                                    target, requiresSource, targetLink, targetCards)
@@ -78,9 +81,10 @@ Command unwireCommand(Json j) {
 }
 Json hello(const Content &c) {
     return {{"type", "Hello"},
-            {"protocol", c.catalog.usesAlphaV25() ? 3 : c.catalog.usesAlphaV2() ? 2 : 1},
+            {"protocol", 4},
             {"program", programVersion},
             {"rules", c.catalog.rulesVersion},
+            {"mechanics", c.catalog.mechanicsRevision},
             {"cards", c.catalog.cardSetVersion},
             {"hash", c.catalog.contentHash}};
 }
@@ -90,7 +94,11 @@ Json encodeView(const GameView &v) {
               {"temporaryLives", v.temporaryLives},
               {"phaseStep", v.phaseStep}, {"phaseGate", v.phaseGate}, {"triggers", v.triggers},
               {"opening", v.opening}, {"initialFormationConfirmed", v.initialFormationConfirmed},
-              {"initialFormation", v.initialFormation}, {"globalTurn", v.globalTurn}, {"clock", v.clock}};
+              {"initialFormation", v.initialFormation}, {"globalTurn", v.globalTurn}, {"clock", v.clock},
+              {"technicalPaused", v.technicalPaused}};
+    j["actionSummary"] = {{"actionable", v.actionSummary.actionable},
+        {"hasNonPhaseAction", v.actionSummary.hasNonPhaseAction},
+        {"safeAdvance", v.actionSummary.safeAdvance ? wireCommand(*v.actionSummary.safeAdvance) : Json()}};
     j["decision"] = v.decision ? Json(*v.decision) : Json();
     j["chain"] = v.chain ? Json(*v.chain) : Json();
     j["cards"] = Json::array();
@@ -102,29 +110,6 @@ Json encodeView(const GameView &v) {
                               {"turnsToReady", c.turnsToReady},
                               {"effectiveCastCost", c.effectiveCastCost},
                               {"effectiveSettingCost", c.effectiveSettingCost}});
-    j["actions"] = Json::array();
-    for (const auto &a : v.actions)
-        j["actions"].push_back({{"label", a.label},
-                                {"source", a.source},
-                                {"target", a.target},
-                                {"command", encodeCommand(a.command)}});
-    j["events"] = Json::array();
-    std::size_t skip = v.events.size() > 512 ? v.events.size() - 512 : 0;
-    j["eventBase"] = std::to_string(v.eventBase + skip);
-    std::size_t i = static_cast<std::size_t>(v.eventBase) + skip;
-    for (auto it = v.events.begin() + skip; it != v.events.end(); ++it) {
-        const auto &e = *it;
-        j["events"].push_back({{"id", std::to_string(++i)},
-                               {"kind", e.kind},
-                               {"text", e.text},
-                               {"audience", e.audience},
-                               {"card", e.card},
-                               {"amount", e.amount},
-                               {"effectType", e.effectType ? Json(*e.effectType) : Json()},
-                               {"actualAmount", e.actualAmount},
-                               {"affectedPlayer", e.affectedPlayer},
-                               {"spellReleased", e.spellReleased}});
-    }
     transform(j, true);
     return j;
 }
@@ -140,18 +125,22 @@ GameView decodeView(const Json &raw, const CardCatalog &catalog) {
         static_cast<int>(v.phase) > 4)
         throw std::runtime_error("Invalid view");
     j.at("players").get_to(v.players);
+    const auto &summary = raw.at("actionSummary");
+    v.actionSummary.actionable = summary.at("actionable");
+    v.actionSummary.hasNonPhaseAction = summary.at("hasNonPhaseAction");
+    if (!summary.at("safeAdvance").is_null()) v.actionSummary.safeAdvance = unwireCommand(summary.at("safeAdvance"));
     j.at("temporary").get_to(v.temporary);
     if (j.contains("temporaryLives"))
         j.at("temporaryLives").get_to(v.temporaryLives);
     j.at("phaseStep").get_to(v.phaseStep);
     j.at("phaseGate").get_to(v.phaseGate);
     j.at("triggers").get_to(v.triggers);
-    j.at("eventBase").get_to(v.eventBase);
     j.at("opening").get_to(v.opening);
     j.at("initialFormationConfirmed").get_to(v.initialFormationConfirmed);
     j.at("initialFormation").get_to(v.initialFormation);
     j.at("globalTurn").get_to(v.globalTurn);
     j.at("clock").get_to(v.clock);
+    j.at("technicalPaused").get_to(v.technicalPaused);
     if (!j.at("decision").is_null())
         v.decision = j.at("decision").get<PendingDecision>();
     if (!j.at("chain").is_null())
@@ -171,23 +160,89 @@ GameView decodeView(const Json &raw, const CardCatalog &catalog) {
         c.effectiveSettingCost = x.at("effectiveSettingCost");
         v.cards.push_back(std::move(c));
     }
-    for (const auto &x : j.at("actions"))
-        v.actions.push_back({x.at("label"), x.at("source"), x.at("target"), decodeCommand(x.at("command"))});
-    for (const auto &x : j.at("events")) {
-        GameEvent e;
-        e.kind = x.at("kind");
-        e.text = x.at("text");
-        e.audience = x.at("audience");
-        e.card = x.at("card");
-        e.amount = x.at("amount");
-        if (!x.at("effectType").is_null())
-            e.effectType = x.at("effectType").get<EffectKind>();
-        e.actualAmount = x.at("actualAmount");
-        e.affectedPlayer = x.at("affectedPlayer");
-        e.spellReleased = x.at("spellReleased");
-        v.events.push_back(std::move(e));
-    }
     return v;
+}
+Json encodeIntent(const ActionIntent &intent) {
+    Json out = {{"source", std::to_string(intent.source)}, {"offset", intent.offset}, {"limit", intent.limit}, {"selections", Json::array()}};
+    for (const auto &selection : intent.selections)
+        out["selections"].push_back({{"field", static_cast<int>(selection.field)}, {"value", selection.value}});
+    return out;
+}
+ActionIntent decodeIntent(const Json &value) {
+    if (!value.is_object() || !value.at("selections").is_array() || value.at("selections").size() > 32)
+        throw std::runtime_error("invalid action intent");
+    ActionIntent intent;
+    const auto source = number(value.at("source"));
+    if (source > std::numeric_limits<CardId>::max()) throw std::runtime_error("invalid query source");
+    intent.source = static_cast<CardId>(source);
+    intent.offset = value.at("offset").get<std::size_t>();
+    intent.limit = value.at("limit").get<std::size_t>();
+    if (!intent.limit || intent.limit > 256 || intent.offset > 1000000) throw std::runtime_error("invalid query page");
+    for (const auto &row : value.at("selections")) {
+        const auto field = row.at("field").get<int>();
+        const auto text = row.at("value").get<std::string>();
+        if (field < 0 || field > static_cast<int>(ActionField::Confirm) || text.size() > 256)
+            throw std::runtime_error("invalid action selection");
+        intent.selections.push_back({static_cast<ActionField>(field), text});
+    }
+    return intent;
+}
+Json encodeOptions(const ActionOptions &options) {
+    Json out = {{"field", static_cast<int>(options.field)}, {"options", Json::array()},
+                {"hasMore", options.hasMore}, {"pending", options.pending}, {"error", options.error},
+                {"complete", options.complete ? wireCommand(*options.complete) : Json()}};
+    for (const auto &option : options.options)
+        out["options"].push_back({{"value", option.value}, {"label", option.label},
+                                  {"card", option.card}, {"player", option.player}});
+    return out;
+}
+ActionOptions decodeOptions(const Json &j) {
+    ActionOptions out;
+    const auto field = j.at("field").get<int>();
+    if (field < 0 || field > static_cast<int>(ActionField::Confirm) || !j.at("options").is_array() ||
+        j.at("options").size() > 256) throw std::runtime_error("invalid action options");
+    out.field = static_cast<ActionField>(field);
+    out.hasMore = j.at("hasMore"); out.pending = j.at("pending"); out.error = j.at("error");
+    if (!j.at("complete").is_null()) out.complete = unwireCommand(j.at("complete"));
+    for (const auto &option : j.at("options"))
+        out.options.push_back({option.at("value"), option.at("label"), option.at("card"), option.at("player")});
+    return out;
+}
+Json encodeClock(const MatchClockView &clock) {
+    Json out = clock;
+    transform(out, true);
+    return out;
+}
+MatchClockView decodeClock(Json value) {
+    transform(value, false);
+    return value.get<MatchClockView>();
+}
+Json encodeEvents(const EventBatch &batch) {
+    Json out = {{"epoch", std::to_string(batch.epoch)}, {"base", std::to_string(batch.base)},
+                {"next", std::to_string(batch.next)}, {"reset", batch.reset}, {"events", Json::array()}};
+    auto cursor = batch.base;
+    for (const auto &e : batch.events)
+        out["events"].push_back({{"id", std::to_string(++cursor)}, {"kind", e.kind}, {"text", e.text},
+            {"audience", e.audience}, {"card", e.card}, {"amount", e.amount},
+            {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
+            {"actualAmount", e.actualAmount}, {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}});
+    return out;
+}
+EventBatch decodeEvents(const Json &j) {
+    EventBatch out{number(j.at("epoch")), number(j.at("base")), number(j.at("next")), j.at("reset").get<bool>(), {}};
+    if (out.next < out.base || out.next - out.base > 512 || !j.at("events").is_array() ||
+        j.at("events").size() != out.next - out.base) throw std::runtime_error("invalid event batch");
+    auto cursor = out.base;
+    for (const auto &row : j.at("events")) {
+        if (number(row.at("id")) != ++cursor) throw std::runtime_error("noncontiguous event batch");
+        GameEvent event;
+        event.kind = row.at("kind"); event.text = row.at("text"); event.audience = row.at("audience");
+        event.card = row.at("card"); event.amount = row.at("amount");
+        if (!row.at("effectType").is_null()) event.effectType = row.at("effectType").get<EffectKind>();
+        event.actualAmount = row.at("actualAmount"); event.affectedPlayer = row.at("affectedPlayer");
+        event.spellReleased = row.at("spellReleased"); out.events.push_back(std::move(event));
+    }
+    return out;
 }
 std::vector<unsigned char> frame(const Json &j) {
     auto s = j.dump();

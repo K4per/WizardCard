@@ -1,0 +1,25 @@
+{
+  "id": "windmaking",
+  "name": "风契·造风术",
+  "type": "word",
+  "rarity": "common",
+  "cost": 2,
+  "rank": 1,
+  "level": 1,
+  "speed": 2,
+  "school": "transmutation",
+  "target": "none",
+  "effects": [
+    {
+      "kind": "return_enemy_analysis"
+    }
+  ],
+  "text": "将对方解析区1张法术卡弹回持有者手卡。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "tags": [
+    "风契"
+  ],
+  "number": "030012",
+  "illustrationId": "windmaking"
+}

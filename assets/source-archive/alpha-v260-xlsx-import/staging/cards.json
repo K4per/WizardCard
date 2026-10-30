@@ -1,0 +1,3224 @@
+{
+  "rulesVersion": "2.6.0",
+  "cardSetVersion": "2.6.0-xlsx-baseline",
+  "mechanicsRevision": 10,
+  "baseLoadCapacity": 2,
+  "status": "staging-blocked",
+  "cards": [
+    {
+      "id": "v260-analytic-0001",
+      "number": "020001",
+      "name": "火球术",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "epic",
+      "rank": 3,
+      "cost": 3,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成7点火焰伤害。",
+      "flavor": "",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 7,
+          "damageType": "fire",
+          "recipient": "target"
+        }
+      ],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 2
+      },
+      "illustrationId": "v260-analytic-0001",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "fireball"
+      }
+    },
+    {
+      "id": "v260-analytic-0002",
+      "number": "020002",
+      "name": "寒霜射线",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "common",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成5点寒冷伤害。那之后，可以使对方解析区1张解析法术卡的解析时间+1。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 3
+      },
+      "illustrationId": "v260-analytic-0002",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "ray-of-frost"
+      }
+    },
+    {
+      "id": "v260-analytic-0003",
+      "number": "020003",
+      "name": "闪电束",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "rare",
+      "rank": 4,
+      "cost": 3,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成8点闪电伤害。那之后，可以销毁对方解析区1张解析法术卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 4
+      },
+      "illustrationId": "v260-analytic-0003",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "lightning-bolt"
+      }
+    },
+    {
+      "id": "v260-analytic-0004",
+      "number": "020004",
+      "name": "魔法飞弹",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "common",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 2,
+      "text": "选择1个目标才能发动。对其造成4点力场伤害。那之后，可以销毁对方解析区1张盖伏卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 5
+      },
+      "illustrationId": "v260-analytic-0004",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "magic-missile"
+      }
+    },
+    {
+      "id": "v260-analytic-0005",
+      "number": "020005",
+      "name": "繁彩球",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "common",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成7点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 6
+      },
+      "illustrationId": "v260-analytic-0005",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "chromatic-orb"
+      }
+    },
+    {
+      "id": "v260-analytic-0006",
+      "number": "020006",
+      "name": "曳光弹",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "uncommon",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成5点光耀伤害。那之后，可以查看对方解析区1张盖伏卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 7
+      },
+      "illustrationId": "v260-analytic-0006",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "guiding-bolt"
+      }
+    },
+    {
+      "id": "v260-analytic-0007",
+      "number": "020007",
+      "name": "炽热射线",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "common",
+      "rank": 5,
+      "cost": 4,
+      "castCost": 2,
+      "analysisTurns": 2,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成4点火焰伤害。重复3次，每次可以选择不同目标。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 8
+      },
+      "illustrationId": "v260-analytic-0007",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "scorching-ray"
+      }
+    },
+    {
+      "id": "v260-analytic-0008",
+      "number": "020008",
+      "name": "炽燃结界",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "common",
+      "rank": 3,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "专注2。发动时，对对方造成4点火焰伤害。维持专注时，对对方造成3点火焰伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 9
+      },
+      "illustrationId": "v260-analytic-0008",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "ward"
+      }
+    },
+    {
+      "id": "v260-analytic-0009",
+      "number": "020009",
+      "name": "阳炎爆",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "legendary",
+      "rank": 6,
+      "cost": 20,
+      "castCost": 2,
+      "analysisTurns": 2,
+      "speed": 3,
+      "text": "对对方造成15点火焰伤害。那之后，可以销毁对方1张阵法卡上的全部法术卡。己方灰烬区每存在1张塑能派系法术卡，此法术卡的设置费用-1。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 10
+      },
+      "illustrationId": "v260-analytic-0009",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "sunburst"
+      }
+    },
+    {
+      "id": "v260-analytic-0010",
+      "number": "020010",
+      "name": "燃烧之手",
+      "type": "analytic",
+      "school": "evocation",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 3,
+      "castCost": 3,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "对对方以及对方场上全部目标各造成6点火焰伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 11
+      },
+      "illustrationId": "v260-analytic-0010",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\燃烧之手.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0011",
+      "number": "020011",
+      "name": "云雾术",
+      "type": "analytic",
+      "school": "conjuration",
+      "rarity": "rare",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 3,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "计时2。选择双方解析区共1至2张解析法术卡，使其直到此法术卡离场不可准备施法。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 12
+      },
+      "illustrationId": "v260-analytic-0011",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "cloud-mist"
+      }
+    },
+    {
+      "id": "v260-analytic-0012",
+      "number": "020012",
+      "name": "召雷术",
+      "type": "analytic",
+      "school": "conjuration",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 3,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成9点雷鸣伤害。那之后，使对方获得5点独立荷载，对方结束阶段开始时清除。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 13
+      },
+      "illustrationId": "v260-analytic-0012",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "thunder-summon"
+      }
+    },
+    {
+      "id": "v260-analytic-0013",
+      "number": "020013",
+      "name": "匕首之云",
+      "type": "analytic",
+      "school": "conjuration",
+      "rarity": "uncommon",
+      "rank": 3,
+      "cost": 2,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "专注1。发动时，对对方造成5点挥砍伤害。维持专注时，对对方造成2点挥砍伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 14
+      },
+      "illustrationId": "v260-analytic-0013",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\匕首之云.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0014",
+      "number": "020014",
+      "name": "臭云术",
+      "type": "analytic",
+      "school": "conjuration",
+      "rarity": "uncommon",
+      "rank": 3,
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "专注1。双方准备阶段开始时，双方各受到1点毒素伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 15
+      },
+      "illustrationId": "v260-analytic-0014",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\臭云术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0015",
+      "number": "020015",
+      "name": "油腻术",
+      "type": "analytic",
+      "school": "conjuration",
+      "rarity": "common",
+      "rank": 3,
+      "cost": 3,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 2,
+      "text": "选择对方场上1张阵法卡才能发动。直到下个己方准备阶段开始时，此阵法卡的环位减半。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 16
+      },
+      "illustrationId": "v260-analytic-0015",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\油腻术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0016",
+      "number": "020016",
+      "name": "次级复原",
+      "type": "analytic",
+      "school": "abjuration",
+      "rarity": "common",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。为其恢复2点生命值。那之后，清除己方6点荷载。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 17
+      },
+      "illustrationId": "v260-analytic-0016",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0017",
+      "number": "020017",
+      "name": "吸收元素",
+      "type": "analytic",
+      "school": "abjuration",
+      "rarity": "uncommon",
+      "rank": 4,
+      "cost": 3,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "专注1。己方每受到1次强酸/寒冷/火焰/闪电/毒素/雷鸣伤害，获得1点魔素。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 18
+      },
+      "illustrationId": "v260-analytic-0017",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\吸收元素.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0018",
+      "number": "020018",
+      "name": "枯萎术",
+      "type": "analytic",
+      "school": "necromancy",
+      "rarity": "epic",
+      "rank": 4,
+      "cost": 3,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成8点暗蚀伤害。",
+      "flavor": "",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 8,
+          "damageType": "necrotic",
+          "recipient": "target"
+        }
+      ],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 19
+      },
+      "illustrationId": "v260-analytic-0018",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\枯萎术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0019",
+      "number": "020019",
+      "name": "缝合生命",
+      "type": "analytic",
+      "school": "necromancy",
+      "rarity": "common",
+      "rank": 3,
+      "cost": 2,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。为其恢复6点生命值。",
+      "flavor": "",
+      "effects": [
+        {
+          "kind": "heal",
+          "amount": 6,
+          "recipient": "target"
+        }
+      ],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 20
+      },
+      "illustrationId": "v260-analytic-0019",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "mend"
+      }
+    },
+    {
+      "id": "v260-analytic-0020",
+      "number": "020020",
+      "name": "虚假生命",
+      "type": "analytic",
+      "school": "necromancy",
+      "rarity": "common",
+      "rank": 3,
+      "cost": 2,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 2,
+      "text": "获得6点临时生命值。",
+      "flavor": "",
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 6,
+          "recipient": "owner"
+        }
+      ],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 21
+      },
+      "illustrationId": "v260-analytic-0020",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "false-life"
+      }
+    },
+    {
+      "id": "v260-analytic-0021",
+      "number": "020021",
+      "name": "治疗之环",
+      "type": "analytic",
+      "school": "necromancy",
+      "rarity": "uncommon",
+      "rank": 2,
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 2,
+      "speed": 1,
+      "text": "计时4。己方结束阶段开始时，恢复2点生命值。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 22
+      },
+      "illustrationId": "v260-analytic-0021",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "healing-circle"
+      }
+    },
+    {
+      "id": "v260-analytic-0022",
+      "number": "020022",
+      "name": "致病射线",
+      "type": "analytic",
+      "school": "necromancy",
+      "rarity": "common",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 2,
+      "text": "选择1个目标才能发动。对其造成4点毒素伤害。那之后，直到下个己方抽卡阶段开始时，对方每设置1张法术卡，使对方受到1点毒素伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 23
+      },
+      "illustrationId": "v260-analytic-0022",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\致病射线.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0023",
+      "number": "020023",
+      "name": "防死结界",
+      "type": "analytic",
+      "school": "necromancy",
+      "rarity": "rare",
+      "rank": 7,
+      "cost": 7,
+      "castCost": 7,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "永续。此卡在己方解析区仅可存在1张。当己方生命值归零时，可以将此法术卡抹除作为替代。那之后，己方生命值变为1。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 24
+      },
+      "illustrationId": "v260-analytic-0023",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\防死结界.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0024",
+      "number": "020024",
+      "name": "汲血之触",
+      "type": "analytic",
+      "school": "necromancy",
+      "rarity": "rare",
+      "rank": 3,
+      "cost": 2,
+      "castCost": 2,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成5点暗蚀伤害，己方恢复2点生命值。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 25
+      },
+      "illustrationId": "v260-analytic-0024",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\汲血之触.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0025",
+      "number": "020025",
+      "name": "沉默术",
+      "type": "analytic",
+      "school": "illusion",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 3,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "直到下个己方抽卡阶段开始时，双方言灵法术不可发动。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 26
+      },
+      "illustrationId": "v260-analytic-0025",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\沉默术.png"
+      },
+      "migration": {
+        "previousId": "instantly-sleep"
+      }
+    },
+    {
+      "id": "v260-analytic-0026",
+      "number": "020026",
+      "name": "朦胧术",
+      "type": "analytic",
+      "school": "illusion",
+      "rarity": "common",
+      "rank": 5,
+      "cost": 3,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 2,
+      "text": "选择1个伤害类型才能发动。直到下个己方准备阶段开始时，己方受到的此类型伤害减半。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 27
+      },
+      "illustrationId": "v260-analytic-0026",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\朦胧术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0027",
+      "number": "020027",
+      "name": "恐惧术",
+      "type": "analytic",
+      "school": "illusion",
+      "rarity": "uncommon",
+      "rank": 5,
+      "cost": 4,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "专注4。对方不可选择己方为法术卡的目标。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 28
+      },
+      "illustrationId": "v260-analytic-0027",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\恐惧术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0028",
+      "number": "020028",
+      "name": "精神监狱",
+      "type": "analytic",
+      "school": "illusion",
+      "rarity": "uncommon",
+      "rank": 6,
+      "cost": 5,
+      "castCost": 5,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "专注6。对方结束阶段开始时，对方必须将1张卡从手卡送去灰烬区，否则使对方受到10点心灵伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 29
+      },
+      "illustrationId": "v260-analytic-0028",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\精神监狱.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0029",
+      "number": "020029",
+      "name": "紊乱波动",
+      "type": "analytic",
+      "school": "enchantment",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 4,
+      "castCost": 4,
+      "analysisTurns": 2,
+      "speed": 1,
+      "text": "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 30
+      },
+      "illustrationId": "v260-analytic-0029",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "messy-wave"
+      }
+    },
+    {
+      "id": "v260-analytic-0030",
+      "number": "020030",
+      "name": "昏昏欲睡",
+      "type": "analytic",
+      "school": "enchantment",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 3,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "直到下个己方抽卡阶段开始时，双方解析法术不可发动。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "目录只有沉默术.png，不能确认它是否对应昏昏欲睡"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 31
+      },
+      "illustrationId": "v260-analytic-0030",
+      "art": {
+        "status": "conflict",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\沉默术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0031",
+      "number": "020031",
+      "name": "疯狂冠冕",
+      "type": "analytic",
+      "school": "enchantment",
+      "rarity": "rare",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "专注2。对方每对己方造成1次伤害，使对方受到2点心灵伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 32
+      },
+      "illustrationId": "v260-analytic-0031",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\疯狂冠冕.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0032",
+      "number": "020032",
+      "name": "祝福术",
+      "type": "analytic",
+      "school": "enchantment",
+      "rarity": "rare",
+      "rank": 4,
+      "cost": 3,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "计时3。己方结束阶段开始时，选择以下1个效果适用：◎恢复2点生命值；◎清除2点荷载；◎获得1点魔素。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 33
+      },
+      "illustrationId": "v260-analytic-0032",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\祝福术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0033",
+      "number": "020033",
+      "name": "灾祸术",
+      "type": "analytic",
+      "school": "enchantment",
+      "rarity": "uncommon",
+      "rank": 4,
+      "cost": 4,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "计时3。己方结束阶段开始时，选择以下1个效果适用：◎对对方造成2点暗蚀伤害；◎使对方获得2点独立荷载，对方结束阶段清除；◎对方魔素-1。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 34
+      },
+      "illustrationId": "v260-analytic-0033",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\灾祸术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0034",
+      "number": "020034",
+      "name": "心灵尖刺",
+      "type": "analytic",
+      "school": "divination",
+      "rarity": "common",
+      "rank": 5,
+      "cost": 3,
+      "castCost": 3,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择1个目标才能发动。对其造成10点心灵伤害。那之后，可以查看对方解析区全部盖伏卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 35
+      },
+      "illustrationId": "v260-analytic-0034",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\心灵尖刺.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0035",
+      "number": "020035",
+      "name": "地震术",
+      "type": "analytic",
+      "school": "transmutation",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 4,
+      "castCost": 0,
+      "analysisTurns": 2,
+      "speed": 1,
+      "text": "计时2。己方主要阶段开始时，将双方解析区盖伏卡全部送去灰烬区。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 36
+      },
+      "illustrationId": "v260-analytic-0035",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "earthquake"
+      }
+    },
+    {
+      "id": "v260-analytic-0036",
+      "number": "020036",
+      "name": "碎环术",
+      "type": "analytic",
+      "school": "transmutation",
+      "rarity": "epic",
+      "rank": 5,
+      "cost": 3,
+      "castCost": 2,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "选择对方场上1张空白阵法卡才能发动。将1张阵法卡从副卡组送去灰烬区，销毁那张空白阵法卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 37
+      },
+      "illustrationId": "v260-analytic-0036",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "unravel"
+      }
+    },
+    {
+      "id": "v260-analytic-0037",
+      "number": "020037",
+      "name": "土石喷发",
+      "type": "analytic",
+      "school": "transmutation",
+      "rarity": "common",
+      "rank": 5,
+      "cost": 5,
+      "castCost": 3,
+      "analysisTurns": 2,
+      "speed": 1,
+      "text": "对对方以及对方场上全部目标各造成10点钝击伤害。那之后，直到己方下个准备阶段开始时，对方施法槽数量减半。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 38
+      },
+      "illustrationId": "v260-analytic-0037",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\土石喷发.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0038",
+      "number": "020038",
+      "name": "弹射术",
+      "type": "analytic",
+      "school": "transmutation",
+      "rarity": "common",
+      "rank": 3,
+      "cost": 4,
+      "castCost": 1,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "将1张法术卡从己方解析区送去灰烬区，选择1个目标才能发动。对其造成10点钝击伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 39
+      },
+      "illustrationId": "v260-analytic-0038",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\弹射术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-analytic-0039",
+      "number": "020039",
+      "name": "加速术",
+      "type": "analytic",
+      "school": "transmutation",
+      "rarity": "legendary",
+      "rank": 6,
+      "cost": 6,
+      "castCost": 6,
+      "analysisTurns": 1,
+      "speed": 1,
+      "text": "获得1个额外的己方回合。那之后，直到下个回合结束阶段结束时，己方获得的荷载×2。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 40
+      },
+      "illustrationId": "v260-analytic-0039",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\加速术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0001",
+      "number": "030001",
+      "name": "火花术",
+      "type": "word",
+      "school": "evocation",
+      "rarity": "common",
+      "rank": 1,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "选择1个目标才能发动。对其造成3点火焰伤害。",
+      "flavor": "",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "fire",
+          "recipient": "target"
+        }
+      ],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 42
+      },
+      "illustrationId": "v260-word-0001",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "spark"
+      }
+    },
+    {
+      "id": "v260-word-0002",
+      "number": "030002",
+      "name": "魔能爆",
+      "type": "word",
+      "school": "evocation",
+      "rarity": "epic",
+      "rank": 1,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "选择1个目标才能发动，对其造成3点力场伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 43
+      },
+      "illustrationId": "v260-word-0002",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\魔能爆.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0003",
+      "number": "030003",
+      "name": "魔力扰动",
+      "type": "word",
+      "school": "conjuration",
+      "rarity": "common",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "获得3点临时荷载，使对方获得6点临时荷载。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 44
+      },
+      "illustrationId": "v260-word-0003",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "disrupt"
+      }
+    },
+    {
+      "id": "v260-word-0004",
+      "number": "030004",
+      "name": "法师之手",
+      "type": "word",
+      "school": "conjuration",
+      "rarity": "common",
+      "rank": 5,
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "选择对方解析区1张法术卡才能发动。将其移入己方解析区。己方准备阶段结束时，返回对方解析区。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 45
+      },
+      "illustrationId": "v260-word-0004",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\法师之手.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0005",
+      "number": "030005",
+      "name": "瞬发回路过载",
+      "type": "word",
+      "school": "conjuration",
+      "rarity": "epic",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "选择己方解析区1张解析法术卡才能发动。使其解析时间-2，获得其实际设置费用的临时荷载。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 46
+      },
+      "illustrationId": "v260-word-0005",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "instant-circuit-overload"
+      }
+    },
+    {
+      "id": "v260-word-0006",
+      "number": "030006",
+      "name": "奥术复苏",
+      "type": "word",
+      "school": "abjuration",
+      "rarity": "legendary",
+      "rank": 1,
+      "cost": 1,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "获得3点魔素和3点独立荷载。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 47
+      },
+      "illustrationId": "v260-word-0006",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "arcane-recovery"
+      }
+    },
+    {
+      "id": "v260-word-0007",
+      "number": "030007",
+      "name": "支援术",
+      "type": "word",
+      "school": "abjuration",
+      "rarity": "common",
+      "rank": 1,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "获得3点临时生命值。",
+      "flavor": "",
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 3,
+          "recipient": "owner"
+        }
+      ],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 48
+      },
+      "illustrationId": "v260-word-0007",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "aid"
+      }
+    },
+    {
+      "id": "v260-word-0008",
+      "number": "030008",
+      "name": "心如止水",
+      "type": "word",
+      "school": "abjuration",
+      "rarity": "common",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "将1张卡从手卡送去灰烬区才能发动。清除己方全部临时荷载。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 49
+      },
+      "illustrationId": "v260-word-0008",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "clarity"
+      }
+    },
+    {
+      "id": "v260-word-0009",
+      "number": "030009",
+      "name": "扰神曲",
+      "type": "word",
+      "school": "abjuration",
+      "rarity": "uncommon",
+      "rank": 3,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 3,
+      "text": "直到下个己方主要阶段开始时，双方不可维持专注。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 50
+      },
+      "illustrationId": "v260-word-0009",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\扰神曲.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0010",
+      "number": "030010",
+      "name": "降咒",
+      "type": "word",
+      "school": "necromancy",
+      "rarity": "uncommon",
+      "rank": 3,
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "直到下个己方抽卡阶段开始时，对方每发动1张言灵法术卡，使对方受到2点暗蚀伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 51
+      },
+      "illustrationId": "v260-word-0010",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\降咒.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0011",
+      "number": "030011",
+      "name": "七彩喷射",
+      "type": "word",
+      "school": "illusion",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 5,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "选择1个目标才能发动。对其造成5点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣/光耀中选择。那之后，直到此回合结束阶段结束时，对方不可选择己方为法术卡的目标。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 52
+      },
+      "illustrationId": "v260-word-0011",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\七彩喷射.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0012",
+      "number": "030012",
+      "name": "幽影刃",
+      "type": "word",
+      "school": "illusion",
+      "rarity": "rare",
+      "rank": 3,
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "对对方造成5点心灵伤害。",
+      "flavor": "",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 5,
+          "damageType": "psychic",
+          "recipient": "opponent"
+        }
+      ],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 53
+      },
+      "illustrationId": "v260-word-0012",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\幽影刃.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0013",
+      "number": "030013",
+      "name": "不谐低语",
+      "type": "word",
+      "school": "enchantment",
+      "rarity": "uncommon",
+      "rank": 2,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "选择1个目标才能发动。对其造成3点心灵伤害。那之后，可以将对方解析区1张盖伏卡弹回持有者手卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 54
+      },
+      "illustrationId": "v260-word-0013",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\不谐低语.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0014",
+      "number": "030014",
+      "name": "脆弱诅咒",
+      "type": "word",
+      "school": "enchantment",
+      "rarity": "uncommon",
+      "rank": 6,
+      "cost": 6,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "此回合，对方受到的伤害+3。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 55
+      },
+      "illustrationId": "v260-word-0014",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\脆弱诅咒.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0015",
+      "number": "030015",
+      "name": "命令术",
+      "type": "word",
+      "school": "enchantment",
+      "rarity": "epic",
+      "rank": 4,
+      "cost": 5,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "选择以下1个效果对对方适用：◎将1张卡从卡组最上方送去灰烬区；◎将1张法术卡从解析区送去灰烬区；◎将1张卡从手卡送去灰烬区。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 56
+      },
+      "illustrationId": "v260-word-0015",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\命令术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0016",
+      "number": "030016",
+      "name": "恶言相加",
+      "type": "word",
+      "school": "enchantment",
+      "rarity": "rare",
+      "rank": 1,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "选择1个目标才能发动。对其造成3点心灵伤害。",
+      "flavor": "",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "psychic",
+          "recipient": "target"
+        }
+      ],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 57
+      },
+      "illustrationId": "v260-word-0016",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\恶言相加.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0017",
+      "number": "030017",
+      "name": "克敌机先",
+      "type": "word",
+      "school": "divination",
+      "rarity": "rare",
+      "rank": 3,
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "将1张法术卡从手卡送去灰烬区才能发动。将1张与那张卡同派系的法术卡从卡组加入手卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 58
+      },
+      "illustrationId": "v260-word-0017",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "true-strike"
+      }
+    },
+    {
+      "id": "v260-word-0018",
+      "number": "030018",
+      "name": "奥术回想",
+      "type": "word",
+      "school": "divination",
+      "rarity": "epic",
+      "rank": 1,
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "抽2张卡，获得2点独立荷载。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 59
+      },
+      "illustrationId": "v260-word-0018",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "recall"
+      }
+    },
+    {
+      "id": "v260-word-0019",
+      "number": "030019",
+      "name": "异界探知",
+      "type": "word",
+      "school": "divination",
+      "rarity": "common",
+      "rank": 3,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "将1张卡从手卡送去灰烬区才能发动。查看对方卡组最上方的3张卡，将其中1张送去灰烬区，其余卡返回卡组最下方。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 60
+      },
+      "illustrationId": "v260-word-0019",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\异界探知.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0020",
+      "number": "030020",
+      "name": "卜筮术",
+      "type": "word",
+      "school": "divination",
+      "rarity": "common",
+      "rank": 1,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "将1张卡从手卡送去灰烬区才能发动。查看己方卡组最上方的3张卡，将其中1张加入手卡，其余卡返回卡组最下方。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 61
+      },
+      "illustrationId": "v260-word-0020",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\卜筮术.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-word-0021",
+      "number": "030021",
+      "name": "强化属性",
+      "type": "word",
+      "school": "transmutation",
+      "rarity": "common",
+      "rank": 5,
+      "cost": 7,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "获得10点临时生命值。",
+      "flavor": "",
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 10,
+          "recipient": "owner"
+        }
+      ],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 62
+      },
+      "illustrationId": "v260-word-0021",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\强化属性.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-talisman-0001",
+      "number": "040001",
+      "name": "炼狱叱喝",
+      "type": "talisman",
+      "school": "evocation",
+      "rarity": "common",
+      "rank": 5,
+      "cost": 0,
+      "castCost": 5,
+      "analysisTurns": 0,
+      "speed": 3,
+      "text": "己方受到伤害时才能发动。对对方造成等量火焰伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 64
+      },
+      "illustrationId": "v260-talisman-0001",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\炼狱叱喝.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-talisman-0002",
+      "number": "040002",
+      "name": "捕获打击",
+      "type": "talisman",
+      "school": "conjuration",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 0,
+      "castCost": 5,
+      "analysisTurns": 0,
+      "speed": 3,
+      "text": "对方发动穿刺/挥砍/钝击伤害法术卡时才能发动。将其无效并盖伏在己方解析区。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 65
+      },
+      "illustrationId": "v260-talisman-0002",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\捕获打击.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-talisman-0003",
+      "number": "040003",
+      "name": "护盾术",
+      "type": "talisman",
+      "school": "abjuration",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 0,
+      "castCost": 3,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "此回合，每次受到的伤害-3。若为力场伤害，则-6。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 66
+      },
+      "illustrationId": "v260-talisman-0003",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "shield"
+      }
+    },
+    {
+      "id": "v260-talisman-0004",
+      "number": "040004",
+      "name": "法术反制",
+      "type": "talisman",
+      "school": "abjuration",
+      "rarity": "legendary",
+      "rank": 5,
+      "cost": 0,
+      "castCost": "X",
+      "analysisTurns": 0,
+      "speed": 4,
+      "text": "对方发动法术卡时才能发动。将其无效并销毁。X为被连锁法术卡的实际设置和发动费用之和。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 67
+      },
+      "illustrationId": "v260-talisman-0004",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "counter-spell"
+      }
+    },
+    {
+      "id": "v260-talisman-0005",
+      "number": "040005",
+      "name": "避火咒",
+      "type": "talisman",
+      "school": "abjuration",
+      "rarity": "epic",
+      "rank": 4,
+      "cost": 0,
+      "castCost": 2,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "专注2。受到的火焰伤害减半，此效果不可叠加。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 68
+      },
+      "illustrationId": "v260-talisman-0005",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "protective-flame"
+      }
+    },
+    {
+      "id": "v260-talisman-0006",
+      "number": "040006",
+      "name": "解除魔法",
+      "type": "talisman",
+      "school": "abjuration",
+      "rarity": "common",
+      "rank": 3,
+      "cost": 0,
+      "castCost": 3,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "对方设置法术卡时才能发动。将其无效并弹回持有者手卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 69
+      },
+      "illustrationId": "v260-talisman-0006",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\解除魔法.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-talisman-0007",
+      "number": "040007",
+      "name": "死佑护甲",
+      "type": "talisman",
+      "school": "necromancy",
+      "rarity": "epic",
+      "rank": 2,
+      "cost": 0,
+      "castCost": 3,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "计时3。己方每受到3点伤害，使对方受到1点暗蚀伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 70
+      },
+      "illustrationId": "v260-talisman-0007",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\死佑护甲.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-talisman-0008",
+      "number": "040008",
+      "name": "步履维艰",
+      "type": "talisman",
+      "school": "illusion",
+      "rarity": "common",
+      "rank": 2,
+      "cost": 0,
+      "castCost": 3,
+      "analysisTurns": 0,
+      "speed": 3,
+      "text": "此回合，对方设置的全部解析法术卡的解析时间+1。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 71
+      },
+      "illustrationId": "v260-talisman-0008",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\步履维艰.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-talisman-0009",
+      "number": "040009",
+      "name": "银光锐语",
+      "type": "talisman",
+      "school": "enchantment",
+      "rarity": "epic",
+      "rank": 3,
+      "cost": 0,
+      "castCost": 5,
+      "analysisTurns": 0,
+      "speed": 3,
+      "text": "对方准备施法时才能发动。将其取消。那之后，可以将对方解析区1张解析法术卡弹回持有者手卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 72
+      },
+      "illustrationId": "v260-talisman-0009",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "barbs"
+      }
+    },
+    {
+      "id": "v260-talisman-0010",
+      "number": "040010",
+      "name": "滑稽魔盒",
+      "type": "talisman",
+      "school": "enchantment",
+      "rarity": "common",
+      "rank": 5,
+      "cost": 0,
+      "castCost": 4,
+      "analysisTurns": 0,
+      "speed": 3,
+      "text": "选择对方灰烬区1张阶级5以下的解析法术卡才能发动。将其盖伏在己方解析区。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 73
+      },
+      "illustrationId": "v260-talisman-0010",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "funny-box"
+      }
+    },
+    {
+      "id": "v260-talisman-0011",
+      "number": "040011",
+      "name": "侦测善恶",
+      "type": "talisman",
+      "school": "divination",
+      "rarity": "common",
+      "rank": 4,
+      "cost": 0,
+      "castCost": 5,
+      "analysisTurns": 0,
+      "speed": 4,
+      "text": "查看对方解析区1张盖伏卡，若为解析/言灵法术卡，将其返回持有者卡组；若为咒符法术卡，则将其送去灰烬区。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 74
+      },
+      "illustrationId": "v260-talisman-0011",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\侦测善恶.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-talisman-0012",
+      "number": "040012",
+      "name": "荆棘丛生",
+      "type": "talisman",
+      "school": "transmutation",
+      "rarity": "common",
+      "rank": 3,
+      "cost": 0,
+      "castCost": 3,
+      "analysisTurns": 0,
+      "speed": 2,
+      "text": "计时2。对方每设置/盖伏1张法术卡，使对方受到2点穿刺伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "worksheet": "卡表",
+        "row": 75
+      },
+      "illustrationId": "v260-talisman-0012",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\荆棘丛生.png"
+      },
+      "migration": {
+        "previousId": null
+      }
+    },
+    {
+      "id": "v260-seal-0001",
+      "number": "050001",
+      "name": "逆三角星符",
+      "type": "seal",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 3,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "/",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
+        "worksheet": "符文卡",
+        "row": 2
+      },
+      "illustrationId": "v260-seal-0001",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "conduit"
+      },
+      "attachToFormation": "魔素收入+1。",
+      "attachToSpell": "无效果。"
+    },
+    {
+      "id": "v260-seal-0002",
+      "number": "050002",
+      "name": "奥术圆环",
+      "type": "seal",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "/",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
+        "worksheet": "符文卡",
+        "row": 3
+      },
+      "illustrationId": "v260-seal-0002",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "ring"
+      },
+      "attachToFormation": "环位+2。",
+      "attachToSpell": "发动时，获得其实际设置费用的魔素。"
+    },
+    {
+      "id": "v260-seal-0003",
+      "number": "050003",
+      "name": "昂扬",
+      "type": "seal",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 2,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "/",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
+        "worksheet": "符文卡",
+        "row": 4
+      },
+      "illustrationId": "v260-seal-0003",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "uplift"
+      },
+      "attachToFormation": "阵法等级+1，环位+1，魔素收入-1。",
+      "attachToSpell": "发动费用+1，额外造成5点力场伤害。"
+    },
+    {
+      "id": "v260-formation-0001",
+      "number": "010001",
+      "name": "正十字",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "己方结束阶段开始时，恢复1点生命值。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 3
+      },
+      "illustrationId": "v260-formation-0001",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "解析区死灵派系法术卡×1＋魔素×1",
+      "level": 3,
+      "body": 2,
+      "rings": 2,
+      "capacity": 5,
+      "income": 2
+    },
+    {
+      "id": "v260-formation-0002",
+      "number": "010002",
+      "name": "逆十字",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "己方结束阶段开始时，失去1点生命值，获得3点临时生命值。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 4
+      },
+      "illustrationId": "v260-formation-0002",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "解析区死灵派系法术卡×1＋魔素×1",
+      "level": 3,
+      "body": 2,
+      "rings": 2,
+      "capacity": 5,
+      "income": 2
+    },
+    {
+      "id": "v260-formation-0003",
+      "number": "010003",
+      "name": "安卡十字",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "此阵法卡离场时才能发动。此阵法卡抹除。那之后，可以将1张阵法卡从己方灰烬区返回副卡组。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 5
+      },
+      "illustrationId": "v260-formation-0003",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "解析区死灵派系法术卡×1",
+      "level": 3,
+      "body": 2,
+      "rings": 1,
+      "capacity": 5,
+      "income": 1
+    },
+    {
+      "id": "v260-formation-0004",
+      "number": "010004",
+      "name": "恩格亚斯之星",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "1回合1次，此阵法卡上设置的解析法术卡的解析时间-1。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 6
+      },
+      "illustrationId": "v260-formation-0004",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "engeas-four-point-star"
+      },
+      "summonCondition": "解析完成的法术卡×1+魔素×3",
+      "level": 2,
+      "body": 1,
+      "rings": 1,
+      "capacity": 2,
+      "income": 2
+    },
+    {
+      "id": "v260-formation-0005",
+      "number": "010005",
+      "name": "元素之环",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "此阵法卡上设置的塑能法术卡造成的伤害+1。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 7
+      },
+      "illustrationId": "v260-formation-0005",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "elemental-ring"
+      },
+      "summonCondition": "解析完成的塑能派系法术卡×1＋魔素×1",
+      "level": 3,
+      "body": 2,
+      "rings": 2,
+      "capacity": 8,
+      "income": 1
+    },
+    {
+      "id": "v260-formation-0006",
+      "number": "010006",
+      "name": "混沌之环",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "此阵法卡上不可同时设置相同派系的法术卡。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 8
+      },
+      "illustrationId": "v260-formation-0006",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "chaos-ring"
+      },
+      "summonCondition": "解析完成的不同派系法术卡×2",
+      "level": 3,
+      "body": 2,
+      "rings": 5,
+      "capacity": 12,
+      "income": 1
+    },
+    {
+      "id": "v260-formation-0007",
+      "number": "010007",
+      "name": "阿克乌姆之弧",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "己方场上阵法卡被销毁时，可以将此阵法送去灰烬区作为替代。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 9
+      },
+      "illustrationId": "v260-formation-0007",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "reservoir"
+      },
+      "summonCondition": "手卡×2",
+      "level": 0,
+      "body": 1,
+      "rings": 0,
+      "capacity": 15,
+      "income": 0
+    },
+    {
+      "id": "v260-formation-0008",
+      "number": "010008",
+      "name": "硫磺",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "此阵法卡上仅可设置火焰伤害法术卡。己方每有1张法术卡从施法区进入灰烬区，对对方造成2点火焰伤害。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "blocked",
+      "effectBlockers": [
+        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "正式卡图未匹配"
+      ],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 10
+      },
+      "illustrationId": "v260-formation-0008",
+      "art": {
+        "status": "missing",
+        "source": null
+      },
+      "migration": {
+        "previousId": "sulfur"
+      },
+      "summonCondition": "解析完成的火焰伤害法术卡×2",
+      "level": 6,
+      "body": 2,
+      "rings": 6,
+      "capacity": 6,
+      "income": 3
+    },
+    {
+      "id": "v260-formation-0009",
+      "number": "010009",
+      "name": "基础法阵",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "无效果。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 12
+      },
+      "illustrationId": "v260-formation-0009",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\基础.png"
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "手卡×1",
+      "level": 1,
+      "body": 1,
+      "rings": 1,
+      "capacity": 5,
+      "income": 1
+    },
+    {
+      "id": "v260-formation-0010",
+      "number": "010010",
+      "name": "标准法阵",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "无效果。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 13
+      },
+      "illustrationId": "v260-formation-0010",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\标准.png"
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "【基础法阵】+魔素×2",
+      "level": 2,
+      "body": 2,
+      "rings": 2,
+      "capacity": 8,
+      "income": 2
+    },
+    {
+      "id": "v260-formation-0011",
+      "number": "010011",
+      "name": "强化法阵",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "无效果。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 14
+      },
+      "illustrationId": "v260-formation-0011",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\强化.png"
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "【标准法阵】+解析区法术卡×1",
+      "level": 3,
+      "body": 2,
+      "rings": 3,
+      "capacity": 10,
+      "income": 3
+    },
+    {
+      "id": "v260-formation-0012",
+      "number": "010012",
+      "name": "复合法阵",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "无效果。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 15
+      },
+      "illustrationId": "v260-formation-0012",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\复合.png"
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "【基础法阵】+【强化法阵】",
+      "level": 4,
+      "body": 2,
+      "rings": 3,
+      "capacity": 10,
+      "income": 4
+    },
+    {
+      "id": "v260-formation-0013",
+      "number": "010013",
+      "name": "增幅法阵",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "无效果。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 16
+      },
+      "illustrationId": "v260-formation-0013",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\增幅.png"
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "【基础法阵】+【强化法阵】+解析区塑能/咒法派系法术卡×1",
+      "level": 5,
+      "body": 3,
+      "rings": 5,
+      "capacity": 15,
+      "income": 5
+    },
+    {
+      "id": "v260-formation-0014",
+      "number": "010014",
+      "name": "守护法阵",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "无效果。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 17
+      },
+      "illustrationId": "v260-formation-0014",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\守护.png"
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "【基础法阵】+【强化法阵】+解析区防护/死灵派系法术卡×1",
+      "level": 5,
+      "body": 3,
+      "rings": 5,
+      "capacity": 15,
+      "income": 5
+    },
+    {
+      "id": "v260-formation-0015",
+      "number": "010015",
+      "name": "幻象法阵",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "无效果。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 18
+      },
+      "illustrationId": "v260-formation-0015",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\幻象.png"
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "【复合法阵】+解析区幻术/惑控派系法术卡×1",
+      "level": 5,
+      "body": 3,
+      "rings": 5,
+      "capacity": 15,
+      "income": 5
+    },
+    {
+      "id": "v260-formation-0016",
+      "number": "010016",
+      "name": "高阶法阵",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "无效果。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 19
+      },
+      "illustrationId": "v260-formation-0016",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\高阶.png"
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "【增幅法阵】或【守护法阵】或【幻象法阵】+解析完成的法术卡×1+魔素×3",
+      "level": 6,
+      "body": 3,
+      "rings": 6,
+      "capacity": 18,
+      "income": 6
+    },
+    {
+      "id": "v260-formation-0017",
+      "number": "010017",
+      "name": "完美法阵",
+      "type": "formation",
+      "school": "",
+      "rarity": "",
+      "rank": null,
+      "cost": 0,
+      "castCost": 0,
+      "analysisTurns": 0,
+      "speed": 1,
+      "text": "无效果。",
+      "flavor": "",
+      "effects": [],
+      "implementationStatus": "structured-candidate",
+      "effectBlockers": [],
+      "source": {
+        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "worksheet": "阵法卡",
+        "row": 20
+      },
+      "illustrationId": "v260-formation-0017",
+      "art": {
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\完美.png"
+      },
+      "migration": {
+        "previousId": null
+      },
+      "summonCondition": "【高阶法阵】+解析完成的法术卡×2+魔素×5",
+      "level": 7,
+      "body": 4,
+      "rings": 7,
+      "capacity": 21,
+      "income": 7
+    }
+  ]
+}

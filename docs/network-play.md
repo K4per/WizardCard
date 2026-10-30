@@ -1,48 +1,44 @@
-# 真人联机（1.1.0-alpha 候选版）
+# 真人联机与协议 4
 
-首版支持两台 Windows 电脑同局域网或虚拟局域网直连。房主兼任权威主机，没有中心服务器。双方使用相同协议、规则、卡池与内容哈希；程序版本只用于诊断。
+当前产品使用 Godot 4.7.2 表现层和 C++17 权威规则。支持两台电脑同局域网或虚拟局域网直连；房主兼任权威端，不依赖中心服务器。双方必须同时更新，握手要求协议 4、规则 2.5.5、mechanicsRevision 9 及相同卡池内容哈希。
 
-## 操作
+## 操作与恢复
 
-1. 两人进入主菜单“真人联机”。房主确认端口（默认27861），选择“创建房间”。
-2. 客机输入房主网卡的IPv4地址和相同端口，选择“加入房间”。127.0.0.1仅用于同机测试；跨公网需先建立虚拟局域网。
-3. 各自选择合法卡组。房主选择先后手和空阶段自动通过；更改配置会清除双方准备状态。
-4. 双方点击“准备对战”。各设备固定本方视角，卡牌点选、拖放、成本选择和确认沿用本地对局。
-5. 设置仅影响本机操作与表现，后台仍收包；联机自动通过由房间统一控制。动画完成与否不会影响规则提交或连接心跳。
-6. 打开设置可投降或返回主菜单。普通退出先请求权威投降、保存记录；保存失败可重试或选择“明确退出”。房主退出后不会迁移主机。
+创建房间后选择端口（默认 27861），客机输入房主 IPv4、IPv6 或域名及相同端口。双方选择合法卡组并准备；房主可调整先后手和空阶段自动通过，更改配置会清除准备状态。页面与设置只影响本机表现，应用根层持续驱动网络、计时和自动动作。
 
-允许游戏通过 Windows 防火墙的专用网络；房主地址可通过系统网络设置查看。端口占用时换一个端口，双方保持一致。不要把虚拟局域网的建立与管理视为游戏功能。
+断线冻结决策时钟，2 秒心跳、6 秒超时、60 秒重连窗口。客机通过内存中的凭据重连；关闭程序后不保留凭据。重连获取稳定状态及事件 reset，清除旧查询，已发送而未确认的命令仍使用原序号重试。普通退出请求权威投降并保存记录；保存失败显示错误，保留权威会话，用户可重试或明确退出。
 
-断线冻结规则与决策，2秒心跳、6秒超时、60秒重连窗口。客机自动使用内存中的凭据重连；关闭程序后不保留凭据，不能恢复中断对局。重连恢复当前裁剪快照并清除旧选择、跳过历史动画。重连超时或房主关闭后可返回菜单。
+执行预算耗尽时，当前命令及其事件回滚，revision 增加并进入 technicalPaused；时钟保持冻结，普通取消暂停或重连不能恢复故障对局。权威端保留已接受命令及完整诊断，并在复盘旁保存 .diagnostic.json。保存失败时内存诊断保留，错误显示给用户。完整诊断和局中完整复盘不发送给客机。
 
-房主按接受命令保存复盘；客机在正常终局或投降后自动获取完整记录。局中客机保存按钮会明确提示不可获取完整复盘。断线中止不给客机完整记录。局内日志保留最近512条可见事件，完整复盘保留全部事件。
+## 会话接口
 
-## 模块复用
+Session 提供 viewFor、clockView、queryActions、submit、eventsSince、revision、tick 和 technicalPaused。稳定查看者投影按 revision 缓存；时钟单独读取。queryActions 的 ActionIntent 包含可选来源卡牌、分步选择及分页参数，查询不更改状态；完成后仍通过 submit 权威验证。
 
-`wizard_network` 是独立 C++17 库，只依赖规则、内容与纯交互库，没有 SFML 或 Godot 类型。`HostSession` 接收客机消息、验证命令并创建各席位快照；`GuestSession` 保存裁剪视图、请求及重连凭据。主机本人的操作也经过权威会话。客机不创建 `GameEngine`。客机的`submit`返回`pending=true`表示已排队，必须等待Accepted/View后再表现规则结果；本地与主机即时提交返回`pending=false`。
+HostSession 接收连接绑定的席位操作，不采用客机传入的 actor。GuestSession 只保存查看者投影、待确认命令、查询及重连凭据，不创建 GameEngine。Peer 组合会话、TCP、心跳与持久化。客机 submit 的 accepted=true,pending=true 仅表示传输已排队，需收到 Accepted 和 StateSnapshot 才能展示规则结果。
 
-`Peer` 组合会话、TCP、心跳与复盘持久化，提供 `host/join/tick/deck/configure/ready/submit/view/save/leave`。每帧调用 `tick`，页面和动画不得停止它。`Application::viewFor/actingPlayer/submit/saveReplay` 是 SFML 的共用对局入口；本地回放验收工具仍可访问原 `MatchSession`。
+## 传输
 
-Godot 接入首选将 `Peer` 封装进 GDExtension，以复制快照桥接脚本。纯会话层也可消费其他字节流适配器；替换 TCP 适配时沿用 `frame/Decoder` 及会话接口，不改变协议。Godot 页面、卡牌场景与特效待视觉方案确定后实施，不能把接口准备视为 Godot 已交付。
+大端 32 位长度前缀和 UTF-8 JSON 对象。单消息 1 MiB、接收缓冲 2 MiB、发送队列 4 MiB、嵌套深度 64。64 位标识使用十进制字符串。握手 Hello/Joined 校验协议、规则、卡池及内容哈希；程序版本只用于诊断。
 
-## 协议1
+- StateSnapshot：开始、重连或 revision 改变时发送完整稳定投影，不带完整动作组合和累计事件。包括可见卡牌、待决策摘要、操作摘要及技术暂停标记。
+- ClockUpdate：至多每 250 ms 发送必要时钟数据；不会触发稳定状态重建。
+- ActionQuery/ActionOptions：按需查询，requestId 与命令 sequence 独立。响应绑定会话、generation、revision、查看者和待决策 ID，旧响应直接丢弃。
+- EventBatch：使用查看者独立 epoch/base/next 游标；私密事件不推进另一位玩家游标。游标失效返回 reset 和最近 512 条可见事件，重复包不重复呈现。
+- Command/Accepted/Rejected：命令包含会话、sequence、requestId、revision、待决策 ID。保留最近 256 个结果，重复请求返回原结果，更旧或乱序请求拒绝。
 
-大端32位长度前缀 + UTF-8 JSON对象。单消息1MiB，接收缓冲2MiB，发送队列4MiB，JSON最大嵌套64层。传输每次轮询处理有上限，避免阻塞界面。64位标识使用十进制字符串；卡牌定义从已校验的本地卡池查询。
+其余消息为 Room/Deck/Ready、Heartbeat、Resume/Resumed、Replay、ReplayBegin/ReplayChunk/ReplayComplete/ReplayReceived、End/Error。正常终局后完整复盘每块 64 KiB、总上限 32 MiB；客机重放验证通过才保存并确认。权威房主持有完整状态，当前直连模式不提供针对恶意房主的反作弊或互联网身份认证。
 
-消息包括 Hello/Joined、Room/Deck/Ready、View、Command/Accepted/Rejected、Heartbeat、Resume/Resumed、Replay、ReplayBegin/ReplayChunk/ReplayComplete/ReplayReceived、End/Error。握手验证协议、规则、卡池及内容哈希。连接绑定席位，命令含会话、序号、请求ID、revision、决策ID；不使用客机提供的actor。保留最近256次提交结果，重复请求返回原结果，更旧请求拒绝，不会重付费用。
+## 复盘格式 5
 
-View仅包含本方投影、合法动作和可见事件，不含种子、完整状态摘要或对手牌库/手牌。事件有稳定编号与`eventBase`，截断历史不会重复反馈。终局复盘分块传输，每块64KiB，总上限32MiB；收到后通过正常重放验证再保存，并向房主确认收到；正常关闭等待确认及发送队列排空。
+新记录显式保存 format=5、contentSchema=1、commandSchema=1、digestSchema=2、mechanicsRevision=9、规则和卡池版本、内容哈希、初始配置、种子、接受命令及逐步摘要。摘要不包含会话历史事件，使用带长度和类型标记的 `wizardcard-state-v6` 完整运行状态编码；format 4 仅通过专用旧摘要适配器验证。
 
-朋友对战以互信为边界：权威房主持有完整状态；协议不提供针对恶意房主的反作弊或互联网身份认证。
+仅保留 programVersion=2.5.5-hotfix.1、rulesVersion=2.5.5、同内容哈希的格式 4 导入；通过兼容摘要逐步验证，并使用当前规则执行器。更早版本、未知 schema 或内容不匹配明确拒绝。内部能力编译不改变原始卡池内容或哈希。
 
-## 验收命令
+## 验证
 
 ```powershell
-ctest --preset windows
-python tools/network_smoke.py --exe build/windows/Release/wizard_network_probe.exe --output build/network-probe-verified
-python tools/network_smoke.py --mode client --exe build/windows/Release/wizard_client.exe --output build/network-ui-verified
+ctest --test-dir build/headless -C Release --output-on-failure
+python tools/network_smoke.py --exe build/headless/Release/wizard_network_probe.exe --output build/network-probe-verified --scenario all
 ```
 
-探针运行两独立进程，覆盖正常终局、投降及重连。图形冒烟通过真实卡牌操作入口完成对局，同时打开设置，生成终局截图和审计结果。两者都检查双方复盘摘要一致；它们不能代替两台实体电脑和实际虚拟局域网验收。
-
-独立安装目录使用 `dist/WizardCard-1.1-alpha`，保留原1.0发行包。两机三局、虚拟局域网、人工视觉与声音验收通过前，不合入master、不宣称正式发行。
+网络探针运行两个独立进程，覆盖正常终局、投降和重连，并核对最终复盘摘要。自动化覆盖不能代替两台实体电脑和实际虚拟局域网验证。Godot 图形与选择交互的验证命令见对应工具链说明。

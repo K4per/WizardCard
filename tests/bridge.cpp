@@ -1,7 +1,6 @@
 #include "wizard/bridge.hpp"
 #include "wizard/network.hpp"
 #include <catch2/catch_test_macros.hpp>
-#include <chrono>
 #include <fstream>
 #include <limits>
 using namespace wizard;
@@ -9,7 +8,7 @@ namespace {
 struct Fixture {
     const std::filesystem::path assets{std::filesystem::path(WIZARD_SOURCE_DIR) / "assets"};
     const std::filesystem::path directory{std::filesystem::path(WIZARD_SOURCE_DIR) / "build" / "v15" /
-        ("bridge-test-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()))};
+        ("bridge-test-" + net::token())};
     bridge::LocalSession bridge;
     Fixture() {
         REQUIRE(bridge.initialize(assets, directory).at("ok") == true);
@@ -22,8 +21,24 @@ struct Fixture {
         auto v = bridge.snapshot(0).at("data");
         return bridge.snapshot(v.at("actingPlayer").get<int>()).at("data");
     }
-    Json select(const Json &v, std::size_t i = 0) {
-        return bridge.selectAction(v.at("viewer"), v.at("actions").at(i).at("id"), v.at("generation"), v.at("revision"));
+    Json completeIntent(const Json &v, int operation = -1) {
+        Json intent{{"source", "0"}, {"selections", Json::array()}};
+        if (operation >= 0) intent["selections"].push_back({{"field", static_cast<int>(ActionField::Operation)}, {"value", std::to_string(operation)}});
+        for (int depth = 0; depth < 32; ++depth) {
+            const auto response = bridge.queryActions(v.at("viewer"), intent, v.at("generation"), v.at("revision"));
+            INFO(response.dump()); REQUIRE(response.at("ok") == true);
+            const auto &query = response.at("data");
+            if (!query.at("complete").is_null()) return intent;
+            REQUIRE_FALSE(query.at("options").empty());
+            auto option = query.at("options").front();
+            if (query.at("field") == static_cast<int>(ActionField::Operation))
+                for (const auto &candidate : query.at("options")) if (candidate.at("value") != std::to_string(static_cast<int>(CommandKind::Surrender))) { option = candidate; break; }
+            intent["selections"].push_back({{"field", query.at("field")}, {"value", option.at("value")}});
+        }
+        FAIL("query did not complete"); return intent;
+    }
+    Json select(const Json &v, int operation = -1) {
+        return bridge.selectIntent(v.at("viewer"), completeIntent(v, operation), v.at("generation"), v.at("revision"));
     }
     Json confirm(const Json &v) { return bridge.confirmAction(v.at("generation"), v.at("revision")); }
 };
@@ -55,7 +70,7 @@ TEST_CASE("bridge presentation batches contain only filtered references and neve
     std::size_t cuesSeen{};
     for (int step = 0; step < 24; ++step) {
         const auto before = f.actingView();
-        if (before.at("actions").empty()) break;
+        if (!before.at("actionSummary").at("actionable").get<bool>()) break;
         REQUIRE(f.select(before).at("ok") == true);
         const auto response = f.confirm(before);
         REQUIRE(response.at("ok") == true);
@@ -93,8 +108,8 @@ TEST_CASE("bridge rejects invalid actors actions generations and malformed start
     Fixture f; const auto v = f.actingView();
     REQUIRE(f.bridge.snapshot(-1).at("ok") == false);
     REQUIRE(f.bridge.snapshot(2).at("ok") == false);
-    REQUIRE(f.bridge.selectAction(v.at("viewer"), "made-up", v.at("generation"), v.at("revision")).at("ok") == false);
-    REQUIRE(f.bridge.selectAction(v.at("viewer"), v.at("actions").at(0).at("id"), "0", v.at("revision")).at("ok") == false);
+    REQUIRE(f.bridge.selectIntent(v.at("viewer"), Json{{"selections", {{{"field", 99}, {"value", "made-up"}}}}}, v.at("generation"), v.at("revision")).at("ok") == false);
+    REQUIRE(f.bridge.selectIntent(v.at("viewer"), Json::object(), "0", v.at("revision")).at("ok") == false);
     REQUIRE(f.bridge.start(Json{{"seed", -1}}).at("ok") == false);
     REQUIRE(f.bridge.start(Json{{"players", Json::array()}}).at("ok") == false);
     REQUIRE(f.actingView() == v);
@@ -118,10 +133,7 @@ TEST_CASE("bridge release reinitialize and restart invalidate old UI handles") {
     REQUIRE(f.actingView().at("generation") != old.at("generation"));
     REQUIRE(f.confirm(old).at("ok") == false);
     const auto v = f.actingView();
-    std::size_t surrender{};
-    for (; surrender < v.at("actions").size(); ++surrender)
-        if (v.at("actions").at(surrender).at("command").at("type") == 11) break;
-    REQUIRE(f.select(v, surrender).at("ok") == true); REQUIRE(f.confirm(v).at("ok") == true);
+    REQUIRE(f.select(v, static_cast<int>(CommandKind::Surrender)).at("ok") == true); REQUIRE(f.confirm(v).at("ok") == true);
     REQUIRE(f.bridge.restart(43).at("ok") == true);
     REQUIRE(f.actingView().at("generation") != v.at("generation"));
 }
@@ -234,19 +246,29 @@ TEST_CASE("bridge retains accepted state after replay save failure") {
     std::filesystem::remove(file);
     REQUIRE(f.bridge.saveReplay().at("ok") == true);
 }
-TEST_CASE("Alpha program whitelist retains every content and digest compatibility gate") {
-    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
-    const auto legacy = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-replay.json");
-    REQUIRE(legacy.at("programVersion") == "1.0.0-alpha");
-    REQUIRE(replay(content, legacy).digest() == legacy.at("finalDigest"));
-    MatchSession session(content, 42);
-    REQUIRE(session.submit(session.engine().state().active, Surrender{}).accepted);
-    auto record = session.recording();
-    for (const auto *version : {"1.0.0-alpha", "1.1.0-alpha"}) {
-        record["programVersion"] = version;
-        REQUIRE(replay(content, record).digest() == session.engine().digest());
+TEST_CASE("local replay autosave batches full history writes and flushes each thirty second command") {
+    Fixture f;
+    const auto path = std::filesystem::u8path(
+        f.bridge.saveReplay().at("data").at("path").get<std::string>());
+    REQUIRE(readJson(path).at("commands").size() == 0);
+    for (int command = 1; command <= 32; ++command) {
+        const auto view = f.actingView();
+        REQUIRE(f.select(view).at("ok") == true);
+        const auto result = f.confirm(view);
+        REQUIRE(result.at("ok") == true);
+        REQUIRE_FALSE(result.at("data").at("pending").get<bool>());
+        if (command == 1) CHECK(readJson(path).at("commands").size() == 1);
+        if (command > 1 && command < 32) CHECK(readJson(path).at("commands").size() == 1);
+        if (command == 32) CHECK(readJson(path).at("commands").size() == 32);
     }
-    for (const auto *key : {"programVersion", "rulesVersion", "cardSetVersion", "contentHash", "finalDigest"}) {
+}
+TEST_CASE("bridge current replay compatibility gates reject unsupported rules") {
+    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    MatchSession session(content, 42);
+    REQUIRE(session.submit(0, Surrender{}).accepted);
+    const auto record = session.recording();
+    REQUIRE(replay(content, record).digest() == session.engine().digest());
+    for (const auto *key : {"rulesVersion", "cardSetVersion", "contentHash", "finalDigest"}) {
         auto bad = record; bad[key] = "unknown"; REQUIRE_THROWS(replay(content, bad));
     }
     auto bad = record; bad["commands"][0]["digest"] = "tampered"; REQUIRE_THROWS(replay(content, bad));
@@ -255,7 +277,7 @@ TEST_CASE("Alpha program whitelist retains every content and digest compatibilit
 
 TEST_CASE("bridge local library preserves Chinese names and unknown IDs through atomic drafts") {
     Fixture f;
-    auto draft = f.bridge.createDraft("default", 2).at("data");
+    auto draft = f.bridge.createDraft("default", 3).at("data");
     draft["name"] = "中文草稿 · 修复";
     draft["cards"]["removed-card-id"] = 1;
     REQUIRE_FALSE(f.bridge.validateDraft(draft).at("data").at("problems").empty());
@@ -274,42 +296,34 @@ TEST_CASE("bridge local library preserves Chinese names and unknown IDs through 
     REQUIRE(f.bridge.library().at("data").at("drafts").at(0) == saved);
 }
 
-TEST_CASE("bridge interaction reuses target and confirmation without mutation or truncated IDs") {
-    Fixture f;
-    auto v = f.actingView();
-    for (int n = 0; n < 30 && v.at("phase") != static_cast<int>(Phase::Main); ++n) {
-        REQUIRE(f.select(v).at("ok") == true); REQUIRE(f.confirm(v).at("ok") == true);
-        v = f.actingView();
-    }
-    REQUIRE(v.at("phase") == static_cast<int>(Phase::Main));
-    while (!v.at("actions").empty() && v.at("actions").at(0).at("source") == "0") {
-        REQUIRE(f.select(v).at("ok") == true);
-        REQUIRE(f.confirm(v).at("ok") == true);
-        v = f.actingView();
-    }
-    auto request = [&](Json command) { return f.bridge.interact(v.at("viewer"), command, v.at("generation"), v.at("revision")); };
-    REQUIRE(request(Json{{"operation", "select"}, {"card", "4294967297"}}).at("ok") == false);
-    REQUIRE(request(Json{{"operation", "select"}, {"card", "1x"}}).at("ok") == false);
-    Json selected;
-    for (const auto &action : v.at("actions")) {
-        if (action.at("source") == "0") continue;
-        const auto result = request(Json{{"operation", "select"}, {"card", action.at("source")}});
-        if (result.at("ok") == true && !result.at("data").at("groups").empty()) { selected = result.at("data"); break; }
-    }
-    REQUIRE_FALSE(selected.is_null());
-    selected = request(Json{{"operation", "activate"}, {"group", 0}}).at("data");
-    for (int n = 0; n < 4 && selected.at("pending").is_null(); ++n) {
-        REQUIRE_FALSE(selected.at("candidates").empty());
-        selected = request(Json{{"operation", "pick"}, {"card", selected.at("candidates").at(0)}}).at("data");
-    }
-    REQUIRE_FALSE(selected.at("pending").is_null());
+TEST_CASE("bridge incremental queries are read only and bound to exact contexts") {
+    Fixture f; const auto v = f.actingView();
+    const auto initial = f.bridge.eventsSince(v.at("viewer"), "0", "0").at("data");
+    const auto intent = f.completeIntent(v);
+    const auto query = f.bridge.queryActions(v.at("viewer"), intent, v.at("generation"), v.at("revision"));
+    REQUIRE(query.at("ok") == true);
+    const auto &queryData = query.at("data");
+    const std::string decisionId = v.at("decision").is_object()
+        ? v.at("decision").at("id").get<std::string>()
+        : v.value("opening", false) ? "opening" : "0";
+    REQUIRE(queryData.at("schema") == bridge::schemaVersion);
+    REQUIRE(queryData.at("generation") == v.at("generation"));
+    REQUIRE(queryData.at("revision") == v.at("revision"));
+    REQUIRE(queryData.at("viewer") == v.at("viewer"));
+    REQUIRE(queryData.at("decisionId") == decisionId);
     REQUIRE(f.actingView() == v);
-    REQUIRE(f.bridge.pause(true).at("ok") == true);
-    REQUIRE(request(Json{{"operation", "activate"}, {"group", 0}}).at("ok") == false);
-    REQUIRE(f.bridge.pause(false).at("ok") == true);
-    REQUIRE(f.confirm(v).at("ok") == true);
+    REQUIRE_FALSE(v.contains("actions")); REQUIRE_FALSE(v.contains("events"));
+    REQUIRE(v.at("schema") == bridge::schemaVersion);
+    REQUIRE(f.bridge.selectIntent(v.at("viewer"), intent, v.at("generation"), v.at("revision")).at("ok") == true);
+    REQUIRE(f.bridge.cancelAction().at("ok") == true);
     REQUIRE(f.confirm(v).at("ok") == false);
-    REQUIRE(request(Json{{"operation", "select"}, {"card", "1"}}).at("ok") == false);
+    REQUIRE(f.actingView() == v);
+    REQUIRE(f.bridge.eventsSince(v.at("viewer"), initial.at("epoch"), initial.at("next")).at("data").at("events").empty());
+    REQUIRE(f.select(v).at("ok") == true); REQUIRE(f.confirm(v).at("ok") == true);
+    REQUIRE(f.bridge.queryActions(v.at("viewer"), intent, v.at("generation"), v.at("revision")).at("ok") == false);
+    const auto now = f.bridge.snapshot(v.at("viewer")).at("data");
+    const auto idle = f.bridge.pollMatch(v.at("viewer"), now.at("generation"), now.at("revision")).at("data");
+    REQUIRE_FALSE(idle.contains("snapshot")); REQUIRE(idle.contains("clock"));
 }
 
 TEST_CASE("bridge local settings and leave preserve match on persistence failure") {
@@ -374,6 +388,7 @@ TEST_CASE("v2.5 command DTO and wire codec retain opening recipe materials targe
         for (const auto &[key, value] : dto.items()) {
             if (key == "type" || key == "release" || key == "ability" || key == "ringIndex" || key == "skipCast") continue;
             if (value.is_array()) for (const auto &id : value) REQUIRE(id.is_string());
+            else if (key == "option") { REQUIRE(value.at("kind").is_number_integer()); REQUIRE(value.at("value").is_string()); }
             else REQUIRE(value.is_string());
         }
     }

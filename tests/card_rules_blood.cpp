@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/core/card_rules.hpp"
 #include "wizard/core/engine.hpp"
 #include "wizard/core/rules.hpp"
@@ -12,7 +13,7 @@ namespace {
 CardCatalog bloodCatalog() {
     return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog;
 }
-CardInstance &bloodCard(GameState &s, CardId id, const char *definition, PlayerId owner, Zone zone,
+CardInstance &bloodCard(MutationContext &s, CardId id, const char *definition, PlayerId owner, Zone zone,
                         SpellState spell = SpellState::None, CardId host = 0) {
     CardInstance card;
     card.id = id; card.definition = definition; card.owner = owner; card.zone = zone;
@@ -26,7 +27,7 @@ CardInstance &bloodCard(GameState &s, CardId id, const char *definition, PlayerI
 TEST_CASE("Alpha v2.5.4 blood life limits clamp and continuous blood mark does not heal on removal",
           "[card-rules][blood][life-limit]") {
     const auto cat = bloodCatalog();
-    GameState s;
+    MutationContext s;
     s.players[0].life = 40;
     card_rules::changeLifeLimit(s, cat, 0, -5);
     CHECK(card_rules::lifeLimit(s, cat, 0) == 35);
@@ -53,7 +54,7 @@ TEST_CASE("Alpha v2.5.4 blood life limits clamp and continuous blood mark does n
 TEST_CASE("Alpha v2.5.4 blood payment leaves one life and permits mixed mana and life",
           "[card-rules][blood][payment]") {
     const auto cat = bloodCatalog();
-    GameState s;
+    MutationContext s;
     s.players[0].mana = 1;
     s.players[0].life = 8;
     bloodCard(s, 1, "blood-altar", 0, Zone::Analysis);
@@ -64,7 +65,7 @@ TEST_CASE("Alpha v2.5.4 blood payment leaves one life and permits mixed mana and
     CHECK_FALSE(card_rules::canPayLife(s, 0, 8));
     CHECK(card_rules::canPayLife(s, 0, 7));
 
-    s.selectedPayment = choices.front();
+    s.paymentInput = choices.front();
     card_rules::pay(s, cat, 0, 4);
     CHECK(s.players[0].mana == 0);
     CHECK(s.players[0].life == 2);
@@ -73,7 +74,7 @@ TEST_CASE("Alpha v2.5.4 blood payment leaves one life and permits mixed mana and
 TEST_CASE("Alpha v2.5.4 blood sacrifice table rewards only the first payment in a turn",
           "[card-rules][blood][payment]") {
     const auto cat = bloodCatalog();
-    GameState s;
+    MutationContext s;
     s.active = 0; s.globalTurn = 5; s.players[0].ownTurn = 2; s.players[0].life = 20;
     bloodCard(s, 1, "blood-sacrificial-table", 0, Zone::Analysis);
     bloodCard(s, 10, "spark", 0, Zone::Deck);
@@ -100,7 +101,7 @@ TEST_CASE("Alpha v2.5.4 blood sacrifice table rewards only the first payment in 
 TEST_CASE("Alpha v2.5.4 blood heart heals actual damage after temporary life absorption",
           "[card-rules][blood][heart]") {
     const auto cat = bloodCatalog();
-    GameState s;
+    MutationContext s;
     s.players[0].life = 20;
     s.players[1].life = 40;
     bloodCard(s, 1, "blood-heart", 0, Zone::Analysis);
@@ -117,7 +118,7 @@ TEST_CASE("Alpha v2.5.4 blood heart heals actual damage after temporary life abs
 TEST_CASE("Alpha v2.5.4 same origin propagates only positive healing once and terminates cycles",
           "[card-rules][blood][same-origin]") {
     const auto cat = bloodCatalog();
-    GameState s;
+    MutationContext s;
     s.players[0].life = 30;
     s.players[1].life = 38;
     bloodCard(s, 10, "blood-same-origin", 0, Zone::Analysis, SpellState::Active);
@@ -139,7 +140,7 @@ TEST_CASE("Alpha v2.5.4 same origin propagates only positive healing once and te
 TEST_CASE("Alpha v2.5.4 blood pool restores only temporary life that expires",
           "[card-rules][blood][temporary-life]") {
     const auto cat = bloodCatalog();
-    GameState s;
+    MutationContext s;
     s.active = 1; s.phase = Phase::End; s.phaseStep = PhaseStep::Body; s.phaseGate = 1;
     s.globalTurn = 5; s.players[0].ownTurn = 2; s.players[1].ownTurn = 2;
     s.players[0].life = 20; s.players[0].lifeLimit = 35;

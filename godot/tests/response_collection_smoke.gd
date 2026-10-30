@@ -1,12 +1,5 @@
 extends SceneTree
 
-class RecordingService extends FrontendService:
-	var submitted: Array[String] = []
-	func match_request(method: StringName, arguments: Array = []) -> Dictionary:
-		if method == &"select_action":
-			submitted.append(str(arguments[1]))
-		return {"ok": true, "data": {}}
-
 var _failures: int = 0
 
 func _initialize() -> void:
@@ -25,18 +18,22 @@ func _run() -> void:
 	var page: MatchPage = (load("res://pages/match_page.tscn") as PackedScene).instantiate() as MatchPage
 	root.add_child(page)
 	await _settle()
-	var service: RecordingService = RecordingService.new()
+	var service: QueryFixtureService = QueryFixtureService.new()
 	service.match_mode = "ai"
 	service.match_snapshot = {
 		"generation": "9007199254740993", "revision": "9007199254740995", "viewer": 0, "result": -1,
 		"players": [{"life": 40}, {"life": 40}], "cards": [],
 		"decision": {"id": "9007199254740997", "player": 0, "kind": 0},
-		"actions": [
+		"actionSummary": {"hasNonPhaseAction": true, "safeAdvance": {"type": KernelContract.CommandKind.PassResponse, "decision": "9007199254740997"}},
+	}
+	service.set_actions([
 			{"id": "respond", "source": "33", "command": {"type": 12, "decision": "9007199254740997"}},
 			{"id": "pass", "source": "0", "command": {"type": 13, "decision": "9007199254740997"}},
-		],
-	}
+		])
 	page.service = service
+	page._selection.service = service
+	page._selection.changed.connect(page._query_changed)
+	page._selection.completed.connect(page._query_completed)
 	page.canvas.configure(MatchProjection.field(service.match_snapshot))
 	page._status_own.set_status("我方", 0, {"life": 26, "lifeLimit": 34, "temporaryLife": 7, "sevenMode": 1})
 	_expect(page._status_own._life.text == "生命 26/34", "life limit is projected independently of ordinary life")
@@ -54,14 +51,16 @@ func _run() -> void:
 		page._toggle_hand()
 		await _settle()
 		_expect(page._decision.request.response_mode and page._decision.request.decision_id == "9007199254740997", "collapsed response survives %s browsing" % zone)
-		_expect(page._decision.request.pass_id == "pass", "native pass remains reachable after %s" % zone)
-		_expect(service.submitted.is_empty(), "browsing and collapse do not submit an action")
+		_expect(page._decision.request.pass_id == str(KernelContract.CommandKind.PassResponse), "native pass remains reachable after %s" % zone)
+		_expect(service.selected_actions.is_empty(), "browsing and collapse do not submit an action")
 	# The exact legal response still confirms after both collection clicks.
 	page._render_decision()
 	await _settle()
-	page._decision._options["respond"].button_pressed = true
+	page._decision._options[str(KernelContract.CommandKind.Respond)].button_pressed = true
 	page._decision._confirm.pressed.emit()
-	_expect(service.submitted == ["respond"], "response confirms its exact legal action")
+	page._decision._options["33"].button_pressed = true
+	page._decision._confirm.pressed.emit()
+	_expect(service.selected_actions == ["respond"], "response confirms its exact legal action")
 	page.queue_free()
 	await process_frame
 	print("Response collection smoke: %s" % ("PASS" if _failures == 0 else "FAIL"))

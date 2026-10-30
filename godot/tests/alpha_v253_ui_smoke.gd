@@ -121,11 +121,14 @@ func _native_debug_checks(match_page: MatchPage, replay_page: ReplayPage) -> voi
 		if bool(view.get("aiTurn", false)):
 			_expect(bool(bridge.step_ai(str(view.generation), str(view.revision)).get("ok", false)), "AI opening action")
 		else:
-			var actions: Array = view.get("actions", [])
-			_expect(not actions.is_empty(), "human opening has legal choice")
-			if actions.is_empty():
+			var intent: Dictionary = {"source": "0", "selections": [{"field": KernelContract.ActionField.Operation, "value": str(KernelContract.CommandKind.SelectInitialFormation)}], "offset": 0, "limit": 64}
+			var choices: Dictionary = bridge.query_actions(0, intent, str(view.generation), str(view.revision))
+			var choices_data: Dictionary = choices.get("data", {})
+			_expect(bool(choices.get("ok", false)) and not choices_data.get("options", []).is_empty(), "human opening has legal choice")
+			if not bool(choices.get("ok", false)) or choices_data.get("options", []).is_empty():
 				return
-			_expect(bool(bridge.select_action(0, str(actions[0].id), str(view.generation), str(view.revision)).get("ok", false)), "select initial formation")
+			intent.selections.append({"field": KernelContract.ActionField.Source, "value": str(choices_data["options"][0]["value"])})
+			_expect(bool(bridge.select_intent(0, intent, str(view.generation), str(view.revision)).get("ok", false)), "select initial formation")
 			_expect(bool(bridge.confirm_action(str(view.generation), str(view.revision)).get("ok", false)), "confirm initial formation")
 	var before: Dictionary = bridge.snapshot(0).get("data", {})
 	_expect(not bool(before.get("opening", true)), "opening completed")
@@ -133,10 +136,14 @@ func _native_debug_checks(match_page: MatchPage, replay_page: ReplayPage) -> voi
 	_expect(bool(bridge.debug_command({"operation": "gain_temporary_life", "player": 1, "amount": 6}).get("ok", false)), "debug adjusts opponent temporary life")
 	var current: Dictionary = bridge.snapshot(0).get("data", {})
 	match_page.canvas.configure(MatchProjection.field(current))
-	match_page._append_log_events(current)
+	var event_response: Dictionary = bridge.events_since(0, "0", "0")
+	var event_log: MatchEventLog = MatchEventLog.new()
+	event_log.reset(str(current.get("generation", "")), 0)
+	var update: Dictionary = event_log.ingest(event_response.get("data", {}))
+	match_page._events_changed(update)
 	var log_text: String = match_page._logs_text.get_parsed_text()
 	_expect(not log_text.is_empty(), "native event descriptions populate the match log")
-	match_page._append_log_events(current)
+	match_page._events_changed({"reset": false, "events": []})
 	_expect(match_page._logs_text.get_parsed_text() == log_text, "repeated snapshots do not duplicate log events")
 	# Reserve the widest legal hand fan while testing corner HUD clearance.
 	if not match_page.canvas.field.hand.is_empty():

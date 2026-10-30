@@ -1,0 +1,48 @@
+{
+  "id": "blood-coagulation",
+  "name": "血契·凝血",
+  "type": "talisman",
+  "rarity": "rare",
+  "cost": 3,
+  "castCost": 0,
+  "rank": 3,
+  "level": 3,
+  "speed": 2,
+  "number": "040017",
+  "illustrationId": "blood-coagulation",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [
+    {
+      "kind": "blood_pact_clot",
+      "amount": 4
+    }
+  ],
+  "text": "己方受到伤害时才能发动。免疫此次伤害。那之后，己方生命值上限-4，抽1张卡。",
+  "analysisTurns": 0,
+  "school": "abjuration",
+  "responseOnly": true,
+  "responses": [
+    {
+      "id": "blood_clot",
+      "name": "免疫此次伤害",
+      "sources": [
+        "ambush"
+      ],
+      "windows": [
+        "cast",
+        "trigger"
+      ],
+      "eventOwner": "opponent",
+      "target": "none",
+      "effects": [
+        {
+          "kind": "blood_pact_clot",
+          "amount": 4
+        }
+      ]
+    }
+  ]
+}

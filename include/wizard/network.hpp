@@ -10,6 +10,14 @@ namespace wizard::net {
 inline constexpr std::size_t maxMessage = 1024 * 1024, maxReceive = 2 * maxMessage, maxSend = 4 * maxMessage;
 Json encodeView(const GameView &);
 GameView decodeView(const Json &, const CardCatalog &);
+Json encodeClock(const MatchClockView &);
+MatchClockView decodeClock(Json);
+Json encodeEvents(const EventBatch &);
+EventBatch decodeEvents(const Json &);
+Json encodeIntent(const ActionIntent &);
+ActionIntent decodeIntent(const Json &);
+Json encodeOptions(const ActionOptions &);
+ActionOptions decodeOptions(const Json &);
 Json wireCommand(const Command &);
 Command unwireCommand(Json);
 std::uint64_t number(const Json &);
@@ -70,6 +78,15 @@ class HostSession {
         return session_;
     }
     Json snapshot(PlayerId) const;
+    Json clockUpdate() const;
+    Json eventUpdate(PlayerId, std::uint64_t epoch, std::uint64_t cursor) const;
+    EventBatch eventsSince(PlayerId p, std::uint64_t epoch, std::uint64_t cursor) const {
+        return match_ ? match_->eventsSince(p, epoch, cursor) : EventBatch{};
+    }
+    bool technicalPaused() const { return match_ && match_->technicalPaused(); }
+    const MatchClockView &clock() const { return match_->clock(); }
+    const Json &diagnostic() const;
+    ActionOptions queryActions(PlayerId, std::uint64_t generation, std::uint64_t revision, const ActionIntent &);
     Json room() const;
     Json recording() const;
     GameView view() const;
@@ -82,6 +99,11 @@ class GuestSession {
     GameView view_;
     Json room_;
     bool started_{}, resumed_{};
+    bool technicalPaused_{};
+    EventBatch events_;
+    std::uint64_t nextQuery_{1};
+    std::optional<Json> query_;
+    std::optional<ActionOptions> queryResult_;
 
   public:
     explicit GuestSession(Content c) : content_(std::move(c)) {}
@@ -111,6 +133,11 @@ class GuestSession {
     const GameView &view() const {
         return view_;
     }
+    bool technicalPaused() const { return technicalPaused_; }
+    EventBatch eventsSince(std::uint64_t epoch, std::uint64_t cursor) const;
+    Json query(std::uint64_t generation, std::uint64_t revision, const ActionIntent &);
+    std::optional<ActionOptions> queryResult(std::uint64_t generation, std::uint64_t revision,
+                                            const ActionIntent &) const;
     const Json &room() const {
         return room_;
     }
@@ -146,6 +173,7 @@ class Peer : public RoomSession {
     GameView view_;
     bool connected_{}, authenticated_{}, closing_{}, ended_{}, reset_{}, replayRequested_{}, departure_{};
     std::uint64_t revision_{}, sentRevision_{~std::uint64_t{0}};
+    std::uint64_t sentEventEpoch_{}, sentEventCursor_{};
     std::string address_, notice_, saveError_;
     std::string outgoingReplay_, incomingReplay_;
     std::shared_ptr<std::atomic_bool> replayValidationCanceled_;
@@ -164,6 +192,13 @@ class Peer : public RoomSession {
     explicit Peer(Content, std::filesystem::path);
     ~Peer() override;
     GameView viewFor(PlayerId) const override { return view_; }
+    MatchClockView clockView() const override { return view_.clock; }
+    EventBatch eventsSince(PlayerId, std::uint64_t epoch, std::uint64_t cursor) const override;
+    bool technicalPaused() const override {
+        return host_ ? host_->technicalPaused() : guest_ && guest_->technicalPaused();
+    }
+    ActionOptions queryActions(PlayerId, std::uint64_t generation, std::uint64_t revision,
+                               const ActionIntent &) override;
     CommandResult submit(PlayerId actor, const Command &command) override {
         if (!started() || actor != view_.viewer)
             return {false, "当前不是本机玩家", {}, {}, "wrong_player"};
@@ -204,7 +239,7 @@ class Peer : public RoomSession {
         return r;
     }
     bool blocked() const {
-        return !connected() || ended_ || closing_ || (guest_ && guest_->pending());
+        return !connected() || ended_ || closing_ || technicalPaused() || (guest_ && guest_->pending());
     }
     std::uint64_t revision() const {
         return revision_;

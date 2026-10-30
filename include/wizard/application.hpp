@@ -88,7 +88,7 @@ class Application {
         return bool(match_) || (network_ && network_->started());
     }
     bool paused() const {
-        return page_ != Page::Match || !hasMatch() || (network_ && network_->blocked());
+        return page_ != Page::Match || !hasMatch() || (network_ && network_->blocked()) || (match_ && match_->technicalPaused());
     }
     bool quitRequested() const {
         return quit_;
@@ -100,6 +100,13 @@ class Application {
     // Compatibility accessor for legacy offline tools; presentation uses viewFor.
     const MatchSession &match() const;
     GameView viewFor(PlayerId) const;
+    MatchClockView clock() const;
+    ActionOptions queryActions(PlayerId, std::uint64_t generation, std::uint64_t revision, const ActionIntent &);
+    EventBatch eventsSince(PlayerId, std::uint64_t epoch, std::uint64_t cursor) const;
+    bool technicalPaused() const;
+    bool saveDiagnostic(std::string &error) const;
+    void tick();
+    void visitActions(PlayerId, const std::function<bool(const LegalAction &)> &) const;
     PlayerId actingPlayer() const;
     RoomSession *network() {
         return network_.get();

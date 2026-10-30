@@ -15,8 +15,10 @@ import struct
 import subprocess
 from pathlib import Path
 
+from design_snapshot_archive import materialize_snapshot, snapshot_dir, snapshot_reference
+
 ROOT = Path(__file__).resolve().parents[1]
-SNAPSHOT = ROOT / "assets/design/alpha-v252"
+SNAPSHOT = snapshot_dir(ROOT, "alpha-v252")
 ART = ROOT / "assets/art/alpha-v252-20261021"
 SOURCES = {"spells": "法术列表.md", "seals": "符文列表.md", "formations": "阵法列表.md"}
 SCHOOLS = dict(zip("塑能 变化 咒法 惑控 幻术 防护 死灵 预言 阿卡那".split(),
@@ -181,11 +183,12 @@ def import_art(design_dir: Path | None, cards):
 
 
 def main():
+    global SNAPSHOT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--design-dir", type=Path)
     args = parser.parse_args()
     if args.design_dir:
-        SNAPSHOT.mkdir(parents=True, exist_ok=True)
+        SNAPSHOT = materialize_snapshot(ROOT, "alpha-v252")
         for filename in SOURCES.values():
             shutil.copyfile(args.design_dir / filename, SNAPSHOT / filename)
     baseline_path = SNAPSHOT / "previous-catalog.json"
@@ -256,7 +259,7 @@ def main():
     catalog["metadata"].update(rulesVersion="2.5.2", cardSetVersion="2.5.2", mechanicsRevision=5)
     save(ROOT / "assets/catalog.json", catalog)
     report = {"version": "2.5.2", "status": "imported", "designEntries": len(rows), "catalogDefinitions": len(cards),
-              "sources": {key: {"file": (SNAPSHOT / value).relative_to(ROOT).as_posix(), "sha256": digest(SNAPSHOT / value)} for key, value in SOURCES.items()},
+              "sources": {key: {"file": snapshot_reference(ROOT, "alpha-v252", value), "sha256": digest(SNAPSHOT / value)} for key, value in SOURCES.items()},
               "compatibilityOnlyIds": sorted(set(cards) - {row["stableId"] for row in rows}), "rows": rows}
     save(ROOT / "docs/reports/alpha-v2.5.2-card-pool-migration.json", report)
     lines = ["# Alpha v2.5.2 卡池迁移", "", f"设计快照 {len(rows)} 项全部映射至稳定 ID；正式卡池 {len(cards)} 张。三种十字阵法沿用 2.5.1，恩格亚斯四角星保留用于旧卡组兼容。", "", "| 设计名称 | ID | 编号 | 状态 | 插图 |", "|---|---|---|---|---|"]

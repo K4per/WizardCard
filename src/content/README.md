@@ -10,10 +10,11 @@ tests and `docs/card-design-guide.md` together when adding a field. Content and
 file IO have no network or application dependency.
 
 `wizard_codec` owns command encoding/decoding and integer range validation;
-variant order is the existing protocol contract. `wizard_replay` owns local
-sessions and accepted-command recordings. Replays validate content versions,
-hashes and every command's digest. Existing format 2 records remain compatible
-during the engineering phase; switching rules is a separate versioned change.
+command kinds use explicit stable identifiers. `wizard_replay` owns local
+sessions and accepted-command recordings. Format 5 records declare their
+content, command, and digest schemas and validate each accepted command. Format
+4 import is restricted to the current 2.5.5-hotfix.1 rules and uses a dedicated
+legacy digest adapter; it does not restore historical rule execution.
 
 `assets/catalog.json` and its listed files under `assets/cards/<type>/<id>.json`
 are the sole formal content sources. Edit one listed card file; run
@@ -25,10 +26,10 @@ The complete current field inventory is in `docs/card-schema.md`.
 
 `catalog.json.format` versions the manifest shape, not individual card JSON.
 `rulesVersion` identifies game semantics and `cardSetVersion` identifies the
-reviewed pool; `mechanicsRevision` selects supported parser/rule capabilities.
-They are independent fields. A definition or metadata change changes the
-canonical content hash used by replay compatibility. Replay format is currently
-selected by rules capability (2/3/4), rather than independently configured.
+reviewed pool. The production loader accepts only rules 2.5.5 with mechanics
+revision 9. A definition or metadata change changes the canonical content hash
+used by replay compatibility. Replay format versions independently from the
+rules implementation.
 Developer card packs use the independently versioned format documented in
 `docs/card-pack.md`. Player deck exchange uses `wizardcard-deck` version 1;
 its public shape and validation behavior are also documented there. Local deck

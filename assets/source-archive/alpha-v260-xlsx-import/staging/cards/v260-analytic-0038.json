@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0038",
+  "number": "020038",
+  "name": "弹射术",
+  "type": "analytic",
+  "school": "transmutation",
+  "rarity": "common",
+  "rank": 3,
+  "cost": 4,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "将1张法术卡从己方解析区送去灰烬区，选择1个目标才能发动。对其造成10点钝击伤害。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 39
+  },
+  "illustrationId": "v260-analytic-0038",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\弹射术.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

@@ -14,8 +14,10 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from design_snapshot_archive import materialize_snapshot, snapshot_dir
+
 ROOT = Path(__file__).resolve().parents[1]
-SNAPSHOT = ROOT / "assets/design/alpha-v253"
+SNAPSHOT = snapshot_dir(ROOT, "alpha-v253")
 SOURCE_FILES = {
     "spells": "法术列表-共29+14+6张卡.md",
     "sique": "【味契】系列-共19张卡.md",
@@ -345,12 +347,14 @@ def exclude_pending() -> None:
 
 
 def main() -> None:
+    global SNAPSHOT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--design-dir", type=Path, help="copy raw 10.22 sources into the reviewed snapshot")
     parser.add_argument("--apply-reviewed-fields", action="store_true", help="import explicit simple source fields and card text")
     parser.add_argument("--exclude-pending-cards", action="store_true", help="remove the three confirmed drafts from the formal catalog")
     args = parser.parse_args()
     if args.design_dir:
+        SNAPSHOT = materialize_snapshot(ROOT, "alpha-v253")
         snapshot_sources(args.design_dir)
     if args.exclude_pending_cards:
         exclude_pending()

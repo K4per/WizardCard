@@ -1,0 +1,40 @@
+{
+  "id": "v260-formation-0007",
+  "number": "010007",
+  "name": "阿克乌姆之弧",
+  "type": "formation",
+  "school": "",
+  "rarity": "",
+  "rank": null,
+  "cost": 0,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 1,
+  "text": "己方场上阵法卡被销毁时，可以将此阵法送去灰烬区作为替代。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+    "正式卡图未匹配"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "worksheet": "阵法卡",
+    "row": 9
+  },
+  "illustrationId": "v260-formation-0007",
+  "art": {
+    "status": "missing",
+    "source": null
+  },
+  "migration": {
+    "previousId": "reservoir"
+  },
+  "summonCondition": "手卡×2",
+  "level": 0,
+  "body": 1,
+  "rings": 0,
+  "capacity": 15,
+  "income": 0
+}

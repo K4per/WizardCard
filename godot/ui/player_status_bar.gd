@@ -9,6 +9,7 @@ var _life: Label
 var _temporary_life: Label
 var _mana: Label
 var _load: Label
+var _player_caption: String = ""
 
 func _ready() -> void:
 	var panel: StyleBoxFlat = StyleBoxFlat.new()
@@ -78,8 +79,8 @@ func set_status(player_name: String, player_index: int, values: Dictionary, load
 	if not is_node_ready():
 		return
 	var seven_mode: int = int(values.get("sevenMode", 0))
-	_name.text = player_name + (" · 耀" if seven_mode == 1 else (" · 黯" if seven_mode == 2 else "")) + (" · " + clock_text if not clock_text.is_empty() else "")
-	_name.add_theme_color_override(&"font_color", Color("f0aaaa") if clock_warning else Color("e7e6da"))
+	_player_caption = player_name + (" · 耀" if seven_mode == 1 else (" · 黯" if seven_mode == 2 else ""))
+	set_clock(clock_text, clock_warning)
 	var unlimited_life: bool = bool(debug.get("infiniteLife", values.get("infiniteLife", false)))
 	var unlimited_mana: bool = bool(debug.get("infiniteMana", values.get("infiniteMana", false)))
 	var unlimited_capacity: bool = bool(debug.get("infiniteLoad", values.get("infiniteLoad", false)))
@@ -110,3 +111,9 @@ func set_status(player_name: String, player_index: int, values: Dictionary, load
 	_life.tooltip_text = "当前生命 / 生命上限，不含临时生命。"
 	_temporary_life.tooltip_text = "临时生命；己方抽卡阶段清除。"
 	_mana.tooltip_text = "当前魔素 / 上限 20。"
+
+func set_clock(clock_text: String, warning: bool) -> void:
+	if _name == null:
+		return
+	_name.text = _player_caption + (" · " + clock_text if not clock_text.is_empty() else "")
+	_name.add_theme_color_override(&"font_color", Color("f0aaaa") if warning else Color("e7e6da"))

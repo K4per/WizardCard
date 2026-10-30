@@ -79,7 +79,12 @@ class WizardBridge : public godot::RefCounted {
         ClassDB::bind_method(D_METHOD("initialize", "assets", "user_directory"), &WizardBridge::initialize);
         ClassDB::bind_method(D_METHOD("start_match", "options"), &WizardBridge::start_match);
         ClassDB::bind_method(D_METHOD("snapshot", "viewer"), &WizardBridge::snapshot);
-        ClassDB::bind_method(D_METHOD("select_action", "viewer", "action_id", "generation", "revision"), &WizardBridge::select_action);
+        ClassDB::bind_method(D_METHOD("query_actions", "viewer", "intent", "generation", "revision"), &WizardBridge::query_actions);
+        ClassDB::bind_method(D_METHOD("select_intent", "viewer", "intent", "generation", "revision"), &WizardBridge::select_intent);
+        ClassDB::bind_method(D_METHOD("submit_command", "viewer", "command", "generation", "revision"), &WizardBridge::submit_command);
+        ClassDB::bind_method(D_METHOD("events_since", "viewer", "epoch", "cursor"), &WizardBridge::events_since);
+        ClassDB::bind_method(D_METHOD("poll_match", "viewer", "generation", "revision"), &WizardBridge::poll_match);
+        ClassDB::bind_method(D_METHOD("save_diagnostic"), &WizardBridge::save_diagnostic);
         ClassDB::bind_method(D_METHOD("confirm_action", "generation", "revision"), &WizardBridge::confirm_action);
         ClassDB::bind_method(D_METHOD("cancel_action"), &WizardBridge::cancel_action);
         ClassDB::bind_method(D_METHOD("debug_command", "request"), &WizardBridge::debug_command);
@@ -114,10 +119,22 @@ class WizardBridge : public godot::RefCounted {
     Dictionary snapshot(std::int64_t viewer) {
         return bridgeCall([&] { return session_.snapshot(viewer == 0 || viewer == 1 ? static_cast<int>(viewer) : -1); });
     }
-    Dictionary select_action(std::int64_t viewer, const String &id, const String &generation, const String &revision) {
-        return bridgeCall([&] { return session_.selectAction(viewer == 0 || viewer == 1 ? static_cast<int>(viewer) : -1,
-            utf8(id), utf8(generation), utf8(revision)); });
+    Dictionary query_actions(std::int64_t viewer, const Dictionary &intent, const String &generation, const String &revision) {
+        return bridgeCall([&] { return session_.queryActions(static_cast<int>(viewer), json(intent), utf8(generation), utf8(revision)); });
     }
+    Dictionary select_intent(std::int64_t viewer, const Dictionary &intent, const String &generation, const String &revision) {
+        return bridgeCall([&] { return session_.selectIntent(static_cast<int>(viewer), json(intent), utf8(generation), utf8(revision)); });
+    }
+    Dictionary submit_command(std::int64_t viewer, const Dictionary &command, const String &generation, const String &revision) {
+        return bridgeCall([&] { return session_.submitCommand(static_cast<int>(viewer), json(command), utf8(generation), utf8(revision)); });
+    }
+    Dictionary events_since(std::int64_t viewer, const String &epoch, const String &cursor) {
+        return bridgeCall([&] { return session_.eventsSince(static_cast<int>(viewer), utf8(epoch), utf8(cursor)); });
+    }
+    Dictionary poll_match(std::int64_t viewer, const String &generation, const String &revision) {
+        return bridgeCall([&] { return session_.pollMatch(static_cast<int>(viewer), utf8(generation), utf8(revision)); });
+    }
+    Dictionary save_diagnostic() { return bridgeCall([&] { return session_.saveDiagnostic(); }); }
     Dictionary confirm_action(const String &generation, const String &revision) {
         return bridgeCall([&] { return session_.confirmAction(utf8(generation), utf8(revision)); });
     }
@@ -154,7 +171,7 @@ class WizardBridge : public godot::RefCounted {
     }
     Dictionary library() { return bridgeCall([&] { return session_.library(); }); }
     Dictionary create_draft(const String &preset) { return bridgeCall([&] { return session_.createDraft(utf8(preset)); }); }
-    Dictionary create_construction_draft(const String &preset) { return bridgeCall([&] { return session_.createDraft(utf8(preset), 2); }); }
+    Dictionary create_construction_draft(const String &preset) { return bridgeCall([&] { return session_.createDraft(utf8(preset), 3); }); }
     Dictionary validate_draft(const Dictionary &draft) { return bridgeCall([&] { return session_.validateDraft(json(draft)); }); }
     Dictionary save_draft(const Dictionary &draft) { return bridgeCall([&] { return session_.saveDraft(json(draft)); }); }
     Dictionary erase_draft(const String &id) { return bridgeCall([&] { return session_.eraseDraft(utf8(id)); }); }

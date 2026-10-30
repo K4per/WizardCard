@@ -1,0 +1,26 @@
+{
+  "id": "qixing-ruin",
+  "name": "七星归墟",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 7,
+  "castCost": 20,
+  "rank": 7,
+  "level": 7,
+  "speed": 1,
+  "number": "020039",
+  "illustrationId": "qixing-ruin",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [
+    {
+      "kind": "seven_stars_ruin",
+      "amount": 20
+    }
+  ],
+  "text": "耀：对双方造成20点光耀伤害。 黯：对双方造成20点暗蚀伤害。",
+  "analysisTurns": 4,
+  "school": "evocation"
+}

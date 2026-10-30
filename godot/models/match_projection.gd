@@ -34,21 +34,9 @@ static func field(snapshot: Dictionary) -> FieldPresentation:
 	for player: int in range(2):
 		result.clock_remaining[player] = int(remaining[player]) if remaining.size() > player else 0
 		result.clock_running[player] = bool(clock.get("running", false)) and (bool(running_players[player]) if running_players.size() > player else running_player == player)
-	for action: Dictionary in snapshot.get("actions", []):
-		var command: Dictionary = action.get("command", {})
-		var operation: int = int(command.get("type", -1))
-		if operation in [0, 18]:
-			result.can_set_formation = true
-		var source: String = str(action.get("source", "0"))
-		if source.is_empty() or source == "0":
-			continue
-		var highlight: int = 0
-		if operation == 15:
-			highlight = FieldPresentation.LEGAL_AMBUSH
-		elif operation in [0, 2, 3, 4, 5, 6, 12, 16, 17, 18]:
-			highlight = FieldPresentation.LEGAL_GOLD
-		if highlight != 0:
-			result.legal_cards[source] = int(result.legal_cards.get(source, 0)) | highlight
+	result.can_set_formation = bool(snapshot.get("canSetFormation", false))
+	for source: String in snapshot.get("availableCards", {}):
+		result.legal_cards[source] = int(snapshot["availableCards"][source])
 	var formations: Dictionary[String, FormationPresentation] = {}
 	var rows: Array = (snapshot.get("cards", []) as Array).duplicate()
 	rows.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
@@ -134,33 +122,34 @@ static func action_group_key(action: Dictionary) -> String:
 	var command: Dictionary = action.get("command", {})
 	var type: int = int(command.get("type", -1))
 	var key: String = str(type)
-	if type == 0:
+	if type == KernelContract.CommandKind.SetFormation:
 		key += ":replace" if str(command.get("replace", "0")) != "0" else ":set"
-	elif type == 12:
+	elif type == KernelContract.CommandKind.Respond:
 		key += ":" + str(command.get("ability", ""))
-	elif type == 14:
+	elif type == KernelContract.CommandKind.AdvancePhase:
 		key += ":end" if bool(command.get("skipCast", false)) else ":next"
 	return key
 
 static func action_label(snapshot: Dictionary, action: Dictionary) -> String:
 	var command: Dictionary = action.get("command", {})
 	var type: int = int(command.get("type", -1))
-	var labels: Dictionary[int, String] = {1: "移除阵法", 2: "设置解析", 3: "准备施法", 4: "发动", 6: "附着", 7: "拆除符文", 8: "放弃", 9: "继续", 11: "投降", 12: "响应", 13: "放弃响应", 14: "切换阶段", 15: "盖伏", 16: "反转", 17: "发动", 18: "选择初始阵法"}
-	if type == 0:
+	var labels: Dictionary[int, String] = {KernelContract.CommandKind.RemoveFormation: "移除阵法", KernelContract.CommandKind.StartAnalysis: "设置解析", KernelContract.CommandKind.PrepareCast: "准备施法", KernelContract.CommandKind.PlayAction: "发动", KernelContract.CommandKind.AttachSeal: "附着符文", KernelContract.CommandKind.RemoveSeal: "拆除符文", KernelContract.CommandKind.Abandon: "放弃", KernelContract.CommandKind.Advance: "继续", KernelContract.CommandKind.Surrender: "投降", KernelContract.CommandKind.Respond: "响应", KernelContract.CommandKind.PassResponse: "放弃响应", KernelContract.CommandKind.AdvancePhase: "切换阶段", KernelContract.CommandKind.PreloadWord: "设置言灵", KernelContract.CommandKind.SetAmbush: "盖伏", KernelContract.CommandKind.FlipAmbush: "反转盖伏", KernelContract.CommandKind.ActivateSpell: "发动", KernelContract.CommandKind.SelectInitialFormation: "选择初始阵法", KernelContract.CommandKind.Timeout: "超时裁定", KernelContract.CommandKind.ActivateAbility: "发动能力"}
+	if type == KernelContract.CommandKind.SetFormation:
 		return "替换阵法" if str(command.get("replace", "0")) != "0" else "设置阵法"
-	if type == 5:
+	if type == KernelContract.CommandKind.PreloadWord:
 		return "设置并发动" if bool(command.get("release", false)) else "设置言灵"
-	if type == 8:
+	if type == KernelContract.CommandKind.Abandon:
 		for row: Dictionary in snapshot.get("cards", []):
 			if str(row.get("id", "0")) == str(action.get("source", "0")):
 				return "放弃施法" if int(row.get("zone", -1)) == 5 else "放弃"
-	if type == 14:
+	if type == KernelContract.CommandKind.AdvancePhase:
 		if bool(command.get("skipCast", false)):
 			return "切换到结束阶段"
 		return "切换到施法阶段" if int(snapshot.get("phase", -1)) == 2 else "结束当前阶段"
-	if type == 10:
+	if type == KernelContract.CommandKind.Choose:
 		var label: String = str(action.get("label", "确认"))
-		var option: String = str(command.get("option", "0"))
+		var choice: Dictionary = command.get("option", {})
+		var option: String = str(choice.get("value", "0"))
 		return label.replace(" #" + option, "") if option != "0" else label
 	return labels.get(type, "确认")
 
@@ -173,7 +162,7 @@ static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 	var blood_hint: String = blood_heartmark_hint(snapshot, action)
 	if not blood_hint.is_empty():
 		lines.append(blood_hint)
-	if int(command.get("type", -1)) == 1:
+	if int(command.get("type", -1)) == KernelContract.CommandKind.RemoveFormation:
 		var spells: Array[String] = []
 		var seals: int = 0
 		var departing: Array[String] = [source]
@@ -227,7 +216,7 @@ static func blood_heartmark_hint(snapshot: Dictionary, action: Dictionary) -> St
 	# when that exact spell action has an attached rune with the declared trait.
 	var command: Dictionary = action.get("command", {})
 	var command_type: int = int(command.get("type", -1))
-	if command_type not in [4, 12, 17]:
+	if command_type not in [KernelContract.CommandKind.PlayAction, KernelContract.CommandKind.Respond, KernelContract.CommandKind.ActivateSpell]:
 		return ""
 	var source: String = str(action.get("source", command.get("card", "0")))
 	if source.is_empty() or source == "0":
@@ -269,9 +258,6 @@ static func formation_removal_unavailable(snapshot: Dictionary, id: String) -> S
 			break
 	if not formation:
 		return ""
-	for action: Dictionary in snapshot.get("actions", []):
-		if str(action.get("source", "0")) == id and int((action.get("command", {}) as Dictionary).get("type", -1)) == 1:
-			return ""
 	if int(snapshot.get("result", -1)) != -1:
 		return "对局已结束，不能移除阵法。"
 	if bool(snapshot.get("opening", false)):

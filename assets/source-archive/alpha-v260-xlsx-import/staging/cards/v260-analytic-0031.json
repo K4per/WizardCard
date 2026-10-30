@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0031",
+  "number": "020031",
+  "name": "疯狂冠冕",
+  "type": "analytic",
+  "school": "enchantment",
+  "rarity": "rare",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "专注2。对方每对己方造成1次伤害，使对方受到2点心灵伤害。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 32
+  },
+  "illustrationId": "v260-analytic-0031",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\疯狂冠冕.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

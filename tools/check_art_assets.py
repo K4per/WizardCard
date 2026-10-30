@@ -155,7 +155,7 @@ def write_inventory(source_files: dict[str, Path], runtime_fileset: set[str], pr
     old_bytes = sum(int(entry.get("bytes", 0)) for entry in previous.values())
     INVENTORY.write_text(json.dumps({
         "format": 2,
-        "scope": "Authoring and candidate source files; Godot runtime mirror listed separately. No removal is implied.",
+        "scope": "Current production source collections and required runtime inputs; Godot runtime mirror listed separately. Retired design archives and unused legacy exports are excluded.",
         "comparison": {"previousSourceFiles": old_count, "currentSourceFiles": len(source_entries),
                        "sourceFileDelta": len(source_entries) - old_count, "previousBytes": old_bytes,
                        "currentBytes": sum(item["bytes"] for item in source_entries)},

@@ -22,13 +22,12 @@ struct Tutorial {
     Lesson lesson{Lesson::Intro};
     CardId spell{};
     bool countered{};
-    bool alphaV2{};
     std::string title() const;
     std::string hint(const GameView &) const;
     bool canContinue(const GameView &) const;
     void continueLesson(const GameView &);
-    bool allows(const GameView &, const Command &) const;
+    bool allows(const GameView &, const Command &, const ai::CandidateSource & = {}) const;
     void observe(PlayerId, const Command &, const GameView &after, const std::vector<GameEvent> &);
-    std::optional<ai::Selection> opponent(const GameView &) const;
+    std::optional<ai::Selection> opponent(const GameView &, const ai::CandidateSource &) const;
 };
 } // namespace wizard::app

@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0032",
+  "number": "020032",
+  "name": "祝福术",
+  "type": "analytic",
+  "school": "enchantment",
+  "rarity": "rare",
+  "rank": 4,
+  "cost": 3,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "计时3。己方结束阶段开始时，选择以下1个效果适用：◎恢复2点生命值；◎清除2点荷载；◎获得1点魔素。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 33
+  },
+  "illustrationId": "v260-analytic-0032",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\祝福术.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

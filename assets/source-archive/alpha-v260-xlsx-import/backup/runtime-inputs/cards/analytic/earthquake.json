@@ -1,0 +1,25 @@
+{
+  "id": "earthquake",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "earthquake",
+  "number": "020026",
+  "name": "地震术",
+  "type": "analytic",
+  "text": "计时2。己方主要阶段开始时，将双方解析区盖伏的法术卡全部送去灰烬区。",
+  "rank": 4,
+  "level": 4,
+  "school": "transmutation",
+  "cost": 4,
+  "castCost": 0,
+  "analysisTurns": 2,
+  "speed": 1,
+  "duration": 2,
+  "effects": [],
+  "onMain": [
+    {
+      "kind": "clear_all_ambush",
+      "amount": 0
+    }
+  ]
+}

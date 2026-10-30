@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
@@ -6,11 +7,11 @@ using namespace wizard;
 
 namespace {
 Content stormContent() {
-    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
+    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
 }
 
-GameState stormState() {
-    GameState state;
+MutationContext stormState() {
+    MutationContext state;
     state.phase = Phase::Main;
     state.phaseStep = PhaseStep::Body;
     state.flow = Flow::Main;
@@ -38,9 +39,9 @@ GameState stormState() {
 }
 }
 
-TEST_CASE("successfully releasing a storm spell adds a storm point", "[storm]") {
+TEST_CASE("successfully releasing a storm spell adds a storm point", "[storm][legacy]") {
     auto content = stormContent();
-    auto engine = GameEngine::scenario(content.catalog, stormState());
+    auto engine = test::ObservedEngine::scenario(content.catalog, stormState());
 
     const auto released = engine.submit(0, PreloadWord{10, true, 1});
     INFO(released.error);
@@ -56,8 +57,8 @@ TEST_CASE("storm crest attributes follow its point thresholds in the match view"
     auto content = stormContent();
     auto state = stormState();
     state.cards.at(1).stormPoints = 2;
-    auto engine = GameEngine::scenario(content.catalog, state);
-    auto findCrest = [](const GameView &view) -> const CardView & {
+    auto engine = test::ObservedEngine::scenario(content.catalog, state);
+    auto findCrest = [](const test::ObservedView &view) -> const CardView & {
         return *std::find_if(view.cards.begin(), view.cards.end(), [](const CardView &card) {
             return card.instance.id == 1;
         });
@@ -69,21 +70,21 @@ TEST_CASE("storm crest attributes follow its point thresholds in the match view"
     REQUIRE(findCrest(view).definition.level == 1);
 
     state.cards.at(1).stormPoints = 4;
-    engine = GameEngine::scenario(content.catalog, state);
+    engine = test::ObservedEngine::scenario(content.catalog, state);
     view = engine.viewFor(0);
     REQUIRE(view.players[0].capacity == content.catalog.baseLoadCapacity + 8);
     REQUIRE(findCrest(view).effectiveRings == 2);
     REQUIRE(findCrest(view).definition.level == 2);
 
     state.cards.at(1).stormPoints = 5;
-    engine = GameEngine::scenario(content.catalog, state);
+    engine = test::ObservedEngine::scenario(content.catalog, state);
     view = engine.viewFor(0);
     REQUIRE(view.players[0].capacity == content.catalog.baseLoadCapacity + 10);
     REQUIRE(findCrest(view).effectiveRings == 3);
     REQUIRE(findCrest(view).definition.level == 3);
 }
 
-TEST_CASE("wind strike responds to a prepared analytic and uses its rank for damage and destruction", "[storm]") {
+TEST_CASE("wind strike responds to a prepared analytic and uses its rank for damage and destruction", "[storm][legacy]") {
     auto content = stormContent();
     auto state = stormState();
     state.active = 1;
@@ -113,7 +114,7 @@ TEST_CASE("wind strike responds to a prepared analytic and uses its rank for dam
     target.spell = SpellState::Ready;
     state.cards.emplace(target.id, target);
 
-    auto engine = GameEngine::scenario(content.catalog, state);
+    auto engine = test::ObservedEngine::scenario(content.catalog, state);
     const auto declared = engine.submit(1, PrepareCast{20});
     INFO(declared.error);
     REQUIRE(declared.accepted);

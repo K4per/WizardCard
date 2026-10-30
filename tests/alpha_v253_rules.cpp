@@ -1,22 +1,23 @@
+#include "support/observed_engine.hpp"
 #include "wizard/replay.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
 using namespace wizard;
 namespace {
 CardCatalog rules253() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog; }
-GameState main253() {
-    GameState s; s.phase = Phase::Main; s.phaseStep = PhaseStep::Body;
+MutationContext main253() {
+    MutationContext s; s.phase = Phase::Main; s.phaseStep = PhaseStep::Body;
     s.phaseGate = 2; s.globalTurn = 5; s.rng = 123;
     for (auto &p : s.players) { p.mana = 20; p.ownTurn = 2; }
     return s;
 }
-CardInstance &put253(GameState &s, CardId id, const std::string &definition, int player, Zone zone) {
+CardInstance &put253(MutationContext &s, CardId id, const std::string &definition, int player, Zone zone) {
     CardInstance c; c.id = id; c.definition = definition; c.owner = player; c.zone = zone;
     if (zone == Zone::Analysis) c.fieldOrder = s.nextFieldOrder++;
     s.cards[id] = c;
     return s.cards.at(id);
 }
-void settle253(GameEngine &e) {
+void settle253(test::ObservedEngine &e) {
     for (int n = 0; e.state().decision && n < 40; ++n) {
         const auto d = *e.state().decision;
         Command c = d.kind == DecisionKind::Response ? Command(PassResponse{d.id}) :
@@ -26,10 +27,10 @@ void settle253(GameEngine &e) {
     }
     REQUIRE_FALSE(e.state().decision);
 }
-void send253(GameEngine &e, int p, Command c) {
+void send253(test::ObservedEngine &e, int p, Command c) {
     const auto result = e.submit(p, c); INFO(result.error); REQUIRE(result.accepted);
 }
-void window253(GameState &s, int speed = 0, int priority = 0) {
+void window253(MutationContext &s, int speed = 0, int priority = 0) {
     ChainLink root; root.id = 1; root.kind = LinkKind::Phase; root.speed = speed;
     ChainState chain; chain.id = 1; chain.priority = priority;
     chain.window = ResponseWindow::Action; chain.links.push_back(root);
@@ -41,7 +42,7 @@ TEST_CASE("Alpha v2.5.3 opening mana is zero for both players before initial for
     const auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     MatchConfig config;
     for (auto &p : config.players) { p.cards = c.deck; p.sideDeck = c.sideDeck; }
-    GameEngine e(c.catalog, config);
+    test::ObservedEngine e(c.catalog, config);
     REQUIRE(e.state().opening);
     REQUIRE(e.state().players[0].mana == 0);
     REQUIRE(e.state().players[1].mana == 0);
@@ -52,7 +53,7 @@ TEST_CASE("Alpha v2.5.3 high rank ambush bypasses host rank but cannot flip prep
     put253(s, 1, "small-hexagram", 0, Zone::Analysis);
     put253(s, 10, "sunburst", 0, Zone::Hand);
     REQUIRE(cat.at("sunburst").rank > Rules::maxRank(s, cat, 1));
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     const auto before = e.digest();
     REQUIRE_FALSE(e.submit(0, StartAnalysis{10, 1}).accepted); REQUIRE(e.digest() == before);
     const auto view = e.viewFor(0);
@@ -60,8 +61,8 @@ TEST_CASE("Alpha v2.5.3 high rank ambush bypasses host rank but cannot flip prep
         const auto *ambush = std::get_if<SetAmbush>(&a.command); return ambush && ambush->card == 10;
     }));
     send253(e, 0, SetAmbush{10, 1}); settle253(e);
-    s = e.state(); ++s.globalTurn;
-    e = GameEngine::scenario(cat, s);
+    s = test::mutation(e.state()); ++s.globalTurn;
+    e = test::ObservedEngine::scenario(cat, s);
     const auto hidden = e.digest();
     REQUIRE_FALSE(e.submit(0, FlipAmbush{10}).accepted);
     REQUIRE_FALSE(e.submit(0, PrepareCast{10}).accepted);
@@ -84,7 +85,7 @@ TEST_CASE("Alpha v2.5.3 hand word responses share legal generation priority spee
         if (invalid == 2) cat.cards.at("disrupt").speed = 1;
         if (invalid == 3) cat.cards.at("disrupt").responseOnly = true;
         window253(s, invalid == 4 ? 4 : 0, invalid == 5 ? 1 : 0);
-        auto e = GameEngine::scenario(cat, s);
+        auto e = test::ObservedEngine::scenario(cat, s);
         const Command command = PreloadWord{10, true, 1, 0, {}, 0, 1};
         REQUIRE(encodeCommand(decodeCommand(encodeCommand(command))) == encodeCommand(command));
         const auto view = e.viewFor(0);
@@ -142,7 +143,7 @@ TEST_CASE("Alpha v2.5.3 hand speed two words can respond only during their owner
         counter.faceDown = true; counter.host = 2; counter.ringIndex = 0;
         counter.wasAmbushed = true; counter.ambushedTurn = 1;
         window253(s, 0, 0);
-        auto e = GameEngine::scenario(cat, s);
+        auto e = test::ObservedEngine::scenario(cat, s);
         const Command command = PreloadWord{10, true, 1, 0, {}, 0, 1};
         const auto view = e.viewFor(0);
         const bool offered = std::any_of(view.actions.begin(), view.actions.end(), [&](const LegalAction &a) {
@@ -177,7 +178,7 @@ TEST_CASE("Alpha v2.5.3 scorching ray accepts player targets projected by legal 
             put253(s, 21, "mend", 1 - owner, Zone::Hand);
             put253(s, 22, "arcana-death", 1 - owner, Zone::Hand);
         }
-        auto e = GameEngine::scenario(cat, s);
+        auto e = test::ObservedEngine::scenario(cat, s);
         auto passResponses = [&] {
             for (int n = 0; e.state().decision && e.state().decision->kind == DecisionKind::Response && n < 8; ++n) {
                 const auto decision = *e.state().decision;
@@ -204,7 +205,7 @@ TEST_CASE("Alpha v2.5.3 scorching ray accepts player targets projected by legal 
             for (const PlayerId player : {PlayerId{0}, PlayerId{1}}) {
                 const auto option = std::find_if(choices.actions.begin(), choices.actions.end(), [&](const LegalAction &a) {
                     const auto *choose = std::get_if<Choose>(&a.command);
-                    return choose && choose->decision == decision.id && choose->option == playerTarget(player);
+                    return choose && choose->decision == decision.id && choose->option == ChoiceValue::player(player);
                 });
                 REQUIRE(option != choices.actions.end());
                 REQUIRE(option->source == 0);
@@ -212,7 +213,7 @@ TEST_CASE("Alpha v2.5.3 scorching ray accepts player targets projected by legal 
             }
             const auto choice = std::find_if(choices.actions.begin(), choices.actions.end(), [&](const LegalAction &a) {
                 const auto *choose = std::get_if<Choose>(&a.command);
-                return choose && choose->decision == decision.id && choose->option == playerTarget(target);
+                return choose && choose->decision == decision.id && choose->option == ChoiceValue::player(target);
             });
             REQUIRE(choice != choices.actions.end());
             send253(e, decision.player, choice->command);
@@ -229,16 +230,17 @@ TEST_CASE("Alpha v2.5.3 campfire triggers once after successful setting without 
     put253(s, 1, "sique-campfire", 0, Zone::Analysis);
     put253(s, 2, "hexagram", 1, Zone::Analysis);
     put253(s, 10, "fireball", 0, Zone::Hand);
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     send253(e, 0, StartAnalysis{10, 1}); settle253(e);
     REQUIRE(e.state().players[1].life == startingLife - 1);
     const auto same = e.digest();
     REQUIRE_FALSE(e.submit(0, StartAnalysis{10, 1}).accepted); REQUIRE(e.digest() == same);
-    auto resolved = e.state();
+    const auto &resolvedEvents = e.events();
+    auto resolved = test::mutation(e.state());
     const Trigger trigger{0, 0, 0, 10, 0, 1};
     EffectResolver::apply(resolved, cat, trigger, {EffectKind::Damage, 4, DamageType::Fire});
     REQUIRE(resolved.players[1].life == startingLife - 5);
-    REQUIRE(std::count_if(resolved.events.begin(), resolved.events.end(), [](const GameEvent &event) {
+    REQUIRE(std::count_if(resolvedEvents.begin(), resolvedEvents.end(), [](const GameEvent &event) {
         return event.kind == "campfire_setting";
     }) == 1);
 }
@@ -246,11 +248,11 @@ TEST_CASE("Alpha v2.5.3 campfire setting trigger excludes ambush and flip action
     auto cat = rules253(); auto s = main253();
     put253(s, 1, "sique-campfire", 0, Zone::Analysis);
     put253(s, 10, "fireball", 0, Zone::Hand);
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     send253(e, 0, SetAmbush{10, 1}); settle253(e);
     REQUIRE(e.state().players[1].life == startingLife);
-    s = e.state(); ++s.globalTurn;
-    e = GameEngine::scenario(cat, s);
+    s = test::mutation(e.state()); ++s.globalTurn;
+    e = test::ObservedEngine::scenario(cat, s);
     send253(e, 0, FlipAmbush{10}); settle253(e);
     REQUIRE(e.state().players[1].life == startingLife);
 }
@@ -258,15 +260,15 @@ TEST_CASE("Alpha v2.5.3 cauldron rejects other runes and annihilation requires a
     auto cat = rules253(); auto s = main253();
     put253(s, 1, "sique-cauldron", 0, Zone::Analysis);
     put253(s, 10, "ring", 0, Zone::Hand);
-    auto e = GameEngine::scenario(cat, s); auto before = e.digest();
+    auto e = test::ObservedEngine::scenario(cat, s); auto before = e.digest();
     REQUIRE_FALSE(e.submit(0, AttachSeal{10, 1}).accepted); REQUIRE(e.digest() == before);
     s.cards.clear();
     put253(s, 1, "fireball", 0, Zone::Casting).spell = SpellState::Ready;
     put253(s, 10, "storm-annihilation-crest", 0, Zone::Hand);
-    e = GameEngine::scenario(cat, s); before = e.digest();
+    e = test::ObservedEngine::scenario(cat, s); before = e.digest();
     REQUIRE_FALSE(e.submit(0, AttachSeal{10, 1}).accepted); REQUIRE(e.digest() == before);
     s.cards.at(1).definition = "cutting-wind";
-    e = GameEngine::scenario(cat, s);
+    e = test::ObservedEngine::scenario(cat, s);
     send253(e, 0, AttachSeal{10, 1}); settle253(e);
     REQUIRE(e.state().cards.at(10).host == 1);
 }
@@ -296,20 +298,20 @@ TEST_CASE("Alpha v2.5.3 Storm Crest confirmed counter thresholds determine all r
         REQUIRE(Rules::income(s, cat, 1) == (points >= 5 ? 2 : 1));
     }
 }
-TEST_CASE("Alpha v2.5.3 cauldron allows non Sique analysis and preparation but rejects activation", "[alpha-v253]") {
+TEST_CASE("Alpha v2.5.3 cauldron allows non Sique analysis and preparation but rejects activation", "[legacy][alpha-v253]") {
     auto cat = rules253(); auto s = main253();
     put253(s, 1, "sique-cauldron", 0, Zone::Analysis);
     put253(s, 2, "hexagram", 0, Zone::Analysis);
     put253(s, 10, "fireball", 0, Zone::Hand);
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     send253(e, 0, StartAnalysis{10, 2}); settle253(e);
-    s = e.state(); s.cards.at(10).spell = SpellState::Ready;
+    s = test::mutation(e.state()); s.cards.at(10).spell = SpellState::Ready;
     s.cards.at(10).analysisProgress = cat.at("fireball").analysisTurns;
-    e = GameEngine::scenario(cat, s);
+    e = test::ObservedEngine::scenario(cat, s);
     send253(e, 0, PrepareCast{10}); settle253(e);
     REQUIRE(e.state().cards.at(10).zone == Zone::Casting);
-    s = e.state(); s.phase = Phase::Cast;
-    e = GameEngine::scenario(cat, s);
+    s = test::mutation(e.state()); s.phase = Phase::Cast;
+    e = test::ObservedEngine::scenario(cat, s);
     const auto before = e.digest();
     REQUIRE_FALSE(e.submit(0, ActivateSpell{10, playerTarget(1)}).accepted);
     REQUIRE(e.digest() == before);

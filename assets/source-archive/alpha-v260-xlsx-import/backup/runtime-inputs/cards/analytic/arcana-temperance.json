@@ -1,0 +1,23 @@
+{
+  "id": "arcana-temperance",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "arcana-temperance",
+  "number": "020035",
+  "name": "节制",
+  "type": "analytic",
+  "text": "专注2。每次己方消耗魔素时，获得1点魔素。",
+  "rank": 4,
+  "level": 4,
+  "school": "arcana",
+  "cost": 6,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 1,
+  "concentration": true,
+  "concentrationUpkeep": 2,
+  "traits": [
+    "arcana_temperance"
+  ],
+  "effects": []
+}

@@ -1,7 +1,0 @@
-status: 正在连接房主… revision=0 result=-1
-status: 已连接房主 revision=0 result=-1
-status: 过期或无效的操作 revision=2 result=-1
-status: 操作已确认 revision=4 result=-1
-status: 过期或无效的操作 revision=5 result=-1
-status: 操作已确认 revision=6 result=0
-{"commands":5,"digest":"5e7ed7acb4405ac2","host":false,"reconnected":false,"result":0,"scenario":"surrender"}

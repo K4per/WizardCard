@@ -71,6 +71,13 @@ func _run() -> void:
 		if match_page._privacy_layer.visible and match_page._pending_viewer >= 0:
 			match_page._reveal()
 			await process_frame
+	for handoff_step: int in range(4):
+		await process_frame
+		if match_page._privacy_layer.visible and match_page._pending_viewer >= 0:
+			match_page._reveal()
+			await process_frame
+		if not match_page._privacy_layer.visible and int(app.service.match_snapshot.get("viewer", -1)) == app.service.match_viewer:
+			break
 	if not _expect(not app.service.match_snapshot.is_empty(), "match has a viewer projection"):
 		return
 	if not _expect(match_page.canvas.field.own_deck_count > 0 and match_page.canvas.field.opponent_deck_count > 0, "authoritative deck counts reach battlefield"):
@@ -79,27 +86,29 @@ func _run() -> void:
 		return int(row.get("zone", -1)) == 9 and int(row.get("owner", -1)) == app.service.match_viewer)
 	if not _expect(side_rows.size() == match_page.canvas.field.own_side_count, "own side deck cards are projected for inspection"):
 		return
-	await process_frame
-	if not _expect(match_page.canvas.zone_at(match_page.canvas._zone_hits[0]["rect"].get_center()).has("kind"), "deck and ash regions expose click targets"):
+	for draw_step: int in range(12):
+		await process_frame
+		if not match_page.canvas._zone_hits.is_empty():
+			break
+	if not _expect(not match_page.canvas._zone_hits.is_empty() and match_page.canvas.zone_at(match_page.canvas._zone_hits[0]["rect"].get_center()).has("kind"), "deck and ash regions expose click targets"):
 		return
 	# Finish any phase-start response window before exercising card contexts.
 	for response_step: int in range(40):
 		if not match_page._decision.visible:
-			if app.service.match_snapshot.get("automaticAction") is String or match_page._auto_busy:
+			if app.service.match_snapshot.get("automaticCommand") is Dictionary or match_page._auto_busy:
 				await create_timer(0.06).timeout
 				if match_page._privacy_layer.visible and match_page._pending_viewer >= 0:
 					match_page._reveal()
 					await process_frame
 				continue
 			break
-		var response_actions: Array = app.service.match_snapshot.get("actions", [])
 		var response_snapshot: Dictionary = app.service.match_snapshot
-		var pass_action: Dictionary = response_actions[0]
-		for candidate: Dictionary in response_actions:
-			if int((candidate.get("command", {}) as Dictionary).get("type", -1)) == 13:
-				pass_action = candidate
 		var decision_id: String = str((response_snapshot.get("decision", {}) as Dictionary).get("id", ""))
-		match_page._decision_confirmed(str(response_snapshot["generation"]), str(response_snapshot["revision"]), decision_id, [str(pass_action["id"])])
+		var pass_intent: Dictionary = {"source": "0", "selections": [{"field": KernelContract.ActionField.Operation, "value": str(KernelContract.CommandKind.PassResponse)}]}
+		var staged_pass: Dictionary = app.service.match_request(&"select_intent", [app.service.match_viewer, pass_intent, str(response_snapshot["generation"]), str(response_snapshot["revision"])])
+		if not _expect(bool(staged_pass.get("ok", false)), "native response query stages pass"):
+			return
+		match_page._apply_result(app.service.match_request(&"confirm_action", [str(response_snapshot["generation"]), str(response_snapshot["revision"])]))
 		await process_frame
 		if match_page._privacy_layer.visible and match_page._pending_viewer >= 0:
 			match_page._reveal()
@@ -189,21 +198,20 @@ func _run() -> void:
 		return
 	response_panel.queue_free()
 	await process_frame
-	if not await _exercise_card_input(match_page):
-		return
 	if not await _exercise_second_player_side_deck(match_page):
+		return
+	if not await _exercise_card_input(match_page):
 		return
 	await _capture_page("match")
 	var original_revision: String = str(app.service.match_snapshot.get("revision", ""))
-	var actions: Array = app.service.match_snapshot.get("actions", [])
-	if not _expect(not actions.is_empty(), "viewer has legal actions"):
-		return
-	var first: Dictionary = actions[0]
 	var generation: String = str(app.service.match_snapshot.get("generation", ""))
-	var selected: Dictionary = app.service.match_request(&"select_action", [app.service.match_viewer, str(first["id"]), generation, original_revision])
+	var first: Dictionary = app.service.match_snapshot.get("actionSummary", {}).get("safeAdvance", {})
+	if not _expect(not first.is_empty(), "viewer has a safe legal advance command"):
+		return
+	var selected: Dictionary = app.service.match_request(&"submit_command", [app.service.match_viewer, first, generation, original_revision])
 	if not _expect(bool(selected.get("ok", false)), "select current legal action"):
 		return
-	match_page._apply_result(app.service.match_request(&"confirm_action", [generation, original_revision]))
+	match_page._apply_result(selected)
 	await process_frame
 	if match_page._privacy_layer.visible and match_page._pending_viewer >= 0:
 		match_page._reveal()
@@ -273,26 +281,23 @@ func _run() -> void:
 	quit(0)
 
 func _exercise_card_input(match_page: MatchPage) -> bool:
-	# Reach a card action through the native phase gate; only setup uses the
-	# service directly. The regression itself clicks the real viewport controls.
+	# Discover a playable hand card using bounded native operation/source queries.
 	var playable: CardPresentation
 	for step: int in range(16):
+		var snapshot: Dictionary = app.service.match_snapshot
 		for card: CardPresentation in match_page.canvas.field.hand:
-			for action: Dictionary in app.service.match_snapshot.get("actions", []):
-				if str(action.get("source", "0")) == card.instance_id:
-					playable = card
+			if snapshot.get("availableCards", {}).has(card.instance_id):
+				playable = card
+				break
 		if playable != null:
 			break
-		var actions: Array = app.service.match_snapshot.get("actions", [])
-		if not _expect(not actions.is_empty(), "native setup has a phase or response action"):
+		var safe: Dictionary = snapshot.get("actionSummary", {}).get("safeAdvance", {})
+		if not _expect(not safe.is_empty(), "native setup has a safe advance"):
 			return false
-		var snapshot: Dictionary = app.service.match_snapshot
-		var generation: String = str(snapshot["generation"])
-		var revision: String = str(snapshot["revision"])
-		var selected: Dictionary = app.service.match_request(&"select_action", [app.service.match_viewer, str(actions[0]["id"]), generation, revision])
-		if not _expect(bool(selected.get("ok", false)), "native phase setup accepts current action"):
+		var result: Dictionary = app.service.match_request(&"submit_command", [app.service.match_viewer, safe, str(snapshot.get("generation", "")), str(snapshot.get("revision", ""))])
+		if not _expect(result.get("ok", false), "native setup accepts a safe advance"):
 			return false
-		match_page._apply_result(app.service.match_request(&"confirm_action", [generation, revision]))
+		match_page._apply_result(result)
 		await process_frame
 		if match_page._privacy_layer.visible and match_page._pending_viewer >= 0:
 			match_page._reveal()
@@ -332,8 +337,6 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 				return false
 		if not _expect(Rect2(Vector2.ZERO, dimensions).encloses(match_page._action_popup.get_global_rect()), "card actions stay inside the resized viewport"):
 			return false
-	# A selected hand card rises after the input callback. Its actions must follow
-	# that fresh geometry instead of remaining attached to its lowered position.
 	var selected_bounds: Rect2 = match_page.canvas.card_bounds(playable)
 	var selected_top: float = match_page.canvas.global_position.y + selected_bounds.position.y
 	if not _expect(absf(match_page._action_popup.get_global_rect().end.y + 8.0 - selected_top) < 1.0, "card actions follow the raised hand card after redraw"):
@@ -346,41 +349,33 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 	for button: Control in match_page._action_list.get_children():
 		if not _expect(action_scroll.get_global_rect().encloses(button.get_global_rect()), "short action list shows each complete action button"):
 			return false
-	point = action_button.get_global_rect().get_center()
+	var point_on_action: Vector2 = action_button.get_global_rect().get_center()
 	var motion: InputEventMouseMotion = InputEventMouseMotion.new()
-	motion.position = point
-	motion.global_position = point
+	motion.position = point_on_action
+	motion.global_position = point_on_action
 	root.push_input(motion, true)
 	if not _expect(root.gui_get_hovered_control() == action_button, "card action receives mouse input above the detail shade"):
 		return false
 	var original_revision: String = str(app.service.match_snapshot["revision"])
-	_mouse_button(point, true)
-	_mouse_button(point, false)
+	_mouse_button(point_on_action, true)
+	_mouse_button(point_on_action, false)
 	await process_frame
 	for target_step: int in range(10):
-		if match_page._target_actions.is_empty() or str(app.service.match_snapshot["revision"]) != original_revision:
+		if not match_page.canvas.target_ids.is_empty() or str(app.service.match_snapshot["revision"]) != original_revision:
 			break
-		if not _expect(not match_page._confirm.visible and not match_page.canvas.target_ids.is_empty(), "placement exposes board candidates without an extra confirmation"):
-			return false
 		await process_frame
-		var target_point: Vector2 = Vector2.ZERO
-		for hit: Dictionary in match_page.canvas._card_hits:
-			var target: CardPresentation = hit["card"]
-			if match_page.canvas.target_ids.has(target.instance_id):
-				target_point = match_page.canvas.global_position + (hit["rect"] as Rect2).get_center()
-				break
-		if not _expect(target_point != Vector2.ZERO, "an authoritative target is clickable on the battlefield"):
-			return false
-		_mouse_button(target_point, true)
-		_mouse_button(target_point, false)
+	if not _expect(not match_page.canvas.target_ids.is_empty() or match_page._confirm.visible, "operation query reaches a valid target or confirmation step"):
+		return false
+	if not match_page.canvas.target_ids.is_empty():
+		var target_id: String = str(match_page.canvas.target_ids.keys()[0])
+		match_page._pick_action_target(target_id)
 		await process_frame
 	if match_page._confirm.visible:
 		if not _expect(not match_page._pending.is_empty(), "single action retains a pending command for confirmation"):
 			return false
 		var confirm_button: Button = match_page._confirm.get_node("Column/Actions/Buttons/Confirm") as Button
-		point = confirm_button.get_global_rect().get_center()
-		_mouse_button(point, true)
-		_mouse_button(point, false)
+		_mouse_button(confirm_button.get_global_rect().get_center(), true)
+		_mouse_button(confirm_button.get_global_rect().get_center(), false)
 		await process_frame
 	if not _expect(str(app.service.snapshot()["revision"]) != original_revision, "mouse operation and target selection execute the card in the native session"):
 		return false

@@ -1,0 +1,38 @@
+{
+  "id": "storm-heart",
+  "name": "风契·风暴之心",
+  "type": "formation",
+  "rarity": "legendary",
+  "level": 7,
+  "body": 5,
+  "rings": 5,
+  "capacity": 20,
+  "income": 7,
+  "maxRank": 7,
+  "cost": 0,
+  "baseEligible": false,
+  "text": "设置时，从卡组将1张【风契·大风暴术】加入手卡。 己方每发动1张【风契】法术卡，此阵法卡获得1个【风契指示物】。 此阵法卡被销毁时，可以移除此阵法卡上的1个【风契指示物】作为替代。 1回合1次，移除此阵法卡上的2个【风契指示物】，选择以下1个效果发动： 抽1张卡。 将己方灰烬区1张【风契】卡返回卡组。",
+  "summonCondition": "【风暴纹章】+【风契指示物】x 10 +【魔素】x 4",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 4
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "storm-crest"
+    }
+  ],
+  "traits": [
+    "unique",
+    "activate_storm_heart_choice",
+    "storm_heart_upgrade",
+    "search_great_storm_on_setup"
+  ],
+  "tags": [
+    "风契"
+  ],
+  "number": "010015",
+  "illustrationId": "storm-heart"
+}

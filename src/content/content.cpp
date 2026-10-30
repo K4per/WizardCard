@@ -189,14 +189,12 @@ void writeJson(const std::filesystem::path &p, const Json &j) {
 CardCatalog parseCatalog(const Json &j, const std::string &source) {
     CardCatalog cat;
     const auto revision = number(j, "mechanicsRevision", source);
-    if (revision > 9)
-        fail(source + "/mechanicsRevision", "unsupported mechanics revision");
-    cat.advancedRules = revision >= 1;
     cat.mechanicsRevision = revision;
-    cat.alphaV2 = revision >= 2;
     cat.baseLoadCapacity = number(j, "baseLoadCapacity", source);
     cat.rulesVersion = text(j, "rulesVersion", source);
     cat.cardSetVersion = text(j, "cardSetVersion", source);
+    if (cat.rulesVersion != "2.5.5" || revision != 9)
+        fail(source, "only rulesVersion 2.5.5 with mechanicsRevision 9 is supported");
     if (!j.contains("cards") || !j.at("cards").is_array())
         fail(source + "/cards", "expected array");
     const std::map<std::string, CardType> types = {{"action", CardType::Action},
@@ -228,7 +226,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         d.text = text(card, "text", p);
         d.rarity = text(card, "rarity", p);
         d.type = enumeration(text(card, "type", p), types, p + "/type");
-        if (cat.alphaV2) {
+        {
             d.number = text(card, "number", p);
             const std::map<CardType, std::string> prefixes{{CardType::Formation, "01"},
                                                             {CardType::Analytic, "02"},
@@ -276,7 +274,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         d.immediate = boolean(card, "immediate", p);
         d.concentration = boolean(card, "concentration", p);
         d.perpetual = boolean(card, "perpetual", p);
-        if (cat.alphaV2 && card.contains("recipe")) {
+        if (card.contains("recipe")) {
             if (d.type != CardType::Formation || !card.at("recipe").is_array())
                 fail(p + "/recipe", "formation recipe must be an array");
             const std::map<std::string, RecipeCostKind> recipeKinds{
@@ -311,7 +309,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         if (!d.school.empty() && schoolName(d.school).empty())
             fail(p + "/school", "unknown school");
         d.speed = number(card, "speed", p, 1);
-        if (d.speed < 1 || d.speed > 4 || (!cat.alphaV2 && d.type == CardType::Analytic && d.speed > 2))
+        if (d.speed < 1 || d.speed > 4)
             fail(p + "/speed", "invalid spell speed");
         d.capacityBonus = number(card, "capacityBonus", p);
         d.rankBonus = number(card, "rankBonus", p);
@@ -336,10 +334,8 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         d.refundSetting = number(card, "refundSetting", p);
         if (card.contains("flavor"))
             d.flavor = text(card, "flavor", p);
-        if (d.immediate && (d.type != CardType::Word || (cat.alphaV2 ? d.rank != 1 : d.rank != 0) ||
-                            d.concentration || d.duration ||
-                            (!cat.advancedRules && d.target != TargetKind::Opponent)))
-            fail(p + "/immediate", "requires instant rank-zero opponent-target word");
+        if (d.immediate && (d.type != CardType::Word || d.rank != 1 || d.concentration || d.duration))
+            fail(p + "/immediate", "requires instant rank-one word without duration or concentration");
         if (d.concentration && ((d.type != CardType::Analytic && d.type != CardType::Word &&
                                  d.type != CardType::Talisman) || d.duration || d.perpetual ||
                                 !d.onPrepare.empty() || !d.onEnd.empty()))
@@ -354,11 +350,8 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         d.targetCount = number(card, "targetCount", p, 1);
         if (d.targetCount < 1 || d.targetCount > 5)
             fail(p + "/targetCount", "expected 1..5");
-        if (!cat.usesAlphaV25() && d.baseEligible && (d.type != CardType::Formation || d.body < 1 || d.body > 5 || !d.capacity ||
-                               !d.rings || !d.maxRank))
+        if (d.baseEligible && (d.type != CardType::Formation || d.body < 1 || d.body > 5 || !d.capacity || !d.rings || !d.maxRank || d.level != 1))
             fail(p + "/baseEligible", "requires usable formation");
-        if (!cat.usesAlphaV25() && cat.alphaV2 && d.baseEligible && d.level != 1)
-            fail(p + "/baseEligible", "initial formation must be level 1");
         if (card.contains("tags")) {
             if (!card.at("tags").is_array())
                 fail(p + "/tags", "expected array");
@@ -368,7 +361,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 d.tags.push_back(tag.get<std::string>());
             }
         }
-        if (cat.alphaV2 && card.contains("traits")) {
+        if (card.contains("traits")) {
             static const std::set<std::string> allowed{
                 "unique", "effect_indestructible", "effect_immune", "host_heal_plus_one",
                 "host_cast_life_for_temporary", "host_evocation_damage_plus_one",
@@ -452,7 +445,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                     else if (value == "ambush" && (d.type == CardType::Word || d.type == CardType::Action ||
                                                    d.type == CardType::Talisman))
                         a.fromAmbush = true;
-                    else if (value == "casting" && cat.alphaV2 &&
+                    else if (value == "casting" &&
                              (d.type == CardType::Analytic || d.type == CardType::Word ||
                               d.type == CardType::Talisman))
                         a.fromCasting = true;
@@ -497,8 +490,6 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                                                                      {"end", Phase::End}},
                                         rp + "/phases"));
                 }
-                if (cat.advancedRules && a.fromHand)
-                    fail(rp + "/sources", "hand cannot respond under revision 1");
                 a.effects = effects(entry.value("effects", Json::array()), rp + "/effects");
                 if (a.effects.empty())
                     fail(rp + "/effects", "response must have effects");
@@ -513,21 +504,16 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         }
         if (d.extraDiscard > 1 || (d.extraDiscard && d.type != CardType::Analytic))
             fail(p + "/extraDiscard", "prototype supports one discard at analytic preparation");
-        if (d.type == CardType::Analytic && d.analysisTurns < (cat.advancedRules ? 0 : 1))
-            fail(p + "/analysisTurns", "must be positive");
-        if (d.type == CardType::Formation &&
-            (d.body < 1 || d.body > 5 || (!cat.advancedRules && d.cost != 0)))
-            fail(p, "formation needs body 1..5 and cost 0");
+        if (d.type == CardType::Formation && (d.body < 1 || d.body > 5))
+            fail(p, "formation needs body 1..5");
         if ((d.type == CardType::Analytic || d.type == CardType::Word || d.type == CardType::Talisman) &&
             d.rank < 1 && !d.immediate)
             fail(p + "/rank", "spell rank must be positive");
-        if (!cat.alphaV2 && d.type == CardType::Word && d.duration)
-            fail(p + "/duration", "first-set words must be instant");
-        if (d.type != CardType::Analytic && !(cat.alphaV2 && d.type == CardType::Formation) &&
+        if (d.type != CardType::Analytic && d.type != CardType::Formation &&
             (!d.onPrepare.empty() || !d.onEnd.empty()))
             fail(p, "periodic effects require analytic spell");
         if ((!d.onPrepare.empty() || !d.onEnd.empty()) && !d.duration && !d.perpetual &&
-            !(cat.alphaV2 && (d.type == CardType::Formation || d.concentration)))
+            !(d.type == CardType::Formation || d.concentration))
             fail(p + "/duration", "periodic effects require finite duration");
         if (d.concentration && (!d.onDraw.empty() || !d.onMain.empty() || !d.onMana.empty()))
             fail(p + "/concentration", "concentration effects run only in cast phase");
@@ -538,18 +524,12 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         if (!cat.cards.emplace(d.id, d).second)
             fail(p + "/id", "duplicate card id");
     }
-    if (cat.usesAlphaV25()) {
-        if (std::none_of(cat.cards.begin(), cat.cards.end(), [](const auto &entry) {
+    if (std::none_of(cat.cards.begin(), cat.cards.end(), [](const auto &entry) {
             return entry.second.type == CardType::Formation && entry.second.level == 1;
         })) fail(source + "/cards", "missing level 1 formation");
-    } else {
-        const std::string requiredBase = cat.alphaV2 ? "small-hexagram" : "balance";
-        if (!cat.cards.count(requiredBase) || !cat.at(requiredBase).baseEligible)
-            fail(source + "/cards", "missing eligible base formation " + requiredBase);
-    }
     // Resolve names only after the complete catalogue exists. Conditions describe the
     // same recipe that the engine executes, so display text cannot authorize a cost.
-    if (cat.alphaV2) for (auto &[id, formation] : cat.cards) {
+    for (auto &[id, formation] : cat.cards) {
         if (formation.type != CardType::Formation) continue;
         std::vector<std::string> clauses;
         if (formation.cost) clauses.push_back("支付" + std::to_string(formation.cost) + "魔素");
@@ -583,9 +563,10 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         formation.settingConditions += "。需有足够阵体空间；每己方回合最多设置或替换1个阵法。";
         if (std::find(formation.traits.begin(), formation.traits.end(), "unique") != formation.traits.end())
             formation.settingConditions += "己方场上最多存在1个同名阵法。";
-        if (cat.usesAlphaV25() && formation.level == 1)
+        if (formation.level == 1)
             formation.settingConditions += "开局可从副卡组免费选择，双方确认后同时设置，不计本回合额度。";
     }
+    cat.compileAbilities();
     cat.contentHash = fingerprint(j.dump());
     return cat;
 }
@@ -601,30 +582,28 @@ std::vector<std::string> parseDeck(const Json &j, const CardCatalog &cat, const 
         int count = number(e, "count", p);
         if (!cat.cards.count(id))
             fail(p + "/id", "unknown definition");
-        if (cat.alphaV2 && (cat.at(id).type == CardType::Formation ||
-                            cat.at(id).type == CardType::Action))
+        if (cat.at(id).type == CardType::Formation || cat.at(id).type == CardType::Action)
             fail(p + "/id", "card cannot enter main deck");
         if (count < 1 || (names[cat.at(id).name] += count) > 3)
             fail(p + "/count", "same-name limit is 3");
         for (int k = 0; k < count; ++k)
             deck.push_back(id);
     }
-    if (deck.size() != (cat.alphaV2 ? 40u : 30u))
-        fail(source, cat.alphaV2 ? "main deck must contain exactly 40 cards"
-                                 : "deck must contain exactly 30 cards");
+    if (deck.size() != 40)
+        fail(source, "main deck must contain exactly 40 cards");
     return deck;
 }
 Content loadContent(const std::filesystem::path &dir) {
     Content c;
     c.catalog = parseCatalog(readCatalogJson(dir), dir.string());
     c.deck = parseDeck(readJson(dir / "deck.json"), c.catalog, (dir / "deck.json").string());
-    if (c.catalog.alphaV2) {
+    {
         auto side = readJson(dir / "side-deck.json");
-        if (!side.is_object() || (!c.catalog.usesAlphaV25() && !side.contains("initialFormation")) ||
+        if (!side.is_object() ||
             (side.contains("initialFormation") && !side.at("initialFormation").is_string()) || !side.contains("cards") ||
             !side.at("cards").is_array())
             fail((dir / "side-deck.json").string(), "invalid side deck");
-        c.initialFormation = side.value("initialFormation", std::string{});
+        c.initialFormation.clear();
         std::map<std::string, int> names;
         for (const auto &row : side.at("cards")) {
             auto id = text(row, "id", (dir / "side-deck.json").string());
@@ -634,10 +613,8 @@ Content loadContent(const std::filesystem::path &dir) {
                 fail((dir / "side-deck.json").string(), "invalid formation or duplicate name");
             c.sideDeck.insert(c.sideDeck.end(), count, id);
         }
-        const bool hasInitial = c.catalog.usesAlphaV25() ?
-            std::any_of(c.sideDeck.begin(), c.sideDeck.end(), [&](const auto &id) { return c.catalog.at(id).level == 1; }) :
-            c.catalog.cards.count(c.initialFormation) && c.catalog.at(c.initialFormation).level == 1 &&
-            std::find(c.sideDeck.begin(), c.sideDeck.end(), c.initialFormation) != c.sideDeck.end();
+        const bool hasInitial = std::any_of(c.sideDeck.begin(), c.sideDeck.end(),
+            [&](const auto &id) { return c.catalog.at(id).level == 1; });
         if (c.sideDeck.size() != 10 || !hasInitial)
             fail((dir / "side-deck.json").string(), "invalid initial formation or side deck size");
     }

@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0039",
+  "number": "020039",
+  "name": "加速术",
+  "type": "analytic",
+  "school": "transmutation",
+  "rarity": "legendary",
+  "rank": 6,
+  "cost": 6,
+  "castCost": 6,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "获得1个额外的己方回合。那之后，直到下个回合结束阶段结束时，己方获得的荷载×2。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 40
+  },
+  "illustrationId": "v260-analytic-0039",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\加速术.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

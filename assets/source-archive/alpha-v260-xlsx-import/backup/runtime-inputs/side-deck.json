@@ -1,0 +1,33 @@
+{
+  "initialFormation": "small-hexagram",
+  "cards": [
+    {
+      "id": "small-hexagram",
+      "count": 3
+    },
+    {
+      "id": "hexagram",
+      "count": 2
+    },
+    {
+      "id": "pentagram-of-life",
+      "count": 1
+    },
+    {
+      "id": "octagram",
+      "count": 1
+    },
+    {
+      "id": "reservoir",
+      "count": 1
+    },
+    {
+      "id": "engeas-four-point-star",
+      "count": 1
+    },
+    {
+      "id": "elemental-ring",
+      "count": 1
+    }
+  ]
+}

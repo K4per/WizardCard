@@ -1,0 +1,34 @@
+{
+  "id": "v260-talisman-0005",
+  "number": "040005",
+  "name": "避火咒",
+  "type": "talisman",
+  "school": "abjuration",
+  "rarity": "epic",
+  "rank": 4,
+  "cost": 0,
+  "castCost": 2,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "专注2。受到的火焰伤害减半，此效果不可叠加。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+    "正式卡图未匹配"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 68
+  },
+  "illustrationId": "v260-talisman-0005",
+  "art": {
+    "status": "missing",
+    "source": null
+  },
+  "migration": {
+    "previousId": "protective-flame"
+  }
+}

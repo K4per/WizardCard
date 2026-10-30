@@ -1,0 +1,28 @@
+{
+  "id": "great-cyclone",
+  "name": "风契·大旋风术",
+  "type": "talisman",
+  "rarity": "epic",
+  "cost": 4,
+  "rank": 5,
+  "level": 5,
+  "speed": 2,
+  "school": "transmutation",
+  "target": "none",
+  "effects": [
+    {
+      "kind": "storm_cyclone"
+    }
+  ],
+  "text": "己方场上存在【风契】阵法卡，移除5个【风契指示物】才能发动。销毁对方1张阵法卡上的全部法术卡。那之后，可以对对方造成销毁数量×2点钝击伤害。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "tags": [
+    "风契"
+  ],
+  "traits": [
+    "requires_storm_formation"
+  ],
+  "number": "040008",
+  "illustrationId": "great-cyclone"
+}

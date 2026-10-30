@@ -1,0 +1,27 @@
+{
+  "id": "qixing-punishment",
+  "name": "七星惩戒",
+  "type": "talisman",
+  "rarity": "rare",
+  "cost": 5,
+  "castCost": 0,
+  "rank": 5,
+  "level": 5,
+  "speed": 3,
+  "number": "040015",
+  "illustrationId": "qixing-punishment",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [
+    {
+      "kind": "seven_stars_ruin",
+      "amount": 12,
+      "recipient": "opponent"
+    }
+  ],
+  "text": "耀：对对方造成12点光耀伤害。 黯：对对方造成12点暗蚀伤害。",
+  "analysisTurns": 0,
+  "school": "evocation"
+}

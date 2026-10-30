@@ -1,12 +1,5 @@
 extends SceneTree
 
-class RecordingService extends FrontendService:
-	var submitted: Array[String] = []
-	func match_request(method: StringName, arguments: Array = []) -> Dictionary:
-		if method == &"select_action":
-			submitted.append(str(arguments[1]))
-		return {"ok": true, "data": {}}
-
 var failures: int = 0
 var output: String = ""
 
@@ -52,10 +45,13 @@ func _run() -> void:
 	var page: MatchPage = (load("res://pages/match_page.tscn") as PackedScene).instantiate() as MatchPage
 	root.add_child(page)
 	await _settle()
-	var service: RecordingService = RecordingService.new()
+	var service: QueryFixtureService = QueryFixtureService.new()
 	service.match_mode = "ai"
-	service.match_snapshot = {"generation": "9007199254740993", "revision": "9007199254740995", "viewer": 0, "result": -1, "players": [{"life": 40}, {"life": 40}], "cards": [_card("33", "魔法飞弹", 1, 1), _card("34", "小六芒星", 3), _card("35", "蓄能阵", 9), _card("36", "均衡之六芒星", 9), _card("37", "火球术", 6, 1)], "actions": []}
+	service.match_snapshot = {"generation": "9007199254740993", "revision": "9007199254740995", "viewer": 0, "result": -1, "players": [{"life": 40}, {"life": 40}], "cards": [_card("33", "魔法飞弹", 1, 1), _card("34", "小六芒星", 3), _card("35", "蓄能阵", 9), _card("36", "均衡之六芒星", 9), _card("37", "火球术", 6, 1)]}
 	page.service = service
+	page._selection.service = service
+	page._selection.changed.connect(page._query_changed)
+	page._selection.completed.connect(page._query_completed)
 	page.canvas.configure(MatchProjection.field(service.match_snapshot))
 	page._phase.text = "第 12 回合\n玩家 1 · 主要"
 	page._update_status()
@@ -84,7 +80,7 @@ func _run() -> void:
 		_click(page._decision._collapse.get_global_rect().get_center())
 		await _settle()
 		_expect(not page._decision.visible and not page.canvas.hand_collapsed, "collapse restores hand without submission")
-		_expect(service.submitted.is_empty(), "collapsing does not submit a rule command")
+		_expect(service.selected_actions.is_empty(), "collapsing does not submit a rule command")
 		page._toggle_hand()
 		await _settle()
 		_click((page._collection_grid.get_child(0) as Button).get_global_rect().get_center())
@@ -97,7 +93,8 @@ func _run() -> void:
 		page.dismiss_cancel()
 		_expect(not page._decision.visible, "Escape closes collection")
 	service.match_snapshot["decision"] = {"id": "9007199254740997", "player": 0, "kind": 0}
-	service.match_snapshot["actions"] = [{"id": "respond", "source": "33", "command": {"type": 12, "decision": "9007199254740997"}}, {"id": "pass", "source": "0", "command": {"type": 13, "decision": "9007199254740997"}}]
+	service.fixture_actions.assign([{"id": "respond", "source": "33", "command": {"type": 12, "decision": "9007199254740997"}}, {"id": "pass", "source": "0", "command": {"type": 13, "decision": "9007199254740997"}}])
+	service.match_snapshot["actionSummary"] = {"hasNonPhaseAction": true}
 	page._render_decision()
 	await _settle()
 	_expect(page._decision._confirm.visible and page._decision._cancel.visible, "response exposes confirm and pass footer")
@@ -105,15 +102,16 @@ func _run() -> void:
 	await _capture("response")
 	_click(page._decision._collapse.get_global_rect().get_center())
 	await _settle()
-	_expect(service.submitted.is_empty() and page._tray_suspended, "collapsing mandatory response keeps it pending")
+	_expect(service.selected_actions.is_empty() and page._tray_suspended, "collapsing mandatory response keeps it pending")
 	page._toggle_hand()
 	await _settle()
-	_click(page._decision._options["respond"].get_global_rect().get_center())
+	_click(page._decision._options[str(KernelContract.CommandKind.Respond)].get_global_rect().get_center())
 	await _settle()
-	_expect(service.submitted.is_empty() and not page._decision._confirm.disabled, "response selection waits for explicit confirmation")
+	_expect(service.selected_actions.is_empty() and not page._decision._confirm.disabled, "response selection waits for explicit confirmation")
 	_click(page._decision._cancel.get_global_rect().get_center())
 	await _settle()
-	_expect(service.submitted == ["pass"], "pass button submits exactly the native pass action")
+	_expect(service.selected_actions == ["pass"], "pass button submits exactly the native pass action")
+	page._network_waiting = false
 	# Damage types, load entries and trigger IDs share numeric values with card
 	# instances, but their native decision options do not identify those cards.
 	service.match_snapshot["cards"].append(_card("1", "小六芒星", 3))
@@ -126,37 +124,37 @@ func _run() -> void:
 	]
 	for scalar: Dictionary in scalar_choices:
 		service.match_snapshot["decision"] = {"id": "9007199254740999", "player": 0, "kind": scalar["kind"]}
-		service.match_snapshot["actions"] = [{"id": "scalar", "source": "0", "label": scalar["label"], "command": {"type": 10, "option": "1", "decision": "9007199254740999"}}]
+		service.fixture_actions.assign([{"id": "scalar", "source": "0", "label": scalar["label"], "command": {"type": 10, "option": "1", "decision": "9007199254740999"}}])
 		page._render_decision()
 		await _settle()
 		_expect(page._decision.request.choices[0].card == null, "scalar decision does not render a colliding card instance")
-		_expect(page._decision._labels["scalar"].text == scalar["label"], "scalar decision displays its exact native option label")
+		_expect(page._decision._labels["1"].text == scalar["label"], "scalar decision displays its exact native option label")
 	service.match_snapshot["decision"] = {"id": "9007199254740999", "player": 0, "kind": 11}
-	service.match_snapshot["actions"] = [{"id": "search", "source": "0", "label": "选择 蓄能阵 #2", "command": {"type": 10, "option": "2", "decision": "9007199254740999"}}]
+	service.fixture_actions.assign([{"id": "search", "source": "0", "label": "选择 蓄能阵 #2", "queryCard": "2", "command": {"type": 10, "option": "2", "decision": "9007199254740999"}}])
 	page._render_decision()
 	await _settle()
 	_expect(page._decision.request.choices[0].card != null and page._decision.request.choices[0].card.instance_id == "2", "search options still resolve a genuine card ID")
 	var damage_names: Array[String] = ["火焰", "寒冷", "光耀", "黯蚀", "毒素", "闪电", "心灵", "雷鸣", "力场", "挥砍", "钝击", "穿刺", "强酸"]
 	service.match_snapshot["decision"] = {"id": "9007199254740999", "player": 0, "kind": 14}
-	service.match_snapshot["actions"] = []
+	service.fixture_actions.assign([])
 	for index: int in range(damage_names.size()):
-		service.match_snapshot["actions"].append({"id": "damage-%d" % index, "source": "0", "label": "选择" + damage_names[index] + "伤害", "command": {"type": 10, "option": str(index + 1), "decision": "9007199254740999"}})
+		service.fixture_actions.append({"id": "damage-%d" % index, "source": "0", "label": "选择" + damage_names[index] + "伤害", "command": {"type": 10, "option": str(index + 1), "decision": "9007199254740999"}})
 	page._render_decision()
 	await _settle()
 	for index: int in range(damage_names.size()):
-		_expect(page._decision.request.choices[index].card == null and page._decision._labels["damage-%d" % index].text == "选择" + damage_names[index] + "伤害", "all damage options show their own type")
+		_expect(page._decision.request.choices[index].card == null and page._decision._labels[str(index + 1)].text == "选择" + damage_names[index] + "伤害", "all damage options show their own type")
 	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 1000), Vector2i(1920, 1080)]:
 		root.size = dimensions
 		await _settle()
 		await _capture("damage-types")
 	page._decision._candidate_scroll.scroll_horizontal = 0
 	await _settle()
-	_click(page._decision._options["damage-0"].get_global_rect().get_center())
+	_click(page._decision._options["1"].get_global_rect().get_center())
 	await _settle()
-	_expect(not page._decision._confirm.disabled and page._decision._selected == ["damage-0"], "damage selection enables explicit confirmation")
+	_expect(not page._decision._confirm.disabled and page._decision._selected == ["1"], "damage selection enables explicit confirmation")
 	_click(page._decision._confirm.get_global_rect().get_center())
 	await _settle()
-	_expect(service.submitted == ["pass", "damage-0"], "damage confirmation submits the exact native action ID")
+	_expect(service.selected_actions == ["pass", "damage-0"], "damage confirmation submits the exact native action ID")
 	page.queue_free()
 	await process_frame
 	print("Card tray smoke: %s" % ("PASS" if failures == 0 else "FAIL"))

@@ -2,11 +2,41 @@
 #include "wizard/core/types.hpp"
 
 namespace wizard {
+enum class Capability : std::uint8_t {
+    ActivateStormCrestDestroy, ActivateStormHeartChoice, ActivateStormSearch,
+    ArcanaChariot, ArcanaDeath, ArcanaDevil, ArcanaEmperorCost, ArcanaFoolCondition,
+    ArcanaHangedCost, ArcanaPriestessCost, ArcanaStrength, ArcanaTemperance,
+    AshEvocationDiscount, BloodAltar, BloodCurse, BloodHeart, BloodHeartmark,
+    BloodLastStand, BloodMark, BloodOfferingCost, BloodPool, BloodSacrificeReward,
+    BloodSameOrigin, BloodTransfusion, BloodVein, BloodWristCost,
+    ClearLoadOnAnalysis, DestroyEnemyAmbushEnd, DiscardSpellSearch, DistinctHostSchools,
+    DoubleEnemyConcentrationUpkeep, EffectImmune, EffectIndestructible, EndPhaseStart,
+    FireDamageSpell, GreatStorm, HostCastLifeForTemporary, HostEvocationDamagePlusOne,
+    HostFireOnly, HostHealPlusOne, MaxTwo, Moon, OpponentSpellLoad4, PingOnSpellLeave,
+    QuickHostAnalysis1, QuickHostAnalysis2, RequiresStormFormation,
+    RequiresStormHeartSetup, RequiresStormSetup, ReturnFormationFromAsh,
+    SearchGreatStormOnSetup, SelfAmbushOnLeave, SevenStarsBanner, SevenStarsEffectOnly,
+    SevenStarsKaiyang, SevenStarsLamp, SevenStarsYaoguang, SiqueCampfireOnly,
+    SiqueCauldronOnly, SiqueDetach1, SiqueDetach2, SiqueDetach3,
+    SiqueRequiresCampfire, SiqueRequiresCauldron, StormFormationHostOnly,
+    StormFormationHostRestriction, StormHeartUpgrade, StormReleaseCounter,
+    StormSearch, StormSearchTalisman, InspectEnemyAmbush,
+    SurchargeEnemyTimedCast, ThunderDamageBonus, Unique, BloodDebt, BloodRepayment,
+    ArcanaMagician, ArcanaTower, ArcanaLovers, CloudMist, QixingDivination, QixingRuin, QixingShift,
+    QixingTianquan, QixingTianshu, QixingTianxuan, QixingYuheng, SiqueAromaLure,
+    SiqueCampfire, SiqueCauldron, StormCrest, StormHeart, SwiftWind, ThunderSummon,
+    WindStrike, QixingGaze, QixingReturn, ArcanaWorld, MoonMaterialFormation,
+    SiqueBoilingSurge, SiqueChili, SiqueSugar, SiqueVinegar, CounterSpell
+};
 struct Effect {
     EffectKind kind{};
     int amount{};
     DamageType damageType{DamageType::Force};
     EffectRecipient recipient{};
+    bool operator==(const Effect &other) const {
+        return kind == other.kind && amount == other.amount && damageType == other.damageType && recipient == other.recipient;
+    }
+    bool operator!=(const Effect &other) const { return !(*this == other); }
 };
 struct ResponseAbility {
     std::string id;
@@ -42,7 +72,8 @@ struct CardDefinition {
     bool baseEligible{};
     int targetCount{1};
     std::vector<std::string> tags;
-    std::vector<std::string> traits; // Validated executable 2.0 card capabilities.
+    std::vector<std::string> traits; // Content identity / format-4 adapter.
+    std::vector<Capability> capabilities; // Compiled once from the executable trait registry.
     std::vector<ResponseAbility> responses;
     std::vector<Effect> onDraw, onMain, onCast, onLeave, onMana;
     std::string school;
@@ -58,19 +89,13 @@ struct CardCatalog {
     std::string rulesVersion, cardSetVersion, contentHash;
     int mechanicsRevision{};
     std::map<std::string, CardDefinition> cards;
-    bool advancedRules{};
-    // Offline Alpha v2 rule fixtures only, until construction/phase gates are complete.
-    // The production JSON loader deliberately does not enable this draft mode.
-    bool alphaV2Draft{};
-    bool alphaV2{};
-    bool usesAlphaV2() const { return alphaV2 || alphaV2Draft; }
-    bool usesAlphaV25() const { return mechanicsRevision >= 3; }
-    bool usesAlphaV252() const { return mechanicsRevision >= 5; }
-    bool usesAlphaV253() const { return mechanicsRevision >= 6; }
-    bool usesAlphaV253Hotfix1() const { return mechanicsRevision >= 7; }
-    bool usesCardRules() const { return mechanicsRevision >= 8; }
-    bool usesAlphaV255() const { return mechanicsRevision >= 9; }
     int baseLoadCapacity{};
     const CardDefinition &at(const std::string &id) const;
+    void compileAbilities();
 };
+inline bool hasCapability(const CardDefinition &definition, Capability capability) {
+    return std::find(definition.capabilities.begin(), definition.capabilities.end(), capability) != definition.capabilities.end();
+}
+std::optional<Capability> findCapability(const std::string &name);
+
 } // namespace wizard

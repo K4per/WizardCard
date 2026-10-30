@@ -1,0 +1,25 @@
+{
+  "id": "qixing-lamp",
+  "name": "七星灯盏",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 7,
+  "castCost": 7,
+  "rank": 7,
+  "level": 7,
+  "speed": 1,
+  "number": "020038",
+  "illustrationId": "qixing-lamp",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [],
+  "text": "计时7。自己场上有【瑶光】存在才能发动。发动后，此法术卡只要在己方场上存在，己方不会受到伤害。此法术卡离场时，己方败北。",
+  "analysisTurns": 7,
+  "school": "necromancy",
+  "traits": [
+    "seven_stars_lamp"
+  ],
+  "duration": 7
+}

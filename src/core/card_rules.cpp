@@ -6,6 +6,7 @@
 #include <type_traits>
 
 namespace wizard::card_rules {
+
 bool member(const CardDefinition &d, const char *series) {
     return std::find(d.tags.begin(), d.tags.end(), series) != d.tags.end();
 }
@@ -13,20 +14,20 @@ bool field(const CardInstance &c) {
     return c.zone == Zone::Analysis || c.zone == Zone::Casting || c.zone == Zone::Attached;
 }
 int lifeLimit(const GameState &s, const CardCatalog &cat, PlayerId p) {
-    if (!cat.usesCardRules()) return maximumLife;
+
     int modifier = 0;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p && c.zone == Zone::Attached && c.definition == "blood-mark") {
+        if (c.owner == p && c.zone == Zone::Attached && hasCapability(cat.at(c.definition), Capability::BloodMark)) {
             const auto host = s.cards.find(c.host);
             if (host != s.cards.end() && host->second.zone == Zone::Analysis &&
                 cat.at(host->second.definition).type == CardType::Formation && !effectImmune(s, cat, host->first)) modifier -= 6;
         }
     return std::clamp(s.players[p].lifeLimit + modifier, 1, maximumLife);
 }
-void normalizeLife(GameState &s, const CardCatalog &cat, PlayerId p) {
-    if (cat.usesCardRules()) s.players[p].life = std::min(s.players[p].life, lifeLimit(s, cat, p));
+void normalizeLife(MutationContext &s, const CardCatalog &cat, PlayerId p) {
+    s.players[p].life = std::min(s.players[p].life, lifeLimit(s, cat, p));
 }
-void changeLifeLimit(GameState &s, const CardCatalog &cat, PlayerId p, int delta) {
+void changeLifeLimit(MutationContext &s, const CardCatalog &cat, PlayerId p, int delta) {
     const int before = lifeLimit(s, cat, p);
     const int after = std::clamp(before + delta, 1, maximumLife);
     s.players[p].lifeLimit += after - before;
@@ -36,17 +37,25 @@ void changeLifeLimit(GameState &s, const CardCatalog &cat, PlayerId p, int delta
 bool canPayLife(const GameState &s, PlayerId p, int amount) {
     return amount >= 0 && (s.players[p].debugInfiniteLife || s.players[p].life > amount);
 }
-void payLife(GameState &s, const CardCatalog &cat, PlayerId p, int amount, CardId source) {
+int activationLifeCost(const CardDefinition &definition) {
+    if (hasCapability(definition, Capability::BloodWristCost)) return 4;
+    if (hasCapability(definition, Capability::BloodOfferingCost)) return 1;
+    return 0;
+}
+int attachmentLifeCost(const CardDefinition &definition) {
+    return hasCapability(definition, Capability::BloodCurse) ? 2 : 0;
+}
+void payLife(MutationContext &s, const CardCatalog &cat, PlayerId p, int amount, CardId source) {
     if (amount <= 0 || !canPayLife(s, p, amount)) return;
     if (!s.players[p].debugInfiniteLife) s.players[p].life -= amount;
     s.events.push_back({"life_payment", "支付普通生命", -1, source, amount});
     if (p != s.active || s.players[p].firstLifePaymentTurn == s.globalTurn) return;
     s.players[p].firstLifePaymentTurn = s.globalTurn;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p && c.zone == Zone::Analysis && c.definition == "blood-sacrificial-table")
+        if (c.owner == p && c.zone == Zone::Analysis && hasCapability(cat.at(c.definition), Capability::BloodSacrificeReward))
             ResourceRules::drawOne(s, cat, p);
 }
-int heal(GameState &s, const CardCatalog &cat, PlayerId p, int amount, CardId source) {
+int heal(MutationContext &s, const CardCatalog &cat, PlayerId p, int amount, CardId source) {
     if (amount <= 0 || s.result != -1) return 0;
     const int actual = std::min(amount, std::max(0, lifeLimit(s, cat, p) - s.players[p].life));
     s.players[p].life += actual;
@@ -57,7 +66,7 @@ int heal(GameState &s, const CardCatalog &cat, PlayerId p, int amount, CardId so
     while (!queue.empty()) {
         const auto [restored, value] = queue.front(); queue.pop_front();
         for (const auto &[id, c] : s.cards) {
-            if (c.owner == restored || c.definition != "blood-same-origin" || !field(c) ||
+            if (c.owner == restored || !hasCapability(cat.at(c.definition), Capability::BloodSameOrigin) || !field(c) ||
                 c.spell != SpellState::Active || c.faceDown || visited.count(id)) continue;
             visited.insert(id);
             const int gain = std::min(value, std::max(0, lifeLimit(s, cat, c.owner) - s.players[c.owner].life));
@@ -74,10 +83,11 @@ int paymentRatio(const GameState &s, const CardCatalog &cat, PlayerId p) {
     for (const auto &[id, c] : s.cards) {
         if (c.owner != p || c.faceDown) continue;
         if (c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation) {
-            if (c.definition == "blood-altar" && !ratio) ratio = 2;
-            if (c.definition == "blood-pool" || c.definition == "blood-heart") ratio = 1;
+            if (hasCapability(cat.at(c.definition), Capability::BloodAltar) && !ratio) ratio = 2;
+            if (hasCapability(cat.at(c.definition), Capability::BloodPool) ||
+                hasCapability(cat.at(c.definition), Capability::BloodHeart)) ratio = 1;
         }
-        if (c.zone == Zone::Attached && c.definition == "blood-vein") {
+        if (c.zone == Zone::Attached && hasCapability(cat.at(c.definition), Capability::BloodVein)) {
             const auto host = s.cards.find(c.host);
             if (host != s.cards.end() && host->second.zone == Zone::Analysis &&
                 cat.at(host->second.definition).type == CardType::Formation && !effectImmune(s, cat, host->first)) ratio = 1;
@@ -98,40 +108,43 @@ std::vector<PaymentChoice> paymentChoices(const GameState &s, const CardCatalog 
         canPayLife(s, 1 - p, fee) && fee > 0) out.push_back({0, fee, 1 - p});
     return out;
 }
-bool canPay(const GameState &s, const CardCatalog &cat, PlayerId p, int fee) {
-    if (s.selectedPayment) {
-        const auto &choice = *s.selectedPayment;
+bool canPay(const GameState &s, const CardCatalog &cat, PlayerId p, int fee, const PaymentChoice *selected) {
+    if (selected) {
+        const auto &choice = *selected;
         const int ratio = choice.lifePlayer == p ? paymentRatio(s, cat, p) : 1;
         return choice.mana + (ratio ? choice.life / ratio : 0) == fee &&
             ResourceRules::canPayMana(s, p, choice.mana) && canPayLife(s, choice.lifePlayer, choice.life);
     }
     return ResourceRules::canPayMana(s, p, fee);
 }
-void pay(GameState &s, const CardCatalog &cat, PlayerId p, int fee) {
-    if (!s.selectedPayment) { ResourceRules::payMana(s, p, fee); return; }
-    const auto choice = *s.selectedPayment;
+void pay(MutationContext &s, const CardCatalog &cat, PlayerId p, int fee) {
+    if (!s.paymentInput) { ResourceRules::payMana(s, p, fee); return; }
+    const auto choice = *s.paymentInput;
     ResourceRules::payMana(s, p, choice.mana);
     payLife(s, cat, choice.lifePlayer, choice.life);
 }
 bool damageImmune(const GameState &s, const CardCatalog &cat, PlayerId p) {
-    return cat.usesCardRules() && std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+    return std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
         const auto &c = entry.second;
-        return c.owner == p && c.definition == "qixing-lamp" && field(c) && !c.faceDown && c.spell == SpellState::Active;
+        return c.owner == p && hasCapability(cat.at(c.definition), Capability::SevenStarsLamp) && field(c) &&
+            !c.faceDown && c.spell == SpellState::Active;
     });
 }
-void damaged(GameState &s, const CardCatalog &cat, PlayerId, CardId source, int amount) {
+void damaged(MutationContext &s, const CardCatalog &cat, PlayerId, CardId source, int amount) {
     const auto card = s.cards.find(source);
-    if (!cat.usesCardRules() || amount <= 0 || card == s.cards.end() || !member(cat.at(card->second.definition), "血契")) return;
+    if (amount <= 0 || card == s.cards.end() || !member(cat.at(card->second.definition), "血契")) return;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == card->second.owner && c.definition == "blood-heart" && c.zone == Zone::Analysis)
+        if (c.owner == card->second.owner && hasCapability(cat.at(c.definition), Capability::BloodHeart) &&
+            c.zone == Zone::Analysis)
             heal(s, cat, c.owner, amount, id);
 }
-void expiredLife(GameState &s, const CardCatalog &cat, PlayerId p, int amount) {
-    if (amount <= 0 || !cat.usesCardRules()) return;
+void expiredLife(MutationContext &s, const CardCatalog &cat, PlayerId p, int amount) {
+    if (amount <= 0) return;
     for (const auto &[id, c] : s.cards)
-        if (c.owner == p && c.zone == Zone::Analysis && c.definition == "blood-pool") heal(s, cat, p, amount, id);
+        if (c.owner == p && c.zone == Zone::Analysis && hasCapability(cat.at(c.definition), Capability::BloodPool))
+            heal(s, cat, p, amount, id);
 }
-void returnCard(GameState &s, const CardCatalog &cat, CardId id, bool hand) {
+void returnCard(MutationContext &s, const CardCatalog &cat, CardId id, bool hand) {
     auto &c = s.cards.at(id);
     const auto owner = c.owner;
     if (field(c)) StateMaintenance::leave(s, id, &cat);
@@ -172,22 +185,9 @@ std::string paymentKey(const Command &command) {
     return out.str();
 }
 }
-std::optional<std::string> GameEngine::paymentForCardRules(PlayerId actor, const Command &command) {
-    auto &s = state_;
-    if (!catalog_.usesCardRules() || probingPayment_ || s.selectedPayment) return std::nullopt;
-    if (s.payment) {
-        const auto *choose = std::get_if<Choose>(&command);
-        if (!choose || !s.decision || choose->decision != s.decision->id || actor != s.payment->player)
-            return "payment_pending: 请先完成费用选择";
-        auto pending = *s.payment;
-        if (choose->option > pending.choices.size()) return "invalid_option";
-        s.payment.reset(); s.decision = pending.previousDecision;
-        if (!choose->option) return std::string{};
-        s.selectedPayment = pending.choices[choose->option - 1];
-        auto result = execute(actor, pending.command);
-        s.selectedPayment.reset();
-        return result;
-    }
+std::optional<PaymentRequest> GameEngine::paymentRequest(PlayerId actor, const Command &command) const {
+    const auto &s = state_;
+
     CardId source = 0, host = 0;
     bool setting = false;
     if (const auto *c = std::get_if<StartAnalysis>(&command)) { source = c->card; host = c->formation; setting = true; }
@@ -196,29 +196,16 @@ std::optional<std::string> GameEngine::paymentForCardRules(PlayerId actor, const
     if (const auto *c = std::get_if<Respond>(&command)) source = c->card;
     if (const auto *c = std::get_if<FlipAmbush>(&command)) {
         source = c->card;
-        if (s.cards.count(source) && catalog_.at(s.cards.at(source).definition).type == CardType::Analytic) {
+        if (s.cards.count(source) && catalog().at(s.cards.at(source).definition).type == CardType::Analytic) {
             setting = true; host = s.cards.at(source).host;
         }
     }
     if (!source || !s.cards.count(source) || s.cards.at(source).owner != actor) return std::nullopt;
-    const int fee = setting ? Rules::analysisCost(s, catalog_, source, host) : Rules::castCost(s, catalog_, source);
-    if (fee <= 0 || (!card_rules::paymentRatio(s, catalog_, actor) &&
+    const int fee = setting ? Rules::analysisCost(s, catalog(), source, host) : Rules::castCost(s, catalog(), source);
+    if (fee <= 0 || (!card_rules::paymentRatio(s, catalog(), actor) &&
         s.players[actor].siqueLifePaymentTurn != s.globalTurn)) return std::nullopt;
-    auto choices = card_rules::paymentChoices(s, catalog_, actor, fee);
-    std::vector<PaymentChoice> valid;
-    std::string error = "cost: 无可用支付方式";
-    for (const auto &choice : choices) {
-        auto trial = *this; trial.probingPayment_ = true; trial.state_.selectedPayment = choice;
-        const auto result = trial.execute(actor, command);
-        if (result.empty()) valid.push_back(choice);
-        else error = result;
-    }
-    if (valid.empty()) return error;
-    if (valid.size() == 1 && !valid.front().life) return std::nullopt;
-    s.payment = PendingPayment{actor, command, s.decision, std::move(valid), paymentKey(command)};
-    std::vector<std::uint32_t> options;
-    for (std::uint32_t i = 1; i <= s.payment->choices.size(); ++i) options.push_back(i);
-    decision(actor, DecisionKind::Payment, std::move(options), true);
-    return std::string{};
+    auto choices = card_rules::paymentChoices(s, catalog(), actor, fee);
+    if (choices.empty() || (choices.size() == 1 && !choices.front().life)) return std::nullopt;
+    return PaymentRequest{PendingPayment{actor, command, s.decision, std::move(choices), paymentKey(command)}};
 }
 }

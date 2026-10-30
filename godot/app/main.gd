@@ -151,17 +151,15 @@ func _on_close_requested() -> void:
 		get_tree().quit()
 
 func _poll_network() -> void:
-	if not service.network_active:
-		return
-	var state: Dictionary = service.poll_network()
-	if state.is_empty():
-		return
-	if current_page == &"rooms" and bool(state.get("started", false)):
-		navigate(&"match")
-	elif page is RoomsPage:
-		(page as RoomsPage).network_updated(state)
-	elif page is MatchPage:
-		(page as MatchPage).network_updated(state)
+	if service.network_active:
+		var state: Dictionary = service.poll_network()
+		if current_page == &"rooms" and bool(state.get("started", false)):
+			navigate(&"match")
+		elif page is RoomsPage:
+			(page as RoomsPage).network_updated(state)
+		elif page is MatchPage:
+			(page as MatchPage).network_updated(state)
+	service.poll_session()
 
 func _exit_tree() -> void:
 	service.release()

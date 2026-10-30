@@ -1,0 +1,26 @@
+{
+  "id": "unravel",
+  "name": "碎环术",
+  "rarity": "rare",
+  "type": "analytic",
+  "cost": 2,
+  "castCost": 1,
+  "rank": 4,
+  "target": "empty_enemy_formation",
+  "effects": [
+    {
+      "kind": "discard_formation"
+    },
+    {
+      "kind": "destroy"
+    }
+  ],
+  "text": "选择对方场上1张空白阵法卡才能发动。将1张阵法卡从副卡组送去灰烬区，销毁那张空白阵法卡。",
+  "flavor": "碎碎平安！",
+  "speed": 1,
+  "school": "transmutation",
+  "level": 4,
+  "number": "020003",
+  "illustrationId": "unravel",
+  "analysisTurns": 1
+}

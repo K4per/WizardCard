@@ -139,16 +139,11 @@ func _run() -> void:
 	_expect(preview_dynamic_talisman.primary_value == "X" and preview_dynamic_talisman.metadata_text.contains("费用：X"), "preview talisman cost is shown as X")
 	var covered: CardPresentation = CardPresentation.from_projection({"id": "98", "faceDown": true, "definition": {"type": 1, "name": "火球术", "cost": 3}})
 	_expect(covered.face_down and not covered.hidden and covered.title == "火球术", "own facedown card retains inspectable identity with covered face")
-	var highlight_projection: FieldPresentation = MatchProjection.field({"viewer": 0, "players": [{}, {}], "cards": [], "actions": [
-		{"source": "set", "command": {"type": 2}},
-		{"source": "attach", "command": {"type": 6}},
-		{"source": "cast", "command": {"type": 17}},
-		{"source": "covered", "command": {"type": 15}},
-		{"source": "both", "command": {"type": 5}},
-		{"source": "both", "command": {"type": 15}},
-		{"source": "remove", "command": {"type": 1}},
-		{"source": "formation", "command": {"type": 0}}
-	]})
+	var highlight_projection: FieldPresentation = MatchProjection.field({"viewer": 0, "players": [{}, {}], "cards": [], "canSetFormation": true, "availableCards": {
+		"set": FieldPresentation.LEGAL_GOLD, "attach": FieldPresentation.LEGAL_GOLD,
+		"cast": FieldPresentation.LEGAL_GOLD, "covered": FieldPresentation.LEGAL_AMBUSH,
+		"both": FieldPresentation.LEGAL_GOLD | FieldPresentation.LEGAL_AMBUSH
+	}})
 	_expect(highlight_projection.legal_cards.get("set", 0) == FieldPresentation.LEGAL_GOLD and highlight_projection.legal_cards.get("attach", 0) == FieldPresentation.LEGAL_GOLD and highlight_projection.legal_cards.get("cast", 0) == FieldPresentation.LEGAL_GOLD, "native setting, attachment and activation operations receive gold")
 	_expect(highlight_projection.legal_cards.get("covered", 0) == FieldPresentation.LEGAL_AMBUSH, "only native cover operation receives bright blue")
 	_expect(highlight_projection.legal_cards.get("both", 0) == (FieldPresentation.LEGAL_GOLD | FieldPresentation.LEGAL_AMBUSH), "a card preserves simultaneous setting and cover availability")

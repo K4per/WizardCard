@@ -1,0 +1,34 @@
+{
+  "id": "v260-analytic-0004",
+  "number": "020004",
+  "name": "魔法飞弹",
+  "type": "analytic",
+  "school": "evocation",
+  "rarity": "common",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 2,
+  "text": "选择1个目标才能发动。对其造成4点力场伤害。那之后，可以销毁对方解析区1张盖伏卡。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+    "正式卡图未匹配"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 5
+  },
+  "illustrationId": "v260-analytic-0004",
+  "art": {
+    "status": "missing",
+    "source": null
+  },
+  "migration": {
+    "previousId": "magic-missile"
+  }
+}

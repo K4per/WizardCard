@@ -1,0 +1,33 @@
+{
+  "id": "v260-talisman-0007",
+  "number": "040007",
+  "name": "死佑护甲",
+  "type": "talisman",
+  "school": "necromancy",
+  "rarity": "epic",
+  "rank": 2,
+  "cost": 0,
+  "castCost": 3,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "计时3。己方每受到3点伤害，使对方受到1点暗蚀伤害。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 70
+  },
+  "illustrationId": "v260-talisman-0007",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\死佑护甲.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

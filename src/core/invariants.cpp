@@ -17,8 +17,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
     if (s.active < 0 || s.active > 1 || s.first < 0 || s.first > 1)
         errors.push_back("invalid active player");
     if (s.opening) {
-        if (!cat.usesAlphaV25() || s.globalTurn != 0 || s.chain || s.effect || s.decision || s.phaseGate ||
-            !s.queue.items.empty() || !s.deferredPreparations.empty())
+        if (s.globalTurn != 0 || s.chain || s.effect || s.decision || s.phaseGate || !s.queue.items.empty() || !s.deferredPreparations.empty())
             errors.push_back("invalid opening work");
         for (int p = 0; p < 2; ++p) {
             if (s.players[p].ownTurn || s.players[p].deck.size() != 40)
@@ -48,7 +47,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
                            !s.deferredPreparations.empty() || s.phaseGate))
         errors.push_back("terminal work remains");
     for (int p = 0; p < 2; ++p) {
-        if (s.players[p].mana < 0 || s.players[p].mana > (cat.usesAlphaV25() ? maximumMana : 12))
+        if (s.players[p].mana < 0 || s.players[p].mana > (maximumMana))
             errors.push_back("mana bounds");
         std::map<CardId, int> seen;
         for (auto id : s.players[p].deck) {
@@ -63,8 +62,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
             if (controllerOf(c) == p) {
                 if (c.zone == Zone::Words)
                     ++words;
-                if ((c.zone == Zone::Casting || (cat.usesAlphaV2() && c.zone == Zone::Analysis)) && c.spell == SpellState::Active &&
-                    cat.at(c.definition).concentration)
+                if ((c.zone == Zone::Casting || c.zone == Zone::Analysis) && c.spell == SpellState::Active && cat.at(c.definition).concentration)
                     ++concentration;
                 if (c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation)
                     body += cat.at(c.definition).body;
@@ -75,7 +73,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
         if (body > 5 || words > 3)
             errors.push_back("zone capacity");
     }
-    if (cat.usesAlphaV252()) {
+    {
         std::set<std::uint32_t> lifeIds;
         for (const auto &entry : s.temporaryLives)
             if (!lifeIds.insert(entry.id).second || !entry.id || entry.owner < 0 || entry.owner > 1 || entry.amount < 0 || entry.expiryOwnTurn < 0)
@@ -92,8 +90,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
         if (c.id != id || c.owner < 0 || c.owner > 1 || c.controller < -1 || c.controller > 1 ||
             c.analysisLoad < 0 || c.castLoad < 0)
             errors.push_back("instance bounds");
-        if (!cat.usesAlphaV2() && c.base && c.zone != Zone::Analysis)
-            errors.push_back("base protection");
+
         if (c.zone == Zone::Ash && (c.analysisLoad || c.castLoad || c.host))
             errors.push_back("ash residue");
         if (c.host) {
@@ -105,10 +102,7 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
             else if (c.zone == Zone::Analysis && cat.at(h->second.definition).type != CardType::Formation)
                 errors.push_back("analysis host is not formation");
         }
-        if ((c.zone == Zone::Attached ||
-             (c.zone == Zone::Analysis && (cat.at(c.definition).type == CardType::Analytic ||
-               (cat.usesAlphaV2() && cat.at(c.definition).type != CardType::Formation)))) &&
-            !c.host)
+        if ((c.zone == Zone::Attached || c.zone == Zone::Analysis && (cat.at(c.definition).type == CardType::Analytic || cat.at(c.definition).type != CardType::Formation)) && !c.host)
             errors.push_back("missing host");
         if (c.zone == Zone::Attached && cat.at(c.definition).type != CardType::Seal)
             errors.push_back("non-seal attachment");
@@ -116,14 +110,10 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
         for (const auto &[other, x] : s.cards)
             if (x.zone == Zone::Attached && x.host == id)
                 ++seals;
-        if (!cat.usesAlphaV252() && c.definition != "sique-cauldron") {
-            int count = 0;
-            for (const auto &[sealId, seal] : s.cards) if (seal.zone == Zone::Attached && seal.host == id) ++count;
-            if (count > 1) errors.push_back("multiple seals");
-        }
+
         if (c.zone == Zone::Casting && c.host)
             errors.push_back("casting still attached to formation");
-        if (cat.usesAlphaV2()) {
+        {
             if (c.zone == Zone::Words || c.zone == Zone::Action || c.zone == Zone::Resolving)
                 errors.push_back("obsolete v2 zone");
             if (c.zone == Zone::SideDeck && cat.at(c.definition).type != CardType::Formation)

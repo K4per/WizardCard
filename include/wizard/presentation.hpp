@@ -21,7 +21,7 @@ struct MatchCue {
 // Presentation only: two views of the same viewer, no engine or unfiltered command events.
 class MatchPresentation {
   public:
-    void observe(const GameView &before, const GameView &after, bool reducedMotion = false);
+    void observe(const GameView &before, const GameView &after, const std::vector<GameEvent> &events, bool reducedMotion = false);
     void update(float seconds);
     void clear();
     void sampleLatest(float seconds); // Deterministic capture of an actual submitted transition.

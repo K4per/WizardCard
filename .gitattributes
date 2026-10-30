@@ -16,7 +16,3 @@
 # Preserve the copied license bytes covered by the runtime art manifest.
 godot/art/fonts/OFL.txt -text whitespace=cr-at-eol
 godot/art/fonts/NotoSansCJK-OFL.txt -text whitespace=cr-at-eol
-# Design snapshots are hashed verbatim by the release migration report.
-assets/design/alpha-v252/*.md -text whitespace=-blank-at-eof
-# Frozen Alpha 2.5.4 source snapshots use stable LF bytes for provenance hashes.
-assets/design/alpha-v254/sources/*.md text eol=lf whitespace=-blank-at-eof

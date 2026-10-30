@@ -1,0 +1,40 @@
+{
+  "id": "v260-word-0001",
+  "number": "030001",
+  "name": "火花术",
+  "type": "word",
+  "school": "evocation",
+  "rarity": "common",
+  "rank": 1,
+  "cost": 2,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "选择1个目标才能发动。对其造成3点火焰伤害。",
+  "flavor": "",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 3,
+      "damageType": "fire",
+      "recipient": "target"
+    }
+  ],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "正式卡图未匹配"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 42
+  },
+  "illustrationId": "v260-word-0001",
+  "art": {
+    "status": "missing",
+    "source": null
+  },
+  "migration": {
+    "previousId": "spark"
+  }
+}

@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include "wizard/command_codec.hpp"
 #include "wizard/core/card_rules.hpp"
@@ -8,11 +9,11 @@ using namespace wizard;
 namespace {
 CardCatalog catalog() {
     auto result = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog;
-    result.mechanicsRevision = 5;
+    result.mechanicsRevision = 9;
     return result;
 }
-GameState stateAt(Phase phase = Phase::Main) {
-    GameState state;
+MutationContext stateAt(Phase phase = Phase::Main) {
+    MutationContext state;
     state.phase = phase;
     state.phaseStep = PhaseStep::Body;
     state.phaseGate = 1;
@@ -21,7 +22,7 @@ GameState stateAt(Phase phase = Phase::Main) {
     for (auto &player : state.players) { player.mana = 20; player.ownTurn = 2; }
     return state;
 }
-CardInstance &put(GameState &state, CardId id, const std::string &definition, PlayerId owner, Zone zone,
+CardInstance &put(MutationContext &state, CardId id, const std::string &definition, PlayerId owner, Zone zone,
                   CardId host = 0, SpellState spell = SpellState::None) {
     CardInstance card;
     card.id = id; card.definition = definition; card.owner = owner; card.zone = zone;
@@ -30,12 +31,12 @@ CardInstance &put(GameState &state, CardId id, const std::string &definition, Pl
     state.cards.emplace(id, card);
     return state.cards.at(id);
 }
-void send(GameEngine &engine, PlayerId player, const Command &command) {
+void send(test::ObservedEngine &engine, PlayerId player, const Command &command) {
     const auto result = engine.submit(player, command);
     INFO(result.error);
     REQUIRE(result.accepted);
 }
-void settle(GameEngine &engine) {
+void settle(test::ObservedEngine &engine) {
     for (int n = 0; n < 32 && engine.state().decision; ++n) {
         const auto decision = *engine.state().decision;
         if (decision.kind == DecisionKind::Response) send(engine, decision.player, PassResponse{decision.id});
@@ -44,7 +45,7 @@ void settle(GameEngine &engine) {
         else return;
     }
 }
-bool hasFlip(const GameView &view, CardId card) {
+bool hasFlip(const test::ObservedView &view, CardId card) {
     return std::any_of(view.actions.begin(), view.actions.end(), [&](const LegalAction &action) {
         const auto *flip = std::get_if<FlipAmbush>(&action.command);
         return flip && flip->card == card;
@@ -52,7 +53,7 @@ bool hasFlip(const GameView &view, CardId card) {
 }
 }
 
-TEST_CASE("Alpha v2.5.2 formations and spells accept several paid seals with individual removal", "[alpha-v252][seals]") {
+TEST_CASE("Alpha v2.5.2 formations and spells accept several paid seals with individual removal", "[alpha-v252][seals][legacy]") {
     auto cat = catalog();
     auto state = stateAt();
     put(state, 1, "hexagram", 0, Zone::Analysis);
@@ -62,7 +63,7 @@ TEST_CASE("Alpha v2.5.2 formations and spells accept several paid seals with ind
     put(state, 12, "uplift", 0, Zone::Hand);
     put(state, 13, "uplift", 0, Zone::Hand);
     put(state, 20, "fireball", 0, Zone::Analysis, 1, SpellState::Ready).ringIndex = 0;
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     const int mana = engine.state().players[0].mana;
     send(engine, 0, AttachSeal{10, 1}); settle(engine);
     const auto view = engine.viewFor(0);
@@ -95,7 +96,7 @@ TEST_CASE("Alpha v2.5.2 removal is offered and shares the formation quota while 
     put(state, 11, "conduit", 0, Zone::Attached, 1);
     put(state, 12, "uplift", 0, Zone::Attached, 10);
     put(state, 13, "hexagram", 0, Zone::SideDeck);
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     const auto view = engine.viewFor(0);
     REQUIRE(std::any_of(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
         const auto *remove = std::get_if<RemoveFormation>(&action.command);
@@ -126,7 +127,7 @@ TEST_CASE("Alpha v2.5.2 unconfigured Storm Vortex flips on the immediately follo
         hidden.ringIndex = 0;
         put(state, 20, "fireball", 1 - owner, Zone::Analysis, 2, SpellState::Ready).ringIndex = 0;
         put(state, 30, "spark", 1 - owner, Zone::Hand);
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         send(engine, 1 - owner, SetAmbush{30, 2});
         REQUIRE(engine.state().decision);
         REQUIRE(engine.state().decision->player == owner);
@@ -168,7 +169,7 @@ TEST_CASE("Alpha v2.5.2 generic ambush activation keeps wait speed priority cost
         state.chain = chain;
         state.decision = PendingDecision{1, 0, DecisionKind::Response, {10}, true};
         state.nextLink = 2;
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         const auto unchanged = engine.digest();
         const auto result = engine.submit(0, FlipAmbush{10, 0, {}, 1});
         REQUIRE_FALSE(result.accepted);
@@ -180,7 +181,7 @@ TEST_CASE("Alpha v2.5.2 generic ambush activation keeps wait speed priority cost
 
 
 namespace {
-void settleChoices(GameEngine &engine) {
+void settleChoices(test::ObservedEngine &engine) {
     for (int n = 0; n < 96 && engine.state().decision && engine.state().result == -1; ++n) {
         const auto choice = *engine.state().decision;
         if (choice.kind == DecisionKind::Response) send(engine, choice.player, PassResponse{choice.id});
@@ -196,13 +197,13 @@ CardCatalog arcanaCatalog() {
     host.capacity = 50; host.rings = 8; host.maxRank = 8; host.level = 8;
     return cat;
 }
-void deckCard(GameState &state, CardId id, const std::string &definition, PlayerId owner = 0) {
+void deckCard(MutationContext &state, CardId id, const std::string &definition, PlayerId owner = 0) {
     put(state, id, definition, owner, Zone::Deck);
     state.players[owner].deck.push_back(id);
 }
 }
 
-TEST_CASE("Alpha v2.5.2 every nonconditional Arcana source reaches normal authoritative resolution", "[alpha-v252][arcana]") {
+TEST_CASE("Alpha v2.5.2 every nonconditional Arcana source reaches normal authoritative resolution", "[alpha-v252][arcana][legacy]") {
     const auto cat = arcanaCatalog();
     const std::vector<std::string> cards{
         "arcana-fool", "arcana-magician", "arcana-priestess", "arcana-empress", "arcana-emperor",
@@ -242,18 +243,18 @@ TEST_CASE("Alpha v2.5.2 every nonconditional Arcana source reaches normal author
         put(state, 41, "hexagram", 0, Zone::Ash);
         deckCard(state, 50, "spark", 1);
         put(state, 51, "fireball", 1, Zone::Ash);
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         const auto command = ActivateSpell{10, target, target ? std::vector<CardId>{target} : std::vector<CardId>{}, cost};
-        auto invalidTarget = GameEngine::scenario(cat, state);
+        auto invalidTarget = test::ObservedEngine::scenario(cat, state);
         REQUIRE_FALSE(invalidTarget.submit(0, ActivateSpell{10, 2, {2}, cost}).accepted);
         auto noPriorityState = state;
         noPriorityState.active = 1;
-        auto noPriority = GameEngine::scenario(cat, noPriorityState);
+        auto noPriority = test::ObservedEngine::scenario(cat, noPriorityState);
         REQUIRE_FALSE(noPriority.submit(0, command).accepted);
         if (Rules::castCost(state, cat, 10) > 0) {
             auto unpaidState = state;
             unpaidState.players[0].mana = 0;
-            auto unpaid = GameEngine::scenario(cat, unpaidState);
+            auto unpaid = test::ObservedEngine::scenario(cat, unpaidState);
             const auto unchanged = unpaid.digest();
             REQUIRE_FALSE(unpaid.submit(0, command).accepted);
             REQUIRE(unpaid.digest() == unchanged);
@@ -297,7 +298,7 @@ TEST_CASE("Alpha v2.5.2 every nonconditional Arcana source reaches normal author
     }
 }
 
-TEST_CASE("Alpha v2.5.2 Arcana costs and conditions reject before payment or zone mutation", "[alpha-v252][arcana]") {
+TEST_CASE("Alpha v2.5.2 Arcana costs and conditions reject before payment or zone mutation", "[alpha-v252][arcana][legacy]") {
     const auto cat = arcanaCatalog();
     for (const std::string definition : {"arcana-fool", "arcana-magician", "arcana-priestess", "arcana-emperor", "arcana-hanged-man", "arcana-tower"}) {
         INFO(definition);
@@ -306,14 +307,14 @@ TEST_CASE("Alpha v2.5.2 Arcana costs and conditions reject before payment or zon
         put(state, 2, "hexagram", 1, Zone::Analysis);
         put(state, 10, definition, 0, Zone::Casting, 0, SpellState::Ready).sourceFormation = 1;
         if (definition == "arcana-hanged-man") state.players[0].life = 1;
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         const auto digest = engine.digest();
         REQUIRE_FALSE(engine.submit(0, ActivateSpell{10}).accepted);
         REQUIRE(engine.digest() == digest);
     }
 }
 
-TEST_CASE("Alpha v2.5.2 Arcana analysis hooks count events and preserve exile distinction", "[alpha-v252][arcana]") {
+TEST_CASE("Alpha v2.5.2 Arcana analysis hooks count events and preserve exile distinction", "[alpha-v252][arcana][legacy]") {
     const auto cat = arcanaCatalog();
     auto state = stateAt();
     put(state, 1, "hexagram", 0, Zone::Analysis);
@@ -347,7 +348,7 @@ TEST_CASE("Alpha v2.5.2 generic ready spells can join chains without response co
         put(state, 2, "hexagram", 1 - owner, Zone::Analysis);
         put(state, 10, "spark", owner, Zone::Casting, 0, SpellState::Ready).sourceFormation = 1;
         put(state, 20, "spark", 1 - owner, Zone::Hand);
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         send(engine, 1 - owner, SetAmbush{20, 2});
         REQUIRE(engine.state().decision);
         const auto view = engine.viewFor(owner);
@@ -372,7 +373,7 @@ TEST_CASE("Alpha v2.5.2 Wind Strike responds only to the opponent setting an ana
     auto &hidden = put(state, 10, "wind-strike", 1, Zone::Analysis, 2);
     hidden.faceDown = hidden.wasAmbushed = true; hidden.ambushedTurn = 1; hidden.ringIndex = 0;
     put(state, 20, "fireball", 0, Zone::Hand);
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     REQUIRE_FALSE(hasFlip(engine.viewFor(1), 10));
     send(engine, 0, StartAnalysis{20, 1});
     REQUIRE(engine.state().decision);
@@ -384,25 +385,25 @@ TEST_CASE("Alpha v2.5.2 Wind Strike responds only to the opponent setting an ana
     REQUIRE(response != view.actions.end());
     auto slowCatalog = cat;
     slowCatalog.cards.at("wind-strike").speed = 1;
-    auto slow = GameEngine::scenario(slowCatalog, engine.state());
+    auto slow = test::ObservedEngine::scenario(slowCatalog, engine.state());
     REQUIRE_FALSE(slow.submit(1, response->command).accepted);
-    auto wrongEventState = engine.state();
+    auto wrongEventState = test::mutation(engine.state());
     wrongEventState.chain->window = ResponseWindow::Action;
-    auto wrongEvent = GameEngine::scenario(cat, wrongEventState);
+    auto wrongEvent = test::ObservedEngine::scenario(cat, wrongEventState);
     REQUIRE_FALSE(wrongEvent.submit(1, response->command).accepted);
     send(engine, 1, response->command); settleChoices(engine);
     REQUIRE(engine.state().players[0].life == 40 - cat.at("fireball").rank * 2);
 }
 
 
-TEST_CASE("Alpha v2.5.2 Devil changes an opponent selected target and charges once", "[alpha-v252][arcana]") {
+TEST_CASE("Alpha v2.5.2 Devil changes an opponent selected target and charges once", "[alpha-v252][arcana][legacy]") {
     const auto cat = arcanaCatalog();
     auto state = stateAt(Phase::Cast);
     put(state, 1, "hexagram", 0, Zone::Analysis);
     put(state, 2, "hexagram", 1, Zone::Analysis);
     put(state, 10, "spark", 0, Zone::Casting, 0, SpellState::Ready).sourceFormation = 1;
     put(state, 20, "arcana-devil", 1, Zone::Casting, 0, SpellState::Ready).sourceFormation = 2;
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     send(engine, 0, ActivateSpell{10, playerTarget(1), {playerTarget(1)}});
     REQUIRE(engine.state().decision);
     const auto view = engine.viewFor(1);
@@ -429,7 +430,7 @@ TEST_CASE("Alpha v2.5.2 Lovers departure forces the opponent to choose one analy
     put(state, 2, "hexagram", 1, Zone::Analysis);
     put(state, 10, "arcana-lovers", 0, Zone::Casting, 0, SpellState::Ready).sourceFormation = 1;
     put(state, 20, "fireball", 1, Zone::Analysis, 2, SpellState::Ready).ringIndex = 0;
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     send(engine, 0, ActivateSpell{10}); settleChoices(engine);
     send(engine, 0, Abandon{10});
     REQUIRE(engine.state().decision);
@@ -439,7 +440,7 @@ TEST_CASE("Alpha v2.5.2 Lovers departure forces the opponent to choose one analy
     REQUIRE(engine.state().cards.at(10).remaining == 0);
 }
 
-TEST_CASE("Alpha v2.5.2 Hierophant absorbs one event Strength doubles damage and Temperance refunds one per payment", "[alpha-v252][arcana]") {
+TEST_CASE("Alpha v2.5.2 Hierophant absorbs one event Strength doubles damage and Temperance refunds one per payment", "[alpha-v252][arcana][legacy]") {
     const auto cat = arcanaCatalog();
     auto state = stateAt();
     put(state, 1, "hexagram", 0, Zone::Analysis);
@@ -447,11 +448,11 @@ TEST_CASE("Alpha v2.5.2 Hierophant absorbs one event Strength doubles damage and
     put(state, 10, "arcana-hierophant", 0, Zone::Casting, 0, SpellState::Ready).sourceFormation = 1;
     put(state, 20, "arcana-strength", 1, Zone::Analysis, 2, SpellState::Active).ringIndex = 0;
     put(state, 21, "arcana-temperance", 0, Zone::Analysis, 1, SpellState::Active).ringIndex = 0;
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     send(engine, 0, ActivateSpell{10}); settleChoices(engine);
     REQUIRE(engine.state().players[0].nextDamageImmune);
     REQUIRE(engine.state().players[0].mana == 15);
-    auto damaged = engine.state();
+    auto damaged = test::mutation(engine.state());
     Trigger trigger; trigger.owner = 1; trigger.targetPlayer = 0;
     EffectResolver::apply(damaged, cat, trigger, {EffectKind::Damage, 5});
     REQUIRE(damaged.players[0].life == 40);
@@ -475,7 +476,7 @@ TEST_CASE("Alpha v2.5.2 Earthquake removes both players concealed spells on its 
         hidden.ringIndex = owner ? 0 : 1;
         hidden.faceDown = hidden.wasAmbushed = true; hidden.ambushedTurn = state.globalTurn;
     }
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     send(engine, 0, AdvancePhase{1}); settleChoices(engine);
     REQUIRE(engine.state().phase == Phase::Main);
     REQUIRE(engine.state().cards.at(20).zone == Zone::Ash);
@@ -490,7 +491,7 @@ TEST_CASE("Alpha v2.5.2 Unravel completes setup analysis targetless preparation 
     put(state, 10, "unravel", 0, Zone::Hand);
     put(state, 20, "small-hexagram", 0, Zone::SideDeck);
     for (CardId id = 30; id < 38; ++id) deckCard(state, id, "spark", id % 2);
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     send(engine, 0, StartAnalysis{10, 1}); settleChoices(engine);
     REQUIRE(engine.state().cards.at(10).spell == SpellState::Analyzing);
     for (int step = 0; step < 16 && !(engine.state().active == 0 && engine.state().phase == Phase::Main &&
@@ -518,7 +519,7 @@ TEST_CASE("Alpha v2.5.2 Unravel prepares without an enemy target and rejects fab
     put(state, 1, "sun", 0, Zone::Analysis);
     put(state, 10, "unravel", 0, Zone::Analysis, 1, SpellState::Ready).ringIndex = 0;
     put(state, 20, "small-hexagram", 0, Zone::SideDeck);
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     for (const auto &command : {PrepareCast{10, 1, 0, {1}}, PrepareCast{10, 0, 0, {1}}}) {
         const auto before = engine.digest();
         REQUIRE_FALSE(engine.submit(0, command).accepted);
@@ -556,7 +557,7 @@ TEST_CASE("Alpha v2.5.2 Unravel rejects occupied enemy formations before paying"
         occupant.ambushedTurn = concealed ? 1 : 0;
         if (concealed) occupant.spell = SpellState::None;
         put(state, 20, "small-hexagram", 0, Zone::SideDeck);
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         const auto before = engine.digest();
         REQUIRE_FALSE(engine.submit(0, ActivateSpell{10, 2, {2}}).accepted);
         REQUIRE(engine.digest() == before);
@@ -571,7 +572,7 @@ TEST_CASE("Alpha v2.5.2 Unravel may activate with an empty side deck but cannot 
     put(state, 1, "sun", 0, Zone::Analysis);
     put(state, 2, "reservoir", 1, Zone::Analysis);
     put(state, 10, "unravel", 0, Zone::Casting, 0, SpellState::Ready).sourceFormation = 1;
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     const int fee = Rules::castCost(state, cat, 10);
     REQUIRE(fee == 1);
     send(engine, 0, ActivateSpell{10, 2, {2}}); settleChoices(engine);
@@ -581,7 +582,7 @@ TEST_CASE("Alpha v2.5.2 Unravel may activate with an empty side deck but cannot 
     REQUIRE(engine.state().cards.at(10).payments.size() == 1);
     REQUIRE(engine.state().cards.at(10).payments.front().paid == fee);
     REQUIRE_FALSE(engine.state().cards.at(10).payments.front().canceled);
-    REQUIRE(std::any_of(engine.state().events.begin(), engine.state().events.end(), [](const GameEvent &event) {
+    REQUIRE(std::any_of(engine.events().begin(), engine.events().end(), [](const GameEvent &event) {
         return event.kind == "effect_incomplete" && event.card == 10;
     }));
 }
@@ -595,7 +596,7 @@ TEST_CASE("Alpha v2.5.2 Unravel loses an invalidated chain target without a refu
     put(state, 10, "unravel", 0, Zone::Casting, 0, SpellState::Ready).sourceFormation = 1;
     put(state, 20, "storm-guidance", 1, Zone::Casting, 0, SpellState::Ready).sourceFormation = 3;
     put(state, 30, "small-hexagram", 0, Zone::SideDeck);
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     const int fee = Rules::castCost(state, cat, 10);
     send(engine, 0, ActivateSpell{10, 2, {2}});
     REQUIRE(engine.state().decision);
@@ -619,7 +620,7 @@ TEST_CASE("Alpha v2.5.2 Unravel loses an invalidated chain target without a refu
     REQUIRE(engine.state().cards.at(10).payments.size() == 1);
     REQUIRE(engine.state().cards.at(10).payments.front().paid == fee);
     REQUIRE(engine.state().cards.at(10).payments.front().canceled);
-    REQUIRE(std::none_of(engine.state().events.begin(), engine.state().events.end(), [](const GameEvent &event) {
+    REQUIRE(std::none_of(engine.events().begin(), engine.events().end(), [](const GameEvent &event) {
         return event.kind == "effect_incomplete" && event.card == 10;
     }));
 }
@@ -636,7 +637,7 @@ TEST_CASE("Alpha v2.5.2 unique Strength rejects same owner setup duplicates inde
         existing.sourceFormation = 1;
         if (existingZone == Zone::Analysis) existing.ringIndex = 0;
         put(state, 11, "arcana-strength", owner, Zone::Hand);
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         for (const Command &command : {Command{StartAnalysis{11, 1}}, Command{SetAmbush{11, 1}}}) {
             const auto before = engine.digest();
             const auto result = engine.submit(owner, command);
@@ -648,7 +649,7 @@ TEST_CASE("Alpha v2.5.2 unique Strength rejects same owner setup duplicates inde
         auto &hidden = hiddenState.cards.at(11);
         hidden.zone = Zone::Analysis; hidden.host = hidden.sourceFormation = 1;
         hidden.ringIndex = 1; hidden.faceDown = hidden.wasAmbushed = true; hidden.ambushedTurn = 1;
-        auto hiddenEngine = GameEngine::scenario(cat, hiddenState);
+        auto hiddenEngine = test::ObservedEngine::scenario(cat, hiddenState);
         const auto before = hiddenEngine.digest();
         const auto result = hiddenEngine.submit(owner, FlipAmbush{11});
         REQUIRE_FALSE(result.accepted);
@@ -662,11 +663,11 @@ TEST_CASE("Alpha v2.5.2 unique Strength rejects same owner setup duplicates inde
         put(state, 2, "sun", 1 - owner, Zone::Analysis);
         put(state, 10, "arcana-strength", 1 - owner, Zone::Analysis, 2, SpellState::Active).ringIndex = 0;
         put(state, 11, "arcana-strength", owner, Zone::Hand);
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         if (ambush) {
             send(engine, owner, SetAmbush{11, 1}); settleChoices(engine);
-            auto next = engine.state(); ++next.globalTurn;
-            engine = GameEngine::scenario(cat, next);
+            auto next = test::mutation(engine.state()); ++next.globalTurn;
+            engine = test::ObservedEngine::scenario(cat, next);
             send(engine, owner, FlipAmbush{11}); settleChoices(engine);
         } else {
             send(engine, owner, StartAnalysis{11, 1}); settleChoices(engine);
@@ -680,7 +681,7 @@ TEST_CASE("Alpha v2.5.2 unique Strength rejects same owner setup duplicates inde
     }
 }
 
-TEST_CASE("Alpha v2.5.2 all five conditional responses reject unpaid fees without consuming the source", "[alpha-v252][response-cost]") {
+TEST_CASE("Alpha v2.5.2 all five conditional responses reject unpaid fees without consuming the source", "[alpha-v252][response-cost][legacy]") {
     const auto cat = catalog();
     for (const std::string id : {"barbs", "counter-spell", "wind-strike", "sique-boiling-surge", "arcana-devil"}) {
         INFO(id);
@@ -699,7 +700,7 @@ TEST_CASE("Alpha v2.5.2 all five conditional responses reject unpaid fees withou
         else if (id == "barbs") put(state, 20, "fireball", 0, Zone::Analysis, 2, SpellState::Ready).ringIndex = 0;
         else put(state, 20, id == "sique-boiling-surge" ? "unravel" : "spark", 0,
                  Zone::Casting, 0, SpellState::Ready).sourceFormation = 2;
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         if (id == "wind-strike") send(engine, 0, StartAnalysis{20, 2});
         else if (id == "barbs") send(engine, 0, PrepareCast{20, playerTarget(1), 0, {playerTarget(1)}});
         else {
@@ -714,8 +715,8 @@ TEST_CASE("Alpha v2.5.2 all five conditional responses reject unpaid fees withou
         });
         REQUIRE(response != view.actions.end());
         const Command command = response->command;
-        auto unpaidState = engine.state(); unpaidState.players[1].mana = 0;
-        auto unpaid = GameEngine::scenario(cat, unpaidState);
+        auto unpaidState = test::mutation(engine.state()); unpaidState.players[1].mana = 0;
+        auto unpaid = test::ObservedEngine::scenario(cat, unpaidState);
         const auto before = unpaid.digest();
         const auto result = unpaid.submit(1, command);
         REQUIRE_FALSE(result.accepted);
@@ -743,7 +744,7 @@ TEST_CASE("Alpha v2.5.2 Sun clears only enemy concealed spells at its owners end
             hidden.faceDown = hidden.wasAmbushed = true; hidden.ambushedTurn = 1;
         }
         put(state, 22, "fireball", 1, Zone::Analysis, 2, SpellState::Ready).ringIndex = 2;
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         send(engine, active, AdvancePhase{engine.state().phaseGate}); settleChoices(engine);
         REQUIRE(engine.state().phase == Phase::End);
         REQUIRE(engine.state().cards.at(10).zone == Zone::Analysis);
@@ -759,7 +760,7 @@ TEST_CASE("Alpha v2.5.2 Sun is excluded from another cards field removal effect"
     put(state, 1, "storm-crest", 0, Zone::Analysis).stormPoints = 5;
     put(state, 2, "sun", 1, Zone::Analysis);
     put(state, 10, "storm-guidance", 0, Zone::Casting, 0, SpellState::Ready).sourceFormation = 1;
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     send(engine, 0, ActivateSpell{10}); settle(engine);
     REQUIRE(engine.state().decision);
     REQUIRE(engine.state().decision->kind == DecisionKind::EffectChoice);
@@ -781,7 +782,7 @@ TEST_CASE("Alpha v2.5.2 Messy Wave adds four temporary load per opponent spell a
         auto &wave = put(state, 10, "messy-wave", 1, Zone::Analysis, owner == 1 ? 1 : 2, SpellState::Active);
         wave.ringIndex = 0; wave.remaining = 3;
         put(state, 20, definition, owner, Zone::Casting, 0, SpellState::Ready).sourceFormation = 1;
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         const CardId target = cat.at(definition).target == TargetKind::Player ? playerTarget(1 - owner) : 0;
         send(engine, owner, ActivateSpell{20, target, target ? std::vector<CardId>{target} : std::vector<CardId>{}});
         settleChoices(engine);
@@ -805,7 +806,7 @@ TEST_CASE("Alpha v2.5.2 Snow Rain Storm surcharges setting only and doubles actu
     put(state, 12, "messy-wave", 1, Zone::Hand);
     put(state, 13, "fireball", 1, Zone::Hand);
     deckCard(state, 30, "spark", 1);
-    auto engine = GameEngine::scenario(cat, state);
+    auto engine = test::ObservedEngine::scenario(cat, state);
     send(engine, 0, ActivateSpell{10}); settleChoices(engine);
     REQUIRE(engine.state().cards.at(10).spell == SpellState::Active);
     REQUIRE(engine.state().cards.at(10).concentrationCost == 2);
@@ -847,12 +848,12 @@ TEST_CASE("Alpha v2.5.2 Woodpile allows two own copies and excludes a replaced c
         put(state, 3, "sique-woodpile", 1 - owner, Zone::Analysis);
         put(state, 10, "sique-woodpile", owner, Zone::SideDeck);
         put(state, 11, "sique-woodpile", owner, Zone::SideDeck);
-        auto engine = GameEngine::scenario(cat, state);
+        auto engine = test::ObservedEngine::scenario(cat, state);
         send(engine, owner, SetFormation{10}); settleChoices(engine);
         REQUIRE(engine.state().cards.at(10).zone == Zone::Analysis);
         REQUIRE(engine.state().players[owner].mana == 17);
-        auto next = engine.state(); next.players[owner].formations = 0;
-        engine = GameEngine::scenario(cat, next);
+        auto next = test::mutation(engine.state()); next.players[owner].formations = 0;
+        engine = test::ObservedEngine::scenario(cat, next);
         const auto before = engine.digest();
         const auto result = engine.submit(owner, SetFormation{11});
         REQUIRE_FALSE(result.accepted);

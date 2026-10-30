@@ -5,7 +5,7 @@ namespace wizard::net {
 namespace {
 PlayerDeck readDeck(const Json &j, const CardCatalog &c) {
     PlayerDeck d{j.value("baseFormation", std::string{}), j.at("cards").get<std::vector<std::string>>()};
-    if (c.usesAlphaV2()) d.sideDeck = j.at("sideDeck").get<std::vector<std::string>>();
+    d.sideDeck = j.at("sideDeck").get<std::vector<std::string>>();
     auto e = Rules::deckErrors(c, d);
     if (!e.empty())
         throw std::runtime_error(e.front());
@@ -18,10 +18,7 @@ Json deckJson(const PlayerDeck &d) {
 HostSession::HostSession(Content c) : content_(std::move(c)) {
     for (auto &d : decks_) {
         d.cards = content_.deck;
-        if (content_.catalog.usesAlphaV2()) {
-            d.sideDeck = content_.sideDeck;
-            d.baseFormation = content_.initialFormation;
-        }
+        d.sideDeck = content_.sideDeck;
     }
 }
 void HostSession::deck(const PlayerDeck &d) {
@@ -49,23 +46,35 @@ void HostSession::ready() {
         // Existing rules choose the first seat from the seed. Select a seed whose
         // first seat is zero, so room hostPlayer_ implements the requested order
         // without changing rules, command semantics or replay format.
+        // Seed probing must not execute card effects. The current rules consume
+        // one bounded RNG draw per shuffle slot, then one draw for the first
+        // seat; reproduce that small deterministic prefix locally instead of
+        // running a temporary match during room setup.
+        const auto firstSeat = [](std::uint32_t seed, const MatchConfig &config) {
+            std::uint32_t rng = seed ? seed : 0x9e3779b9u;
+            const auto random32 = [&]() {
+                auto x = rng;
+                x ^= x << 13;
+                x ^= x >> 17;
+                x ^= x << 5;
+                return rng = x;
+            };
+            const auto bounded = [&](std::uint32_t n) {
+                const auto threshold = (std::uint32_t{0} - n) % n;
+                std::uint32_t x = 0;
+                do x = random32(); while (x < threshold);
+                return x % n;
+            };
+            for (const auto &player : config.players)
+                for (std::size_t size = player.cards.size(); size > 1; --size)
+                    (void)bounded(static_cast<std::uint32_t>(size));
+            return bounded(2);
+        };
         for (unsigned attempt = 0; attempt < 128; ++attempt) {
             c.seed = std::random_device{}();
-            auto next = std::make_unique<MatchSession>(content_, c);
-            auto probe = next->engine();
-            if (probe.state().opening) {
-                for (int p = 0; p < 2; ++p) {
-                    const auto v = probe.viewFor(p);
-                    for (const auto &a : v.actions)
-                        if (std::holds_alternative<SelectInitialFormation>(a.command)) {
-                            if (!probe.submit(p, a.command).accepted)
-                                throw std::runtime_error("开局种子探测失败");
-                            break;
-                        }
-                }
-            }
-            if (probe.state().first == 0) {
-                if (content_.catalog.usesAlphaV25()) next->enableClock(automatic_);
+            if (firstSeat(c.seed, c) == 0) {
+                auto next = std::make_unique<MatchSession>(content_, c);
+                next->enableClock(automatic_);
                 match_ = std::move(next);
                 break;
             }
@@ -82,15 +91,35 @@ GameView HostSession::view() const {
 }
 Json HostSession::room() const {
     return {{"type", "Room"},    {"session", session_},     {"hostPlayer", hostPlayer_}, {"ready", ready_},
-            {"joined", joined_}, {"automatic", automatic_}, {"started", started()},      {"ended", ended_}};
+            {"joined", joined_}, {"automatic", automatic_}, {"started", started()},      {"ended", ended_}, {"technicalPaused", technicalPaused()}};
 }
 Json HostSession::snapshot(PlayerId p) const {
     if (!match_)
         return room();
-    return {{"type", "View"},
+    return {{"type", "StateSnapshot"},
             {"session", session_},
             {"revision", std::to_string(revision_)},
+            {"technicalPaused", technicalPaused()},
             {"view", encodeView(match_->viewFor(p))}};
+}
+Json HostSession::clockUpdate() const {
+    if (!match_) return room();
+    return {{"type", "ClockUpdate"}, {"session", session_}, {"revision", std::to_string(revision_)},
+            {"clock", encodeClock(match_->clock())}};
+}
+Json HostSession::eventUpdate(PlayerId p, std::uint64_t epoch, std::uint64_t cursor) const {
+    return {{"type", "EventBatch"}, {"session", session_}, {"revision", std::to_string(revision_)},
+            {"batch", encodeEvents(eventsSince(p, epoch, cursor))}};
+}
+const Json &HostSession::diagnostic() const {
+    static const Json empty;
+    return match_ ? match_->diagnostic() : empty;
+}
+ActionOptions HostSession::queryActions(PlayerId viewer, std::uint64_t generation,
+                                               std::uint64_t revision, const ActionIntent &intent) {
+    ActionOptions out;
+    if (!match_ || revision != revision_) { out.error = "stale_query"; return out; }
+    return match_->queryActions(viewer, generation, match_->revision(), intent);
 }
 Json HostSession::recording() const {
     if (!match_)
@@ -98,7 +127,7 @@ Json HostSession::recording() const {
     return match_->recording();
 }
 CommandResult HostSession::submit(const Command &c) {
-    if (!match_ || frozen_ || ended_)
+    if (!match_ || frozen_ || ended_ || technicalPaused())
         return {false, "连接中断或对局已结束", {}, {}, "disconnected"};
     tick();
     const auto before = match_->revision();
@@ -114,7 +143,7 @@ CommandResult HostSession::submit(const Command &c) {
 }
 bool HostSession::advance() {
     tick();
-    if (!match_ || frozen_ || ended_ || !automatic_)
+    if (!match_ || frozen_ || ended_ || technicalPaused() || !automatic_)
         return false;
     const auto &s = match_->engine().state();
     auto p = s.decision ? s.decision->player : s.active;
@@ -147,7 +176,7 @@ Json HostSession::receive(const Json &j) {
         throw std::runtime_error("房间已结束");
     if (type == "Hello") {
         auto expected = hello(content_);
-        for (const auto *k : {"protocol", "rules", "cards", "hash"})
+        for (const auto *k : {"protocol", "rules", "mechanics", "cards", "hash"})
             if (j.at(k) != expected.at(k))
                 throw std::runtime_error("协议、规则或卡池版本不一致");
         if (joined_)
@@ -159,7 +188,8 @@ Json HostSession::receive(const Json &j) {
         if (!joined_ || j.at("session") != session_ || j.at("credential") != credential_)
             throw std::runtime_error("重连凭据无效");
         freeze(false);
-        return {{"type", "Resumed"}, {"room", room()}, {"snapshot", snapshot(1 - hostPlayer_)}};
+        return {{"type", "Resumed"}, {"room", room()}, {"snapshot", snapshot(1 - hostPlayer_)},
+                {"events", eventUpdate(1 - hostPlayer_, 0, 0)}};
     }
     if (!joined_ || j.at("session") != session_)
         throw std::runtime_error("房间会话已过期");
@@ -177,6 +207,19 @@ Json HostSession::receive(const Json &j) {
         if (ready_[hostPlayer_])
             ready();
         return room();
+    }
+    if (type == "ActionQuery") {
+        const auto generation = number(j.at("generation"));
+        const auto revision = number(j.at("revision"));
+        const auto viewer = 1 - hostPlayer_;
+        const auto currentView = match_ ? match_->viewFor(viewer) : GameView{};
+        const auto decision = currentView.decision ? currentView.decision->id : 0;
+        auto options = queryActions(viewer, generation, revision, decodeIntent(j.at("intent")));
+        if (number(j.at("decision")) != decision) { options = {}; options.error = "stale_query"; }
+        return {{"type", "ActionOptions"}, {"session", session_}, {"request", j.at("request")},
+                {"generation", j.at("generation")}, {"revision", j.at("revision")},
+                {"viewer", viewer}, {"decision", std::to_string(decision)},
+                {"options", encodeOptions(options)}};
     }
     if (type == "Command") {
         tick();
@@ -238,23 +281,56 @@ void GuestSession::receive(const Json &j) {
     } else if (type == "Resumed") {
         room_ = j.at("room");
         resumed_ = true;
+        query_.reset(); queryResult_.reset();
         receive(j.at("snapshot"));
+        receive(j.at("events"));
     } else if (type == "Room") {
         if (j.at("session") != session_)
             throw std::runtime_error("房间会话不一致");
         room_ = j;
-    } else if (type == "View") {
+    } else if (type == "StateSnapshot") {
         if (j.at("session") != session_)
             throw std::runtime_error("视图会话不一致");
         auto revision = number(j.at("revision"));
         if (revision < revision_)
             return;
         auto view = decodeView(j.at("view"), content_.catalog);
-        if (started_ && revision == revision_ && view.clock.sequence <= view_.clock.sequence)
-            return;
+        if (started_ && revision == revision_ && view.clock.sequence < view_.clock.sequence)
+            view.clock = view_.clock;
+        if (revision != revision_) { query_.reset(); queryResult_.reset(); }
         view_ = std::move(view);
+        technicalPaused_ = j.at("technicalPaused").get<bool>();
         revision_ = revision;
         started_ = true;
+    } else if (type == "ClockUpdate") {
+        if (j.at("session") != session_) throw std::runtime_error("clock session mismatch");
+        if (number(j.at("revision")) != revision_) return;
+        auto clock = decodeClock(j.at("clock"));
+        if (clock.sequence > view_.clock.sequence) view_.clock = std::move(clock);
+    } else if (type == "EventBatch") {
+        if (j.at("session") != session_) throw std::runtime_error("event session mismatch");
+        if (number(j.at("revision")) < revision_) return;
+        auto batch = decodeEvents(j.at("batch"));
+        if (batch.epoch < events_.epoch ||
+            (batch.epoch == events_.epoch && batch.next < events_.next)) return;
+        if (batch.reset || batch.epoch != events_.epoch) events_ = std::move(batch);
+        else if (batch.base == events_.next) {
+            events_.events.insert(events_.events.end(), batch.events.begin(), batch.events.end());
+            events_.next = batch.next;
+            if (events_.events.size() > 512) {
+                auto trim = events_.events.size() - 512;
+                events_.events.erase(events_.events.begin(), events_.events.begin() + trim);
+                events_.base += trim;
+            }
+        } else if (batch.next > events_.next) throw std::runtime_error("event cursor gap");
+    } else if (type == "ActionOptions") {
+        if (j.at("session") != session_) throw std::runtime_error("query session mismatch");
+        if (query_ && query_->at("request") == j.at("request") &&
+            query_->at("generation") == j.at("generation") &&
+            query_->at("revision") == j.at("revision") && number(j.at("revision")) == revision_ &&
+            j.at("viewer") == view_.viewer && query_->at("decision") == j.at("decision") &&
+            number(j.at("decision")) == (view_.decision ? view_.decision->id : 0))
+            queryResult_ = decodeOptions(j.at("options"));
     } else if (type == "Accepted" || type == "Rejected") {
         if (pending_ && pending_->at("request") == j.at("request")) {
             pending_.reset();
@@ -263,8 +339,33 @@ void GuestSession::receive(const Json &j) {
     } else
         throw std::runtime_error("未知主机消息类型");
 }
+EventBatch GuestSession::eventsSince(std::uint64_t epoch, std::uint64_t cursor) const {
+    const bool reset = epoch != events_.epoch || cursor < events_.base || cursor > events_.next;
+    auto out = events_;
+    out.reset = reset;
+    if (!reset) {
+        out.events.erase(out.events.begin(), out.events.begin() + static_cast<std::ptrdiff_t>(cursor - out.base));
+        out.base = cursor;
+    }
+    return out;
+}
+std::optional<ActionOptions> GuestSession::queryResult(std::uint64_t generation, std::uint64_t revision,
+                                                          const ActionIntent &intent) const {
+    if (!query_ || query_->at("generation") != std::to_string(generation) ||
+        query_->at("revision") != std::to_string(revision) || query_->at("intent") != encodeIntent(intent)) return {};
+    if (queryResult_) return queryResult_;
+    ActionOptions pending; pending.pending = true; return pending;
+}
+Json GuestSession::query(std::uint64_t generation, std::uint64_t revision, const ActionIntent &intent) {
+    queryResult_.reset();
+    query_ = {{"type", "ActionQuery"}, {"session", session_}, {"request", std::to_string(nextQuery_++)},
+              {"generation", std::to_string(generation)}, {"revision", std::to_string(revision)},
+              {"decision", std::to_string(view_.decision ? view_.decision->id : 0)},
+              {"intent", encodeIntent(intent)}};
+    return *query_;
+}
 Json GuestSession::command(const Command &c) {
-    if (!started_ || pending_)
+    if (!started_ || pending_ || technicalPaused_)
         throw std::runtime_error("等待对局或操作确认");
     pending_ = Json{{"type", "Command"},
                     {"session", session_},

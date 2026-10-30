@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0022",
+  "number": "020022",
+  "name": "致病射线",
+  "type": "analytic",
+  "school": "necromancy",
+  "rarity": "common",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 2,
+  "text": "选择1个目标才能发动。对其造成4点毒素伤害。那之后，直到下个己方抽卡阶段开始时，对方每设置1张法术卡，使对方受到1点毒素伤害。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 23
+  },
+  "illustrationId": "v260-analytic-0022",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\致病射线.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

@@ -28,5 +28,5 @@ int soundPriority(SoundId);
 float soundCooldown(SoundId);
 // Views must share a viewer. Only newly appended public/own events are consumed.
 // humanDecision is false while the AI controls the current decision.
-std::vector<SoundId> matchSounds(const GameView &before, const GameView &after, bool humanDecision);
+std::vector<SoundId> matchSounds(const GameView &before, const GameView &after, const std::vector<GameEvent> &events, bool humanDecision);
 } // namespace wizard::ui

@@ -1,0 +1,35 @@
+{
+  "id": "blood-altar",
+  "name": "血契·祭坛",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "castCost": 0,
+  "rank": 0,
+  "level": 2,
+  "speed": 1,
+  "number": "010029",
+  "illustrationId": "blood-altar",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [],
+  "text": "此阵法卡在己方场上存在，己方设置/发动法术卡时，可以将每2点生命值作为1点费用支付的替代。",
+  "body": 1,
+  "rings": 2,
+  "capacity": 6,
+  "income": 1,
+  "maxRank": 2,
+  "summonCondition": "魔素×3",
+  "baseEligible": false,
+  "traits": [
+    "blood_altar"
+  ],
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 3
+    }
+  ]
+}

@@ -22,14 +22,17 @@ func _run() -> void:
 	var page: MatchPage = (load("res://pages/match_page.tscn") as PackedScene).instantiate() as MatchPage
 	root.add_child(page)
 	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	page.service = FrontendService.new()
+	page.service = QueryFixtureService.new()
+	page._selection.service = page.service
+	page._selection.changed.connect(page._query_changed)
+	page._selection.completed.connect(page._query_completed)
 	page.service.match_snapshot = {
-		"phase": 2,
-		"actions": [
+		"generation": "1", "revision": "1", "phaseGate": "3", "viewer": 0, "phase": 2,
+	}
+	(page.service as QueryFixtureService).set_actions([
 			{"id": "cast", "source": "0", "command": {"type": 14, "gate": "3"}},
 			{"id": "end", "source": "0", "command": {"type": 14, "gate": "3", "skipCast": true}},
-		],
-	}
+		])
 	page._phase_selector.action_chosen.disconnect(page._choose_phase_action)
 	page._phase_selector.action_chosen.connect(_chosen.append)
 	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 1000), Vector2i(1920, 1080)]:

@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/replay.hpp"
 #include "wizard/core/card_rules.hpp"
 #include <catch2/catch_test_macros.hpp>
@@ -6,13 +7,13 @@
 using namespace wizard;
 namespace {
 CardCatalog sevenCatalog() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog; }
-GameState sevenState(int ownTurn = 1, Phase phase = Phase::Main) {
-    GameState s; s.phase = phase; s.phaseStep = PhaseStep::Body; s.phaseGate = 1;
+MutationContext sevenState(int ownTurn = 1, Phase phase = Phase::Main) {
+    MutationContext s; s.phase = phase; s.phaseStep = PhaseStep::Body; s.phaseGate = 1;
     s.globalTurn = 5; s.rng = 149;
     for (auto &p : s.players) { p.ownTurn = ownTurn; p.mana = 20; }
     return s;
 }
-CardInstance &putSeven(GameState &s, CardId id, const char *definition, PlayerId owner, Zone zone,
+CardInstance &putSeven(MutationContext &s, CardId id, const char *definition, PlayerId owner, Zone zone,
                       CardId host = 0, SpellState spell = SpellState::None) {
     CardInstance c; c.id = id; c.definition = definition; c.owner = owner; c.zone = zone;
     c.host = host; c.sourceFormation = host; c.spell = spell;
@@ -23,10 +24,10 @@ CardInstance &putSeven(GameState &s, CardId id, const char *definition, PlayerId
     if (zone == Zone::Deck) s.players[owner].deck.push_back(id);
     return s.cards.at(id);
 }
-void sendSeven(GameEngine &e, PlayerId p, const Command &command) {
+void sendSeven(test::ObservedEngine &e, PlayerId p, const Command &command) {
     const auto result = e.submit(p, command); INFO(result.error); REQUIRE(result.accepted);
 }
-void passSeven(GameEngine &e) {
+void passSeven(test::ObservedEngine &e) {
     for (int i = 0; e.state().decision && i < 100; ++i) {
         const auto d = *e.state().decision;
         if (d.kind == DecisionKind::Response) sendSeven(e, d.player, PassResponse{d.id});
@@ -34,11 +35,11 @@ void passSeven(GameEngine &e) {
         else return;
     }
 }
-void chooseSeven(GameEngine &e, CardId choice) {
+void chooseSeven(test::ObservedEngine &e, CardId choice) {
     passSeven(e); REQUIRE(e.state().decision);
     const auto d = *e.state().decision; sendSeven(e, d.player, Choose{d.id, choice}); passSeven(e);
 }
-void castSeven(GameEngine &e, CardId source) {
+void castSeven(test::ObservedEngine &e, CardId source) {
     sendSeven(e, 0, ActivateSpell{source}); passSeven(e);
 }
 }
@@ -62,14 +63,14 @@ TEST_CASE("2.5.5 seven formation recipes use the updated Tianshu and Tianxuan co
     putSeven(s, 1, "qixing-tianshu", 0, Zone::SideDeck);
     putSeven(s, 2, "qixing-tianxuan", 0, Zone::SideDeck);
     putSeven(s, 3, "spark", 0, Zone::Hand);
-    auto e = GameEngine::scenario(cat, s); const auto before = e.digest();
+    auto e = test::ObservedEngine::scenario(cat, s); const auto before = e.digest();
     CHECK_FALSE(e.submit(0, SetFormation{2}).accepted); CHECK(e.digest() == before);
     sendSeven(e, 0, SetFormation{1, 0, {3}}); passSeven(e);
     CHECK(e.state().cards.at(1).zone == Zone::Analysis); CHECK(e.state().cards.at(3).zone == Zone::Ash);
     s = sevenState();
     putSeven(s, 1, "qixing-tianshu", 0, Zone::Analysis);
     putSeven(s, 2, "qixing-tianxuan", 0, Zone::SideDeck);
-    e = GameEngine::scenario(cat, s);
+    e = test::ObservedEngine::scenario(cat, s);
     sendSeven(e, 0, SetFormation{2, 0, {1}}); passSeven(e);
     CHECK(e.state().cards.at(2).zone == Zone::Analysis); CHECK(e.state().players[0].mana == 18);
 }
@@ -79,7 +80,7 @@ TEST_CASE("2.5.5 Tianxuan searches a Seven Shift when set", "[alpha-v255][seven]
     putSeven(s, 1, "qixing-tianshu", 0, Zone::Analysis);
     putSeven(s, 2, "qixing-tianxuan", 0, Zone::SideDeck);
     putSeven(s, 10, "qixing-shift", 0, Zone::Deck);
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     sendSeven(e, 0, SetFormation{2, 0, {1}}); passSeven(e); chooseSeven(e, 10);
     CHECK(e.state().cards.at(1).zone == Zone::Ash);
     CHECK(e.state().cards.at(2).zone == Zone::Analysis);
@@ -94,7 +95,7 @@ TEST_CASE("2.5.4 seven insight upgrades leave attachments and cannot bypass excl
     putSeven(s, 10, "qixing-divination", 0, Zone::Casting, 1, SpellState::Ready);
     putSeven(s, 20, "spark", 0, Zone::Hand);
     putSeven(s, 21, "qixing-shift", 0, Zone::Deck);
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     sendSeven(e, 0, ActivateSpell{10, 0, {}, 20}); passSeven(e);
     chooseSeven(e, 1); chooseSeven(e, 2); chooseSeven(e, 21);
     CHECK(e.state().cards.at(1).zone == Zone::Ash);
@@ -116,13 +117,13 @@ TEST_CASE("2.5.4 seven formation setup retrieves the specified deck and ash card
             const bool deck = std::string(name) == "qixing-tianji";
             putSeven(s, 20, std::string(name) == "qixing-tianquan" ? "qixing-shift" : "qixing-banner", 0, deck ? Zone::Deck : Zone::Ash);
             card_rules::queueFormationSetup(s, cat, 1);
-            auto e = GameEngine::scenario(cat, s);
+            auto e = test::ObservedEngine::scenario(cat, s);
             sendSeven(e, 0, Surrender{});
             // Setup triggers execute through the normal engine pump in the
             // following live scenario rather than invoking an effect directly.
             s.players[0].surrendered = false;
             s.decision = PendingDecision{9, 0, DecisionKind::TriggerOrder, {s.queue.items.front().id}, false};
-            auto active = GameEngine::scenario(cat, s);
+            auto active = test::ObservedEngine::scenario(cat, s);
             sendSeven(active, 0, Choose{9, s.queue.items.front().id}); passSeven(active); chooseSeven(active, 20);
             CHECK(active.state().cards.at(20).zone == Zone::Hand);
         }
@@ -135,7 +136,7 @@ TEST_CASE("2.5.4 seven divination inspects fewer than seven and bottoms in origi
     putSeven(s, 10, "qixing-divination", 0, Zone::Casting, 1, SpellState::Ready);
     putSeven(s, 20, "spark", 0, Zone::Deck); putSeven(s, 21, "qixing-shift", 0, Zone::Deck);
     putSeven(s, 22, "mend", 0, Zone::Deck); const auto rng = s.rng;
-    auto e = GameEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 21);
+    auto e = test::ObservedEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 21);
     CHECK(e.state().cards.at(21).zone == Zone::Hand);
     CHECK(e.state().players[0].deck == std::vector<CardId>{20, 22}); CHECK(e.state().rng == rng);
 }
@@ -146,7 +147,7 @@ TEST_CASE("2.5.4 seven awakening bright price is chosen and dark retrieval retur
         auto s = sevenState(); putSeven(s, 1, "qixing-tianshu", 0, Zone::Analysis);
         putSeven(s, 10, "qixing-awaken", 0, Zone::Casting, 1, SpellState::Ready);
         putSeven(s, 20, "qixing-banner", 0, Zone::Deck);
-        auto e = GameEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 20);
+        auto e = test::ObservedEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 20);
         const auto view = e.viewFor(0);
         REQUIRE(std::any_of(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
             const auto *choice = std::get_if<Choose>(&action.command);
@@ -159,7 +160,7 @@ TEST_CASE("2.5.4 seven awakening bright price is chosen and dark retrieval retur
         auto s = sevenState(); putSeven(s, 1, "qixing-kaiyang", 0, Zone::Analysis);
         putSeven(s, 10, "qixing-awaken", 0, Zone::Casting, 1, SpellState::Ready);
         putSeven(s, 20, "qixing-banner", 0, Zone::Deck);
-        auto e = GameEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 20); chooseSeven(e, 0xffffffb2u);
+        auto e = test::ObservedEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 20); chooseSeven(e, 0xffffffb2u);
         CHECK(e.state().players[0].life == 40);
         CHECK(std::any_of(e.state().temporary.begin(), e.state().temporary.end(), [](const TemporaryLoad &load) {
             return load.owner == 0 && load.source == 10 && load.amount == 7 && load.independent;
@@ -169,7 +170,7 @@ TEST_CASE("2.5.4 seven awakening bright price is chosen and dark retrieval retur
         auto s = sevenState(2); putSeven(s, 1, "qixing-tianshu", 0, Zone::Analysis);
         putSeven(s, 10, "qixing-awaken", 0, Zone::Casting, 1, SpellState::Ready);
         putSeven(s, 20, "qixing-tianxuan", 0, Zone::Ash);
-        auto e = GameEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 20);
+        auto e = test::ObservedEngine::scenario(cat, s); castSeven(e, 10); chooseSeven(e, 20);
         CHECK(e.state().cards.at(20).zone == Zone::SideDeck); CHECK(e.state().players[0].life == 40);
     }
 }
@@ -179,14 +180,14 @@ TEST_CASE("2.5.4 seven shift pays life separately from damage and dark shift upg
     putSeven(s, 1, "qixing-tianshu", 0, Zone::Analysis);
     putSeven(s, 10, "qixing-shift", 0, Zone::Casting, 1, SpellState::Ready);
     s.players[0].nextDamageImmune = true;
-    auto e = GameEngine::scenario(cat, s); castSeven(e, 10);
+    auto e = test::ObservedEngine::scenario(cat, s); castSeven(e, 10);
     CHECK(e.state().players[0].life == 33); CHECK(e.state().players[0].nextDamageImmune);
     CHECK(card_rules::aspectMode(e.state(), cat, 0) == 2);
     auto dark = sevenState(2); putSeven(dark, 1, "qixing-tianshu", 0, Zone::Analysis);
     putSeven(dark, 2, "qixing-tianxuan", 0, Zone::SideDeck);
     putSeven(dark, 10, "qixing-shift", 0, Zone::Casting, 1, SpellState::Ready);
     putSeven(dark, 20, "spark", 0, Zone::Hand);
-    auto upgrade = GameEngine::scenario(cat, dark); sendSeven(upgrade, 0, ActivateSpell{10, 0, {}, 20}); passSeven(upgrade);
+    auto upgrade = test::ObservedEngine::scenario(cat, dark); sendSeven(upgrade, 0, ActivateSpell{10, 0, {}, 20}); passSeven(upgrade);
     chooseSeven(upgrade, 1); chooseSeven(upgrade, 2); CHECK(upgrade.state().cards.at(2).zone == Zone::Analysis);
 }
 
@@ -197,7 +198,7 @@ TEST_CASE("2.5.5 Kaiyang manual activation is unavailable", "[alpha-v255][seven]
     putSeven(s, 3, "qixing-banner", 0, Zone::Attached, 1);
     putSeven(s, 20, "spark", 0, Zone::Hand); s.players[0].life = 5;
     for (CardId i = 30; i < 35; ++i) putSeven(s, i, "spark", 0, Zone::Deck);
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     CHECK_FALSE(e.submit(0, ActivateAbility{1, 0, "seven_kaiyang"}).accepted);
     CHECK(e.state().cards.at(1).zone == Zone::Analysis); CHECK(e.state().cards.at(3).zone == Zone::Attached);
     CHECK(e.state().cards.at(20).zone == Zone::Hand); CHECK(e.state().cards.at(2).zone == Zone::SideDeck);
@@ -222,7 +223,7 @@ TEST_CASE("2.5.4 seven ruin and punishment use the correct aspect damage recipie
         DYNAMIC_SECTION(name << turn) {
             auto s = sevenState(turn, Phase::Cast); putSeven(s, 1, "qixing-yaoguang", 0, Zone::Analysis);
             putSeven(s, 10, name, 0, Zone::Casting, 1, SpellState::Ready);
-            auto e = GameEngine::scenario(cat, s); castSeven(e, 10);
+            auto e = test::ObservedEngine::scenario(cat, s); castSeven(e, 10);
             CHECK(e.state().players[0].life == (std::string(name) == "qixing-ruin" ? 20 : 40));
             CHECK(e.state().players[1].life == (std::string(name) == "qixing-ruin" ? 20 : 28));
         }
@@ -234,7 +235,7 @@ TEST_CASE("2.5.4 seven return requires one card then permits stopping up to seve
     putSeven(s, 1, "qixing-tianshu", 0, Zone::Analysis);
     putSeven(s, 10, "qixing-return", 0, Zone::Casting, 1, SpellState::Ready);
     putSeven(s, 20, "qixing-tianxuan", 0, Zone::Ash); putSeven(s, 21, "qixing-banner", 0, Zone::Ash);
-    auto e = GameEngine::scenario(cat, s); castSeven(e, 10);
+    auto e = test::ObservedEngine::scenario(cat, s); castSeven(e, 10);
     REQUIRE(e.state().decision); CHECK_FALSE(e.state().decision->mayPass);
     const auto before = e.digest(); CHECK_FALSE(e.submit(0, Choose{e.state().decision->id, 0}).accepted); CHECK(e.digest() == before);
     chooseSeven(e, 20); REQUIRE(e.state().decision); CHECK(e.state().decision->mayPass); chooseSeven(e, 0);

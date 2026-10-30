@@ -6,7 +6,8 @@ Json commandDto(const Command &command) {
     for (auto &[key, value] : encoded.items()) {
         if (key == "type" || key == "ability" || key == "release" || key == "skipCast") continue;
         if (key == "ringIndex") continue; // A small ordinal, not a card/decision ID.
-        if (value.is_array()) {
+        if (key == "option" && value.is_object()) { if (!value.at("value").is_string()) value["value"] = std::to_string(value.at("value").get<std::uint64_t>()); }
+        else if (value.is_array()) {
             for (auto &id : value) id = std::to_string(id.get<std::uint64_t>());
         } else value = std::to_string(value.get<std::uint64_t>());
     }
@@ -19,6 +20,11 @@ template<class T> Json ids(const std::vector<T> &values) {
     return out;
 }
 } // namespace
+Json choicesDto(const std::vector<ChoiceValue> &values) {
+    Json out=Json::array();
+    for(const auto &choice:values) out.push_back({{"kind",static_cast<int>(choice.kind)},{"value",std::to_string(choice.value)}});
+    return out;
+}
 Json cardDefinitionDto(const CardDefinition &d) {
     Json recipe = Json::array();
     for (const auto &cost : d.recipe)
@@ -35,8 +41,18 @@ Json cardDefinitionDto(const CardDefinition &d) {
             {"dynamicCost", d.dynamicCost},
             {"recipe", recipe}, {"settingConditions", d.settingConditions}};
 }
+Json eventDto(const GameEvent &e) {
+    return {{"kind", e.kind}, {"text", e.text}, {"card", std::to_string(e.card)},
+        {"amount", e.amount}, {"actualAmount", e.actualAmount},
+        {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
+        {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}};
+}
+Json clockDto(const MatchClockView &clock) {
+    return {{"enabled", clock.enabled}, {"running", clock.running}, {"runningPlayer", clock.runningPlayer},
+        {"runningPlayers", clock.runningPlayers}, {"remainingMs", clock.remainingMs}, {"sequence", std::to_string(clock.sequence)}};
+}
 Json viewDto(const GameView &v) {
-    Json out = {{"viewer", v.viewer}, {"activePlayer", v.active}, {"phase", static_cast<int>(v.phase)},
+    Json out = {{"schema", schemaVersion}, {"viewer", v.viewer}, {"activePlayer", v.active}, {"phase", static_cast<int>(v.phase)},
                 {"phaseName", phaseName(v.phase)}, {"phaseStep", static_cast<int>(v.phaseStep)},
                 {"phaseGate", std::to_string(v.phaseGate)}, {"result", v.result},
                 {"globalTurn", std::to_string(v.globalTurn)}, {"opening", v.opening},
@@ -46,7 +62,7 @@ Json viewDto(const GameView &v) {
                     {"runningPlayer", v.clock.runningPlayer}, {"runningPlayers", v.clock.runningPlayers},
                     {"remainingMs", v.clock.remainingMs}, {"sequence", std::to_string(v.clock.sequence)}}},
                 {"players", Json::array()}, {"cards", Json::array()},
-                {"events", Json::array()}, {"loads", Json::array()}, {"triggers", Json::array()},
+                {"loads", Json::array()}, {"triggers", Json::array()},
                 {"temporaryLives", Json::array()},
                 {"decision", nullptr}, {"chain", nullptr}};
     for (const auto &p : v.players)
@@ -92,7 +108,7 @@ Json viewDto(const GameView &v) {
     }
     if (v.decision)
         out["decision"] = {{"id", std::to_string(v.decision->id)}, {"player", v.decision->player},
-            {"kind", static_cast<int>(v.decision->kind)}, {"options", ids(v.decision->options)},
+            {"kind", static_cast<int>(v.decision->kind)}, {"options", choicesDto(v.decision->options)},
             {"mayPass", v.decision->mayPass}};
     if (v.chain) {
         const auto &chain = *v.chain;
@@ -108,13 +124,6 @@ Json viewDto(const GameView &v) {
             {"windowName", windowName(chain.window)}, {"mode", static_cast<int>(chain.mode)},
             {"priority", chain.priority}, {"passes", chain.passes}, {"links", links}};
     }
-    std::size_t eventIndex{};
-    for (const auto &e : v.events) {
-        out["events"].push_back({{"id", std::to_string(eventIndex++)}, {"kind", e.kind}, {"text", e.text},
-            {"card", std::to_string(e.card)}, {"amount", e.amount}, {"actualAmount", e.actualAmount},
-            {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
-            {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}});
-    }
     for (const auto &load : v.temporary)
         out["loads"].push_back({{"id", std::to_string(load.id)}, {"owner", load.owner},
             {"source", std::to_string(load.source)}, {"amount", load.amount}, {"expiryTurn", load.expiryTurn},
@@ -122,6 +131,10 @@ Json viewDto(const GameView &v) {
     for (const auto &t : v.triggers)
         out["triggers"].push_back({{"id", std::to_string(t.id)}, {"source", std::to_string(t.source)},
                                    {"owner", t.owner}});
+    out["technicalPaused"] = v.technicalPaused;
+    out["actionSummary"] = {{"actionable", v.actionSummary.actionable},
+        {"hasNonPhaseAction", v.actionSummary.hasNonPhaseAction},
+        {"safeAdvance", v.actionSummary.safeAdvance ? commandDto(*v.actionSummary.safeAdvance) : Json()}};
     return out;
 }
 } // namespace wizard::bridge

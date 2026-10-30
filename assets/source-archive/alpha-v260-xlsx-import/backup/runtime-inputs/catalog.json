@@ -1,0 +1,487 @@
+{
+  "format": 1,
+  "metadata": {
+    "rulesVersion": "2.5.5",
+    "cardSetVersion": "2.5.5",
+    "baseLoadCapacity": 2,
+    "mechanicsRevision": 9
+  },
+  "definitions": [
+    {
+      "id": "fireball",
+      "file": "cards/analytic/fireball.json"
+    },
+    {
+      "id": "barbs",
+      "file": "cards/talisman/barbs.json"
+    },
+    {
+      "id": "recall",
+      "file": "cards/word/recall.json"
+    },
+    {
+      "id": "ring",
+      "file": "cards/seal/ring.json"
+    },
+    {
+      "id": "spark",
+      "file": "cards/word/spark.json"
+    },
+    {
+      "id": "mend",
+      "file": "cards/analytic/mend.json"
+    },
+    {
+      "id": "unravel",
+      "file": "cards/analytic/unravel.json"
+    },
+    {
+      "id": "disrupt",
+      "file": "cards/word/disrupt.json"
+    },
+    {
+      "id": "clarity",
+      "file": "cards/word/clarity.json"
+    },
+    {
+      "id": "reservoir",
+      "file": "cards/formation/reservoir.json"
+    },
+    {
+      "id": "conduit",
+      "file": "cards/seal/conduit.json"
+    },
+    {
+      "id": "ward",
+      "file": "cards/analytic/ward.json"
+    },
+    {
+      "id": "messy-wave",
+      "file": "cards/analytic/messy-wave.json"
+    },
+    {
+      "id": "instantly-sleep",
+      "file": "cards/analytic/instantly-sleep.json"
+    },
+    {
+      "id": "magic-missile",
+      "file": "cards/analytic/magic-missile.json"
+    },
+    {
+      "id": "aid",
+      "file": "cards/word/aid.json"
+    },
+    {
+      "id": "counter-spell",
+      "file": "cards/talisman/counter-spell.json"
+    },
+    {
+      "id": "true-strike",
+      "file": "cards/word/true-strike.json"
+    },
+    {
+      "id": "protective-flame",
+      "file": "cards/talisman/protective-flame.json"
+    },
+    {
+      "id": "pentagram-of-life",
+      "file": "cards/formation/pentagram-of-life.json"
+    },
+    {
+      "id": "engeas-four-point-star",
+      "file": "cards/formation/engeas-four-point-star.json"
+    },
+    {
+      "id": "uplift",
+      "file": "cards/seal/uplift.json"
+    },
+    {
+      "id": "instant-circuit-overload",
+      "file": "cards/word/instant-circuit-overload.json"
+    },
+    {
+      "id": "ray-of-frost",
+      "file": "cards/analytic/ray-of-frost.json"
+    },
+    {
+      "id": "lightning-bolt",
+      "file": "cards/analytic/lightning-bolt.json"
+    },
+    {
+      "id": "lesser-restoration",
+      "file": "cards/analytic/lesser-restoration.json"
+    },
+    {
+      "id": "false-life",
+      "file": "cards/analytic/false-life.json"
+    },
+    {
+      "id": "arcane-recovery",
+      "file": "cards/word/arcane-recovery.json"
+    },
+    {
+      "id": "shield",
+      "file": "cards/talisman/shield.json"
+    },
+    {
+      "id": "chromatic-orb",
+      "file": "cards/analytic/chromatic-orb.json"
+    },
+    {
+      "id": "guiding-bolt",
+      "file": "cards/analytic/guiding-bolt.json"
+    },
+    {
+      "id": "scorching-ray",
+      "file": "cards/analytic/scorching-ray.json"
+    },
+    {
+      "id": "sunburst",
+      "file": "cards/analytic/sunburst.json"
+    },
+    {
+      "id": "healing-circle",
+      "file": "cards/analytic/healing-circle.json"
+    },
+    {
+      "id": "funny-box",
+      "file": "cards/talisman/funny-box.json"
+    },
+    {
+      "id": "small-hexagram",
+      "file": "cards/formation/small-hexagram.json"
+    },
+    {
+      "id": "hexagram",
+      "file": "cards/formation/hexagram.json"
+    },
+    {
+      "id": "octagram",
+      "file": "cards/formation/octagram.json"
+    },
+    {
+      "id": "sun",
+      "file": "cards/formation/sun.json"
+    },
+    {
+      "id": "elemental-ring",
+      "file": "cards/formation/elemental-ring.json"
+    },
+    {
+      "id": "chaos-ring",
+      "file": "cards/formation/chaos-ring.json"
+    },
+    {
+      "id": "sulfur",
+      "file": "cards/formation/sulfur.json"
+    },
+    {
+      "id": "storm-crest",
+      "file": "cards/formation/storm-crest.json"
+    },
+    {
+      "id": "storm-heart",
+      "file": "cards/formation/storm-heart.json"
+    },
+    {
+      "id": "wind-whisper",
+      "file": "cards/word/wind-whisper.json"
+    },
+    {
+      "id": "swift-wind",
+      "file": "cards/word/swift-wind.json"
+    },
+    {
+      "id": "snow-rain-storm",
+      "file": "cards/talisman/snow-rain-storm.json"
+    },
+    {
+      "id": "windmaking",
+      "file": "cards/word/windmaking.json"
+    },
+    {
+      "id": "storm-guidance",
+      "file": "cards/word/storm-guidance.json"
+    },
+    {
+      "id": "storm-vortex",
+      "file": "cards/talisman/storm-vortex.json"
+    },
+    {
+      "id": "wind-strike",
+      "file": "cards/talisman/wind-strike.json"
+    },
+    {
+      "id": "great-cyclone",
+      "file": "cards/talisman/great-cyclone.json"
+    },
+    {
+      "id": "storm-brand",
+      "file": "cards/seal/storm-brand.json"
+    },
+    {
+      "id": "storm-annihilation-crest",
+      "file": "cards/seal/storm-annihilation-crest.json"
+    },
+    {
+      "id": "ice-storm",
+      "file": "cards/analytic/ice-storm.json"
+    },
+    {
+      "id": "cutting-wind",
+      "file": "cards/analytic/cutting-wind.json"
+    },
+    {
+      "id": "great-storm",
+      "file": "cards/analytic/great-storm.json"
+    },
+    {
+      "id": "cloud-mist",
+      "file": "cards/analytic/cloud-mist.json"
+    },
+    {
+      "id": "thunder-summon",
+      "file": "cards/analytic/thunder-summon.json"
+    },
+    {
+      "id": "sique-woodpile",
+      "file": "cards/formation/sique-woodpile.json"
+    },
+    {
+      "id": "sique-campfire",
+      "file": "cards/formation/sique-campfire.json"
+    },
+    {
+      "id": "sique-cauldron",
+      "file": "cards/formation/sique-cauldron.json"
+    },
+    {
+      "id": "sique-vinegar",
+      "file": "cards/seal/sique-vinegar.json"
+    },
+    {
+      "id": "sique-sugar",
+      "file": "cards/seal/sique-sugar.json"
+    },
+    {
+      "id": "sique-salt",
+      "file": "cards/seal/sique-salt.json"
+    },
+    {
+      "id": "sique-chili",
+      "file": "cards/seal/sique-chili.json"
+    },
+    {
+      "id": "sique-parsley",
+      "file": "cards/seal/sique-parsley.json"
+    },
+    {
+      "id": "sique-mushroom-soup",
+      "file": "cards/analytic/sique-mushroom-soup.json"
+    },
+    {
+      "id": "sique-pancakes",
+      "file": "cards/analytic/sique-pancakes.json"
+    },
+    {
+      "id": "sique-divine-stew",
+      "file": "cards/analytic/sique-divine-stew.json"
+    },
+    {
+      "id": "sique-ingredients",
+      "file": "cards/word/sique-ingredients.json"
+    },
+    {
+      "id": "sique-flavor-shift",
+      "file": "cards/word/sique-flavor-shift.json"
+    },
+    {
+      "id": "sique-refire",
+      "file": "cards/word/sique-refire.json"
+    },
+    {
+      "id": "sique-boiling-surge",
+      "file": "cards/talisman/sique-boiling-surge.json"
+    },
+    {
+      "id": "sique-aroma-lure",
+      "file": "cards/talisman/sique-aroma-lure.json"
+    },
+    {
+      "id": "earthquake",
+      "file": "cards/analytic/earthquake.json"
+    },
+    {
+      "id": "sique-roast",
+      "file": "cards/analytic/sique-roast.json"
+    },
+    {
+      "id": "arcana-empress",
+      "file": "cards/analytic/arcana-empress.json"
+    },
+    {
+      "id": "arcana-lovers",
+      "file": "cards/analytic/arcana-lovers.json"
+    },
+    {
+      "id": "arcana-chariot",
+      "file": "cards/analytic/arcana-chariot.json"
+    },
+    {
+      "id": "arcana-strength",
+      "file": "cards/analytic/arcana-strength.json"
+    },
+    {
+      "id": "arcana-hermit",
+      "file": "cards/analytic/arcana-hermit.json"
+    },
+    {
+      "id": "arcana-hanged-man",
+      "file": "cards/analytic/arcana-hanged-man.json"
+    },
+    {
+      "id": "arcana-death",
+      "file": "cards/analytic/arcana-death.json"
+    },
+    {
+      "id": "arcana-temperance",
+      "file": "cards/analytic/arcana-temperance.json"
+    },
+    {
+      "id": "arcana-devil",
+      "file": "cards/analytic/arcana-devil.json"
+    },
+    {
+      "id": "arcana-tower",
+      "file": "cards/analytic/arcana-tower.json"
+    },
+    {
+      "id": "sique-blowfire",
+      "file": "cards/word/sique-blowfire.json"
+    },
+    {
+      "id": "arcana-fool",
+      "file": "cards/word/arcana-fool.json"
+    },
+    {
+      "id": "arcana-magician",
+      "file": "cards/word/arcana-magician.json"
+    },
+    {
+      "id": "arcana-priestess",
+      "file": "cards/word/arcana-priestess.json"
+    },
+    {
+      "id": "arcana-emperor",
+      "file": "cards/word/arcana-emperor.json"
+    },
+    {
+      "id": "arcana-justice",
+      "file": "cards/word/arcana-justice.json"
+    },
+    {
+      "id": "arcana-world",
+      "file": "cards/word/arcana-world.json"
+    },
+    {
+      "id": "sique-backfire",
+      "file": "cards/talisman/sique-backfire.json"
+    },
+    {
+      "id": "arcana-hierophant",
+      "file": "cards/talisman/arcana-hierophant.json"
+    },
+    {
+      "id": "three-star",
+      "file": "cards/formation/three-star.json"
+    },
+    {
+      "id": "two-star",
+      "file": "cards/formation/two-star.json"
+    },
+    {
+      "id": "moon",
+      "file": "cards/formation/moon.json"
+    },
+    {
+      "id": "blood-altar",
+      "file": "cards/formation/blood-altar.json"
+    },
+    {
+      "id": "blood-transfusion",
+      "file": "cards/formation/blood-transfusion.json"
+    },
+    {
+      "id": "blood-sacrificial-table",
+      "file": "cards/formation/blood-sacrificial-table.json"
+    },
+    {
+      "id": "blood-pool",
+      "file": "cards/formation/blood-pool.json"
+    },
+    {
+      "id": "blood-heart",
+      "file": "cards/formation/blood-heart.json"
+    },
+    {
+      "id": "blood-mark",
+      "file": "cards/seal/blood-mark.json"
+    },
+    {
+      "id": "blood-vein",
+      "file": "cards/seal/blood-vein.json"
+    },
+    {
+      "id": "blood-curse",
+      "file": "cards/seal/blood-curse.json"
+    },
+    {
+      "id": "blood-heartmark",
+      "file": "cards/seal/blood-heartmark.json"
+    },
+    {
+      "id": "blood-blade",
+      "file": "cards/analytic/blood-blade.json"
+    },
+    {
+      "id": "blood-debt",
+      "file": "cards/analytic/blood-debt.json"
+    },
+    {
+      "id": "blood-renewal",
+      "file": "cards/analytic/blood-renewal.json"
+    },
+    {
+      "id": "blood-repayment",
+      "file": "cards/analytic/blood-repayment.json"
+    },
+    {
+      "id": "blood-letting",
+      "file": "cards/word/blood-letting.json"
+    },
+    {
+      "id": "blood-wrist",
+      "file": "cards/word/blood-wrist.json"
+    },
+    {
+      "id": "blood-offering",
+      "file": "cards/word/blood-offering.json"
+    },
+    {
+      "id": "blood-last-stand",
+      "file": "cards/word/blood-last-stand.json"
+    },
+    {
+      "id": "blood-coagulation",
+      "file": "cards/talisman/blood-coagulation.json"
+    },
+    {
+      "id": "blood-rain",
+      "file": "cards/talisman/blood-rain.json"
+    },
+    {
+      "id": "blood-same-origin",
+      "file": "cards/talisman/blood-same-origin.json"
+    }
+  ]
+}

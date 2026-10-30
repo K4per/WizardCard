@@ -1,0 +1,28 @@
+{
+  "id": "lesser-restoration",
+  "name": "次级复原术",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 1,
+  "castCost": 2,
+  "rank": 2,
+  "speed": 1,
+  "school": "abjuration",
+  "analysisTurns": 1,
+  "target": "player",
+  "effects": [
+    {
+      "kind": "heal",
+      "amount": 2
+    },
+    {
+      "kind": "clear_temporary",
+      "amount": 6,
+      "recipient": "owner"
+    }
+  ],
+  "text": "选择1个目标才能发动。为其恢复2点生命值。那之后，可以清除己方6点临时荷载。",
+  "level": 2,
+  "number": "020011",
+  "illustrationId": "lesser-restoration"
+}

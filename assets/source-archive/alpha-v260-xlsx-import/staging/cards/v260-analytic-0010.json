@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0010",
+  "number": "020010",
+  "name": "燃烧之手",
+  "type": "analytic",
+  "school": "evocation",
+  "rarity": "common",
+  "rank": 4,
+  "cost": 3,
+  "castCost": 3,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "对对方以及对方场上全部目标各造成6点火焰伤害。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 11
+  },
+  "illustrationId": "v260-analytic-0010",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\燃烧之手.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

@@ -5,8 +5,8 @@ using namespace wizard;
 namespace {
 Content clockContent() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets"); }
 Command initialChoice(const GameView &v) {
-    for (const auto &a : v.actions)
-        if (std::holds_alternative<SelectInitialFormation>(a.command)) return a.command;
+    for (const auto &card : v.cards)
+        if (card.instance.owner == v.viewer && card.instance.zone == Zone::SideDeck) return SelectInitialFormation{card.instance.id};
     throw std::runtime_error("missing initial formation choice");
 }
 }
@@ -49,12 +49,10 @@ TEST_CASE("LAN clock replenishes the turn player caps at 300 seconds and exclude
         const auto &s = session.engine().state();
         const auto actor = s.decision ? s.decision->player : s.active;
         const auto v = session.viewFor(actor);
-        bool accepted = false;
-        for (const auto &a : v.actions)
-            if (std::holds_alternative<PassResponse>(a.command) || std::holds_alternative<AdvancePhase>(a.command)) {
-                REQUIRE(session.submit(actor, a.command).accepted); accepted = true; break;
-            }
-        REQUIRE(accepted);
+        if (s.decision && s.decision->kind == DecisionKind::Response)
+            REQUIRE(v.clock.runningPlayers[actor]);
+        REQUIRE(v.actionSummary.safeAdvance);
+        REQUIRE(session.submit(actor, *v.actionSummary.safeAdvance).accepted);
     }
     REQUIRE(session.engine().state().phase == Phase::Main);
     while (session.engine().state().decision) {
@@ -81,14 +79,15 @@ TEST_CASE("clock wire updates preserve action revision and opening privacy", "[a
     guest.receive(host.receive(net::hello(c))); host.ready();
     guest.receive(host.receive({{"type", "Ready"}, {"session", host.session()}}));
     guest.receive(host.snapshot(1)); auto revision = guest.revision();
-    auto clockUpdate = host.snapshot(1);
-    auto v = net::decodeView(clockUpdate.at("view"), c.catalog);
-    v.clock.remainingMs[1] -= 1234; ++v.clock.sequence;
-    clockUpdate["view"] = net::encodeView(v); guest.receive(clockUpdate);
-    REQUIRE(guest.view().clock.remainingMs[1] == v.clock.remainingMs[1]);
+    auto clockUpdate = host.clockUpdate();
+    auto clock = net::decodeClock(clockUpdate.at("clock"));
+    clock.remainingMs[1] -= 1234; ++clock.sequence;
+    clockUpdate["clock"] = net::encodeClock(clock); guest.receive(clockUpdate);
+    REQUIRE(guest.view().clock.remainingMs[1] == clock.remainingMs[1]);
     REQUIRE(guest.revision() == revision); REQUIRE(guest.view().opening);
     REQUIRE(guest.view().initialFormation == 0);
-    REQUIRE(net::encodeView(guest.view()) == clockUpdate.at("view"));
+    REQUIRE(net::encodeClock(guest.view().clock) == clockUpdate.at("clock"));
+    REQUIRE_FALSE(clockUpdate.contains("view"));
     REQUIRE_FALSE(host.submit(Timeout{}).accepted);
     REQUIRE(host.receive(guest.command(Timeout{})).at("type") == "Rejected");
 }

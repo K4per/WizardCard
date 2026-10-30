@@ -1,0 +1,30 @@
+{
+  "id": "blood-repayment",
+  "name": "血契·血偿",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 5,
+  "castCost": 0,
+  "rank": 6,
+  "level": 6,
+  "speed": 1,
+  "number": "020043",
+  "illustrationId": "blood-repayment",
+  "target": "player",
+  "tags": [
+    "血契"
+  ],
+  "effects": [
+    {
+      "kind": "blood_pact_damage",
+      "amount": 16,
+      "damageType": "necrotic"
+    },
+    {
+      "kind": "blood_pact_search"
+    }
+  ],
+  "text": "选择1个目标才能发动。对其造成己方已减少生命值上限等量的暗蚀伤害，最多16点。那之后，可以将1张【血契·血债】从卡组加入手卡。",
+  "analysisTurns": 2,
+  "school": "necromancy"
+}

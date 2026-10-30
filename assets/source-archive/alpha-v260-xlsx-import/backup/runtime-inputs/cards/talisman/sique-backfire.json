@@ -1,0 +1,30 @@
+{
+  "id": "sique-backfire",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "sique-backfire",
+  "number": "040011",
+  "name": "味契·回火",
+  "type": "talisman",
+  "text": "己方场上存在【味契·魔力坩埚】才能发动。将对方灰烬区1至5张卡返回卡组/副卡组，对对方造成返回数量的火焰伤害，己方恢复返回数量×2的生命值。",
+  "rank": 5,
+  "level": 5,
+  "school": "evocation",
+  "cost": 4,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "tags": [
+    "味契"
+  ],
+  "traits": [
+    "sique_requires_cauldron",
+    "fire_damage_spell"
+  ],
+  "effects": [
+    {
+      "kind": "sique_backfire",
+      "amount": 5
+    }
+  ]
+}

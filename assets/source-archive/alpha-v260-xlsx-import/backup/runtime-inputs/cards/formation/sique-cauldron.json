@@ -1,0 +1,39 @@
+{
+  "id": "sique-cauldron",
+  "name": "味契·魔力坩埚",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 5,
+  "rank": 1,
+  "level": 5,
+  "maxRank": 5,
+  "speed": 1,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "010018",
+  "illustrationId": "sique-cauldron",
+  "body": 3,
+  "rings": 5,
+  "capacity": 11,
+  "income": 4,
+  "recipe": [
+    {
+      "kind": "discard_hand",
+      "amount": 3
+    }
+  ],
+  "traits": [
+    "sique_requires_campfire",
+    "end_phase_start"
+  ],
+  "onEnd": [
+    {
+      "kind": "sique_detach_all",
+      "amount": 0
+    }
+  ],
+  "text": "己方场上存在【味契·篝火】才能设置。此阵法卡只要在己方场上存在，己方仅可发动/附着【味契】卡。己方结束阶段开始时，将此阵法卡上附着的符文卡全部送去灰烬区。",
+  "summonCondition": "手卡×3+魔素×5"
+}

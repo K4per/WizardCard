@@ -1,0 +1,29 @@
+{
+  "id": "sique-pancakes",
+  "name": "味契·糖浆煎饼",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 5,
+  "level": 5,
+  "speed": 1,
+  "castCost": 1,
+  "tags": [
+    "味契"
+  ],
+  "number": "020024",
+  "illustrationId": "sique-pancakes",
+  "analysisTurns": 1,
+  "school": "abjuration",
+  "traits": [
+    "sique_detach_2"
+  ],
+  "target": "self",
+  "effects": [
+    {
+      "kind": "sique_damage_cap",
+      "amount": 4
+    }
+  ],
+  "text": "将2张【味契】符文卡从己方场上送去灰烬区才能发动。直到下个己方准备阶段开始时，每次受到的伤害最多4点。"
+}

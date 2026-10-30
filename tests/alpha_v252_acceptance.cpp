@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
@@ -7,14 +8,14 @@ namespace {
 CardCatalog acceptanceCatalog() {
     return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog;
 }
-GameState acceptanceState(Phase phase = Phase::Main) {
-    GameState s;
+MutationContext acceptanceState(Phase phase = Phase::Main) {
+    MutationContext s;
     s.phase = phase; s.phaseStep = PhaseStep::Body; s.phaseGate = 1;
     s.globalTurn = 5; s.rng = 43;
     for (auto &p : s.players) { p.mana = 20; p.ownTurn = 2; }
     return s;
 }
-CardInstance &acceptanceCard(GameState &s, CardId id, const std::string &definition, PlayerId owner,
+CardInstance &acceptanceCard(MutationContext &s, CardId id, const std::string &definition, PlayerId owner,
                              Zone zone, CardId host = 0, SpellState spell = SpellState::None) {
     CardInstance card;
     card.id = id; card.definition = definition; card.owner = owner; card.zone = zone;
@@ -25,12 +26,12 @@ CardInstance &acceptanceCard(GameState &s, CardId id, const std::string &definit
     if (zone == Zone::Deck) s.players[owner].deck.push_back(id);
     return s.cards.at(id);
 }
-void acceptanceSend(GameEngine &e, PlayerId p, const Command &command) {
+void acceptanceSend(test::ObservedEngine &e, PlayerId p, const Command &command) {
     const auto result = e.submit(p, command);
     INFO(result.error);
     REQUIRE(result.accepted);
 }
-void acceptanceSettle(GameEngine &e) {
+void acceptanceSettle(test::ObservedEngine &e) {
     for (int n = 0; n < 96 && e.state().decision && e.state().result == -1; ++n) {
         const auto d = *e.state().decision;
         if (d.kind == DecisionKind::Response) acceptanceSend(e, d.player, PassResponse{d.id});
@@ -52,7 +53,7 @@ TEST_CASE("Alpha v2.5.2 Empress heals and clears two loads only on its owners en
             empress.ringIndex = 0; empress.remaining = 4;
             s.players[0].life = 30;
             s.temporary.push_back({s.nextLoad++, 0, 0, 3, 0, true});
-            auto e = GameEngine::scenario(cat, s);
+            auto e = test::ObservedEngine::scenario(cat, s);
             acceptanceSend(e, active, AdvancePhase{e.state().phaseGate}); acceptanceSettle(e);
             REQUIRE(e.state().phase == Phase::End);
             CHECK(e.state().players[0].life == (active == 0 ? 32 : 30));
@@ -70,7 +71,7 @@ TEST_CASE("Alpha v2.5.2 Tower respects effect indestructibility on both selected
             acceptanceCard(s, 1, protectOwn ? "hexagram" : "reservoir", 0, Zone::Analysis);
             acceptanceCard(s, 2, protectOwn ? "reservoir" : "hexagram", 1, Zone::Analysis);
             acceptanceCard(s, 10, "arcana-tower", 0, Zone::Casting, 1, SpellState::Ready);
-            auto e = GameEngine::scenario(cat, s);
+            auto e = test::ObservedEngine::scenario(cat, s);
             acceptanceSend(e, 0, ActivateSpell{10, 1, {1}}); acceptanceSettle(e);
             CHECK(e.state().cards.at(protectOwn ? 1 : 2).zone == Zone::Analysis);
             if (!protectOwn) CHECK(e.state().cards.at(1).zone == Zone::Ash);
@@ -83,13 +84,13 @@ TEST_CASE("Alpha v2.5.2 Vinegar grants attach and detach life without its old da
     acceptanceCard(s, 1, "sique-cauldron", 0, Zone::Analysis);
     acceptanceCard(s, 2, "sique-campfire", 0, Zone::Analysis);
     acceptanceCard(s, 10, "sique-vinegar", 0, Zone::Hand);
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     const auto before = e.digest();
     CHECK_FALSE(e.submit(0, AttachSeal{10, 2}).accepted); CHECK(e.digest() == before);
     acceptanceSend(e, 0, AttachSeal{10, 1}); acceptanceSettle(e);
     REQUIRE(e.state().players[0].temporaryLife == 2);
     CHECK(e.state().players[0].mana == 18);
-    auto damaged = e.state();
+    auto damaged = test::mutation(e.state());
     Trigger damage; damage.owner = 1; damage.targetPlayer = 0;
     EffectResolver::apply(damaged, cat, damage, {EffectKind::Damage, 5});
     CHECK(damaged.players[0].temporaryLife == 0);
@@ -107,7 +108,7 @@ TEST_CASE("Alpha v2.5.2 Chili deals one damage per actual opponent draw", "[alph
     acceptanceCard(s, 30, "recall", 1, Zone::Hand);
     acceptanceCard(s, 20, "spark", 1, Zone::Deck);
     s.active = 1;
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     acceptanceSend(e, 1, PreloadWord{30, true, 2}); acceptanceSettle(e);
     CHECK(e.state().players[1].life == startingLife - 2); // One actual draw triggers Chili once.
     CHECK(e.state().players[1].exhaustion == 1);

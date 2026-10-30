@@ -19,11 +19,14 @@ TEST_CASE("local session interface preserves revision projection and rejected co
     REQUIRE(initial.opening);
     for (int player = 0; player < 2; ++player) {
         const auto view = session.viewFor(player);
-        const auto choice = std::find_if(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
-            return std::holds_alternative<SelectInitialFormation>(action.command);
-        });
-        REQUIRE(choice != view.actions.end());
-        REQUIRE(session.submit(player, choice->command).accepted);
+        ActionIntent intent;
+        intent.selections.push_back({ActionField::Operation, std::to_string(static_cast<unsigned>(CommandKind::SelectInitialFormation))});
+        auto options = session.queryActions(player, 1, session.revision(), intent);
+        REQUIRE_FALSE(options.options.empty());
+        intent.selections.push_back({options.field, options.options.front().value});
+        options = session.queryActions(player, 1, session.revision(), intent);
+        REQUIRE(options.complete);
+        REQUIRE(session.submit(player, *options.complete).accepted);
         REQUIRE(session.revision() == static_cast<std::uint64_t>(player + 1));
     }
     while (local.engine().state().decision) {

@@ -1,0 +1,36 @@
+{
+  "id": "v260-seal-0001",
+  "number": "050001",
+  "name": "逆三角星符",
+  "type": "seal",
+  "school": "",
+  "rarity": "",
+  "rank": null,
+  "cost": 3,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 1,
+  "text": "/",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+    "正式卡图未匹配"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
+    "worksheet": "符文卡",
+    "row": 2
+  },
+  "illustrationId": "v260-seal-0001",
+  "art": {
+    "status": "missing",
+    "source": null
+  },
+  "migration": {
+    "previousId": "conduit"
+  },
+  "attachToFormation": "魔素收入+1。",
+  "attachToSpell": "无效果。"
+}

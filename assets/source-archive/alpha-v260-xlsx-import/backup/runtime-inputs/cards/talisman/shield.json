@@ -1,0 +1,25 @@
+{
+  "id": "shield",
+  "name": "护盾术",
+  "type": "talisman",
+  "rarity": "common",
+  "cost": 3,
+  "rank": 3,
+  "speed": 2,
+  "concentration": false,
+  "school": "abjuration",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "shield_for_turn",
+      "amount": 5
+    }
+  ],
+  "text": "此回合，每次受到的伤害-5。若为力场伤害，则-10。",
+  "castCost": 0,
+  "level": 3,
+  "responseOnly": false,
+  "analysisTurns": 0,
+  "number": "040003",
+  "illustrationId": "shield"
+}

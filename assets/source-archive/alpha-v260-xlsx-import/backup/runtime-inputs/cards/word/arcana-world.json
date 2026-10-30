@@ -1,0 +1,28 @@
+{
+  "id": "arcana-world",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "arcana-world",
+  "number": "030024",
+  "name": "世界",
+  "type": "word",
+  "text": "获得1点魔素。选择1张解析法术卡从卡组加入手卡。选择【世界】以外的1张言灵法术卡从卡组加入手卡。选择1张咒符法术卡加入手卡。选择1张符文卡加入手卡。",
+  "rank": 6,
+  "level": 6,
+  "school": "arcana",
+  "cost": 10,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "effects": [
+    {
+      "kind": "mana",
+      "amount": 1,
+      "recipient": "owner"
+    },
+    {
+      "kind": "arcana_world",
+      "amount": 0
+    }
+  ]
+}

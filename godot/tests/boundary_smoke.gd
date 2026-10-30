@@ -40,10 +40,20 @@ func _run() -> void:
 	player["life"] = -100
 	if not _expect((_bridge.snapshot(viewer)["data"] as Dictionary) == original, "snapshot mutation changed C++"):
 		return
-	var action: Dictionary = (original["actions"] as Array)[0] as Dictionary
+	var intent: Dictionary = {"selections": [{"field": 0, "value": "18"}]}
+	for depth: int in range(32):
+		var query: Dictionary = _bridge.query_actions(viewer, intent, str(original["generation"]), str(original["revision"]))
+		if not _expect(bool(query.get("ok", false)), "incremental query failed"):
+			return
+		var data: Dictionary = query["data"]
+		if data.get("complete") is Dictionary:
+			break
+		if not _expect(not data.get("options", []).is_empty(), "query has no options"):
+			return
+		intent["selections"].append({"field": data["field"], "value": data["options"][0]["value"]})
 	var generation: String = str(original["generation"])
 	var revision: String = str(original["revision"])
-	if not _expect(bool(_bridge.select_action(viewer, str(action["id"]), generation, revision)["ok"]), "select failed"):
+	if not _expect(bool(_bridge.select_intent(viewer, intent, generation, revision)["ok"]), "select failed"):
 		return
 	_bridge.set_paused(true)
 	if not _expect(not bool(_bridge.confirm_action(generation, revision)["ok"]), "paused confirmation accepted"):

@@ -12,7 +12,7 @@
 namespace wizard {
 namespace {
 bool effectImmune(const CardDefinition &definition) {
-    return std::find(definition.traits.begin(), definition.traits.end(), "effect_immune") != definition.traits.end();
+    return hasCapability(definition, Capability::EffectImmune);
 }
 }
 int Rules::load(const GameState &s, PlayerId p) {
@@ -31,7 +31,7 @@ int Rules::capacity(const GameState &s, const CardCatalog &cat, PlayerId p) {
         if (controllerOf(c) == p && c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation) {
             const auto &definition = cat.at(c.definition);
             int capacity = definition.capacity;
-            if (definition.id == "storm-crest")
+            if (hasCapability(definition, Capability::StormCrest))
                 capacity = c.stormPoints >= 5 ? 10 : c.stormPoints >= 3 ? 8 : 5;
             n += capacity;
             for (const auto &[sid, seal] : s.cards)
@@ -43,22 +43,22 @@ int Rules::capacity(const GameState &s, const CardCatalog &cat, PlayerId p) {
 int Rules::income(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &card = s.cards.at(id);
     const auto &definition = cat.at(card.definition);
-    if (definition.id == "storm-crest")
+    if (hasCapability(definition, Capability::StormCrest))
         return card.stormPoints >= 5 ? 2 : 1;
     return definition.income;
 }
 int Rules::level(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &card = s.cards.at(id);
     const auto &definition = cat.at(card.definition);
-    if (definition.id == "storm-crest")
+    if (hasCapability(definition, Capability::StormCrest))
         return card.stormPoints >= 5 ? 3 : card.stormPoints >= 3 ? 2 : 1;
-    return cat.usesAlphaV2() ? definition.level : definition.maxRank;
+    return definition.level;
 }
 int Rules::rings(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &card = s.cards.at(id);
     const auto &definition = cat.at(card.definition);
     int n = definition.rings;
-    if (definition.id == "storm-crest")
+    if (hasCapability(definition, Capability::StormCrest))
         n = card.stormPoints >= 5 ? 3 : card.stormPoints >= 3 ? 2 : 1;
     for (const auto &[cid, c] : s.cards)
         if (!effectImmune(cat.at(s.cards.at(id).definition)) && c.zone == Zone::Attached && c.host == id)
@@ -76,8 +76,8 @@ int Rules::maxRank(const GameState &s, const CardCatalog &cat, CardId id) {
 int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, CardId host) {
     const auto &d = cat.at(s.cards.at(id).definition);
     const auto h = s.cards.find(host);
-    int discount = card_rules::attachedCount(s, controllerOf(s.cards.at(id)), "sique-sugar");
-    if (cat.usesAlphaV2() && std::find(d.traits.begin(), d.traits.end(), "ash_evocation_discount") != d.traits.end())
+    int discount = card_rules::attachedCount(s, cat, controllerOf(s.cards.at(id)), Capability::SiqueSugar);
+    if (hasCapability(d, Capability::AshEvocationDiscount))
         for (const auto &[cid, card] : s.cards) {
             const auto &definition = cat.at(card.definition);
             if (card.owner == s.cards.at(id).owner && card.zone == Zone::Ash &&
@@ -85,12 +85,11 @@ int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, C
                     definition.type == CardType::Word || definition.type == CardType::Talisman)) ++discount;
         }
     int surcharge = 0;
-    if (cat.usesAlphaV252() && d.duration > 0)
+    if (d.duration > 0)
         for (const auto &[sourceId, source] : s.cards)
             if (controllerOf(source) != controllerOf(s.cards.at(id)) && source.spell == SpellState::Active &&
                 (source.zone == Zone::Analysis || source.zone == Zone::Casting)) {
-                const auto &traits = cat.at(source.definition).traits;
-                if (std::find(traits.begin(), traits.end(), "surcharge_enemy_timed_cast") != traits.end()) surcharge += 2;
+                if (hasCapability(cat.at(source.definition), Capability::SurchargeEnemyTimedCast)) surcharge += 2;
             }
     return std::max(0, d.cost + surcharge - discount - (h != s.cards.end() && h->second.base && cat.at(h->second.definition).baseAnalysisDiscount &&
                                          (d.school == "evocation" || d.school == "conjuration")
@@ -100,25 +99,16 @@ int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, C
 int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
     const auto &d = cat.at(c.definition);
-    int n = (d.type == CardType::Word || (cat.usesAlphaV2() && d.type == CardType::Talisman) ? d.cost : d.castCost)
-        - card_rules::attachedCount(s, controllerOf(c), "sique-sugar");
+    int n = ((d.type == CardType::Word || d.type == CardType::Talisman) ? d.cost : d.castCost)
+        - card_rules::attachedCount(s, cat, controllerOf(c), Capability::SiqueSugar);
     for (const auto &[sid, seal] : s.cards)
         if (seal.zone == Zone::Attached && seal.host == id) {
             const auto &sealDefinition = cat.at(seal.definition);
             n += sealDefinition.castCostBonus;
-            if (cat.usesCardRules() && sealDefinition.id == "qixing-banner" &&
-                d.type != CardType::Formation)
+            if (hasCapability(sealDefinition, Capability::SevenStarsBanner) && d.type != CardType::Formation)
                 n -= 3;
         }
-    if (!cat.usesAlphaV252() && d.duration > 0)
-        for (const auto &[sourceId, source] : s.cards) {
-            const auto &sourceDefinition = cat.at(source.definition);
-            if (controllerOf(source) != controllerOf(c) && source.spell == SpellState::Active &&
-                (source.zone == Zone::Analysis || source.zone == Zone::Casting) &&
-                std::find(sourceDefinition.traits.begin(), sourceDefinition.traits.end(),
-                          "surcharge_enemy_timed_cast") != sourceDefinition.traits.end())
-                n += 2;
-        }
+
     return std::max(0, n);
 }
 int Rules::concentrationUpkeep(const GameState &s, const CardCatalog &cat, CardId id) {
@@ -128,27 +118,26 @@ int Rules::concentrationUpkeep(const GameState &s, const CardCatalog &cat, CardI
         const auto &definition = cat.at(source.definition);
         return controllerOf(source) != controllerOf(card) && source.spell == SpellState::Active &&
             (source.zone == Zone::Analysis || source.zone == Zone::Casting) &&
-            std::find(definition.traits.begin(), definition.traits.end(),
-                      "double_enemy_concentration_upkeep") != definition.traits.end();
+            hasCapability(definition, Capability::DoubleEnemyConcentrationUpkeep);
     });
     return card.concentrationCost * (doubled ? 2 : 1);
 }
 int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const Effect &e) {
     if (s.players[p].debugInfiniteLife) return 0;
-    if (cat.usesAlphaV252() && s.players[p].nextDamageImmune) return 0;
+    if (s.players[p].nextDamageImmune) return 0;
     bool resistance = false;
     for (const auto &[id, c] : s.cards)
-        if (controllerOf(c) == p && (c.zone == Zone::Casting || (cat.usesAlphaV2() && c.zone == Zone::Analysis)) && c.spell == SpellState::Active) {
+        if (controllerOf(c) == p && (c.zone == Zone::Casting || c.zone == Zone::Analysis) && c.spell == SpellState::Active) {
             const auto &d = cat.at(c.definition);
             if (std::find(d.immunities.begin(), d.immunities.end(), e.damageType) != d.immunities.end())
                 return 0;
             resistance |=
                 std::find(d.resistances.begin(), d.resistances.end(), e.damageType) != d.resistances.end();
         }
-    const int base = card_rules::hasActiveTrait(s, cat, "arcana_strength") ? e.amount * 2 : e.amount;
+    const int base = card_rules::hasActiveTrait(s, cat, Capability::ArcanaStrength) ? e.amount * 2 : e.amount;
     const int resisted = resistance ? base / 2 : base;
     const int reduction = e.damageType == DamageType::Force ? s.players[p].forceDamageReduction : s.players[p].damageReduction;
-    const int amount = std::max(0, resisted - reduction - (cat.usesAlphaV252() ? 0 : 2 * card_rules::attachedCount(s, p, "sique-vinegar")));
+    const int amount = std::max(0, resisted - reduction - 0);
     return s.players[p].siqueDamageCap > 0 ? std::min(amount, s.players[p].siqueDamageCap) : amount;
 }
 int Rules::occupied(const GameState &s, CardId host) {
@@ -181,18 +170,18 @@ bool Rules::canHost(const GameState &s, const CardCatalog &cat, CardId spell, Ca
         host->second.zone != Zone::Analysis || host->second.faceDown ||
         cat.at(host->second.definition).type != CardType::Formation) return false;
     const auto &definition = cat.at(source->second.definition);
-    if (cat.usesAlphaV252() && std::find(definition.traits.begin(), definition.traits.end(), "unique") != definition.traits.end())
+    if (hasCapability(definition, Capability::Unique))
         for (const auto &[id, card] : s.cards)
             if (id != spell && controllerOf(card) == controllerOf(source->second) && card.definition == source->second.definition &&
                 (card.zone == Zone::Analysis || card.zone == Zone::Casting)) return false;
-    if ((!faceDown || !cat.usesAlphaV253()) && definition.rank > maxRank(s, cat, formation)) return false;
-    if (faceDown && cat.usesAlphaV253()) return true; // Restrictions apply when flipped.
-    if (cat.usesAlphaV252() && std::find(definition.traits.begin(), definition.traits.end(), "sique_campfire_only") != definition.traits.end() &&
-        host->second.definition != "sique-campfire") return false;
-    const auto &traits = cat.at(host->second.definition).traits;
-    if (std::find(traits.begin(), traits.end(), "host_fire_only") != traits.end() &&
+    if (!faceDown && definition.rank > maxRank(s, cat, formation)) return false;
+    if (faceDown) return true; // Restrictions apply when flipped.
+    if (hasCapability(definition, Capability::SiqueCampfireOnly) &&
+        !hasCapability(cat.at(host->second.definition), Capability::SiqueCampfire)) return false;
+    const auto &hostDefinition = cat.at(host->second.definition);
+    if (hasCapability(hostDefinition, Capability::HostFireOnly) &&
         !card_rules::isFireSpell(definition)) return false;
-    if (std::find(traits.begin(), traits.end(), "distinct_host_schools") != traits.end())
+    if (hasCapability(hostDefinition, Capability::DistinctHostSchools))
         for (const auto &[id, card] : s.cards)
             if (id != spell && card.host == formation && card.zone == Zone::Analysis && !card.faceDown &&
                 cat.at(card.definition).school == definition.school) return false;
@@ -247,7 +236,7 @@ bool Rules::linkTargetValid(const GameState &s, TargetKind kind, LinkId id) {
 }
 std::vector<std::string> Rules::deckErrors(const CardCatalog &cat, const PlayerDeck &deck) {
     std::vector<std::string> out;
-    if (cat.usesAlphaV2()) {
+    {
         if (deck.cards.size() != 40) out.push_back("main deck must contain exactly 40 cards");
         if (deck.sideDeck.size() != 10) out.push_back("side deck must contain exactly 10 formations");
         for (bool side : {false, true}) {
@@ -261,17 +250,11 @@ std::vector<std::string> Rules::deckErrors(const CardCatalog &cat, const PlayerD
                 if (++counts[d.name] > 3) out.push_back("at most 3 cards per name in each deck");
             }
         }
-        if (cat.usesAlphaV25()) {
+        {
             if (std::none_of(deck.sideDeck.begin(), deck.sideDeck.end(), [&](const std::string &id) {
                 const auto card = cat.cards.find(id);
                 return card != cat.cards.end() && card->second.type == CardType::Formation && card->second.level == 1;
             })) out.push_back("side deck must contain a level 1 formation");
-        } else {
-            const auto initial = cat.cards.find(deck.baseFormation);
-            if (initial == cat.cards.end() || initial->second.type != CardType::Formation ||
-                initial->second.level != 1 || !initial->second.baseEligible ||
-                std::find(deck.sideDeck.begin(), deck.sideDeck.end(), deck.baseFormation) == deck.sideDeck.end())
-                out.push_back("initial formation must be an eligible level 1 entity in the side deck");
         }
         return out;
     }

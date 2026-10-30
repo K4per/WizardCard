@@ -1,0 +1,532 @@
+Internal ctest changing into directory: E:/Project/WizardCard/build/windows
+Test project E:/Project/WizardCard/build/windows
+        Start   1: manifest preserves canonical card order hash and legacy imports
+  1/263 Test   #1: manifest preserves canonical card order hash and legacy imports ............................................   Passed    0.09 sec
+        Start   2: manifest rejects duplicates ID mismatch traversal and missing definitions
+  2/263 Test   #2: manifest rejects duplicates ID mismatch traversal and missing definitions ..................................   Passed    0.04 sec
+        Start   3: content validation includes unknown effects duplicates references and counts
+  3/263 Test   #3: content validation includes unknown effects duplicates references and counts ...............................   Passed    0.06 sec
+        Start   4: every command variant round trips
+  4/263 Test   #4: every command variant round trips ..........................................................................   Passed    0.02 sec
+        Start   5: replay detects incompatible content versions and tampering
+  5/263 Test   #5: replay detects incompatible content versions and tampering .................................................   Passed    0.06 sec
+        Start   6: incremental interaction selects a host without owning action combinations
+  6/263 Test   #6: incremental interaction selects a host without owning action combinations ..................................   Passed    0.03 sec
+        Start   7: incremental targeting retains chosen target when querying payment cards
+  7/263 Test   #7: incremental targeting retains chosen target when querying payment cards ....................................   Passed    0.02 sec
+        Start   8: refresh discards response selection and stale offered decision identities
+  8/263 Test   #8: refresh discards response selection and stale offered decision identities ..................................   Passed    0.02 sec
+        Start   9: automatic phase scheduling consumes summary without enumerating candidates
+  9/263 Test   #9: automatic phase scheduling consumes summary without enumerating candidates .................................   Passed    0.02 sec
+        Start  10: drag is an uncommitted intent and never guesses removal
+ 10/263 Test  #10: drag is an uncommitted intent and never guesses removal ....................................................   Passed    0.02 sec
+        Start  11: hand order is private presentation state and synchronizes draws and departures
+ 11/263 Test  #11: hand order is private presentation state and synchronizes draws and departures .............................   Passed    0.02 sec
+        Start  12: release starts at forty life and healing cannot exceed forty
+ 12/263 Test  #12: release starts at forty life and healing cannot exceed forty ...............................................   Passed    0.05 sec
+        Start  13: settings serialize strictly and multiply master and sound volume
+ 13/263 Test  #13: settings serialize strictly and multiply master and sound volume ...........................................   Passed    0.02 sec
+        Start  14: font scale accepts supported sizes and preserves legacy settings defaults
+ 14/263 Test  #14: font scale accepts supported sizes and preserves legacy settings defaults ..................................   Passed    0.02 sec
+        Start  15: menu starts without constructing a match and settings survive recreation
+ 15/263 Test  #15: menu starts without constructing a match and settings survive recreation ...................................   Passed    0.06 sec
+        Start  16: invalid settings preserve original file until explicit successful replacement
+ 16/263 Test  #16: invalid settings preserve original file until explicit successful replacement ..............................   Passed    0.06 sec
+        Start  17: failed atomic settings replacement keeps committed values and temporary files are cleaned
+ 17/263 Test  #17: failed atomic settings replacement keeps committed values and temporary files are cleaned ..................   Passed    0.05 sec
+        Start  18: setup uses independent legal presets and records both actual configurations
+ 18/263 Test  #18: setup uses independent legal presets and records both actual configurations ................................   Passed    0.06 sec
+        Start  19: illegal match configuration or unavailable replay directory never creates a session
+ 19/263 Test  #19: illegal match configuration or unavailable replay directory never creates a session ........................   Passed    0.06 sec
+        Start  20: return confirmation cancel preserves paused settings and active match
+ 20/263 Test  #20: return confirmation cancel preserves paused settings and active match ......................................   Passed    0.06 sec
+        Start  21: return to menu completes and saves a replay then invalidates old match actions
+ 21/263 Test  #21: return to menu completes and saves a replay then invalidates old match actions .............................   Passed    0.07 sec
+        Start  22: failed leave save preserves the live session and confirmation can be canceled
+ 22/263 Test  #22: failed leave save preserves the live session and confirmation can be canceled ..............................   Passed    0.06 sec
+        Start  23: menu quit is immediate while in-match quit requires saved confirmation
+ 23/263 Test  #23: menu quit is immediate while in-match quit requires saved confirmation .....................................   Passed    0.08 sec
+        Start  24: surrender through settings yields a result and restart preserves both chosen decks
+ 24/263 Test  #24: surrender through settings yields a result and restart preserves both chosen decks .........................   Passed    0.10 sec
+        Start  25: saving while paused retains exact rule state and menu navigation cannot abandon a match
+ 25/263 Test  #25: saving while paused retains exact rule state and menu navigation cannot abandon a match ....................   Passed    0.09 sec
+        Start  26: surrender save failure leaves the live session unmodified
+ 26/263 Test  #26: surrender save failure leaves the live session unmodified ..................................................   Passed    0.09 sec
+        Start  27: restart save failure retains result configuration and generation
+ 27/263 Test  #27: restart save failure retains result configuration and generation ...........................................   Passed    0.09 sec
+        Start  28: new construction drafts persist 40 main and 10 formation side cards alongside legacy decks
+ 28/263 Test  #28: new construction drafts persist 40 main and 10 formation side cards alongside legacy decks .................   Passed    0.09 sec
+        Start  29: rank and casting fee filters do not give unrelated card types artificial zero values
+ 29/263 Test  #29: rank and casting fee filters do not give unrelated card types artificial zero values .......................   Passed    0.09 sec
+        Start  30: deck drafts preserve stable ids counts and bases across restart including incomplete drafts
+ 30/263 Test  #30: deck drafts preserve stable ids counts and bases across restart including incomplete drafts ................   Passed    0.09 sec
+        Start  31: draft validation covers quantity same name limit unknown cards and eligible base
+ 31/263 Test  #31: draft validation covers quantity same name limit unknown cards and eligible base ...........................   Passed    0.07 sec
+        Start  32: card search combines Chinese partial name type rarity setting casting rank and all tags
+ 32/263 Test  #32: card search combines Chinese partial name type rarity setting casting rank and all tags ....................   Passed    0.07 sec
+        Start  33: content upgrades retain removed cards and revalidate changed base eligibility
+ 33/263 Test  #33: content upgrades retain removed cards and revalidate changed base eligibility ..............................   Passed    0.07 sec
+        Start  34: atomic deck save and delete failures retain committed library and original file
+ 34/263 Test  #34: atomic deck save and delete failures retain committed library and original file ............................   Passed    0.07 sec
+        Start  35: corrupted unsupported or duplicated draft storage cannot silently overwrite player data
+ 35/263 Test  #35: corrupted unsupported or duplicated draft storage cannot silently overwrite player data ....................   Passed    0.06 sec
+        Start  36: draft encoding rejects invalid counts while preserving valid obsolete ids for repair
+ 36/263 Test  #36: draft encoding rejects invalid counts while preserving valid obsolete ids for repair .......................   Passed    0.06 sec
+        Start  37: saved valid user decks join independent match choices while drafts stay excluded
+ 37/263 Test  #37: saved valid user decks join independent match choices while drafts stay excluded ...........................   Passed    0.07 sec
+        Start  38: deleting one user deck preserves every other deck and persists after restart
+ 38/263 Test  #38: deleting one user deck preserves every other deck and persists after restart ...............................   Passed    0.07 sec
+        Start  39: uncommon rarity uses the same Chinese label in details and filters
+ 39/263 Test  #39: uncommon rarity uses the same Chinese label in details and filters .........................................   Passed    0.03 sec
+        Start  40: normal AI takes immediate lethal damage instead of a future analysis
+ 40/263 Test  #40: normal AI takes immediate lethal damage instead of a future analysis .......................................   Passed    0.09 sec
+        Start  41: hard AI orders a cheap preparation before a valuable spell against a public counter
+ 41/263 Test  #41: hard AI orders a cheap preparation before a valuable spell against a public counter ........................   Passed    0.11 sec
+        Start  42: AI skips fatal self load and drawing beyond the remaining deck
+ 42/263 Test  #42: AI skips fatal self load and drawing beyond the remaining deck .............................................   Passed    0.09 sec
+        Start  43: AI discards inexpensive cards and can stop optional self destruction
+ 43/263 Test  #43: AI discards inexpensive cards and can stop optional self destruction .......................................   Passed    0.11 sec
+        Start  44: AI clears available temporary load and declines unsafe concentration
+ 44/263 Test  #44: AI clears available temporary load and declines unsafe concentration .......................................   Passed    0.07 sec
+        Start  45: hard AI can prioritize a mana trigger before damage without hidden queue access
+ 45/263 Test  #45: hard AI can prioritize a mana trigger before damage without hidden queue access ............................   Passed    0.03 sec
+        Start  46: AI counters a live enemy link and passes once that link is already cancelled
+ 46/263 Test  #46: AI counters a live enemy link and passes once that link is already cancelled ...............................   Passed    0.06 sec
+        Start  47: AI budgets are finite preserve a pass and return no action on terminal or empty views
+ 47/263 Test  #47: AI budgets are finite preserve a pass and return no action on terminal or empty views ......................   Passed    0.06 sec
+        Start  48: every forced decision has a deterministic projected choice including effect preparation and overflow
+ 48/263 Test  #48: every forced decision has a deterministic projected choice including effect preparation and overflow .......   Passed    0.33 sec
+        Start  49: pending AI plans pause and reject duplicate revised or previous match submissions
+ 49/263 Test  #49: pending AI plans pause and reject duplicate revised or previous match submissions ..........................   Passed    0.09 sec
+        Start  50: presentation never copies an opponent hand or deck and uses anonymous draw counts
+ 50/263 Test  #50: presentation never copies an opponent hand or deck and uses anonymous draw counts ..........................   Passed    0.03 sec
+        Start  51: presentation distinguishes discard from an action used before moving to ash
+ 51/263 Test  #51: presentation distinguishes discard from an action used before moving to ash ................................   Passed    0.03 sec
+        Start  52: ready preparation response cancellation and release reflect submitted public transitions
+ 52/263 Test  #52: ready preparation response cancellation and release reflect submitted public transitions ...................   Passed    0.03 sec
+        Start  53: resource feedback uses actual projected deltas without inventing damage from event text
+ 53/263 Test  #53: resource feedback uses actual projected deltas without inventing damage from event text ....................   Passed    0.03 sec
+        Start  54: handoff and new match histories clear private animation snapshots
+ 54/263 Test  #54: handoff and new match histories clear private animation snapshots ..........................................   Passed    0.03 sec
+        Start  55: animation clocks are bounded deterministic and expire without changing match inputs
+ 55/263 Test  #55: animation clocks are bounded deterministic and expire without changing match inputs ........................   Passed    0.03 sec
+        Start  56: reduced motion preserves numeric and phase feedback without card flights
+ 56/263 Test  #56: reduced motion preserves numeric and phase feedback without card flights ...................................   Passed    0.03 sec
+        Start  57: sound consumption is structural incremental and private-view safe
+ 57/263 Test  #57: sound consumption is structural incremental and private-view safe ..........................................   Passed    0.03 sec
+        Start  58: release success and actual impacts do not infer from cancellation or payment prose
+ 58/263 Test  #58: release success and actual impacts do not infer from cancellation or payment prose .........................   Passed    0.03 sec
+        Start  59: sound merging preserves damage and healing within the same net-zero transition
+ 59/263 Test  #59: sound merging preserves damage and healing within the same net-zero transition .............................   Passed    0.03 sec
+        Start  60: only human response decisions sound once and terminal outcome is exclusive
+ 60/263 Test  #60: only human response decisions sound once and terminal outcome is exclusive .................................   Passed    0.03 sec
+        Start  61: draw discard and readiness distinguish real card transitions from played actions
+ 61/263 Test  #61: draw discard and readiness distinguish real card transitions from played actions ...........................   Passed    0.03 sec
+        Start  62: real effect metadata captures capped healing and actual draw independently of text
+ 62/263 Test  #62: real effect metadata captures capped healing and actual draw independently of text .........................   Passed    0.07 sec
+        Start  63: network frames survive every split and coalesced packets
+ 63/263 Test  #63: network frames survive every split and coalesced packets ...................................................   Passed    0.07 sec
+        Start  64: network decoder rejects invalid length JSON and receive limits
+ 64/263 Test  #64: network decoder rejects invalid length JSON and receive limits .............................................   Passed    0.04 sec
+        Start  65: network TCP accepts IPv4 DNS answers, IPv4 literals and IPv6 literals
+ 65/263 Test  #65: network TCP accepts IPv4 DNS answers, IPv4 literals and IPv6 literals ......................................   Passed    0.21 sec
+        Start  66: network DNS errors, connection refusal and send queue limits are actionable
+ 66/263 Test  #66: network DNS errors, connection refusal and send queue limits are actionable ................................   Passed    2.29 sec
+        Start  67: network exact identifiers retain values beyond double precision
+ 67/263 Test  #67: network exact identifiers retain values beyond double precision ............................................   Passed    0.02 sec
+        Start  68: network handshake keeps program diagnostic and rejects content mismatch
+ 68/263 Test  #68: network handshake keeps program diagnostic and rejects content mismatch ....................................   Passed    0.04 sec
+        Start  69: network guest view contains no opponent hand deck seed or digest
+ 69/263 Test  #69: network guest view contains no opponent hand deck seed or digest ...........................................   Passed    0.05 sec
+        Start  70: network opening keeps confirmed choices private across resume and reveals both together
+ 70/263 Test  #70: network opening keeps confirmed choices private across resume and reveals both together ....................   Passed    0.06 sec
+        Start  71: network authority duplicate requests do not execute twice
+ 71/263 Test  #71: network authority duplicate requests do not execute twice ..................................................   Passed    0.05 sec
+        Start  72: network rejects stale revisions decisions and unauthorized commands
+ 72/263 Test  #72: network rejects stale revisions decisions and unauthorized commands ........................................   Passed    0.05 sec
+        Start  73: network resume preserves pending request after lost acknowledgement
+ 73/263 Test  #73: network resume preserves pending request after lost acknowledgement ........................................   Passed    0.05 sec
+        Start  74: network replay is available only after normal terminal result
+ 74/263 Test  #74: network replay is available only after normal terminal result ..............................................   Passed    0.05 sec
+        Start  75: network room changes clear both readiness flags and host seat swaps
+ 75/263 Test  #75: network room changes clear both readiness flags and host seat swaps ........................................   Passed    0.05 sec
+        Start  76: network memory sessions run a complete match with matching replay
+ 76/263 Test  #76: network memory sessions run a complete match with matching replay ..........................................   Passed   17.01 sec
+        Start  77: network real TCP peers support settings independent progress and terminal replay
+ 77/263 Test  #77: network real TCP peers support settings independent progress and terminal replay ...........................   Passed    0.33 sec
+        Start  78: network v2.5 recordings require the matching program and format
+ 78/263 Test  #78: network v2.5 recordings require the matching program and format ............................................   Passed    0.05 sec
+        Start  79: network bounded event history keeps stable IDs and only consumes new events
+ 79/263 Test  #79: network bounded event history keeps stable IDs and only consumes new events ................................   Passed    0.06 sec
+        Start  80: network rejects excessive JSON nesting before parsing
+ 80/263 Test  #80: network rejects excessive JSON nesting before parsing ......................................................   Passed    0.03 sec
+        Start  81: network invalid decks and frozen sessions cannot advance authoritative rules
+ 81/263 Test  #81: network invalid decks and frozen sessions cannot advance authoritative rules ...............................   Passed    0.09 sec
+        Start  82: network save failure keeps the authoritative match until explicit exit
+ 82/263 Test  #82: network save failure keeps the authoritative match until explicit exit .....................................   Passed    0.20 sec
+        Start  83: bridge IDs preserve the complete unsigned 64 bit range without floating point
+ 83/263 Test  #83: bridge IDs preserve the complete unsigned 64 bit range without floating point ..............................   Passed    0.03 sec
+        Start  84: bridge selection does not pay and duplicate confirmation cannot submit twice
+ 84/263 Test  #84: bridge selection does not pay and duplicate confirmation cannot submit twice ...............................   Passed    0.06 sec
+        Start  85: bridge presentation batches contain only filtered references and never repeat on reads
+ 85/263 Test  #85: bridge presentation batches contain only filtered references and never repeat on reads .....................   Passed    0.20 sec
+        Start  86: bridge rejects invalid actors actions generations and malformed start options atomically
+ 86/263 Test  #86: bridge rejects invalid actors actions generations and malformed start options atomically ...................   Passed    0.07 sec
+        Start  87: bridge pause preserves a selection but stops confirmations and AI
+ 87/263 Test  #87: bridge pause preserves a selection but stops confirmations and AI ..........................................   Passed    0.07 sec
+        Start  88: bridge release reinitialize and restart invalidate old UI handles
+ 88/263 Test  #88: bridge release reinitialize and restart invalidate old UI handles ..........................................   Passed    0.11 sec
+        Start  89: bridge whitelist excludes private cards hidden definitions seed and writable state
+ 89/263 Test  #89: bridge whitelist excludes private cards hidden definitions seed and writable state .........................   Passed    0.07 sec
+        Start  90: dynamic setting and casting fees survive local bridge and LAN projections
+ 90/263 Test  #90: dynamic setting and casting fees survive local bridge and LAN projections ..................................   Passed    0.03 sec
+        Start  91: storm point counts survive network projection and appear in visible bridge snapshots
+ 91/263 Test  #91: storm point counts survive network projection and appear in visible bridge snapshots .......................   Passed    0.03 sec
+        Start  92: shown concealed card remains inspectable and facedown after LAN transport
+ 92/263 Test  #92: shown concealed card remains inspectable and facedown after LAN transport ..................................   Passed    0.03 sec
+        Start  93: bridge AI exposes only human projection and rejects stale plans
+ 93/263 Test  #93: bridge AI exposes only human projection and rejects stale plans ............................................   Passed    0.10 sec
+        Start  94: bridge retains accepted state after replay save failure
+ 94/263 Test  #94: bridge retains accepted state after replay save failure ....................................................   Passed    0.08 sec
+        Start  95: local replay autosave batches full history writes and flushes each thirty second command
+ 95/263 Test  #95: local replay autosave batches full history writes and flushes each thirty second command ...................   Passed    0.25 sec
+        Start  96: bridge current replay compatibility gates reject unsupported rules
+ 96/263 Test  #96: bridge current replay compatibility gates reject unsupported rules .........................................   Passed    0.07 sec
+        Start  97: bridge local library preserves Chinese names and unknown IDs through atomic drafts
+ 97/263 Test  #97: bridge local library preserves Chinese names and unknown IDs through atomic drafts .........................   Passed    0.11 sec
+        Start  98: bridge incremental queries are read only and bound to exact contexts
+ 98/263 Test  #98: bridge incremental queries are read only and bound to exact contexts .......................................   Passed    0.07 sec
+        Start  99: bridge local settings and leave preserve match on persistence failure
+ 99/263 Test  #99: bridge local settings and leave preserve match on persistence failure ......................................   Passed    0.09 sec
+        Start 100: bridge replay frames rewind without changing the live match and validate the unseen suffix
+100/263 Test #100: bridge replay frames rewind without changing the live match and validate the unseen suffix .................   Passed    0.08 sec
+        Start 101: v2.5 command DTO and wire codec retain opening recipe materials targets and exact decisions
+101/263 Test #101: v2.5 command DTO and wire codec retain opening recipe materials targets and exact decisions ................   Passed    0.03 sec
+        Start 102: local session interface preserves revision projection and rejected command atomicity
+102/263 Test #102: local session interface preserves revision projection and rejected command atomicity .......................   Passed    0.09 sec
+        Start 103: injected room sessions preserve pending authority privacy and polling while settings are open
+103/263 Test #103: injected room sessions preserve pending authority privacy and polling while settings are open ..............   Passed    0.32 sec
+        Start 104: 2.5.5 overload counts the entire positive increment and repeated increases
+104/263 Test #104: 2.5.5 overload counts the entire positive increment and repeated increases .................................   Passed    0.03 sec
+        Start 105: 2.5.5 overload at exact capacity is harmless and uses temporary life first
+105/263 Test #105: 2.5.5 overload at exact capacity is harmless and uses temporary life first .................................   Passed    0.02 sec
+        Start 106: 2.5.5 cap decrease deals no increment damage and final threshold checks only the active player
+106/263 Test #106: 2.5.5 cap decrease deals no increment damage and final threshold checks only the active player .............   Passed    0.02 sec
+        Start 107: 2.5.5 transient double capacity survives if reduced before end cleanup
+107/263 Test #107: 2.5.5 transient double capacity survives if reduced before end cleanup .....................................   Passed    0.02 sec
+        Start 108: 2.5.5 end threshold retains temporary loads until the next preparation
+108/263 Test #108: 2.5.5 end threshold retains temporary loads until the next preparation .....................................   Passed    0.03 sec
+        Start 109: 2.5.5 empty draws deal cumulative per-player damage rather than instant defeat
+109/263 Test #109: 2.5.5 empty draws deal cumulative per-player damage rather than instant defeat .............................   Passed    0.03 sec
+        Start 110: 2.5.5 mixed draws process each failure individually and stop at life zero
+110/263 Test #110: 2.5.5 mixed draws process each failure individually and stop at life zero ..................................   Passed    0.03 sec
+        Start 111: 2.5.5 rules damage bypasses spell immunity and can be absorbed by temporary life
+111/263 Test #111: 2.5.5 rules damage bypasses spell immunity and can be absorbed by temporary life ...........................   Passed    0.03 sec
+        Start 112: 2.5.5 life zero interrupts the remaining effect frame immediately
+112/263 Test #112: 2.5.5 life zero interrupts the remaining effect frame immediately ..........................................   Passed    0.03 sec
+        Start 113: 2.5.5 nonzero load with zero capacity loses only at end cleanup
+113/263 Test #113: 2.5.5 nonzero load with zero capacity loses only at end cleanup ............................................   Passed    0.03 sec
+        Start 114: 2.5.5 free ambush reserves a ring and enforces the global turn wait
+114/263 Test #114: 2.5.5 free ambush reserves a ring and enforces the global turn wait ........................................   Passed    0.03 sec
+        Start 115: 2.5.5 preparation moves to casting before a separate one speed activation
+115/263 Test #115: 2.5.5 preparation moves to casting before a separate one speed activation ..................................   Passed    0.04 sec
+        Start 116: 2.5.5 bound payment may overload and rejects unaffordable payment atomically
+116/263 Test #116: 2.5.5 bound payment may overload and rejects unaffordable payment atomically ...............................   Passed    0.03 sec
+        Start 117: 2.5.5 preparation clears old temporary resources before formation effects
+117/263 Test #117: 2.5.5 preparation clears old temporary resources before formation effects ..................................   Passed    0.04 sec
+        Start 118: 2.5.5 duration returns to a chosen formation and ticks at every global end
+118/263 Test #118: 2.5.5 duration returns to a chosen formation and ticks at every global end .................................   Passed    0.04 sec
+        Start 119: 2.5.5 replacement recipes are atomic and may consume the initial formation
+119/263 Test #119: 2.5.5 replacement recipes are atomic and may consume the initial formation .................................   Passed    0.03 sec
+        Start 120: 2.5.5 forty plus ten construction and side deck privacy
+120/263 Test #120: 2.5.5 forty plus ten construction and side deck privacy ....................................................   Passed    0.04 sec
+        Start 121: 2.5.5 opponents may flip and prepare only previously ambushed analytic sources
+121/263 Test #121: 2.5.5 opponents may flip and prepare only previously ambushed analytic sources .............................   Passed    0.04 sec
+        Start 122: 2.5.5 preparation has a cancellable root and does not prepay activation
+122/263 Test #122: 2.5.5 preparation has a cancellable root and does not prepay activation ....................................   Passed    0.03 sec
+        Start 123: 2.5.5 actual chain completion creates one timing and empty timing cannot loop
+123/263 Test #123: 2.5.5 actual chain completion creates one timing and empty timing cannot loop ..............................   Passed    0.03 sec
+        Start 124: 2.5.5 sustained return respects field order and permits choosing any free ring
+124/263 Test #124: 2.5.5 sustained return respects field order and permits choosing any free ring .............................   Passed    0.03 sec
+        Start 125: 2.5.5 draw damage uses temporary life and retains the remainder through prepare
+125/263 Test #125: 2.5.5 draw damage uses temporary life and retains the remainder through prepare ............................   Passed    0.04 sec
+        Start 126: 2.5.5 sustained passive phase effects continue after returning to analysis
+126/263 Test #126: 2.5.5 sustained passive phase effects continue after returning to analysis .................................   Passed    0.03 sec
+        Start 127: 2.5.5 concentration and paused cleanup resume without repeating payment or expiry
+127/263 Test #127: 2.5.5 concentration and paused cleanup resume without repeating payment or expiry ..........................   Passed    0.03 sec
+        Start 128: 2.5.5 lethal overload during a response stops before dereferencing the cleared chain
+128/263 Test #128: 2.5.5 lethal overload during a response stops before dereferencing the cleared chain .......................   Passed    0.03 sec
+        Start 129: Alpha v2.5 main phase can enter casting or skip directly to end with cleanup
+129/263 Test #129: Alpha v2.5 main phase can enter casting or skip directly to end with cleanup ...............................   Passed    0.04 sec
+        Start 130: Alpha v2.5 AI can answer an opponent cast with a facedown counter
+130/263 Test #130: Alpha v2.5 AI can answer an opponent cast with a facedown counter ..........................................   Passed    0.03 sec
+        Start 131: Alpha v2.5 skipped casting completes the turn after mandatory end cleanup choices
+131/263 Test #131: Alpha v2.5 skipped casting completes the turn after mandatory end cleanup choices ..........................   Passed    0.04 sec
+        Start 132: Alpha v2.5 initial formations are privately confirmed before shuffle and simultaneous reveal
+132/263 Test #132: Alpha v2.5 initial formations are privately confirmed before shuffle and simultaneous reveal ...............   Passed    0.05 sec
+        Start 133: Alpha v2.5 rejects non-level-one opening entities and allows either confirmation order
+133/263 Test #133: Alpha v2.5 rejects non-level-one opening entities and allows either confirmation order .....................   Passed    0.04 sec
+        Start 134: Alpha v2.5 timeouts use an authority path and terminate pending work deterministically
+134/263 Test #134: Alpha v2.5 timeouts use an authority path and terminate pending work deterministically .....................   Passed    0.03 sec
+        Start 135: 2.5.5 replay records opening and timeout events in format five and rejects old versions
+135/263 Test #135: 2.5.5 replay records opening and timeout events in format five and rejects old versions ....................   Passed    0.05 sec
+        Start 136: Alpha v2.5 formation setting text derives from validated recipes and resolves later card names
+136/263 Test #136: Alpha v2.5 formation setting text derives from validated recipes and resolves later card names .............   Passed    0.08 sec
+        Start 137: Alpha v2.5 construction requires a level one formation without a saved choice or base eligibility
+137/263 Test #137: Alpha v2.5 construction requires a level one formation without a saved choice or base eligibility ..........   Passed    0.03 sec
+        Start 138: storm point counts affect canonical match state and remain in public card views
+138/263 Test #138: storm point counts affect canonical match state and remain in public card views ............................   Passed    0.03 sec
+        Start 139: Alpha v2.5 draw clears temporary resources before income and exhaustion only for the turn player
+139/263 Test #139: Alpha v2.5 draw clears temporary resources before income and exhaustion only for the turn player ...........   Passed    0.03 sec
+        Start 140: Alpha v2.5 timed focus and perpetual spells activate in casting and maintain without a new activation
+140/263 Test #140: Alpha v2.5 timed focus and perpetual spells activate in casting and maintain without a new activation ......   Passed    0.05 sec
+        Start 141: Alpha v2.5 continuous spells go to ash when no legal return ring remains
+141/263 Test #141: Alpha v2.5 continuous spells go to ash when no legal return ring remains ...................................   Passed    0.03 sec
+        Start 142: Alpha v2.5 continuous spells can return to another legal formation and reject invalid choices atomically
+142/263 Test #142: Alpha v2.5 continuous spells can return to another legal formation and reject invalid choices atomically ...   Passed    0.03 sec
+        Start 143: Alpha v2.5 side-deck content has no saved initial choice and validates its level-one candidate
+143/263 Test #143: Alpha v2.5 side-deck content has no saved initial choice and validates its level-one candidate .............   Passed    0.10 sec
+        Start 144: storm crest attributes follow its point thresholds in the match view
+144/263 Test #144: storm crest attributes follow its point thresholds in the match view .......................................   Passed    0.07 sec
+        Start 145: Snow-Rain Storm doubles an opponent's concentration upkeep
+145/263 Test #145: Snow-Rain Storm doubles an opponent's concentration upkeep .................................................   Passed    0.06 sec
+        Start 146: Storm Brand grants an extra point on every second successful Storm spell release
+146/263 Test #146: Storm Brand grants an extra point on every second successful Storm spell release ...........................   Passed    0.06 sec
+        Start 147: Storm Crest searches a Storm spell once per turn for two Storm points
+147/263 Test #147: Storm Crest searches a Storm spell once per turn for two Storm points ......................................   Passed    0.06 sec
+        Start 148: Storm Heart's once-per-turn choice recovers a Storm card to the shuffled deck
+148/263 Test #148: Storm Heart's once-per-turn choice recovers a Storm card to the shuffled deck ..............................   Passed    0.06 sec
+        Start 149: Storm Heart requires ten Storm points to upgrade and searches Great Storm when set
+149/263 Test #149: Storm Heart requires ten Storm points to upgrade and searches Great Storm when set .........................   Passed    0.06 sec
+        Start 150: Storm Annihilation Crest destroys an idle enemy formation for two Storm points
+150/263 Test #150: Storm Annihilation Crest destroys an idle enemy formation for two Storm points .............................   Passed    0.06 sec
+        Start 151: Storm Annihilation Crest adds thunder damage to its attached spell
+151/263 Test #151: Storm Annihilation Crest adds thunder damage to its attached spell .........................................   Passed    0.06 sec
+        Start 152: LAN clock charges only unconfirmed opening decisions and ordinary submissions cannot forge timeout
+152/263 Test #152: LAN clock charges only unconfirmed opening decisions and ordinary submissions cannot forge timeout .........   Passed    0.07 sec
+        Start 153: LAN clock replenishes the turn player caps at 300 seconds and excludes automatic gates
+153/263 Test #153: LAN clock replenishes the turn player caps at 300 seconds and excludes automatic gates .....................   Passed    0.10 sec
+        Start 154: offline sessions never enable clocks and settings persist a validated built in background
+154/263 Test #154: offline sessions never enable clocks and settings persist a validated built in background ..................   Passed    0.07 sec
+        Start 155: clock wire updates preserve action revision and opening privacy
+155/263 Test #155: clock wire updates preserve action revision and opening privacy ............................................   Passed    0.07 sec
+        Start 156: rejected commands retain submillisecond clock accumulation
+156/263 Test #156: rejected commands retain submillisecond clock accumulation .................................................   Passed    0.07 sec
+        Start 157: session history is outside engine copies and event cursors are viewer local
+157/263 Test #157: session history is outside engine copies and event cursors are viewer local ................................   Passed    0.08 sec
+        Start 158: opponent hidden deck identities do not affect visible projection query or event cursor
+158/263 Test #158: opponent hidden deck identities do not affect visible projection query or event cursor .....................   Passed    0.08 sec
+        Start 159: debug checkpoints are bounded and rewind revisions never repeat
+159/263 Test #159: debug checkpoints are bounded and rewind revisions never repeat ............................................   Passed    1.79 sec
+        Start 160: current recordings use versioned format five and still import current format four
+160/263 Test #160: current recordings use versioned format five and still import current format four ..........................   Passed    0.43 sec
+        Start 161: protocol four separates state clocks events and read only queries
+161/263 Test #161: protocol four separates state clocks events and read only queries ..........................................   Passed    0.06 sec
+        Start 162: pre refactor current format four golden traces import without an old rules executor
+162/263 Test #162: pre refactor current format four golden traces import without an old rules executor ........................   Passed    6.78 sec
+        Start 163: query responses are isolated from command sequences and discarded after newer intent or state
+163/263 Test #163: query responses are isolated from command sequences and discarded after newer intent or state ..............   Passed    0.08 sec
+        Start 164: typed choice transport rejects legacy numeric choices and preserves wide link identifiers
+164/263 Test #164: typed choice transport rejects legacy numeric choices and preserves wide link identifiers ..................   Passed    0.05 sec
+        Start 165: execution faults roll back commands freeze clocks and retain local diagnostic evidence
+165/263 Test #165: execution faults roll back commands freeze clocks and retain local diagnostic evidence .....................   Passed    6.03 sec
+        Start 166: authority execution faults pause both peers without transmitting hidden diagnostic state
+166/263 Test #166: authority execution faults pause both peers without transmitting hidden diagnostic state ...................   Passed    6.12 sec
+        Start 167: cloud mist locks up to two field analytic spells until its duration ends
+167/263 Test #167: cloud mist locks up to two field analytic spells until its duration ends ...................................   Passed    0.07 sec
+        Start 168: Storm Guidance sacrifices a field card, exposes legal mode actions, and searches a Storm spell
+168/263 Test #168: Storm Guidance sacrifices a field card, exposes legal mode actions, and searches a Storm spell .............   Passed    0.07 sec
+        Start 169: Storm Guidance can add two Storm points after sacrificing a field card
+169/263 Test #169: Storm Guidance can add two Storm points after sacrificing a field card .....................................   Passed    0.07 sec
+        Start 170: Storm Guidance can search its auxiliary analytic spells
+170/263 Test #170: Storm Guidance can search its auxiliary analytic spells ....................................................   Passed    0.07 sec
+        Start 171: Wind Whisper searches only Storm talismans of rank two or lower
+171/263 Test #171: Wind Whisper searches only Storm talismans of rank two or lower ............................................   Passed    0.06 sec
+        Start 172: Storm Vortex destroys an opponent's field spell through its activation choice
+172/263 Test #172: Storm Vortex destroys an opponent's field spell through its activation choice ..............................   Passed    0.06 sec
+        Start 173: Storm Vortex can destroy an opponent's active spell in the casting zone
+173/263 Test #173: Storm Vortex can destroy an opponent's active spell in the casting zone ....................................   Passed    0.06 sec
+        Start 174: Windmaking returns an opponent's active casting spell to hand
+174/263 Test #174: Windmaking returns an opponent's active casting spell to hand ..............................................   Passed    0.07 sec
+        Start 175: Great Storm blocks setting analytics while it remains on Storm Heart
+175/263 Test #175: Great Storm blocks setting analytics while it remains on Storm Heart .......................................   Passed    0.06 sec
+        Start 176: Great Storm counts its timer and resolves one end effect per owner's turn
+176/263 Test #176: Great Storm counts its timer and resolves one end effect per owner's turn ..................................   Passed    0.12 sec
+        Start 177: Sique pool has all sixteen numbered executable cards
+177/263 Test #177: Sique pool has all sixteen numbered executable cards .......................................................   Passed    0.06 sec
+        Start 178: Sique pancakes cap individual spell and rules damage until next own prepare begins
+178/263 Test #178: Sique pancakes cap individual spell and rules damage until next own prepare begins .........................   Passed    0.07 sec
+        Start 179: Sique ingredients choose two runes and dispose the partner only in the search turn
+179/263 Test #179: Sique ingredients choose two runes and dispose the partner only in the search turn .........................   Passed    0.07 sec
+        Start 180: Sique refire recycles up to five cards to the correct deck then offers one draw
+180/263 Test #180: Sique refire recycles up to five cards to the correct deck then offers one draw ............................   Passed    0.07 sec
+        Start 181: Sique aroma lure requires cauldron and gives each player an independent redraw choice
+181/263 Test #181: Sique aroma lure requires cauldron and gives each player an independent redraw choice ......................   Passed    0.07 sec
+        Start 182: Sique cauldron detaches all runes at own end phase start
+182/263 Test #182: Sique cauldron detaches all runes at own end phase start ...................................................   Passed    0.07 sec
+        Start 183: Alpha 2.5.3 Sique selections require one through five cards and handle empty choices
+183/263 Test #183: Alpha 2.5.3 Sique selections require one through five cards and handle empty choices .......................   Passed    0.07 sec
+        Start 184: Alpha 2.5.3 Sique flavor shift can only attach from deck to the cauldron
+184/263 Test #184: Alpha 2.5.3 Sique flavor shift can only attach from deck to the cauldron ...................................   Passed    0.07 sec
+        Start 185: Alpha 2.5.3 soup pays exactly one owned rune and sugar leaves for one mana
+185/263 Test #185: Alpha 2.5.3 soup pays exactly one owned rune and sugar leaves for one mana .................................   Passed    0.06 sec
+        Start 186: Alpha 2.5.3 ingredients tracks the searched instances rather than matching names
+186/263 Test #186: Alpha 2.5.3 ingredients tracks the searched instances rather than matching names ...........................   Passed    0.06 sec
+        Start 187: Alpha 2.5.3 divine stew substitutes only mana at declaration and retains opponent life
+187/263 Test #187: Alpha 2.5.3 divine stew substitutes only mana at declaration and retains opponent life .....................   Passed    0.07 sec
+        Start 188: Alpha 2.5.3 divine stew respects independent infinite resource switches
+188/263 Test #188: Alpha 2.5.3 divine stew respects independent infinite resource switches ....................................   Passed    0.06 sec
+        Start 189: Alpha 2.5.3 hanged man pays rounded ordinary life and exchanges only nonformations
+189/263 Test #189: Alpha 2.5.3 hanged man pays rounded ordinary life and exchanges only nonformations .........................   Passed    0.06 sec
+        Start 190: Alpha 2.5.3 magician lets the opponent choose from three revealed distinct names
+190/263 Test #190: Alpha 2.5.3 magician lets the opponent choose from three revealed distinct names ...........................   Passed    0.06 sec
+        Start 191: Alpha v2.5.2 removal is offered and shares the formation quota while cleaning hosted cards
+191/263 Test #191: Alpha v2.5.2 removal is offered and shares the formation quota while cleaning hosted cards .................   Passed    0.06 sec
+        Start 192: Alpha v2.5.2 unconfigured Storm Vortex flips on the immediately following opponent turn
+192/263 Test #192: Alpha v2.5.2 unconfigured Storm Vortex flips on the immediately following opponent turn ....................   Passed    0.06 sec
+        Start 193: Alpha v2.5.2 generic ambush activation keeps wait speed priority cost and exclusive conditions
+193/263 Test #193: Alpha v2.5.2 generic ambush activation keeps wait speed priority cost and exclusive conditions .............   Passed    0.06 sec
+        Start 194: Alpha v2.5.2 generic ready spells can join chains without response configuration on either turn
+194/263 Test #194: Alpha v2.5.2 generic ready spells can join chains without response configuration on either turn ............   Passed    0.06 sec
+        Start 195: Alpha v2.5.2 Wind Strike responds only to the opponent setting an analytic spell
+195/263 Test #195: Alpha v2.5.2 Wind Strike responds only to the opponent setting an analytic spell ...........................   Passed    0.06 sec
+        Start 196: Alpha v2.5.2 Lovers departure forces the opponent to choose one analytic-zone spell
+196/263 Test #196: Alpha v2.5.2 Lovers departure forces the opponent to choose one analytic-zone spell ........................   Passed    0.06 sec
+        Start 197: Alpha v2.5.2 Earthquake removes both players concealed spells on its main-phase trigger
+197/263 Test #197: Alpha v2.5.2 Earthquake removes both players concealed spells on its main-phase trigger ....................   Passed    0.06 sec
+        Start 198: Alpha v2.5.2 Unravel completes setup analysis targetless preparation and side deck resolution
+198/263 Test #198: Alpha v2.5.2 Unravel completes setup analysis targetless preparation and side deck resolution ..............   Passed    0.08 sec
+        Start 199: Alpha v2.5.2 Unravel prepares without an enemy target and rejects fabricated preparation targets
+199/263 Test #199: Alpha v2.5.2 Unravel prepares without an enemy target and rejects fabricated preparation targets ...........   Passed    0.06 sec
+        Start 200: Alpha v2.5.2 Unravel rejects occupied enemy formations before paying
+200/263 Test #200: Alpha v2.5.2 Unravel rejects occupied enemy formations before paying .......................................   Passed    0.06 sec
+        Start 201: Alpha v2.5.2 Unravel may activate with an empty side deck but cannot destroy
+201/263 Test #201: Alpha v2.5.2 Unravel may activate with an empty side deck but cannot destroy ...............................   Passed    0.06 sec
+        Start 202: Alpha v2.5.2 Unravel loses an invalidated chain target without a refund or side deck discard
+202/263 Test #202: Alpha v2.5.2 Unravel loses an invalidated chain target without a refund or side deck discard ...............   Passed    0.06 sec
+        Start 203: Alpha v2.5.2 unique Strength rejects same owner setup duplicates independently for each player
+203/263 Test #203: Alpha v2.5.2 unique Strength rejects same owner setup duplicates independently for each player .............   Passed    0.07 sec
+        Start 204: Alpha v2.5.2 Sun clears only enemy concealed spells at its owners end start
+204/263 Test #204: Alpha v2.5.2 Sun clears only enemy concealed spells at its owners end start ................................   Passed    0.07 sec
+        Start 205: Alpha v2.5.2 Sun is excluded from another cards field removal effect
+205/263 Test #205: Alpha v2.5.2 Sun is excluded from another cards field removal effect .......................................   Passed    0.06 sec
+        Start 206: Alpha v2.5.2 Messy Wave adds four temporary load per opponent spell activation
+206/263 Test #206: Alpha v2.5.2 Messy Wave adds four temporary load per opponent spell activation .............................   Passed    0.07 sec
+        Start 207: Alpha v2.5.2 Snow Rain Storm surcharges setting only and doubles actual focus upkeep
+207/263 Test #207: Alpha v2.5.2 Snow Rain Storm surcharges setting only and doubles actual focus upkeep .......................   Passed    0.07 sec
+        Start 208: Alpha v2.5.2 Woodpile allows two own copies and excludes a replaced copy from that limit
+208/263 Test #208: Alpha v2.5.2 Woodpile allows two own copies and excludes a replaced copy from that limit ...................   Passed    0.07 sec
+        Start 209: Alpha v2.5.2 temporary life stacks sources and absorbs by expiry
+209/263 Test #209: Alpha v2.5.2 temporary life stacks sources and absorbs by expiry ...........................................   Passed    0.06 sec
+        Start 210: Alpha v2.5.2 life clearing and expiry preserve other sources and owners
+210/263 Test #210: Alpha v2.5.2 life clearing and expiry preserve other sources and owners ....................................   Passed    0.03 sec
+        Start 211: Alpha v2.5.2 temporary life does not change load clearing healing or death
+211/263 Test #211: Alpha v2.5.2 temporary life does not change load clearing healing or death .................................   Passed    0.06 sec
+        Start 212: Alpha v2.5.5 current pool has unique executable identities and excludes unfinished drafts
+212/263 Test #212: Alpha v2.5.5 current pool has unique executable identities and excludes unfinished drafts ..................   Passed    3.34 sec
+        Start 213: Alpha v2.5.3 fire damage classification is independent of school and validated as a spell
+213/263 Test #213: Alpha v2.5.3 fire damage classification is independent of school and validated as a spell ..................   Passed    0.08 sec
+        Start 214: Alpha v2.5.2 roast recovers any Sique card and enforces its campfire host
+214/263 Test #214: Alpha v2.5.2 roast recovers any Sique card and enforces its campfire host ..................................   Passed    0.06 sec
+        Start 215: Alpha v2.5.2 blowfire optional discard deals additional fire damage once
+215/263 Test #215: Alpha v2.5.2 blowfire optional discard deals additional fire damage once ...................................   Passed    0.06 sec
+        Start 216: Alpha v2.5.2 backfire recycles opponents cards and scales damage and healing
+216/263 Test #216: Alpha v2.5.2 backfire recycles opponents cards and scales damage and healing ...............................   Passed    0.06 sec
+        Start 217: Alpha v2.5.2 new star hosts shorten analysis and add the specified independent load
+217/263 Test #217: Alpha v2.5.2 new star hosts shorten analysis and add the specified independent load ........................   Passed    0.09 sec
+        Start 218: Alpha v2.5.2 moon blocks face up setup and prevents overload while allowing ambush
+218/263 Test #218: Alpha v2.5.2 moon blocks face up setup and prevents overload while allowing ambush .........................   Passed    0.06 sec
+        Start 219: Alpha v2.5.2 scorching rays choose a fresh player for each subsequent ray
+219/263 Test #219: Alpha v2.5.2 scorching rays choose a fresh player for each subsequent ray ..................................   Passed    0.06 sec
+        Start 220: Alpha v2.5.2 ice storm optionally delays every enemy analysis including zero progress
+220/263 Test #220: Alpha v2.5.2 ice storm optionally delays every enemy analysis including zero progress ......................   Passed    0.06 sec
+        Start 221: Alpha v2.5.2 instant circuit advances exactly two turns and sleep locks both players
+221/263 Test #221: Alpha v2.5.2 instant circuit advances exactly two turns and sleep locks both players .......................   Passed    0.06 sec
+        Start 222: Alpha v2.5.2 Empress heals and clears two loads only on its owners end start
+222/263 Test #222: Alpha v2.5.2 Empress heals and clears two loads only on its owners end start ...............................   Passed    0.09 sec
+        Start 223: Alpha v2.5.2 Tower respects effect indestructibility on both selected formations
+223/263 Test #223: Alpha v2.5.2 Tower respects effect indestructibility on both selected formations ...........................   Passed    0.09 sec
+        Start 224: Alpha v2.5.2 Vinegar grants attach and detach life without its old damage reduction
+224/263 Test #224: Alpha v2.5.2 Vinegar grants attach and detach life without its old damage reduction ........................   Passed    0.06 sec
+        Start 225: Alpha v2.5.2 Chili deals one damage per actual opponent draw
+225/263 Test #225: Alpha v2.5.2 Chili deals one damage per actual opponent draw ...............................................   Passed    0.06 sec
+        Start 226: Alpha v2.5.2 every formal formation executes its printed recipe and rejects invalid timing
+226/263 Test #226: Alpha v2.5.2 every formal formation executes its printed recipe and rejects invalid timing .................   Passed    0.08 sec
+        Start 227: Alpha v2.5.2 every formal seal attaches through authority with paid cost and valid host
+227/263 Test #227: Alpha v2.5.2 every formal seal attaches through authority with paid cost and valid host ....................   Passed    0.07 sec
+        Start 228: Alpha v2.5.2 every ordinary formal spell resolves its source and meaningful effect choices
+228/263 Test #228: Alpha v2.5.2 every ordinary formal spell resolves its source and meaningful effect choices .................   Passed    0.46 sec
+        Start 229: Alpha v2.5.3 debug adds cards without drawing and rejects invalid or full hands atomically
+229/263 Test #229: Alpha v2.5.3 debug adds cards without drawing and rejects invalid or full hands atomically .................   Passed    0.06 sec
+        Start 230: Alpha v2.5.3 infinite resources are independent and literal debug changes retain actual values
+230/263 Test #230: Alpha v2.5.3 infinite resources are independent and literal debug changes retain actual values .............   Passed    0.06 sec
+        Start 231: Alpha v2.5.3 infinite mana bypasses authoritative cost gates without negative resources
+231/263 Test #231: Alpha v2.5.3 infinite mana bypasses authoritative cost gates without negative resources ....................   Passed    0.06 sec
+        Start 232: Alpha v2.5.3 debug load categories validate source and preserve provenance
+232/263 Test #232: Alpha v2.5.3 debug load categories validate source and preserve provenance .................................   Passed    0.06 sec
+        Start 233: Alpha v2.5.3 debug rewind restores complete turn state RNG and replay prefix
+233/263 Test #233: Alpha v2.5.3 debug rewind restores complete turn state RNG and replay prefix ...............................   Passed    0.35 sec
+        Start 234: Alpha v2.5.3 debug authority rejects hotseat tutorial network mode and replay browsing
+234/263 Test #234: Alpha v2.5.3 debug authority rejects hotseat tutorial network mode and replay browsing .....................   Passed    0.16 sec
+        Start 235: Alpha v2.5.3 opening mana is zero for both players before initial formation selection
+235/263 Test #235: Alpha v2.5.3 opening mana is zero for both players before initial formation selection ......................   Passed    0.07 sec
+        Start 236: Alpha v2.5.3 high rank ambush bypasses host rank but cannot flip prepare or set face up
+236/263 Test #236: Alpha v2.5.3 high rank ambush bypasses host rank but cannot flip prepare or set face up ....................   Passed    0.07 sec
+        Start 237: Alpha v2.5.3 hand word responses share legal generation priority speed cost and codec
+237/263 Test #237: Alpha v2.5.3 hand word responses share legal generation priority speed cost and codec ......................   Passed    0.24 sec
+        Start 238: Alpha v2.5.3 hand speed two words can respond only during their owner's turn
+238/263 Test #238: Alpha v2.5.3 hand speed two words can respond only during their owner's turn ...............................   Passed    0.10 sec
+        Start 239: Alpha v2.5.3 scorching ray accepts player targets projected by legal actions
+239/263 Test #239: Alpha v2.5.3 scorching ray accepts player targets projected by legal actions ...............................   Passed    0.15 sec
+        Start 240: Alpha v2.5.3 campfire triggers once after successful setting without adding spell damage
+240/263 Test #240: Alpha v2.5.3 campfire triggers once after successful setting without adding spell damage ...................   Passed    0.06 sec
+        Start 241: Alpha v2.5.3 campfire setting trigger excludes ambush and flip actions
+241/263 Test #241: Alpha v2.5.3 campfire setting trigger excludes ambush and flip actions .....................................   Passed    0.06 sec
+        Start 242: Alpha v2.5.3 cauldron rejects other runes and annihilation requires a Storm spell host
+242/263 Test #242: Alpha v2.5.3 cauldron rejects other runes and annihilation requires a Storm spell host .....................   Passed    0.06 sec
+        Start 243: Alpha v2.5.3 elemental ring adds one per evocation damage event only
+243/263 Test #243: Alpha v2.5.3 elemental ring adds one per evocation damage event only .......................................   Passed    0.06 sec
+        Start 244: Alpha v2.5.3 Storm Crest confirmed counter thresholds determine all resources
+244/263 Test #244: Alpha v2.5.3 Storm Crest confirmed counter thresholds determine all resources ..............................   Passed    0.06 sec
+        Start 245: Alpha v2.5.4 analytic setup and preparation defer all targets until activation
+245/263 Test #245: Alpha v2.5.4 analytic setup and preparation defer all targets until activation .............................   Passed    0.12 sec
+        Start 246: Alpha v2.5.4 Unravel legal targets exclude hidden spells and formations with runes
+246/263 Test #246: Alpha v2.5.4 Unravel legal targets exclude hidden spells and formations with runes .........................   Passed    0.06 sec
+        Start 247: Alpha v2.5.4 refire cannot draw without a successful recycle
+247/263 Test #247: Alpha v2.5.4 refire cannot draw without a successful recycle ...............................................   Passed    0.06 sec
+        Start 248: Alpha v2.5.4 Fool and following words use actual casting zones
+248/263 Test #248: Alpha v2.5.4 Fool and following words use actual casting zones .............................................   Passed    0.06 sec
+        Start 249: Alpha v2.5.4 Death advances only for cards entering its owners ash
+249/263 Test #249: Alpha v2.5.4 Death advances only for cards entering its owners ash .........................................   Passed    0.06 sec
+        Start 250: Alpha v2.5.4 Storm Guidance allows declining its dependent followup
+250/263 Test #250: Alpha v2.5.4 Storm Guidance allows declining its dependent followup ........................................   Passed    0.06 sec
+        Start 251: Alpha v2.5.5 removes manual rune actions but host departure still clears runes
+251/263 Test #251: Alpha v2.5.5 removes manual rune actions but host departure still clears runes .............................   Passed    0.06 sec
+        Start 252: Alpha v2.5.5 Funny Box borrows an enemy spell but ash stays with its owner
+252/263 Test #252: Alpha v2.5.5 Funny Box borrows an enemy spell but ash stays with its owner .................................   Passed    0.06 sec
+        Start 253: Arcana Death exposes and accepts typed damage choices
+253/263 Test #253: Arcana Death exposes and accepts typed damage choices ......................................................   Passed    0.06 sec
+        Start 254: Alpha v2.5.5 Counter Spell uses actual linked setting and activation payments
+254/263 Test #254: Alpha v2.5.5 Counter Spell uses actual linked setting and activation payments ..............................   Passed    0.06 sec
+        Start 255: Alpha v2.5.4 Great Storm removes and snapshots counters when set
+255/263 Test #255: Alpha v2.5.4 Great Storm removes and snapshots counters when set ...........................................   Passed    0.06 sec
+        Start 256: Alpha v2.5.4 blood life limits clamp and continuous blood mark does not heal on removal
+256/263 Test #256: Alpha v2.5.4 blood life limits clamp and continuous blood mark does not heal on removal ....................   Passed    0.06 sec
+        Start 257: Alpha v2.5.4 blood payment leaves one life and permits mixed mana and life
+257/263 Test #257: Alpha v2.5.4 blood payment leaves one life and permits mixed mana and life .................................   Passed    0.06 sec
+        Start 258: Alpha v2.5.4 blood sacrifice table rewards only the first payment in a turn
+258/263 Test #258: Alpha v2.5.4 blood sacrifice table rewards only the first payment in a turn ................................   Passed    0.06 sec
+        Start 259: Alpha v2.5.4 blood heart heals actual damage after temporary life absorption
+259/263 Test #259: Alpha v2.5.4 blood heart heals actual damage after temporary life absorption ...............................   Passed    0.06 sec
+        Start 260: Alpha v2.5.4 same origin propagates only positive healing once and terminates cycles
+260/263 Test #260: Alpha v2.5.4 same origin propagates only positive healing once and terminates cycles .......................   Passed    0.06 sec
+        Start 261: Alpha v2.5.4 blood pool restores only temporary life that expires
+261/263 Test #261: Alpha v2.5.4 blood pool restores only temporary life that expires ..........................................   Passed    0.06 sec
+        Start 262: content_validate
+262/263 Test #262: content_validate ...........................................................................................   Passed    0.05 sec
+        Start 263: scripted_match
+263/263 Test #263: scripted_match .............................................................................................   Passed   18.39 sec
+
+100% tests passed, 0 tests failed out of 263
+
+Total Test time (real) =  79.72 sec

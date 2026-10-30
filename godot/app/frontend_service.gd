@@ -1,6 +1,19 @@
 class_name FrontendService
 extends RefCounted
 
+signal match_changed(snapshot: Dictionary)
+signal clock_changed(clock: Dictionary)
+signal events_changed(update: Dictionary)
+signal availability_changed(snapshot: Dictionary)
+signal session_polled
+
+var match_state: MatchState
+var event_log: MatchEventLog = MatchEventLog.new()
+var clock_received: int = 0
+var _snapshot_dirty: bool = true
+var _query_cache: Dictionary = {}
+var _availability_jobs: Array[Dictionary] = []
+
 var error: String = ""
 var cards: Array[CardPresentation] = []
 var settings: Dictionary = {}
@@ -248,19 +261,93 @@ func start_match(options: Dictionary) -> bool:
 	match_viewer = 0
 	response_modes = [ResponseTiming.Mode.AUTO, ResponseTiming.Mode.AUTO]
 	match_snapshot.clear()
+	_snapshot_dirty = true
+	match_state = null
+	_query_cache.clear()
 	match_active = true
 	last_replay_path = ""
 	return true
 
 func snapshot(viewer: int = -1) -> Dictionary:
+	var selected_viewer: int = match_viewer if viewer < 0 else viewer
+	if not _snapshot_dirty and not match_snapshot.is_empty() and int(match_snapshot.get("viewer", -1)) == selected_viewer:
+		return match_snapshot
 	var response: Dictionary = _request(&"snapshot", [match_viewer if viewer < 0 else viewer])
 	if not bool(response.get("ok", false)):
 		return {}
-	match_snapshot = (response.get("data", {}) as Dictionary).duplicate(true)
+	if not _install_snapshot(response.get("data", {})):
+		return {}
 	return match_snapshot
 
 func match_request(method: StringName, arguments: Array = []) -> Dictionary:
-	return _request(method, arguments)
+	var key: String = JSON.stringify(arguments)
+	if method == &"query_actions" and _query_cache.has(key):
+		return _query_cache[key]
+	var result: Dictionary = _request(method, arguments)
+	if method == &"query_actions" and bool(result.get("ok", false)) and not bool(result.get("data", {}).get("pending", false)):
+		if _query_cache.size() >= 256:
+			_query_cache.erase(_query_cache.keys()[0])
+		_query_cache[key] = result
+	elif method in [&"confirm_action", &"submit_command", &"step_ai", &"debug_command", &"continue_tutorial", &"set_paused"]:
+		_snapshot_dirty = true
+		_query_cache.clear()
+	return result
+
+func _install_snapshot(data: Dictionary) -> bool:
+	var parsed: MatchState = MatchState.parse(data)
+	if parsed == null:
+		error = "对局数据版本不匹配，请更新客户端。"
+		return false
+	if event_log.generation != parsed.generation or event_log.viewer != parsed.viewer:
+		event_log.reset(parsed.generation, parsed.viewer)
+		events_changed.emit({"reset": true, "events": []})
+	var changed: bool = match_state == null or match_state.generation != parsed.generation or match_state.revision != parsed.revision or match_state.viewer != parsed.viewer
+	if not changed:
+		parsed.data["availableCards"] = match_snapshot.get("availableCards", {})
+		parsed.data["canSetFormation"] = match_snapshot.get("canSetFormation", false)
+	match_state = parsed
+	match_snapshot = parsed.data
+	_snapshot_dirty = false
+	clock_received = Time.get_ticks_msec()
+	if changed:
+		_query_cache.clear()
+		match_snapshot["availableCards"] = {}
+		match_snapshot["canSetFormation"] = false
+		_availability_jobs = [{"source": "0", "selections": [], "offset": 0, "limit": 64}]
+		_update_availability()
+	return true
+
+func poll_session() -> void:
+	if not match_active:
+		return
+	var generation: String = str(match_snapshot.get("generation", ""))
+	var revision: String = str(match_snapshot.get("revision", ""))
+	if _snapshot_dirty or int(match_snapshot.get("viewer", -1)) != match_viewer:
+		generation = ""
+	var response: Dictionary = _request(&"poll_match", [match_viewer, generation, revision])
+	if not bool(response.get("ok", false)):
+		return
+	var data: Dictionary = response.get("data", {})
+	if int(data.get("schema", -1)) != KernelContract.SCHEMA:
+		error = "对局数据版本不匹配，请更新客户端。"
+		return
+	if data.get("snapshot") is Dictionary and _install_snapshot(data["snapshot"]):
+		match_changed.emit(match_snapshot)
+	elif data.get("clock") is Dictionary and not match_snapshot.is_empty():
+		match_snapshot["clock"] = data["clock"]
+		match_snapshot["paused"] = bool(data.get("paused", false))
+		match_snapshot["technicalPaused"] = bool(data.get("technicalPaused", false))
+		clock_received = Time.get_ticks_msec()
+		clock_changed.emit(data["clock"])
+	if not match_snapshot.is_empty():
+		var batch: Dictionary = _request(&"events_since", [match_viewer, event_log.epoch, event_log.cursor])
+		if bool(batch.get("ok", false)):
+			var update: Dictionary = event_log.ingest(batch.get("data", {}))
+			if not update.is_empty() and (bool(update.get("reset", false)) or not update.get("events", []).is_empty()):
+				events_changed.emit(update)
+	_update_availability()
+	session_polled.emit()
+
 
 func save_replay() -> bool:
 	var response: Dictionary = _request(&"save_replay")
@@ -320,3 +407,45 @@ func release() -> void:
 	if _bridge != null:
 		_bridge.call(&"release_session")
 		_bridge = null
+
+func _update_availability() -> void:
+	if _availability_jobs.is_empty() or bool(match_snapshot.get("technicalPaused", false)):
+		return
+	var changed: bool = false
+	var viewer: int = int(match_snapshot.get("viewer", match_viewer))
+	for job_index: int in range(8):
+		if _availability_jobs.is_empty():
+			break
+		var intent: Dictionary = _availability_jobs[0]
+		var response: Dictionary = match_request(&"query_actions", [viewer, intent, str(match_snapshot.get("generation", "")), str(match_snapshot.get("revision", ""))])
+		if not bool(response.get("ok", false)):
+			_availability_jobs.pop_front()
+			continue
+		var options: ActionOptions = ActionOptions.parse(response.get("data", {}))
+		if options == null or not options.matches(match_snapshot, viewer):
+			_availability_jobs.clear()
+			break
+		if options.pending:
+			break
+		_availability_jobs.pop_front()
+		if options.field == KernelContract.ActionField.Operation:
+			for operation: Dictionary in options.options:
+				var kind: int = int(operation["value"])
+				if kind in [KernelContract.CommandKind.SetFormation, KernelContract.CommandKind.SelectInitialFormation]:
+					match_snapshot["canSetFormation"] = true
+				if kind in [KernelContract.CommandKind.SetFormation, KernelContract.CommandKind.StartAnalysis, KernelContract.CommandKind.PrepareCast, KernelContract.CommandKind.PlayAction, KernelContract.CommandKind.PreloadWord, KernelContract.CommandKind.AttachSeal, KernelContract.CommandKind.Respond, KernelContract.CommandKind.SetAmbush, KernelContract.CommandKind.FlipAmbush, KernelContract.CommandKind.ActivateSpell, KernelContract.CommandKind.SelectInitialFormation, KernelContract.CommandKind.ActivateAbility]:
+					_availability_jobs.append({"source": "0", "selections": [{"field": KernelContract.ActionField.Operation, "value": str(kind)}], "offset": 0, "limit": 64})
+		elif options.field == KernelContract.ActionField.Source:
+			var kind: int = int(intent["selections"][0]["value"])
+			var flag: int = FieldPresentation.LEGAL_AMBUSH if kind == KernelContract.CommandKind.SetAmbush else FieldPresentation.LEGAL_GOLD
+			for option: Dictionary in options.options:
+				var source: String = str(option.get("card", "0"))
+				if source != "0":
+					match_snapshot["availableCards"][source] = int(match_snapshot["availableCards"].get(source, 0)) | flag
+		if options.has_more:
+			var next: Dictionary = intent.duplicate(true)
+			next["offset"] = int(intent.get("offset", 0)) + options.options.size()
+			_availability_jobs.push_front(next)
+		changed = true
+	if changed:
+		availability_changed.emit(match_snapshot)

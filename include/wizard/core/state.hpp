@@ -33,6 +33,14 @@ struct PendingPayment {
     std::vector<PaymentChoice> choices;
     std::string key;
 };
+enum class PhasePreparationStage { Income, Draw, FormationTriggers, SpellTriggers, Concentration, Analysis, Complete };
+enum class PhaseCleanupStage { FormationTriggers, SpellTriggers, Duration, Casting, Discard, Complete };
+struct PhaseEntryContinuation { PhasePreparationStage stage{PhasePreparationStage::Income}; std::uint64_t after{}; };
+struct PhaseCleanupContinuation { PhaseCleanupStage stage{PhaseCleanupStage::FormationTriggers}; std::uint64_t after{}; };
+using PhaseContinuation = std::variant<PhaseEntryContinuation, PhaseCleanupContinuation>;
+struct ConcentrationContinuation { CardId source{}; };
+struct ReturnContinuation { CardId source{}; };
+using MaintenanceContinuation = std::variant<std::monostate, ConcentrationContinuation, ReturnContinuation>;
 enum class Flow {
     Draw,
     Income,
@@ -68,17 +76,28 @@ struct GameState {
     std::optional<EffectFrame> effect;
     std::optional<ChainState> chain;
     std::deque<ChainLink> deferredPreparations;
-    std::vector<GameEvent> events;
-    int phaseCursor{};
-    CardId maintenanceSource{};
+    PhaseContinuation phaseContinuation;
+    MaintenanceContinuation maintenance;
     std::uint64_t nextFieldOrder{1};
     bool returnRequested{}, timingPending{};
     bool skipCastPhase{}; // Keep the end-turn intent while response and cleanup choices resolve.
-    std::uint64_t phaseOrderCursor{};
     bool opening{};
     std::array<CardId, 2> initialFormations{};
     bool debugUsed{};
     std::optional<PendingPayment> payment;
-    std::optional<PaymentChoice> selectedPayment;
+    CardId maintenanceCard() const {
+        return std::visit([](const auto &value) -> CardId {
+            using T = std::decay_t<decltype(value)>;
+            if constexpr (std::is_same_v<T, std::monostate>) return 0;
+            else return value.source;
+        }, maintenance);
+    }
+
+};
+// Per-transaction mutation surface. Only the GameState base is a checkpoint.
+// Events and payment input are outputs/inputs of execution, never rule history.
+struct MutationContext : GameState {
+    std::vector<GameEvent> events;
+    std::optional<PaymentChoice> paymentInput;
 };
 } // namespace wizard

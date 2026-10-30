@@ -16,10 +16,11 @@ import struct
 import subprocess
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+from design_snapshot_archive import materialize_snapshot, snapshot_dir
 from import_alpha_v253_content import ALIASES as OLD_ALIASES, SCHOOL, TYPE
 
-ROOT = Path(__file__).resolve().parents[1]
-SNAPSHOT = ROOT / "assets/design/alpha-v254"
+SNAPSHOT = snapshot_dir(ROOT, "alpha-v254")
 ART = ROOT / "assets/art/alpha-v254-20261024"
 SOURCE_FILES = {
     "spells": "法术卡列表-共29+14+6张卡.md",
@@ -152,7 +153,7 @@ def snapshot_sources(design_dir: Path):
     if not previous.exists():
         previous.write_bytes(subprocess.check_output(["git", "show", "HEAD:assets/cards.json"], cwd=ROOT))
     for filename in PENDING:
-        source = ROOT / "assets/design/alpha-v253/drafts/cards" / (filename + ".json")
+        source = snapshot_dir(ROOT, "alpha-v253") / "drafts/cards" / (filename + ".json")
         destination = SNAPSHOT / "drafts/cards" / source.name
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, destination)
@@ -368,11 +369,13 @@ def report(rows, cards):
 
 
 def main():
+    global SNAPSHOT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--design-dir", type=Path, help="freeze the supplied 10.24 source directory and original artwork")
     parser.add_argument("--apply", action="store_true", help="apply reviewed fields and explicit new definitions")
     args = parser.parse_args()
     if args.design_dir:
+        SNAPSHOT = materialize_snapshot(ROOT, "alpha-v254")
         snapshot_sources(args.design_dir)
         synchronize_art(args.design_dir)
     rows = parse_cards()

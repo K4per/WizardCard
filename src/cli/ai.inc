@@ -25,13 +25,8 @@ int runAi(const Content &content, const std::filesystem::path &assets, int argc,
                     throw std::runtime_error("tutorial AI has no action");
                 result = application.commitAi(*plan);
             } else {
-                auto allowed = v.actions;
-                allowed.clear();
-                for (const auto &a : v.actions)
-                    if (application.tutorial()->allows(v, a.command))
-                        allowed.push_back(a);
-                v.actions = std::move(allowed);
-                const auto selected = ai::choose(v, ai::Difficulty::Normal);
+                ai::CandidateSource candidates = [&](const auto &visitor) { application.visitActions(0, visitor); };
+                const auto selected = ai::choose(v, candidates, ai::Difficulty::Normal);
                 if (!selected)
                     throw std::runtime_error("student has no action at lesson " +
                                              application.tutorial()->title());
@@ -59,12 +54,18 @@ int runAi(const Content &content, const std::filesystem::path &assets, int argc,
     MatchSession session(content, config);
     int commands = 0;
     for (; session.engine().state().result == -1; ++commands) {
-        if (commands >= 1500)
-            throw std::runtime_error("AI duel did not terminate within verification budget");
+        if (commands >= 4000) {
+            const auto &state = session.engine().state();
+            throw std::runtime_error("AI duel did not terminate within verification budget at turn " +
+                                     std::to_string(state.globalTurn) + " phase " + phaseName(state.phase) +
+                                     ", life " + std::to_string(state.players[0].life) + "/" +
+                                     std::to_string(state.players[1].life) + ", digest " + session.engine().digest());
+        }
         const auto &s = session.engine().state();
         const int actor = s.decision ? s.decision->player : s.active;
         const auto selected =
-            ai::choose(session.engine().viewFor(actor), actor == 0 ? ai::Difficulty::Normal : difficulty);
+            ai::choose(session.viewFor(actor), [&](const auto &visitor) { session.engine().visitLegalActions(actor, visitor); },
+                       actor == 0 ? ai::Difficulty::Normal : difficulty);
         if (!selected)
             throw std::runtime_error("AI has no legal action");
         const auto result = session.submit(actor, selected->command);

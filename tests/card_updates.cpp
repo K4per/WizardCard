@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/replay.hpp"
 #include "wizard/interaction.hpp"
 #include <algorithm>
@@ -6,8 +7,8 @@
 using namespace wizard;
 namespace {
 struct UpdatedCards {
-    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
-    GameState state;
+    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    MutationContext state;
     UpdatedCards() {
         state.phase = Phase::Main;
         state.phaseStep = PhaseStep::Body;
@@ -55,25 +56,25 @@ struct UpdatedCards {
         c.payments.push_back({1, 1, 1, false});
         return c;
     }
-    GameEngine engine() {
-        return GameEngine::scenario(content.catalog, state);
+    test::ObservedEngine engine() {
+        return test::ObservedEngine::scenario(content.catalog, state);
     }
 };
-void submit(GameEngine &e, int p, const Command &cmd) {
+void submit(test::ObservedEngine &e, int p, const Command &cmd) {
     auto r = e.submit(p, cmd);
     INFO(r.error);
     REQUIRE(r.accepted);
 }
-void choice(GameEngine &e, CardId option) {
+void choice(test::ObservedEngine &e, CardId option) {
     REQUIRE(e.state().decision);
     auto d = *e.state().decision;
     submit(e, d.player, Choose{d.id, option});
 }
-void advance(GameEngine &e) {
+void advance(test::ObservedEngine &e) {
     REQUIRE(e.state().phaseGate);
     submit(e, e.state().active, AdvancePhase{e.state().phaseGate});
 }
-void reach(GameEngine &e, int player, Phase phase) {
+void reach(test::ObservedEngine &e, int player, Phase phase) {
     for (int n = 0; n < 25 && !(e.state().active == player && e.state().phase == phase); ++n) {
         REQUIRE(e.state().result == -1);
         REQUIRE_FALSE(e.state().decision);
@@ -82,7 +83,7 @@ void reach(GameEngine &e, int player, Phase phase) {
     REQUIRE(e.state().active == player);
     REQUIRE(e.state().phase == phase);
 }
-bool hasOption(const GameEngine &e, CardId id) {
+bool hasOption(const test::ObservedEngine &e, CardId id) {
     const auto &opts = e.state().decision->options;
     return std::find(opts.begin(), opts.end(), id) != opts.end();
 }
@@ -218,7 +219,7 @@ TEST_CASE("life stitch produces independent load that survives spell cleanup and
     REQUIRE(Rules::load(e.state(), 0) == 2);
     reach(e, 0, Phase::Main);
     REQUIRE(Rules::load(e.state(), 0) == 2);
-    auto state = e.state();
+    auto state = test::mutation(e.state());
     Trigger clear;
     clear.owner = 0;
     EffectResolver::apply(state, f.content.catalog, clear, {EffectKind::ClearIndependent, 0});
@@ -258,9 +259,9 @@ TEST_CASE("shatter ring cannot destroy without its discard or an available targe
     f.card(12, "balance");
     e = f.engine();
     submit(e, 0, PrepareCast{10, 11, 0});
-    auto state = e.state();
+    auto state = test::mutation(e.state());
     StateMaintenance::leave(state, 11, &f.content.catalog);
-    e = GameEngine::scenario(f.content.catalog, state);
+    e = test::ObservedEngine::scenario(f.content.catalog, state);
     reach(e, 0, Phase::Cast);
     choice(e, 10);
     REQUIRE_FALSE(e.state().decision);
@@ -301,9 +302,9 @@ TEST_CASE("inverted triangle income applies only when attached to a formation") 
     f.card(11, "mend");
     e = f.engine();
     submit(e, 0, StartAnalysis{11, 1});
-    auto s = e.state();
+    auto s = test::mutation(e.state());
     s.players[0].mana = 1;
-    e = GameEngine::scenario(f.content.catalog, s);
+    e = test::ObservedEngine::scenario(f.content.catalog, s);
     submit(e, 0, AttachSeal{10, 11});
     reach(e, 1, Phase::Main);
     reach(e, 0, Phase::Prepare);
@@ -521,10 +522,10 @@ TEST_CASE("barbs grants optional paid preparation out of turn after the current 
     REQUIRE(e.state().cards.at(12).zone == Zone::Ash);
     REQUIRE(e.state().deferredPreparations.empty());
     int closed = -1, opened = -1;
-    for (std::size_t n = 0; n < e.state().events.size(); ++n) {
-        if (e.state().events[n].kind == "chain_closed" && closed < 0)
+    for (std::size_t n = 0; n < e.events().size(); ++n) {
+        if (e.events()[n].kind == "chain_closed" && closed < 0)
             closed = static_cast<int>(n);
-        if (e.state().events[n].kind == "chain_open" && closed >= 0) {
+        if (e.events()[n].kind == "chain_open" && closed >= 0) {
             opened = static_cast<int>(n);
             break;
         }
@@ -616,7 +617,7 @@ TEST_CASE("word concentration uses its actual setting cost and replaces analytic
     REQUIRE(e.state().players[0].life == 19);
 }
 TEST_CASE("updated content rejects invalid immediate concentration and attachment declarations") {
-    const auto source = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production/cards.json");
+    const auto source = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/cards.json");
     auto index = [&](const char *id) {
         for (std::size_t n = 0; n < source["cards"].size(); ++n)
             if (source["cards"][n]["id"] == id)

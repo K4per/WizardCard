@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/bridge.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
@@ -10,8 +11,8 @@ MatchConfig debugConfig(const Content &c) {
     for (auto &p : config.players) { p.cards = c.deck; p.sideDeck = c.sideDeck; }
     return config;
 }
-GameEngine debugEngine() {
-    auto c = debugContent(); GameState s;
+test::ObservedEngine debugEngine() {
+    auto c = debugContent(); MutationContext s;
     s.phase = Phase::Main; s.phaseStep = PhaseStep::Body; s.flow = Flow::Main;
     s.phaseGate = 1; s.nextDecision = 2; s.globalTurn = 3; s.rng = 456;
     for (auto &p : s.players) { p.ownTurn = 2; p.life = 20; }
@@ -20,19 +21,19 @@ GameEngine debugEngine() {
         formation.definition = "hexagram"; formation.zone = Zone::Analysis; formation.fieldOrder = s.nextFieldOrder++;
         s.cards.emplace(formation.id, formation);
     }
-    return GameEngine::scenario(c.catalog, s);
+    return test::ObservedEngine::scenario(c.catalog, s);
 }
 DebugOperation operation(const std::string &name, int player = 0, int amount = 0) {
     DebugOperation op; op.operation = name; op.player = player; op.amount = amount; return op;
 }
-void debugSend(GameEngine &e, const DebugOperation &op) {
+void debugSend(test::ObservedEngine &e, const DebugOperation &op) {
     const auto result = e.debug(op); INFO(result.error); REQUIRE(result.accepted);
 }
 void goToTurn(MatchSession &session, std::uint64_t turn) {
     for (int n = 0; n < 500 && (session.engine().state().opening || session.engine().state().globalTurn < turn); ++n) {
-        const auto &s = session.engine().state();
+        const auto &s = test::mutation(session.engine().state());
         const int player = s.opening ? (s.initialFormations[0] ? 1 : 0) : s.decision ? s.decision->player : s.active;
-        const auto v = session.viewFor(player);
+        const auto v = test::view(session.engine(),player);
         auto preferred = std::find_if(v.actions.begin(), v.actions.end(), [&](const LegalAction &a) {
             if (s.opening) return std::holds_alternative<SelectInitialFormation>(a.command);
             if (s.decision) return s.decision->kind == DecisionKind::Response ?
@@ -59,22 +60,22 @@ TEST_CASE("Alpha v2.5.3 debug adds cards without drawing and rejects invalid or 
     REQUIRE(e.state().cards.size() == 3);
     REQUIRE(e.state().players[0].deck == deck);
     REQUIRE(e.state().cards.at(3).definition == "fireball");
-    REQUIRE(e.state().events.back().kind == "debug");
+    REQUIRE(e.events().back().kind == "debug");
     REQUIRE(e.state().debugUsed);
     add.cardId = e.catalog().at("fireball").name;
     for (int i = 1; i < 8; ++i) debugSend(e, add);
-    const auto digest = e.digest(); const auto events = e.state().events.size();
+    const auto digest = e.digest(); const auto events = e.events().size();
     REQUIRE_FALSE(e.debug(add).accepted);
     add.cardId = "missing"; REQUIRE_FALSE(e.debug(add).accepted);
     add.player = 2; REQUIRE_FALSE(e.debug(add).accepted);
-    REQUIRE(e.digest() == digest); REQUIRE(e.state().events.size() == events);
-    REQUIRE(std::none_of(e.state().events.begin(), e.state().events.end(), [](const GameEvent &event) { return event.kind == "draw"; }));
+    REQUIRE(e.digest() == digest); REQUIRE(e.events().size() == events);
+    REQUIRE(std::none_of(e.events().begin(), e.events().end(), [](const GameEvent &event) { return event.kind == "draw"; }));
 }
 TEST_CASE("Alpha v2.5.3 infinite resources are independent and literal debug changes retain actual values", "[alpha-v253][debug]") {
     auto e = debugEngine();
     auto life = operation("set_infinite_life"); life.enabled = true; debugSend(e, life);
     auto mana = operation("set_infinite_mana"); mana.enabled = true; debugSend(e, mana);
-    auto s = e.state();
+    auto s = test::mutation(e.state());
     REQUIRE(ResourceRules::canPayMana(s, 0, 1000)); ResourceRules::payMana(s, 0, 1000);
     REQUIRE(s.players[0].mana == 0);
     Trigger t; t.owner = 1; t.targetPlayer = 0;
@@ -112,7 +113,7 @@ TEST_CASE("Alpha v2.5.3 debug load categories validate source and preserve prove
     REQUIRE(Rules::load(e.state(), 0) == 21); REQUIRE(e.state().players[0].life == 20);
     auto clear = operation("clear_load", 0, 3); clear.loadKind = "temporary"; debugSend(e, clear);
     REQUIRE(Rules::load(e.state(), 0) == 18);
-    auto s = e.state(); StateMaintenance::leave(s, 1, &e.catalog());
+    auto s = test::mutation(e.state()); StateMaintenance::leave(s, 1, &e.catalog());
     REQUIRE(Rules::load(s, 0) == 12);
     REQUIRE(std::none_of(s.temporary.begin(), s.temporary.end(), [](const TemporaryLoad &l) { return l.sourceBound && l.source == 1; }));
     toggle.enabled = false; debugSend(e, toggle);

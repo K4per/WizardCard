@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/replay.hpp"
 #include "wizard/interaction.hpp"
 #include <algorithm>
@@ -6,8 +7,8 @@
 using namespace wizard;
 namespace {
 struct Arena {
-    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/stage2");
-    GameState state;
+    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    MutationContext state;
     Arena() {
         state.phase = Phase::Main;
         state.flow = Flow::Main;
@@ -69,29 +70,29 @@ struct Arena {
         d.responses.push_back(a);
         content.catalog.cards[id] = std::move(d);
     }
-    GameEngine engine() {
-        return GameEngine::scenario(content.catalog, state);
+    test::ObservedEngine engine() {
+        return test::ObservedEngine::scenario(content.catalog, state);
     }
 };
-void ok(GameEngine &e, int p, const Command &c) {
+void ok(test::ObservedEngine &e, int p, const Command &c) {
     auto r = e.submit(p, c);
     INFO(r.error);
     REQUIRE(r.accepted);
     REQUIRE(Rules::invariants(e.state(), e.catalog()).empty());
 }
-void reject(GameEngine &e, int p, const Command &c) {
+void reject(test::ObservedEngine &e, int p, const Command &c) {
     auto before = e.canonicalState();
     auto digest = e.digest();
     REQUIRE_FALSE(e.submit(p, c).accepted);
     REQUIRE(e.canonicalState() == before);
     REQUIRE(e.digest() == digest);
 }
-void advance(GameEngine &e) {
+void advance(test::ObservedEngine &e) {
     REQUIRE_FALSE(e.state().decision);
     REQUIRE(e.state().phaseGate != 0);
     ok(e, e.state().active, AdvancePhase{e.state().phaseGate});
 }
-Respond response(GameEngine &e, CardId card, LinkId link = 0) {
+Respond response(test::ObservedEngine &e, CardId card, LinkId link = 0) {
     REQUIRE(e.state().decision);
     auto v = e.viewFor(e.state().decision->player);
     for (const auto &a : v.actions)
@@ -101,32 +102,32 @@ Respond response(GameEngine &e, CardId card, LinkId link = 0) {
     FAIL("response not projected");
     return {};
 }
-void respond(GameEngine &e, CardId card, LinkId link = 0) {
+void respond(test::ObservedEngine &e, CardId card, LinkId link = 0) {
     auto r = response(e, card, link);
     ok(e, e.state().decision->player, r);
 }
-void pass(GameEngine &e) {
+void pass(test::ObservedEngine &e) {
     auto d = *e.state().decision;
     ok(e, d.player, PassResponse{d.id});
 }
-void choose(GameEngine &e) {
+void choose(test::ObservedEngine &e) {
     auto d = *e.state().decision;
     ok(e, d.player, Choose{d.id, d.options.front()});
 }
-void untilMain(GameEngine &e) {
+void untilMain(test::ObservedEngine &e) {
     for (int n = 0; n < 10 && e.state().result == -1 && !e.state().decision && e.state().phase != Phase::Main;
          ++n)
         advance(e);
 }
-int events(const GameEngine &e, const std::string &kind) {
-    return static_cast<int>(std::count_if(e.state().events.begin(), e.state().events.end(),
+int events(const test::ObservedEngine &e, const std::string &kind) {
+    return static_cast<int>(std::count_if(e.events().begin(), e.events().end(),
                                           [&](const GameEvent &event) { return event.kind == kind; }));
 }
 } // namespace
 
 TEST_CASE("PH-01 PH-02 five distinct phase gates preserve draw and income") {
-    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
-    GameEngine e(c.catalog, {c.deck, c.deck}, 42);
+    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    test::ObservedEngine e(c.catalog, {c.deck, c.deck}, 42);
     auto first = e.state().first;
     REQUIRE(e.state().phase == Phase::Draw);
     REQUIRE(e.viewFor(first).players[first].handCount == 5);
@@ -150,7 +151,7 @@ TEST_CASE("PH-01 PH-02 five distinct phase gates preserve draw and income") {
     advance(e);
     REQUIRE(e.state().players[1 - first].mana == 3);
     std::vector<std::string> ended;
-    for (const auto &event : e.state().events)
+    for (const auto &event : e.events())
         if (event.kind == "phase_end")
             ended.push_back(event.text);
     REQUIRE(ended.size() == 6);
@@ -234,7 +235,7 @@ TEST_CASE("LC-01 S3 counter-counter resolves in reverse order") {
     REQUIRE(e.state().cards.at(12).zone == Zone::Ash);
     REQUIRE_FALSE(e.state().cards.at(10).payments.back().canceled);
     std::vector<CardId> order;
-    for (const auto &event : e.state().events)
+    for (const auto &event : e.events())
         if (event.kind == "link_resolved" || event.kind == "link_skipped")
             order.push_back(event.card);
     REQUIRE((order == std::vector<CardId>{12, 11, 10}));
@@ -329,7 +330,7 @@ TEST_CASE("CH-02 LC-03 IV-01 implicit hand permissions and private response cand
     REQUIRE(e.viewFor(1).actions.empty());
     REQUIRE(e.viewFor(0).chain->links.back().item.source == 13);
     reject(e, 1, old);
-    for (const auto &event : e.state().events)
+    for (const auto &event : e.events())
         if (event.kind == "response_pass") {
             REQUIRE(event.audience == -1);
             REQUIRE(event.card == 0);
@@ -541,7 +542,7 @@ TEST_CASE("ST-04 deferred captured triggers cannot interrupt a current chain") {
     ok(e, 1, r);
     REQUIRE(e.state().players[0].mana == 6);
     std::vector<std::string> kinds;
-    for (const auto &event : e.state().events)
+    for (const auto &event : e.events())
         if (event.kind == "chain_open" || event.kind == "chain_closed")
             kinds.push_back(event.kind);
     REQUIRE((kinds == std::vector<std::string>{"chain_open", "chain_closed", "chain_open", "chain_closed"}));
@@ -562,7 +563,7 @@ TEST_CASE("ST-08 logical cycle key ignores allocations but waiting choices stop 
     alternate.nextChain = 456;
     alternate.nextLink = 789;
     alternate.nextBatch = 900;
-    auto other = GameEngine::scenario(a.content.catalog, alternate);
+    auto other = test::ObservedEngine::scenario(a.content.catalog, alternate);
     REQUIRE(e.cycleKey() == other.cycleKey());
     REQUIRE(e.digest() != other.digest());
     ok(e, 0, PlayAction{11, 0});
@@ -579,29 +580,29 @@ TEST_CASE("ST-08 logical cycle key ignores allocations but waiting choices stop 
     reject(e, 0, PlayAction{11, 0});
 }
 TEST_CASE("CF-01 CF-02 CF-03 CF-04 base qualification and two independent configurations") {
-    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     MatchConfig config;
     for (auto &p : config.players)
         p.cards = c.deck;
     config.players[1].baseFormation = "reservoir";
-    REQUIRE_THROWS(GameEngine(c.catalog, config));
+    REQUIRE_THROWS(test::ObservedEngine(c.catalog, config));
     c.catalog.cards.at("reservoir").baseEligible = true;
     c.catalog.cards.at("reservoir").rings = 1;
     c.catalog.cards.at("reservoir").maxRank = 1;
-    auto e = GameEngine(c.catalog, config);
+    auto e = test::ObservedEngine(c.catalog, config);
     REQUIRE(e.state().cards.at(32).definition == "reservoir");
     REQUIRE(Rules::capacity(e.state(), c.catalog, 1) == 5 + c.catalog.baseLoadCapacity);
     REQUIRE(Rules::rings(e.state(), c.catalog, 32) == 1);
     config.players[0].baseFormation = "missing";
-    REQUIRE_THROWS(GameEngine(c.catalog, config));
+    REQUIRE_THROWS(test::ObservedEngine(c.catalog, config));
     config.players[0].baseFormation = "balance";
     c.catalog.cards.at("reservoir").capacity = 0;
-    REQUIRE_THROWS(GameEngine(c.catalog, config));
-    auto j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production/cards.json");
+    REQUIRE_THROWS(test::ObservedEngine(c.catalog, config));
+    auto j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/cards.json");
     j["cards"][1]["baseEligible"] = true;
     REQUIRE_THROWS(parseCatalog(j));
     for (const auto *field : {"capacity", "rings", "maxRank"}) {
-        j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production/cards.json");
+        j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/cards.json");
         j["cards"][0][field] = 0;
         REQUIRE_THROWS(parseCatalog(j));
     }
@@ -618,10 +619,10 @@ TEST_CASE("CF-01 CF-02 CF-03 CF-04 base qualification and two independent config
         if (id == "fireball")
             id = "balance";
     REQUIRE(Rules::deckErrors(a.content.catalog, deck).empty());
-    REQUIRE_NOTHROW(GameEngine(a.content.catalog, {deck.cards, deck.cards}, 42));
+    REQUIRE_NOTHROW(test::ObservedEngine(a.content.catalog, {deck.cards, deck.cards}, 42));
 }
 TEST_CASE("RP-01 RP-02 RP-03 format two records configurations and detects protocol tampering") {
-    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    auto c = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     c.catalog.cards.at("reservoir").baseEligible = true;
     c.catalog.cards.at("reservoir").rings = 1;
     c.catalog.cards.at("reservoir").maxRank = 1;
@@ -634,7 +635,7 @@ TEST_CASE("RP-01 RP-02 RP-03 format two records configurations and detects proto
     for (int n = 0; n < 3000 && session.engine().state().result == -1; ++n) {
         auto &e = session.engine();
         auto p = e.state().decision ? e.state().decision->player : e.state().active;
-        auto v = e.viewFor(p);
+        auto v = test::view(e,p);
         auto i = std::find_if(v.actions.begin(), v.actions.end(), [](const LegalAction &a) {
             return !std::holds_alternative<Surrender>(a.command) &&
                    !std::holds_alternative<Abandon>(a.command) &&
@@ -676,17 +677,17 @@ TEST_CASE("RP-01 RP-02 RP-03 format two records configurations and detects proto
     a.state.temporary = {{1, 0, 0, 1, 2}};
     auto e = a.engine();
     ok(e, 0, PlayAction{10, 0});
-    auto s = e.state();
+    auto s = test::mutation(e.state());
     s.durationApplied = !s.durationApplied;
-    auto altered = GameEngine::scenario(a.content.catalog, s);
+    auto altered = test::ObservedEngine::scenario(a.content.catalog, s);
     REQUIRE(altered.digest() != e.digest());
-    s = e.state();
+    s = test::mutation(e.state());
     s.chain->links.back().paid++;
-    altered = GameEngine::scenario(a.content.catalog, s);
+    altered = test::ObservedEngine::scenario(a.content.catalog, s);
     REQUIRE(altered.digest() != e.digest());
 }
 TEST_CASE("content response schema requires explicit source cost window and target") {
-    auto j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production/cards.json");
+    auto j = readJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/cards.json");
     auto bad = j;
     bad["cards"][2]["responses"][0]["sources"] = {"hand"};
     REQUIRE_THROWS(parseCatalog(bad));
@@ -704,7 +705,7 @@ TEST_CASE("content response schema requires explicit source cost window and targ
     REQUIRE_THROWS(parseCatalog(bad));
 }
 TEST_CASE("RP-02 accepted commands replay active chains and mandatory effect decisions") {
-    auto dir = std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/stage2";
+    auto dir = std::filesystem::path(WIZARD_SOURCE_DIR) / "assets";
     // Historical mechanics fixture isolates command/replay regression from formal v1 source restrictions.
     auto definitions = readJson(dir / "cards.json");
     for (auto &definition : definitions["cards"]) {
@@ -728,7 +729,7 @@ TEST_CASE("RP-02 accepted commands replay active chains and mandatory effect dec
             session.submit(session.engine().state().active, AdvancePhase{session.engine().state().phaseGate})
                 .accepted);
     auto active = session.engine().state().active;
-    auto view = session.engine().viewFor(active);
+    auto view = test::view(session.engine(),active);
     auto action = std::find_if(view.actions.begin(), view.actions.end(), [](const LegalAction &a) {
         return std::holds_alternative<PlayAction>(a.command);
     });
@@ -736,7 +737,7 @@ TEST_CASE("RP-02 accepted commands replay active chains and mandatory effect dec
     REQUIRE(session.submit(active, action->command).accepted);
     REQUIRE(session.engine().state().chain);
     REQUIRE(replay(content, session.recording()).canonicalState() == session.engine().canonicalState());
-    view = session.engine().viewFor(1 - active);
+    view = test::view(session.engine(),1 - active);
     action = std::find_if(view.actions.begin(), view.actions.end(),
                           [](const LegalAction &a) { return std::holds_alternative<Respond>(a.command); });
     REQUIRE(action != view.actions.end());
@@ -789,10 +790,10 @@ TEST_CASE("LC-04 cancelled hand word keeps mana and discard but releases bound l
     REQUIRE(e.state().cards.at(10).zone == Zone::Casting);
 }
 TEST_CASE("PH-05 automatic phase driver respects disabled main and forced decisions") {
-    auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     MatchSession session(content, 42);
     auto active = session.engine().state().active;
-    auto view = session.engine().viewFor(active);
+    auto view = test::view(session.engine(),active);
     auto before = session.engine().digest();
     REQUIRE_FALSE(ui::automaticAdvance(view, false));
     REQUIRE(session.engine().digest() == before);
@@ -800,8 +801,8 @@ TEST_CASE("PH-05 automatic phase driver respects disabled main and forced decisi
     REQUIRE(gate);
     REQUIRE(session.submit(active, *gate).accepted);
     REQUIRE(session.recording()["commands"][0]["command"]["type"] == 14);
-    REQUIRE(session.submit(active, *ui::automaticAdvance(session.engine().viewFor(active), true)).accepted);
-    REQUIRE_FALSE(ui::automaticAdvance(session.engine().viewFor(active), true));
+    REQUIRE(session.submit(active, *ui::automaticAdvance(test::view(session.engine(),active), true)).accepted);
+    REQUIRE_FALSE(ui::automaticAdvance(test::view(session.engine(),active), true));
     Arena a;
     a.ready(10);
     auto e = a.engine();

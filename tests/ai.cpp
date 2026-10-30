@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include <algorithm>
 #include <catch2/catch_test_macros.hpp>
@@ -7,7 +8,7 @@ using namespace wizard;
 using namespace wizard::app;
 namespace {
 Content content() {
-    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
 }
 CardView shown(CardId id, const char *name, int owner = 0, Zone zone = Zone::Hand) {
     CardView c;
@@ -18,8 +19,8 @@ CardView shown(CardId id, const char *name, int owner = 0, Zone zone = Zone::Han
     c.definition = content().catalog.at(name);
     return c;
 }
-GameView view() {
-    GameView v;
+test::ObservedView view() {
+    test::ObservedView v;
     v.result = -1;
     v.viewer = v.active = 0;
     v.phase = Phase::Main;
@@ -46,20 +47,12 @@ struct Fixture {
     }
     Application app() {
         return Application(data, directory,
-                           loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production"));
+                           loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets"));
     }
 };
 Command student(const Application &a) {
-    auto v = a.match().engine().viewFor(0);
-    const auto *t = a.tutorial();
-    if (t) {
-        std::vector<LegalAction> available;
-        for (const auto &action : v.actions)
-            if (t->allows(v, action.command))
-                available.push_back(action);
-        v.actions = std::move(available);
-    }
-    const auto choice = ai::choose(v, ai::Difficulty::Normal);
+    auto v = a.viewFor(0);
+    const auto choice = ai::choose(v, [&](const auto &visitor) { a.visitActions(0, visitor); }, ai::Difficulty::Normal);
     REQUIRE(choice);
     return choice->command;
 }
@@ -77,9 +70,9 @@ TEST_CASE("normal AI takes immediate lethal damage instead of a future analysis"
     v.players[1].life = 2;
     v.cards = {shown(1, "fireball"), shown(2, "spark")};
     v.actions = {{"解析", 1, 3, StartAnalysis{1, 3}},
-                 {"立即释放", 2, 0, PreloadWord{2,true}},
+                 {"立即释放", 2, playerTarget(1), PreloadWord{2,true,0,playerTarget(1)}},
                  {"结束", 0, 0, AdvancePhase{9}}};
-    const auto selected = ai::choose(v, ai::Difficulty::Normal);
+    const auto selected = test::choose(v, ai::Difficulty::Normal);
     REQUIRE(selected);
     REQUIRE(std::holds_alternative<PreloadWord>(selected->command));
 }
@@ -92,12 +85,14 @@ TEST_CASE("hard AI orders a cheap preparation before a valuable spell against a 
     auto counter = shown(3, "barbs", 1, Zone::Words);
     v.cards = {fire, ward, counter};
     v.actions = {
-        {"火球", 1, 0, PrepareCast{1}}, {"结界", 2, 0, PrepareCast{2}}, {"结束", 0, 0, AdvancePhase{9}}};
-    REQUIRE(std::get<PrepareCast>(ai::choose(v, ai::Difficulty::Normal)->command).card == 1);
-    REQUIRE(std::get<PrepareCast>(ai::choose(v, ai::Difficulty::Hard)->command).card == 2);
-    REQUIRE(std::get<PrepareCast>(ai::choose(v, ai::Difficulty::Easy)->command).card == 1);
+        {"火球", 1, playerTarget(1), PrepareCast{1, playerTarget(1)}},
+        {"结界", 2, playerTarget(1), PrepareCast{2, playerTarget(1)}},
+        {"结束", 0, 0, AdvancePhase{9}}};
+    REQUIRE(std::get<PrepareCast>(test::choose(v, ai::Difficulty::Normal)->command).card == 1);
+    REQUIRE(std::get<PrepareCast>(test::choose(v, ai::Difficulty::Hard)->command).card == 2);
+    REQUIRE(std::get<PrepareCast>(test::choose(v, ai::Difficulty::Easy)->command).card == 1);
     v.cards.pop_back();
-    REQUIRE(std::get<PrepareCast>(ai::choose(v, ai::Difficulty::Hard)->command).card == 1);
+    REQUIRE(std::get<PrepareCast>(test::choose(v, ai::Difficulty::Hard)->command).card == 1);
 }
 TEST_CASE("AI skips fatal self load and drawing beyond the remaining deck") {
     auto v = view();
@@ -107,36 +102,36 @@ TEST_CASE("AI skips fatal self load and drawing beyond the remaining deck") {
     v.actions = {
         {"抽牌", 1, 0, PlayAction{1}}, {"治疗", 2, 0, PrepareCast{2}}, {"结束", 0, 0, AdvancePhase{3}}};
     for (const auto d : {ai::Difficulty::Easy, ai::Difficulty::Normal, ai::Difficulty::Hard})
-        REQUIRE(std::holds_alternative<AdvancePhase>(ai::choose(v, d)->command));
+        REQUIRE(std::holds_alternative<AdvancePhase>(test::choose(v, d)->command));
 }
 TEST_CASE("AI discards inexpensive cards and can stop optional self destruction") {
     auto v = view();
     v.cards = {shown(1, "fireball"), shown(2, "spark")};
-    v.decision = PendingDecision{7, 0, DecisionKind::Discard, {1, 2}, false};
-    v.actions = {{"弃置", 1, 0, Choose{7, 1}}, {"弃置", 2, 0, Choose{7, 2}}};
-    REQUIRE(std::get<Choose>(ai::choose(v, ai::Difficulty::Normal)->command).option == 2);
-    v.decision = PendingDecision{8, 0, DecisionKind::DestroyOwnFormation, {3}, true};
+    v.decision = PendingDecision{7, 0, DecisionKind::Discard, {ChoiceValue::card(1), ChoiceValue::card(2)}, false};
+    v.actions = {{"弃置", 1, 0, Choose{7, {ChoiceKind::Card, 1}}}, {"弃置", 2, 0, Choose{7, {ChoiceKind::Card, 2}}}};
+    REQUIRE(std::get<Choose>(test::choose(v, ai::Difficulty::Normal)->command).option == ChoiceValue::card(2));
+    v.decision = PendingDecision{8, 0, DecisionKind::DestroyOwnFormation, {ChoiceValue::card(3)}, true};
     v.cards.push_back(shown(3, "reservoir", 0, Zone::Analysis));
-    v.actions = {{"销毁", 3, 0, Choose{8, 3}}, {"跳过", 0, 0, Choose{8, 0}}};
-    REQUIRE(std::get<Choose>(ai::choose(v, ai::Difficulty::Normal)->command).option == 0);
+    v.actions = {{"销毁", 3, 0, Choose{8, {ChoiceKind::Card, 3}}}, {"跳过", 0, 0, Choose{8, 0}}};
+    REQUIRE(std::get<Choose>(test::choose(v, ai::Difficulty::Normal)->command).option == 0);
 }
 TEST_CASE("AI clears available temporary load and declines unsafe concentration") {
     auto v = view();
-    v.decision = PendingDecision{5, 0, DecisionKind::ClearLoad, {12, 13}, true};
+    v.decision = PendingDecision{5, 0, DecisionKind::ClearLoad, {ChoiceValue::load(12), ChoiceValue::load(13)}, true};
     v.temporary = {{12, 0, 1, 1, 2, false}, {13, 0, 2, 3, 2, false}, {14, 0, 3, 5, 0, true}};
-    v.actions = {{"清理", 0, 0, Choose{5, 12}}, {"清理", 0, 0, Choose{5, 13}}, {"停止", 0, 0, Choose{5, 0}}};
-    REQUIRE(std::get<Choose>(ai::choose(v, ai::Difficulty::Hard)->command).option == 13);
+    v.actions = {{"清理", 0, 0, Choose{5, {ChoiceKind::Load, 12}}}, {"清理", 0, 0, Choose{5, {ChoiceKind::Load, 13}}}, {"停止", 0, 0, Choose{5, 0}}};
+    REQUIRE(std::get<Choose>(test::choose(v, ai::Difficulty::Hard)->command).option == ChoiceValue::load(13));
     auto ward = shown(1, "ward", 0, Zone::Casting);
     ward.instance.concentrationCost = 1;
     v.cards = {ward};
     v.players[0].load = v.players[0].capacity;
-    v.decision = PendingDecision{6, 0, DecisionKind::Concentration, {1}, true};
-    v.actions = {{"维持", 1, 0, Choose{6, 1}}, {"销毁", 0, 0, Choose{6, 0}}};
-    REQUIRE(std::get<Choose>(ai::choose(v, ai::Difficulty::Hard)->command).option == 0);
+    v.decision = PendingDecision{6, 0, DecisionKind::Concentration, {ChoiceValue::card(1)}, true};
+    v.actions = {{"维持", 1, 0, Choose{6, {ChoiceKind::Card, 1}}}, {"销毁", 0, 0, Choose{6, 0}}};
+    REQUIRE(std::get<Choose>(test::choose(v, ai::Difficulty::Hard)->command).option == 0);
 }
 TEST_CASE("hard AI can prioritize a mana trigger before damage without hidden queue access") {
     auto v = view();
-    v.decision = PendingDecision{3, 0, DecisionKind::TriggerOrder, {11, 12}, false};
+    v.decision = PendingDecision{3, 0, DecisionKind::TriggerOrder, {{ChoiceKind::Trigger,11}, {ChoiceKind::Trigger,12}}, false};
     Trigger damage;
     damage.id = 11;
     damage.owner = 0;
@@ -147,9 +142,9 @@ TEST_CASE("hard AI can prioritize a mana trigger before damage without hidden qu
     mana.owner = 0;
     mana.effects = {{EffectKind::GainMana, 2}};
     v.triggers = {damage, mana};
-    v.actions = {{"伤害", 0, 0, Choose{3, 11}}, {"魔素", 0, 0, Choose{3, 12}}};
-    REQUIRE(std::get<Choose>(ai::choose(v, ai::Difficulty::Normal)->command).option == 11);
-    REQUIRE(std::get<Choose>(ai::choose(v, ai::Difficulty::Hard)->command).option == 12);
+    v.actions = {{"伤害", 0, 0, Choose{3, {ChoiceKind::Trigger, 11}}}, {"魔素", 0, 0, Choose{3, {ChoiceKind::Trigger, 12}}}};
+    REQUIRE(std::get<Choose>(test::choose(v, ai::Difficulty::Normal)->command).option == ChoiceValue(ChoiceKind::Trigger,11));
+    REQUIRE(std::get<Choose>(test::choose(v, ai::Difficulty::Hard)->command).option == ChoiceValue(ChoiceKind::Trigger,12));
 }
 TEST_CASE("AI counters a live enemy link and passes once that link is already cancelled") {
     auto v = view();
@@ -168,24 +163,24 @@ TEST_CASE("AI counters a live enemy link and passes once that link is already ca
     chain.links = {root};
     v.chain = chain;
     v.actions = {{"反制", 2, 0, Respond{3, 2, "cancel_preparation", 0, 9}}, {"放弃", 0, 0, PassResponse{3}}};
-    REQUIRE(std::holds_alternative<Respond>(ai::choose(v, ai::Difficulty::Normal)->command));
+    REQUIRE(std::holds_alternative<Respond>(test::choose(v, ai::Difficulty::Normal)->command));
     v.chain->links[0].canceled = true;
-    REQUIRE(std::holds_alternative<PassResponse>(ai::choose(v, ai::Difficulty::Normal)->command));
+    REQUIRE(std::holds_alternative<PassResponse>(test::choose(v, ai::Difficulty::Normal)->command));
 }
 TEST_CASE("AI budgets are finite preserve a pass and return no action on terminal or empty views") {
     auto v = view();
     v.cards = {shown(1, "reservoir", 0, Zone::Analysis)};
     v.actions = {{"拆除", 1, 0, RemoveFormation{1}}, {"结束", 0, 0, AdvancePhase{3}}};
-    const auto selected = ai::choose(v, ai::Difficulty::Hard, 1);
+    const auto selected = test::choose(v, ai::Difficulty::Hard, 1);
     REQUIRE(selected);
     REQUIRE(selected->evaluated == 1);
     REQUIRE(std::holds_alternative<AdvancePhase>(selected->command));
-    REQUIRE_FALSE(ai::choose(v, ai::Difficulty::Hard, 0));
+    REQUIRE_FALSE(test::choose(v, ai::Difficulty::Hard, 0));
     v.result = 0;
-    REQUIRE_FALSE(ai::choose(v, ai::Difficulty::Normal));
+    REQUIRE_FALSE(test::choose(v, ai::Difficulty::Normal));
     v.result = -1;
     v.actions.clear();
-    REQUIRE_FALSE(ai::choose(v, ai::Difficulty::Normal));
+    REQUIRE_FALSE(test::choose(v, ai::Difficulty::Normal));
 }
 TEST_CASE(
     "every forced decision has a deterministic projected choice including effect preparation and overflow") {
@@ -197,7 +192,7 @@ TEST_CASE(
         if (v.decision->kind == DecisionKind::EffectPrepare)
             v.actions = {{"准备", 1, 0, PrepareCast{1, 0, 0, {}, 9}}};
         for (auto d : {ai::Difficulty::Easy, ai::Difficulty::Normal, ai::Difficulty::Hard}) {
-            const auto first = ai::choose(v, d), second = ai::choose(v, d);
+            const auto first = test::choose(v, d), second = test::choose(v, d);
             REQUIRE(first);
             REQUIRE(second);
             REQUIRE(same(first->command, second->command));
@@ -205,44 +200,42 @@ TEST_CASE(
         }
     }
 }
-TEST_CASE("AI choices cannot inspect a different enemy hand or shuffled deck with the same projection") {
+TEST_CASE("AI choices cannot inspect a different enemy hand or shuffled deck with the same projection", "[legacy]") {
     auto c = content();
     MatchConfig config;
-    for (auto &p : config.players)
-        p.cards = c.deck;
-    GameEngine e(c.catalog, config);
+    for (auto &p : config.players) { p.cards = c.deck; p.sideDeck = c.sideDeck; }
+    test::ObservedEngine e(c.catalog, config);
     while (e.state().phase != Phase::Main) {
-        const auto &state = e.state();
+        const auto &state = test::mutation(e.state());
         const int actor = state.decision ? state.decision->player : state.active;
-        auto action = ai::choose(e.viewFor(actor), ai::Difficulty::Normal);
+        auto action = test::choose(e.viewFor(actor), ai::Difficulty::Normal);
         REQUIRE(action);
         REQUIRE(e.submit(actor, action->command).accepted);
     }
-    auto s = e.state();
+    auto s = test::mutation(e.state());
     const int actor = s.decision ? s.decision->player : s.active;
     for (auto &[id, card] : s.cards)
         if (card.owner != actor && (card.zone == Zone::Hand || card.zone == Zone::Deck))
             card.definition = "mend";
-    auto other = GameEngine::scenario(c.catalog, s);
+    auto other = test::ObservedEngine::scenario(c.catalog, s);
     REQUIRE(e.digest() != other.digest());
     auto v = e.viewFor(actor), w = other.viewFor(actor);
     REQUIRE(
         std::any_of(v.actions.begin(), v.actions.end(), [](const LegalAction &a) { return a.source != 0; }));
     for (auto d : {ai::Difficulty::Easy, ai::Difficulty::Normal, ai::Difficulty::Hard}) {
-        auto a = ai::choose(v, d), b = ai::choose(w, d);
+        auto a = test::choose(v, d), b = test::choose(w, d);
         REQUIRE(a);
         REQUIRE(b);
         REQUIRE(same(a->command, b->command));
         REQUIRE(a->score == b->score);
     }
 }
-TEST_CASE("trigger choices expose only the deciding player's visible source snapshots") {
+TEST_CASE("trigger choices expose only the deciding player's visible source snapshots", "[legacy]") {
     auto data = content();
     MatchConfig config;
-    for (auto &p : config.players)
-        p.cards = data.deck;
-    GameEngine engine(data.catalog, config);
-    auto state = engine.state();
+    for (auto &p : config.players) { p.cards = data.deck; p.sideDeck = data.sideDeck; }
+    test::ObservedEngine engine(data.catalog, config);
+    auto state = test::mutation(engine.state());
     CardId privateSource = 0;
     for (const auto &[id, c] : state.cards)
         if (c.owner == 1 && c.zone == Zone::Hand)
@@ -261,14 +254,14 @@ TEST_CASE("trigger choices expose only the deciding player's visible source snap
     otherTrigger.effects = {{EffectKind::Draw, 1}};
     state.queue.append(publicTrigger);
     state.queue.append(otherTrigger);
-    state.decision = PendingDecision{999, 0, DecisionKind::TriggerOrder, {900}, false};
-    auto scenario = GameEngine::scenario(data.catalog, state);
+    state.decision = PendingDecision{999, 0, DecisionKind::TriggerOrder, {{ChoiceKind::Trigger,900}}, false};
+    auto scenario = test::ObservedEngine::scenario(data.catalog, state);
     auto v = scenario.viewFor(0);
     REQUIRE(v.triggers.size() == 1);
     REQUIRE(v.triggers[0].id == 900);
     REQUIRE(scenario.viewFor(1).triggers.empty());
 }
-TEST_CASE("AI can pay a preloaded response discard and counter an opposing counter through the normal core") {
+TEST_CASE("AI can pay a preloaded response discard and counter an opposing counter through the normal core", "[legacy]") {
     auto data = content();
     auto spell = data.catalog.cards.at("spark");
     spell.id = "ai-test-counter";
@@ -284,10 +277,9 @@ TEST_CASE("AI can pay a preloaded response discard and counter an opposing count
     spell.responses = {ability};
     data.catalog.cards.emplace(spell.id, spell);
     MatchConfig config;
-    for (auto &p : config.players)
-        p.cards = data.deck;
-    GameEngine initial(data.catalog, config);
-    auto state = initial.state();
+    for (auto &p : config.players) { p.cards = data.deck; p.sideDeck = data.sideDeck; }
+    test::ObservedEngine initial(data.catalog, config);
+    auto state = test::mutation(initial.state());
     state.phase = Phase::Main;
     state.phaseStep = PhaseStep::Body;
     state.flow = Flow::Main;
@@ -324,13 +316,13 @@ TEST_CASE("AI can pay a preloaded response discard and counter an opposing count
     REQUIRE(counter);
     REQUIRE(discard);
     REQUIRE(word);
-    auto engine = GameEngine::scenario(data.catalog, state);
+    auto engine = test::ObservedEngine::scenario(data.catalog, state);
     REQUIRE(engine.submit(0, PrepareCast{fire}).accepted);
-    auto first = ai::choose(engine.viewFor(1), ai::Difficulty::Hard);
+    auto first = test::choose(engine.viewFor(1), ai::Difficulty::Hard);
     REQUIRE(first);
     REQUIRE(std::holds_alternative<Respond>(first->command));
     REQUIRE(engine.submit(1, first->command).accepted);
-    auto second = ai::choose(engine.viewFor(0), ai::Difficulty::Hard);
+    auto second = test::choose(engine.viewFor(0), ai::Difficulty::Hard);
     REQUIRE(second);
     REQUIRE(std::holds_alternative<Respond>(second->command));
     auto response = std::get<Respond>(second->command);
@@ -340,9 +332,9 @@ TEST_CASE("AI can pay a preloaded response discard and counter an opposing count
     REQUIRE(engine.submit(0, response).accepted);
     for (int n = 0; engine.state().chain; ++n) {
         REQUIRE(n < 20);
-        const auto &s = engine.state();
+        const auto &s = test::mutation(engine.state());
         auto actor = s.decision ? s.decision->player : s.active;
-        auto action = ai::choose(engine.viewFor(actor), ai::Difficulty::Hard);
+        auto action = test::choose(engine.viewFor(actor), ai::Difficulty::Hard);
         REQUIRE(action);
         REQUIRE(engine.submit(actor, action->command).accepted);
     }
@@ -350,9 +342,9 @@ TEST_CASE("AI can pay a preloaded response discard and counter an opposing count
     REQUIRE(engine.state().cards.at(response.discard).zone == Zone::Ash);
     REQUIRE(engine.state().cards.at(counter).zone == Zone::Ash);
 }
-TEST_CASE("all difficulties finish fixed seed games with representative decks and deterministic replay") {
+TEST_CASE("all difficulties finish fixed seed games with representative decks and deterministic replay", "[legacy]") {
     auto c = content();
-    auto presets = loadPresets(c, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    auto presets = loadPresets(c, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     std::set<DecisionKind> encountered;
     for (int d = 0; d < 3; ++d)
         for (auto seed : {1u, 39u, 42u}) {
@@ -367,7 +359,7 @@ TEST_CASE("all difficulties finish fixed seed games with representative decks an
                 const int actor = s.decision ? s.decision->player : s.active;
                 if (s.decision)
                     encountered.insert(s.decision->kind);
-                const auto selected = ai::choose(session.engine().viewFor(actor),
+                const auto selected = test::choose(test::view(session.engine(),actor),
                                                  static_cast<ai::Difficulty>(actor == 1 ? d : 1));
                 REQUIRE(selected);
                 auto result = session.submit(actor, selected->command);
@@ -386,8 +378,7 @@ TEST_CASE("pending AI plans pause and reject duplicate revised or previous match
     auto a = f.app();
     MatchConfig config;
     config.seed = 39;
-    for (auto &p : config.players)
-        p.cards = f.data.deck;
+    for (auto &p : config.players) { p.cards = f.data.deck; p.sideDeck = f.data.sideDeck; }
     std::string error;
     REQUIRE(a.start(config, error, {MatchMode::Ai, ai::Difficulty::Hard}));
     for (int n = 0; !a.aiTurn(); ++n) {
@@ -410,12 +401,12 @@ TEST_CASE("pending AI plans pause and reject duplicate revised or previous match
     REQUIRE(a.commitAi(*plan).errorCode == "stale_ai");
 }
 TEST_CASE(
-    "fixed tutorial uses normal shuffle rejects wrong moves and teaches real cancellation and release") {
+    "fixed tutorial uses normal shuffle rejects wrong moves and teaches real cancellation and release", "[legacy]") {
     Fixture f;
     auto a = f.app();
     std::string error;
     REQUIRE(a.startTutorial(error));
-    REQUIRE(a.configuration().seed == 39);
+    REQUIRE(a.configuration().seed == 5);
     REQUIRE(a.match().engine().state().first == 1);
     const auto opening = a.match().engine().digest();
     a.requestLeave();
@@ -428,7 +419,7 @@ TEST_CASE(
         INFO(static_cast<int>(a.tutorial()->lesson));
         REQUIRE(n < 300);
         REQUIRE(a.match().engine().state().result == -1);
-        auto v = a.match().engine().viewFor(0);
+        auto v = test::view(a.match().engine(),0);
         visited.insert(a.tutorial()->lesson);
         if (a.tutorial()->canContinue(v)) {
             a.continueTutorial();
@@ -443,7 +434,7 @@ TEST_CASE(
         if (a.tutorial()->lesson == Lesson::Rune && !triedWrong) {
             for (const auto &action : v.actions)
                 if (auto cmd = std::get_if<AttachSeal>(&action.command))
-                    if (!a.tutorial()->allows(v, action.command)) {
+                    if (!a.tutorial()->allows(v, action.command, [&](const auto &visitor) { a.match().engine().visitLegalActions(0,visitor); })) {
                         auto before = a.match().engine().digest();
                         REQUIRE(a.submit(0, *cmd, a.generation()).errorCode == "tutorial_hint");
                         REQUIRE(a.match().engine().digest() == before);
@@ -482,6 +473,6 @@ TEST_CASE(
     REQUIRE(replay(f.data, a.match().recording()).digest() == a.match().engine().digest());
     REQUIRE(a.restart(12345, error));
     REQUIRE(a.mode() == MatchMode::Tutorial);
-    REQUIRE(a.configuration().seed == 39);
+    REQUIRE(a.configuration().seed == 5);
     REQUIRE(a.match().engine().digest() == opening);
 }

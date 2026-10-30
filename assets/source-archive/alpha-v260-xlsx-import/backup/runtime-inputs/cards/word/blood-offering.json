@@ -1,0 +1,28 @@
+{
+  "id": "blood-offering",
+  "name": "血契·祭品",
+  "type": "word",
+  "rarity": "rare",
+  "cost": 1,
+  "castCost": 0,
+  "rank": 2,
+  "level": 2,
+  "speed": 2,
+  "number": "030030",
+  "illustrationId": "blood-offering",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [
+    {
+      "kind": "blood_pact_search"
+    }
+  ],
+  "text": "支付1点生命值才能发动。将1张【血契】卡从卡组加入手卡。",
+  "analysisTurns": 0,
+  "school": "conjuration",
+  "traits": [
+    "blood_offering_cost"
+  ]
+}

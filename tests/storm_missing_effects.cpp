@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
@@ -6,10 +7,10 @@ using namespace wizard;
 
 namespace {
 Content stormContent() {
-    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
+    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
 }
 
-CardInstance &put(GameState &state, CardId id, const std::string &definition, PlayerId owner,
+CardInstance &put(MutationContext &state, CardId id, const std::string &definition, PlayerId owner,
                   Zone zone, CardId host = 0, SpellState spell = SpellState::None) {
     CardInstance card;
     card.id = id;
@@ -25,8 +26,8 @@ CardInstance &put(GameState &state, CardId id, const std::string &definition, Pl
     return state.cards.at(id);
 }
 
-GameState stateAt(Phase phase) {
-    GameState state;
+MutationContext stateAt(Phase phase) {
+    MutationContext state;
     state.phase = phase;
     state.phaseStep = PhaseStep::Body;
     state.phaseGate = 1;
@@ -37,13 +38,13 @@ GameState stateAt(Phase phase) {
     return state;
 }
 
-void send(GameEngine &engine, PlayerId player, const Command &command) {
+void send(test::ObservedEngine &engine, PlayerId player, const Command &command) {
     const auto result = engine.submit(player, command);
     INFO(result.error);
     REQUIRE(result.accepted);
 }
 
-void passResponses(GameEngine &engine) {
+void passResponses(test::ObservedEngine &engine) {
     for (int count = 0; count < 16 && engine.state().decision &&
          engine.state().decision->kind == DecisionKind::Response; ++count) {
         const auto decision = *engine.state().decision;
@@ -51,7 +52,7 @@ void passResponses(GameEngine &engine) {
     }
 }
 
-void advanceCurrentPhase(GameEngine &engine, std::uint32_t effectChoice = 0) {
+void advanceCurrentPhase(test::ObservedEngine &engine, std::uint32_t effectChoice = 0) {
     REQUIRE(engine.state().phaseStep == PhaseStep::Body);
     send(engine, engine.state().active, AdvancePhase{engine.state().phaseGate});
     for (int count = 0; count < 16; ++count) {
@@ -74,7 +75,7 @@ void advanceCurrentPhase(GameEngine &engine, std::uint32_t effectChoice = 0) {
     FAIL("phase did not advance");
 }
 
-void advanceToPhase(GameEngine &engine, Phase phase, PlayerId active) {
+void advanceToPhase(test::ObservedEngine &engine, Phase phase, PlayerId active) {
     for (int count = 0; count < 32; ++count) {
         if (engine.state().phase == phase && engine.state().active == active &&
             engine.state().phaseStep == PhaseStep::Body)
@@ -84,13 +85,13 @@ void advanceToPhase(GameEngine &engine, Phase phase, PlayerId active) {
     FAIL("target phase was not reached");
 }
 
-void choose(GameEngine &engine, std::uint32_t option) {
+void choose(test::ObservedEngine &engine, std::uint32_t option) {
     REQUIRE(engine.state().decision);
     const auto decision = *engine.state().decision;
     send(engine, decision.player, Choose{decision.id, option});
 }
 
-void startStormGuidance(GameEngine &engine) {
+void startStormGuidance(test::ObservedEngine &engine) {
     send(engine, 0, PreloadWord{10, true, 1});
     passResponses(engine);
     REQUIRE(engine.state().decision);
@@ -102,7 +103,7 @@ void startStormGuidance(GameEngine &engine) {
     REQUIRE(engine.state().decision->kind == DecisionKind::EffectChoice);
 }
 
-void stormGuidanceState(GameState &state, const std::string &deckDefinition = {}) {
+void stormGuidanceState(MutationContext &state, const std::string &deckDefinition = {}) {
     put(state, 1, "storm-heart", 0, Zone::Analysis);
     put(state, 2, "small-hexagram", 1, Zone::Analysis);
     put(state, 10, "storm-guidance", 0, Zone::Hand);
@@ -118,7 +119,7 @@ TEST_CASE("Storm Guidance sacrifices a field card, exposes legal mode actions, a
     auto content = stormContent();
     auto state = stateAt(Phase::Main);
     stormGuidanceState(state, "storm-vortex");
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     startStormGuidance(engine);
     const auto pending = *engine.state().decision;
@@ -136,7 +137,7 @@ TEST_CASE("Storm Guidance sacrifices a field card, exposes legal mode actions, a
 
     REQUIRE(engine.state().decision);
     REQUIRE(engine.state().decision->kind == DecisionKind::EffectChoice);
-    REQUIRE(engine.state().decision->options == std::vector<std::uint32_t>{20});
+    REQUIRE(engine.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(20)});
     choose(engine, 20);
 
     REQUIRE(engine.state().cards.at(2).zone == Zone::Ash);
@@ -148,7 +149,7 @@ TEST_CASE("Storm Guidance can add two Storm points after sacrificing a field car
     auto content = stormContent();
     auto state = stateAt(Phase::Main);
     stormGuidanceState(state);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     startStormGuidance(engine);
     REQUIRE(std::find(engine.state().decision->options.begin(), engine.state().decision->options.end(),
@@ -163,14 +164,14 @@ TEST_CASE("Storm Guidance can search its auxiliary analytic spells", "[storm][st
     auto content = stormContent();
     auto state = stateAt(Phase::Main);
     stormGuidanceState(state, "cloud-mist");
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     startStormGuidance(engine);
     REQUIRE(std::find(engine.state().decision->options.begin(), engine.state().decision->options.end(),
                       0xfffffff3u) != engine.state().decision->options.end());
     choose(engine, 0xfffffff3u);
     REQUIRE(engine.state().decision);
-    REQUIRE(engine.state().decision->options == std::vector<std::uint32_t>{20});
+    REQUIRE(engine.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(20)});
     choose(engine, 20);
 
     REQUIRE(engine.state().cards.at(2).zone == Zone::Ash);
@@ -186,14 +187,14 @@ TEST_CASE("Wind Whisper searches only Storm talismans of rank two or lower", "[s
     put(state, 21, "wind-strike", 0, Zone::Deck);
     put(state, 22, "windmaking", 0, Zone::Deck);
     state.players[0].deck = {20, 21, 22};
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 0, PreloadWord{10, true, 1});
     passResponses(engine);
 
     REQUIRE(engine.state().decision);
     REQUIRE(engine.state().decision->kind == DecisionKind::SearchDeck);
-    REQUIRE(engine.state().decision->options == std::vector<std::uint32_t>{20});
+    REQUIRE(engine.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(20)});
     choose(engine, 20);
 
     REQUIRE(engine.state().cards.at(20).zone == Zone::Hand);
@@ -210,7 +211,7 @@ TEST_CASE("Storm Vortex destroys an opponent's field spell through its activatio
     (void)vortex;
     auto &enemySpell = put(state, 20, "fireball", 1, Zone::Analysis, 2, SpellState::Ready);
     enemySpell.ringIndex = 0;
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 0, ActivateSpell{10});
     passResponses(engine);
@@ -231,14 +232,14 @@ TEST_CASE("Storm Vortex can destroy an opponent's active spell in the casting zo
     put(state, 2, "small-hexagram", 1, Zone::Analysis);
     put(state, 10, "storm-vortex", 0, Zone::Casting, 1, SpellState::Ready);
     put(state, 20, "fireball", 1, Zone::Casting, 2, SpellState::Active);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 0, ActivateSpell{10});
     passResponses(engine);
 
     REQUIRE(engine.state().decision);
     REQUIRE(engine.state().decision->kind == DecisionKind::EffectChoice);
-    REQUIRE(engine.state().decision->options == std::vector<std::uint32_t>{20});
+    REQUIRE(engine.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(20)});
     choose(engine, 20);
     REQUIRE(engine.state().cards.at(20).zone == Zone::Ash);
 }
@@ -250,21 +251,21 @@ TEST_CASE("Windmaking returns an opponent's active casting spell to hand", "[sto
     put(state, 2, "small-hexagram", 1, Zone::Analysis);
     put(state, 10, "windmaking", 0, Zone::Hand);
     put(state, 20, "fireball", 1, Zone::Casting, 2, SpellState::Active);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 0, PreloadWord{10, true, 1});
     passResponses(engine);
 
     REQUIRE(engine.state().decision);
     REQUIRE(engine.state().decision->kind == DecisionKind::EffectChoice);
-    REQUIRE(engine.state().decision->options == std::vector<std::uint32_t>{20});
+    REQUIRE(engine.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(20)});
     choose(engine, 20);
     REQUIRE(engine.state().cards.at(20).zone == Zone::Hand);
     REQUIRE(engine.state().cards.at(20).spell == SpellState::None);
 }
 
 TEST_CASE("Great Cyclone destroys all spells under the selected formation and spends five Storm points",
-          "[storm][storm-effects]") {
+          "[storm][storm-effects][legacy]") {
     auto content = stormContent();
     auto state = stateAt(Phase::Cast);
     auto &crest = put(state, 1, "storm-crest", 0, Zone::Analysis);
@@ -275,7 +276,7 @@ TEST_CASE("Great Cyclone destroys all spells under the selected formation and sp
     analysisSpell.ringIndex = 0;
     auto &castingSpell = put(state, 21, "magic-missile", 1, Zone::Casting, 2, SpellState::Active);
     castingSpell.ringIndex = -1;
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
     const auto enemyLife = engine.state().players[1].life;
 
     send(engine, 0, ActivateSpell{10});
@@ -292,13 +293,13 @@ TEST_CASE("Great Cyclone destroys all spells under the selected formation and sp
     REQUIRE(engine.state().cards.at(1).stormPoints == 4);
 }
 
-TEST_CASE("Cutting Wind sacrifices an idle formation and deals rank-scaled damage", "[storm][storm-effects]") {
+TEST_CASE("Cutting Wind sacrifices an idle formation and deals rank-scaled damage", "[storm][storm-effects][legacy]") {
     auto content = stormContent();
     auto state = stateAt(Phase::Cast);
     put(state, 1, "storm-crest", 0, Zone::Analysis);
     put(state, 2, "small-hexagram", 0, Zone::Analysis);
     put(state, 10, "cutting-wind", 0, Zone::Casting, 1, SpellState::Ready);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
     const auto enemyLife = engine.state().players[1].life;
 
     send(engine, 0, ActivateSpell{10});
@@ -316,7 +317,7 @@ TEST_CASE("Cutting Wind sacrifices an idle formation and deals rank-scaled damag
 }
 
 TEST_CASE("Great Storm consumes the Heart's Storm points as its timer and counts destroyed field cards",
-          "[storm][storm-effects]") {
+          "[storm][storm-effects][legacy]") {
     auto content = stormContent();
     auto state = stateAt(Phase::Cast);
     auto &heart = put(state, 1, "storm-heart", 0, Zone::Analysis);
@@ -325,7 +326,7 @@ TEST_CASE("Great Storm consumes the Heart's Storm points as its timer and counts
     put(state, 10, "great-storm", 0, Zone::Casting, 1, SpellState::Ready);
     auto &enemySpell = put(state, 20, "fireball", 1, Zone::Analysis, 2, SpellState::Ready);
     enemySpell.ringIndex = 0;
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
     const auto enemyLife = engine.state().players[1].life;
 
     send(engine, 0, ActivateSpell{10});
@@ -340,7 +341,7 @@ TEST_CASE("Great Storm consumes the Heart's Storm points as its timer and counts
 }
 
 TEST_CASE("Great Storm destroys the enemy Storm Heart when its owner declines token replacement",
-          "[storm][storm-effects]") {
+          "[storm][storm-effects][legacy]") {
     auto content = stormContent();
     auto state = stateAt(Phase::Cast);
     auto &heart = put(state, 1, "storm-heart", 0, Zone::Analysis);
@@ -348,7 +349,7 @@ TEST_CASE("Great Storm destroys the enemy Storm Heart when its owner declines to
     auto &enemyHeart = put(state, 2, "storm-heart", 1, Zone::Analysis);
     enemyHeart.stormPoints = 1;
     put(state, 10, "great-storm", 0, Zone::Casting, 1, SpellState::Ready);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
     const auto enemyLife = engine.state().players[1].life;
 
     send(engine, 0, ActivateSpell{10});
@@ -370,7 +371,7 @@ TEST_CASE("Great Storm blocks setting analytics while it remains on Storm Heart"
     auto &greatStorm = put(state, 10, "great-storm", 0, Zone::Analysis, 1, SpellState::Active);
     greatStorm.remaining = 2;
     put(state, 20, "fireball", 0, Zone::Hand);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     const auto setup = engine.submit(0, StartAnalysis{20, 1});
     REQUIRE_FALSE(setup.accepted);
@@ -387,7 +388,7 @@ TEST_CASE("Great Storm blocks setting analytics while it remains on Storm Heart"
 }
 
 TEST_CASE("Great Storm hosted by Storm Heart is protected from generic destroy effects",
-          "[storm][storm-effects]") {
+          "[storm][storm-effects][legacy]") {
     auto content = stormContent();
     CardDefinition destroyer;
     destroyer.id = "test-destroyer";
@@ -403,7 +404,7 @@ TEST_CASE("Great Storm hosted by Storm Heart is protected from generic destroy e
     greatStorm.remaining = 2;
     put(state, 10, "test-destroyer", 1, Zone::Hand);
     state.active = 1;
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 1, PlayAction{10, 20});
     passResponses(engine);
@@ -412,7 +413,7 @@ TEST_CASE("Great Storm hosted by Storm Heart is protected from generic destroy e
     REQUIRE(engine.state().cards.at(20).spell == SpellState::Active);
 }
 
-TEST_CASE("Storm Heart can spend a Storm point to replace generic destruction", "[storm][storm-effects]") {
+TEST_CASE("Storm Heart can spend a Storm point to replace generic destruction", "[storm][storm-effects][legacy]") {
     auto content = stormContent();
     CardDefinition destroyer;
     destroyer.id = "test-destroyer";
@@ -426,7 +427,7 @@ TEST_CASE("Storm Heart can spend a Storm point to replace generic destruction", 
     auto &heart = put(state, 2, "storm-heart", 1, Zone::Analysis);
     heart.stormPoints = 2;
     put(state, 10, "test-destroyer", 0, Zone::Hand);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 0, PlayAction{10, 2});
     passResponses(engine);
@@ -440,7 +441,7 @@ TEST_CASE("Storm Heart can spend a Storm point to replace generic destruction", 
     REQUIRE(engine.state().cards.at(2).stormPoints == 1);
 }
 
-TEST_CASE("Storm Heart is destroyed when its owner declines generic token replacement", "[storm][storm-effects]") {
+TEST_CASE("Storm Heart is destroyed when its owner declines generic token replacement", "[storm][storm-effects][legacy]") {
     auto content = stormContent();
     CardDefinition destroyer;
     destroyer.id = "test-destroyer";
@@ -454,7 +455,7 @@ TEST_CASE("Storm Heart is destroyed when its owner declines generic token replac
     auto &heart = put(state, 2, "storm-heart", 1, Zone::Analysis);
     heart.stormPoints = 2;
     put(state, 10, "test-destroyer", 0, Zone::Hand);
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
 
     send(engine, 0, PlayAction{10, 2});
     passResponses(engine);
@@ -480,7 +481,7 @@ TEST_CASE("Great Storm counts its timer and resolves one end effect per owner's 
         put(state, id, "wind-whisper", 1, Zone::Deck);
         state.players[1].deck.push_back(id);
     }
-    auto engine = GameEngine::scenario(content.catalog, std::move(state));
+    auto engine = test::ObservedEngine::scenario(content.catalog, std::move(state));
     const auto enemyLife = engine.state().players[1].life;
 
     advanceCurrentPhase(engine, 20);

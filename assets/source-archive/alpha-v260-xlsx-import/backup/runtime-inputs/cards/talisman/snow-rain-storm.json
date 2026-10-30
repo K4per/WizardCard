@@ -1,0 +1,27 @@
+{
+  "id": "snow-rain-storm",
+  "name": "风契·雪雨暴",
+  "type": "talisman",
+  "rarity": "common",
+  "cost": 3,
+  "rank": 3,
+  "level": 3,
+  "speed": 2,
+  "school": "transmutation",
+  "target": "opponent",
+  "effects": [],
+  "text": "专注2。对方计时法术的设置费用+2，对方维持专注需支付的费用×2。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "concentration": true,
+  "concentrationUpkeep": 2,
+  "tags": [
+    "风契"
+  ],
+  "traits": [
+    "surcharge_enemy_timed_cast",
+    "double_enemy_concentration_upkeep"
+  ],
+  "number": "040013",
+  "illustrationId": "snow-rain-storm"
+}

@@ -30,6 +30,10 @@ bool Peer::persist() {
         return true;
     try {
         writeAtomicJson(replayPath_, host_->recording());
+        if (host_->technicalPaused()) {
+            auto diagnosticPath = replayPath_; diagnosticPath += ".diagnostic.json";
+            writeAtomicJson(diagnosticPath, host_->diagnostic());
+        }
         saveError_.clear();
         return true;
     } catch (const std::exception &e) {
@@ -56,6 +60,7 @@ void Peer::tick() {
             authenticated_ = false;
             received_ = heartbeat_ = now;
             sentRevision_ = ~std::uint64_t{0};
+            sentEventEpoch_ = sentEventCursor_ = 0;
             if (guest_)
                 tcp_.send(guest_->canResume() ? guest_->resume() : hello(content_));
         }
@@ -172,17 +177,30 @@ void Peer::tick() {
             const auto beforeTick = host_->revision();
             host_->tick();
             if (host_->revision() != beforeTick) persist();
-            if (authenticated_ && connected_ && !closing_ && host_->advance())
-                persist();
+            if (authenticated_ && connected_ && !closing_) {
+                const auto beforeAdvance = host_->revision();
+                host_->advance();
+                if (host_->revision() != beforeAdvance) persist();
+            }
             room_ = host_->room();
             if (host_->started()) {
+                if (revision_ != host_->revision() || !view_.clock.enabled) view_ = host_->view();
                 revision_ = host_->revision();
-                view_ = host_->view();
-                if (authenticated_ && connected_ &&
-                    (revision_ != sentRevision_ || now - clockSent_ >= 250ms)) {
-                    tcp_.send(host_->snapshot(1 - host_->player()));
-                    sentRevision_ = revision_;
-                    clockSent_ = now;
+                view_.clock = host_->clock();
+                if (authenticated_ && connected_) {
+                    if (revision_ != sentRevision_) {
+                        tcp_.send(host_->snapshot(1 - host_->player()));
+                        sentRevision_ = revision_;
+                    }
+                    if (now - clockSent_ >= 250ms) {
+                        tcp_.send(host_->clockUpdate());
+                        clockSent_ = now;
+                    }
+                    const auto events = host_->eventsSince(1 - host_->player(), sentEventEpoch_, sentEventCursor_);
+                    if (events.reset || !events.events.empty()) {
+                        tcp_.send(host_->eventUpdate(1 - host_->player(), sentEventEpoch_, sentEventCursor_));
+                        sentEventEpoch_ = events.epoch; sentEventCursor_ = events.next;
+                    }
                 }
             }
             if (authenticated_ && connected_ && room_ != roomSent_) {
@@ -192,9 +210,11 @@ void Peer::tick() {
         } else if (guest_) {
             room_ = guest_->room();
             if (guest_->started()) {
+                const auto resumed = guest_->takeResumed();
+                if (revision_ != guest_->revision() || resumed || !view_.clock.enabled) view_ = guest_->view();
                 revision_ = guest_->revision();
-                view_ = guest_->view();
-                reset_ = guest_->takeResumed() || reset_;
+                view_.clock = guest_->view().clock;
+                reset_ = resumed || reset_;
                 if (view_.result != -1 && replay_.is_null() && authenticated_ && connected_ &&
                     !replayRequested_) {
                     tcp_.send({{"type", "Replay"}, {"session", room_.at("session")}});
@@ -251,6 +271,21 @@ void Peer::tick() {
         if (host_)
             host_->freeze(true);
     }
+}
+ActionOptions Peer::queryActions(PlayerId viewer, std::uint64_t generation,
+                                        std::uint64_t revision, const ActionIntent &intent) {
+    ActionOptions out;
+    if (!started() || viewer != view_.viewer) { out.error = "invalid_viewer"; return out; }
+    if (revision != revision_) { out.error = "stale_query"; return out; }
+    if (blocked()) { out.error = technicalPaused() ? "technical_paused" : "network_wait"; return out; }
+    if (host_) return host_->queryActions(viewer, generation, revision, intent);
+    if (auto result = guest_->queryResult(generation, revision, intent)) return *result;
+    tcp_.send(guest_->query(generation, revision, intent));
+    out.pending = true; return out;
+}
+EventBatch Peer::eventsSince(PlayerId viewer, std::uint64_t epoch, std::uint64_t cursor) const {
+    if (!started() || viewer != view_.viewer) throw std::invalid_argument("invalid event viewer");
+    return host_ ? host_->eventsSince(viewer, epoch, cursor) : guest_->eventsSince(epoch, cursor);
 }
 void Peer::deck(const PlayerDeck &d) {
     if (blocked())
@@ -337,7 +372,7 @@ bool Peer::leave(std::string &error, bool force) {
         error = "等待发送最后的对局记录…";
         return false;
     }
-    if (started() && view_.result == -1 && connected() && !ended_) {
+    if (started() && view_.result == -1 && connected() && !ended_ && !technicalPaused()) {
         if (!closing_) {
             auto r = submit(Surrender{});
             if (!r.accepted) {

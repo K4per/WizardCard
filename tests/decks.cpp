@@ -3,8 +3,16 @@
 #include <algorithm>
 #include <chrono>
 #include <fstream>
+#include <random>
 using namespace wizard;
 using namespace wizard::app;
+namespace {
+std::string uniqueDirectorySuffix() {
+    static std::mt19937_64 random(std::random_device{}());
+    return std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()) + "-" +
+           std::to_string(random());
+}
+}
 TEST_CASE("new construction drafts persist 40 main and 10 formation side cards alongside legacy decks") {
     const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     DeckDraft draft;
@@ -40,7 +48,7 @@ TEST_CASE("new construction drafts persist 40 main and 10 formation side cards a
     invalid["format"] = 9;
     REQUIRE_THROWS(decodeDraft(invalid));
     const auto directory = std::filesystem::path(WIZARD_SOURCE_DIR) / "build" / "deck-tests" /
-        ("construction-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+        ("construction-" + uniqueDirectorySuffix());
     DeckLibrary store(content.catalog, directory);
     auto legacy = store.create("保留旧版");
     legacy.format = 1;
@@ -70,18 +78,18 @@ TEST_CASE("rank and casting fee filters do not give unrelated card types artific
 }
 namespace {
 struct DeckFixture {
-    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     std::filesystem::path directory =
         std::filesystem::path(WIZARD_SOURCE_DIR) / "build" / "deck-tests" /
-        std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
+        uniqueDirectorySuffix();
     ~DeckFixture() {
         std::error_code e;
         std::filesystem::remove_all(directory, e);
     }
     DeckDraft legal(DeckLibrary &store) {
         auto d = store.create("自建解析");
-        for (const auto &id : content.deck)
-            ++d.cards[id];
+        for (const auto &id : content.deck) ++d.cards[id];
+        for (const auto &id : content.sideDeck) ++d.sideCards[id];
         return d;
     }
 };
@@ -100,7 +108,7 @@ TEST_CASE("deck drafts preserve stable ids counts and bases across restart inclu
     auto full = f.legal(library);
     REQUIRE(library.save(full, error));
     REQUIRE(library.problems(full).empty());
-    REQUIRE(full.playerDeck().cards.size() == 30);
+    REQUIRE(full.playerDeck().cards.size() == 40);
 }
 TEST_CASE("draft validation covers quantity same name limit unknown cards and eligible base") {
     DeckFixture f;
@@ -110,9 +118,9 @@ TEST_CASE("draft validation covers quantity same name limit unknown cards and el
     d.cards["fireball"] = 4;
     REQUIRE_FALSE(deckProblems(f.content.catalog, d).empty());
     d = f.legal(library);
-    d.baseFormation = "fireball";
+    d.sideCards["fireball"] = 1;
     REQUIRE_FALSE(deckProblems(f.content.catalog, d).empty());
-    d.baseFormation = "deleted";
+    d.sideCards.erase("fireball"); d.sideCards["deleted"] = 1;
     REQUIRE_FALSE(deckProblems(f.content.catalog, d).empty());
     d = f.legal(library);
     d.cards["missing"] = 1;
@@ -137,8 +145,8 @@ TEST_CASE("card search combines Chinese partial name type rarity setting casting
     q.rarity = "rare";
     q.cost = 3;
     q.castCost = 1;
-    q.rank = 2;
-    q.tags = {"伤害", "销毁"};
+    q.rank = 3;
+    q.tags = {"伤害"};
     REQUIRE(queryCards(f.content.catalog, q) == std::vector<std::string>{"fireball"});
     q.cost = 0;
     REQUIRE(queryCards(f.content.catalog, q).empty());
@@ -161,7 +169,7 @@ TEST_CASE("content upgrades retain removed cards and revalidate changed base eli
     REQUIRE(library.save(d, error));
     auto changed = f.content.catalog;
     changed.cards.erase("fireball");
-    changed.cards.at("balance").baseEligible = false;
+    changed.cards.erase("hexagram");
     changed.contentHash = "new-content";
     DeckLibrary loaded(changed, f.directory);
     REQUIRE(loaded.writable());
@@ -238,7 +246,7 @@ TEST_CASE("saved valid user decks join independent match choices while drafts st
     second.id = a.decks().create().id;
     second.name = "另一构筑";
     --second.cards["fireball"];
-    ++second.cards["conduit"];
+    ++second.cards["barbs"];
     REQUIRE(a.decks().save(d, error));
     REQUIRE(a.decks().save(second, error));
     REQUIRE(a.decks().save(a.decks().create("未完成"), error));

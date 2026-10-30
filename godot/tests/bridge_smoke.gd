@@ -3,6 +3,12 @@ extends SceneTree
 var _bridge: WizardBridge = WizardBridge.new()
 var _options: Dictionary = {}
 var _checked: int = 0
+var _started_ms: int = 0
+var _submitted_ms: int = 0
+var _saved_ms: int = 0
+var _snapshot_us: int = 0
+var _submit_us: int = 0
+var _duplicate_us: int = 0
 
 func _initialize() -> void:
 	var args: PackedStringArray = OS.get_cmdline_user_args()
@@ -18,6 +24,7 @@ func _check(response: Dictionary, context: String) -> Dictionary:
 	return response.get("data", {}) as Dictionary
 
 func _run() -> void:
+	_started_ms = Time.get_ticks_msec()
 	var assets: String = str(_options.get("--assets", ProjectSettings.globalize_path("res://../assets")))
 	var data_dir: String = str(_options.get("--user-data", ProjectSettings.globalize_path("res://../build/v15/smoke-data")))
 	_check(_bridge.initialize(assets, data_dir), "initialize")
@@ -28,10 +35,18 @@ func _run() -> void:
 	var difficulty: int = int(_options.get("--difficulty", 1))
 	_check(_bridge.start_match({"mode": mode, "difficulty": difficulty, "seed": plan["seed"], "players": plan["players"]}), "start")
 	var rows: Array = plan["commands"] as Array
+	var expected_final_digest: String = str(plan["finalDigest"])
+	if _options.has("--limit"):
+		var limit: int = clampi(int(_options["--limit"]), 0, rows.size())
+		rows = rows.slice(0, limit)
+		if not rows.is_empty():
+			expected_final_digest = str((rows.back() as Dictionary)["digest"])
 	for raw: Variant in rows:
 		var row: Dictionary = raw as Dictionary
 		var viewer: int = int(row["actor"]) if mode == "hotseat" else 0
+		var sample_started_us: int = Time.get_ticks_usec()
 		var view: Dictionary = _check(_bridge.snapshot(viewer), "snapshot")
+		_snapshot_us += Time.get_ticks_usec() - sample_started_us
 		if mode == "tutorial":
 			var tutorial: Dictionary = view["tutorial"] as Dictionary
 			while bool(tutorial["canContinue"]) and not bool(tutorial["complete"]):
@@ -42,32 +57,20 @@ func _run() -> void:
 			_check(_bridge.step_ai(str(view["generation"]), str(view["revision"])), "AI commit")
 			_checked += 1
 			continue
-		var actions: Array = view["actions"] as Array
-		var selected: String = ""
-		for raw_action: Variant in actions:
-			var action: Dictionary = raw_action as Dictionary
-			if action["command"] == row["command"]:
-				selected = str(action["id"])
-				break
-		if selected.is_empty():
-			push_error("No legal action for reference step %d" % _checked)
-			quit(3)
-			return
 		var generation: String = str(view["generation"])
 		var revision: String = str(view["revision"])
-		_check(_bridge.select_action(int(row["actor"]), selected, generation, revision), "select")
-		var uncommitted: Dictionary = _check(_bridge.snapshot(int(row["actor"])), "selection snapshot")
-		if uncommitted != view:
-			push_error("Selection mutated the rule state")
-			quit(4)
-			return
-		_check(_bridge.confirm_action(generation, revision), "confirm")
-		var duplicate: Dictionary = _bridge.confirm_action(generation, revision)
+		sample_started_us = Time.get_ticks_usec()
+		_check(_bridge.submit_command(int(row["actor"]), row["command"], generation, revision), "submit reference command")
+		_submit_us += Time.get_ticks_usec() - sample_started_us
+		sample_started_us = Time.get_ticks_usec()
+		var duplicate: Dictionary = _bridge.submit_command(int(row["actor"]), row["command"], generation, revision)
+		_duplicate_us += Time.get_ticks_usec() - sample_started_us
 		if bool(duplicate.get("ok", true)):
-			push_error("Duplicate confirmation was accepted")
+			push_error("Duplicate command accepted with stale revision")
 			quit(5)
 			return
 		_checked += 1
+	_submitted_ms = Time.get_ticks_msec()
 	if mode == "tutorial":
 		var view: Dictionary = _check(_bridge.snapshot(0), "final tutorial")
 		var tutorial: Dictionary = view["tutorial"] as Dictionary
@@ -80,7 +83,9 @@ func _run() -> void:
 			quit(11)
 			return
 	var saved: Dictionary = _check(_bridge.save_replay(), "save")
+	_saved_ms = Time.get_ticks_msec()
 	var verified: Dictionary = _check(_bridge.verify_replay(str(saved["path"])), "verify")
+	var verified_ms: int = Time.get_ticks_msec()
 	var digests: Array = verified["digests"] as Array
 	if digests.size() != rows.size():
 		push_error("Recorded command count mismatch")
@@ -92,7 +97,7 @@ func _run() -> void:
 			push_error("Digest diverged at step %d" % index)
 			quit(7)
 			return
-	if verified["digest"] != plan["finalDigest"]:
+	if verified["digest"] != expected_final_digest:
 		push_error("Final digest mismatch")
 		quit(8)
 		return
@@ -101,7 +106,10 @@ func _run() -> void:
 		push_error("Released handle remained valid")
 		quit(9)
 		return
-	var report: Dictionary = {"ok": true, "steps": _checked, "digest": verified["digest"], "replay": saved["path"]}
+	var report: Dictionary = {"ok": true, "steps": _checked, "digest": verified["digest"], "replay": saved["path"],
+		"submitMs": _submitted_ms - _started_ms, "saveMs": _saved_ms - _submitted_ms,
+		"verifyMs": verified_ms - _saved_ms, "totalMs": verified_ms - _started_ms,
+		"snapshotUs": _snapshot_us, "acceptedSubmitUs": _submit_us, "duplicateSubmitUs": _duplicate_us}
 	if _options.has("--report"):
 		var file: FileAccess = FileAccess.open(str(_options["--report"]), FileAccess.WRITE)
 		if file == null:

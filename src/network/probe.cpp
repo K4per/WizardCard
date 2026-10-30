@@ -1,5 +1,5 @@
-#include "wizard/ai.hpp"
 #include "wizard/network.hpp"
+#include <algorithm>
 #include <iostream>
 #include <thread>
 using namespace wizard;
@@ -12,10 +12,7 @@ int main(int argc, char **argv) {
         net::Peer peer(c, std::filesystem::path(argv[3]));
         PlayerDeck d;
         d.cards = c.deck;
-        if (c.catalog.usesAlphaV2()) {
-            d.sideDeck = c.sideDeck;
-            d.baseFormation = c.initialFormation;
-        }
+        d.sideDeck = c.sideDeck;
         auto port = std::stoul(argv[4]);
         if (!port || port > 65535)
             throw std::runtime_error("Invalid port");
@@ -27,6 +24,8 @@ int main(int argc, char **argv) {
             peer.join(argv[6], static_cast<unsigned short>(port));
         bool deck = host, reconnected = false;
         std::size_t commands = 0;
+        ActionIntent intent;
+        std::uint64_t queryRevision = ~std::uint64_t{0};
         std::string lastNotice;
         auto terminal = std::chrono::steady_clock::time_point{};
         // Current-card-pool matches can exceed three minutes on a busy CI host.
@@ -88,11 +87,37 @@ int main(int argc, char **argv) {
                 } else if (!host && scenario == "reconnect" && commands >= 3 && !reconnected) {
                     peer.reconnect();
                     reconnected = true;
-                } else if (auto a = ai::choose(v, ai::Difficulty::Normal)) {
-                    auto r = peer.submit(a->command);
-                    if (!r.accepted)
-                        throw std::runtime_error(r.error);
-                    ++commands;
+                } else {
+                    if (queryRevision != peer.revision()) { intent = {}; queryRevision = peer.revision(); }
+                    auto options = peer.queryActions(v.viewer, 1, queryRevision, intent);
+                    if (!options.pending && options.error.empty()) {
+                        if (options.complete) {
+                            auto result = peer.submit(*options.complete);
+                            if (!result.accepted) throw std::runtime_error(result.error);
+                            ++commands; intent = {};
+                        } else if (!options.options.empty()) {
+                            auto choice = options.options.begin();
+                            if (options.field == ActionField::Operation) {
+                                const auto preferred = v.actionSummary.safeAdvance ?
+                                    std::to_string(static_cast<unsigned>(commandKind(*v.actionSummary.safeAdvance))) : std::string{};
+                                auto found = std::find_if(options.options.begin(), options.options.end(), [&](const ActionOption &o) {
+                                    return o.value == preferred;
+                                });
+                                if (found != options.options.end()) choice = found;
+                                else {
+                                    found = std::find_if(options.options.begin(), options.options.end(), [](const ActionOption &o) {
+                                        return o.value != std::to_string(static_cast<unsigned>(CommandKind::Surrender));
+                                    });
+                                    if (found == options.options.end()) {
+                                        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+                                        continue;
+                                    }
+                                    choice = found;
+                                }
+                            }
+                            intent.selections.push_back({options.field, choice->value});
+                        }
+                    }
                 }
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(2));

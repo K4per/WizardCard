@@ -62,7 +62,7 @@ Alpha v2.5.1 adds the validated `sique_*` effects for rune detachment,
 filtered searches/recovery, the damage cap, alternate life payment, recycling,
 optional draws, hand shuffling and negation. Their timing and the executable
 `sique_detach_1/2/3`, `sique_cauldron_only`, `sique_requires_campfire` and
-`sique_requires_cauldron` traits are documented in [sique-cards.md](sique-cards.md).
+`sique_requires_cauldron` traits are documented in [archive/README.md](archive/README.md).
 The series uses the existing fields and does not introduce an unvalidated
 script or an arbitrary effect name.
 

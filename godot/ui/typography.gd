@@ -1,16 +1,19 @@
 class_name Typography
 extends RefCounted
 
-# Godot's built-in fallback keeps fresh headless imports portable across platforms.
-# The bundled CFF OTF files remain available to the desktop export and art pipeline,
-# but Godot 4.7 cannot load them from a clean Linux import cache.
-static var BODY: Font = ThemeDB.fallback_font
-static var HEADING: Font = ThemeDB.fallback_font
-static var MENU: Font = ThemeDB.fallback_font
+# Keep the shipped Chinese fonts in the UI while retaining a safe fallback for
+# platforms where the importer cannot provide a dynamic font resource.
+static var BODY: Font = _bundled_or_fallback("res://art/fonts/NotoSansCJKsc-Regular.otf")
+static var HEADING: Font = _bundled_or_fallback("res://art/fonts/NotoSansCJKsc-Bold.otf")
+static var MENU: Font = _bundled_or_fallback("res://art/fonts/NotoSansCJKsc-Black.otf")
 const SCALES: Array[int] = [90, 100, 110, 120]
 const DEFAULT_SCALE: int = 100
 
 static var scale_percent: int = 100
+
+static func _bundled_or_fallback(path: String) -> Font:
+	var bundled: Font = load(path) as Font
+	return bundled if bundled != null else ThemeDB.fallback_font
 
 static func override_size(control: Control, item: StringName, base_size: int) -> void:
 	var base: Dictionary = control.get_meta(&"typography_base_sizes", {})

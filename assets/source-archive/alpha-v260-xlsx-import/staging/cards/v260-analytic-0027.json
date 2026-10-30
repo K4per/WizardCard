@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0027",
+  "number": "020027",
+  "name": "恐惧术",
+  "type": "analytic",
+  "school": "illusion",
+  "rarity": "uncommon",
+  "rank": 5,
+  "cost": 4,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "专注4。对方不可选择己方为法术卡的目标。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 28
+  },
+  "illustrationId": "v260-analytic-0027",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\恐惧术.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

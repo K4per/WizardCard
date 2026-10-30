@@ -162,9 +162,9 @@
 
 - [README](../README.md)、[联机说明](network-play.md)：当前可复用功能与Godot接入边界。
 - [正式卡池清单](../assets/catalog.json)、[插图映射](../assets/art/runtime.json)：设计稿记录的历史卡池与保留插图入口，不代表新版机制已实现。
-- [术语规范](terminology.md)：现有卡名参考；类型、区域、构筑、过载、枯竭和速度的新要求以报告及后续正式规则定稿为准。
-- [历史UI需求](art-resource-requirements.md)、[旧UI资源](../assets/art/ui/manifest.json)：只供结构参考，不计入新版交付。
-- [最近卡框探索](../assets/art/design/spell-layout-v1/README.md)：候选视觉参考，尚不等于新版定稿。
+- [术语规范](../GLOSSARY.md)：现有卡名参考；类型、区域、构筑、过载、枯竭和速度的新要求以报告及后续正式规则定稿为准。
+- [历史UI需求](archive/README.md)、[当前 Godot 美术清单](../godot/art/assets.json)：旧导出资源已清理，以 Godot 运行清单和下方重绘批次为准。
+- 早期卡框探索稿已从工作区清理，当前素材以 Godot 运行清单和下方重绘批次为准。
 
 ## 主界面重绘批次
 

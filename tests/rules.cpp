@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/replay.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
@@ -5,12 +6,12 @@
 using namespace wizard;
 namespace {
 struct Fixture {
-    Content content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"tests/fixtures/stage2"); GameState state;
+    Content content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets"); MutationContext state;
     Fixture() {
         state.phase=Phase::Main; state.flow=Flow::Main; state.rng=7;
         for(int p=0;p<2;++p) {
             state.players[p].mana=12; state.players[p].ownTurn=1;
-            CardInstance c; c.id=static_cast<CardId>(p+1); c.definition="balance"; c.owner=p; c.zone=Zone::Analysis; c.base=true; state.cards[c.id]=c;
+            CardInstance c; c.id=static_cast<CardId>(p+1); c.definition="hexagram"; c.owner=p; c.zone=Zone::Analysis; c.base=true; state.cards[c.id]=c;
             for(int n=0;n<20;++n) { c={}; c.id=static_cast<CardId>(100+p*20+n); c.owner=p; c.definition="spark"; state.cards[c.id]=c; state.players[p].deck.push_back(c.id); }
         }
     }
@@ -20,13 +21,13 @@ struct Fixture {
     CardInstance& ready(CardId id,std::string name="fireball",PlayerId p=0,CardId host=1) {
         auto& c=card(id,std::move(name),p,Zone::Analysis);c.host=host;c.spell=SpellState::Ready;c.analysisLoad=content.catalog.at(c.definition).cost;return c;
     }
-    GameEngine engine() { return GameEngine::scenario(content.catalog,state); }
+    test::ObservedEngine engine() { return test::ObservedEngine::scenario(content.catalog,state); }
 };
 // Legacy regressions use a client driver to pass empty phases; the new phase
 // tests submit each gate explicitly and never use this helper.
-void emptyPhases(GameEngine& e) { for(int i=0;i<10 && e.state().result==-1 && !e.state().decision && e.state().phase!=Phase::Main;++i){auto r=e.submit(e.state().active,AdvancePhase{e.state().phaseGate});INFO(r.error);REQUIRE(r.accepted);} }
-void accept(GameEngine& e,PlayerId p,Command c) { auto r=e.submit(p,c); INFO(r.error); REQUIRE(r.accepted);if(std::holds_alternative<Advance>(c) || std::holds_alternative<Choose>(c))emptyPhases(e); }
-void chooseFirst(GameEngine& e) { auto d=*e.state().decision; accept(e,d.player,Choose{d.id,d.options.front()}); }
+void emptyPhases(test::ObservedEngine& e) { for(int i=0;i<10 && e.state().result==-1 && !e.state().decision && e.state().phase!=Phase::Main;++i){auto r=e.submit(e.state().active,AdvancePhase{e.state().phaseGate});INFO(r.error);REQUIRE(r.accepted);} }
+void accept(test::ObservedEngine& e,PlayerId p,Command c) { auto r=e.submit(p,c); INFO(r.error); REQUIRE(r.accepted);if(std::holds_alternative<Advance>(c) || std::holds_alternative<Choose>(c))emptyPhases(e); }
+void chooseFirst(test::ObservedEngine& e) { auto d=*e.state().decision; accept(e,d.player,Choose{d.id,d.options.front()}); }
 }
 TEST_CASE("load boundary is inclusive and rejected commands are atomic") {
     Fixture f; f.ready(10); f.state.temporary.push_back({1,0,0,4,2}); auto e=f.engine();
@@ -57,20 +58,20 @@ TEST_CASE("passing response completes preparation and releases original ring") {
     REQUIRE(Rules::occupied(e.state(),1)==0);
 }
 TEST_CASE("formation and dependents leave before overload check") {
-    Fixture f; f.card(10,"balance",0,Zone::Analysis); f.ready(11,"fireball",0,10).analysisLoad=6;
+    Fixture f; f.card(10,"hexagram",0,Zone::Analysis); f.ready(11,"fireball",0,10).analysisLoad=6;
     f.ready(12).analysisLoad=7; f.card(13,"ring",0,Zone::Attached).host=11;
     StateMaintenance::leave(f.state,10); StateMaintenance::check(f.state,f.content.catalog);
     REQUIRE(f.state.result==-1); REQUIRE(Rules::load(f.state,0)==7); REQUIRE(f.state.cards.at(13).zone==Zone::Ash);
     REQUIRE(f.state.players[0].sealRemovals==0);
 }
 TEST_CASE("destroying empty formation can cause overload and base is protected") {
-    Fixture f; f.card(10,"balance",1,Zone::Analysis); f.state.temporary.push_back({1,1,0,10,2});
+    Fixture f; f.card(10,"hexagram",1,Zone::Analysis); f.state.temporary.push_back({1,1,0,10,2});
     StateMaintenance::leave(f.state,10); StateMaintenance::check(f.state,f.content.catalog); REQUIRE(f.state.result==0);
     StateMaintenance::leave(f.state,1); REQUIRE(f.state.cards.at(1).zone==Zone::Analysis);
 }
 TEST_CASE("prepared spell survives former formation destruction") {
-    Fixture f;f.card(10,"balance",0,Zone::Analysis);f.ready(11,"spark",0,10);auto e=f.engine();accept(e,0,PrepareCast{11,0,0});
-    auto s=e.state();StateMaintenance::leave(s,10);REQUIRE(s.cards.at(11).zone==Zone::Casting);REQUIRE(s.cards.at(11).analysisLoad==1);
+    Fixture f;f.card(10,"hexagram",0,Zone::Analysis);f.ready(11,"spark",0,10);auto e=f.engine();accept(e,0,PrepareCast{11,0,0});
+    auto s = test::mutation(e.state());StateMaintenance::leave(s,10);REQUIRE(s.cards.at(11).zone==Zone::Casting);REQUIRE(s.cards.at(11).analysisLoad==1);
 }
 TEST_CASE("instant success refunds only cast payment before leaving") {
     Fixture f; f.ready(10); f.card(11,"ring",0,Zone::Attached).host=10; f.state.players[0].mana=4;
@@ -99,9 +100,9 @@ TEST_CASE("fourth action is allowed and ordinary resource and timing rules remai
     REQUIRE(e.state().players[0].actionsPlayed==4);REQUIRE(e.state().players[0].mana==7);
     REQUIRE(Rules::load(e.state(),1)==2);
     auto before=e.digest();REQUIRE_FALSE(e.submit(1,PlayAction{14,0}).accepted);REQUIRE(e.digest()==before);
-    auto s=e.state();s.players[0].mana=1;auto poor=GameEngine::scenario(f.content.catalog,s);before=poor.digest();
+    auto s = test::mutation(e.state());s.players[0].mana=1;auto poor=test::ObservedEngine::scenario(f.content.catalog,s);before=poor.digest();
     REQUIRE_FALSE(poor.submit(0,PlayAction{14,0}).accepted);REQUIRE(poor.digest()==before);
-    s.players[0].mana=12;s.temporary.push_back({20,0,0,8,2});auto full=GameEngine::scenario(f.content.catalog,s);before=full.digest();
+    s.players[0].mana=12;s.temporary.push_back({20,0,0,8,2});auto full=test::ObservedEngine::scenario(f.content.catalog,s);before=full.digest();
     REQUIRE_FALSE(full.submit(0,PlayAction{14,0}).accepted);REQUIRE(full.digest()==before);
 }
 TEST_CASE("clear temporary uses player allocation and leaves bound load") {
@@ -142,7 +143,7 @@ TEST_CASE("periodic triggers preserve chosen order and queued source snapshot") 
     auto d=*e.state().decision;accept(e,0,Choose{d.id,d.options.back()});REQUIRE(e.state().players[1].life==startingLife-4);
 }
 TEST_CASE("first player skips only first base draw and both get income") {
-    auto c=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"tests/fixtures/alpha-v1-production");GameEngine e(c.catalog,{c.deck,c.deck},42);int first=e.state().first;
+    auto c=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");test::ObservedEngine e(c.catalog,{c.deck,c.deck},42);int first=e.state().first;
     emptyPhases(e);
     REQUIRE(e.viewFor(first).players[first].handCount==5);REQUIRE(e.state().players[first].mana==3);
     accept(e,first,Advance{});REQUIRE(e.viewFor(1-first).players[1-first].handCount==6);REQUIRE(e.state().players[1-first].mana==3);
@@ -178,7 +179,7 @@ TEST_CASE("same-event order is active owner then non-active owner and appended b
     f.state.queue.append({3,1,1,0,0,0,{{EffectKind::Damage,3}}});f.state.queue.append({4,2,0,0,0,1,{{EffectKind::Damage,4}}});
     f.state.decision=PendingDecision{1,0,DecisionKind::TriggerOrder,{1,2},false};auto e=f.engine();accept(e,0,Choose{1,2});
     REQUIRE(e.state().players[0].life==startingLife-3);REQUIRE(e.state().players[1].life==startingLife-7);
-    std::vector<int> values;for(const auto& event:e.state().events)if(event.kind=="effect")values.push_back(event.amount);
+    std::vector<int> values;for(const auto& event:e.events())if(event.kind=="effect")values.push_back(event.amount);
     REQUIRE(values.size()==4);REQUIRE(values[0]==2);REQUIRE(values[1]==1);REQUIRE(values[2]==3);REQUIRE(values[3]==4);
 }
 TEST_CASE("new formations do not grant immediate income and analysis completes next own turn") {
@@ -191,9 +192,9 @@ TEST_CASE("end triggers resolve and check before expiring temporary load") {
     f.state.players[1].life=2;f.state.temporary.push_back({1,0,0,1,1});auto e=f.engine();accept(e,0,Advance{});REQUIRE(e.state().result==0);REQUIRE(e.state().temporary.size()==1);
 }
 TEST_CASE("long legal and illegal command sequences preserve state invariants") {
-    auto content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"tests/fixtures/alpha-v1-production");
+    auto content=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");
     for(std::uint32_t seed=1;seed<=8;++seed) {
-        GameEngine e(content.catalog,{content.deck,content.deck},seed);std::uint32_t rng=seed;
+        test::ObservedEngine e(content.catalog,{content.deck,content.deck},seed);std::uint32_t rng=seed;
         for(int n=0;n<100 && e.state().result==-1;++n) {
             int p=e.state().decision?e.state().decision->player:e.state().active;auto view=e.viewFor(p);std::vector<Command> commands;
             for(const auto& a:view.actions)if(!std::holds_alternative<Surrender>(a.command))commands.push_back(a.command);

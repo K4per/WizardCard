@@ -1,16 +1,17 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include <catch2/catch_test_macros.hpp>
 
 using namespace wizard;
 
-TEST_CASE("ice storm advances every analyzing opponent spell", "[storm][rc-content]") {
-    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
+TEST_CASE("ice storm advances every analyzing opponent spell", "[storm][rc-content][legacy]") {
+    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     const auto &catalog = content.catalog;
     const auto &iceStormDefinition = catalog.at("ice-storm");
     REQUIRE(iceStormDefinition.effects.size() == 2);
     REQUIRE(iceStormDefinition.effects[1].kind == EffectKind::AdvanceAllEnemyAnalysis);
 
-    GameState state;
+    MutationContext state;
     state.phase = Phase::Cast;
     state.flow = Flow::Cast;
     state.phaseStep = PhaseStep::Body;
@@ -57,7 +58,7 @@ TEST_CASE("ice storm advances every analyzing opponent spell", "[storm][rc-conte
     ownSpell.spell = SpellState::Ready;
     ownSpell.analysisProgress = 1;
 
-    auto engine = GameEngine::scenario(catalog, state);
+    auto engine = test::ObservedEngine::scenario(catalog, state);
     const auto released = engine.submit(0, ActivateSpell{20});
     INFO(released.error);
     REQUIRE(released.accepted);

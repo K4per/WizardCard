@@ -14,6 +14,7 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_PACKAGE_VERSION = "2.6.0-staging"
 
 
 def run(*args):
@@ -25,14 +26,22 @@ def main():
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--build", type=Path, required=True)
     parser.add_argument("--configuration", default="Release")
-    parser.add_argument("--output", type=Path, default=ROOT / "dist/WizardCard-2.5.5-hotfix.1-windows-x64")
+    parser.add_argument("--package-version", default=DEFAULT_PACKAGE_VERSION,
+                        help="portable package label; the executable reports its own runtime version")
+    parser.add_argument("--output", type=Path,
+                        help="empty package directory; defaults to dist/WizardCard-<package-version>-windows-x64")
+    parser.add_argument("--staging-report", type=Path,
+                        default=ROOT / "assets/source-archive/alpha-v260-xlsx-import/import-report.md",
+                        help="v2.6.0 import report to include in a staging package")
+    parser.add_argument("--include-presets", action="store_true",
+                        help="include legacy public presets (disabled for the v2.6.0 staging package)")
     parser.add_argument("--crt", type=Path, help="Directory containing the x64 VC runtime DLLs")
     args = parser.parse_args()
     lock = json.loads((ROOT / "godot/toolchain-lock.json").read_text())
     version = subprocess.check_output([str(args.godot), "--version"], text=True).strip()
     if version != lock["engine"]:
         raise SystemExit(f"Expected Godot {lock['engine']}, found {version}")
-    output = args.output.resolve()
+    output = (args.output or (ROOT / "dist" / f"WizardCard-{args.package_version}-windows-x64")).resolve()
     if not output.is_relative_to(ROOT / "dist"):
         raise SystemExit("Package output must be inside this repository's dist directory")
     output.mkdir(parents=True, exist_ok=True)
@@ -46,7 +55,9 @@ def main():
     run(args.godot, "--headless", "--path", ROOT / "godot", "--import", "--frame-delay", "1000")
     run(args.godot, "--headless", "--path", ROOT / "godot", "--export-release", "Windows Desktop", output / "WizardCard.exe")
     manifest = json.loads((ROOT / "assets/catalog.json").read_text(encoding="utf-8"))
-    data_files = ["catalog.json", "cards.json", "deck.json", "side-deck.json", "presets.json"]
+    data_files = ["catalog.json", "cards.json", "deck.json", "side-deck.json"]
+    if args.include_presets:
+        data_files.append("presets.json")
     data_files += [entry["file"] for entry in manifest["definitions"]]
     for relative in data_files:
         source = ROOT / "assets" / relative
@@ -65,27 +76,23 @@ def main():
             shutil.copy2(file, output / file.name)
     for name in ("LICENSE", "THIRD_PARTY_NOTICES.md", "README.md", "CHANGELOG.md", "GLOSSARY.md"):
         shutil.copy2(ROOT / name, output / name)
-    shutil.copytree(ROOT / "licenses", output / "licenses")
-    (output / "docs").mkdir()
-    for name in ("alpha-v2.5-rules.md", "card-catalog.md", "card-catalog.html", "sique-cards.md",
-                 "card-migration-2.5.3.md", "releases/2.5.5-hotfix.1.md", "reports/2.5.5-hotfix.1.md",
-                 "releases/2.5.5.md", "reports/2.5.5.md",
-                 "releases/2.5.4.md", "reports/2.5.4.md",
-                 "releases/2.5.3-hotfix.1.md", "reports/2.5.3-hotfix.1.md",
-                 "releases/2.5.3.md", "reports/2.5.3.md",
-                 "reports/alpha-v2.5.3-requirements.md", "reports/alpha-v2.5.3-network.md",
-                 "reports/alpha-v2.5.3-card-pool-migration.md", "reports/alpha-v2.5.3-card-acceptance.md",
-                 "reports/alpha-v2.5.3-card-acceptance.json"):
+    if args.staging_report.is_file():
+        destination = output / "docs" / "releases" / "alpha-v2.6.0-staging-import.md"
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(args.staging_report, destination)
+    shutil.copytree(ROOT / "licenses", output / "licenses",
+                    ignore=shutil.ignore_patterns("SFML.txt"))
+    (output / "docs").mkdir(exist_ok=True)
+    for name in ("alpha-v2.5-rules.md", "architecture.md", "network-play.md",
+                 "card-catalog.md", "card-catalog.html", "sique-cards.md",
+                 "releases/2.6.0-staging.md",
+                 "releases/2.5.5-hotfix.1.md", "reports/2.5.5-hotfix.1.md",
+                 "releases/2.5.5.md", "reports/2.5.5.md"):
         source = ROOT / "docs" / name
         if source.exists():
             destination = output / "docs" / name
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, destination)
-    evidence = ROOT / "docs/reports/alpha-v2.5.3-evidence"
-    if evidence.is_dir():
-        shutil.copytree(evidence, output / "docs/reports/alpha-v2.5.3-evidence")
-    # Keep the migration report's relative source and draft links usable offline.
-    shutil.copytree(ROOT / "assets/design/alpha-v254", output / "assets/design/alpha-v254")
     # The offline catalogue uses the same relative illustration paths as the
     # repository. Copy only the official cards' runtime art beside the docs.
     art_files = {entry["id"]: entry["file"]
@@ -110,6 +117,8 @@ def main():
     verified = json.loads(recording.read_text(encoding="utf-8"))
     release = {key: verified[key] for key in
                ("programVersion", "rulesVersion", "cardSetVersion", "contentHash")}
+    release.update({"packageVersion": args.package_version,
+                    "status": "staging-blocked" if args.staging_report.is_file() else "runtime-verified"})
     release.update({"mechanicsRevision": manifest["metadata"]["mechanicsRevision"],
                     "cardCount": len(cards), "engine": version,
                     "catalogSha256": hashlib.sha256((output / "assets/cards.json").read_bytes()).hexdigest(),
@@ -117,6 +126,9 @@ def main():
     (output / "RELEASE.json").write_text(json.dumps(release, indent=2) + "\n", encoding="utf-8")
     if not bridge_destination.is_file():
         raise SystemExit("Portable package is missing bin/wizard_godot_bridge.release.dll")
+    sfml_files = [path for path in output.rglob("*") if path.is_file() and "sfml" in path.name.lower()]
+    if sfml_files:
+        raise SystemExit("Portable package contains retired SFML files: " + ", ".join(map(str, sfml_files)))
     # Export exclusions can remove a global script class while editor tests still
     # pass. Boot the actual executable; release templates disable --script.
     with tempfile.TemporaryDirectory(prefix="wizardcard-package-") as startup_check:
@@ -140,6 +152,7 @@ def main():
     archive_hash = hashlib.sha256(archive.read_bytes()).hexdigest()
     (archive.parent / (archive.name + ".sha256")).write_text(archive_hash + "  " + archive.name + "\n", encoding="utf-8")
     print(json.dumps({"package": str(output), "zip": str(archive), "files": len(inventory),
+                      "packageVersion": args.package_version,
                       "sha256": archive_hash}, indent=2))
 
 

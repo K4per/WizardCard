@@ -22,17 +22,12 @@ void MatchSession::syncClock() {
                 clock_.remainingMs[p] + 60000LL * (turn - replenishedTurn_[p]));
             replenishedTurn_[p] = turn;
         }
-        if (clockFrozen_ || state.result != -1) continue;
-        const auto view = engine_.viewFor(p);
-        bool actionable = false, onlyPhase = true;
-        for (const auto &action : view.actions) {
-            if (std::holds_alternative<Surrender>(action.command)) continue;
-            actionable = true;
-            if (!std::holds_alternative<AdvancePhase>(action.command)) onlyPhase = false;
-        }
-        const bool automatic = automaticClockPhases_ && onlyPhase &&
-            view.phase != Phase::Main && view.phaseStep == PhaseStep::Body &&
-            !view.decision && !view.chain;
+        if (clockFrozen_ || technicalPaused_ || state.result != -1) continue;
+        const auto summary = engine_.actionSummary(p);
+        const bool actionable = summary.actionable;
+        const bool automatic = automaticClockPhases_ && !summary.hasNonPhaseAction &&
+            state.phase != Phase::Main && state.phaseStep == PhaseStep::Body &&
+            !state.decision && !state.chain;
         clock_.runningPlayers[p] = actionable && !automatic;
     }
     clock_.running = clock_.runningPlayers[0] || clock_.runningPlayers[1];
@@ -47,7 +42,7 @@ void MatchSession::tick() {
     const auto elapsed = std::max<std::int64_t>(0,
         std::chrono::duration_cast<std::chrono::milliseconds>(now - clockAt_).count());
     clockAt_ += std::chrono::milliseconds(elapsed);
-    if (clockFrozen_ || engine_.state().result != -1) { clockAt_ = now; return; }
+    if (clockFrozen_ || technicalPaused_ || engine_.state().result != -1) { clockAt_ = now; return; }
     PlayerId expired = -1;
     std::int64_t firstExpiry = elapsed + 1;
     for (int p = 0; p < 2; ++p) if (clock_.runningPlayers[p]) {
@@ -60,20 +55,39 @@ void MatchSession::tick() {
         clock_.remainingMs[p] = std::max<std::int64_t>(0, clock_.remainingMs[p] - charge);
     if (expired >= 0) {
         const auto result = engine_.timeout(expired);
-        if (result.accepted) commands_.push_back({expired, Timeout{}, engine_.digest()});
+        if (result.accepted) {
+            commands_.push_back({expired, Timeout{}, engine_.digest()});
+            appendEvents(result.events);
+            changed();
+        } else handleFault(expired, Timeout{}, result);
     }
     if (expired >= 0) syncClock();
     else if (elapsed) ++clock_.sequence;
 }
 void MatchSession::freezeClock(bool frozen) {
     tick();
-    clockFrozen_ = frozen;
+    clockFrozen_ = frozen || technicalPaused_;
     if (now_) clockAt_ = now_();
     syncClock();
 }
+ActionOptions MatchSession::queryActions(PlayerId viewer, std::uint64_t, std::uint64_t revision,
+                                               const ActionIntent &intent) {
+    ActionOptions out;
+    if (viewer < 0 || viewer > 1) { out.error = "invalid_viewer"; return out; }
+    if (revision != revision_) { out.error = "stale_query"; return out; }
+    if (technicalPaused_) { out.error = "technical_paused"; return out; }
+    return engine_.queryActions(viewer, intent);
+}
 GameView MatchSession::viewFor(PlayerId viewer) const {
-    auto view = engine_.viewFor(viewer);
+    if (viewer < 0 || viewer > 1) throw std::invalid_argument("invalid viewer");
+    if (!viewCache_[viewer] || viewRevision_[viewer] != revision_) {
+        viewCache_[viewer] = engine_.viewFor(viewer);
+        viewCache_[viewer]->actionSummary = engine_.actionSummary(viewer);
+        viewRevision_[viewer] = revision_;
+    }
+    auto view = *viewCache_[viewer];
     view.clock = clock_;
+    view.technicalPaused = technicalPaused_;
     return view;
 }
 } // namespace wizard

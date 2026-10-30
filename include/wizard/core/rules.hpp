@@ -25,27 +25,27 @@ struct Rules {
     static std::vector<std::string> invariants(const GameState &, const CardCatalog &);
 };
 struct StateMaintenance {
-    static void leave(GameState &, CardId, const CardCatalog * = nullptr);
-    static void check(GameState &, const CardCatalog &, bool endCleanup = false);
+    static void leave(MutationContext &, CardId, const CardCatalog * = nullptr);
+    static void check(MutationContext &, const CardCatalog &, bool endCleanup = false);
 };
 struct ResourceRules {
     static bool canPayMana(const GameState &, PlayerId, int amount);
-    static void payMana(GameState &, PlayerId, int amount);
+    static void payMana(MutationContext &, PlayerId, int amount);
     // Each grant expires at the start of the recipient's indicated draw phase.
     // Source 0 denotes a migrated aggregate with unknown historical provenance.
-    static void normalizeTemporaryLife(GameState &, PlayerId);
-    static void grantTemporaryLife(GameState &, PlayerId, CardId source, int amount, int expiryOwnTurn);
-    static void absorbTemporaryLife(GameState &, PlayerId, int amount);
-    static void clearTemporaryLife(GameState &, PlayerId, CardId source = 0);
-    static void expireTemporaryLife(GameState &, PlayerId);
+    static void normalizeTemporaryLife(MutationContext &, PlayerId);
+    static void grantTemporaryLife(MutationContext &, PlayerId, CardId source, int amount, int expiryOwnTurn);
+    static void absorbTemporaryLife(MutationContext &, PlayerId, int amount);
+    static void clearTemporaryLife(MutationContext &, PlayerId, CardId source = 0);
+    static void expireTemporaryLife(MutationContext &, PlayerId);
     // Rules damage bypasses spell resistance, consumes temporary life first.
     // EffectResolver checks terminal state before executing the next effect.
-    static void damage(GameState &, PlayerId, int amount, const std::string &reason, const CardCatalog *catalog = nullptr);
+    static void damage(MutationContext &, PlayerId, int amount, const std::string &reason, const CardCatalog *catalog = nullptr);
     // Call immediately after each individual positive mutation, with its gross increase.
-    static void increasedLoad(GameState &, const CardCatalog &, PlayerId, int increment);
-    static void drawOne(GameState &, const CardCatalog &, PlayerId);
+    static void increasedLoad(MutationContext &, const CardCatalog &, PlayerId, int increment);
+    static void drawOne(MutationContext &, const CardCatalog &, PlayerId);
 };
 struct EffectResolver {
-    static void apply(GameState &, const CardCatalog &, const Trigger &, const Effect &);
+    static void apply(MutationContext &, const CardCatalog &, const Trigger &, const Effect &);
 };
 } // namespace wizard

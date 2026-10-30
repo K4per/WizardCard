@@ -23,9 +23,8 @@ GameView GameEngine::viewFor(PlayerId p) const {
     v.temporaryLives = state_.temporaryLives;
     const bool inspectEnemyAmbush = std::any_of(state_.cards.begin(), state_.cards.end(), [&](const auto &item) {
         const auto &card = item.second;
-        const auto &traits = catalog_.at(card.definition).traits;
         return controllerOf(card) == p && card.zone == Zone::Analysis && !card.faceDown &&
-            std::find(traits.begin(), traits.end(), "inspect_enemy_ambush") != traits.end();
+            hasCapability(catalog().at(card.definition), Capability::InspectEnemyAmbush);
     });
     for (int i = 0; i < 2; ++i) {
         const auto &pl = state_.players[i];
@@ -36,7 +35,7 @@ GameView GameEngine::viewFor(PlayerId p) const {
         v.players[i] = {pl.life,
                         pl.mana,
                         Rules::load(state_, i),
-                        Rules::capacity(state_, catalog_, i),
+                        Rules::capacity(state_, catalog(), i),
                         hand,
                         static_cast<int>(pl.deck.size()),
                         pl.ownTurn,
@@ -44,9 +43,9 @@ GameView GameEngine::viewFor(PlayerId p) const {
                         pl.temporaryLife,
                         pl.blockedActionTurn};
         for (const auto &[id, c] : state_.cards)
-            if (controllerOf(c) == i && (c.zone == Zone::Casting || (catalog_.usesAlphaV2() && c.zone == Zone::Analysis)) &&
+            if (controllerOf(c) == i && (c.zone == Zone::Casting || (c.zone == Zone::Analysis)) &&
                 !c.faceDown && c.spell == SpellState::Active) {
-                const auto &d = catalog_.at(c.definition);
+                const auto &d = catalog().at(c.definition);
                 v.players[i].resistances.insert(v.players[i].resistances.end(), d.resistances.begin(),
                                                 d.resistances.end());
                 v.players[i].immunities.insert(v.players[i].immunities.end(), d.immunities.begin(),
@@ -55,8 +54,8 @@ GameView GameEngine::viewFor(PlayerId p) const {
     }
     for (int player = 0; player < 2; ++player) {
         v.players[player].exhaustion = state_.players[player].exhaustion;
-        v.players[player].lifeLimit = card_rules::lifeLimit(state_, catalog_, player);
-        v.players[player].sevenMode = card_rules::aspectMode(state_, catalog_, player);
+        v.players[player].lifeLimit = card_rules::lifeLimit(state_, catalog(), player);
+        v.players[player].sevenMode = card_rules::aspectMode(state_, catalog(), player);
         v.players[player].infiniteLife = state_.players[player].debugInfiniteLife;
         v.players[player].infiniteMana = state_.players[player].debugInfiniteMana;
         v.players[player].infiniteLoad = state_.players[player].debugInfiniteLoad;
@@ -67,18 +66,18 @@ GameView GameEngine::viewFor(PlayerId p) const {
         if (c.publiclyRevealed || ((c.zone != Zone::Deck ||
              (state_.decision && state_.decision->player == p &&
               (state_.decision->kind == DecisionKind::SearchDeck ||
-               (catalog_.usesAlphaV2() && state_.decision->kind == DecisionKind::EffectChoice)) &&
-              std::find(state_.decision->options.begin(), state_.decision->options.end(), id) !=
+               (state_.decision->kind == DecisionKind::EffectChoice)) &&
+              std::find(state_.decision->options.begin(), state_.decision->options.end(), ChoiceValue::card(id)) !=
                   state_.decision->options.end())) &&
             (c.zone != Zone::Hand || controllerOf(c) == p) && (c.zone != Zone::SideDeck || controllerOf(c) == p))) {
-            const auto &def = catalog_.at(c.definition);
+            const auto &def = catalog().at(c.definition);
             CardView card{c, def};
-            card.effectiveCastCost = Rules::castCost(state_, catalog_, id);
+            card.effectiveCastCost = Rules::castCost(state_, catalog(), id);
             card.effectiveSettingCost = def.type == CardType::Talisman ? 0 : def.cost;
             if (def.type == CardType::Analytic) {
                 // No host yet in hand: show the source's current setting cost.
                 // Once placed, also include the actual host's modifiers.
-                card.effectiveSettingCost = Rules::analysisCost(state_, catalog_, id,
+                card.effectiveSettingCost = Rules::analysisCost(state_, catalog(), id,
                     c.zone == Zone::Analysis ? c.host : 0);
             }
             if (c.faceDown && controllerOf(c) != p && !c.publiclyRevealed && !(inspectEnemyAmbush && c.zone == Zone::Analysis)) {
@@ -100,33 +99,30 @@ GameView GameEngine::viewFor(PlayerId p) const {
                 continue;
             }
             if (def.type == CardType::Formation && c.zone == Zone::Analysis) {
-                card.effectiveRings = Rules::rings(state_, catalog_, id);
+                card.effectiveRings = Rules::rings(state_, catalog(), id);
                 card.occupiedRings = Rules::occupied(state_, id);
-                card.definition.level = Rules::level(state_, catalog_, id);
-                card.definition.maxRank = Rules::maxRank(state_, catalog_, id);
+                card.definition.level = Rules::level(state_, catalog(), id);
+                card.definition.maxRank = Rules::maxRank(state_, catalog(), id);
                 card.definition.rings = card.effectiveRings;
-                if (def.id == "storm-crest") {
+                if (hasCapability(def, Capability::StormCrest)) {
                     card.definition.capacity = state_.cards.at(id).stormPoints >= 5 ? 10 :
                         state_.cards.at(id).stormPoints >= 3 ? 8 : 5;
-                    card.definition.income = Rules::income(state_, catalog_, id);
+                    card.definition.income = Rules::income(state_, catalog(), id);
                 }
             }
             if (c.spell == SpellState::Analyzing)
                 card.turnsToReady =
-                        std::max(0, def.analysisTurns - (catalog_.usesAlphaV2() ? c.analysisProgress :
-                        state_.players[controllerOf(c)].ownTurn - c.analysisStarted));
+                        std::max(0, def.analysisTurns - c.analysisProgress);
             v.cards.push_back(std::move(card));
         }
     if (state_.decision && state_.decision->player == p)
         v.decision = state_.decision;
-    for (const auto &e : state_.events)
-        if (e.audience == -1 || e.audience == p)
-            v.events.push_back(e);
+
     v.temporary = state_.temporary;
-    v.actions = legalActions(p);
+    // Actions are queried separately; stable projections never enumerate commands.
     if (v.decision && v.decision->kind == DecisionKind::TriggerOrder)
         for (const auto &t : state_.queue.items)
-            if (std::find(v.decision->options.begin(), v.decision->options.end(), t.id) !=
+            if (std::find(v.decision->options.begin(), v.decision->options.end(), ChoiceValue{ChoiceKind::Trigger, t.id}) !=
                     v.decision->options.end() &&
                 std::any_of(v.cards.begin(), v.cards.end(),
                             [&](const CardView &c) { return c.instance.id == t.source; }))

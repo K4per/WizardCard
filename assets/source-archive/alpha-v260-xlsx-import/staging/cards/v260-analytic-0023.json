@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0023",
+  "number": "020023",
+  "name": "防死结界",
+  "type": "analytic",
+  "school": "necromancy",
+  "rarity": "rare",
+  "rank": 7,
+  "cost": 7,
+  "castCost": 7,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "永续。此卡在己方解析区仅可存在1张。当己方生命值归零时，可以将此法术卡抹除作为替代。那之后，己方生命值变为1。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 24
+  },
+  "illustrationId": "v260-analytic-0023",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\防死结界.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

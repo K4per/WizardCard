@@ -125,7 +125,7 @@ if(BUILD_TESTING AND GODOT_BIN)
     --output ${CMAKE_CURRENT_BINARY_DIR}/deck-frontend-smoke-output)
   set_tests_properties(godot_deck_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
-  foreach(smoke typography feedback deck_exchange network_frontend art_residency)
+  foreach(smoke typography feedback deck_exchange network_frontend art_residency incremental_kernel)
     add_test(NAME godot_${smoke}_smoke COMMAND "${GODOT_BIN}" --headless
       --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/${smoke}_smoke.gd --
       --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets

@@ -1,0 +1,20 @@
+{
+  "id": "uplift",
+  "name": "昂扬",
+  "type": "seal",
+  "rarity": "common",
+  "cost": 1,
+  "rankBonus": 1,
+  "incomeBonus": -1,
+  "castCostBonus": 1,
+  "damageBonus": 2,
+  "text": "附着于阵法：阵法等级+1，环位+1，魔素收入-1。 附着于法术：发动费用+1，额外造成2点力场伤害。",
+  "flavor": "沸腾的魔素是一把双刃剑。",
+  "castCost": 0,
+  "rank": 1,
+  "speed": 1,
+  "level": 0,
+  "ringBonus": 1,
+  "number": "050003",
+  "illustrationId": "uplift"
+}

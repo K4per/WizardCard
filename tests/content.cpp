@@ -45,7 +45,7 @@ TEST_CASE("manifest rejects duplicates ID mismatch traversal and missing definit
 }
 TEST_CASE("content validation includes unknown effects duplicates references and counts") {
     const auto dir=std::filesystem::path(WIZARD_SOURCE_DIR)/"assets";auto j=readJson(dir/"cards.json");auto c=loadContent(dir);
-    REQUIRE(c.catalog.cards.size()==135);REQUIRE(c.deck.size()==40);
+    REQUIRE(c.catalog.cards.size()==119);REQUIRE(c.deck.size()==40);
     for (const auto *draft : {"upright-cross", "inverted-cross", "ankh"})
         REQUIRE(c.catalog.cards.count(draft) == 0);
     auto bad=j;bad["cards"][0]["body"]=-1;REQUIRE_THROWS_WITH(parseCatalog(bad),"cards.json/cards/0/body: expected integer in [0,1000]");
@@ -55,7 +55,7 @@ TEST_CASE("content validation includes unknown effects duplicates references and
     deck=readJson(dir/"deck.json");deck[0]["count"]=4;REQUIRE_THROWS(parseDeck(deck,c.catalog));
 }
 TEST_CASE("every command variant round trips") {
-    std::vector<Command> commands={SetFormation{1,2},RemoveFormation{1},StartAnalysis{1,2},PrepareCast{1,2,3},PlayAction{1,2},PreloadWord{1},AttachSeal{1,2},RemoveSeal{1},Abandon{1},Advance{},Choose{5,6},Surrender{}};
+    std::vector<Command> commands={SetFormation{1,2},RemoveFormation{1},StartAnalysis{1,2},PrepareCast{1,2,3},PlayAction{1,2},PreloadWord{1},AttachSeal{1,2},RemoveSeal{1},Abandon{1},Advance{},Choose{5,ChoiceValue::card(6)},Surrender{}};
     for(const auto& c:commands) REQUIRE(encodeCommand(decodeCommand(encodeCommand(c)))==encodeCommand(c));
     REQUIRE_THROWS(decodeCommand(Json{{"type",0},{"card",4294967296ull},{"replace",0}}));
     REQUIRE_THROWS(decodeCommand(Json{{"type",9.5}}));
@@ -63,10 +63,14 @@ TEST_CASE("every command variant round trips") {
 TEST_CASE("replay detects incompatible content versions and tampering") {
     auto c=loadContent(std::filesystem::path(WIZARD_SOURCE_DIR)/"assets");MatchSession session(c,42);auto p=session.engine().state().active;
     for (int actor = 0; actor < 2; ++actor) {
-        const auto view = session.viewFor(actor);
-        for (const auto &a : view.actions) if (std::holds_alternative<SelectInitialFormation>(a.command)) {
-            REQUIRE(session.submit(actor, a.command).accepted); break;
-        }
+        std::optional<Command> selection;
+        session.engine().visitLegalActions(actor, [&](const LegalAction &action) {
+            if (!std::holds_alternative<SelectInitialFormation>(action.command)) return true;
+            selection = action.command;
+            return false;
+        });
+        REQUIRE(selection);
+        REQUIRE(session.submit(actor, *selection).accepted);
     }
     p = session.engine().state().active;
     REQUIRE(session.submit(p, Surrender{}).accepted);

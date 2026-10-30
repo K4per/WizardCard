@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0015",
+  "number": "020015",
+  "name": "油腻术",
+  "type": "analytic",
+  "school": "conjuration",
+  "rarity": "common",
+  "rank": 3,
+  "cost": 3,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 2,
+  "text": "选择对方场上1张阵法卡才能发动。直到下个己方准备阶段开始时，此阵法卡的环位减半。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 16
+  },
+  "illustrationId": "v260-analytic-0015",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\油腻术.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

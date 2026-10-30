@@ -1,0 +1,34 @@
+{
+  "id": "v260-word-0008",
+  "number": "030008",
+  "name": "心如止水",
+  "type": "word",
+  "school": "abjuration",
+  "rarity": "common",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "将1张卡从手卡送去灰烬区才能发动。清除己方全部临时荷载。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+    "正式卡图未匹配"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 49
+  },
+  "illustrationId": "v260-word-0008",
+  "art": {
+    "status": "missing",
+    "source": null
+  },
+  "migration": {
+    "previousId": "clarity"
+  }
+}

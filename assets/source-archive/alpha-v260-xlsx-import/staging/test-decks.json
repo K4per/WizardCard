@@ -1,0 +1,75 @@
+{
+  "format": 1,
+  "status": "blocked",
+  "contentHash": "cc287c6ce51eecc77aebf994f1caf72895d87bb105a5986dff3238f160434860",
+  "main": [
+    {
+      "id": "v260-analytic-0018",
+      "count": 3
+    },
+    {
+      "id": "v260-word-0012",
+      "count": 3
+    },
+    {
+      "id": "v260-word-0016",
+      "count": 3
+    },
+    {
+      "id": "v260-word-0021",
+      "count": 3
+    }
+  ],
+  "side": [
+    {
+      "id": "v260-formation-0001",
+      "count": 1
+    },
+    {
+      "id": "v260-formation-0002",
+      "count": 1
+    },
+    {
+      "id": "v260-formation-0003",
+      "count": 1
+    },
+    {
+      "id": "v260-formation-0004",
+      "count": 1
+    },
+    {
+      "id": "v260-formation-0005",
+      "count": 1
+    },
+    {
+      "id": "v260-formation-0006",
+      "count": 1
+    },
+    {
+      "id": "v260-formation-0007",
+      "count": 1
+    },
+    {
+      "id": "v260-formation-0008",
+      "count": 1
+    },
+    {
+      "id": "v260-formation-0009",
+      "count": 1
+    },
+    {
+      "id": "v260-formation-0010",
+      "count": 1
+    }
+  ],
+  "initialFormation": "v260-formation-0009",
+  "validation": {
+    "mainCount": 12,
+    "sideCount": 10,
+    "mainSameNameLimit": true,
+    "hasLevelOneFormation": true,
+    "errors": [
+      "structured candidate effects are insufficient to build a legal 40-card main deck"
+    ]
+  }
+}

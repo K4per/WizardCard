@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0017",
+  "number": "020017",
+  "name": "吸收元素",
+  "type": "analytic",
+  "school": "abjuration",
+  "rarity": "uncommon",
+  "rank": 4,
+  "cost": 3,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "专注1。己方每受到1次强酸/寒冷/火焰/闪电/毒素/雷鸣伤害，获得1点魔素。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 18
+  },
+  "illustrationId": "v260-analytic-0017",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\吸收元素.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

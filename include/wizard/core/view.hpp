@@ -4,6 +4,7 @@
 #include "wizard/core/commands.hpp"
 #include "wizard/core/events.hpp"
 #include "wizard/core/chain.hpp"
+#include "wizard/core/action_query.hpp"
 
 namespace wizard {
 struct CommandResult {
@@ -52,21 +53,16 @@ struct GameView {
     std::vector<TemporaryLoad> temporary;
     std::vector<TemporaryLife> temporaryLives;
     std::optional<PendingDecision> decision;
-    std::vector<GameEvent> events;
-    std::vector<LegalAction> actions;
     PhaseStep phaseStep{};
     DecisionId phaseGate{};
     std::optional<ChainState> chain;
     std::vector<Trigger> triggers; // only visible choices of this viewer's trigger-order decision
-    std::uint64_t eventBase{}; // projection-only offset for bounded network event history
     bool opening{};
     std::array<bool, 2> initialFormationConfirmed{};
     CardId initialFormation{}; // Only this viewer's confirmed entity while opening.
     std::uint64_t globalTurn{1};
     MatchClockView clock;
+    ActionSummary actionSummary;
+    bool technicalPaused{};
 };
-inline std::size_t firstNewEvent(const GameView& before,const GameView& after) {
-    auto end=before.eventBase+before.events.size();
-    return end<=after.eventBase?0:static_cast<std::size_t>(std::min<std::uint64_t>(after.events.size(),end-after.eventBase));
-}
 } // namespace wizard

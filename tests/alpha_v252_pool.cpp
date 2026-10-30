@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include "wizard/core/card_rules.hpp"
 #include <catch2/catch_test_macros.hpp>
@@ -6,14 +7,14 @@
 
 using namespace wizard;
 namespace {
-GameState poolState(Phase phase = Phase::Cast) {
-    GameState s;
+MutationContext poolState(Phase phase = Phase::Cast) {
+    MutationContext s;
     s.phase = phase; s.phaseStep = PhaseStep::Body; s.phaseGate = 1;
     s.globalTurn = 5; s.rng = 73;
     for (auto &p : s.players) { p.mana = 20; p.ownTurn = 2; }
     return s;
 }
-CardInstance &poolCard(GameState &s, CardId id, const std::string &definition, PlayerId owner,
+CardInstance &poolCard(MutationContext &s, CardId id, const std::string &definition, PlayerId owner,
                        Zone zone, CardId host = 0, SpellState spell = SpellState::None) {
     CardInstance c;
     c.id = id; c.definition = definition; c.owner = owner; c.zone = zone; c.spell = spell;
@@ -24,18 +25,18 @@ CardInstance &poolCard(GameState &s, CardId id, const std::string &definition, P
     if (zone == Zone::Deck) s.players[owner].deck.push_back(id);
     return s.cards.at(id);
 }
-void poolSend(GameEngine &e, PlayerId p, const Command &c) {
+void poolSend(test::ObservedEngine &e, PlayerId p, const Command &c) {
     const auto result = e.submit(p, c);
     INFO(result.error);
     REQUIRE(result.accepted);
 }
-void poolReject(GameEngine &e, PlayerId p, const Command &c) {
+void poolReject(test::ObservedEngine &e, PlayerId p, const Command &c) {
     const auto before = e.digest();
     const auto result = e.submit(p, c);
     REQUIRE_FALSE(result.accepted);
     REQUIRE(e.digest() == before);
 }
-void poolSettle(GameEngine &e) {
+void poolSettle(test::ObservedEngine &e) {
     for (int n = 0; n < 256 && e.state().decision && e.state().result == -1; ++n) {
         const auto d = *e.state().decision;
         if (d.kind == DecisionKind::Response) poolSend(e, d.player, PassResponse{d.id});
@@ -48,7 +49,7 @@ void poolSettle(GameEngine &e) {
 bool poolTrait(const CardDefinition &d, const std::string &name) {
     return std::find(d.traits.begin(), d.traits.end(), name) != d.traits.end();
 }
-std::vector<CardId> poolMaterials(GameState &s, const CardDefinition &d) {
+std::vector<CardId> poolMaterials(MutationContext &s, const CardDefinition &d) {
     std::vector<CardId> materials;
     CardId id = 20;
     int spellIndex = 0;
@@ -90,25 +91,25 @@ TEST_CASE("Alpha v2.5.2 every formal formation executes its printed recipe and r
             const auto materials = poolMaterials(s, d);
             const SetFormation command{10, 0, materials};
             poolCard(s, 200, "reservoir", 1, Zone::Analysis);
-            auto badTarget = GameEngine::scenario(cat, s);
+            auto badTarget = test::ObservedEngine::scenario(cat, s);
             poolReject(badTarget, 0, SetFormation{10, 200, materials});
             int fee = d.cost;
             for (const auto &recipe : d.recipe)
                 if (recipe.kind == RecipeCostKind::Mana) fee += recipe.amount;
             if (fee > 0) {
                 auto unpaidState = s; unpaidState.players[0].mana = 0;
-                auto unpaid = GameEngine::scenario(cat, unpaidState);
+                auto unpaid = test::ObservedEngine::scenario(cat, unpaidState);
                 poolReject(unpaid, 0, command);
             }
             auto wrongPhase = s; wrongPhase.phase = Phase::Cast;
-            auto wrong = GameEngine::scenario(cat, wrongPhase);
+            auto wrong = test::ObservedEngine::scenario(cat, wrongPhase);
             poolReject(wrong, 0, command);
             if (!materials.empty()) {
-                auto missing = GameEngine::scenario(cat, s);
+                auto missing = test::ObservedEngine::scenario(cat, s);
                 auto invalid = command; invalid.materials.pop_back();
                 poolReject(missing, 0, invalid);
             }
-            auto e = GameEngine::scenario(cat, s);
+            auto e = test::ObservedEngine::scenario(cat, s);
             poolSend(e, 0, command); poolSettle(e);
             REQUIRE(e.state().cards.at(10).zone == Zone::Analysis);
             REQUIRE(e.state().players[0].formations == 1);
@@ -118,7 +119,7 @@ TEST_CASE("Alpha v2.5.2 every formal formation executes its printed recipe and r
             REQUIRE(Rules::invariants(e.state(), cat).empty());
         }
     }
-    REQUIRE(covered == 25);
+    REQUIRE(covered == 23);
 }
 
 TEST_CASE("Alpha v2.5.2 every formal seal attaches through authority with paid cost and valid host", "[alpha-v252][pool]") {
@@ -138,10 +139,10 @@ TEST_CASE("Alpha v2.5.2 every formal seal attaches through authority with paid c
             poolCard(s, 10, id, 0, Zone::Hand);
             poolCard(s, 40, "sique-sugar", 0, Zone::Deck);
             poolCard(s, 41, "sique-roast", 0, Zone::Deck);
-            auto e = GameEngine::scenario(cat, s);
+            auto e = test::ObservedEngine::scenario(cat, s);
             poolReject(e, 0, AttachSeal{10, 2});
             auto unpaidState = s; unpaidState.players[0].mana = 0;
-            auto unpaid = GameEngine::scenario(cat, unpaidState);
+            auto unpaid = test::ObservedEngine::scenario(cat, unpaidState);
             poolReject(unpaid, 0, AttachSeal{10, 1});
             poolSend(e, 0, AttachSeal{10, 1}); poolSettle(e);
             REQUIRE(e.state().cards.at(10).zone == Zone::Attached);
@@ -151,21 +152,17 @@ TEST_CASE("Alpha v2.5.2 every formal seal attaches through authority with paid c
             REQUIRE(Rules::invariants(e.state(), cat).empty());
         }
     }
-    REQUIRE(covered == 15);
+    REQUIRE(covered == 14);
 }
 
 TEST_CASE("Alpha v2.5.2 every ordinary formal spell resolves its source and meaningful effect choices", "[alpha-v252][pool]") {
     const auto cat = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog;
     const std::set<std::string> responseOnly{
         "barbs", "counter-spell", "wind-strike", "sique-boiling-surge", "arcana-devil",
-        "qixing-gaze", "blood-coagulation"};
-    const std::set<std::string> sevenSpellCoverage{
-        "qixing-awaken", "qixing-divination", "qixing-lamp", "qixing-punishment",
-        "qixing-return", "qixing-ruin", "qixing-shift"};
+        "blood-coagulation"};
     std::set<std::string> covered;
     for (const auto &[id, d] : cat.cards) {
         if (d.type == CardType::Formation || d.type == CardType::Seal || responseOnly.count(id) ||
-            sevenSpellCoverage.count(id) ||
             std::find(d.traits.begin(), d.traits.end(), "blood_last_stand") != d.traits.end()) continue;
         INFO(id);
         {
@@ -233,13 +230,13 @@ TEST_CASE("Alpha v2.5.2 every ordinary formal spell resolves its source and mean
             }
             if (target) targets = {target};
             const ActivateSpell command{10, target, targets, cost};
-            auto e = GameEngine::scenario(cat, s);
+            auto e = test::ObservedEngine::scenario(cat, s);
             // Every case rejects a malformed target before payment or effect mutation.
             poolReject(e, 0, ActivateSpell{10, 999999, {999999}, cost});
             const int fee = Rules::castCost(s, cat, 10);
             if (fee > 0) {
                 auto unpaidState = s; unpaidState.players[0].mana = 0;
-                auto unpaid = GameEngine::scenario(cat, unpaidState);
+                auto unpaid = test::ObservedEngine::scenario(cat, unpaidState);
                 poolReject(unpaid, 0, command);
             }
             poolSend(e, 0, command); poolSettle(e);
@@ -281,10 +278,10 @@ TEST_CASE("Alpha v2.5.2 every ordinary formal spell resolves its source and mean
         }
     }
     REQUIRE(covered.size() == 75);
-    REQUIRE(covered.size() + responseOnly.size() + sevenSpellCoverage.size() + 1 + 30 + 15 == cat.cards.size());
+    REQUIRE(covered.size() + responseOnly.size() + 1 + 23 + 14 == cat.cards.size());
 }
 
-TEST_CASE("Alpha v2.5.2 each conditional formal response joins its actual declared event", "[alpha-v252][pool]") {
+TEST_CASE("Alpha v2.5.2 each conditional formal response joins its actual declared event", "[alpha-v252][pool][legacy]") {
     const auto cat = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog;
     for (const std::string id : {"barbs", "counter-spell", "wind-strike", "sique-boiling-surge", "arcana-devil"}) {
         INFO(id);
@@ -300,9 +297,9 @@ TEST_CASE("Alpha v2.5.2 each conditional formal response joins its actual declar
                 source.faceDown = source.wasAmbushed = true;
                 source.ambushedTurn = 1; source.ringIndex = 0;
             }
-            auto outside = GameEngine::scenario(cat, s);
+            auto outside = test::ObservedEngine::scenario(cat, s);
             poolReject(outside, 1, Respond{1, 10, cat.at(id).responses.front().id, 0, 1});
-            auto e = GameEngine::scenario(cat, s);
+            auto e = test::ObservedEngine::scenario(cat, s);
             // Open a real chain by an opponent action; do not manufacture a pending link.
             auto eventState = s;
             if (id == "wind-strike") poolCard(eventState, 20, "fireball", 0, Zone::Hand);
@@ -310,7 +307,7 @@ TEST_CASE("Alpha v2.5.2 each conditional formal response joins its actual declar
                 auto &spell = poolCard(eventState, 20, "fireball", 0, Zone::Analysis, 2, SpellState::Ready);
                 spell.ringIndex = 0;
             } else poolCard(eventState, 20, id == "sique-boiling-surge" ? "unravel" : "spark", 0, Zone::Casting, 2, SpellState::Ready);
-            e = GameEngine::scenario(cat, eventState);
+            e = test::ObservedEngine::scenario(cat, eventState);
             if (id == "wind-strike") poolSend(e, 0, StartAnalysis{20, 2});
             else if (id == "barbs") poolSend(e, 0, PrepareCast{20});
             else poolSend(e, 0, ActivateSpell{20, id == "sique-boiling-surge" ? 1 : playerTarget(1),

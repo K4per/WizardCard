@@ -1,6 +1,6 @@
 # Third-party notices
 
-WizardCard Alpha v1.0 uses SFML, nlohmann/json, FreeType (FreeType License), HarfBuzz, libogg, libvorbis and libFLAC. Original license texts are included in licenses/. SFML also embeds stb_image, stb_image_write, miniaudio (including its dr_mp3 decoder), QOI and GLAD; their bundled license excerpts are included there.
+WizardCard uses Godot, godot-cpp and nlohmann/json. Godot includes additional third-party libraries; its bundled copyright and license information applies to the exported runtime. Original license texts and historical dependency notices are retained in licenses/. The former SFML client is no longer built or distributed; retained historical license texts do not imply that its runtime libraries are included.
 
 Noto Sans CJK SC font: assets/fonts/OFL.txt (SIL Open Font License). User-provided AI-generated P0 audio: assets/audio/LICENSE.md and manifest.json, CC0-1.0 as specified by the user. Project illustrations and logo/icon provenance: assets/art/provenance.json; additional built-in imagegen prompts: assets/art/alpha-release/manifest.json and assets/art/branding/icon-manifest.json. Original generated raster files are retained; the icon ICO is a size-format export for Windows.
 

@@ -122,7 +122,6 @@ DeckDraft decodeDraft(const Json &j) {
     return d;
 }
 std::vector<std::string> constructionProblems(const CardCatalog &cat, const DeckDraft &d) {
-    if (d.format < 2) return deckProblems(cat, d);
     std::vector<std::string> errors;
     if (blank(d.name)) errors.push_back("请输入卡组名称");
     if (d.size() != 40) errors.push_back("主卡组需40张，当前" + std::to_string(d.size()) + "张");
@@ -144,52 +143,15 @@ std::vector<std::string> constructionProblems(const CardCatalog &cat, const Deck
         if (count > 3) errors.push_back(name + "同名最多3张，当前" + std::to_string(count) + "张");
     for (const auto &[name, count] : sideNames)
         if (count > 3) errors.push_back(name + "同名最多3张，当前" + std::to_string(count) + "张");
-    if (cat.usesAlphaV25()) {
-        if (std::none_of(d.sideCards.begin(), d.sideCards.end(), [&](const auto &entry) {
-            const auto card = cat.cards.find(entry.first);
-            return entry.second > 0 && card != cat.cards.end() && card->second.type == CardType::Formation && card->second.level == 1;
-        })) errors.push_back("副卡组需含至少一张等级1阵法；初始阵法在开局时选择");
-    } else {
-        const auto base = cat.cards.find(d.baseFormation);
-        if (base == cat.cards.end() || base->second.type != CardType::Formation || !base->second.baseEligible ||
-            base->second.level != 1) errors.push_back("请选择可作为初始阵法的阵法卡");
-        if (!d.sideCards.count(d.baseFormation)) errors.push_back("初始阵法必须位于自己的副卡组");
-    }
+    if (std::none_of(d.sideCards.begin(), d.sideCards.end(), [&](const auto &entry) {
+        const auto card = cat.cards.find(entry.first);
+        return entry.second > 0 && card != cat.cards.end() &&
+               card->second.type == CardType::Formation && card->second.level == 1;
+    })) errors.push_back("副卡组需含至少一张等级1阵法；初始阵法在开局时选择");
     return errors;
 }
 std::vector<std::string> deckProblems(const CardCatalog &cat, const DeckDraft &d) {
-    if (d.format >= 2) {
-        auto errors = constructionProblems(cat, d);
-        if (errors.empty())
-            for (const auto &error : Rules::deckErrors(cat, d.playerDeck()))
-                errors.push_back(error);
-        return errors;
-    }
-    std::vector<std::string> errors;
-    if (blank(d.name))
-        errors.push_back("请输入卡组名称");
-    if (d.size() != 30)
-        errors.push_back("主卡组需30张，当前" + std::to_string(d.size()) + "张");
-    std::map<std::string, int> names;
-    for (const auto &[id, count] : d.cards) {
-        if (count < 1 || count > 1000)
-            errors.push_back("份数无效：" + id);
-        const auto it = cat.cards.find(id);
-        if (it == cat.cards.end()) {
-            errors.push_back("卡池已无此卡：" + id);
-            continue;
-        }
-        names[it->second.name] += count;
-    }
-    for (const auto &[name, count] : names)
-        if (count > 3)
-            errors.push_back(name + "同名最多3张，当前" + std::to_string(count) + "张");
-    auto base = cat.cards.find(d.baseFormation);
-    if (base == cat.cards.end())
-        errors.push_back("基础阵法已不存在：" + d.baseFormation);
-    else if (!base->second.baseEligible || base->second.type != CardType::Formation)
-        errors.push_back("该卡不具有基础阵法资格");
-    // The engine remains the authority on all additional formation constraints.
+    auto errors = constructionProblems(cat, d);
     if (errors.empty())
         for (const auto &error : Rules::deckErrors(cat, d.playerDeck()))
             errors.push_back(error);
@@ -375,9 +337,7 @@ DeckDraft DeckLibrary::create(const std::string &name) const {
     static std::atomic<std::uint64_t> serial{};
     DeckDraft d;
     d.name = name;
-    d.format = catalog_.usesAlphaV25() ? 3 : catalog_.usesAlphaV2() ? 2 : 1;
-    if (catalog_.usesAlphaV2() && !catalog_.usesAlphaV25())
-        d.baseFormation = "small-hexagram";
+    d.format = 3;
     do {
         d.id = "deck-" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) + "-" +
                std::to_string(++serial);

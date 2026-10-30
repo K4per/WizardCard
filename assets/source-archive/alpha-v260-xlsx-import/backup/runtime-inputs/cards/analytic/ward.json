@@ -1,0 +1,33 @@
+{
+  "id": "ward",
+  "name": "炽燃结界",
+  "rarity": "uncommon",
+  "type": "analytic",
+  "cost": 2,
+  "castCost": 0,
+  "rank": 2,
+  "concentration": true,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 4,
+      "damageType": "fire"
+    }
+  ],
+  "onCast": [
+    {
+      "kind": "damage",
+      "amount": 2,
+      "damageType": "fire"
+    }
+  ],
+  "text": "专注1。发动时，对对方造成4点火焰伤害。维持专注时，对对方造成2点火焰伤害。",
+  "speed": 1,
+  "school": "evocation",
+  "level": 2,
+  "analysisTurns": 1,
+  "concentrationUpkeep": 1,
+  "number": "020004",
+  "illustrationId": "ward"
+}

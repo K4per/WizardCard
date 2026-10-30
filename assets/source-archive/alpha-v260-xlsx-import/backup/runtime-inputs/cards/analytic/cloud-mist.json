@@ -1,0 +1,23 @@
+{
+  "id": "cloud-mist",
+  "name": "云雾术",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 2,
+  "castCost": 3,
+  "rank": 2,
+  "level": 2,
+  "speed": 1,
+  "school": "transmutation",
+  "analysisTurns": 1,
+  "duration": 2,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "lock_analysis"
+    }
+  ],
+  "text": "计时2。选择双方解析区1至2张解析法术卡，使其直到此法术卡离场不可准备施法。",
+  "number": "020021",
+  "illustrationId": "cloud-mist"
+}

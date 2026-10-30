@@ -1,0 +1,33 @@
+{
+  "id": "hexagram",
+  "name": "六芒星",
+  "type": "formation",
+  "rarity": "uncommon",
+  "level": 3,
+  "body": 2,
+  "rings": 3,
+  "capacity": 8,
+  "income": 2,
+  "maxRank": 3,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "此阵法卡不会被效果销毁。",
+  "summonCondition": "【四芒星】+魔素×2",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "small-hexagram"
+    },
+    {
+      "kind": "mana",
+      "amount": 2
+    }
+  ],
+  "traits": [
+    "effect_indestructible"
+  ],
+  "flavor": "魔法界最流行的一种法阵，你几乎可以在任何一种复杂术式中看到它的身影。六芒星诉说着它的信念：秩序不偏向任何一边。",
+  "number": "010005",
+  "illustrationId": "alpha-v252-hexagram"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "small-hexagram",
+  "name": "四芒星",
+  "type": "formation",
+  "rarity": "common",
+  "level": 1,
+  "body": 1,
+  "rings": 1,
+  "capacity": 5,
+  "income": 1,
+  "maxRank": 1,
+  "baseEligible": true,
+  "cost": 0,
+  "text": "此阵法卡在己方场上仅可存在1张。",
+  "summonCondition": "魔素×2",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 2
+    }
+  ],
+  "traits": [
+    "unique"
+  ],
+  "number": "010004",
+  "illustrationId": "alpha-v252-small-hexagram"
+}

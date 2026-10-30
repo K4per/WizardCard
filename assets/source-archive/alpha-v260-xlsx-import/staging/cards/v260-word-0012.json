@@ -1,0 +1,38 @@
+{
+  "id": "v260-word-0012",
+  "number": "030012",
+  "name": "幽影刃",
+  "type": "word",
+  "school": "illusion",
+  "rarity": "rare",
+  "rank": 3,
+  "cost": 3,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "对对方造成5点心灵伤害。",
+  "flavor": "",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "psychic",
+      "recipient": "opponent"
+    }
+  ],
+  "implementationStatus": "structured-candidate",
+  "effectBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 53
+  },
+  "illustrationId": "v260-word-0012",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\幽影刃.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

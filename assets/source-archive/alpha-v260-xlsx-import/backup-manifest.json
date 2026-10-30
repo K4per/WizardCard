@@ -1,0 +1,686 @@
+{
+  "createdAt": "2026-10-30T18:51:34.695092+00:00",
+  "files": [
+    {
+      "file": "assets/catalog.json",
+      "sha256": "e648c2311af2e3b4a627b2d9cbaf7c57499b77a3b6c897d38b690728c53e900e"
+    },
+    {
+      "file": "assets/cards.json",
+      "sha256": "ede86bf35375d3a73392b636c89987d3098155dd8ad95c4b1bb34a5fdf00b02c"
+    },
+    {
+      "file": "assets/deck.json",
+      "sha256": "977367e1a3e4bc4824870000f44222089f764188e03784f7c823c94a02cde61b"
+    },
+    {
+      "file": "assets/side-deck.json",
+      "sha256": "c3e7fb7c250029580d45a598d9647b21810423dfc9b93a9c6ac2d9a68fd7490f"
+    },
+    {
+      "file": "assets/presets.json",
+      "sha256": "1f6ebff7d6eae7a06035383650e9f0408c54af08bcb40ebedc73082b2434f28a"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-chariot.json",
+      "sha256": "635d4505281e4e9da12d62314aa9060a1fb52aee0fcca5d9142a4f9568a575b5"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-death.json",
+      "sha256": "3bcdb39be350ec3d76603e29caa96e18c5b95e5315b5298e7b05931f49531f32"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-devil.json",
+      "sha256": "bee207818fc432b448a03b3011d30c22d08c99f953d7b15d1e7ae5f0d7a9639f"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-empress.json",
+      "sha256": "aeeeeba62fa4536e7402179348a52b2ba81ee1746afe2af5ccc0fd77eea318a6"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-hanged-man.json",
+      "sha256": "ac29aa2715afb9cc74c4c7780b740ab14cf419309bcc3c0abed488b52f8a39f4"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-hermit.json",
+      "sha256": "536b82f3759e04324ff17951d20d7086d249dbbba50553b7b9a80eabc49e8596"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-lovers.json",
+      "sha256": "8235d644c387d41b6a0cdb8fed442def49c70ce6aecf9f0e6fcab99a61420403"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-strength.json",
+      "sha256": "cfc4f4c7fb99cb96d7c82ca94a69c6b71f80dce7f61c1aa70c6d3a2b3573f837"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-temperance.json",
+      "sha256": "f3f9e4d6555dab9c7ff7e5ec82aedfc1512754ca052f760926a6046203a82138"
+    },
+    {
+      "file": "assets/cards/analytic/arcana-tower.json",
+      "sha256": "ba5d527f5484b43595aa66a08cc63596a23d1eb141ae15bdd8d71dd8bacf27c1"
+    },
+    {
+      "file": "assets/cards/analytic/blood-blade.json",
+      "sha256": "0c50c6c1f0add8eb19d9247e8570dbf218eeb152d5949853bfc514e2d753051f"
+    },
+    {
+      "file": "assets/cards/analytic/blood-debt.json",
+      "sha256": "a3ab3a381d540bfcb987891ef438e460e3cd2ea2e9c336ad814b82e5aa78efa5"
+    },
+    {
+      "file": "assets/cards/analytic/blood-renewal.json",
+      "sha256": "03441d1e0e3504ed422c4a483a319fbc9af9652172bffda0591d79887bce43cc"
+    },
+    {
+      "file": "assets/cards/analytic/blood-repayment.json",
+      "sha256": "deab01a8a73ff19b27227133d8dea77b43f61521203c2eda25070076e76b23c8"
+    },
+    {
+      "file": "assets/cards/analytic/chromatic-orb.json",
+      "sha256": "17b583d174aa610517b65d0f8ad75168290cb5bc67e3ae55a5ae3a18985b615a"
+    },
+    {
+      "file": "assets/cards/analytic/cloud-mist.json",
+      "sha256": "5f0b2ec5bd0a260b7581d05fe532bbbc372b56ed1595efae81e7f496665114e5"
+    },
+    {
+      "file": "assets/cards/analytic/cutting-wind.json",
+      "sha256": "444816286b136364de97cb7fcc93a79e235438b256c68c7a5b5641f93efc209a"
+    },
+    {
+      "file": "assets/cards/analytic/earthquake.json",
+      "sha256": "78afed45f7554f69cac1748b7917af9d7e9777235c03ac0c1256fed977ce34b7"
+    },
+    {
+      "file": "assets/cards/analytic/false-life.json",
+      "sha256": "6cffacc60fcc224f414603512599666ae047e3082c15ae2587bfbcff8d0e0720"
+    },
+    {
+      "file": "assets/cards/analytic/fireball.json",
+      "sha256": "e87c83fab2c5318c7225f96d5fa2a80966dfc01891df6e2f3e39823575ed3052"
+    },
+    {
+      "file": "assets/cards/analytic/great-storm.json",
+      "sha256": "56c849a7e2f26b4de3da918055d8e919ead1f0a8d40e2f2a8611b29cb705c6e4"
+    },
+    {
+      "file": "assets/cards/analytic/guiding-bolt.json",
+      "sha256": "8557257c6d0fa4749f4546bd78df321b23a18d4662f30777632a66248b75acb0"
+    },
+    {
+      "file": "assets/cards/analytic/healing-circle.json",
+      "sha256": "fbd3a49ffb63fd9773d3842f92cc05685c2a0706ef46065ec76a8ef0eae369cc"
+    },
+    {
+      "file": "assets/cards/analytic/ice-storm.json",
+      "sha256": "b30e218fd1e9c1544dce8bb53c4ffc58b0612d6c6bc7de9ceea9b6e0bbb2c331"
+    },
+    {
+      "file": "assets/cards/analytic/instantly-sleep.json",
+      "sha256": "a3494174904834cf3dadb9ff6dfe9794b3254190733c69ed9d195bdd4390b7e3"
+    },
+    {
+      "file": "assets/cards/analytic/lesser-restoration.json",
+      "sha256": "790760bf5aa3001d505b6e54d1c55fd48d0a74fdddaf4ad6d5ab2362d575d701"
+    },
+    {
+      "file": "assets/cards/analytic/lightning-bolt.json",
+      "sha256": "76e1767bad6c333aa5a8c33a1982a50179219064d572d62c319614239a1f55b3"
+    },
+    {
+      "file": "assets/cards/analytic/magic-missile.json",
+      "sha256": "32a2f8efbbcf6dcf1d10c6f96dae13b9a446bf49fc2b66425133808b41b3e9d3"
+    },
+    {
+      "file": "assets/cards/analytic/mend.json",
+      "sha256": "9b19549b09e3ef272f7a31c9505cfb19eb3cc371f688bd51abdf6e2470f9b589"
+    },
+    {
+      "file": "assets/cards/analytic/messy-wave.json",
+      "sha256": "71833f01ee448cf7daca8df854683c0d732e7c6174511499757a7115446bbea3"
+    },
+    {
+      "file": "assets/cards/analytic/qixing-lamp.json",
+      "sha256": "46c6c7c5047df2bd66978b8af6115b37ca2db2522f7e24b30757a529a073e49c"
+    },
+    {
+      "file": "assets/cards/analytic/qixing-ruin.json",
+      "sha256": "9cd2c6acba7c6c9eebf8f20dbfebcfbd9e313f818f0d0b59d9bc1063c5277a51"
+    },
+    {
+      "file": "assets/cards/analytic/ray-of-frost.json",
+      "sha256": "a7bae988b4bbada052b1b5147c39aaaa3a7d5c806faab39a909fbc3ef44f7e78"
+    },
+    {
+      "file": "assets/cards/analytic/scorching-ray.json",
+      "sha256": "f9b624394897dc53581ec1462696b21fa65c702afd5d13cf6444cc41cab1545d"
+    },
+    {
+      "file": "assets/cards/analytic/sique-divine-stew.json",
+      "sha256": "d68adc96033279148ba92d8f436e73e8f9d5d9041ce460a03aeb31b7b48bd4bc"
+    },
+    {
+      "file": "assets/cards/analytic/sique-mushroom-soup.json",
+      "sha256": "a2d81a9cdbc5921fa131cf23331fa99032640f8c033b906647527ac67fa20879"
+    },
+    {
+      "file": "assets/cards/analytic/sique-pancakes.json",
+      "sha256": "1a6e76814cd612a0e17a9c884d839cdea70346e0b1f6ec6f4787035068fea3b9"
+    },
+    {
+      "file": "assets/cards/analytic/sique-roast.json",
+      "sha256": "570d5db2e0b08b006d7b9194a0e9500100d31336a26139e9f8194b0c27ad471b"
+    },
+    {
+      "file": "assets/cards/analytic/sunburst.json",
+      "sha256": "32550216fc8180c0722e553a86914f30bc114966cf95876e67620e2cd41c46cb"
+    },
+    {
+      "file": "assets/cards/analytic/thunder-summon.json",
+      "sha256": "9bf2543826fea3876048a7376f314dcf62759c948afd6626ab5d58472ca3bd6a"
+    },
+    {
+      "file": "assets/cards/analytic/unravel.json",
+      "sha256": "9727525dd9b5e3fb3bec9773fb62e58f6b94dea91a7d430e7cfdd636da692048"
+    },
+    {
+      "file": "assets/cards/analytic/ward.json",
+      "sha256": "3fd472e278da7c98f756b1eb59bfefa9c90353a5ec35551654e0086076863f6f"
+    },
+    {
+      "file": "assets/cards/formation/ankh.json",
+      "sha256": "a889a7dd9642fdba3611d322b8ff663f200ded74dd1d1704c0be28a17f45b2c6"
+    },
+    {
+      "file": "assets/cards/formation/blood-altar.json",
+      "sha256": "bfd33801a3979bfe25c6e0a3bc0a6163ff7093faea7d9dbf8fab97262e421b3c"
+    },
+    {
+      "file": "assets/cards/formation/blood-heart.json",
+      "sha256": "8a911e99d6c75c5452dd2ccc429377bde016ef4a8e1fb60dec62da640342c8eb"
+    },
+    {
+      "file": "assets/cards/formation/blood-pool.json",
+      "sha256": "c87c82896db34eb981a3de900d23ca01443d24dadda6df78bf7ab2dedc511249"
+    },
+    {
+      "file": "assets/cards/formation/blood-sacrificial-table.json",
+      "sha256": "4ab59dfbb4e47bd6eeb86b7cec6fe68f38666b7e8af89a8af3b498f59b560b7b"
+    },
+    {
+      "file": "assets/cards/formation/blood-transfusion.json",
+      "sha256": "88ac36890457bef73af2f6aa989ee048b4d6640ad8f469e222a37f9374f83292"
+    },
+    {
+      "file": "assets/cards/formation/chaos-ring.json",
+      "sha256": "447cdb66900ed10230e6e866d94aa23aeef141f03ba738963f8846965f7dbea4"
+    },
+    {
+      "file": "assets/cards/formation/elemental-ring.json",
+      "sha256": "b436e2dab4fb4fdbef481ce23dd3d26b922684d452705ed717698ea679113462"
+    },
+    {
+      "file": "assets/cards/formation/engeas-four-point-star.json",
+      "sha256": "9642de21202cabbfd18b65e3aa34319ca7916f8bd71d23d2d5ea188b48311ba6"
+    },
+    {
+      "file": "assets/cards/formation/hexagram.json",
+      "sha256": "3bbe86ce62b046e665538f2c26f92a05deee19c714e1785a7e72da6d4f1df896"
+    },
+    {
+      "file": "assets/cards/formation/inverted-cross.json",
+      "sha256": "13fa1a3218293c4a12fb6f957abbcea0464adb86cdc8e699dcdbe7b6440b52c4"
+    },
+    {
+      "file": "assets/cards/formation/moon.json",
+      "sha256": "1fc1fbb14e01ef62cadee9e163e12006f32db292ef83079a0e1a5ef4d78aa5af"
+    },
+    {
+      "file": "assets/cards/formation/octagram.json",
+      "sha256": "ee28f1209512c3f905a4ede1863fcc154c983f9a4990596ef7a198642aef1f8e"
+    },
+    {
+      "file": "assets/cards/formation/pentagram-of-life.json",
+      "sha256": "d756d9292c65aa65016fa66dbc91608e6cde3aac58769726bbbe629ed97be4f3"
+    },
+    {
+      "file": "assets/cards/formation/qixing-kaiyang.json",
+      "sha256": "af8a6c34d6d996e28946ffeb0c2c248ddd7bff5bc3c344cb8506199a28885a6b"
+    },
+    {
+      "file": "assets/cards/formation/qixing-tianji.json",
+      "sha256": "cc9d04ba08f5f251389f470e1a4b3f5496347d4291c1302688a0390b1f69e964"
+    },
+    {
+      "file": "assets/cards/formation/qixing-tianquan.json",
+      "sha256": "35017a65a1b5fbe49b22e923d6bdbd1689cc32b759b8cc6e9378a052ab98dfdd"
+    },
+    {
+      "file": "assets/cards/formation/qixing-tianshu.json",
+      "sha256": "1ee45b92e489d116bb6bb12da4ff281570a743dd95888249768edbf6b5799820"
+    },
+    {
+      "file": "assets/cards/formation/qixing-tianxuan.json",
+      "sha256": "f5c73887d771bd7f5bee8e2bf19e5aa527680fab527a157fc10609289fdc1bec"
+    },
+    {
+      "file": "assets/cards/formation/qixing-yaoguang.json",
+      "sha256": "cc5a469ae4fa624ee02643f48419011ea7317dea59102226686815f166029c7e"
+    },
+    {
+      "file": "assets/cards/formation/qixing-yuheng.json",
+      "sha256": "de346667c63baa2f329aedfd5994165d347c04f24ab915017bef733028cfc210"
+    },
+    {
+      "file": "assets/cards/formation/reservoir.json",
+      "sha256": "3fd99c4ea1b409e0a750fa7c190e83e817b83700fda137d55dc78e4de63b683e"
+    },
+    {
+      "file": "assets/cards/formation/sique-campfire.json",
+      "sha256": "a646c86f1ba161913305232685a8b55a29e495ddb9c3fcc91f1ecfa12ae38ea0"
+    },
+    {
+      "file": "assets/cards/formation/sique-cauldron.json",
+      "sha256": "257869cbda9fb78896c651e1752f150ddb799f351e5b2a07aada94d042326156"
+    },
+    {
+      "file": "assets/cards/formation/sique-woodpile.json",
+      "sha256": "2ba4844e6e1f2b59293ddf127bf29b9479b3cdf133c7276185aa0b9336ea4cf2"
+    },
+    {
+      "file": "assets/cards/formation/small-hexagram.json",
+      "sha256": "92d172268aa4f875190282ce73b4f1f20b26679fc1bb496a53cc702113adbdf6"
+    },
+    {
+      "file": "assets/cards/formation/storm-crest.json",
+      "sha256": "ebd81da7d7a1a9d78ebbec571c7702b2bdcd68ad2552c48048621db396c498d2"
+    },
+    {
+      "file": "assets/cards/formation/storm-heart.json",
+      "sha256": "8347341ac645a713d82a14c29b3b69d3ec43008ee918a93a769612e20dfab6ce"
+    },
+    {
+      "file": "assets/cards/formation/sulfur.json",
+      "sha256": "20b48011592455882fae99de1f78737818db3612a6e31074311e2b728ab90c93"
+    },
+    {
+      "file": "assets/cards/formation/sun.json",
+      "sha256": "48acb0118aeac94f0713dad2efd116a68d6118fd3fcc5f572a980b3a70870f21"
+    },
+    {
+      "file": "assets/cards/formation/three-star.json",
+      "sha256": "a4d4c42066a57d81641383ca5f0fc78b60f052b61c9aaa6bf70e455a1ad96898"
+    },
+    {
+      "file": "assets/cards/formation/two-star.json",
+      "sha256": "2e8c9e92242a85f12c6a1cdb724ebcb757eed0d4cf38f2eed3a3b351d15e8431"
+    },
+    {
+      "file": "assets/cards/formation/upright-cross.json",
+      "sha256": "33b876ac6f562b91da7b2fe084eda219a0b93235470f248cb708bcde665a8c42"
+    },
+    {
+      "file": "assets/cards/seal/blood-curse.json",
+      "sha256": "39e0d56215198b82b801b6682b6dcb1d79fc2d5a78428b7b0be853752cfa6236"
+    },
+    {
+      "file": "assets/cards/seal/blood-heartmark.json",
+      "sha256": "3b6c2312089d1ac230c0b4adb43976dbbf578da29226906c3d4f84705feb801d"
+    },
+    {
+      "file": "assets/cards/seal/blood-mark.json",
+      "sha256": "c4c84c9aac9b999f6a1840ae1a2a7876de50f5589c2fefcf0043ea2c835d5aec"
+    },
+    {
+      "file": "assets/cards/seal/blood-vein.json",
+      "sha256": "d8bcebdc65887d31abd0b068eff008080d8f47d8a5649b804c49afaa6c6bb351"
+    },
+    {
+      "file": "assets/cards/seal/conduit.json",
+      "sha256": "17e460c81ffd099efe592c7eeab3f69db326e6114cdef4736809363dcae35fcb"
+    },
+    {
+      "file": "assets/cards/seal/qixing-banner.json",
+      "sha256": "00e556f8a692237548b6ba21cd0f387fa34185f9008b7350ca2adb5c69ddf09e"
+    },
+    {
+      "file": "assets/cards/seal/ring.json",
+      "sha256": "be83f3197ae189c32383c5e0afbf74c30e1a7ca06574d6a6a70d655003a7efe0"
+    },
+    {
+      "file": "assets/cards/seal/sique-chili.json",
+      "sha256": "93cdf9df3bf04d0dc80b5667953f079adbd1b359522109e031bd49586758cae4"
+    },
+    {
+      "file": "assets/cards/seal/sique-parsley.json",
+      "sha256": "d35a33cd78fc278868e5fe8b45e59e16d4cf7a9649321bb917ede23e3e92c067"
+    },
+    {
+      "file": "assets/cards/seal/sique-salt.json",
+      "sha256": "e38db2573adbafd1a3408f8a15af4f5c4766a557db91f396f5047573b0bbf0ea"
+    },
+    {
+      "file": "assets/cards/seal/sique-sugar.json",
+      "sha256": "3eb0c2ec74e04542a35d7529c83670aad87ac848b03331aecb53334ab890ce87"
+    },
+    {
+      "file": "assets/cards/seal/sique-vinegar.json",
+      "sha256": "6cd1cc568eb4ed8ed592adeecc9b673a5de56b2eca75c8c9c81cb8b63fff7123"
+    },
+    {
+      "file": "assets/cards/seal/storm-annihilation-crest.json",
+      "sha256": "489ef7e214c177fb8cc1856257995c36817a9cf55eca65169094fc5bbf9cacb7"
+    },
+    {
+      "file": "assets/cards/seal/storm-brand.json",
+      "sha256": "b56804101cd74cfa2751b7320f1f5e7cca2e5de5bf78a51997d1fc13da5082ba"
+    },
+    {
+      "file": "assets/cards/seal/uplift.json",
+      "sha256": "feb1b4d0f81b86778264fcb383808d2fc2c6a72a556875efe58c4703d8879ef1"
+    },
+    {
+      "file": "assets/cards/talisman/arcana-hierophant.json",
+      "sha256": "162739a78c1866d103994b1f91b11ea098e8e7e8fc393fe1ed80c986fdfb4043"
+    },
+    {
+      "file": "assets/cards/talisman/barbs.json",
+      "sha256": "a164b308315be604534058afe2c6862bc89f67f8a5da6844db4ddd2504e6bede"
+    },
+    {
+      "file": "assets/cards/talisman/blood-coagulation.json",
+      "sha256": "e4d42f3ab893b8fd21b0aa7338ebbe0fdf0feeca78cfdd86ba3be19b9812b134"
+    },
+    {
+      "file": "assets/cards/talisman/blood-rain.json",
+      "sha256": "828ec6575712270704cdac8bfd4883faf354c273aa6ade3340b0fa37fc801246"
+    },
+    {
+      "file": "assets/cards/talisman/blood-same-origin.json",
+      "sha256": "6f56767756931abac7a5a76ccd0e19bef1a5afe81872da2cee11239440df81da"
+    },
+    {
+      "file": "assets/cards/talisman/counter-spell.json",
+      "sha256": "489650706fb40e91e7874e719f9571210cd71ee71141f30f6ffcd1af609dc44c"
+    },
+    {
+      "file": "assets/cards/talisman/funny-box.json",
+      "sha256": "34704d7d19772d239513ce25e715d8c0d355841cbb2bd03fdfeb772c12aa5505"
+    },
+    {
+      "file": "assets/cards/talisman/great-cyclone.json",
+      "sha256": "3e28209a24ef329666cbb776d1297ac5bf6e565abe7d8ede0c6472ad74eda463"
+    },
+    {
+      "file": "assets/cards/talisman/protective-flame.json",
+      "sha256": "9966281976611ef61b8b4e68c631562fa33a6f06a022a30b20b62c9369c4e21c"
+    },
+    {
+      "file": "assets/cards/talisman/qixing-gaze.json",
+      "sha256": "29ed84ad0ee347aac3b10d351628c52ad2a9e8c04468a18ef36dcdc6522451fe"
+    },
+    {
+      "file": "assets/cards/talisman/qixing-punishment.json",
+      "sha256": "b5c9ff13b8d3885aa22c32a98085978d5a3f566ae03be0afe81e90732ee84d2c"
+    },
+    {
+      "file": "assets/cards/talisman/qixing-return.json",
+      "sha256": "13f7c9ed86350f1db83bdfd124bcfc345ae5a3c6456b6a974e7246de34d8f41f"
+    },
+    {
+      "file": "assets/cards/talisman/shield.json",
+      "sha256": "6a96cdc76c5c6189ee8f1611c816758198f5133d2c710453df29d93e14c80d44"
+    },
+    {
+      "file": "assets/cards/talisman/sique-aroma-lure.json",
+      "sha256": "f29753d29a6cfa812bb064f1e28087286104307388ede78d7df72a9100160e46"
+    },
+    {
+      "file": "assets/cards/talisman/sique-backfire.json",
+      "sha256": "a3d3a1d3d4de1a170b751d702a1c35c8539e52242c79e093a35afef413838c8a"
+    },
+    {
+      "file": "assets/cards/talisman/sique-boiling-surge.json",
+      "sha256": "878c130a8ff50d8ab977b303bfe28bd3057a89b125cdd4e53a2a6be521f25cb7"
+    },
+    {
+      "file": "assets/cards/talisman/snow-rain-storm.json",
+      "sha256": "67a8306513f7ca2b2c35321bfd08b99a5162a118cf668677306447a2f3e4c250"
+    },
+    {
+      "file": "assets/cards/talisman/storm-vortex.json",
+      "sha256": "e63c59ab6b610f76d49c9f96ae2f4122c64d734c81a6401d8b7419168c1f0fa3"
+    },
+    {
+      "file": "assets/cards/talisman/wind-strike.json",
+      "sha256": "1d44f9fc100a4817fe36c42950c8eb754beb797ee16933d5b7549710885c2d71"
+    },
+    {
+      "file": "assets/cards/word/aid.json",
+      "sha256": "2029ca4f435b3e4715c04682fdcaafd95c1b2b58d31bffb21051d73a7df08904"
+    },
+    {
+      "file": "assets/cards/word/arcana-emperor.json",
+      "sha256": "c415d6f5d8935fd97a4a2fce27e10a5cd26968677f541ca9a95c3049d71f4979"
+    },
+    {
+      "file": "assets/cards/word/arcana-fool.json",
+      "sha256": "11457faede938a69931ffd9b4830c78487b519d887f38f659021c3e528ff35e0"
+    },
+    {
+      "file": "assets/cards/word/arcana-justice.json",
+      "sha256": "460db27f60b8ac5c90f1fdabd27038509c32d5f65bfeae9cbe4b82c67b6e478e"
+    },
+    {
+      "file": "assets/cards/word/arcana-magician.json",
+      "sha256": "9e4d210f7d877d76869c0500926857ab09ccd126960b8c10060c940d966930ba"
+    },
+    {
+      "file": "assets/cards/word/arcana-priestess.json",
+      "sha256": "9550f20a165c28482ab3832a1b0934035b4aef2ff8a6ca3c56de9ba770d46f07"
+    },
+    {
+      "file": "assets/cards/word/arcana-world.json",
+      "sha256": "727b7e421d89871e1c57764d29ec3abfe32269b27e7936d5bfa2a02dd4bb0d41"
+    },
+    {
+      "file": "assets/cards/word/arcane-recovery.json",
+      "sha256": "64c6ee3b9e8053dce821d95174f5fda88c32b67cdca692f2df75c9e8f981bc3b"
+    },
+    {
+      "file": "assets/cards/word/barbs.json",
+      "sha256": "42576542638a394886a88b0bc17adf6eb8d764c41467a1713ce00c97ac78c03b"
+    },
+    {
+      "file": "assets/cards/word/blood-last-stand.json",
+      "sha256": "af60d44d26b53f5a114cc848936fb83b327e52577ce2bae24d81f98b513ac248"
+    },
+    {
+      "file": "assets/cards/word/blood-letting.json",
+      "sha256": "817fb2dca4d87a4396d23c30b4422b0c1318af18978f18d59d0cb475c1089b86"
+    },
+    {
+      "file": "assets/cards/word/blood-offering.json",
+      "sha256": "c4f7358a069ab6d30afee25830eff53fc90e3008bcda21791ac7ded01e893d9d"
+    },
+    {
+      "file": "assets/cards/word/blood-wrist.json",
+      "sha256": "6861274b2b2f658dbc10fa8d101549c38724efc70345b625a51f1935e35cfee0"
+    },
+    {
+      "file": "assets/cards/word/clarity.json",
+      "sha256": "7b24bbdfba5b2ec7656e530f2d51b99a26b0b23ceb04cdf82a5cf3cc65978a78"
+    },
+    {
+      "file": "assets/cards/word/counter-spell.json",
+      "sha256": "a7400319eac4b25af47f7888c70376be22cbcfbfa833e0109fcbb05a02766ac6"
+    },
+    {
+      "file": "assets/cards/word/disrupt.json",
+      "sha256": "180123df9a4a3c4a5ba65bdb7d9f46965a52a7ec7081cd68e6862ad3027d4a34"
+    },
+    {
+      "file": "assets/cards/word/instant-circuit-overload.json",
+      "sha256": "9936f5e31421fd9323cdad5c54c06c27a6f6618ba18cb0007255d459e187227c"
+    },
+    {
+      "file": "assets/cards/word/qixing-awaken.json",
+      "sha256": "d8bac03f7b7e262425c0d02b1f057ebf44ff49155e471d52d05d7bd5512b4311"
+    },
+    {
+      "file": "assets/cards/word/qixing-divination.json",
+      "sha256": "3db52c70099bd481d66996f5455b48e9d609b08fb99a07f75fc910c5964f09c6"
+    },
+    {
+      "file": "assets/cards/word/qixing-shift.json",
+      "sha256": "42983171bc2f63b3079a7489482a7d89c2a5aabf6dafecd0d8bc4dae0215dcea"
+    },
+    {
+      "file": "assets/cards/word/recall.json",
+      "sha256": "9581d019d5cf02950665d5fb97b0870242d869158982e54bc63142d4c3650da0"
+    },
+    {
+      "file": "assets/cards/word/shield.json",
+      "sha256": "1e8af4e1b4bee056bef25900e55b4ab55fb47199b4553b5a8498ec552c4bb3c1"
+    },
+    {
+      "file": "assets/cards/word/sique-blowfire.json",
+      "sha256": "c47d59549c21575391bb8c51caccf2057260dffbe8b9ff71c883dd685720011c"
+    },
+    {
+      "file": "assets/cards/word/sique-flavor-shift.json",
+      "sha256": "e09757110323db49486b963004522ff876522244d60bce3ad33956379592eada"
+    },
+    {
+      "file": "assets/cards/word/sique-ingredients.json",
+      "sha256": "5cb392ca4830ff63570c31b2b1ee1e3c7ebbb3044b4134f068afcb6248a4a0a4"
+    },
+    {
+      "file": "assets/cards/word/sique-refire.json",
+      "sha256": "6ae3fab84aad4a633640b205c9de202d7b0e5a52756d27408a4335ee852b01a2"
+    },
+    {
+      "file": "assets/cards/word/spark.json",
+      "sha256": "faf87c699c38f28f28a479104c75781c06bc785e33dc41f9e7b4582f97001302"
+    },
+    {
+      "file": "assets/cards/word/storm-guidance.json",
+      "sha256": "032c1d8000ff94c0d7605a75905e6a4d6b28d83e291f1093b73c5ef3c3c3009b"
+    },
+    {
+      "file": "assets/cards/word/swift-wind.json",
+      "sha256": "a1f85e759de2f76a496836d2b33e41a9aa6a8d20f622b30866e40cb64270a112"
+    },
+    {
+      "file": "assets/cards/word/true-strike.json",
+      "sha256": "94cf07c11d7b3ff3b7c5ac6b181f20e15d18552d89bbcf6bf70929b0b7c02ee2"
+    },
+    {
+      "file": "assets/cards/word/wind-whisper.json",
+      "sha256": "134fffc757cd1401fc531c9756e8992f89df59e26b3602424f2edf891b520165"
+    },
+    {
+      "file": "assets/cards/word/windmaking.json",
+      "sha256": "18a11c35f3ddc2aa65c3f9c550d983808de5c134773c718ff572a984e8239836"
+    }
+  ],
+  "replays": [
+    {
+      "file": "tests/fixtures/alpha-v1-replay.json",
+      "backup": "backup/runtime-inputs/replays/tests/fixtures/alpha-v1-replay.json",
+      "sha256": "85bb2f0eefaf4dfba4647f88b79cfadd87bc0222929f4f02fdafb2fcc9be0ec7"
+    },
+    {
+      "file": "tests/fixtures/current-format4-seed-314.json",
+      "backup": "backup/runtime-inputs/replays/tests/fixtures/current-format4-seed-314.json",
+      "sha256": "c37cf95ceaf9ad2f92bfc6259f4c665573b0ebd155759baf76dbd8015cb16b70"
+    },
+    {
+      "file": "tests/fixtures/current-format4-seed-42.json",
+      "backup": "backup/runtime-inputs/replays/tests/fixtures/current-format4-seed-42.json",
+      "sha256": "09be8e1c8524926cc4b76453c59968a5ed96581b55eeb4af4d41d5d66cf303cd"
+    },
+    {
+      "file": "tests/fixtures/current-format4-seed-71.json",
+      "backup": "backup/runtime-inputs/replays/tests/fixtures/current-format4-seed-71.json",
+      "sha256": "4f77ae806fe8f341be7959534aaf0a3bedd00046b7797cffaf64233e2b002e7c"
+    },
+    {
+      "file": "build/windows/card-scenario-1.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/card-scenario-1.json",
+      "sha256": "b2689ea541afc887b26af63e1656f0c2f32b17f377fe57572a0ea3d6038273b0"
+    },
+    {
+      "file": "build/windows/card-scenario-2.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/card-scenario-2.json",
+      "sha256": "b7aa94f988f84aa3bb3b439497f359c78cc4d41b95c7a600e804326485e1da6e"
+    },
+    {
+      "file": "build/windows/card-scenario-3.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/card-scenario-3.json",
+      "sha256": "8aaf901500099acb6653100ec67eca5cf74570237c74d022a75da3b62e3c57d3"
+    },
+    {
+      "file": "build/windows/card-scenario-4.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/card-scenario-4.json",
+      "sha256": "24fc074b26f33ab7555a4d85d887c990fbdd7fd2ca0458855946c8a5c0f18f05"
+    },
+    {
+      "file": "build/windows/card-scenario-5.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/card-scenario-5.json",
+      "sha256": "639b268e53277ced846bb6765e1f96e5e9aa908450ef45f631ea73251eed6ab1"
+    },
+    {
+      "file": "build/windows/card-scenario-7.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/card-scenario-7.json",
+      "sha256": "aeadaea76602382e6197e5d6bffb8d4c216f9f8eaaac68e808a3b0921854ea1a"
+    },
+    {
+      "file": "build/windows/card-scenario-9.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/card-scenario-9.json",
+      "sha256": "6858eede2029edf77c65638d9497cc9d2423883df08a54d146882faa185e9889"
+    },
+    {
+      "file": "build/windows/card-update-match.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/card-update-match.json",
+      "sha256": "07211208f8afddba889a6c5e891dbae5afe3e7267be1fd6c025f29f344df1407"
+    },
+    {
+      "file": "build/windows/phase2-smoke.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/phase2-smoke.json",
+      "sha256": "6a249f675125f73ac8ab2e7e5359761b52aa3367d498662cde89d3ff4231fa34"
+    },
+    {
+      "file": "build/windows/phase2-ui-chain-smoke.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/phase2-ui-chain-smoke.json",
+      "sha256": "e053880b91ab622b02ae5cbe7dee191845a3284f344e63dc7d6ea3111b96d040"
+    },
+    {
+      "file": "build/windows/release-smoke-255.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/release-smoke-255.json",
+      "sha256": "3fb30ae5bd497175d15b0c3ed194d68396df15899d2a95ebbcc48ed8834aaf96"
+    },
+    {
+      "file": "build/windows/smoke.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/smoke.json",
+      "sha256": "cdcceed763158dc26243c0f9f1f0fc697b62a24133db1a602767ca669f14e80f"
+    },
+    {
+      "file": "build/windows/stage3-match.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/stage3-match.json",
+      "sha256": "3cfdd8192c654a707d8d191ff291bdb302ebf9455b9d941444ccb0c0e3af42d3"
+    },
+    {
+      "file": "build/windows/stage4-match.json",
+      "backup": "backup/runtime-inputs/replays/build/windows/stage4-match.json",
+      "sha256": "878a9f79cf098b31ff91b2cf4aeac13af93f20b75259373a513500de886b02eb"
+    },
+    {
+      "file": "build/headless/smoke.json",
+      "backup": "backup/runtime-inputs/replays/build/headless/smoke.json",
+      "sha256": "48a2123f658e351dcec834bbad8a2530279a07eff1201f85b81b2122b81b7e18"
+    }
+  ]
+}

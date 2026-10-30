@@ -1,0 +1,33 @@
+{
+  "id": "v260-talisman-0008",
+  "number": "040008",
+  "name": "步履维艰",
+  "type": "talisman",
+  "school": "illusion",
+  "rarity": "common",
+  "rank": 2,
+  "cost": 0,
+  "castCost": 3,
+  "analysisTurns": 0,
+  "speed": 3,
+  "text": "此回合，对方设置的全部解析法术卡的解析时间+1。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 71
+  },
+  "illustrationId": "v260-talisman-0008",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\步履维艰.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

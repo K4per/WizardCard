@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0037",
+  "number": "020037",
+  "name": "土石喷发",
+  "type": "analytic",
+  "school": "transmutation",
+  "rarity": "common",
+  "rank": 5,
+  "cost": 5,
+  "castCost": 3,
+  "analysisTurns": 2,
+  "speed": 1,
+  "text": "对对方以及对方场上全部目标各造成10点钝击伤害。那之后，直到己方下个准备阶段开始时，对方施法槽数量减半。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 38
+  },
+  "illustrationId": "v260-analytic-0037",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\土石喷发.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

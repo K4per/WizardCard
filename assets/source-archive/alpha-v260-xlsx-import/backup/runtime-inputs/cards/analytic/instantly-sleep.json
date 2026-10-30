@@ -1,0 +1,24 @@
+{
+  "id": "instantly-sleep",
+  "name": "沉默术",
+  "type": "analytic",
+  "rarity": "uncommon",
+  "cost": 3,
+  "castCost": 1,
+  "rank": 4,
+  "speed": 1,
+  "school": "enchantment",
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "block_actions",
+      "amount": 0
+    }
+  ],
+  "text": "直到下个己方抽卡阶段开始时，双方言灵法术不可发动。",
+  "flavor": "巫师牌安眠药。",
+  "level": 4,
+  "number": "020006",
+  "illustrationId": "instantly-sleep",
+  "analysisTurns": 1
+}

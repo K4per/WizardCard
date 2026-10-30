@@ -1,5 +1,6 @@
 #pragma once
 #include "wizard/core/view.hpp"
+#include "wizard/core/action_query.hpp"
 
 namespace wizard::ui {
 std::optional<AdvancePhase> automaticAdvance(const GameView&,bool enabled);
@@ -13,11 +14,12 @@ public:
 private:
     std::array<std::vector<CardId>,2> order_;
 };
-struct ActionGroup { std::string title; std::vector<LegalAction> options; };
+struct ActionGroup { std::string title, operation; };
 // Presentation-only selection state. Rules still validate every submitted command.
 class Interaction {
 public:
-    void update(GameView view);
+    using Query = std::function<ActionOptions(const ActionIntent &)>;
+    void update(GameView view, Query query = {});
     bool select(CardId card);
     bool activate(std::size_t group);
     bool pick(CardId card);
@@ -38,7 +40,9 @@ public:
     static CardId costCard(const Command&);
 private:
     GameView view_; CardId selected_{}; Step step_{Step::Inspect};
-    std::vector<LegalAction> options_; std::optional<LegalAction> pending_;
+    Query query_; ActionIntent intent_; ActionOptions options_;
+    std::optional<LegalAction> pending_;
+    bool choose(const std::string &value);
     void advance();
 };
 }

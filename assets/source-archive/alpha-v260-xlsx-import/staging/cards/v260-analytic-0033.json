@@ -1,0 +1,33 @@
+{
+  "id": "v260-analytic-0033",
+  "number": "020033",
+  "name": "灾祸术",
+  "type": "analytic",
+  "school": "enchantment",
+  "rarity": "uncommon",
+  "rank": 4,
+  "cost": 4,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "计时3。己方结束阶段开始时，选择以下1个效果适用：◎对对方造成2点暗蚀伤害；◎使对方获得2点独立荷载，对方结束阶段清除；◎对方魔素-1。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "blocked",
+  "effectBlockers": [
+    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  ],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 34
+  },
+  "illustrationId": "v260-analytic-0033",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\灾祸术.png"
+  },
+  "migration": {
+    "previousId": null
+  }
+}

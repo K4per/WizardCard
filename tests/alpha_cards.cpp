@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include "wizard/interaction.hpp"
 #include <algorithm>
@@ -5,20 +6,20 @@
 using namespace wizard;
 namespace {
 struct V1 {
-    Content data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
-    GameState s;
+    Content data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    MutationContext s;
     V1() {
         s.phase = Phase::Main;
         s.phaseStep = PhaseStep::Body;
         s.flow = Flow::Main;
         s.rng = 7;
         s.nextLoad = 1000;
-        data.catalog.cards.at("balance").capacity = 40;
+        data.catalog.cards.at("hexagram").capacity = 40;
         for (int p = 0; p < 2; ++p) {
             s.players[p].mana = 12;
             s.players[p].life = 20;
             s.players[p].ownTurn = 2;
-            auto &b = add(static_cast<CardId>(p + 1), "balance", p, Zone::Analysis);
+            auto &b = add(static_cast<CardId>(p + 1), "hexagram", p, Zone::Analysis);
             b.base = true;
             for (CardId id = 100 + 30 * p; id < static_cast<CardId>(120 + 30 * p); ++id) {
                 add(id, "spark", p, Zone::Deck);
@@ -48,27 +49,27 @@ struct V1 {
         c.analysisLoad = c.settingPaid = data.catalog.at(name).cost;
         return c;
     }
-    GameEngine engine() {
-        return GameEngine::scenario(data.catalog, s);
+    test::ObservedEngine engine() {
+        return test::ObservedEngine::scenario(data.catalog, s);
     }
 };
-void send(GameEngine &e, int p, const Command &c) {
+void send(test::ObservedEngine &e, int p, const Command &c) {
     auto r = e.submit(p, c);
     INFO(r.error);
     REQUIRE(r.accepted);
 }
-void pass(GameEngine &e) {
+void pass(test::ObservedEngine &e) {
     for (int n = 0; e.state().decision && e.state().decision->kind == DecisionKind::Response && n < 12; ++n) {
         auto d = *e.state().decision;
         send(e, d.player, PassResponse{d.id});
     }
 }
-void next(GameEngine &e) {
+void next(test::ObservedEngine &e) {
     pass(e);
     REQUIRE_FALSE(e.state().decision);
     send(e, e.state().active, AdvancePhase{e.state().phaseGate});
 }
-void reach(GameEngine &e, int p, Phase phase) {
+void reach(test::ObservedEngine &e, int p, Phase phase) {
     if (e.state().active == p && e.state().phase == phase)
         next(e);
     for (int n = 0; n < 30 && (e.state().active != p || e.state().phase != phase); ++n)
@@ -76,7 +77,7 @@ void reach(GameEngine &e, int p, Phase phase) {
     REQUIRE(e.state().active == p);
     REQUIRE(e.state().phase == phase);
 }
-Respond response(GameEngine &e, int p, CardId id) {
+Respond response(test::ObservedEngine &e, int p, CardId id) {
     auto v = e.viewFor(p);
     for (const auto &a : v.actions)
         if (auto r = std::get_if<Respond>(&a.command))
@@ -180,7 +181,8 @@ TEST_CASE("release supplement damage protection restoration and recovery resolve
 TEST_CASE("v1 cards expose typed damage schools speeds and untouched artwork entries") {
     V1 f;
     REQUIRE(f.data.catalog.cards.size() == 30);
-    REQUIRE(f.data.catalog.advancedRules);
+    REQUIRE(f.data.catalog.rulesVersion == "2.5.5");
+    REQUIRE(f.data.catalog.mechanicsRevision == 9);
     for (auto name : {"fireball", "spark", "ward"}) {
         const auto &d = f.data.catalog.at(name);
         REQUIRE(d.school == "evocation");
@@ -199,11 +201,11 @@ TEST_CASE("intrinsic load capacity persists independently and overload uses the 
     V1 f;
     REQUIRE(f.data.catalog.baseLoadCapacity == 2);
     REQUIRE(f.data.catalog.at("pentagram-of-life").capacity == 5);
-    f.data.catalog.cards.at("balance").capacity = 8;
-    for (const auto &base : {std::string("balance"), std::string("pentagram-of-life")}) {
+    f.data.catalog.cards.at("hexagram").capacity = 8;
+    for (const auto &base : {std::string("hexagram"), std::string("pentagram-of-life")}) {
         auto state = f.s;
         state.cards.at(1).definition = base;
-        const int limit = base == "balance" ? 10 : 7;
+        const int limit = base == "hexagram" ? 10 : 7;
         REQUIRE(Rules::capacity(state, f.data.catalog, 0) == limit);
         state.temporary.push_back({1, 0, 0, limit, 2});
         StateMaintenance::check(state, f.data.catalog);
@@ -218,7 +220,7 @@ TEST_CASE("intrinsic load capacity persists independently and overload uses the 
     REQUIRE(Rules::capacity(f.s, f.data.catalog, 0) == before - f.data.catalog.at("reservoir").capacity);
     f.s.cards.at(1).zone = Zone::Ash;
     REQUIRE(Rules::capacity(f.s, f.data.catalog, 0) == 2);
-    const auto legacy = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/stage2");
+    const auto legacy = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     REQUIRE(legacy.catalog.baseLoadCapacity == 0);
 }
 TEST_CASE("shared drag destinations prefer analysis and preloading over ambush") {
@@ -317,13 +319,13 @@ TEST_CASE("four point star accelerates rank one once per own turn and never cons
     next(e);
     reach(e, 0, Phase::Main);
     send(e, 0, Abandon{11});
-    auto state = e.state();
+    auto state = test::mutation(e.state());
     CardInstance c;
     c.id = 14;
     c.definition = "magic-missile";
     c.zone = Zone::Hand;
     state.cards[14] = c;
-    auto again = GameEngine::scenario(f.data.catalog, state);
+    auto again = test::ObservedEngine::scenario(f.data.catalog, state);
     send(again, 0, StartAnalysis{14, 13});
     REQUIRE(again.state().cards.at(14).spell == SpellState::Ready);
 }
@@ -520,7 +522,7 @@ TEST_CASE(
     REQUIRE(std::none_of(opponent.cards.begin(), opponent.cards.end(),
                          [](const CardView &c) { return c.instance.zone == Zone::Deck; }));
     auto own = e.viewFor(0);
-    REQUIRE(ai::choose(own, ai::Difficulty::Hard));
+    REQUIRE(test::choose(own, ai::Difficulty::Hard));
     send(e, 0, Choose{e.state().decision->id, 101});
     REQUIRE(e.state().cards.at(101).zone == Zone::Hand);
     REQUIRE(e.state().players[0].deck.size() == 19);
@@ -581,7 +583,7 @@ TEST_CASE(
     send(e, 0, SetFormation{10});
     REQUIRE(e.state().players[0].mana == 11);
     REQUIRE(e.state().cards.at(10).settingPaid == 1);
-    REQUIRE(f.data.catalog.at("balance").cost == 0);
+    REQUIRE(f.data.catalog.at("hexagram").cost == 0);
     REQUIRE(f.data.catalog.at("reservoir").cost == 0);
 }
 
@@ -601,8 +603,8 @@ TEST_CASE("cancelled preparation cannot bypass its retry restriction via direct 
     REQUIRE(e.state().players[1].life == 17);
 }
 TEST_CASE("new representative decks finish every AI difficulty and replay all accepted commands") {
-    const auto data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
-    const auto presets = app::loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    const auto data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    const auto presets = app::loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     for (int d = 0; d < 3; ++d)
         for (std::size_t k = 4; k < presets.size(); ++k) {
             MatchConfig cfg;
@@ -612,9 +614,9 @@ TEST_CASE("new representative decks finish every AI difficulty and replay all ac
             MatchSession session(data, cfg);
             for (int n = 0; session.engine().state().result == -1; ++n) {
                 REQUIRE(n < 1500);
-                const auto &state = session.engine().state();
+                const auto &state = test::mutation(session.engine().state());
                 const auto p = state.decision ? state.decision->player : state.active;
-                const auto selected = ai::choose(session.engine().viewFor(p), static_cast<ai::Difficulty>(d));
+                const auto selected = test::choose(test::view(session.engine(),p), static_cast<ai::Difficulty>(d));
                 REQUIRE(selected);
                 auto result = session.submit(p, selected->command);
                 INFO(result.error);
@@ -736,8 +738,8 @@ TEST_CASE("required multi target release skips its entire effect when one target
     REQUIRE(e.state().cards.at(10).zone == Zone::Ash);
 }
 TEST_CASE("full new card replay covers ambush flip search and direct release through legal projection") {
-    const auto data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
-    const auto presets = app::loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v1-production");
+    const auto data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
+    const auto presets = app::loadPresets(data, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     MatchConfig cfg;
     cfg.seed = 42;
     cfg.players[0] = cfg.players[1] = presets[4].deck;
@@ -749,10 +751,10 @@ TEST_CASE("full new card replay covers ambush flip search and direct release thr
     bool flipped = false, searched = false;
     for (int n = 0; session.engine().state().result == -1; ++n) {
         REQUIRE(n < 1500);
-        const auto &state = session.engine().state();
+        const auto &state = test::mutation(session.engine().state());
         const auto p = state.decision ? state.decision->player : state.active;
-        const auto v = session.engine().viewFor(p);
-        auto selected = ai::choose(v, ai::Difficulty::Easy);
+        const auto v = test::view(session.engine(),p);
+        auto selected = test::choose(v, ai::Difficulty::Easy);
         REQUIRE(selected);
         if (!set[p])
             for (const auto &a : v.actions)

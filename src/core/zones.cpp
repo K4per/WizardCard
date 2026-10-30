@@ -9,13 +9,12 @@
 #include <stdexcept>
 
 namespace wizard {
-void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
+void StateMaintenance::leave(MutationContext &s, CardId id, const CardCatalog *cat) {
     std::vector<Trigger> captured;
     std::uint32_t batch = 0;
     auto leaveOne = [&](auto &&self, CardId source) -> void {
         auto i = s.cards.find(source);
-        if (i == s.cards.end() || i->second.zone == Zone::Ash || i->second.zone == Zone::Exile ||
-            (i->second.base && (!cat || !cat->usesAlphaV2())))
+        if (i == s.cards.end() || i->second.zone == Zone::Ash || i->second.zone == Zone::Exile || i->second.base && !cat)
             return;
         auto &c = i->second;
         if (cat && c.zone == Zone::Attached && card_rules::member(cat->at(c.definition), "味契")) {
@@ -27,12 +26,12 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
                 children.push_back(cid);
         const bool publicSource = c.zone != Zone::Hand && c.zone != Zone::Deck && c.zone != Zone::SideDeck;
         const bool wasCasting = c.zone == Zone::Casting;
-        if (cat && cat->usesCardRules() && c.definition == "qixing-lamp" &&
+        if (cat && hasCapability(cat->at(c.definition), Capability::SevenStarsLamp) &&
             (c.zone == Zone::Analysis || c.zone == Zone::Casting) && c.spell == SpellState::Active) {
             s.players[c.owner].surrendered = true;
             s.events.push_back({"seven_lamp_defeat", "已发动的七星灯盏离场：己方败北", -1, source});
         }
-        if (cat && cat->usesAlphaV252() && c.definition == "arcana-lovers" && c.remaining > 0) {
+        if (cat && hasCapability(cat->at(c.definition), Capability::ArcanaLovers) && c.remaining > 0) {
             if (!batch) batch = s.nextBatch++;
             Trigger trigger;
             trigger.id = s.nextTrigger++; trigger.batch = batch;
@@ -80,18 +79,18 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
         c.faceDown = false;
         c.publiclyRevealed = false;
         c.ringIndex = -1;
-        if (cat && cat->usesAlphaV2()) {
+        if (cat) {
             c.wasAmbushed = false;
             c.ambushedTurn = 0;
             c.analysisProgress = 0;
             const auto &definition = cat->at(c.definition);
-            c.faceDown = std::find(definition.traits.begin(), definition.traits.end(), "self_ambush_on_leave") != definition.traits.end();
+            c.faceDown = hasCapability(definition, Capability::SelfAmbushOnLeave);
             if (wasCasting && (definition.type == CardType::Analytic || definition.type == CardType::Word ||
                                definition.type == CardType::Talisman))
                 for (const auto &[formationId, formation] : s.cards) {
                     const auto &passive = cat->at(formation.definition);
                     if (formation.owner != c.owner || formation.zone != Zone::Analysis ||
-                        std::find(passive.traits.begin(), passive.traits.end(), "ping_on_spell_leave") == passive.traits.end())
+                        !hasCapability(passive, Capability::PingOnSpellLeave))
                         continue;
                     if (!batch) batch = s.nextBatch++;
                     Trigger trigger;
@@ -123,16 +122,15 @@ void StateMaintenance::leave(GameState &s, CardId id, const CardCatalog *cat) {
     for (auto &trigger : captured)
         s.queue.append(std::move(trigger));
 }
-void StateMaintenance::check(GameState &s, const CardCatalog &cat, bool endCleanup) {
+void StateMaintenance::check(MutationContext &s, const CardCatalog &cat, bool endCleanup) {
     if (s.result != -1)
         return;
     bool loses[2]{};
     for (int p = 0; p < 2; ++p)
         loses[p] = (!s.players[p].debugInfiniteLife && s.players[p].life <= 0) || s.players[p].surrendered ||
-                   (cat.usesAlphaV2()
-                        ? !s.players[p].debugInfiniteLoad && endCleanup && p == s.active && Rules::load(s, p) > Rules::capacity(s, cat, p) &&
-                            Rules::load(s, p) >= 2 * Rules::capacity(s, cat, p)
-                        : s.players[p].drawFailed || (!s.players[p].debugInfiniteLoad && Rules::load(s, p) > Rules::capacity(s, cat, p)));
+                   (!s.players[p].debugInfiniteLoad && endCleanup && p == s.active &&
+                    Rules::load(s, p) > Rules::capacity(s, cat, p) &&
+                    Rules::load(s, p) >= 2 * Rules::capacity(s, cat, p));
     if (loses[0] || loses[1]) {
         s.result = loses[0] && loses[1] ? 2 : loses[0] ? 1 : 0;
         for (int p = 0; p < 2; ++p)

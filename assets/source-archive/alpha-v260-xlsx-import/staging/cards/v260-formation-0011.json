@@ -1,0 +1,37 @@
+{
+  "id": "v260-formation-0011",
+  "number": "010011",
+  "name": "强化法阵",
+  "type": "formation",
+  "school": "",
+  "rarity": "",
+  "rank": null,
+  "cost": 0,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 1,
+  "text": "无效果。",
+  "flavor": "",
+  "effects": [],
+  "implementationStatus": "structured-candidate",
+  "effectBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "worksheet": "阵法卡",
+    "row": 14
+  },
+  "illustrationId": "v260-formation-0011",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\强化.png"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "summonCondition": "【标准法阵】+解析区法术卡×1",
+  "level": 3,
+  "body": 2,
+  "rings": 3,
+  "capacity": 10,
+  "income": 3
+}

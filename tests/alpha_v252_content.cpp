@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include "wizard/core/card_rules.hpp"
 #include <catch2/catch_test_macros.hpp>
@@ -5,13 +6,13 @@
 using namespace wizard;
 namespace {
 CardCatalog currentCatalog() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets").catalog; }
-GameState contentState(Phase phase = Phase::Cast) {
-    GameState s; s.phase = phase; s.phaseStep = PhaseStep::Body; s.phaseGate = 1;
+MutationContext contentState(Phase phase = Phase::Cast) {
+    MutationContext s; s.phase = phase; s.phaseStep = PhaseStep::Body; s.phaseGate = 1;
     s.globalTurn = 5; s.rng = 19;
     for (auto &p : s.players) { p.ownTurn = 2; p.mana = 20; }
     return s;
 }
-CardInstance &add252(GameState &s, CardId id, const std::string &def, PlayerId owner, Zone zone,
+CardInstance &add252(MutationContext &s, CardId id, const std::string &def, PlayerId owner, Zone zone,
                      CardId host = 0, SpellState spell = SpellState::None) {
     CardInstance c; c.id = id; c.definition = def; c.owner = owner; c.zone = zone;
     c.sourceFormation = host; c.spell = spell;
@@ -21,8 +22,8 @@ CardInstance &add252(GameState &s, CardId id, const std::string &def, PlayerId o
     if (zone == Zone::Deck) s.players[owner].deck.push_back(id);
     return s.cards.at(id);
 }
-void send252(GameEngine &e, PlayerId p, const Command &c) { auto r = e.submit(p, c); INFO(r.error); REQUIRE(r.accepted); }
-void settle252(GameEngine &e) {
+void send252(test::ObservedEngine &e, PlayerId p, const Command &c) { auto r = e.submit(p, c); INFO(r.error); REQUIRE(r.accepted); }
+void settle252(test::ObservedEngine &e) {
     for (int n = 0; n < 80 && e.state().decision; ++n) {
         const auto d = *e.state().decision;
         if (d.kind == DecisionKind::Response) send252(e, d.player, PassResponse{d.id});
@@ -30,15 +31,15 @@ void settle252(GameEngine &e) {
         else return;
     }
 }
-void choose252(GameEngine &e, CardId id) {
+void choose252(test::ObservedEngine &e, CardId id) {
     settle252(e); REQUIRE(e.state().decision);
     const auto d = *e.state().decision; send252(e, d.player, Choose{d.id, id}); settle252(e);
 }
 }
 TEST_CASE("Alpha v2.5.5 current pool has unique executable identities and excludes unfinished drafts", "[alpha-v252][alpha-v253][content]") {
-    const auto cat = currentCatalog(); REQUIRE(cat.cards.size() == 135); REQUIRE(cat.usesAlphaV253());
+    const auto cat = currentCatalog(); REQUIRE(cat.cards.size() == 119); REQUIRE(cat.mechanicsRevision == 9);
     CHECK(cat.rulesVersion == "2.5.5"); CHECK(cat.cardSetVersion == "2.5.5");
-    CHECK(cat.mechanicsRevision == 9); CHECK(cat.usesAlphaV253Hotfix1()); CHECK(cat.usesAlphaV255());
+    CHECK(cat.mechanicsRevision == 9);
     for (const auto *draft : {"upright-cross", "inverted-cross", "ankh"}) CHECK(cat.cards.count(draft) == 0);
     std::set<std::string> numbers;
     for (const auto &[id, d] : cat.cards) {
@@ -46,7 +47,7 @@ TEST_CASE("Alpha v2.5.5 current pool has unique executable identities and exclud
             CHECK(numbers.insert(d.number).second); CHECK(d.number.size() == 6);
             CHECK_FALSE(d.illustrationId.empty());
             auto s = contentState(); add252(s, 10, id, 0, Zone::Hand);
-            auto e = GameEngine::scenario(cat, s); const auto before = e.digest();
+            auto e = test::ObservedEngine::scenario(cat, s); const auto before = e.digest();
             // Every definition rejects an opponent's forged ownership command atomically.
             CHECK_FALSE(e.submit(1, Abandon{10}).accepted); CHECK(e.digest() == before);
         }
@@ -75,7 +76,7 @@ TEST_CASE("Alpha v2.5.2 roast recovers any Sique card and enforces its campfire 
     add252(s, 2, "hexagram", 0, Zone::Analysis);
     add252(s, 10, "sique-roast", 0, Zone::Casting, 1, SpellState::Ready);
     add252(s, 20, "sique-vinegar", 0, Zone::Ash);
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     const auto before = e.digest();
     CHECK_FALSE(e.submit(0, ActivateSpell{10, 999}).accepted); CHECK(e.digest() == before);
     send252(e, 0, ActivateSpell{10, playerTarget(1)}); choose252(e, 20);
@@ -90,8 +91,8 @@ TEST_CASE("Alpha v2.5.2 blowfire optional discard deals additional fire damage o
     add252(s, 10, "sique-blowfire", 0, Zone::Casting, 1, SpellState::Ready);
     add252(s, 20, "recall", 0, Zone::Hand);
     auto invalid = s; invalid.cards.at(1).definition = "hexagram";
-    auto denied = GameEngine::scenario(cat, invalid); CHECK_FALSE(denied.submit(0, ActivateSpell{10}).accepted);
-    auto e = GameEngine::scenario(cat, s); send252(e, 0, ActivateSpell{10}); choose252(e, 20);
+    auto denied = test::ObservedEngine::scenario(cat, invalid); CHECK_FALSE(denied.submit(0, ActivateSpell{10}).accepted);
+    auto e = test::ObservedEngine::scenario(cat, s); send252(e, 0, ActivateSpell{10}); choose252(e, 20);
     CHECK(e.state().cards.at(20).zone == Zone::Ash);
     CHECK(e.state().players[1].life == startingLife - 7);
     CHECK_FALSE(e.submit(0, ActivateSpell{10}).accepted);
@@ -102,7 +103,7 @@ TEST_CASE("Alpha v2.5.2 backfire recycles opponents cards and scales damage and 
     add252(s, 10, "sique-backfire", 0, Zone::Casting, 1, SpellState::Ready);
     add252(s, 20, "hexagram", 1, Zone::Ash); add252(s, 21, "spark", 1, Zone::Ash);
     add252(s, 22, "recall", 0, Zone::Ash);
-    auto e = GameEngine::scenario(cat, s); send252(e, 0, ActivateSpell{10});
+    auto e = test::ObservedEngine::scenario(cat, s); send252(e, 0, ActivateSpell{10});
     settle252(e); REQUIRE(e.state().decision);
     CHECK_FALSE(e.submit(0, Choose{e.state().decision->id, 22}).accepted);
     choose252(e, 20); choose252(e, 21);
@@ -117,7 +118,7 @@ TEST_CASE("Alpha v2.5.2 new star hosts shorten analysis and add the specified in
             add252(s, 10, "sique-pancakes", 0, Zone::Hand);
             // Use an in-rank spell with more than one analysis round.
             s.cards.at(10).definition = host == std::string("three-star") ? "healing-circle" : "earthquake";
-            auto e = GameEngine::scenario(cat, s);
+            auto e = test::ObservedEngine::scenario(cat, s);
             const int fee = Rules::analysisCost(s, cat, 10, 1);
             send252(e, 0, StartAnalysis{10, 1}); settle252(e);
             const int advance = host == std::string("three-star") ? 1 : 2;
@@ -130,7 +131,7 @@ TEST_CASE("Alpha v2.5.2 moon blocks face up setup and prevents overload while al
     auto cat = currentCatalog(); auto s = contentState(Phase::Main);
     add252(s, 1, "hexagram", 0, Zone::Analysis); add252(s, 2, "moon", 1, Zone::Analysis);
     add252(s, 10, "fireball", 0, Zone::Hand);
-    auto e = GameEngine::scenario(cat, s); CHECK_FALSE(e.submit(0, StartAnalysis{10, 1}).accepted);
+    auto e = test::ObservedEngine::scenario(cat, s); CHECK_FALSE(e.submit(0, StartAnalysis{10, 1}).accepted);
     send252(e, 0, SetAmbush{10, 1}); settle252(e); CHECK(e.state().cards.at(10).faceDown);
     s.temporary.push_back({s.nextLoad++, 1, 0, 100, 3});
     ResourceRules::increasedLoad(s, cat, 1, 100); CHECK(s.players[1].life == startingLife);
@@ -140,7 +141,7 @@ TEST_CASE("Alpha v2.5.2 scorching rays choose a fresh player for each subsequent
     auto cat = currentCatalog(); auto s = contentState();
     add252(s, 1, "hexagram", 0, Zone::Analysis);
     add252(s, 10, "scorching-ray", 0, Zone::Casting, 1, SpellState::Ready);
-    auto e = GameEngine::scenario(cat, s); send252(e, 0, ActivateSpell{10, playerTarget(1)});
+    auto e = test::ObservedEngine::scenario(cat, s); send252(e, 0, ActivateSpell{10, playerTarget(1)});
     settle252(e); REQUIRE(e.state().decision);
     CHECK_FALSE(e.submit(0, Choose{e.state().decision->id, 999}).accepted);
     choose252(e, playerTarget(0)); choose252(e, playerTarget(1));
@@ -156,7 +157,7 @@ TEST_CASE("Alpha v2.5.2 ice storm optionally delays every enemy analysis includi
     add252(s, 20, "fireball", 1, Zone::Analysis, 2, SpellState::Analyzing).ringIndex = 0;
     auto &ready = add252(s, 21, "mend", 1, Zone::Analysis, 2, SpellState::Ready);
     ready.ringIndex = 1; ready.analysisProgress = cat.at("mend").analysisTurns;
-    auto e = GameEngine::scenario(cat, s); send252(e, 0, ActivateSpell{10, playerTarget(1)});
+    auto e = test::ObservedEngine::scenario(cat, s); send252(e, 0, ActivateSpell{10, playerTarget(1)});
     choose252(e, 0xffffffd1u);
     CHECK(e.state().cards.at(20).analysisProgress == -1);
     CHECK(e.state().cards.at(21).spell == SpellState::Analyzing);
@@ -174,11 +175,11 @@ TEST_CASE("Alpha v2.5.2 instant circuit advances exactly two turns and sleep loc
     t.targetCard = 0; EffectResolver::apply(s, cat, t, {EffectKind::BlockActions, 0});
     add252(s, 10, "spark", 0, Zone::Casting, 1, SpellState::Ready);
     add252(s, 11, "spark", 1, Zone::Casting, 1, SpellState::Ready);
-    auto e = GameEngine::scenario(cat, s);
+    auto e = test::ObservedEngine::scenario(cat, s);
     CHECK_FALSE(e.submit(0, ActivateSpell{10, playerTarget(1)}).accepted);
-    s.active = 1; e = GameEngine::scenario(cat, s);
+    s.active = 1; e = test::ObservedEngine::scenario(cat, s);
     CHECK_FALSE(e.submit(1, ActivateSpell{11, playerTarget(0)}).accepted);
-    s.active = 0; ++s.players[0].ownTurn; e = GameEngine::scenario(cat, s);
+    s.active = 0; ++s.players[0].ownTurn; e = test::ObservedEngine::scenario(cat, s);
     send252(e, 0, ActivateSpell{10, playerTarget(1)}); settle252(e);
     CHECK(e.state().players[1].life == startingLife - 3);
 }

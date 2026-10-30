@@ -1,0 +1,49 @@
+{
+  "id": "sique-boiling-surge",
+  "name": "味契·沸汤滚袭",
+  "type": "talisman",
+  "rarity": "rare",
+  "cost": 4,
+  "rank": 5,
+  "level": 5,
+  "speed": 2,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "040009",
+  "illustrationId": "sique-boiling-surge",
+  "school": "evocation",
+  "responseOnly": true,
+  "target": "enemy_spell_link",
+  "effects": [],
+  "responses": [
+    {
+      "id": "boiling_surge",
+      "name": "无效并销毁，造成10点火焰伤害",
+      "sources": [
+        "ambush",
+        "casting"
+      ],
+      "windows": [
+        "cast"
+      ],
+      "target": "enemy_spell_link",
+      "eventOwner": "opponent",
+      "effects": [
+        {
+          "kind": "sique_negate_destroy",
+          "amount": 0
+        },
+        {
+          "kind": "damage",
+          "amount": 10,
+          "damageType": "fire",
+          "recipient": "opponent"
+        }
+      ]
+    }
+  ],
+  "text": "对方发动将【味契】阵法卡销毁的法术卡时才能发动。将其无效并销毁，对对方造成10点火焰伤害。",
+  "analysisTurns": 0
+}

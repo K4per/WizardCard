@@ -1,0 +1,26 @@
+{
+  "id": "arcana-death",
+  "rarity": "rare",
+  "target": "player",
+  "illustrationId": "arcana-death",
+  "number": "020034",
+  "name": "死神",
+  "type": "analytic",
+  "text": "选择1个目标才能发动。选择对其造成40点暗蚀/光耀伤害。此法术卡在己方解析区存在，每有1张卡送去己方灰烬区，此法术卡的解析时间-1。",
+  "rank": 5,
+  "level": 5,
+  "school": "arcana",
+  "cost": 13,
+  "castCost": 0,
+  "analysisTurns": 12,
+  "speed": 2,
+  "traits": [
+    "arcana_death"
+  ],
+  "effects": [
+    {
+      "kind": "arcana_death",
+      "amount": 40
+    }
+  ]
+}

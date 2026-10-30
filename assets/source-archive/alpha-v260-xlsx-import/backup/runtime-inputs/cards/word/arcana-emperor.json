@@ -1,0 +1,26 @@
+{
+  "id": "arcana-emperor",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "arcana-emperor",
+  "number": "030022",
+  "name": "皇帝",
+  "type": "word",
+  "text": "将解析区1张法术卡抹除才能发动。将1张法术阶级为X的法术卡加入手卡，X为抹除法术卡的法术阶级+3。",
+  "rank": 3,
+  "level": 3,
+  "school": "arcana",
+  "cost": 5,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "traits": [
+    "arcana_emperor_cost"
+  ],
+  "effects": [
+    {
+      "kind": "arcana_emperor",
+      "amount": 0
+    }
+  ]
+}

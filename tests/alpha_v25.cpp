@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/core/engine.hpp"
 #include "wizard/command_codec.hpp"
 #include "wizard/decks.hpp"
@@ -13,9 +14,8 @@ struct Fixture {
     CardCatalog catalog;
     MatchConfig config;
     Fixture() {
-        catalog.alphaV2 = catalog.advancedRules = true;
-        catalog.mechanicsRevision = 3; catalog.baseLoadCapacity = 2;
-        catalog.rulesVersion = catalog.cardSetVersion = "2.5.0";
+        catalog.mechanicsRevision = 9; catalog.baseLoadCapacity = 2;
+        catalog.rulesVersion = catalog.cardSetVersion = "2.5.5";
         CardDefinition formation; formation.id = "formation"; formation.name = "一级阵法";
         formation.type = CardType::Formation; formation.level = 1; formation.body = 1;
         formation.rings = 3; formation.capacity = 8; formation.income = 2; formation.maxRank = 1;
@@ -37,8 +37,8 @@ struct Fixture {
         }
         for (auto &deck : config.players) deck.baseFormation = "unused-legacy-field";
     }
-    GameState state(Phase phase = Phase::Main) const {
-        GameState s; s.phase = phase; s.phaseStep = PhaseStep::Body;
+    MutationContext state(Phase phase = Phase::Main) const {
+        MutationContext s; s.phase = phase; s.phaseStep = PhaseStep::Body;
         s.phaseGate = 1; s.nextDecision = 2; s.rng = 42;
         for (int p = 0; p < 2; ++p) {
             s.players[p].mana = 12; s.players[p].ownTurn = 2;
@@ -49,11 +49,21 @@ struct Fixture {
         return s;
     }
 };
-void advance(GameEngine &e) {
+void passResponses(test::ObservedEngine &e) {
+    for (int n = 0; e.state().decision && e.state().decision->kind == DecisionKind::Response && n < 40; ++n) {
+        const auto decision = *e.state().decision;
+        const auto result = e.submit(decision.player, PassResponse{decision.id});
+        INFO(result.error);
+        REQUIRE(result.accepted);
+    }
+}
+void advance(test::ObservedEngine &e) {
+    passResponses(e);
     const auto r = e.submit(e.state().active, AdvancePhase{e.state().phaseGate});
     INFO(r.error); REQUIRE(r.accepted);
+    passResponses(e);
 }
-CardId initial(const GameView &view) {
+CardId initial(const test::ObservedView &view) {
     for (const auto &action : view.actions)
         if (const auto *choice = std::get_if<SelectInitialFormation>(&action.command)) return choice->card;
     return 0;
@@ -63,11 +73,11 @@ TEST_CASE("Alpha v2.5 main phase can enter casting or skip directly to end with 
     Fixture f;
     f.catalog.cards.at("formation0").onCast = {{EffectKind::Heal, 4}};
     f.catalog.cards.at("formation0").onEnd = {{EffectKind::Heal, 2}};
-    auto state = f.state(); state.players[0].life = 30;
+    auto state = test::mutation(f.state()); state.players[0].life = 30;
     CardInstance prepared; prepared.id = 10; prepared.definition = "spell0";
     prepared.zone = Zone::Casting; prepared.spell = SpellState::Ready;
     state.cards.emplace(prepared.id, prepared);
-    auto e = GameEngine::scenario(f.catalog, state);
+    auto e = test::ObservedEngine::scenario(f.catalog, state);
     const auto actions = e.viewFor(0).actions;
     REQUIRE(std::count_if(actions.begin(), actions.end(), [](const LegalAction &action) {
         return std::holds_alternative<AdvancePhase>(action.command);
@@ -76,6 +86,7 @@ TEST_CASE("Alpha v2.5 main phase can enter casting or skip directly to end with 
     const auto skipped = AdvancePhase{gate, true};
     REQUIRE(std::get<AdvancePhase>(decodeCommand(encodeCommand(skipped))).skipCast);
     REQUIRE(e.submit(0, skipped).accepted);
+    passResponses(e);
     REQUIRE(e.state().phase == Phase::Draw);
     REQUIRE(e.state().active == 1);
     REQUIRE(e.state().players[0].life == 32);
@@ -84,16 +95,16 @@ TEST_CASE("Alpha v2.5 main phase can enter casting or skip directly to end with 
     REQUIRE_FALSE(e.submit(1, AdvancePhase{e.state().phaseGate, true}).accepted);
     REQUIRE(e.digest() == before);
     REQUIRE(e.state().cards.at(10).zone == Zone::Ash);
-    REQUIRE(std::none_of(e.state().events.begin(), e.state().events.end(), [](const GameEvent &event) {
+    REQUIRE(std::none_of(e.events().begin(), e.events().end(), [](const GameEvent &event) {
         return event.kind == "phase_enter" && event.text == "进入施法阶段";
     }));
-    e = GameEngine::scenario(f.catalog, state);
+    e = test::ObservedEngine::scenario(f.catalog, state);
     advance(e);
     REQUIRE(e.state().phase == Phase::Cast);
     REQUIRE(e.state().players[0].life == 34);
 }
 
-TEST_CASE("Alpha v2.5 ambush responses open on opponent action windows", "[alpha-v25][ambush]") {
+TEST_CASE("2.5.5 ambush responses open on opponent setup windows", "[alpha-v25][ambush][legacy]") {
     Fixture f;
     auto ambush = f.catalog.cards.at("spell0");
     ambush.id = "ambush";
@@ -105,7 +116,7 @@ TEST_CASE("Alpha v2.5 ambush responses open on opponent action windows", "[alpha
     ResponseAbility ability;
     ability.id = "respond";
     ability.fromAmbush = true;
-    ability.windows = {ResponseWindow::Action};
+    ability.windows = {ResponseWindow::Prepare};
     ability.effects = {{EffectKind::GainMana, 1}};
     ambush.responses = {ability};
     f.catalog.cards.emplace(ambush.id, ambush);
@@ -128,11 +139,12 @@ TEST_CASE("Alpha v2.5 ambush responses open on opponent action windows", "[alpha
     pending.definition = "spell0";
     pending.zone = Zone::Hand;
     state.cards.emplace(pending.id, pending);
-    auto e = GameEngine::scenario(f.catalog, state);
+    auto e = test::ObservedEngine::scenario(f.catalog, state);
     REQUIRE(e.submit(1, StartAnalysis{30, 2}).accepted);
     REQUIRE(e.state().decision);
     REQUIRE(e.state().decision->player == 0);
-    REQUIRE(std::any_of(e.viewFor(0).actions.begin(), e.viewFor(0).actions.end(), [](const LegalAction &action) {
+    const auto observed = e.viewFor(0);
+    REQUIRE(std::any_of(observed.actions.begin(), observed.actions.end(), [](const LegalAction &action) {
         const auto *respond = std::get_if<Respond>(&action.command);
         return respond && respond->card == 20;
     }));
@@ -142,11 +154,11 @@ TEST_CASE("Alpha v2.5 ambush responses open on opponent action windows", "[alpha
     aiState.cards.at(20).owner = 1;
     aiState.cards.at(20).host = 2;
     aiState.cards.at(30).owner = 0;
-    auto ai = GameEngine::scenario(f.catalog, aiState);
+    auto ai = test::ObservedEngine::scenario(f.catalog, aiState);
     REQUIRE(ai.submit(0, StartAnalysis{30, 1}).accepted);
     REQUIRE(ai.state().decision);
     REQUIRE(ai.state().decision->player == 1);
-    const auto selection = ai::choose(ai.viewFor(1), ai::Difficulty::Normal);
+    const auto selection = test::choose(ai.viewFor(1), ai::Difficulty::Normal);
     REQUIRE(selection);
     REQUIRE(std::holds_alternative<Respond>(selection->command));
     REQUIRE(ai.submit(1, selection->command).accepted);
@@ -189,17 +201,17 @@ TEST_CASE("Alpha v2.5 AI can answer an opponent cast with a facedown counter", "
     pending.zone = Zone::Casting;
     pending.spell = SpellState::Ready;
     state.cards.emplace(pending.id, pending);
-    auto e = GameEngine::scenario(f.catalog, state);
+    auto e = test::ObservedEngine::scenario(f.catalog, state);
     REQUIRE(e.submit(0, ActivateSpell{30}).accepted);
     REQUIRE(e.state().decision);
     REQUIRE(e.state().decision->player == 1);
-    const auto selection = ai::choose(e.viewFor(1), ai::Difficulty::Normal);
+    const auto selection = test::choose(e.viewFor(1), ai::Difficulty::Normal);
     REQUIRE(selection);
     REQUIRE(std::holds_alternative<Respond>(selection->command));
     REQUIRE(e.submit(1, selection->command).accepted);
 }
 
-TEST_CASE("Alpha v2.5 action windows let AI use a facedown shield", "[alpha-v25][ambush]") {
+TEST_CASE("Alpha v2.5 action windows let AI use a facedown shield", "[alpha-v25][ambush][legacy]") {
     Fixture f;
     auto shield = f.catalog.cards.at("spell0");
     shield.id = "shield";
@@ -244,7 +256,7 @@ TEST_CASE("Alpha v2.5 action windows let AI use a facedown shield", "[alpha-v25]
     pending.definition = action.id;
     pending.zone = Zone::Hand;
     state.cards.emplace(pending.id, pending);
-    auto engine = GameEngine::scenario(f.catalog, state);
+    auto engine = test::ObservedEngine::scenario(f.catalog, state);
     REQUIRE(engine.submit(1, PlayAction{30}).accepted);
     REQUIRE(engine.state().decision);
     REQUIRE(engine.state().decision->player == 0);
@@ -253,7 +265,7 @@ TEST_CASE("Alpha v2.5 action windows let AI use a facedown shield", "[alpha-v25]
         const auto *respond = std::get_if<Respond>(&legal.command);
         return respond && respond->card == 20;
     }));
-    const auto selection = ai::choose(view, ai::Difficulty::Normal);
+    const auto selection = test::choose(view, ai::Difficulty::Normal);
     REQUIRE(selection);
     REQUIRE(std::holds_alternative<Respond>(selection->command));
     REQUIRE(engine.submit(0, selection->command).accepted);
@@ -264,7 +276,7 @@ TEST_CASE("Alpha v2.5 action windows let AI use a facedown shield", "[alpha-v25]
     REQUIRE(engine.state().cards.at(30).zone == Zone::Ash);
 }
 
-TEST_CASE("Alpha v2.5 skip casting preserves main phase end response before entering end", "[alpha-v25][phase-choice]") {
+TEST_CASE("Alpha v2.5 skip casting preserves main phase end response before entering end", "[alpha-v25][phase-choice][legacy]") {
     Fixture f;
     auto &spell = f.catalog.cards.at("spell0");
     spell.type = CardType::Word; spell.speed = 3;
@@ -272,33 +284,38 @@ TEST_CASE("Alpha v2.5 skip casting preserves main phase end response before ente
     ability.handCost = 0; ability.windows = {ResponseWindow::PhaseEnd};
     ability.phases = {Phase::Main}; ability.effects = {{EffectKind::Heal, 1}};
     spell.responses.push_back(ability);
-    auto state = f.state();
+    auto state = test::mutation(f.state());
     CardInstance response; response.id = 10; response.owner = 1;
     response.definition = "spell0"; response.zone = Zone::Analysis; response.host = 2;
     response.faceDown = response.wasAmbushed = true; response.ambushedTurn = 0;
     state.cards.emplace(response.id, response);
-    auto e = GameEngine::scenario(f.catalog, state);
+    auto e = test::ObservedEngine::scenario(f.catalog, state);
     REQUIRE(e.submit(0, AdvancePhase{e.state().phaseGate, true}).accepted);
     REQUIRE(e.state().decision);
     REQUIRE(e.state().decision->kind == DecisionKind::Response);
     REQUIRE(e.state().phase == Phase::Main);
     REQUIRE(e.state().skipCastPhase);
-    auto replayed = GameEngine::scenario(f.catalog, state);
+    auto replayed = test::ObservedEngine::scenario(f.catalog, state);
     REQUIRE(replayed.submit(0, decodeCommand(encodeCommand(AdvancePhase{state.phaseGate, true}))).accepted);
     REQUIRE(replayed.digest() == e.digest());
     REQUIRE(e.submit(1, PassResponse{e.state().decision->id}).accepted);
+    REQUIRE(e.submit(0, AdvancePhase{e.state().phaseGate, true}).accepted);
+    passResponses(e);
+    REQUIRE(e.submit(0, AdvancePhase{e.state().phaseGate}).accepted);
+    passResponses(e);
     REQUIRE(e.state().phase == Phase::Draw);
     REQUIRE(e.state().active == 1);
     REQUIRE_FALSE(e.state().skipCastPhase);
 }
 TEST_CASE("Alpha v2.5 skipped casting completes the turn after mandatory end cleanup choices", "[alpha-v25][phase-choice]") {
-    Fixture f; auto state = f.state();
+    Fixture f; auto state = test::mutation(f.state());
     for (CardId id = 10; id < 19; ++id) {
         CardInstance hand; hand.id = id; hand.definition = "spell0"; hand.zone = Zone::Hand;
         state.cards.emplace(id, hand);
     }
-    auto e = GameEngine::scenario(f.catalog, state);
+    auto e = test::ObservedEngine::scenario(f.catalog, state);
     REQUIRE(e.submit(0, AdvancePhase{e.state().phaseGate, true}).accepted);
+    passResponses(e);
     REQUIRE(e.state().phase == Phase::End);
     REQUIRE(e.state().decision);
     REQUIRE(e.state().decision->kind == DecisionKind::Discard);
@@ -309,7 +326,7 @@ TEST_CASE("Alpha v2.5 skipped casting completes the turn after mandatory end cle
     REQUIRE_FALSE(e.state().skipCastPhase);
 }
 TEST_CASE("Alpha v2.5 initial formations are privately confirmed before shuffle and simultaneous reveal", "[alpha-v25]") {
-    Fixture f; GameEngine e(f.catalog, f.config);
+    Fixture f; test::ObservedEngine e(f.catalog, f.config);
     REQUIRE(Rules::deckErrors(f.catalog, f.config.players[0]).empty());
     const auto a = e.viewFor(0), b = e.viewFor(1);
     REQUIRE(a.opening); REQUIRE(a.players[0].handCount == 0);
@@ -337,14 +354,14 @@ TEST_CASE("Alpha v2.5 initial formations are privately confirmed before shuffle 
     REQUIRE(e.state().cards.at(initial(a)).base); REQUIRE(e.state().cards.at(initial(b)).base);
     REQUIRE(e.state().players[0].formations == 0); REQUIRE(e.state().players[1].formations == 0);
     REQUIRE(std::count_if(started.events.begin(), started.events.end(), [](const GameEvent &event) { return event.kind == "initial_formation"; }) == 2);
-    GameEngine replayed(f.catalog, f.config);
+    test::ObservedEngine replayed(f.catalog, f.config);
     REQUIRE(replayed.submit(0, decodeCommand(encodeCommand(SelectInitialFormation{initial(a)}))).accepted);
     REQUIRE(replayed.submit(1, SelectInitialFormation{initial(b)}).accepted);
     REQUIRE(replayed.digest() == e.digest());
 }
 TEST_CASE("Alpha v2.5 rejects non-level-one opening entities and allows either confirmation order", "[alpha-v25]") {
     Fixture f; f.catalog.cards.at("formation1").level = 2;
-    GameEngine e(f.catalog, f.config);
+    test::ObservedEngine e(f.catalog, f.config);
     const auto view = e.viewFor(0);
     auto invalid = std::find_if(view.cards.begin(), view.cards.end(), [](const CardView &card) {
         return card.definition.id == "formation1";
@@ -362,27 +379,38 @@ TEST_CASE("Alpha v2.5 rejects non-level-one opening entities and allows either c
     }));
 }
 TEST_CASE("Alpha v2.5 timeouts use an authority path and terminate pending work deterministically", "[alpha-v25]") {
-    Fixture f; GameEngine e(f.catalog, f.config);
+    Fixture f; test::ObservedEngine e(f.catalog, f.config);
     const auto before = e.digest();
     REQUIRE_FALSE(e.submit(0, Timeout{}).accepted); REQUIRE(e.digest() == before);
     REQUIRE(e.timeout(0).accepted); REQUIRE(e.state().result == 1); REQUIRE_FALSE(e.state().opening);
-    REQUIRE(e.state().events.back().kind == "timeout");
-    GameEngine replayed(f.catalog, f.config);
+    REQUIRE(e.events().back().kind == "timeout");
+    test::ObservedEngine replayed(f.catalog, f.config);
     REQUIRE(std::holds_alternative<Timeout>(decodeCommand(encodeCommand(Timeout{}))));
     REQUIRE(replayed.timeout(0).accepted); REQUIRE(replayed.digest() == e.digest());
     REQUIRE_FALSE(e.timeout(1).accepted);
 }
-TEST_CASE("Alpha v2.5 replay records opening and timeout events in format four and rejects old versions", "[alpha-v25]") {
+TEST_CASE("2.5.5 replay records opening and timeout events in format five and rejects old versions", "[rules-2.5.5]") {
     Fixture f; Content content; content.catalog = f.catalog;
     MatchSession session(content, f.config);
     auto now = MatchSession::Clock::time_point{};
     session.enableClock(false, [&] { return now; });
-    REQUIRE(session.submit(0, SelectInitialFormation{initial(session.viewFor(0))}).accepted);
-    REQUIRE(session.submit(1, SelectInitialFormation{initial(session.viewFor(1))}).accepted);
+    auto chooseInitial = [&](PlayerId player) {
+        ActionIntent intent;
+        intent.selections.push_back({ActionField::Operation,
+            std::to_string(static_cast<unsigned>(CommandKind::SelectInitialFormation))});
+        auto options = session.queryActions(player, 1, session.revision(), intent);
+        REQUIRE_FALSE(options.options.empty());
+        intent.selections.push_back({options.field, options.options.front().value});
+        options = session.queryActions(player, 1, session.revision(), intent);
+        REQUIRE(options.complete);
+        REQUIRE(session.submit(player, *options.complete).accepted);
+    };
+    chooseInitial(0);
+    chooseInitial(1);
     now += std::chrono::minutes(6); session.tick();
     REQUIRE(session.engine().state().result != -1);
     const auto record = session.recording();
-    REQUIRE(record.at("format") == 4);
+    REQUIRE(record.at("format") == 5);
     REQUIRE_FALSE(record.at("players").at(0).contains("baseFormation"));
     REQUIRE(record.at("commands").back().at("command").at("type") == 19);
     REQUIRE(replay(content, record).digest() == session.engine().digest());
@@ -392,7 +420,7 @@ TEST_CASE("Alpha v2.5 replay records opening and timeout events in format four a
 }
 TEST_CASE("Alpha v2.5 formation setting text derives from validated recipes and resolves later card names", "[alpha-v25]") {
     auto json = readCatalogJson(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
-    json["mechanicsRevision"] = 3;
+    json["mechanicsRevision"] = 9;
     auto formation = std::find_if(json["cards"].begin(), json["cards"].end(), [](const Json &card) { return card.at("id") == "small-hexagram"; });
     REQUIRE(formation != json["cards"].end());
     (*formation)["baseEligible"] = false;
@@ -427,13 +455,13 @@ TEST_CASE("Alpha v2.5 construction requires a level one formation without a save
 }
 TEST_CASE("storm point counts affect canonical match state and remain in public card views", "[alpha-v25][storm]") {
     Fixture f;
-    auto withStormPoints = f.state();
+    auto withStormPoints = test::mutation(f.state());
     withStormPoints.cards.at(1).stormPoints = 5;
-    const auto charged = GameEngine::scenario(f.catalog, withStormPoints);
-    const auto empty = GameEngine::scenario(f.catalog, f.state());
-    auto withReleaseProgress = f.state();
+    const auto charged = test::ObservedEngine::scenario(f.catalog, withStormPoints);
+    const auto empty = test::ObservedEngine::scenario(f.catalog, f.state());
+    auto withReleaseProgress = test::mutation(f.state());
     withReleaseProgress.cards.at(1).stormReleaseProgress = 1;
-    const auto releasing = GameEngine::scenario(f.catalog, withReleaseProgress);
+    const auto releasing = test::ObservedEngine::scenario(f.catalog, withReleaseProgress);
 
     REQUIRE(charged.digest() != empty.digest());
     REQUIRE(releasing.digest() != empty.digest());
@@ -456,19 +484,19 @@ TEST_CASE("Alpha v2.5 draw clears temporary resources before income and exhausti
     s.players[0].temporaryLife = s.players[1].temporaryLife = 8;
     s.temporary = {{1, 1, 0, 4, 0}, {2, 0, 0, 3, 0}, {3, 1, 0, 1, 0, true}, {4, 1, 2, 1, 0, false, true}};
     s.nextLoad = 5;
-    auto e = GameEngine::scenario(f.catalog, s); advance(e);
+    auto e = test::ObservedEngine::scenario(f.catalog, s); advance(e);
     REQUIRE(e.state().phase == Phase::Draw); REQUIRE(e.state().active == 1);
     REQUIRE(e.state().players[1].temporaryLife == 0); REQUIRE(e.state().players[1].life == 39);
     REQUIRE(e.state().players[0].temporaryLife == 8); REQUIRE(Rules::load(e.state(), 1) == 2);
     REQUIRE(Rules::load(e.state(), 0) == 3);
-    const auto &events = e.state().events;
+    const auto &events = e.events();
     const auto load = std::find_if(events.begin(), events.end(), [](const GameEvent &v) { return v.kind == "temporary_load_cleared"; });
     const auto life = std::find_if(events.begin(), events.end(), [](const GameEvent &v) { return v.kind == "temporary_life_cleared"; });
     const auto income = std::find_if(events.begin(), events.end(), [](const GameEvent &v) { return v.kind == "income"; });
     REQUIRE(load < life); REQUIRE(life < income);
-    auto continuation = e.state(); continuation.players[1].temporaryLife = 5;
+    auto continuation = test::mutation(e.state()); continuation.players[1].temporaryLife = 5;
     continuation.temporary.push_back({5, 1, 0, 2, 0}); continuation.nextLoad = 6;
-    e = GameEngine::scenario(f.catalog, continuation); advance(e);
+    e = test::ObservedEngine::scenario(f.catalog, continuation); advance(e);
     REQUIRE(e.state().phase == Phase::Prepare); REQUIRE(e.state().players[1].temporaryLife == 5);
     REQUIRE(Rules::load(e.state(), 1) == 4);
 }
@@ -477,14 +505,17 @@ TEST_CASE("Alpha v2.5 timed focus and perpetual spells activate in casting and m
         Fixture f; auto &d = f.catalog.cards.at("spell0");
         d.duration = trait == 0 ? 2 : 0; d.concentration = trait == 1; d.perpetual = trait == 2;
         d.concentrationUpkeep = 1;
-        auto s = f.state(); CardInstance c; c.id = 10; c.definition = "spell0";
+        auto s = test::mutation(f.state()); CardInstance c; c.id = 10; c.definition = "spell0";
         c.zone = Zone::Analysis; c.host = 1; c.spell = SpellState::Ready; s.cards.emplace(c.id, c);
-        auto e = GameEngine::scenario(f.catalog, s);
+        auto e = test::ObservedEngine::scenario(f.catalog, s);
         REQUIRE_FALSE(e.submit(0, ActivateSpell{10}).accepted);
         const auto before = e.viewFor(0);
         REQUIRE(std::none_of(before.actions.begin(), before.actions.end(), [](const LegalAction &a) { return std::holds_alternative<ActivateSpell>(a.command); }));
-        REQUIRE(e.submit(0, PrepareCast{10}).accepted); REQUIRE(e.state().cards.at(10).zone == Zone::Casting);
+    REQUIRE(e.submit(0, PrepareCast{10}).accepted);
+    passResponses(e);
+    REQUIRE(e.state().cards.at(10).zone == Zone::Casting);
         advance(e); REQUIRE(e.submit(0, ActivateSpell{10}).accepted);
+        passResponses(e);
         REQUIRE(e.state().cards.at(10).zone == Zone::Casting); REQUIRE(e.state().cards.at(10).spell == SpellState::Active);
         advance(e); REQUIRE(e.state().decision); REQUIRE(e.state().decision->kind == DecisionKind::ReturnSpell);
         REQUIRE(e.submit(0, Choose{e.state().decision->id, 1}).accepted);
@@ -496,6 +527,7 @@ TEST_CASE("Alpha v2.5 timed focus and perpetual spells activate in casting and m
             REQUIRE(e.state().decision); REQUIRE(e.state().decision->kind == DecisionKind::Concentration);
             const auto mana = e.state().players[0].mana;
             REQUIRE(e.submit(0, Choose{e.state().decision->id, 10}).accepted);
+            passResponses(e);
             REQUIRE(e.state().cards.at(10).zone == Zone::Analysis); REQUIRE_FALSE(e.state().chain);
             REQUIRE(e.state().players[0].mana == mana - 1);
         }
@@ -505,7 +537,7 @@ TEST_CASE("Alpha v2.5 continuous spells go to ash when no legal return ring rema
     Fixture f;
     auto &definition = f.catalog.cards.at("spell0");
     definition.perpetual = true;
-    auto s = f.state();
+    auto s = test::mutation(f.state());
     CardInstance active; active.id = 10; active.owner = 0; active.definition = "spell0";
     active.zone = Zone::Casting; active.spell = SpellState::Active;
     active.sourceFormation = 1; active.sourceRingIndex = 0;
@@ -517,18 +549,18 @@ TEST_CASE("Alpha v2.5 continuous spells go to ash when no legal return ring rema
         s.cards.emplace(occupant.id, occupant);
     }
     s.returnRequested = true;
-    auto e = GameEngine::scenario(f.catalog, s);
+    auto e = test::ObservedEngine::scenario(f.catalog, s);
     advance(e);
     REQUIRE_FALSE(e.state().decision);
     REQUIRE(e.state().cards.at(10).zone == Zone::Ash);
-    REQUIRE(e.state().maintenanceSource == 0);
+    REQUIRE(e.state().maintenanceCard() == 0);
     REQUIRE_FALSE(e.state().returnRequested);
 }
 TEST_CASE("Alpha v2.5 continuous spells can return to another legal formation and reject invalid choices atomically", "[alpha-v25]") {
     Fixture f;
     auto &definition = f.catalog.cards.at("spell0");
     definition.perpetual = true;
-    auto s = f.state();
+    auto s = test::mutation(f.state());
     s.cards.at(1).zone = Zone::Ash;
     CardInstance replacement; replacement.id = 3; replacement.owner = 0; replacement.definition = "formation1";
     replacement.zone = Zone::Analysis;
@@ -538,12 +570,12 @@ TEST_CASE("Alpha v2.5 continuous spells can return to another legal formation an
     active.sourceFormation = 1; active.sourceRingIndex = 0;
     s.cards.emplace(active.id, active);
     s.returnRequested = true;
-    auto e = GameEngine::scenario(f.catalog, s);
+    auto e = test::ObservedEngine::scenario(f.catalog, s);
     advance(e);
     REQUIRE(e.state().decision);
     REQUIRE(e.state().decision->kind == DecisionKind::ReturnSpell);
     const auto decision = e.state().decision->id;
-    REQUIRE(std::find(e.state().decision->options.begin(), e.state().decision->options.end(), 3) !=
+    REQUIRE(std::find(e.state().decision->options.begin(), e.state().decision->options.end(), ChoiceValue::card(3)) !=
             e.state().decision->options.end());
     const auto before = e.digest();
     REQUIRE_FALSE(e.submit(0, Choose{decision, 3, 99}).accepted);
@@ -561,7 +593,7 @@ TEST_CASE("Alpha v2.5 side-deck content has no saved initial choice and validate
         ~TemporaryDirectory() { std::error_code ec; std::filesystem::remove_all(path, ec); }
     } temporary;
     const auto assets = std::filesystem::path(WIZARD_SOURCE_DIR) / "assets";
-    auto json = readCatalogJson(assets); json["mechanicsRevision"] = 3;
+    auto json = readCatalogJson(assets); json["mechanicsRevision"] = 9;
     auto side = readJson(assets / "side-deck.json"); side.erase("initialFormation");
     writeJson(temporary.path / "cards.json", json);
     writeJson(temporary.path / "deck.json", readJson(assets / "deck.json"));

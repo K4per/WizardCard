@@ -4,9 +4,32 @@
 #include <type_traits>
 namespace wizard {
 using detail::integer;
+Json encodeChoice(const ChoiceValue &choice) {
+    // Numeric choices can still be constructed by in-process format-4
+    // adapters. Serialize them as their unambiguous card representation;
+    // decoding never accepts the legacy numeric wire shape.
+    const auto kind = choice.kind == ChoiceKind::Legacy ? ChoiceKind::Card : choice.kind;
+    return {{"kind", static_cast<unsigned>(kind)}, {"value", std::to_string(choice.value)}};
+}
+ChoiceValue decodeChoice(const Json &j) {
+    if (!j.is_object() || !j.at("value").is_string()) throw std::runtime_error("invalid typed choice");
+    const auto kind = integer(j.at("kind"), static_cast<unsigned>(ChoiceKind::Trigger));
+    const auto text = j.at("value").get<std::string>();
+    if (text.empty() || text.size() > 20 || text.find_first_not_of("0123456789") != std::string::npos)
+        throw std::runtime_error("invalid choice identifier");
+    const auto value = std::stoull(text);
+    const auto typed = static_cast<ChoiceKind>(kind);
+    if (typed == ChoiceKind::Legacy)
+        throw std::runtime_error("legacy choices are not valid on the wire");
+    if ((typed == ChoiceKind::Pass && value != 0) || (typed == ChoiceKind::Player && value > 1) ||
+        ((typed == ChoiceKind::Card || typed == ChoiceKind::Load || typed == ChoiceKind::Mode ||
+          typed == ChoiceKind::Payment || typed == ChoiceKind::Trigger) && value > std::numeric_limits<std::uint32_t>::max()))
+        throw std::runtime_error("choice identifier out of range");
+    return {typed, value};
+}
 Json encodeCommand(const Command &c) {
     Json j;
-    j["type"] = c.index();
+    j["type"] = static_cast<unsigned>(commandKind(c));
     std::visit(
         [&](const auto &x) {
             using T = std::decay_t<decltype(x)>;
@@ -55,7 +78,7 @@ Json encodeCommand(const Command &c) {
                 j["host"] = x.host;
             if constexpr (std::is_same_v<T, Choose>) {
                 j["decision"] = x.decision;
-                j["option"] = x.option;
+                j["option"] = encodeChoice(x.option);
                 if (x.ringIndex >= 0) j["ringIndex"] = x.ringIndex;
             }
             if constexpr (std::is_same_v<T, FlipAmbush>)
@@ -123,7 +146,7 @@ Command decodeCommand(const Json &j) {
     case 9:
         return Advance{};
     case 10:
-        return Choose{serial("decision"), id("option"),
+        return Choose{serial("decision"), decodeChoice(j.at("option")),
             j.contains("ringIndex") ? static_cast<int>(integer(j.at("ringIndex"), 1000)) : -1};
     case 11:
         return Surrender{};
@@ -159,5 +182,12 @@ Command decodeCommand(const Json &j) {
     default:
         throw std::runtime_error("unknown command type");
     }
+}
+Command decodeLegacyCommand(const Json &j) {
+    if (integer(j.at("type"), std::numeric_limits<std::uint32_t>::max()) != static_cast<unsigned>(CommandKind::Choose))
+        return decodeCommand(j);
+    return Choose{integer(j.at("decision"), std::numeric_limits<std::uint64_t>::max(), true),
+        ChoiceValue{static_cast<std::uint32_t>(integer(j.at("option"), std::numeric_limits<std::uint32_t>::max()))},
+        j.contains("ringIndex") ? static_cast<int>(integer(j.at("ringIndex"), 1000)) : -1};
 }
 }

@@ -1,71 +1,66 @@
 #include "wizard/core/engine.hpp"
 #include "engine_internal.hpp"
 #include "wizard/core/card_rules.hpp"
-#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
 
 namespace wizard {
-std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
-    std::vector<LegalAction> out;
+namespace { struct StopActionVisit {}; }
+void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const LegalAction &)> &visitor, const ActionIntent *intent) const {
+    try {
     const auto &s = state_;
+    if (p < 0 || p > 1) return;
+    std::optional<unsigned> selectedOperation;
+    CardId selectedSource = intent ? intent->source : 0;
+    if (intent) for (const auto &selection : intent->selections) {
+        if (selection.field == ActionField::Operation) selectedOperation = static_cast<unsigned>(std::stoul(selection.value));
+        if (selection.field == ActionField::Source) selectedSource = static_cast<CardId>(std::stoul(selection.value));
+    }
     auto add = [&](std::string label, CardId source, CardId target, Command cmd) {
-        if (std::holds_alternative<RemoveFormation>(cmd) && !catalog_.usesAlphaV252()) return;
-        auto trial = *this;
-        if (trial.execute(p, cmd).empty())
-            out.push_back({std::move(label), source, target, std::move(cmd)});
+        if (selectedOperation && static_cast<unsigned>(commandKind(cmd)) != *selectedOperation) return;
+        if (selectedSource && source != selectedSource) return;
+
+        if (detail::matchesIntent(cmd, intent) && validate(p, cmd).empty())
+            if (!visitor({std::move(label), source, target, std::move(cmd)})) throw StopActionVisit{};
     };
     if (s.result != -1)
-        return out;
+        return;
     if (s.opening) {
         if (!s.initialFormations[p])
             for (const auto &[id, card] : s.cards)
                 if (controllerOf(card) == p && card.zone == Zone::SideDeck &&
-                    catalog_.at(card.definition).type == CardType::Formation && catalog_.at(card.definition).level == 1)
-                    add("选择初始阵法 " + catalog_.at(card.definition).name, id, 0, SelectInitialFormation{id});
+                    catalog().at(card.definition).type == CardType::Formation && catalog().at(card.definition).level == 1)
+                    add("选择初始阵法 " + catalog().at(card.definition).name, id, 0, SelectInitialFormation{id});
         add("投降", 0, 0, Surrender{});
-        return out;
+        return;
     }
     if (s.decision) {
         const auto &d = *s.decision;
         if (d.player != p)
-            return out;
+            return;
         if (d.kind == DecisionKind::Payment && s.payment) {
             for (std::size_t index = 0; index < s.payment->choices.size(); ++index) {
                 const auto &choice = s.payment->choices[index];
                 const auto label = "支付 " + std::to_string(choice.mana) + " 魔素 / " +
                     std::to_string(choice.life) + (choice.lifePlayer == p ? " 己方生命" : " 对方生命");
-                add(label, 0, 0, Choose{d.id, static_cast<CardId>(index + 1)});
+                add(label, 0, 0, Choose{d.id, {ChoiceKind::Payment, index + 1}});
             }
             add("取消支付", 0, 0, Choose{d.id, 0});
-            return out;
+            return;
         }
         if (d.kind == DecisionKind::Response) {
-            if (catalog_.usesAlphaV2()) {
-                auto setups = responseSetupsV2(p, d.id);
-                out.insert(out.end(), setups.begin(), setups.end());
+            {
+                visitResponseSetups(p, d.id, [&](const LegalAction &setup) { if (!visitor(setup)) throw StopActionVisit{}; }, intent);
             }
-            for (auto r : responsesFor(p, d.id)) {
+            visitResponses(p, d.id, [&](const Respond &r) {
                 const auto &source = s.cards.at(r.card);
-                const auto &definition = catalog_.at(source.definition);
+                const auto &definition = catalog().at(source.definition);
                 auto label = "响应 " + definition.name;
                 for (const auto &ability : definition.responses)
                     if (ability.id == r.ability) {
-                        const bool hand = source.zone == Zone::Hand;
-                        const int paid = catalog_.usesAlphaV2() ? Rules::castCost(s, catalog_, source.id) :
-                            source.faceDown                 ? definition.cost
-                            : source.zone == Zone::Analysis ? Rules::castCost(s, catalog_, source.id)
-                            : hand                          ? ability.handCost
-                                                            : ability.preloadedCost +
-                                         (definition.type == CardType::Word
-                                              ? Rules::castCost(s, catalog_, source.id) - definition.cost
-                                              : 0);
-                        const int added = ability.burden + (catalog_.usesAlphaV2() ? paid :
-                                          ((source.zone == Zone::Analysis ||
-                                            ((hand || source.faceDown) && definition.type == CardType::Word))
-                                               ? paid
-                                               : 0));
+                        const int paid = Rules::castCost(s, catalog(), source.id);
+                        const int added = ability.burden + paid;
                         label += " · " + (ability.name.empty() ? ability.id : ability.name) + "（魔素" +
                                  std::to_string(paid) + " / 新增荷载" + std::to_string(added) + "）";
                     }
@@ -75,15 +70,15 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                     label += " → 卡牌 #" + std::to_string(target);
                 if (r.discard)
                     label += "；弃置 #" + std::to_string(r.discard);
-                out.push_back({label, r.card, r.target, std::move(r)});
-            }
+                if (!visitor({label, r.card, r.target, r})) throw StopActionVisit{};
+            }, intent);
             add("放弃响应", 0, 0, PassResponse{d.id});
             add("投降", 0, 0, Surrender{});
-            return out;
+            return;
         }
         if (d.kind == DecisionKind::EffectPrepare) {
             for (auto cmd : preparationsFor(p, d.id)) {
-                std::string label = "准备施法 " + catalog_.at(s.cards.at(cmd.card).definition).name;
+                std::string label = "准备施法 " + catalog().at(s.cards.at(cmd.card).definition).name;
                 for (auto id : cmd.targets)
                     label += " → #" + std::to_string(id);
                 if (cmd.discard)
@@ -92,74 +87,48 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             }
             add("放弃额外准备施法", 0, 0, Choose{d.id, 0});
             add("投降", 0, 0, Surrender{});
-            return out;
+            return;
         }
-        const bool stormGuidanceMode = d.kind == DecisionKind::EffectChoice && s.effect &&
-            s.effect->clearRemaining == -2 &&
-            s.effect->cursor < s.effect->item.effects.size() &&
-            s.effect->item.effects[s.effect->cursor].kind == EffectKind::StormGuidance;
-        constexpr CardId takeDamage = 0xffffffb1u, takeLoad = 0xffffffb2u;
-        for (auto id : d.options) {
+        for (const auto option : d.options) {
+            const auto id = static_cast<CardId>(option.value);
             std::string label;
-            const bool playerChoice = id == playerTarget(0) || id == playerTarget(1);
-            if (d.kind == DecisionKind::DamageChoice)
-                label = "选择" + damageName(static_cast<DamageType>(id - 1)) + "伤害";
-            else if (playerChoice)
-                label = id == playerTarget(p) ? "选择己方玩家" : "选择对方玩家";
-            else if (id == 0xffffffd1u) label = "延长对方全部解析法术的解析时间";
-            else if (id == 0xffffffd2u) label = "造成大旋风追加伤害";
-            else if (id == takeDamage) label = "受到7点光耀伤害";
-            else if (id == takeLoad) label = "获得7点独立荷载";
-            else if (id == 0xffffffe1u)
-                label = "抽取效果指定数量的牌";
-            else if (stormGuidanceMode)
-                label = id == 0xfffffff1u ? "检索一张风暴法术加入手牌"
-                    : id == 0xfffffff2u ? "使己方风暴阵法获得2点风暴点数"
-                    : id == 0xfffffff3u ? "检索云雾术或雷鸣召唤术加入手牌"
-                                        : "选择风暴导向效果";
-            else if (d.kind == DecisionKind::ReturnSpell) {
-                for (int ring = 0; ring < Rules::rings(s, catalog_, id); ++ring) {
+            if (option.kind == ChoiceKind::Player) label = id == static_cast<CardId>(p) ? "选择己方玩家" : "选择对方玩家";
+            else if (option.kind == ChoiceKind::Load) label = "清除荷载来源 #" + std::to_string(id) + " 的1点荷载";
+            else if (option.kind == ChoiceKind::Mode) {
+                switch (static_cast<ChoiceMode>(id)) {
+                case ChoiceMode::Confirm: label = "确认执行此效果"; break;
+                case ChoiceMode::SevenDamage: label = "受到7点光耀伤害"; break;
+                case ChoiceMode::SevenLoad: label = "获得7点独立荷载"; break;
+                case ChoiceMode::DelayAnalysis: label = "延长对方全部解析法术的解析时间"; break;
+                case ChoiceMode::CycloneDamage: label = "造成大旋风追加伤害"; break;
+                case ChoiceMode::Draw: label = "抽取效果指定数量的牌"; break;
+                case ChoiceMode::StormSearch: label = "检索一张风暴法术加入手牌"; break;
+                case ChoiceMode::StormPoints: label = "使己方风暴阵法获得2点风暴点数"; break;
+                case ChoiceMode::SupportingSearch: label = "检索云雾术或雷鸣召唤术加入手牌"; break;
+                case ChoiceMode::HeartDraw: label = "抽1张牌"; break;
+                case ChoiceMode::HeartRecover: label = "将风暴卡放回牌库"; break;
+                case ChoiceMode::ArcanaDeathNecrotic: label = "选择恶咒伤害"; break;
+                case ChoiceMode::ArcanaDeathRadiant: label = "选择光耀伤害"; break;
+                default: label = "选择" + damageName(static_cast<DamageType>(id - static_cast<unsigned>(ChoiceMode::DamageTypeBase))) + "伤害"; break;
+                }
+            } else if (option.kind == ChoiceKind::Trigger) {
+                for (const auto &trigger : s.queue.items) if (trigger.id == id)
+                    label = "结算被动触发 " + catalog().at(s.cards.at(trigger.source).definition).name;
+            } else if (d.kind == DecisionKind::ReturnSpell) {
+                for (int ring = 0; ring < Rules::rings(s, catalog(), id); ++ring) {
                     bool occupied = false;
                     for (const auto &[other, card] : s.cards)
-                        occupied |= other != s.maintenanceSource && card.zone == Zone::Analysis &&
-                                    card.host == id && card.ringIndex == ring;
-                    if (occupied) continue;
-                    const auto ringLabel = "回位至 " + catalog_.at(s.cards.at(id).definition).name + " 环位 " + std::to_string(ring + 1);
-                    add(ringLabel, s.maintenanceSource, id, Choose{d.id, id, ring});
+                        occupied |= other != s.maintenanceCard() && card.zone == Zone::Analysis && card.host == id && card.ringIndex == ring;
+                    if (!occupied) add("回位至 " + catalog().at(s.cards.at(id).definition).name + " 环位 " + std::to_string(ring + 1),
+                        s.maintenanceCard(), id, Choose{d.id, option, ring});
                 }
                 continue;
-            }
-            else if (d.kind == DecisionKind::ClearAnyLoad)
-                label = id & 0x80000000u ? "清除荷载来源 #" + std::to_string(id & 0x7fffffffu) + " 的1点荷载"
-                                       : "清除 " + catalog_.at(s.cards.at(id).definition).name + " 的1点绑定荷载";
-            else if (d.kind == DecisionKind::ClearLoad)
-                label = "移除临时荷载来源 #" + std::to_string(id) + " 的1点荷载";
-            else if (d.kind == DecisionKind::StormSearch)
-                label = "将 " + catalog_.at(s.cards.at(id).definition).name + " 加入手牌";
-            else if (d.kind == DecisionKind::StormHeartChoice)
-                label = id == 1 ? "抽1张牌" : "将风暴卡放回牌库";
-            else if (d.kind == DecisionKind::StormHeartRecover)
-                label = "将 " + catalog_.at(s.cards.at(id).definition).name + " 放回牌库";
+            } else if (d.kind == DecisionKind::ClearAnyLoad) label = "清除 " + catalog().at(s.cards.at(id).definition).name + " 的1点绑定荷载";
             else if (d.kind == DecisionKind::Concentration) {
-                const auto fee = Rules::concentrationUpkeep(s, catalog_, id);
-                label = "维持专注（魔素 " + std::to_string(fee) + " / 荷载 +" +
-                        std::to_string(fee) + "）";
-            } else if (d.kind == DecisionKind::TriggerOrder) {
-                for (const auto &t : s.queue.items)
-                    if (t.id == id)
-                        label = "结算被动触发 " + catalog_.at(s.cards.at(t.source).definition).name;
-            } else
-                label = "选择 " + catalog_.at(s.cards.at(id).definition).name + " #" + std::to_string(id);
-            add(label,
-                (d.kind == DecisionKind::DamageChoice || d.kind == DecisionKind::ClearLoad ||
-                 d.kind == DecisionKind::ClearAnyLoad || d.kind == DecisionKind::TriggerOrder ||
-                 d.kind == DecisionKind::SearchDeck || d.kind == DecisionKind::StormSearch ||
-                 d.kind == DecisionKind::StormHeartChoice || d.kind == DecisionKind::StormHeartRecover ||
-                 playerChoice || stormGuidanceMode || id == 0xffffffe1u || id == 0xffffffd1u || id == 0xffffffd2u ||
-                 id == takeDamage || id == takeLoad)
-                    ? 0
-                    : id,
-                0, Choose{d.id, id});
+                const auto fee = Rules::concentrationUpkeep(s, catalog(), id);
+                label = "维持专注（魔素 " + std::to_string(fee) + " / 荷载 +" + std::to_string(fee) + "）";
+            } else label = "选择 " + catalog().at(s.cards.at(id).definition).name + " #" + std::to_string(id);
+            add(label, option.kind == ChoiceKind::Card ? id : 0, 0, Choose{d.id, option});
         }
         if (d.mayPass)
             add(d.kind == DecisionKind::Concentration ? "销毁专注法术"
@@ -167,55 +136,29 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                                                       : "跳过 / 停止",
                 0, 0, Choose{d.id, 0});
         add("投降", 0, 0, Surrender{});
-        return out;
+        return;
     }
     if (s.active != p)
-        return out;
-    auto targets = [&](const CardDefinition &d) {
-        std::vector<std::vector<CardId>> result;
-        if (d.target == TargetKind::Player) return std::vector<std::vector<CardId>>{{playerTarget(0)}, {playerTarget(1)}};
-        if (d.target == TargetKind::None || d.target == TargetKind::Self ||
-            d.target == TargetKind::Opponent) {
-            result.push_back({});
-            return result;
-        }
-        std::vector<CardId> ids, selected;
-        for (const auto &[id, c] : s.cards)
-            if (Rules::targetValid(s, d, p, id))
-                ids.push_back(id);
-        auto visit = [&](auto &&self, std::size_t pos) -> void {
-            if (selected.size() == static_cast<std::size_t>(d.targetCount)) {
-                result.push_back(selected);
-                return;
-            }
-            for (std::size_t i = pos; i < ids.size(); ++i) {
-                selected.push_back(ids[i]);
-                self(self, i + 1);
-                selected.pop_back();
-            }
-        };
-        if (d.targetCount > 0 && d.targetCount <= 5)
-            visit(visit, 0);
-        return result;
-    };
-    if (catalog_.usesAlphaV2()) {
+        return;
+    {
         for (const auto &[id, card] : s.cards) {
+            if (selectedSource && id != selectedSource) continue;
             if (controllerOf(card) != p) continue;
-            const auto &def = catalog_.at(card.definition);
+            const auto &def = catalog().at(card.definition);
             const auto name = def.name + " #" + std::to_string(id);
-            const auto activationSets = card_rules::detachCost(def) ? card_rules::detachOptions(s, catalog_, p, def) : targets(def);
+            const auto activationSets = detail::activationSets(s, catalog(), p, def, intent);
             const auto activationLabel = [&](const std::vector<CardId> &costs) {
                 std::string label;
                 if (card_rules::detachCost(def)) for (auto cost : costs)
-                    label += "；拆卸 " + catalog_.at(s.cards.at(cost).definition).name + " #" + std::to_string(cost);
+                    label += "；拆卸 " + catalog().at(s.cards.at(cost).definition).name + " #" + std::to_string(cost);
                 return label;
             };
             if (card.zone == Zone::Analysis && card.stormPoints >= 2 &&
                 card.stormAbilityTurn != s.players[p].ownTurn &&
-                std::find(def.traits.begin(), def.traits.end(), "activate_storm_search") != def.traits.end()) {
+                hasCapability(def, Capability::ActivateStormSearch)) {
                 const bool canSearch = std::any_of(s.players[p].deck.begin(), s.players[p].deck.end(), [&](CardId deckId) {
                     const auto &candidate = s.cards.at(deckId);
-                    const auto &candidateDefinition = catalog_.at(candidate.definition);
+                    const auto &candidateDefinition = catalog().at(candidate.definition);
                     const bool spell = candidateDefinition.type == CardType::Analytic ||
                         candidateDefinition.type == CardType::Word || candidateDefinition.type == CardType::Talisman;
                     return candidate.zone == Zone::Deck && spell &&
@@ -226,18 +169,18 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             }
             if (card.zone == Zone::Analysis && card.stormPoints >= 2 &&
                 card.stormAbilityTurn != s.players[p].ownTurn &&
-                std::find(def.traits.begin(), def.traits.end(), "activate_storm_heart_choice") != def.traits.end())
+                hasCapability(def, Capability::ActivateStormHeartChoice))
                 add("发动风暴之心能力 " + name, id, 0, ActivateAbility{id, 0, "storm_heart_choice"});
-            std::vector<CardId> spellCosts = card_rules::costOptions(s, catalog_, p, id);
-            if (std::find(def.traits.begin(), def.traits.end(), "discard_spell_search") != def.traits.end()) {
+            std::vector<CardId> spellCosts = card_rules::costOptions(s, catalog(), p, id);
+            if (hasCapability(def, Capability::DiscardSpellSearch)) {
                 spellCosts.clear();
                 for (const auto &[material, candidate] : s.cards)
                     if (material != id && controllerOf(candidate) == p && candidate.zone == Zone::Hand &&
-                        (catalog_.at(candidate.definition).type == CardType::Analytic ||
-                         catalog_.at(candidate.definition).type == CardType::Word ||
-                         catalog_.at(candidate.definition).type == CardType::Talisman)) spellCosts.push_back(material);
+                        (catalog().at(candidate.definition).type == CardType::Analytic ||
+                         catalog().at(candidate.definition).type == CardType::Word ||
+                         catalog().at(candidate.definition).type == CardType::Talisman)) spellCosts.push_back(material);
             }
-            if (card.zone == Zone::SideDeck) {
+            if (card.zone == Zone::SideDeck && (!selectedOperation || *selectedOperation == static_cast<unsigned>(CommandKind::SetFormation))) {
                 int count = 0;
                 for (const auto &part : def.recipe)
                     if (part.kind != RecipeCostKind::Mana && part.kind != RecipeCostKind::Life) count += part.amount;
@@ -249,31 +192,33 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                 auto choose = [&](auto &&self, std::size_t pos) -> void {
                     if (static_cast<int>(selected.size()) == count) {
                         auto add_formation = [&](CardId replace) {
-                            auto trial = *this;
-                            if (!trial.executeV2(p, SetFormation{id, replace, selected}).empty()) return;
+                            if (!detail::intentAllows(intent, ActionField::Replacement, replace)) return;
+                            if (!validate(p, SetFormation{id, replace, selected}).empty()) return;
                             if (!replace)
                                 add("设置阵法 " + name, id, 0, SetFormation{id, 0, selected});
                             else
-                                add("替换 " + catalog_.at(s.cards.at(replace).definition).name + " 为 " + name,
+                                add("替换 " + catalog().at(s.cards.at(replace).definition).name + " 为 " + name,
                                     id, replace, SetFormation{id, replace, selected});
                         };
                         add_formation(0);
                         for (const auto &[host, formation] : s.cards)
                             if (controllerOf(formation) == p && formation.zone == Zone::Analysis &&
-                                catalog_.at(formation.definition).type == CardType::Formation)
+                                catalog().at(formation.definition).type == CardType::Formation)
                                 add_formation(host);
                         return;
                     }
+                    const auto prefix = detail::intentPrefix(intent, ActionField::Material);
                     for (std::size_t i = pos; i < pool.size(); ++i) {
+                        if (selected.size() < prefix.size() && pool[i] != prefix[selected.size()]) continue;
                         selected.push_back(pool[i]); self(self, i + 1); selected.pop_back();
                     }
                 };
                 if (count <= 5 && s.phase == Phase::Main) choose(choose, 0);
             }
-            if (card.zone == Zone::Hand) {
+            if (card.zone == Zone::Hand && (!selectedOperation || *selectedOperation == static_cast<unsigned>(CommandKind::SetAmbush) || *selectedOperation == static_cast<unsigned>(CommandKind::StartAnalysis) || *selectedOperation == static_cast<unsigned>(CommandKind::PreloadWord) || *selectedOperation == static_cast<unsigned>(CommandKind::AttachSeal))) {
                 for (const auto &[host, formation] : s.cards) {
-                    if (controllerOf(formation) != p) continue;
-                    if (formation.zone == Zone::Analysis && catalog_.at(formation.definition).type == CardType::Formation) {
+                    if (!detail::intentAllows(intent, ActionField::Host, host) || controllerOf(formation) != p) continue;
+                    if (formation.zone == Zone::Analysis && catalog().at(formation.definition).type == CardType::Formation) {
                         add("盖伏 " + name, id, host, SetAmbush{id, host});
                         add("设置解析法术 " + name, id, host, StartAnalysis{id, host});
                         for (const auto &ids : activationSets) {
@@ -289,9 +234,7 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
             if (card.faceDown || card.spell == SpellState::Ready) {
                 // Shatter Ring has no meaningful target during preparation;
                 // choose the empty enemy formation when it is released.
-                const auto prepareTargets = catalog_.usesCardRules() || def.id == "unravel"
-                    ? std::vector<std::vector<CardId>>{{}}
-                    : targets(def);
+                const std::vector<std::vector<CardId>> prepareTargets{{}};
                 for (const auto &ids : prepareTargets) {
                     const auto target = ids.empty() ? 0 : ids.front();
                     if (!card.faceDown) {
@@ -312,16 +255,16 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
                     add("反转 " + name, id, 0, FlipAmbush{id});
             }
             add("放弃 " + name, id, 0, Abandon{id});
-            if (!catalog_.usesAlphaV255()) add("拆除符文 " + name, id, 0, RemoveSeal{id});
-            if (catalog_.usesAlphaV252()) add("移除阵法 " + name, id, 0, RemoveFormation{id});
+
+            add("移除阵法 " + name, id, 0, RemoveFormation{id});
             if (card.zone == Zone::Attached &&
-                std::find(def.traits.begin(), def.traits.end(), "activate_storm_crest_destroy") != def.traits.end() &&
+                hasCapability(def, Capability::ActivateStormCrestDestroy) &&
                 card.host && s.cards.count(card.host) && s.cards.at(card.host).stormPoints >= 2) {
                 for (const auto &[targetId, target] : s.cards)
                     if (controllerOf(target) != p && target.zone == Zone::Analysis && !target.faceDown &&
-                        catalog_.at(target.definition).type == CardType::Formation &&
+                        catalog().at(target.definition).type == CardType::Formation &&
                         target.spell == SpellState::None && Rules::occupied(s, targetId) == 0)
-                        add("发动风暴湮灭能力 → " + catalog_.at(target.definition).name,
+                        add("发动风暴湮灭能力 → " + catalog().at(target.definition).name,
                             id, targetId, ActivateAbility{id, targetId, "storm_annihilation_destroy"});
             }
         }
@@ -329,106 +272,10 @@ std::vector<LegalAction> GameEngine::legalActions(PlayerId p) const {
         if (s.phase == Phase::Main)
             add("切换到结束阶段", 0, 0, AdvancePhase{s.phaseGate, true});
         add("投降", 0, 0, Surrender{});
-        return out;
+        return;
     }
-    if (catalog_.advancedRules) {
-        for (const auto &[id, c] : s.cards)
-            if (controllerOf(c) == p) {
-                const auto &def = catalog_.at(c.definition);
-                if (!c.faceDown &&
-                    (c.zone == Zone::Words || (c.zone == Zone::Analysis && c.spell == SpellState::Ready))) {
-                    for (const auto &ids : targets(def)) {
-                        const auto target = ids.empty() ? 0 : ids.front();
-                        add("释放法术 " + def.name, id, target, ActivateSpell{id, target, ids});
-                    }
-                }
-                if (c.faceDown) {
-                    const auto choices =
-                        def.type == CardType::Analytic ? std::vector<std::vector<CardId>>{{}} : targets(def);
-                    for (const auto &ids : choices) {
-                        const auto target = ids.empty() ? 0 : ids.front();
-                        add("反转埋伏卡 " + def.name, id, target, FlipAmbush{id, target, ids});
-                    }
-                }
-            }
-    }
-    if (s.phase != Phase::Main) {
-        add("结束" + phaseName(s.phase) + "阶段", 0, 0, AdvancePhase{s.phaseGate});
-        add("投降", 0, 0, Surrender{});
-        return out;
-    }
-    for (const auto &[id, c] : s.cards)
-        if (controllerOf(c) == p) {
-            const auto &def = catalog_.at(c.definition);
-            const auto name = def.name + " #" + std::to_string(id);
-            if (c.zone == Zone::Hand) {
-                if (catalog_.advancedRules) {
-                    if (def.type == CardType::Action || def.type == CardType::Word)
-                        add("埋伏 " + name, id, 0, SetAmbush{id, 0});
-                    if (def.type == CardType::Analytic)
-                        for (const auto &[host, h] : s.cards)
-                            if (controllerOf(h) == p && h.zone == Zone::Analysis &&
-                                catalog_.at(h.definition).type == CardType::Formation)
-                                add("埋伏 " + name + " → " + catalog_.at(h.definition).name, id, host,
-                                    SetAmbush{id, host});
-                }
-                if (def.type == CardType::Formation) {
-                    add("设置阵法 " + name, id, 0, SetFormation{id, 0});
-                    for (const auto &[other, h] : s.cards)
-                        if (controllerOf(h) == p && h.zone == Zone::Analysis &&
-                            catalog_.at(h.definition).type == CardType::Formation && !h.base)
-                            add("替换阵法 " + catalog_.at(h.definition).name + " #" + std::to_string(other),
-                                id, other, SetFormation{id, other});
-                } else if (def.type == CardType::Analytic || def.type == CardType::Seal) {
-                    for (const auto &[host, h] : s.cards)
-                        if (controllerOf(h) == p && (h.zone == Zone::Analysis ||
-                                             (def.type == CardType::Seal && h.zone == Zone::Words))) {
-                            const auto hostName =
-                                catalog_.at(h.definition).name + " #" + std::to_string(host);
-                            if (def.type == CardType::Analytic)
-                                add("开始解析 " + name + " → " + hostName, id, host, StartAnalysis{id, host});
-                            else
-                                add("附着符文 " + name + " → " + hostName, id, host, AttachSeal{id, host});
-                        }
-                } else if (def.type == CardType::Word) {
-                    add("设置言灵法术 " + name, id, 0, PreloadWord{id});
-                    if (def.immediate && catalog_.advancedRules)
-                        add("设置并释放 " + name, id, 0, PreloadWord{id, true});
-                } else
-                    for (const auto &ids : targets(def)) {
-                        auto target = ids.empty() ? 0 : ids.front();
-                        add("使用行动卡 " + name + " → #" + std::to_string(target), id, target,
-                            PlayAction{id, target, ids});
-                    }
-            } else if (c.zone == Zone::Analysis && def.type == CardType::Formation) {
-                if (catalog_.usesAlphaV252()) add("移除阵法 " + name, id, 0, RemoveFormation{id});
-            } else if (c.zone == Zone::Attached)
-                if (!catalog_.usesAlphaV255()) add("拆除符文 " + name, id, 0, RemoveSeal{id});
-            if (c.zone == Zone::Analysis && c.spell == SpellState::Ready) {
-                for (const auto &ids : targets(def)) {
-                    auto target = ids.empty() ? 0 : ids.front();
-                    std::vector<CardId> discards{0};
-                    if (def.extraDiscard) {
-                        discards.clear();
-                        for (const auto &[discard, h] : s.cards)
-                            if (controllerOf(h) == p && h.zone == Zone::Hand)
-                                discards.push_back(discard);
-                    }
-                    for (auto discard : discards) {
-                        auto label = "准备施法 " + name;
-                        for (auto tid : ids)
-                            label += " → #" + std::to_string(tid);
-                        if (discard)
-                            label += "；弃置 #" + std::to_string(discard);
-                        add(label, id, target, PrepareCast{id, target, discard, ids});
-                    }
-                }
-            }
-            if (c.zone == Zone::Analysis || c.zone == Zone::Casting || c.zone == Zone::Words)
-                add("放弃法术 " + name, id, 0, Abandon{id});
-        }
-    add("结束" + phaseName(s.phase) + "阶段", 0, 0, AdvancePhase{s.phaseGate});
-    add("投降", 0, 0, Surrender{});
-    return out;
+    } catch (const StopActionVisit &) {}
+      catch (const std::invalid_argument &) {}
+      catch (const std::out_of_range &) {}
 }
 } // namespace wizard

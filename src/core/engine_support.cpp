@@ -1,17 +1,46 @@
 #include "engine_internal.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
 #include <type_traits>
 namespace wizard::detail {
-std::uint32_t random32(GameState &s) {
+std::uint32_t legacyChoice(ChoiceValue option, DecisionKind kind) {
+    if (option.kind == ChoiceKind::Pass) return 0;
+    if (option.kind == ChoiceKind::Player) return playerTarget(static_cast<PlayerId>(option.value));
+    if (option.kind == ChoiceKind::Load && kind == DecisionKind::ClearAnyLoad) return static_cast<std::uint32_t>(option.value) | 0x80000000u;
+    if (option.kind == ChoiceKind::Mode) {
+        const auto mode = static_cast<ChoiceMode>(option.value);
+        switch (mode) {
+        case ChoiceMode::Confirm: return 0xffffffa1u;
+        case ChoiceMode::SevenDamage: return 0xffffffb1u;
+        case ChoiceMode::SevenLoad: return 0xffffffb2u;
+        case ChoiceMode::DelayAnalysis: return 0xffffffd1u;
+        case ChoiceMode::CycloneDamage: return 0xffffffd2u;
+        case ChoiceMode::Draw: return 0xffffffe1u;
+        case ChoiceMode::StormSearch: return 0xfffffff1u;
+        case ChoiceMode::StormPoints: return 0xfffffff2u;
+        case ChoiceMode::SupportingSearch: return 0xfffffff3u;
+        case ChoiceMode::HeartDraw: return 1;
+        case ChoiceMode::HeartRecover: return 2;
+        case ChoiceMode::ArcanaDeathNecrotic: return 1;
+        case ChoiceMode::ArcanaDeathRadiant: return 2;
+        default: return static_cast<std::uint32_t>(option.value - static_cast<unsigned>(ChoiceMode::DamageTypeBase) + 1);
+        }
+    }
+    return static_cast<std::uint32_t>(option.value);
+}
+std::string choiceKey(ChoiceValue choice) {
+    return std::to_string(static_cast<unsigned>(choice.kind)) + ":" + std::to_string(choice.value);
+}
+std::uint32_t random32(MutationContext &s) {
     auto x = s.rng;
     x ^= x << 13;
     x ^= x >> 17;
     x ^= x << 5;
     return s.rng = x;
 }
-std::uint32_t bounded(GameState &s, std::uint32_t n) {
+std::uint32_t bounded(MutationContext &s, std::uint32_t n) {
     const auto threshold = (std::uint32_t{0} - n) % n;
     std::uint32_t x;
     do {
@@ -70,30 +99,23 @@ bool validTargets(const GameState &s, TargetKind kind, int count, PlayerId p, Ca
             return false;
     return true;
 }
-std::vector<std::vector<CardId>> sets(const GameState &s, TargetKind kind, int count, PlayerId p) {
-    if (kind == TargetKind::Player) return {{playerTarget(0)}, {playerTarget(1)}};
-    if (!cardTarget(kind))
-        return {{}};
+Combinations sets(const GameState &s, TargetKind kind, int count, PlayerId p, const ActionIntent *intent) {
+    if (kind == TargetKind::Player) return {{playerTarget(0), playerTarget(1)}, 1, intentPrefix(intent, ActionField::Target)};
+    if (!cardTarget(kind)) return {{}, 0, intentPrefix(intent, ActionField::Target)};
+    if (count < 1 || count > 5) return Combinations::empty();
     std::vector<CardId> ids;
     for (const auto &[id, c] : s.cards)
-        if (Rules::targetValid(s, kind, p, id))
-            ids.push_back(id);
-    std::vector<std::vector<CardId>> out;
-    std::vector<CardId> selected;
-    auto visit = [&](auto &&self, std::size_t pos) -> void {
-        if (selected.size() == static_cast<std::size_t>(count)) {
-            out.push_back(selected);
-            return;
-        }
-        for (std::size_t i = pos; i < ids.size(); ++i) {
-            selected.push_back(ids[i]);
-            self(self, i + 1);
-            selected.pop_back();
-        }
-    };
-    if (count > 0 && count <= 5)
-        visit(visit, 0);
-    return out;
+        if (Rules::targetValid(s, kind, p, id)) ids.push_back(id);
+    return {std::move(ids), static_cast<std::size_t>(count), intentPrefix(intent, ActionField::Target)};
+}
+Combinations activationSets(const GameState &s, const CardCatalog &cat, PlayerId p, const CardDefinition &d, const ActionIntent *intent) {
+    const auto count = card_rules::detachCost(d);
+    if (!count) return sets(s, d.target, d.targetCount, p, intent);
+    std::vector<CardId> pool;
+    for (const auto &[id, c] : s.cards)
+        if (c.owner == p && c.zone == Zone::Attached && cat.at(c.definition).type == CardType::Seal &&
+            card_rules::member(cat.at(c.definition), "味契")) pool.push_back(id);
+    return {std::move(pool), static_cast<std::size_t>(count), intentPrefix(intent, ActionField::Target)};
 }
 const ResponseAbility *ability(const CardDefinition &d, const std::string &id) {
     for (const auto &a : d.responses)

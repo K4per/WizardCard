@@ -1,0 +1,23 @@
+{
+  "id": "arcana-tower",
+  "rarity": "rare",
+  "target": "own_card",
+  "illustrationId": "arcana-tower",
+  "number": "020037",
+  "name": "高塔",
+  "type": "analytic",
+  "text": "选择己方场上1张阵法卡才能发动。将其销毁。那之后，可以销毁对方场上1张阵法卡。",
+  "rank": 4,
+  "level": 4,
+  "school": "arcana",
+  "cost": 7,
+  "castCost": 0,
+  "analysisTurns": 1,
+  "speed": 2,
+  "effects": [
+    {
+      "kind": "arcana_tower",
+      "amount": 0
+    }
+  ]
+}

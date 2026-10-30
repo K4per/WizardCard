@@ -9,6 +9,9 @@ namespace wizard::bridge {
 Json commandDto(const Command &);
 Json viewDto(const GameView &);
 Json cardDefinitionDto(const CardDefinition &);
+inline constexpr int schemaVersion = 2;
+Json eventDto(const GameEvent &);
+Json clockDto(const MatchClockView &);
 
 class LocalSession {
   public:
@@ -16,8 +19,12 @@ class LocalSession {
     Json initialize(const std::filesystem::path &assets, const std::filesystem::path &userDirectory);
     Json start(const Json &options);
     Json snapshot(PlayerId viewer) const;
-    Json selectAction(PlayerId viewer, const std::string &actionId,
-                      const std::string &generation, const std::string &revision);
+    Json queryActions(PlayerId viewer, const Json &intent, const std::string &generation, const std::string &revision);
+    Json selectIntent(PlayerId viewer, const Json &intent, const std::string &generation, const std::string &revision);
+    Json submitCommand(PlayerId viewer, const Json &command, const std::string &generation, const std::string &revision);
+    Json eventsSince(PlayerId viewer, const std::string &epoch, const std::string &cursor) const;
+    Json pollMatch(PlayerId viewer, const std::string &generation, const std::string &revision);
+    Json saveDiagnostic() const;
     Json confirmAction(const std::string &generation, const std::string &revision);
     Json cancelAction();
     Json debugCommand(const Json &);
@@ -42,33 +49,42 @@ class LocalSession {
     Json readReplayPlan(const std::filesystem::path &path) const;
     Json verifyReplay(const std::filesystem::path &path) const;
     Json replayFrame(const std::filesystem::path &path, std::size_t step, PlayerId viewer) const;
-    std::uint64_t generation() const { return generation_; }
+    std::uint64_t generation() const { return match_.generation; }
 
   private:
     struct Pending { PlayerId viewer; Command command; std::uint64_t generation, revision; };
-    std::optional<Content> content_;
+    struct DeckWorkspace {
+        std::optional<Content> content;
+        mutable std::optional<Json> libraryCache;
+    } decks_;
+    struct MatchWorkspace {
+        std::unique_ptr<app::Application> application;
+        std::optional<Pending> pending;
+        std::uint64_t generation{};
+        ui::Interaction interaction;
+        std::uint64_t interactionGeneration{}, interactionRevision{};
+        PlayerId interactionViewer{-1};
+    } match_;
+    struct ReplayBrowser {
+        std::filesystem::path path;
+        Json record;
+        std::unique_ptr<GameEngine> engine;
+        std::filesystem::file_time_type writeTime{};
+        std::uintmax_t fileSize{};
+        std::size_t step{};
+        bool valid{}, browsing{};
+        std::map<std::size_t, GameEngine> checkpoints;
+        std::map<std::size_t, std::array<std::vector<GameEvent>, 2>> eventCheckpoints;
+        std::array<std::vector<GameEvent>, 2> visibleEvents;
+    };
+    mutable ReplayBrowser replay_;
+    // Full replay writes are deliberately batched. A failed write keeps the
+    // session dirty so each following command retries until persistence works.
+    mutable bool replaySaveHealthy_{true};
     RoomFactory roomFactory_;
-    std::unique_ptr<app::Application> application_;
-    std::optional<Pending> pending_;
-    std::uint64_t generation_{};
-    ui::Interaction interaction_;
-    std::uint64_t interactionGeneration_{}, interactionRevision_{};
-    PlayerId interactionViewer_{-1};
-    // Replay browsing keeps one validated engine and advances it between frames.
-    // Without this cache every next/previous click rebuilt the whole recording.
-    mutable std::filesystem::path replayCachePath_;
-    mutable Json replayCacheRecord_;
-    mutable std::unique_ptr<GameEngine> replayCacheEngine_;
-    mutable std::filesystem::file_time_type replayCacheWriteTime_{};
-    mutable std::uintmax_t replayCacheFileSize_{};
-    mutable std::size_t replayCacheStep_{};
-    mutable bool replayCacheValid_{};
-    mutable bool replayBrowsing_{};
-    mutable std::map<std::size_t, GameEngine> replayCheckpoints_;
     void prepareReplay(const std::filesystem::path &) const;
     bool visibleTo(PlayerId viewer) const;
     bool current(const std::string &generation, const std::string &revision) const;
-    std::string actionId(PlayerId viewer, std::size_t index) const;
     GameView view(PlayerId viewer) const;
     Json accepted(const CommandResult &, const GameView &before);
 };

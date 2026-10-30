@@ -12,43 +12,45 @@ namespace wizard {
 bool GameEngine::cardEffect() {
     return resolveResourceEffect() || resolveFormationEffect() || resolveSpellEffect() || resolveRecipeEffect();
 }
-bool GameEngine::chooseCardEffect(PlayerId actor, CardId selected) {
-    return chooseResourceEffect(actor, selected) || chooseFormationEffect(actor, selected) || chooseSpellEffect(actor, selected) || chooseRecipeEffect(actor, selected);
+bool GameEngine::chooseCardEffect(PlayerId actor, ChoiceValue choice) {
+    return chooseResourceEffect(actor, choice) || chooseFormationEffect(actor, choice) || chooseSpellEffect(actor, choice) || chooseRecipeEffect(actor, choice);
 }
 namespace {
-constexpr CardId yes = 0xffffffa1u;
-void shuffleBloodDeck(GameState &s, PlayerId p) {
+
+void shuffleBloodDeck(MutationContext &s, PlayerId p) {
     auto &deck = s.players[p].deck;
     for (std::size_t n = deck.size(); n > 1; --n) std::swap(deck[n - 1], deck[detail::bounded(s, static_cast<std::uint32_t>(n))]);
 }
 }
 bool GameEngine::resolveResourceEffect() {
     auto &s = state_;
-    if (!catalog_.usesCardRules() || !s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
+    if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
     const auto p = f.item.owner;
-    const auto finish = [&] { ++f.cursor; f.clearRemaining = -1; f.resolvedCount = 0; };
+    const auto finish = [&] { ++f.cursor; f.resume<RepeatedChoiceContinuation>().remaining = -1; f.resume<RepeatedChoiceContinuation>().completed = 0; };
     if (e.kind == EffectKind::ChangeLifeLimit) {
-        card_rules::changeLifeLimit(s, catalog_, p, e.amount); finish(); return true;
+        card_rules::changeLifeLimit(s, catalog(), p, e.amount); finish(); return true;
     }
     if (e.kind == EffectKind::BloodDamage) {
-        const int amount = std::min(e.amount, maximumLife - card_rules::lifeLimit(s, catalog_, p));
-        EffectResolver::apply(s, catalog_, f.item, {EffectKind::Damage, amount, DamageType::Necrotic});
+        const int amount = std::min(e.amount, maximumLife - card_rules::lifeLimit(s, catalog(), p));
+        EffectResolver::apply(s, catalog(), f.item, {EffectKind::Damage, amount, DamageType::Necrotic});
         // Search is dependent on this damage actually being applied.
-        f.resolvedCount = amount > 0 && !card_rules::damageImmune(s, catalog_, f.item.targetPlayer >= 0 ? f.item.targetPlayer : p) ? 1 : 0;
+        f.resume<RepeatedChoiceContinuation>().completed = amount > 0 && !card_rules::damageImmune(s, catalog(), f.item.targetPlayer >= 0 ? f.item.targetPlayer : p) ? 1 : 0;
         ++f.cursor;
         return true;
     }
     if (e.kind == EffectKind::BloodSearch) {
-        const auto &source = s.cards.at(f.item.source).definition;
-        const bool optional = source == "blood-debt" || source == "blood-repayment";
-        if (optional && !f.resolvedCount) { finish(); return true; }
+        const auto &source = catalog().at(s.cards.at(f.item.source).definition);
+        const bool debt = hasCapability(source, Capability::BloodDebt);
+        const bool repayment = hasCapability(source, Capability::BloodRepayment);
+        const bool optional = debt || repayment;
+        if (optional && !f.resume<RepeatedChoiceContinuation>().completed) { finish(); return true; }
         std::vector<CardId> options;
         for (auto id : s.players[p].deck) {
-            const auto &d = catalog_.at(s.cards.at(id).definition);
-            if ((source == "blood-debt" && d.id == "blood-repayment") ||
-                (source == "blood-repayment" && d.id == "blood-debt") ||
+            const auto &d = catalog().at(s.cards.at(id).definition);
+            if ((debt && hasCapability(d, Capability::BloodRepayment)) ||
+                (repayment && hasCapability(d, Capability::BloodDebt)) ||
                 (!optional && card_rules::member(d, "血契"))) options.push_back(id);
         }
         if (options.empty()) finish();
@@ -57,12 +59,12 @@ bool GameEngine::resolveResourceEffect() {
     }
     if (e.kind == EffectKind::BloodTube) {
         if (!card_rules::canPayLife(s, p, 2)) finish();
-        else decision(p, DecisionKind::EffectChoice, {yes}, true);
+        else typedDecision(p, DecisionKind::EffectChoice, {ChoiceValue::mode(ChoiceMode::Confirm)}, true);
         return true;
     }
     if (e.kind == EffectKind::BloodHeartSeal) {
         if (!card_rules::canPayLife(s, p, 2)) finish();
-        else decision(p, DecisionKind::EffectChoice, {yes}, true);
+        else typedDecision(p, DecisionKind::EffectChoice, {ChoiceValue::mode(ChoiceMode::Confirm)}, true);
         return true;
     }
     if (e.kind == EffectKind::BloodClot) {
@@ -72,41 +74,46 @@ bool GameEngine::resolveResourceEffect() {
             for (auto &effect : link.item.effects)
                 if ((effect.kind == EffectKind::Damage || effect.kind == EffectKind::BloodDamage) &&
                     (effect.recipient == EffectRecipient::Opponent ? 1 - link.item.owner : victim) == p && effect.amount > 0) {
-                    effect.amount = 0; prevented = true; break;
+                    effect.amount = 0; prevented = true;
+                    link.item.invalidateEffectsKey();
+                    break;
                 }
         }
         if (prevented) {
-            card_rules::changeLifeLimit(s, catalog_, p, -4);
-            ResourceRules::drawOne(s, catalog_, p);
+            card_rules::changeLifeLimit(s, catalog(), p, -4);
+            ResourceRules::drawOne(s, catalog(), p);
         }
         finish(); return true;
     }
     return false;
 }
-bool GameEngine::chooseResourceEffect(PlayerId actor, CardId selected) {
+bool GameEngine::chooseResourceEffect(PlayerId actor, ChoiceValue choice) {
+    const auto selected = static_cast<CardId>(choice.value);
     auto &s = state_;
-    if (!catalog_.usesCardRules() || !s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
+    if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
     const auto kind = f.item.effects[f.cursor].kind;
     if (kind == EffectKind::BloodSearch) {
         if (selected) {
-            card_rules::returnCard(s, catalog_, selected, true); shuffleBloodDeck(s, actor);
+            card_rules::returnCard(s, catalog(), selected, true); shuffleBloodDeck(s, actor);
         }
     } else if (kind == EffectKind::BloodTube) {
         if (selected) {
-            card_rules::payLife(s, catalog_, actor, 2, f.item.source);
-            EffectResolver::apply(s, catalog_, f.item, {EffectKind::GainMana, 2});
+            card_rules::payLife(s, catalog(), actor, 2, f.item.source);
+            EffectResolver::apply(s, catalog(), f.item, {EffectKind::GainMana, 2});
         }
     } else if (kind == EffectKind::BloodHeartSeal) {
         if (selected) {
-            card_rules::payLife(s, catalog_, actor, 2, f.item.source);
+            card_rules::payLife(s, catalog(), actor, 2, f.item.source);
             const auto host = s.cards.find(s.cards.at(f.item.source).host);
             if (host != s.cards.end() && s.chain) for (auto &link : s.chain->links)
                 if (link.item.source == host->first) for (auto &e : link.item.effects)
                     if (e.kind == EffectKind::Damage || e.kind == EffectKind::BloodDamage) e.amount += 8;
+            if (host != s.cards.end() && s.chain)
+                for (auto &link : s.chain->links) if (link.item.source == host->first) link.item.invalidateEffectsKey();
         }
     } else return false;
-    ++f.cursor; f.clearRemaining = -1; f.resolvedCount = 0;
+    ++f.cursor; f.resume<RepeatedChoiceContinuation>().remaining = -1; f.resume<RepeatedChoiceContinuation>().completed = 0;
     return true;
 }
 }
@@ -118,8 +125,8 @@ bool GameEngine::chooseResourceEffect(PlayerId actor, CardId selected) {
 
 namespace wizard::card_rules {
 namespace {
-bool trait(const CardDefinition &d, const char *name) {
-    return std::find(d.traits.begin(), d.traits.end(), name) != d.traits.end();
+bool trait(const CardDefinition &d, Capability capability) {
+    return hasCapability(d, capability);
 }
 bool sevenFormation(const CardInstance &c, const CardCatalog &cat) {
     return c.zone == Zone::Analysis && !c.faceDown && cat.at(c.definition).type == CardType::Formation &&
@@ -127,7 +134,7 @@ bool sevenFormation(const CardInstance &c, const CardCatalog &cat) {
 }
 }
 int aspectMode(const GameState &s, const CardCatalog &cat, PlayerId p) {
-    if (!cat.usesCardRules() || !std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+    if (!std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
             return entry.second.owner == p && sevenFormation(entry.second, cat);
         })) return 0;
     bool bright = s.players[p].ownTurn % 2 == 1;
@@ -139,35 +146,36 @@ bool effectImmune(const GameState &s, const CardCatalog &cat, CardId id) {
     if (found == s.cards.end()) return false;
     const auto &c = found->second;
     const auto &d = cat.at(c.definition);
-    if (trait(d, "effect_immune")) return true;
-    if (cat.usesCardRules() && trait(d, "great_storm")) return true;
-    if (!cat.usesCardRules() || !field(c) || !member(d, "七星")) return false;
+    if (trait(d, Capability::EffectImmune)) return true;
+    if (trait(d, Capability::GreatStorm)) return true;
+    if (!field(c) || !member(d, "七星")) return false;
     return std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
         const auto &provider = entry.second;
         return entry.first != id && provider.owner == c.owner && provider.zone == Zone::Analysis &&
-            !provider.faceDown && provider.definition == "qixing-yaoguang";
+            !provider.faceDown && hasCapability(cat.at(provider.definition), Capability::SevenStarsYaoguang);
     });
 }
 std::vector<CardId> formationUpgradeSources(const GameState &s, const CardCatalog &cat, PlayerId p, bool kaiyang) {
     std::vector<CardId> out;
     for (const auto &[id, c] : s.cards) {
-        if (c.owner != p || !sevenFormation(c, cat) || (kaiyang && c.definition != "qixing-kaiyang")) continue;
+        if (c.owner != p || !sevenFormation(c, cat) ||
+            (kaiyang && !hasCapability(cat.at(c.definition), Capability::SevenStarsKaiyang))) continue;
         const int next = Rules::maxRank(s, cat, id) + 1;
         if (!kaiyang && next >= 7) continue; // Yaoguang's exclusive condition is never bypassed.
         const bool available = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
             const auto &candidate = entry.second;
             const auto &d = cat.at(candidate.definition);
             return candidate.owner == p && candidate.zone == Zone::SideDeck && d.type == CardType::Formation &&
-                member(d, "七星") && (kaiyang ? d.id == "qixing-yaoguang" : d.level == next);
+                member(d, "七星") && (kaiyang ? hasCapability(d, Capability::SevenStarsYaoguang) : d.level == next);
         });
         if (available) out.push_back(id);
     }
     return out;
 }
-void queueFormationSetup(GameState &s, const CardCatalog &cat, CardId id) {
+void queueFormationSetup(MutationContext &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
-    if (!cat.usesCardRules() || !sevenFormation(c, cat) || c.definition == "qixing-tianshu" ||
-        c.definition == "qixing-kaiyang") return;
+    if (!sevenFormation(c, cat) || hasCapability(cat.at(c.definition), Capability::QixingTianshu) ||
+        hasCapability(cat.at(c.definition), Capability::SevenStarsKaiyang)) return;
     auto trigger = detail::snapshot(c, cat.at(c.definition));
     trigger.id = s.nextTrigger++; trigger.batch = s.nextBatch++;
     trigger.effects = {{EffectKind::SevenSetup}};
@@ -192,12 +200,12 @@ bool validLinkedResponse(const GameState &s, const CardCatalog &cat, PlayerId p,
 
 namespace wizard {
 namespace {
-constexpr CardId takeDamage = 0xffffffb1u, takeLoad = 0xffffffb2u;
+
 bool sevenKind(EffectKind kind) {
     return kind >= EffectKind::SevenAwakening && kind <= EffectKind::SevenKaiyang;
 }
-void finishSeven(EffectFrame &f) { ++f.cursor; f.clearRemaining = -1; f.resolvedCount = 0; }
-void shuffleSevenDeck(GameState &s, PlayerId owner) {
+void finishSeven(EffectFrame &f) { ++f.cursor; f.resume<RepeatedChoiceContinuation>().remaining = -1; f.resume<RepeatedChoiceContinuation>().completed = 0; }
+void shuffleSevenDeck(MutationContext &s, PlayerId owner) {
     auto &deck = s.players[owner].deck;
     for (std::size_t n = deck.size(); n > 1; --n) std::swap(deck[n - 1], deck[detail::bounded(s, static_cast<std::uint32_t>(n))]);
 }
@@ -209,11 +217,11 @@ std::vector<CardId> upgrades(const GameState &s, const CardCatalog &cat, PlayerI
     for (const auto &[id, c] : s.cards) {
         const auto &d = cat.at(c.definition);
         if (c.owner == p && c.zone == Zone::SideDeck && d.type == CardType::Formation &&
-            card_rules::member(d, "七星") && (kaiyang ? d.id == "qixing-yaoguang" : d.level == next && next < 7)) out.push_back(id);
+            card_rules::member(d, "七星") && (kaiyang ? hasCapability(d, Capability::SevenStarsYaoguang) : d.level == next && next < 7)) out.push_back(id);
     }
     return out;
 }
-void replaceSeven(GameState &s, const CardCatalog &cat, CardId oldId, CardId replacement) {
+void replaceSeven(MutationContext &s, const CardCatalog &cat, CardId oldId, CardId replacement) {
     // Replacement follows the shared leave tree: runes and hosted analysis
     // spells leave, while casting spells retain their independent field zone.
     StateMaintenance::leave(s, oldId, &cat);
@@ -225,7 +233,7 @@ void replaceSeven(GameState &s, const CardCatalog &cat, CardId oldId, CardId rep
     s.events.push_back({"formation_replaced", "七星阵法替换", -1, replacement});
     card_rules::queueFormationSetup(s, cat, replacement);
 }
-void bottomViewed(GameState &s, PlayerId owner, const std::vector<CardId> &viewed, CardId selected) {
+void bottomViewed(MutationContext &s, PlayerId owner, const std::vector<CardId> &viewed, CardId selected) {
     auto &deck = s.players[owner].deck;
     std::vector<CardId> bottom;
     for (auto id : viewed) {
@@ -243,7 +251,7 @@ void bottomViewed(GameState &s, PlayerId owner, const std::vector<CardId> &viewe
     }
     s.events.push_back({"deck_bottom", "遥鉴：其余卡牌按原顺序置底（不洗牌）", owner});
 }
-void concealGaze(GameState &s, const CardCatalog &cat, CardId target, CardId host, int ring) {
+void concealGaze(MutationContext &s, const CardCatalog &cat, CardId target, CardId host, int ring) {
     auto &card = s.cards.at(target);
     card.zone = Zone::Analysis; card.host = card.sourceFormation = host;
     card.ringIndex = card.sourceRingIndex = ring; card.faceDown = card.wasAmbushed = true;
@@ -264,28 +272,27 @@ std::optional<std::string> GameEngine::sevenAbility(PlayerId actor, const Activa
 }
 bool GameEngine::resolveFormationEffect() {
     auto &s = state_;
-    if (!catalog_.usesCardRules() || !s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
+    if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
     const auto effect = f.item.effects[f.cursor];
     if (!sevenKind(effect.kind)) return false;
     const auto owner = f.item.owner;
     const auto source = s.cards.find(f.item.source);
-    const auto sourceName = source == s.cards.end() ? std::string{} : source->second.definition;
-    const int mode = card_rules::aspectMode(s, catalog_, owner);
+    const int mode = card_rules::aspectMode(s, catalog(), owner);
     if (effect.kind == EffectKind::SevenRuin || effect.kind == EffectKind::SevenPunishment) {
         const auto trigger = f.item;
-        const bool both = sourceName == "qixing-ruin";
+        const bool both = source != s.cards.end() && hasCapability(catalog().at(source->second.definition), Capability::QixingRuin);
         finishSeven(f);
         if (!mode) return true;
         const auto type = mode == 1 ? DamageType::Radiant : DamageType::Necrotic;
         if (both) {
-            EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, effect.amount, type, EffectRecipient::Owner});
+            EffectResolver::apply(s, catalog(), trigger, {EffectKind::Damage, effect.amount, type, EffectRecipient::Owner});
             if (s.result != -1) return true;
-            EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, effect.amount, type, EffectRecipient::Opponent});
+            EffectResolver::apply(s, catalog(), trigger, {EffectKind::Damage, effect.amount, type, EffectRecipient::Opponent});
         } else {
-            EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, effect.amount, type, EffectRecipient::Opponent});
+            EffectResolver::apply(s, catalog(), trigger, {EffectKind::Damage, effect.amount, type, EffectRecipient::Opponent});
         }
-        StateMaintenance::check(s, catalog_); return true;
+        StateMaintenance::check(s, catalog()); return true;
     }
     if (effect.kind == EffectKind::SevenShift && mode == 1) {
         auto &player = s.players[owner]; player.sevenShifted = !player.sevenShifted;
@@ -293,141 +300,139 @@ bool GameEngine::resolveFormationEffect() {
         s.events.push_back({"seven_shift", "七星耀/黯效果交换，至下个己方回合开始", -1, f.item.source});
         finishSeven(f); return true;
     }
-    if (effect.kind == EffectKind::SevenSetup && sourceName == "qixing-yaoguang") {
+    if (effect.kind == EffectKind::SevenSetup && source != s.cards.end() &&
+        hasCapability(catalog().at(source->second.definition), Capability::SevenStarsYaoguang)) {
         const auto sourceId = f.item.source;
         finishSeven(f);
-        card_rules::heal(s, catalog_, owner, maximumLife, sourceId);
+        card_rules::heal(s, catalog(), owner, maximumLife, sourceId);
         s.players[owner].mana = 0;
-        for (int i = 0; i < 5 && s.result == -1; ++i) ResourceRules::drawOne(s, catalog_, owner);
-        StateMaintenance::check(s, catalog_); return true;
+        for (int i = 0; i < 5 && s.result == -1; ++i) ResourceRules::drawOne(s, catalog(), owner);
+        StateMaintenance::check(s, catalog()); return true;
     }
     if (effect.kind == EffectKind::SevenGaze) {
-        if (f.clearRemaining < 0) {
+        if (!f.resume<TargetWalkContinuation>().next) {
             if (!s.chain) { finishSeven(f); return true; }
             const auto targetLink = std::find_if(s.chain->links.begin(), s.chain->links.end(), [&](const ChainLink &l) { return l.id == f.item.targetLink; });
             if (targetLink == s.chain->links.end() || targetLink->canceled || targetLink->sourceLost ||
-                card_rules::effectImmune(s, catalog_, targetLink->item.source)) { finishSeven(f); return true; }
+                card_rules::effectImmune(s, catalog(), targetLink->item.source)) { finishSeven(f); return true; }
             targetLink->canceled = true;
             f.item.targetCard = targetLink->item.source;
-            f.clearRemaining = 0;
+            f.resume<TargetWalkContinuation>().next = 0;
         }
         const auto target = s.cards.find(f.item.targetCard);
         if (target == s.cards.end() || !card_rules::field(target->second)) { finishSeven(f); return true; }
         const auto id = target->first;
         const auto oldHost = s.cards.find(target->second.sourceFormation);
         const int oldRing = target->second.sourceRingIndex;
-        if (oldHost != s.cards.end() && oldHost->second.zone == Zone::Analysis && oldRing >= 0 &&
-            oldRing < Rules::rings(s, catalog_, oldHost->first) && Rules::canHost(s, catalog_, id, oldHost->first, true) &&
-            std::none_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+        if (oldHost != s.cards.end() && oldHost->second.zone == Zone::Analysis && oldRing >= 0 && oldRing < Rules::rings(s, catalog(), oldHost->first) && Rules::canHost(s, catalog(), id, oldHost->first, true) && std::none_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
                 const auto &other = entry.second;
                 return entry.first != id && other.zone == Zone::Analysis && other.host == oldHost->first && other.ringIndex == oldRing;
             })) {
-            concealGaze(s, catalog_, id, oldHost->first, oldRing); finishSeven(f); return true;
+            concealGaze(s, catalog(), id, oldHost->first, oldRing); finishSeven(f); return true;
         }
         std::vector<CardId> hosts;
         for (const auto &[hostId, host] : s.cards)
-            if (controllerOf(host) == controllerOf(target->second) && host.zone == Zone::Analysis &&
-                catalog_.at(host.definition).type == CardType::Formation &&
-                Rules::canHost(s, catalog_, id, hostId, true) && Rules::freeRing(s, catalog_, hostId) >= 0) hosts.push_back(hostId);
-        if (hosts.empty()) { finishSeven(f); StateMaintenance::leave(s, id, &catalog_); return true; }
+            if (controllerOf(host) == controllerOf(target->second) && host.zone == Zone::Analysis && catalog().at(host.definition).type == CardType::Formation && Rules::canHost(s, catalog(), id, hostId, true) && Rules::freeRing(s, catalog(), hostId) >= 0) hosts.push_back(hostId);
+        if (hosts.empty()) { finishSeven(f); StateMaintenance::leave(s, id, &catalog()); return true; }
         decision(controllerOf(target->second), DecisionKind::EffectChoice, std::move(hosts)); return true;
     }
     if ((effect.kind == EffectKind::SevenInsight && mode == 1) ||
         (effect.kind == EffectKind::SevenShift && mode == 2) || effect.kind == EffectKind::SevenUpgrade || effect.kind == EffectKind::SevenKaiyang) {
         const bool kaiyang = effect.kind == EffectKind::SevenKaiyang;
-        auto options = f.clearRemaining < 0 ? card_rules::formationUpgradeSources(s, catalog_, owner, kaiyang)
-                                           : upgrades(s, catalog_, owner, static_cast<CardId>(f.clearRemaining), kaiyang);
+        auto options = !f.resume<EntityChoiceContinuation>().entity ? card_rules::formationUpgradeSources(s, catalog(), owner, kaiyang)
+                                           : upgrades(s, catalog(), owner, *f.resume<EntityChoiceContinuation>().entity, kaiyang);
         if (options.empty()) { finishSeven(f); return true; }
-        decision(owner, DecisionKind::EffectChoice, std::move(options), kaiyang && f.clearRemaining < 0); return true;
+        decision(owner, DecisionKind::EffectChoice, std::move(options), kaiyang && !f.resume<EntityChoiceContinuation>().entity); return true;
     }
     if (effect.kind == EffectKind::SevenInsight && mode == 2) {
-        if (f.clearRemaining < 0) {
+        if (!f.resume<EntityChoiceContinuation>().inspected) {
             const auto &deck = s.players[owner].deck;
             const auto amount = std::min<std::size_t>(7, deck.size());
             f.item.targetCards.assign(deck.end() - static_cast<std::ptrdiff_t>(amount), deck.end());
             for (auto id : f.item.targetCards) s.events.push_back({"inspect", "七星遥鉴：查看卡组顶部卡牌", owner, id});
-            f.clearRemaining = 0;
+            f.resume<EntityChoiceContinuation>().inspected = true;
         }
         std::vector<CardId> options;
         for (auto id : f.item.targetCards)
-            if (s.cards.count(id) && card_rules::member(catalog_.at(s.cards.at(id).definition), "七星")) options.push_back(id);
+            if (s.cards.count(id) && card_rules::member(catalog().at(s.cards.at(id).definition), "七星")) options.push_back(id);
         if (options.empty()) { bottomViewed(s, owner, f.item.targetCards, 0); finishSeven(f); return true; }
         decision(owner, DecisionKind::EffectChoice, std::move(options)); return true;
     }
-    if (effect.kind == EffectKind::SevenAwakening && f.resolvedCount == 1) {
-        decision(owner, DecisionKind::EffectChoice, {takeDamage, takeLoad}); return true;
+    if (effect.kind == EffectKind::SevenAwakening && f.resume<RepeatedChoiceContinuation>().completed == 1) {
+        typedDecision(owner, DecisionKind::EffectChoice, {ChoiceValue::mode(ChoiceMode::SevenDamage), ChoiceValue::mode(ChoiceMode::SevenLoad)}); return true;
     }
     std::vector<CardId> options;
     if (effect.kind == EffectKind::SevenReturn) {
-        if (f.resolvedCount >= std::max(1, effect.amount)) {
+        if (f.resume<RepeatedChoiceContinuation>().completed >= std::max(1, effect.amount)) {
             shuffleSevenDeck(s, owner); finishSeven(f); return true;
         }
         for (const auto &[id, card] : s.cards) if (card.owner == owner && card.zone == Zone::Ash &&
-            card_rules::member(catalog_.at(card.definition), "七星")) options.push_back(id);
+            card_rules::member(catalog().at(card.definition), "七星")) options.push_back(id);
         if (options.empty()) { shuffleSevenDeck(s, owner); finishSeven(f); return true; }
-        decision(owner, DecisionKind::EffectChoice, std::move(options), f.resolvedCount > 0); return true;
+        decision(owner, DecisionKind::EffectChoice, std::move(options), f.resume<RepeatedChoiceContinuation>().completed > 0); return true;
     }
     if (effect.kind == EffectKind::SevenAwakening || effect.kind == EffectKind::SevenSetup) {
         const bool setup = effect.kind == EffectKind::SevenSetup;
-        const bool ash = setup ? sourceName == "qixing-tianquan" || sourceName == "qixing-yuheng" : mode == 2;
+        const auto *sourceDefinition = source == s.cards.end() ? nullptr : &catalog().at(source->second.definition);
+        const bool ash = setup ? (sourceDefinition && (hasCapability(*sourceDefinition, Capability::QixingTianquan) ||
+            hasCapability(*sourceDefinition, Capability::QixingYuheng))) : mode == 2;
         if (!setup && !mode) { finishSeven(f); return true; }
         for (const auto &[id, card] : s.cards) {
             if (card.owner != owner || card.zone != (ash ? Zone::Ash : Zone::Deck)) continue;
-            const auto &d = catalog_.at(card.definition);
-            const bool shiftOnly = setup && (sourceName == "qixing-tianxuan" || sourceName == "qixing-tianquan");
-            if (shiftOnly ? d.id == "qixing-shift" : card_rules::member(d, "七星")) options.push_back(id);
+            const auto &d = catalog().at(card.definition);
+            const bool shiftOnly = setup && sourceDefinition &&
+                (hasCapability(*sourceDefinition, Capability::QixingTianxuan) || hasCapability(*sourceDefinition, Capability::QixingTianquan));
+            if (shiftOnly ? hasCapability(d, Capability::QixingShift) : card_rules::member(d, "七星")) options.push_back(id);
         }
         if (options.empty()) { finishSeven(f); return true; }
         decision(owner, DecisionKind::EffectChoice, std::move(options)); return true;
     }
     finishSeven(f); return true;
 }
-bool GameEngine::chooseFormationEffect(PlayerId actor, CardId selected) {
+bool GameEngine::chooseFormationEffect(PlayerId actor, ChoiceValue choice) {
+    const auto selected = static_cast<CardId>(choice.value);
     auto &s = state_;
-    if (!catalog_.usesCardRules() || !s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
+    if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
     const auto kind = f.item.effects[f.cursor].kind;
     if (!sevenKind(kind)) return false;
     const auto owner = f.item.owner;
     const auto source = s.cards.find(f.item.source);
-    const auto sourceName = source == s.cards.end() ? std::string{} : source->second.definition;
-    const int mode = card_rules::aspectMode(s, catalog_, owner);
+    const int mode = card_rules::aspectMode(s, catalog(), owner);
     const auto listed = [&](const std::vector<CardId> &ids) {
         return std::find(ids.begin(), ids.end(), selected) != ids.end();
     };
     if (kind == EffectKind::SevenGaze) {
         const auto id = f.item.targetCard;
         const auto target = s.cards.find(selected);
-        if (!s.cards.count(id) || target == s.cards.end() || controllerOf(target->second) != owner || target->second.zone != Zone::Analysis ||
-            target->second.faceDown || catalog_.at(target->second.definition).type != CardType::Formation ||
-            !Rules::canHost(s, catalog_, id, selected, true) || Rules::freeRing(s, catalog_, selected) < 0)
+        if (!s.cards.count(id) || target == s.cards.end() || controllerOf(target->second) != owner || target->second.zone != Zone::Analysis || target->second.faceDown || catalog().at(target->second.definition).type != CardType::Formation || !Rules::canHost(s, catalog(), id, selected, true) || Rules::freeRing(s, catalog(), selected) < 0)
             return false;
-        const int ring = Rules::freeRing(s, catalog_, selected);
-        concealGaze(s, catalog_, id, selected, ring); finishSeven(f); return true;
+        const int ring = Rules::freeRing(s, catalog(), selected);
+        concealGaze(s, catalog(), id, selected, ring); finishSeven(f); return true;
     }
     if ((kind == EffectKind::SevenInsight && mode == 1) || (kind == EffectKind::SevenShift && mode == 2) ||
         kind == EffectKind::SevenUpgrade || kind == EffectKind::SevenKaiyang) {
         const bool kaiyang = kind == EffectKind::SevenKaiyang;
-        const auto options = f.clearRemaining < 0
-            ? card_rules::formationUpgradeSources(s, catalog_, owner, kaiyang)
-            : upgrades(s, catalog_, owner, static_cast<CardId>(f.clearRemaining), kaiyang);
-        if (kaiyang && !selected && f.clearRemaining < 0) {
+        const auto options = !f.resume<EntityChoiceContinuation>().entity
+            ? card_rules::formationUpgradeSources(s, catalog(), owner, kaiyang)
+            : upgrades(s, catalog(), owner, *f.resume<EntityChoiceContinuation>().entity, kaiyang);
+        if (kaiyang && !selected && !f.resume<EntityChoiceContinuation>().entity) {
             finishSeven(f);
             return true;
         }
         if (!listed(options)) return false;
-        if (f.clearRemaining < 0) {
-            f.clearRemaining = static_cast<int>(selected);
+        if (!f.resume<EntityChoiceContinuation>().entity) {
+            f.resume<EntityChoiceContinuation>().entity = selected;
             if (kaiyang) {
                 std::vector<CardId> hand;
                 for (const auto &[id, card] : s.cards)
                     if (card.owner == owner && card.zone == Zone::Hand) hand.push_back(id);
-                for (auto id : hand) StateMaintenance::leave(s, id, &catalog_);
+                for (auto id : hand) StateMaintenance::leave(s, id, &catalog());
             }
         }
         else {
-            const auto old = static_cast<CardId>(f.clearRemaining);
-            finishSeven(f); replaceSeven(s, catalog_, old, selected);
+            const auto old = *f.resume<EntityChoiceContinuation>().entity;
+            finishSeven(f); replaceSeven(s, catalog(), old, selected);
         }
         return true;
     }
@@ -440,36 +445,39 @@ bool GameEngine::chooseFormationEffect(PlayerId actor, CardId selected) {
         if (selected) {
             std::vector<CardId> options;
             for (const auto &[id, card] : s.cards)
-                if (card.owner == owner && card.zone == Zone::Ash && card_rules::member(catalog_.at(card.definition), "七星"))
+                if (card.owner == owner && card.zone == Zone::Ash && card_rules::member(catalog().at(card.definition), "七星"))
                     options.push_back(id);
             if (!listed(options)) return false;
             const auto zone = s.cards.at(selected).zone;
-            card_rules::returnCard(s, catalog_, selected, false);
-            if (zone == Zone::Ash || zone == Zone::Deck) ++f.resolvedCount;
+            card_rules::returnCard(s, catalog(), selected, false);
+            if (zone == Zone::Ash || zone == Zone::Deck) ++f.resume<RepeatedChoiceContinuation>().completed;
         }
         else { shuffleSevenDeck(s, owner); finishSeven(f); }
         return true;
     }
-    if (kind == EffectKind::SevenAwakening && f.resolvedCount == 1) {
-        if (selected != takeDamage && selected != takeLoad) return false;
+    if (kind == EffectKind::SevenAwakening && f.resume<RepeatedChoiceContinuation>().completed == 1) {
+        if (choice != ChoiceValue::mode(ChoiceMode::SevenDamage) && choice != ChoiceValue::mode(ChoiceMode::SevenLoad)) return false;
         const auto trigger = f.item; finishSeven(f);
-        if (selected == takeDamage) EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, 7, DamageType::Radiant, EffectRecipient::Owner});
-        else if (selected == takeLoad) EffectResolver::apply(s, catalog_, trigger, {EffectKind::AddIndependent, 7, DamageType::Force, EffectRecipient::Owner});
-        StateMaintenance::check(s, catalog_); return true;
+        if (choice == ChoiceValue::mode(ChoiceMode::SevenDamage)) EffectResolver::apply(s, catalog(), trigger, {EffectKind::Damage, 7, DamageType::Radiant, EffectRecipient::Owner});
+        else if (choice == ChoiceValue::mode(ChoiceMode::SevenLoad)) EffectResolver::apply(s, catalog(), trigger, {EffectKind::AddIndependent, 7, DamageType::Force, EffectRecipient::Owner});
+        StateMaintenance::check(s, catalog()); return true;
     }
     if (kind == EffectKind::SevenAwakening || kind == EffectKind::SevenSetup) {
         if (!s.cards.count(selected)) return false;
         const bool setup = kind == EffectKind::SevenSetup;
-        const bool ash = setup ? sourceName == "qixing-tianquan" || sourceName == "qixing-yuheng" : mode == 2;
-        const bool shiftOnly = setup && (sourceName == "qixing-tianxuan" || sourceName == "qixing-tianquan");
+        const auto *sourceDefinition = source == s.cards.end() ? nullptr : &catalog().at(source->second.definition);
+        const bool ash = setup ? (sourceDefinition && (hasCapability(*sourceDefinition, Capability::QixingTianquan) ||
+            hasCapability(*sourceDefinition, Capability::QixingYuheng))) : mode == 2;
+        const bool shiftOnly = setup && sourceDefinition &&
+            (hasCapability(*sourceDefinition, Capability::QixingTianxuan) || hasCapability(*sourceDefinition, Capability::QixingTianquan));
         const auto card = s.cards.find(selected);
         if (card == s.cards.end() || card->second.owner != owner || card->second.zone != (ash ? Zone::Ash : Zone::Deck) ||
-            (shiftOnly ? card->second.definition != "qixing-shift" : !card_rules::member(catalog_.at(card->second.definition), "七星")))
+            (shiftOnly ? !hasCapability(catalog().at(card->second.definition), Capability::QixingShift) : !card_rules::member(catalog().at(card->second.definition), "七星")))
             return false;
         const bool fromDeck = s.cards.at(selected).zone == Zone::Deck;
-        card_rules::returnCard(s, catalog_, selected, true);
+        card_rules::returnCard(s, catalog(), selected, true);
         if (fromDeck) shuffleSevenDeck(s, owner);
-        if (kind == EffectKind::SevenAwakening && mode == 1) f.resolvedCount = 1;
+        if (kind == EffectKind::SevenAwakening && mode == 1) f.resume<RepeatedChoiceContinuation>().completed = 1;
         else finishSeven(f);
         return true;
     }
@@ -489,34 +497,38 @@ namespace wizard::card_rules {
 bool isSpell(const CardDefinition &d) {
     return d.type == CardType::Analytic || d.type == CardType::Word || d.type == CardType::Talisman;
 }
-bool hasActiveTrait(const GameState &s, const CardCatalog &cat, const char *name, PlayerId owner) {
-    return cat.usesAlphaV252() && std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+bool hasActiveTrait(const GameState &s, const CardCatalog &cat, Capability capability, PlayerId owner) {
+    return std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
         const auto &c = entry.second;
         return (owner < 0 || c.owner == owner) && !c.faceDown &&
             (c.zone == Zone::Analysis || c.zone == Zone::Casting) && c.spell == SpellState::Active &&
-            trait(cat.at(c.definition), name);
+            trait(cat.at(c.definition), capability);
     });
 }
 std::string activationError(const GameState &s, const CardCatalog &cat, PlayerId owner, CardId source, CardId target) {
     const auto &sourceCard = s.cards.at(source);
-    if (cat.usesCardRules() && (sourceCard.definition == "blood-wrist" || sourceCard.definition == "blood-offering" ||
-                                sourceCard.definition == "blood-last-stand" || member(cat.at(sourceCard.definition), "七星"))) {
-        if ((sourceCard.definition == "blood-wrist" && !canPayLife(s, owner, 4)) ||
-            (sourceCard.definition == "blood-offering" && !canPayLife(s, owner, 1))) return "life_cost";
-        if (sourceCard.definition == "blood-last-stand" && s.players[owner].life > 15) return "life_condition";
+    const auto &sourceDefinition = cat.at(sourceCard.definition);
+    const int activationLife = activationLifeCost(sourceDefinition);
+    if (activationLife || hasCapability(sourceDefinition, Capability::BloodLastStand) || member(sourceDefinition, "七星")) {
+        if (activationLife && !canPayLife(s, owner, activationLife)) return "life_cost";
+        if (hasCapability(sourceDefinition, Capability::BloodLastStand) && s.players[owner].life > 15)
+            return "life_condition";
         if (!member(cat.at(sourceCard.definition), "七星")) return {};
-        if (sourceCard.definition == "qixing-lamp") {
+        if (hasCapability(sourceDefinition, Capability::SevenStarsLamp)) {
             const bool yaoguang = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
-                return entry.second.owner == owner && entry.second.zone == Zone::Analysis && entry.second.definition == "qixing-yaoguang";
+                return entry.second.owner == owner && entry.second.zone == Zone::Analysis &&
+                    hasCapability(cat.at(entry.second.definition), Capability::SevenStarsYaoguang);
             });
             if (!yaoguang) return "qixing_yaoguang_required";
-        } else if (sourceCard.definition != "qixing-gaze" && sourceCard.definition != "qixing-return" && !aspectMode(s, cat, owner))
+        } else if (!hasCapability(sourceDefinition, Capability::QixingShift) &&
+                   !hasCapability(sourceDefinition, Capability::QixingGaze) &&
+                   !hasCapability(sourceDefinition, Capability::QixingReturn) && !aspectMode(s, cat, owner))
             return "qixing_mode_required";
-        if (sourceCard.definition == "qixing-shift" && aspectMode(s, cat, owner) == 1 && !canPayLife(s, owner, 7)) return "life_cost";
+        if (hasCapability(sourceDefinition, Capability::QixingShift) && aspectMode(s, cat, owner) == 1 && !canPayLife(s, owner, 7)) return "life_cost";
     }
-    if (!cat.usesAlphaV252()) return {};
+
     const auto &d = cat.at(sourceCard.definition);
-    if (trait(d, "unique") && std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
+    if (trait(d, Capability::Unique) && std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
         const auto &card = entry.second;
         return entry.first != source && card.owner == owner && card.definition == d.id &&
             (card.zone == Zone::Analysis || card.zone == Zone::Casting);
@@ -524,7 +536,7 @@ std::string activationError(const GameState &s, const CardCatalog &cat, PlayerId
     if (d.type == CardType::Word && std::any_of(s.players.begin(), s.players.end(), [](const PlayerState &p) {
         return p.wordLockUntilOwnDraw > p.ownTurn;
     })) return "word_lock: 昏昏入睡期间双方言灵不可发动";
-    if (trait(d, "arcana_fool_condition")) {
+    if (trait(d, Capability::ArcanaFoolCondition)) {
         int hand = 0;
         for (const auto &[id, c] : s.cards) {
             if (c.owner != owner) continue;
@@ -534,15 +546,14 @@ std::string activationError(const GameState &s, const CardCatalog &cat, PlayerId
         }
         if (hand < 5) return "arcana_fool_condition: 需要至少五张手牌";
     }
-    if (trait(d, "arcana_hanged_cost") && !s.players[owner].debugInfiniteLife &&
-        s.players[owner].life <= (cat.usesAlphaV253() ? 0 : 1))
+    if (trait(d, Capability::ArcanaHangedCost) && !s.players[owner].debugInfiniteLife && s.players[owner].life <= (0))
         return "life_cost: 生命不足以支付一半生命";
-    if (d.id == "arcana-magician") {
+    if (hasCapability(d, Capability::ArcanaMagician)) {
         std::set<std::string> names;
         for (auto id : s.players[owner].deck) names.insert(cat.at(s.cards.at(id).definition).name);
         if (names.size() < 3) return "arcana_magician_condition: 卡组需要三种不同卡名";
     }
-    if (d.id == "arcana-tower") {
+    if (hasCapability(d, Capability::ArcanaTower)) {
         const auto selected = s.cards.find(target);
         if (selected == s.cards.end() || selected->second.owner != owner ||
             selected->second.zone != Zone::Analysis || cat.at(selected->second.definition).type != CardType::Formation)
@@ -551,10 +562,11 @@ std::string activationError(const GameState &s, const CardCatalog &cat, PlayerId
     return {};
 }
 std::vector<CardId> costOptions(const GameState &s, const CardCatalog &cat, PlayerId owner, CardId source) {
-    if (cat.usesCardRules()) {
+    {
         const auto &c = s.cards.at(source);
         const int mode = card_rules::aspectMode(s, cat, owner);
-        if ((c.definition == "qixing-divination" && mode == 1) || (c.definition == "qixing-shift" && mode == 2)) {
+        if ((hasCapability(cat.at(c.definition), Capability::QixingDivination) && mode == 1) ||
+            (hasCapability(cat.at(c.definition), Capability::QixingShift) && mode == 2)) {
             std::vector<CardId> options;
             for (const auto &[id, material] : s.cards)
                 if (id != source && material.owner == owner && material.zone == Zone::Hand) options.push_back(id);
@@ -562,8 +574,8 @@ std::vector<CardId> costOptions(const GameState &s, const CardCatalog &cat, Play
         }
     }
     const auto &d = cat.at(s.cards.at(source).definition);
-    const bool priestess = cat.usesAlphaV252() && trait(d, "arcana_priestess_cost");
-    const bool emperor = cat.usesAlphaV252() && trait(d, "arcana_emperor_cost");
+    const bool priestess = trait(d, Capability::ArcanaPriestessCost);
+    const bool emperor = trait(d, Capability::ArcanaEmperorCost);
     if (!priestess && !emperor) return {0};
     std::vector<CardId> out;
     for (const auto &[id, c] : s.cards) {
@@ -576,10 +588,11 @@ std::vector<CardId> costOptions(const GameState &s, const CardCatalog &cat, Play
     return out;
 }
 bool validCost(const GameState &s, const CardCatalog &cat, PlayerId owner, CardId source, CardId material) {
-    if (cat.usesCardRules()) {
+    {
         const auto &c = s.cards.at(source);
         const int mode = aspectMode(s, cat, owner);
-        const bool discard = (c.definition == "qixing-divination" && mode == 1) || (c.definition == "qixing-shift" && mode == 2);
+        const bool discard = (hasCapability(cat.at(c.definition), Capability::QixingDivination) && mode == 1) ||
+            (hasCapability(cat.at(c.definition), Capability::QixingShift) && mode == 2);
         if (discard) {
             const auto found = s.cards.find(material);
             return material != source && found != s.cards.end() && found->second.owner == owner && found->second.zone == Zone::Hand;
@@ -588,16 +601,16 @@ bool validCost(const GameState &s, const CardCatalog &cat, PlayerId owner, CardI
     const auto options = costOptions(s, cat, owner, source);
     if (std::find(options.begin(), options.end(), material) == options.end()) return false;
     const auto &definition = cat.at(s.cards.at(source).definition);
-    if (trait(definition, "arcana_priestess_cost") || trait(definition, "arcana_emperor_cost")) {
+    if (trait(definition, Capability::ArcanaPriestessCost) || trait(definition, Capability::ArcanaEmperorCost)) {
         return std::any_of(s.players[owner].deck.begin(), s.players[owner].deck.end(), [&](CardId id) {
             const auto &candidate = cat.at(s.cards.at(id).definition);
-            return trait(definition, "arcana_priestess_cost") ? candidate.type == CardType::Seal :
+            return trait(definition, Capability::ArcanaPriestessCost) ? candidate.type == CardType::Seal :
                 isSpell(candidate) && candidate.rank == cat.at(s.cards.at(material).definition).rank + 3;
         });
     }
     return true;
 }
-void eraseCard(GameState &s, const CardCatalog &cat, CardId id) {
+void eraseCard(MutationContext &s, const CardCatalog &cat, CardId id) {
     auto &card = s.cards.at(id);
     std::vector<CardId> children;
     for (const auto &[child, c] : s.cards)
@@ -619,31 +632,32 @@ void eraseCard(GameState &s, const CardCatalog &cat, CardId id) {
     }), s.temporary.end());
     s.events.push_back({"exile", "抹除卡牌", -1, id});
 }
-void payExtraCost(GameState &s, const CardCatalog &cat, PlayerId owner, CardId source, CardId material) {
+void payExtraCost(MutationContext &s, const CardCatalog &cat, PlayerId owner, CardId source, CardId material) {
     const auto &card = s.cards.at(source);
-    if (cat.usesCardRules()) {
-        if (card.definition == "blood-wrist") payLife(s, cat, owner, 4, source);
-        if (card.definition == "blood-offering") payLife(s, cat, owner, 1, source);
+    {
+        if (const auto cost = activationLifeCost(cat.at(card.definition)); cost)
+            payLife(s, cat, owner, cost, source);
         const int mode = aspectMode(s, cat, owner);
-        if (card.definition == "qixing-shift" && mode == 1) payLife(s, cat, owner, 7, source);
-        if (((card.definition == "qixing-divination" && mode == 1) || (card.definition == "qixing-shift" && mode == 2)) && material)
+        if (hasCapability(cat.at(card.definition), Capability::QixingShift) && mode == 1) payLife(s, cat, owner, 7, source);
+        if (((hasCapability(cat.at(card.definition), Capability::QixingDivination) && mode == 1) ||
+             (hasCapability(cat.at(card.definition), Capability::QixingShift) && mode == 2)) && material)
             StateMaintenance::leave(s, material, &cat);
     }
-    if (!cat.usesAlphaV252()) return;
+
     const auto &d = cat.at(s.cards.at(source).definition);
     if (material) {
-        if (trait(d, "arcana_emperor_cost")) eraseCard(s, cat, material);
+        if (trait(d, Capability::ArcanaEmperorCost)) eraseCard(s, cat, material);
         else StateMaintenance::leave(s, material, &cat);
         s.cards.at(source).targets = {material};
     }
-    if (trait(d, "arcana_hanged_cost") && !s.players[owner].debugInfiniteLife) {
+    if (trait(d, Capability::ArcanaHangedCost) && !s.players[owner].debugInfiniteLife) {
         const int amount = (s.players[owner].life + 1) / 2;
         s.players[owner].life -= amount;
         s.events.push_back({"life_cost", "倒吊人：支付一半生命（向上取整）", -1, source, amount});
-        if (cat.usesAlphaV253()) StateMaintenance::check(s, cat);
+        StateMaintenance::check(s, cat);
     }
 }
-void advanceAnalysis(GameState &s, const CardCatalog &cat, CardId id, int amount) {
+void advanceAnalysis(MutationContext &s, const CardCatalog &cat, CardId id, int amount) {
     const auto found = s.cards.find(id);
     if (found == s.cards.end() || amount <= 0) return;
     auto &card = found->second;
@@ -658,36 +672,36 @@ void advanceAnalysis(GameState &s, const CardCatalog &cat, CardId id, int amount
         s.events.push_back({"analysis_ready", "法术解析完成", -1, id});
         for (const auto &[formationId, formation] : s.cards)
             if (formation.owner == card.owner && formation.zone == Zone::Analysis &&
-                trait(cat.at(formation.definition), "clear_load_on_analysis")) {
+                trait(cat.at(formation.definition), Capability::ClearLoadOnAnalysis)) {
                 auto trigger = detail::snapshot(formation, cat.at(formation.definition));
                 trigger.id = s.nextTrigger++; trigger.batch = s.nextBatch++;
                 trigger.effects = {{EffectKind::ClearAnyLoad, 1}};
                 s.queue.append(std::move(trigger));
             }
     }
-    if (cat.usesAlphaV252() && definition.id != "arcana-chariot" &&
-        (!cat.usesCardRules() || definition.type == CardType::Analytic)) {
+    if (!hasCapability(definition, Capability::ArcanaChariot) && definition.type == CardType::Analytic) {
         std::vector<CardId> chariots;
         for (const auto &[other, candidate] : s.cards)
-            if (candidate.owner == card.owner && candidate.definition == "arcana-chariot") chariots.push_back(other);
+            if (candidate.owner == card.owner && hasCapability(cat.at(candidate.definition), Capability::ArcanaChariot)) chariots.push_back(other);
         for (auto chariot : chariots) advanceAnalysis(s, cat, chariot, 1);
     }
 }
-void onAshEntered(GameState &s, const CardCatalog &cat, PlayerId owner) {
-    if (!cat.usesAlphaV252()) return;
+void onAshEntered(MutationContext &s, const CardCatalog &cat, PlayerId owner) {
+
     std::vector<CardId> deaths;
     for (const auto &[id, card] : s.cards)
-        if (card.definition == "arcana-death" && (!cat.usesCardRules() || card.owner == owner)) deaths.push_back(id);
+        if (hasCapability(cat.at(card.definition), Capability::ArcanaDeath) && card.owner == owner) deaths.push_back(id);
     for (auto id : deaths) advanceAnalysis(s, cat, id, 1);
 }
-void onFireDamage(GameState &s, const CardCatalog &cat) {
-    if (!cat.usesAlphaV252()) return;
+void onFireDamage(MutationContext &s, const CardCatalog &cat) {
+
     std::vector<CardId> devils;
-    for (const auto &[id, card] : s.cards) if (card.definition == "arcana-devil") devils.push_back(id);
+    for (const auto &[id, card] : s.cards)
+        if (hasCapability(cat.at(card.definition), Capability::ArcanaDevil)) devils.push_back(id);
     for (auto id : devils) advanceAnalysis(s, cat, id, 1);
 }
-void onManaSpent(GameState &s, const CardCatalog &cat, PlayerId owner, int amount) {
-    if (amount > 0 && hasActiveTrait(s, cat, "arcana_temperance", owner)) {
+void onManaSpent(MutationContext &s, const CardCatalog &cat, PlayerId owner, int amount) {
+    if (amount > 0 && hasActiveTrait(s, cat, Capability::ArcanaTemperance, owner)) {
         s.players[owner].mana = std::min(maximumMana, s.players[owner].mana + 1);
         s.events.push_back({"mana_refund", "节制：消耗魔素后获得1点魔素", -1, 0, 1});
     }
@@ -699,12 +713,12 @@ namespace {
 bool arcanaKind(EffectKind kind) {
     return kind >= EffectKind::ClearAllAmbush && kind <= EffectKind::ArcanaWorld;
 }
-void shuffleArcanaDeck(GameState &s, PlayerId owner) {
+void shuffleArcanaDeck(MutationContext &s, PlayerId owner) {
     auto &deck = s.players[owner].deck;
     for (std::size_t n = deck.size(); n > 1; --n)
         std::swap(deck[n - 1], deck[detail::bounded(s, static_cast<std::uint32_t>(n))]);
 }
-void deckToHand(GameState &s, PlayerId owner, CardId id) {
+void deckToHand(MutationContext &s, PlayerId owner, CardId id) {
     auto &deck = s.players[owner].deck;
     deck.erase(std::remove(deck.begin(), deck.end(), id), deck.end());
     auto &card = s.cards.at(id);
@@ -716,23 +730,23 @@ void deckToHand(GameState &s, PlayerId owner, CardId id) {
 bool immune(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &d = cat.at(s.cards.at(id).definition);
     return card_rules::effectImmune(s, cat, id) ||
-        std::find(d.traits.begin(), d.traits.end(), "effect_immune") != d.traits.end() ||
-        (cat.usesCardRules() && std::find(d.traits.begin(), d.traits.end(), "great_storm") != d.traits.end());
+        hasCapability(d, Capability::EffectImmune) ||
+        hasCapability(d, Capability::GreatStorm);
 }
 }
 bool GameEngine::resolveSpellEffect() {
     auto &s = state_;
-    if (!catalog_.usesAlphaV252() || !s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
+    if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
     const auto effect = f.item.effects[f.cursor];
     if (!arcanaKind(effect.kind)) return false;
     const auto owner = f.item.owner;
-    const auto finish = [&] { ++f.cursor; f.clearRemaining = -1; f.resolvedCount = 0; };
+    const auto finish = [&] { ++f.cursor; f.resume<RepeatedChoiceContinuation>().remaining = -1; f.resume<RepeatedChoiceContinuation>().completed = 0; };
     if (effect.kind == EffectKind::ClearAllAmbush) {
         std::vector<CardId> cards;
         for (const auto &[id, card] : s.cards)
-            if (card.zone == Zone::Analysis && card.faceDown && !immune(s, catalog_, id)) cards.push_back(id);
-        for (auto id : cards) StateMaintenance::leave(s, id, &catalog_);
+            if (card.zone == Zone::Analysis && card.faceDown && !immune(s, catalog(), id)) cards.push_back(id);
+        for (auto id : cards) StateMaintenance::leave(s, id, &catalog());
         finish(); return true;
     }
     if (effect.kind == EffectKind::ArcanaFool) {
@@ -741,7 +755,7 @@ bool GameEngine::resolveSpellEffect() {
             card.zone = Zone::Deck; deck.push_back(id);
         }
         shuffleArcanaDeck(s, owner);
-        for (int i = 0; i < effect.amount && s.result == -1; ++i) ResourceRules::drawOne(s, catalog_, owner);
+        for (int i = 0; i < effect.amount && s.result == -1; ++i) ResourceRules::drawOne(s, catalog(), owner);
         finish(); return true;
     }
     if (effect.kind == EffectKind::PreventNextDamage) {
@@ -755,7 +769,7 @@ bool GameEngine::resolveSpellEffect() {
     }
     if (effect.kind == EffectKind::ArcanaHermit) {
         for (auto &[id, card] : s.cards) if (card.zone == Zone::Analysis &&
-            card_rules::isSpell(catalog_.at(card.definition)) && !immune(s, catalog_, id)) {
+            card_rules::isSpell(catalog().at(card.definition)) && !immune(s, catalog(), id)) {
             card.faceDown = card.wasAmbushed = true;
             card.publiclyRevealed = false;
             card.ambushedTurn = s.globalTurn;
@@ -769,14 +783,14 @@ bool GameEngine::resolveSpellEffect() {
         for (PlayerId p : {0, 1}) {
             std::vector<CardId> ashes;
             for (auto &[id, card] : s.cards) if (card.owner == p && card.zone == Zone::Ash) {
-                if (catalog_.at(card.definition).type == CardType::Formation) {
-                    if (!catalog_.usesAlphaV253()) card.zone = Zone::SideDeck;
+                if (catalog().at(card.definition).type == CardType::Formation) {
+
                 }
                 else ashes.push_back(id);
             }
             for (auto id : s.players[p].deck) {
                 s.cards.at(id).zone = Zone::Ash;
-                card_rules::onAshEntered(s, catalog_, p);
+                card_rules::onAshEntered(s, catalog(), p);
             }
             s.players[p].deck = ashes;
             for (auto id : ashes) { s.cards.at(id).zone = Zone::Deck; s.cards.at(id).faceDown = false; }
@@ -785,22 +799,21 @@ bool GameEngine::resolveSpellEffect() {
         s.events.push_back({"deck_ash_exchange", "倒吊人：双方交换卡组与灰烬区"});
         finish(); return true;
     }
-    if (effect.kind == EffectKind::ArcanaMagician && catalog_.usesAlphaV253() && f.resolvedCount >= 3) {
+    if (effect.kind == EffectKind::ArcanaMagician && f.resume<RepeatedChoiceContinuation>().completed >= 3) {
         decision(1 - owner, DecisionKind::EffectChoice, f.item.targetCards, false);
         return true;
     }
-    if (effect.kind == EffectKind::ArcanaTower && !f.resolvedCount) {
+    if (effect.kind == EffectKind::ArcanaTower && !f.resume<RepeatedChoiceContinuation>().completed) {
         const auto target = s.cards.find(f.item.targetCard);
         if (target == s.cards.end() || controllerOf(target->second) != owner || target->second.zone != Zone::Analysis ||
-            catalog_.at(target->second.definition).type != CardType::Formation || immune(s, catalog_, target->first)) {
+            catalog().at(target->second.definition).type != CardType::Formation || immune(s, catalog(), target->first)) {
             finish(); return true;
         }
         // Resolve destruction through the shared effect path, including immunity
         // and the Storm Heart owner's optional replacement decision.
         f.item.targetCards = {target->first};
-        f.resolvedCount = 1;
-        f.item.effects.insert(f.item.effects.begin() + static_cast<std::ptrdiff_t>(f.cursor),
-                             {EffectKind::Destroy, 0});
+        f.resume<RepeatedChoiceContinuation>().completed = 1;
+        f.insertBeforeCurrent({EffectKind::Destroy, 0});
         return true;
     }
     if (effect.kind == EffectKind::ArcanaTower &&
@@ -811,7 +824,9 @@ bool GameEngine::resolveSpellEffect() {
     bool optional = false;
     std::vector<CardId> options;
     if (effect.kind == EffectKind::ArcanaDeath) {
-        decision(owner, DecisionKind::DamageChoice, {1, 2}); return true;
+        typedDecision(owner, DecisionKind::DamageChoice,
+                      {ChoiceValue::mode(ChoiceMode::ArcanaDeathNecrotic),
+                       ChoiceValue::mode(ChoiceMode::ArcanaDeathRadiant)}); return true;
     }
     if (effect.kind == EffectKind::ArcanaDevil) {
         auto link = std::find_if(s.chain->links.begin(), s.chain->links.end(), [&](const ChainLink &l) {
@@ -825,88 +840,90 @@ bool GameEngine::resolveSpellEffect() {
     } else if (effect.kind == EffectKind::ArcanaJustice) {
         int counts[2]{};
         for (const auto &[id, c] : s.cards)
-            if (c.zone == Zone::Analysis && card_rules::isSpell(catalog_.at(c.definition))) ++counts[c.owner];
+            if (c.zone == Zone::Analysis && card_rules::isSpell(catalog().at(c.definition))) ++counts[c.owner];
         if (counts[0] == counts[1]) { finish(); return true; }
         chooser = counts[0] > counts[1] ? 0 : 1;
         for (const auto &[id, c] : s.cards)
-            if (controllerOf(c) == chooser && c.zone == Zone::Analysis && card_rules::isSpell(catalog_.at(c.definition))) options.push_back(id);
+            if (controllerOf(c) == chooser && c.zone == Zone::Analysis && card_rules::isSpell(catalog().at(c.definition))) options.push_back(id);
     } else if (effect.kind == EffectKind::ArcanaLovers) {
         chooser = 1 - owner;
         for (const auto &[id, c] : s.cards)
-            if (controllerOf(c) == chooser && c.zone == Zone::Analysis && card_rules::isSpell(catalog_.at(c.definition))) options.push_back(id);
+            if (controllerOf(c) == chooser && c.zone == Zone::Analysis && card_rules::isSpell(catalog().at(c.definition))) options.push_back(id);
     } else if (effect.kind == EffectKind::ArcanaTower) {
         optional = true;
         for (const auto &[id, c] : s.cards)
-            if (controllerOf(c) != owner && c.zone == Zone::Analysis && catalog_.at(c.definition).type == CardType::Formation &&
-                !immune(s, catalog_, id) && !card_rules::protectedFormation(s, id) &&
-                !catalog_.at(c.definition).opponentDestroyProtected &&
-                std::find(catalog_.at(c.definition).traits.begin(), catalog_.at(c.definition).traits.end(),
-                          "effect_indestructible") == catalog_.at(c.definition).traits.end()) options.push_back(id);
+            if (controllerOf(c) != owner && c.zone == Zone::Analysis && catalog().at(c.definition).type == CardType::Formation &&
+                !immune(s, catalog(), id) && !card_rules::protectedFormation(s, catalog(), id) &&
+                !catalog().at(c.definition).opponentDestroyProtected &&
+                !hasCapability(catalog().at(c.definition), Capability::EffectIndestructible)) options.push_back(id);
     } else {
         if (effect.kind == EffectKind::ArcanaWorld) {
             optional = true;
-            if (f.clearRemaining < 0) f.clearRemaining = 0;
-            if (f.clearRemaining >= 4) { shuffleArcanaDeck(s, owner); finish(); return true; }
+            if (!f.resume<CatalogWalkContinuation>().next) f.resume<CatalogWalkContinuation>().next = 0;
+            if (*f.resume<CatalogWalkContinuation>().next >= 4) { shuffleArcanaDeck(s, owner); finish(); return true; }
         }
         std::set<std::string> selectedNames;
         if (effect.kind == EffectKind::ArcanaMagician)
-            for (auto id : f.item.targetCards) selectedNames.insert(catalog_.at(s.cards.at(id).definition).name);
+            for (auto id : f.item.targetCards) selectedNames.insert(catalog().at(s.cards.at(id).definition).name);
         for (auto id : s.players[owner].deck) {
-            const auto &d = catalog_.at(s.cards.at(id).definition);
+            const auto &d = catalog().at(s.cards.at(id).definition);
             bool eligible = effect.kind == EffectKind::ArcanaPriestess ? d.type == CardType::Seal :
                 effect.kind == EffectKind::ArcanaEmperor ? !f.item.targetCards.empty() && card_rules::isSpell(d) &&
-                    d.rank == catalog_.at(s.cards.at(f.item.targetCards.front()).definition).rank + 3 :
+                    d.rank == catalog().at(s.cards.at(f.item.targetCards.front()).definition).rank + 3 :
                 effect.kind == EffectKind::ArcanaMagician ? !selectedNames.count(d.name) :
                 effect.kind == EffectKind::ArcanaWorld ?
-                    (f.clearRemaining == 0 ? d.type == CardType::Analytic :
-                     f.clearRemaining == 1 ? d.type == CardType::Word && d.id != "arcana-world" :
-                     f.clearRemaining == 2 ? d.type == CardType::Talisman : d.type == CardType::Seal) : false;
+                    (*f.resume<CatalogWalkContinuation>().next == 0 ? d.type == CardType::Analytic :
+                     *f.resume<CatalogWalkContinuation>().next == 1 ? d.type == CardType::Word && !hasCapability(d, Capability::ArcanaWorld) :
+                     *f.resume<CatalogWalkContinuation>().next == 2 ? d.type == CardType::Talisman : d.type == CardType::Seal) : false;
             if (eligible) options.push_back(id);
         }
     }
     if (options.empty()) {
-        if (effect.kind == EffectKind::ArcanaWorld) { ++f.clearRemaining; return true; }
+        if (effect.kind == EffectKind::ArcanaWorld) { ++*f.resume<CatalogWalkContinuation>().next; return true; }
         if (effect.kind == EffectKind::ArcanaMagician && !f.item.targetCards.empty()) {
             const auto chosen = detail::bounded(s, static_cast<std::uint32_t>(f.item.targetCards.size()));
             const auto cards = f.item.targetCards;
             for (std::size_t i = 0; i < cards.size(); ++i)
-                if (i == chosen) deckToHand(s, owner, cards[i]); else card_rules::eraseCard(s, catalog_, cards[i]);
+                if (i == chosen) deckToHand(s, owner, cards[i]); else card_rules::eraseCard(s, catalog(), cards[i]);
         }
         finish(); return true;
     }
     decision(chooser, DecisionKind::EffectChoice, std::move(options), optional);
     return true;
 }
-bool GameEngine::chooseSpellEffect(PlayerId actor, CardId selected) {
+bool GameEngine::chooseSpellEffect(PlayerId actor, ChoiceValue choice) {
+    const auto selected = static_cast<CardId>(choice.value);
     auto &s = state_;
-    if (!catalog_.usesAlphaV252() || !s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
+    if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
     if (!arcanaKind(e.kind)) return false;
     const auto owner = f.item.owner;
-    const auto finish = [&] { ++f.cursor; f.clearRemaining = -1; f.resolvedCount = 0; };
+    const auto finish = [&] { ++f.cursor; f.resume<RepeatedChoiceContinuation>().remaining = -1; f.resume<RepeatedChoiceContinuation>().completed = 0; };
     if (e.kind == EffectKind::ArcanaDeath) {
-        auto damage = Effect{EffectKind::Damage, e.amount, selected == 1 ? DamageType::Necrotic : DamageType::Radiant};
-        EffectResolver::apply(s, catalog_, f.item, damage);
+        const auto damageType = choice == ChoiceValue::mode(ChoiceMode::ArcanaDeathNecrotic)
+            ? DamageType::Necrotic : DamageType::Radiant;
+        auto damage = Effect{EffectKind::Damage, e.amount, damageType};
+        EffectResolver::apply(s, catalog(), f.item, damage);
         if (s.effect) finish();
         return true;
     }
     if (e.kind == EffectKind::ArcanaMagician) {
-        if (catalog_.usesAlphaV253() && f.resolvedCount >= 3) {
+        if (f.resume<RepeatedChoiceContinuation>().completed >= 3) {
             const auto cards = f.item.targetCards;
             for (auto id : cards)
-                if (id == selected) deckToHand(s, owner, id); else card_rules::eraseCard(s, catalog_, id);
+                if (id == selected) deckToHand(s, owner, id); else card_rules::eraseCard(s, catalog(), id);
             shuffleArcanaDeck(s, owner); finish(); return true;
         }
         f.item.targetCards.push_back(selected);
         s.cards.at(selected).publiclyRevealed = true;
         s.events.push_back({"reveal", "魔术师：展示候选卡牌", -1, selected});
-        if (++f.resolvedCount < 3) return true;
-        if (catalog_.usesAlphaV253()) return true;
+        if (++f.resume<RepeatedChoiceContinuation>().completed < 3) return true;
+        return true;
         const auto chosen = detail::bounded(s, static_cast<std::uint32_t>(f.item.targetCards.size()));
         const auto cards = f.item.targetCards;
         for (std::size_t i = 0; i < cards.size(); ++i)
-            if (i == chosen) deckToHand(s, owner, cards[i]); else card_rules::eraseCard(s, catalog_, cards[i]);
+            if (i == chosen) deckToHand(s, owner, cards[i]); else card_rules::eraseCard(s, catalog(), cards[i]);
         shuffleArcanaDeck(s, owner); finish(); return true;
     }
     if (e.kind == EffectKind::ArcanaPriestess || e.kind == EffectKind::ArcanaEmperor) {
@@ -914,20 +931,19 @@ bool GameEngine::chooseSpellEffect(PlayerId actor, CardId selected) {
     }
     if (e.kind == EffectKind::ArcanaWorld) {
         if (selected) deckToHand(s, owner, selected);
-        ++f.clearRemaining; return true;
+        ++*f.resume<CatalogWalkContinuation>().next; return true;
     }
     if (e.kind == EffectKind::ArcanaTower) {
         finish();
         if (selected) {
             f.item.targetCard = selected;
             f.item.targetCards = {selected};
-            f.item.effects.insert(f.item.effects.begin() + static_cast<std::ptrdiff_t>(f.cursor),
-                                 {EffectKind::Destroy, 0});
+            f.insertBeforeCurrent({EffectKind::Destroy, 0});
         }
         return true;
     }
     if (e.kind == EffectKind::ArcanaJustice || e.kind == EffectKind::ArcanaLovers) {
-        if (selected) StateMaintenance::leave(s, selected, &catalog_);
+        if (selected) StateMaintenance::leave(s, selected, &catalog());
         if (e.kind != EffectKind::ArcanaJustice) finish();
         return true;
     }
@@ -940,9 +956,9 @@ bool GameEngine::chooseSpellEffect(PlayerId actor, CardId selected) {
             if (link->item.targetCards.empty()) link->item.targetCards = {selected};
             else link->item.targetCards.front() = selected;
             if (link->item.target == TargetKind::Player)
-                link->item.targetPlayer = static_cast<PlayerId>(selected - playerTarget(0));
+                link->item.targetPlayer = static_cast<PlayerId>(choice.value);
             s.events.push_back({"retarget", "恶魔：改写对方法术目标", -1, selected});
-            EffectResolver::apply(s, catalog_, f.item, {EffectKind::AddIndependent, 6, DamageType::Force, EffectRecipient::Owner});
+            EffectResolver::apply(s, catalog(), f.item, {EffectKind::AddIndependent, 6, DamageType::Force, EffectRecipient::Owner});
         }
         if (s.effect) finish();
         return true;
@@ -961,14 +977,16 @@ bool GameEngine::chooseSpellEffect(PlayerId actor, CardId selected) {
 #include <set>
 
 namespace wizard::card_rules {
-bool hasFormation(const GameState &s, PlayerId p, const std::string &definition) {
+bool hasFormation(const GameState &s, const CardCatalog &cat, PlayerId p, Capability capability) {
     return std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
-        return entry.second.owner == p && entry.second.zone == Zone::Analysis &&
-               entry.second.definition == definition;
+        const auto &card = entry.second;
+        return card.owner == p && card.zone == Zone::Analysis &&
+               cat.at(card.definition).type == CardType::Formation &&
+               hasCapability(cat.at(card.definition), capability);
     });
 }
 bool isFireSpell(const CardDefinition &d) {
-    if (std::find(d.traits.begin(), d.traits.end(), "fire_damage_spell") != d.traits.end())
+    if (hasCapability(d, Capability::FireDamageSpell))
         return isSpell(d);
     const auto fire = [](const Effect &e) {
         return e.kind == EffectKind::Damage && e.damageType == DamageType::Fire;
@@ -979,29 +997,31 @@ bool isFireSpell(const CardDefinition &d) {
         }));
 }
 bool activationAllowed(const GameState &s, const CardCatalog &cat, PlayerId p, const CardDefinition &d) {
-    if (cat.usesAlphaV252()) {
-        if (std::find(d.traits.begin(), d.traits.end(), "sique_requires_campfire") != d.traits.end() &&
-            !hasFormation(s, p, "sique-campfire")) return false;
-        if (std::find(d.traits.begin(), d.traits.end(), "sique_requires_cauldron") != d.traits.end() &&
-            !hasFormation(s, p, "sique-cauldron")) return false;
-        return !hasFormation(s, p, "sique-cauldron") || member(d, "味契");
-    }
-    return !hasFormation(s, p, "sique-cauldron") || member(d, "味契") || isFireSpell(d);
+    if (hasCapability(d, Capability::SiqueRequiresCampfire) &&
+        !hasFormation(s, cat, p, Capability::SiqueCampfire)) return false;
+    if (hasCapability(d, Capability::SiqueRequiresCauldron) &&
+        !hasFormation(s, cat, p, Capability::SiqueCauldron)) return false;
+    // The cauldron restricts activations to the Sique series, while still
+    // allowing fire-damage spells as its explicit exception.
+    return !hasFormation(s, cat, p, Capability::SiqueCauldron) || member(d, "味契") || isFireSpell(d);
 }
-bool protectedFormation(const GameState &s, CardId id) {
+bool protectedFormation(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto card = s.cards.find(id);
-    return card != s.cards.end() && card->second.definition == "sique-campfire" &&
-           hasFormation(s, card->second.owner, "sique-cauldron");
+    return card != s.cards.end() && hasCapability(cat.at(card->second.definition), Capability::SiqueCampfire) &&
+           hasFormation(s, cat, card->second.owner, Capability::SiqueCauldron);
 }
-int attachedCount(const GameState &s, PlayerId p, const std::string &definition) {
+int attachedCount(const GameState &s, const CardCatalog &cat, PlayerId p, Capability capability) {
     return static_cast<int>(std::count_if(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
-        return entry.second.owner == p && entry.second.zone == Zone::Attached &&
-               entry.second.definition == definition;
+        const auto &card = entry.second;
+        return card.owner == p && card.zone == Zone::Attached &&
+               hasCapability(cat.at(card.definition), capability);
     }));
 }
 int detachCost(const CardDefinition &d) {
     for (int count = 1; count <= 3; ++count)
-        if (std::find(d.traits.begin(), d.traits.end(), "sique_detach_" + std::to_string(count)) != d.traits.end())
+        if ((count == 1 && hasCapability(d, Capability::SiqueDetach1)) ||
+            (count == 2 && hasCapability(d, Capability::SiqueDetach2)) ||
+            (count == 3 && hasCapability(d, Capability::SiqueDetach3)))
             return count;
     return 0;
 }
@@ -1035,29 +1055,29 @@ std::vector<std::vector<CardId>> detachOptions(const GameState &s, const CardCat
     return out;
 }
 bool canPay(const GameState &s, PlayerId p, int amount, const CardCatalog *cat) {
-    if (cat && cat->usesCardRules()) return card_rules::canPay(s, *cat, p, amount);
+    if (cat) return card_rules::canPay(s, *cat, p, amount);
     if (amount < 0) return false;
     if (s.players[p].debugInfiniteMana) return true;
     if (s.players[p].siqueLifePaymentTurn && s.players[p].siqueLifePaymentTurn == s.globalTurn) {
         // Pre-2.5.3 recordings retain their original unrestricted substitution.
-        return !cat || !cat->usesAlphaV253() || s.players[1 - p].debugInfiniteLife ||
+        return !cat || s.players[1 - p].debugInfiniteLife ||
             s.players[1 - p].life > amount;
     }
     return ResourceRules::canPayMana(s, p, amount);
 }
-void pay(GameState &s, PlayerId p, int amount, const CardCatalog *cat) {
-    if (cat && cat->usesCardRules()) { card_rules::pay(s, *cat, p, amount); return; }
+void pay(MutationContext &s, PlayerId p, int amount, const CardCatalog *cat) {
+    if (cat) { card_rules::pay(s, *cat, p, amount); return; }
     if (s.players[p].debugInfiniteMana) return;
     if (s.players[p].siqueLifePaymentTurn && s.players[p].siqueLifePaymentTurn == s.globalTurn) {
         if (s.players[1 - p].debugInfiniteLife) return;
-        if (cat && cat->usesAlphaV253() && !canPay(s, p, amount, cat)) return;
+        if (cat && !canPay(s, p, amount, cat)) return;
         s.players[1 - p].life -= amount;
         s.events.push_back({"life_payment", "神恩炖肉：宣告时以对方普通生命按1:1支付魔素费用", -1, 0, amount});
     } else {
         ResourceRules::payMana(s, p, amount);
         if (amount > 0 && std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
             const auto &card = entry.second;
-            return card.owner == p && card.definition == "arcana-temperance" && !card.faceDown &&
+            return cat && card.owner == p && hasCapability(cat->at(card.definition), Capability::ArcanaTemperance) && !card.faceDown &&
                 (card.zone == Zone::Analysis || card.zone == Zone::Casting) && card.spell == SpellState::Active;
         })) {
             s.players[p].mana = std::min(maximumMana, s.players[p].mana + 1);
@@ -1065,7 +1085,7 @@ void pay(GameState &s, PlayerId p, int amount, const CardCatalog *cat) {
         }
     }
 }
-void attached(GameState &s, const CardCatalog &cat, CardId id) {
+void attached(MutationContext &s, const CardCatalog &cat, CardId id) {
     auto &card = s.cards.at(id);
     if (card.siquePairTurn == s.globalTurn && card.siquePartner) {
         const auto partner = s.cards.find(card.siquePartner);
@@ -1109,24 +1129,24 @@ bool siqueChoice(EffectKind kind) {
         kind == EffectKind::SiqueShuffleHands || kind == EffectKind::SiqueRoastRecover ||
         kind == EffectKind::SiqueBlowfire || kind == EffectKind::SiqueBackfire;
 }
-void shuffleSiqueDeck(GameState &s, PlayerId owner) {
+void shuffleSiqueDeck(MutationContext &s, PlayerId owner) {
     auto &deck = s.players[owner].deck;
     for (std::size_t size = deck.size(); size > 1; --size)
         std::swap(deck[size - 1], deck[detail::bounded(s, static_cast<std::uint32_t>(size))]);
 }
 void finishSiqueEffect(EffectFrame &frame) {
-    ++frame.cursor; frame.clearRemaining = -1; frame.resolvedCount = 0;
+    ++frame.cursor; frame.resume<RepeatedChoiceContinuation>().remaining = -1; frame.resume<RepeatedChoiceContinuation>().completed = 0;
     frame.item.targetCards.clear();
 }
 void finishRecycleEffect(EffectFrame &frame, bool preserveCount) {
-    const auto count = frame.resolvedCount;
+    const auto count = frame.resume<RepeatedChoiceContinuation>().completed;
     finishSiqueEffect(frame);
-    if (preserveCount) frame.resolvedCount = count;
+    if (preserveCount) frame.resume<RepeatedChoiceContinuation>().completed = count;
 }
 } // namespace
 bool GameEngine::resolveRecipeEffect() {
     auto &s = state_;
-    if (!catalog_.usesAlphaV2() || !s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
+    if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
     const auto owner = f.item.owner;
@@ -1144,27 +1164,27 @@ bool GameEngine::resolveRecipeEffect() {
         std::vector<CardId> seals;
         for (const auto &[id, card] : s.cards)
             if (card.zone == Zone::Attached && card.host == f.item.source) seals.push_back(id);
-        for (auto id : seals) StateMaintenance::leave(s, id, &catalog_);
+        for (auto id : seals) StateMaintenance::leave(s, id, &catalog());
         finishSiqueEffect(f); return true;
     }
     if (!siqueChoice(e.kind)) return false;
     if ((e.kind == EffectKind::SiqueBackfire || e.kind == EffectKind::SiqueRecycle) &&
-        f.resolvedCount >= maximumSelection) {
+        f.resume<RepeatedChoiceContinuation>().completed >= maximumSelection) {
         if (e.kind == EffectKind::SiqueRecycle) shuffleSiqueDeck(s, owner);
-        const int count = f.resolvedCount;
+        const int count = f.resume<RepeatedChoiceContinuation>().completed;
         const auto trigger = f.item;
-        finishRecycleEffect(f, catalog_.usesCardRules() && e.kind == EffectKind::SiqueRecycle);
+        finishRecycleEffect(f, e.kind == EffectKind::SiqueRecycle);
         if (e.kind == EffectKind::SiqueBackfire) {
             shuffleSiqueDeck(s, 1 - owner);
-            EffectResolver::apply(s, catalog_, trigger,
+            EffectResolver::apply(s, catalog(), trigger,
                 {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
-            if (s.result == -1) EffectResolver::apply(s, catalog_, trigger,
+            if (s.result == -1) EffectResolver::apply(s, catalog(), trigger,
                 {EffectKind::Heal, count * 2, DamageType::Force, EffectRecipient::Owner});
         }
         return true;
     }
     if (e.kind == EffectKind::SiqueShuffleHands) {
-        if (f.clearRemaining < 0) {
+        if (!f.resume<PlayerWalkContinuation>().next) {
             f.item.targetCards = {0, 0};
             for (auto &[id, card] : s.cards) if (card.zone == Zone::Hand) {
                 ++f.item.targetCards[card.owner]; card.zone = Zone::Deck;
@@ -1172,34 +1192,29 @@ bool GameEngine::resolveRecipeEffect() {
                 card.siquePartner = 0; card.siquePairTurn = 0;
             }
             shuffleSiqueDeck(s, 0); shuffleSiqueDeck(s, 1);
-            f.clearRemaining = 0;
+            f.resume<PlayerWalkContinuation>().next = 0;
         }
-        if (f.clearRemaining >= 2) { finishSiqueEffect(f); return true; }
-        const auto player = f.clearRemaining;
-        if (!f.item.targetCards[player]) { ++f.clearRemaining; return true; }
-        decision(player, DecisionKind::EffectChoice, {0xffffffe1u}, true);
+        if (*f.resume<PlayerWalkContinuation>().next >= 2) { finishSiqueEffect(f); return true; }
+        const auto player = *f.resume<PlayerWalkContinuation>().next;
+        if (!f.item.targetCards[player]) { ++*f.resume<PlayerWalkContinuation>().next; return true; }
+        typedDecision(player, DecisionKind::EffectChoice, {ChoiceValue::mode(ChoiceMode::Draw)}, true);
         return true;
     }
     if (e.kind == EffectKind::SiqueOptionalDraw) {
-        if (catalog_.usesCardRules() && f.cursor > 0 &&
-            f.item.effects[f.cursor - 1].kind == EffectKind::SiqueRecycle && !f.resolvedCount) {
+        if (f.cursor > 0 && f.item.effects[f.cursor - 1].kind == EffectKind::SiqueRecycle && !f.resume<RepeatedChoiceContinuation>().completed) {
             finishSiqueEffect(f); return true;
         }
-        decision(owner, DecisionKind::EffectChoice, {0xffffffe1u}, true); return true;
+        typedDecision(owner, DecisionKind::EffectChoice, {ChoiceValue::mode(ChoiceMode::Draw)}, true); return true;
     }
     std::vector<CardId> choices;
-    if (e.kind == EffectKind::SiqueAttachFromDeck && f.clearRemaining >= 0) {
+    if (e.kind == EffectKind::SiqueAttachFromDeck && f.resume<EntityChoiceContinuation>().entity) {
         for (const auto &[id, card] : s.cards) {
-            const auto &d = catalog_.at(card.definition);
-            const bool occupied = std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
-                return entry.second.zone == Zone::Attached && entry.second.host == id;
-            });
+            const auto &d = catalog().at(card.definition);
             if (card.owner == owner && card.zone == Zone::Analysis && d.type == CardType::Formation &&
-                card_rules::member(d, "味契") && (!catalog_.usesAlphaV253() || d.id == "sique-cauldron") &&
-                (catalog_.usesAlphaV252() || !occupied || d.id == "sique-cauldron")) choices.push_back(id);
+                card_rules::member(d, "味契") && hasCapability(d, Capability::SiqueCauldron)) choices.push_back(id);
         }
     } else for (const auto &[id, card] : s.cards) {
-        const auto &d = catalog_.at(card.definition);
+        const auto &d = catalog().at(card.definition);
         const bool backfire = e.kind == EffectKind::SiqueBackfire;
         if (backfire ? card.owner == owner : card.owner != owner) continue;
         if (!backfire && e.kind != EffectKind::SiqueBlowfire && !card_rules::member(d, "味契")) continue;
@@ -1220,32 +1235,33 @@ bool GameEngine::resolveRecipeEffect() {
         }
         if (eligible) choices.push_back(id);
     }
-    if (e.kind == EffectKind::SiqueSearchPair && f.resolvedCount >= 2) choices.clear();
+    if (e.kind == EffectKind::SiqueSearchPair && f.resume<RepeatedChoiceContinuation>().completed >= 2) choices.clear();
     if ((e.kind == EffectKind::SiqueRecycle || e.kind == EffectKind::SiqueBackfire) &&
-        f.resolvedCount >= maximumSelection) choices.clear();
+        f.resume<RepeatedChoiceContinuation>().completed >= maximumSelection) choices.clear();
     if (choices.empty()) {
         if (e.kind == EffectKind::SiqueBackfire) {
             shuffleSiqueDeck(s, 1 - owner);
-            const int count = f.resolvedCount;
+            const int count = f.resume<RepeatedChoiceContinuation>().completed;
             auto trigger = f.item;
             finishSiqueEffect(f);
-            EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
-            if (s.result == -1) EffectResolver::apply(s, catalog_, trigger,
+            EffectResolver::apply(s, catalog(), trigger, {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
+            if (s.result == -1) EffectResolver::apply(s, catalog(), trigger,
                 {EffectKind::Heal, count * 2, DamageType::Force, EffectRecipient::Owner});
             return true;
         }
         if (e.kind == EffectKind::SiqueSearchPair || e.kind == EffectKind::SiqueAttachFromDeck ||
             e.kind == EffectKind::SiqueMillSeal || e.kind == EffectKind::SiqueMillSpell ||
             e.kind == EffectKind::SiqueRecycle) shuffleSiqueDeck(s, owner);
-        finishRecycleEffect(f, catalog_.usesCardRules() && e.kind == EffectKind::SiqueRecycle); return true;
+        finishRecycleEffect(f, e.kind == EffectKind::SiqueRecycle); return true;
     }
     const bool mayStop = (e.kind == EffectKind::SiqueRecycle || e.kind == EffectKind::SiqueBackfire) &&
-        (!catalog_.usesAlphaV253() || f.resolvedCount > 0);
+        (f.resume<RepeatedChoiceContinuation>().completed > 0);
     decision(owner, DecisionKind::EffectChoice, std::move(choices), mayStop ||
         e.kind == EffectKind::SiqueRoastRecover || e.kind == EffectKind::SiqueBlowfire);
     return true;
 }
-bool GameEngine::chooseRecipeEffect(PlayerId actor, CardId selected) {
+bool GameEngine::chooseRecipeEffect(PlayerId actor, ChoiceValue choice) {
+    const auto selected = static_cast<CardId>(choice.value);
     auto &s = state_;
     if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
@@ -1253,73 +1269,68 @@ bool GameEngine::chooseRecipeEffect(PlayerId actor, CardId selected) {
     if (!siqueChoice(kind)) return false;
     if (kind == EffectKind::SiqueBackfire) {
         if (!selected) {
-            const int count = f.resolvedCount;
+            const int count = f.resume<RepeatedChoiceContinuation>().completed;
             const auto trigger = f.item;
             shuffleSiqueDeck(s, 1 - actor); finishSiqueEffect(f);
-            EffectResolver::apply(s, catalog_, trigger, {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
-            if (s.result == -1) EffectResolver::apply(s, catalog_, trigger,
+            EffectResolver::apply(s, catalog(), trigger, {EffectKind::Damage, count, DamageType::Fire, EffectRecipient::Opponent});
+            if (s.result == -1) EffectResolver::apply(s, catalog(), trigger,
                 {EffectKind::Heal, count * 2, DamageType::Force, EffectRecipient::Owner});
         } else {
             auto &card = s.cards.at(selected);
-            if (catalog_.usesCardRules()) card_rules::returnCard(s, catalog_, selected, false);
-            else if (catalog_.at(card.definition).type == CardType::Formation) card.zone = Zone::SideDeck;
-            else { card.zone = Zone::Deck; s.players[card.owner].deck.push_back(selected); }
+            card_rules::returnCard(s, catalog(), selected, false);
             card.faceDown = false; card.siquePartner = 0; card.siquePairTurn = 0;
-            ++f.resolvedCount;
+            ++f.resume<RepeatedChoiceContinuation>().completed;
         }
         return true;
     }
     if (kind == EffectKind::SiqueBlowfire) {
         const auto trigger = f.item;
-        if (selected) StateMaintenance::leave(s, selected, &catalog_);
+        if (selected) StateMaintenance::leave(s, selected, &catalog());
         finishSiqueEffect(f);
-        if (selected) EffectResolver::apply(s, catalog_, trigger,
+        if (selected) EffectResolver::apply(s, catalog(), trigger,
             {EffectKind::Damage, 4, DamageType::Fire, EffectRecipient::Opponent});
         return true;
     }
     if (kind == EffectKind::SiqueShuffleHands) {
-        const auto count = f.item.targetCards[static_cast<std::size_t>(f.clearRemaining)];
-        ++f.clearRemaining;
+        const auto count = f.item.targetCards[static_cast<std::size_t>(*f.resume<PlayerWalkContinuation>().next)];
+        ++*f.resume<PlayerWalkContinuation>().next;
         if (selected) for (CardId i = 0; i < count && s.result == -1; ++i) {
-            ResourceRules::drawOne(s, catalog_, actor); StateMaintenance::check(s, catalog_);
+            ResourceRules::drawOne(s, catalog(), actor); StateMaintenance::check(s, catalog());
         }
         return true;
     }
     if (kind == EffectKind::SiqueOptionalDraw) {
         finishSiqueEffect(f);
-        if (selected) ResourceRules::drawOne(s, catalog_, actor);
-        StateMaintenance::check(s, catalog_); return true;
+        if (selected) ResourceRules::drawOne(s, catalog(), actor);
+        StateMaintenance::check(s, catalog()); return true;
     }
     if (!selected) {
         shuffleSiqueDeck(s, actor);
-        finishRecycleEffect(f, catalog_.usesCardRules() && kind == EffectKind::SiqueRecycle);
+        finishRecycleEffect(f, kind == EffectKind::SiqueRecycle);
         return true;
     }
     auto &card = s.cards.at(selected);
     auto &deck = s.players[actor].deck;
     if (kind == EffectKind::SiqueAttachFromDeck) {
-        if (f.clearRemaining < 0) { f.clearRemaining = static_cast<int>(selected); return true; }
-        const auto runeId = static_cast<CardId>(f.clearRemaining);
+        if (!f.resume<EntityChoiceContinuation>().entity) { f.resume<EntityChoiceContinuation>().entity = selected; return true; }
+        const auto runeId = *f.resume<EntityChoiceContinuation>().entity;
         auto &rune = s.cards.at(runeId);
         deck.erase(std::remove(deck.begin(), deck.end(), runeId), deck.end());
         rune.zone = Zone::Attached; rune.host = selected;
-        card_rules::attached(s, catalog_, runeId);
+        card_rules::attached(s, catalog(), runeId);
         shuffleSiqueDeck(s, actor); finishSiqueEffect(f); return true;
     }
     if (kind == EffectKind::SiqueMillSeal || kind == EffectKind::SiqueMillSpell) {
-        StateMaintenance::leave(s, selected, &catalog_);
+        StateMaintenance::leave(s, selected, &catalog());
         shuffleSiqueDeck(s, actor); finishSiqueEffect(f); return true;
     }
     if (kind == EffectKind::SiqueRecycle) {
-        if (catalog_.usesCardRules()) card_rules::returnCard(s, catalog_, selected, false);
-        else if (catalog_.at(card.definition).type == CardType::Formation) card.zone = Zone::SideDeck;
-        else { card.zone = Zone::Deck; deck.push_back(selected); }
+        card_rules::returnCard(s, catalog(), selected, false);
         card.faceDown = false; card.siquePartner = 0; card.siquePairTurn = 0;
-        ++f.resolvedCount; return true;
+        ++f.resume<RepeatedChoiceContinuation>().completed; return true;
     }
     deck.erase(std::remove(deck.begin(), deck.end(), selected), deck.end());
-    if (catalog_.usesCardRules()) card_rules::returnCard(s, catalog_, selected, true);
-    else { card.zone = Zone::Hand; card.faceDown = false; }
+    card_rules::returnCard(s, catalog(), selected, true);
     s.events.push_back({"sique_recover", "味契卡加入手牌", actor, selected});
     if (kind == EffectKind::SiqueSearchPair) {
         if (!f.item.targetCards.empty()) {
@@ -1327,7 +1338,7 @@ bool GameEngine::chooseRecipeEffect(PlayerId actor, CardId selected) {
             card.siquePartner = first; card.siquePairTurn = s.globalTurn;
             s.cards.at(first).siquePartner = selected; s.cards.at(first).siquePairTurn = s.globalTurn;
         }
-        f.item.targetCards.push_back(selected); ++f.resolvedCount;
+        f.item.targetCards.push_back(selected); ++f.resume<RepeatedChoiceContinuation>().completed;
         return true;
     }
     finishSiqueEffect(f); return true;

@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include "wizard/bridge.hpp"
 #include <catch2/catch_test_macros.hpp>
@@ -6,10 +7,10 @@
 #include <set>
 using namespace wizard;
 namespace {
-Content rcContent() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production"); }
+Content rcContent() { return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets"); }
 struct CardScenario {
     Content content = rcContent();
-    GameState state;
+    MutationContext state;
     CardScenario() {
         state.phase = Phase::Cast;
         state.phaseStep = PhaseStep::Body;
@@ -35,18 +36,18 @@ struct CardScenario {
         card.spell = SpellState::Ready;
         return card;
     }
-    GameEngine casting(const std::string &name) {
+    test::ObservedEngine casting(const std::string &name) {
         auto &card = add(10, name, 0, Zone::Casting);
         card.spell = SpellState::Ready; card.sourceFormation = 1;
-        return GameEngine::scenario(content.catalog, state);
+        return test::ObservedEngine::scenario(content.catalog, state);
     }
 };
-void send(GameEngine &engine, int actor, const Command &command) {
+void send(test::ObservedEngine &engine, int actor, const Command &command) {
     const auto result = engine.submit(actor, command);
     INFO(result.error);
     REQUIRE(result.accepted);
 }
-void choose(GameEngine &engine, CardId option) {
+void choose(test::ObservedEngine &engine, CardId option) {
     REQUIRE(engine.state().decision);
     const auto decision = *engine.state().decision;
     send(engine, decision.player, Choose{decision.id, option});
@@ -55,8 +56,8 @@ void choose(GameEngine &engine, CardId option) {
 TEST_CASE("rc content is a numbered executable 78 card pool with legal 40 plus 10 presets", "[rc-content]") {
     const auto content = rcContent();
     REQUIRE(content.catalog.cards.size() == 78);
-    REQUIRE(content.catalog.alphaV2);
-    REQUIRE(content.catalog.usesAlphaV25());
+    REQUIRE(content.catalog.rulesVersion == "2.5.5");
+    REQUIRE(content.catalog.mechanicsRevision == 9);
     REQUIRE(content.catalog.at("reservoir").name == "阿克乌姆之弧");
     REQUIRE(content.catalog.at("reservoir").level == 0);
     REQUIRE_FALSE(content.catalog.cards.count("balance"));
@@ -81,7 +82,7 @@ TEST_CASE("rc content is a numbered executable 78 card pool with legal 40 plus 1
         INFO(id);
         REQUIRE(illustrations.insert(card.illustrationId).second);
     }
-    const auto presets = app::loadPresets(content, std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
+    const auto presets = app::loadPresets(content, std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     REQUIRE(presets.size() == 10);
     for (const auto &preset : presets) {
         INFO(preset.id);
@@ -89,7 +90,7 @@ TEST_CASE("rc content is a numbered executable 78 card pool with legal 40 plus 1
         REQUIRE(preset.deck.sideDeck.size() == 10);
         REQUIRE(Rules::deckErrors(content.catalog, preset.deck).empty());
         MatchConfig config; config.players = {preset.deck, preset.deck};
-        REQUIRE_NOTHROW(GameEngine(content.catalog, config));
+        REQUIRE_NOTHROW(test::ObservedEngine(content.catalog, config));
     }
 }
 TEST_CASE("rc pentagram candidates consume exactly one hexagram and one ready spell", "[rc-content]") {
@@ -107,7 +108,7 @@ TEST_CASE("rc pentagram candidates consume exactly one hexagram and one ready sp
     ready.ringIndex = Rules::freeRing(f.state, f.content.catalog, 3);
     f.add(10, "pentagram-of-life", 0, Zone::SideDeck);
 
-    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
     std::vector<SetFormation> candidates;
     for (const auto &action : engine.viewFor(0).actions)
         if (const auto *command = std::get_if<SetFormation>(&action.command);
@@ -141,7 +142,7 @@ TEST_CASE("preview2 formation bodies cap at five and deduct recipe and replaceme
     f.add(10, "hexagram", 0, Zone::SideDeck);
     REQUIRE(f.content.catalog.at("hexagram").body == 2);
     REQUIRE(f.content.catalog.at("small-hexagram").body == 1);
-    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
     REQUIRE(Rules::invariants(engine.state(), f.content.catalog).empty());
     const auto before = engine.digest();
     const auto rejected = engine.submit(0, SetFormation{10, 0, {4}});
@@ -186,7 +187,7 @@ TEST_CASE("preview2 sunburst can be set without ash after saving twenty mana", "
     Trigger income; income.owner = 0;
     EffectResolver::apply(f.state, f.content.catalog, income, {EffectKind::GainMana, 30});
     REQUIRE(f.state.players[0].mana == 20);
-    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
     const auto result = engine.submit(0, StartAnalysis{10, 1});
     INFO(result.error);
     REQUIRE(result.accepted);
@@ -211,7 +212,7 @@ TEST_CASE("preview2 healing can choose either player and damage remains opponent
     CardScenario f;
     f.state.players[0].life = f.state.players[1].life = 20;
     auto engine = f.casting("mend");
-    const auto initialState = engine.state();
+    const auto initialState = test::mutation(engine.state());
     const auto view = engine.viewFor(0);
     REQUIRE(std::count_if(view.actions.begin(), view.actions.end(), [](const LegalAction &action) {
         const auto *activate = std::get_if<ActivateSpell>(&action.command); return activate && activate->card == 10;
@@ -222,7 +223,7 @@ TEST_CASE("preview2 healing can choose either player and damage remains opponent
     send(engine, 0, ActivateSpell{10, playerTarget(1)});
     REQUIRE(engine.state().players[0].life == 20);
     REQUIRE(engine.state().players[1].life == 24);
-    auto replayed = GameEngine::scenario(f.content.catalog, initialState);
+    auto replayed = test::ObservedEngine::scenario(f.content.catalog, initialState);
     send(replayed, 0, decodeCommand(encodeCommand(ActivateSpell{10, playerTarget(1)})));
     REQUIRE(replayed.digest() == engine.digest());
     engine = f.casting("scorching-ray");
@@ -235,13 +236,13 @@ TEST_CASE("preview2 shield reduces every hit this turn and then expires", "[prev
     auto engine = f.casting("shield");
     send(engine, 0, ActivateSpell{10});
     REQUIRE(engine.state().players[0].mana == 9);
-    auto state = engine.state(); Trigger damage; damage.owner = 1; damage.targetPlayer = 0;
+    auto state = test::mutation(engine.state()); Trigger damage; damage.owner = 1; damage.targetPlayer = 0;
     EffectResolver::apply(state, f.content.catalog, damage, {EffectKind::Damage, 8, DamageType::Fire});
     EffectResolver::apply(state, f.content.catalog, damage, {EffectKind::Damage, 8, DamageType::Fire});
     EffectResolver::apply(state, f.content.catalog, damage, {EffectKind::Damage, 12, DamageType::Force});
     REQUIRE(state.players[0].life == 32);
     state.phase = Phase::End; state.phaseStep = PhaseStep::Body; state.phaseGate = 1;
-    engine = GameEngine::scenario(f.content.catalog, state);
+    engine = test::ObservedEngine::scenario(f.content.catalog, state);
     send(engine, 0, AdvancePhase{engine.state().phaseGate});
     REQUIRE(engine.state().players[0].damageReduction == 0);
     REQUIRE(engine.state().players[0].forceDamageReduction == 0);
@@ -249,7 +250,7 @@ TEST_CASE("preview2 shield reduces every hit this turn and then expires", "[prev
 TEST_CASE("preview2 talismans set for free and cannot activate before waiting", "[preview2][card-sync]") {
     for (const auto &name : {"barbs", "shield", "counter-spell", "protective-flame", "funny-box"}) {
         CardScenario f; f.state.phase = Phase::Main; f.state.cards.at(1).definition = "sun";
-        f.add(10, name); auto engine = GameEngine::scenario(f.content.catalog, f.state);
+        f.add(10, name); auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
         REQUIRE(f.content.catalog.at(name).type == CardType::Talisman);
         REQUIRE_FALSE(engine.submit(0, PreloadWord{10, true, 1}).accepted);
         send(engine, 0, SetAmbush{10, 1});
@@ -262,7 +263,7 @@ TEST_CASE("preview2 true strike pays a hand spell before any response and reject
     CardScenario f; f.state.phase = Phase::Main;
     f.add(10, "true-strike"); f.add(20, "fireball");
     f.add(21, "magic-missile", 0, Zone::Deck); f.state.players[0].deck.push_back(21);
-    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
     const auto original = engine.digest();
     REQUIRE_FALSE(engine.submit(0, PreloadWord{10, true, 1}).accepted);
     REQUIRE(engine.digest() == original);
@@ -270,7 +271,7 @@ TEST_CASE("preview2 true strike pays a hand spell before any response and reject
     send(engine, 0, decodeCommand(encodeCommand(command)));
     REQUIRE(engine.state().cards.at(20).zone == Zone::Ash);
     REQUIRE(engine.state().players[0].mana == 9);
-    REQUIRE(engine.state().decision->options == std::vector<CardId>{21});
+    REQUIRE(engine.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(21)});
     choose(engine, 21);
     REQUIRE(engine.state().cards.at(21).zone == Zone::Hand);
 }
@@ -278,13 +279,13 @@ TEST_CASE("preview2 sun inspection preserves concealed cards and only owner sees
     CardScenario f; f.state.cards.at(1).definition = "sun";
     auto &hidden = f.spell(20, "fireball", 1); hidden.faceDown = true;
     hidden.wasAmbushed = true; hidden.ambushedTurn = 1;
-    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
     const auto view = engine.viewFor(0);
     auto card = std::find_if(view.cards.begin(), view.cards.end(), [](const CardView &value) { return value.instance.id == 20; });
     REQUIRE(card != view.cards.end()); REQUIRE_FALSE(card->hidden); REQUIRE(card->instance.faceDown);
     REQUIRE(card->definition.id == "fireball");
     StateMaintenance::leave(f.state, 1, &f.content.catalog);
-    engine = GameEngine::scenario(f.content.catalog, f.state);
+    engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
     const auto concealedView = engine.viewFor(0);
     card = std::find_if(concealedView.cards.begin(), concealedView.cards.end(), [](const CardView &value) { return value.instance.id == 20; });
     REQUIRE(card->hidden); REQUIRE(card->definition.id.empty());
@@ -292,7 +293,7 @@ TEST_CASE("preview2 sun inspection preserves concealed cards and only owner sees
 TEST_CASE("preview2 healing circle heals at its owners end phase before timed expiry", "[preview2][card-sync]") {
     CardScenario f; f.state.phase = Phase::Cast; f.state.players[0].life = 20;
     auto &circle = f.spell(10, "healing-circle"); circle.spell = SpellState::Active; circle.remaining = 1;
-    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
     send(engine, 0, AdvancePhase{engine.state().phaseGate});
     REQUIRE(engine.state().phase == Phase::End);
     REQUIRE(engine.state().players[0].life == 22);
@@ -304,7 +305,7 @@ TEST_CASE("preview2 ward deals maintenance damage only after focus is paid", "[p
     for (bool maintain : {false, true}) {
         CardScenario f; f.state.phase = Phase::Draw;
         auto &ward = f.spell(10, "ward"); ward.spell = SpellState::Active; ward.concentrationCost = 1; ward.targetPlayer = 1;
-        auto engine = GameEngine::scenario(f.content.catalog, f.state);
+        auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
         send(engine, 0, AdvancePhase{engine.state().phaseGate});
         REQUIRE(engine.state().decision); REQUIRE(engine.state().decision->kind == DecisionKind::Concentration);
         choose(engine, maintain ? 10 : 0);
@@ -351,7 +352,7 @@ TEST_CASE("preview2 sun ignores attached rune modifiers including income", "[pre
     REQUIRE(Rules::rings(f.state, f.content.catalog, 1) == 7);
     REQUIRE(Rules::maxRank(f.state, f.content.catalog, 1) == 7);
     f.state.phase = Phase::End; f.state.active = 1; f.state.players[0].mana = 0;
-    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
     send(engine, 1, AdvancePhase{engine.state().phaseGate});
     REQUIRE(engine.state().active == 0); REQUIRE(engine.state().players[0].mana == 8);
 }
@@ -364,18 +365,18 @@ TEST_CASE("preview2 guiding bolt shows the full concealed face and concealment r
     const auto view = engine.viewFor(0);
     const auto face = std::find_if(view.cards.begin(), view.cards.end(), [](const CardView &card) { return card.instance.id == 20; });
     REQUIRE(face != view.cards.end()); REQUIRE_FALSE(face->hidden); REQUIRE(face->definition.id == "fireball");
-    auto state = engine.state(); state.cards.at(20).faceDown = false;
+    auto state = test::mutation(engine.state()); state.cards.at(20).faceDown = false;
     Trigger conceal; conceal.owner = 0; conceal.targetCard = 20;
     EffectResolver::apply(state, f.content.catalog, conceal, {EffectKind::Conceal});
     REQUIRE_FALSE(state.cards.at(20).publiclyRevealed);
-    engine = GameEngine::scenario(f.content.catalog, state);
+    engine = test::ObservedEngine::scenario(f.content.catalog, state);
     const auto concealed = engine.viewFor(0);
     const auto back = std::find_if(concealed.cards.begin(), concealed.cards.end(), [](const CardView &card) { return card.instance.id == 20; });
     REQUIRE(back->hidden);
     state.cards.at(20).publiclyRevealed = true;
-    const auto visibleDigest = GameEngine::scenario(f.content.catalog, state).digest();
+    const auto visibleDigest = test::ObservedEngine::scenario(f.content.catalog, state).digest();
     state.cards.at(20).publiclyRevealed = false;
-    REQUIRE(GameEngine::scenario(f.content.catalog, state).digest() != visibleDigest);
+    REQUIRE(test::ObservedEngine::scenario(f.content.catalog, state).digest() != visibleDigest);
     state.cards.at(20).publiclyRevealed = true;
     StateMaintenance::leave(state, 20, &f.content.catalog);
     REQUIRE_FALSE(state.cards.at(20).publiclyRevealed);
@@ -444,10 +445,10 @@ TEST_CASE("storm wind whisper searches only storm talismans of rank two or less"
 
     REQUIRE(engine.state().decision);
     REQUIRE(engine.state().decision->kind == DecisionKind::SearchDeck);
-    REQUIRE(engine.state().decision->options == std::vector<std::uint32_t>{20});
+    REQUIRE(engine.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(20)});
     const auto view = engine.viewFor(0);
     REQUIRE(view.decision);
-    REQUIRE(view.decision->options == std::vector<std::uint32_t>{20});
+    REQUIRE(view.decision->options == std::vector<ChoiceValue>{ChoiceValue::card(20)});
     choose(engine, 20);
     REQUIRE(engine.state().cards.at(20).zone == Zone::Hand);
     REQUIRE(engine.state().cards.at(21).zone == Zone::Deck);
@@ -469,7 +470,7 @@ TEST_CASE("storm swift wind returns only a low-level enemy formation to its side
 
     REQUIRE(engine.state().decision);
     REQUIRE(engine.state().decision->kind == DecisionKind::EffectChoice);
-    REQUIRE(engine.state().decision->options == std::vector<std::uint32_t>{20, 21});
+    REQUIRE(engine.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(20), ChoiceValue::card(21)});
     choose(engine, 20);
     const auto &returned = engine.state().cards.at(20);
     REQUIRE(returned.owner == 1);
@@ -520,7 +521,7 @@ TEST_CASE("magic missile destroys only opponent face down spells in analysis", "
     send(engine, 0, ActivateSpell{10});
     REQUIRE(engine.state().decision);
     REQUIRE(engine.state().decision->kind == DecisionKind::DestroyAmbush);
-    REQUIRE(engine.state().decision->options == std::vector<CardId>{20});
+    REQUIRE(engine.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(20)});
     choose(engine, 20);
     REQUIRE(engine.state().cards.at(20).zone == Zone::Ash);
     REQUIRE(engine.state().cards.at(21).zone == Zone::Analysis);
@@ -598,7 +599,7 @@ TEST_CASE("sleep blocks next turn hand incantations while permitting an older am
     f.add(10, "spark");
     auto &ambush = f.spell(20, "spark");
     ambush.faceDown = ambush.wasAmbushed = true; ambush.ambushedTurn = 4;
-    auto engine = GameEngine::scenario(f.content.catalog, f.state);
+    auto engine = test::ObservedEngine::scenario(f.content.catalog, f.state);
     const auto before = engine.digest();
     REQUIRE_FALSE(engine.submit(0, PreloadWord{10, true, 1}).accepted);
     REQUIRE(engine.digest() == before);
@@ -617,7 +618,7 @@ TEST_CASE("rc tutorial completes using normal 40 plus 10 rules and recorded shie
         INFO(step); INFO(static_cast<int>(application.tutorial()->lesson));
         REQUIRE(step < 250);
         REQUIRE(application.match().engine().state().result == -1);
-        auto view = application.match().engine().viewFor(0);
+        auto view = test::view(application.match().engine(),0);
         if (application.tutorial()->canContinue(view)) { application.continueTutorial(); continue; }
         if (application.aiTurn()) {
             const auto plan = application.planAi(); REQUIRE(plan);
@@ -625,9 +626,9 @@ TEST_CASE("rc tutorial completes using normal 40 plus 10 rules and recorded shie
             continue;
         }
         view.actions.erase(std::remove_if(view.actions.begin(), view.actions.end(), [&](const LegalAction &a) {
-            return !application.tutorial()->allows(view, a.command);
+            return !application.tutorial()->allows(view, a.command, [&](const auto &visitor) { application.match().engine().visitLegalActions(0,visitor); });
         }), view.actions.end());
-        const auto selected = ai::choose(view, ai::Difficulty::Normal); REQUIRE(selected);
+        const auto selected = test::choose(view, ai::Difficulty::Normal); REQUIRE(selected);
         const auto result = application.submit(0, selected->command, application.generation());
         INFO(result.error); REQUIRE(result.accepted);
     }

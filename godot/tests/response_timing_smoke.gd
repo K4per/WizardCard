@@ -1,15 +1,5 @@
 extends SceneTree
 
-class RecordingService extends FrontendService:
-	var submitted: Array[String] = []
-	var confirmed: int = 0
-	func match_request(method: StringName, arguments: Array = []) -> Dictionary:
-		if method == &"select_action":
-			submitted.append(str(arguments[1]))
-		elif method == &"confirm_action":
-			confirmed += 1
-		return {"ok": true, "data": {"pending": true}}
-
 var _failures: int = 0
 var _output: String = ""
 
@@ -32,10 +22,8 @@ func _snapshot(with_response: bool = false) -> Dictionary:
 		"players": [{"life": 34, "lifeLimit": 36, "temporaryLife": 7, "ownTurn": 2, "sevenMode": 2}, {"life": 40, "lifeLimit": 40, "ownTurn": 1}], "cards": [],
 		"decision": {"id": "9007199254740997", "player": 0, "kind": 0},
 		"chain": {"mode": 0, "windowName": "主要阶段开始", "priority": 0},
-		"actions": [{"id": "pass", "source": "0", "command": {"type": 13, "decision": "9007199254740997"}}, {"id": "surrender", "command": {"type": 11}}],
+		"actionSummary": {"hasNonPhaseAction": with_response, "safeAdvance": {"type": KernelContract.CommandKind.PassResponse, "decision": "9007199254740997"}},
 	}
-	if with_response:
-		snapshot["actions"].append({"id": "respond", "source": "33", "command": {"type": 12, "decision": "9007199254740997"}})
 	return snapshot
 
 func _run() -> void:
@@ -48,55 +36,62 @@ func _run() -> void:
 	var empty: Dictionary = _snapshot()
 	var response: Dictionary = _snapshot(true)
 	_expect(ResponseTiming.pass_action(empty, ResponseTiming.Mode.ALL).is_empty(), "all timing asks even when only pass is legal")
-	_expect(ResponseTiming.pass_action(empty, ResponseTiming.Mode.AUTO).get("id", "") == "pass", "automatic timing skips empty windows using the native pass")
+	_expect(ResponseTiming.pass_action(empty, ResponseTiming.Mode.AUTO).get("type", -1) == KernelContract.CommandKind.PassResponse, "automatic timing skips empty windows using the native pass")
 	_expect(ResponseTiming.pass_action(response, ResponseTiming.Mode.AUTO).is_empty(), "automatic timing asks for legal responses")
-	_expect(ResponseTiming.pass_action(response, ResponseTiming.Mode.IGNORE).get("id", "") == "pass", "ignore timing passes a response opportunity")
+	_expect(ResponseTiming.pass_action(response, ResponseTiming.Mode.IGNORE).get("type", -1) == KernelContract.CommandKind.PassResponse, "ignore timing passes a response opportunity")
 	var forced: Dictionary = empty.duplicate(true)
 	forced["decision"]["kind"] = 13
-	forced["actions"] = [{"id": "optional-stop", "command": {"type": 10, "option": "0", "decision": "9007199254740997"}}]
+	forced["actionSummary"]["safeAdvance"] = null
 	_expect(ResponseTiming.pass_action(forced, ResponseTiming.Mode.IGNORE).is_empty(), "ignore never skips effect choices even when they allow passing")
 	var other: Dictionary = empty.duplicate(true)
 	other["decision"]["player"] = 1
 	_expect(ResponseTiming.pass_action(other, ResponseTiming.Mode.IGNORE).is_empty(), "local mode never passes the other player's priority")
 	var malformed: Dictionary = empty.duplicate(true)
-	malformed["actions"][0]["command"]["decision"] = "old"
+	malformed["actionSummary"]["safeAdvance"]["decision"] = "old"
 	_expect(ResponseTiming.pass_action(malformed, ResponseTiming.Mode.IGNORE).is_empty(), "pass must belong to the current native decision")
 	var page: MatchPage = (load("res://pages/match_page.tscn") as PackedScene).instantiate() as MatchPage
 	root.add_child(page)
 	await _settle()
-	var service: RecordingService = RecordingService.new()
+	var service: QueryFixtureService = QueryFixtureService.new()
 	service.match_mode = "network"
 	service.match_snapshot = empty
 	page.service = service
+	page._selection.service = service
+	page._selection.changed.connect(page._query_changed)
+	page._selection.completed.connect(page._query_completed)
+	service.set_actions([{"id": "pass", "source": "0", "command": {"type": KernelContract.CommandKind.PassResponse, "decision": "9007199254740997"}}])
 	page.canvas.configure(MatchProjection.field(empty))
 	page._update_status()
 	page._phase.text = "第 2 个己方回合\n玩家 1 · 主要"
 	_expect(page._response_mode.item_count == 3 and page._current_response_mode() == ResponseTiming.Mode.AUTO, "response selector defaults to automatic with three modes")
 	page._response_mode_changed(ResponseTiming.Mode.ALL)
-	_expect(page._decision.visible and page._decision.request.pass_id == "pass", "all timing exposes an empty response tray with pass")
+	_expect(page._decision.visible and page._decision.request.pass_id == str(KernelContract.CommandKind.PassResponse), "all timing exposes an empty response tray with pass")
 	page._response_mode_changed(ResponseTiming.Mode.AUTO)
 	_expect(not page._decision.visible, "automatic mode hides the empty response tray")
 	await create_timer(0.2).timeout
-	_expect(service.submitted == ["pass"] and service.confirmed == 1, "automatic empty response submits exactly one native pass")
-	service.submitted.clear()
-	service.confirmed = 0
+	_expect(service.selected_actions == ["pass"] and service.confirmations == 1, "automatic empty response submits exactly one native pass")
+	service.selected_actions.clear()
+	service.confirmations = 0
 	page._network_waiting = false
 	service.match_snapshot = response
+	service.set_actions([{"id": "pass", "source": "0", "command": {"type": KernelContract.CommandKind.PassResponse, "decision": "9007199254740997"}}, {"id": "respond", "source": "33", "command": {"type": KernelContract.CommandKind.Respond, "card": "33", "decision": "9007199254740997"}}])
 	page._render_decision()
-	_expect(page._decision.visible and page._decision.request.choices.size() == 1, "automatic mode displays actual response options")
+	_expect(page._decision.visible and page._decision.request.choices.size() == 2, "automatic mode displays actual response options")
 	page._response_mode_changed(ResponseTiming.Mode.IGNORE)
 	await create_timer(0.2).timeout
-	_expect(service.submitted == ["pass"] and service.confirmed == 1, "ignore submits pass instead of activating an available card")
+	_expect(service.selected_actions == ["pass"] and service.confirmations == 1, "ignore submits pass instead of activating an available card")
 	page._network_waiting = false
-	service.submitted.clear()
+	service.selected_actions.clear()
 	service.match_snapshot = forced
+	service.set_actions([{"id": "mode", "command": {"type": KernelContract.CommandKind.Choose, "option": {"kind": KernelContract.ChoiceKind.Mode, "value": "1"}, "decision": "9007199254740997"}}])
 	page._render_decision()
 	_expect(page._decision.visible, "mandatory effect selection stays visible in ignore mode")
 	service.match_snapshot = response
+	service.set_actions([{"id": "pass", "source": "0", "command": {"type": KernelContract.CommandKind.PassResponse, "decision": "9007199254740997"}}, {"id": "respond", "source": "33", "command": {"type": KernelContract.CommandKind.Respond, "card": "33", "decision": "9007199254740997"}}])
 	page._response_mode_changed(ResponseTiming.Mode.IGNORE)
 	page._response_mode_changed(ResponseTiming.Mode.ALL)
 	await create_timer(0.2).timeout
-	_expect(service.submitted.is_empty() and page._decision.visible, "switching back to all cancels a queued automatic pass")
+	_expect(service.selected_actions.is_empty() and page._decision.visible, "switching back to all cancels a queued automatic pass")
 	service.match_viewer = 1
 	_expect(page._current_response_mode() == ResponseTiming.Mode.AUTO, "hotseat viewer has an independent mode")
 	service.match_viewer = 0

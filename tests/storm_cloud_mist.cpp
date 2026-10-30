@@ -1,3 +1,4 @@
+#include "support/observed_engine.hpp"
 #include "wizard/application.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <algorithm>
@@ -6,7 +7,7 @@ using namespace wizard;
 
 namespace {
 Content loadStormCloudContent() {
-    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "tests/fixtures/alpha-v251-production");
+    return loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
 }
 
 CardInstance fieldCard(CardId id, const std::string &definition, PlayerId owner, Zone zone,
@@ -22,8 +23,8 @@ CardInstance fieldCard(CardId id, const std::string &definition, PlayerId owner,
     return card;
 }
 
-GameState cloudMistState() {
-    GameState state;
+MutationContext cloudMistState() {
+    MutationContext state;
     state.phase = Phase::Cast;
     state.flow = Flow::Cast;
     state.phaseStep = PhaseStep::Body;
@@ -56,7 +57,7 @@ TEST_CASE("cloud mist locks up to two field analytic spells until its duration e
     REQUIRE(catalog.at("cloud-mist").tags.empty());
     REQUIRE(catalog.at("thunder-summon").tags.empty());
 
-    auto engine = GameEngine::scenario(catalog, cloudMistState());
+    auto engine = test::ObservedEngine::scenario(catalog, cloudMistState());
     auto passResponses = [&] {
         while (engine.state().decision && engine.state().decision->kind == DecisionKind::Response) {
             const auto response = *engine.state().decision;
@@ -108,13 +109,13 @@ TEST_CASE("cloud mist locks up to two field analytic spells until its duration e
     REQUIRE(activeCloudMist.remaining == 2);
     REQUIRE((activeCloudMist.targets == std::vector<CardId>{21, 24}));
 
-    auto lockState = engine.state();
+    auto lockState = test::mutation(engine.state());
     lockState.active = 1;
     lockState.phase = Phase::Main;
     lockState.flow = Flow::Main;
     lockState.phaseStep = PhaseStep::Body;
     lockState.phaseGate = 1;
-    auto lockedEngine = GameEngine::scenario(catalog, lockState);
+    auto lockedEngine = test::ObservedEngine::scenario(catalog, lockState);
     const auto blocked = lockedEngine.submit(1, PrepareCast{21});
     INFO(blocked.error);
     REQUIRE_FALSE(blocked.accepted);
@@ -125,7 +126,7 @@ TEST_CASE("cloud mist locks up to two field analytic spells until its duration e
     REQUIRE(unselected.accepted);
 
     lockState.cards.at(20).remaining = 0;
-    auto expiredEngine = GameEngine::scenario(catalog, lockState);
+    auto expiredEngine = test::ObservedEngine::scenario(catalog, lockState);
     const auto afterExpiry = expiredEngine.submit(1, PrepareCast{21});
     INFO(afterExpiry.error);
     REQUIRE(afterExpiry.accepted);

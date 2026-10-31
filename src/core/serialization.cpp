@@ -148,7 +148,7 @@ std::string GameEngine::stateKey(bool logical, bool compactEffects, bool current
             if (currentFormat) o << "effects:" << t.effects.size() << ':';
             for (const auto &e : t.effects)
                 o << static_cast<int>(e.kind) << ',' << e.amount << ',' << static_cast<int>(e.damageType) << ','
-                  << static_cast<int>(e.recipient) << '/';
+                  << static_cast<int>(e.recipient) << ',' << std::quoted(e.semantic) << '/';
         }
         o << ';';
     };

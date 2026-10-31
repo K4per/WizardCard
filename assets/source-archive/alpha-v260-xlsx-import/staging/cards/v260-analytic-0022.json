@@ -17,25 +17,32 @@
       "amount": 4,
       "damageType": "poison",
       "recipient": "target"
+    },
+    {
+      "kind": "setup_damage",
+      "amount": 1,
+      "damageType": "poison",
+      "recipient": "opponent",
+      "expires": "own_draw"
     }
   ],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
-  ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 23
   },
-  "illustrationId": "v260-analytic-0022",
+  "illustrationId": "v260-art-analytic-0022",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\致病射线.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\致病射线.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0022",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0022.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
   },
   "migration": {
     "previousId": null

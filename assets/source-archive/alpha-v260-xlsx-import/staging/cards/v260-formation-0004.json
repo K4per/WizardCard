@@ -12,29 +12,40 @@
   "speed": 1,
   "text": "1回合1次，此阵法卡上设置的解析法术卡的解析时间-1。",
   "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-    "正式卡图未匹配"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
     "worksheet": "阵法卡",
     "row": 6
   },
-  "illustrationId": "v260-formation-0004",
+  "illustrationId": "engeas-four-point-star",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\engeas-four-point-star.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "engeas-four-point-star"
   },
   "migration": {
     "previousId": "engeas-four-point-star"
   },
+  "traits": [
+    "quick_host_analysis_1"
+  ],
   "raritySource": "",
+  "recipe": [
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "readyOnly": true
+    },
+    {
+      "kind": "mana",
+      "amount": 3
+    }
+  ],
   "summonCondition": "解析完成的法术卡×1+魔素×3",
   "level": 2,
   "body": 1,

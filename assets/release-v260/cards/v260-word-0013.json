@@ -1,0 +1,48 @@
+{
+  "id": "v260-word-0013",
+  "number": "030013",
+  "name": "不谐低语",
+  "type": "word",
+  "school": "enchantment",
+  "rarity": "uncommon",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "选择1个目标才能发动。对其造成3点心灵伤害。那之后，可以将对方解析区1张盖伏卡弹回持有者手卡。",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 3,
+      "damageType": "psychic",
+      "recipient": "target"
+    },
+    {
+      "kind": "return_enemy_analysis"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 54
+  },
+  "illustrationId": "v260-art-word-0013",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\不谐低语.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-word-0013",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0013.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "target": "player",
+  "level": 2
+}

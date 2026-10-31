@@ -131,7 +131,7 @@ func _run() -> void:
 	_expect(MatchProjection.blood_heartmark_hint(blood_snapshot, blood_action).contains("支付 2 点生命值"), "blood-heartmark hint comes from the projected legal spell action")
 	var hidden_storm: CardPresentation = CardPresentation.from_projection({"id": "43", "hidden": true, "stormPoints": 99, "definition": {"id": "storm-crest", "tags": ["风暴"]}})
 	_expect(not hidden_storm.detail_text().contains("风暴点数"), "hidden storm card details do not reveal point counts")
-	var talisman: CardPresentation = CardPresentation.from_definition({"type": 5, "cost": 5, "castCost": 0})
+	var talisman: CardPresentation = CardPresentation.from_definition({"type": 5, "cost": 0, "castCost": 5})
 	_expect(talisman.primary_value == "5" and talisman.metadata_text.contains("施法费用：5（盖伏免费）") and not talisman.metadata_text.contains("设置费用"), "talisman has only a casting cost")
 	var dynamic_talisman: CardPresentation = CardPresentation.from_definition({"type": 5, "cost": 5, "dynamicCost": true})
 	_expect(dynamic_talisman.primary_value == "X" and dynamic_talisman.metadata_text.contains("施法费用：X（盖伏免费）"), "dynamic talisman cost is shown as X")

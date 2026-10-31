@@ -46,6 +46,9 @@ func _populate(query: String) -> void:
 		if not query.is_empty() and not (card.number + card.title + card.type_label + card.metadata_text + card.text).contains(query):
 			continue
 		var tile: CardTile = CardTile.new()
+		# The catalogue is deliberately greyboxed: retain each illustration and
+		# its readable metadata, but do not use the authored card-frame textures.
+		tile.simple_style = true
 		_grid.add_child(tile)
 		tile.configure(card)
 		tile.card_selected.connect(_show_detail)

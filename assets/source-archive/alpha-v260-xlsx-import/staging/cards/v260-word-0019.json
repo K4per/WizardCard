@@ -11,27 +11,36 @@
   "analysisTurns": 0,
   "speed": 2,
   "text": "将1张卡从手卡送去灰烬区才能发动。查看对方卡组最上方的3张卡，将其中1张送去灰烬区，其余卡返回卡组最下方。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "inspect_opponent_deck",
+      "amount": 3
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 60
   },
-  "illustrationId": "v260-word-0019",
+  "illustrationId": "v260-art-word-0019",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\异界探知.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\异界探知.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-word-0019",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0019.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
   },
   "migration": {
     "previousId": null
   },
+  "extraDiscard": 1,
+  "traits": [
+    "inspect_opponent_deck"
+  ],
   "level": 3
 }

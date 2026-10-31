@@ -20,19 +20,19 @@
   ],
   "effectStatus": "structured-candidate",
   "effectBlockers": [],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "正式卡图未匹配"
-  ],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 48
   },
-  "illustrationId": "v260-word-0007",
+  "illustrationId": "aid",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\aid.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "aid"
   },
   "migration": {
     "previousId": "aid"

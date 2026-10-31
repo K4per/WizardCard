@@ -12,7 +12,7 @@ func _expect(condition: bool, message: String) -> void:
 
 func _card(id: String, name: String, type: int, zone: int) -> Dictionary:
 	var art_id: String = "balance" if type == 3 else "fireball"
-	return {"id": id, "owner": 0, "zone": zone, "host": "0", "hidden": false, "definition": {"id": name, "illustrationId": art_id, "name": name, "type": type, "rings": 3, "cost": 1, "text": ""}}
+	return {"id": id, "owner": 0, "zone": zone, "host": "0", "hidden": false, "definition": {"id": name, "illustrationId": art_id, "name": name, "type": type, "body": 1, "rings": 3, "cost": 1, "text": ""}}
 
 func _run() -> void:
 	root.size = Vector2i(1280, 720)
@@ -67,6 +67,65 @@ func _run() -> void:
 	service.match_snapshot["decision"] = null
 	service.match_snapshot["revision"] = "9007199254740996"
 	_expect(not page.canvas.target_rings.has("34"), "completed decision clears ring highlights")
+
+	service.match_snapshot["cards"] = [_card("70", "基础法阵", 3, 3), _card("71", "恩格亚斯之星", 3, 9)]
+	page.canvas.configure(MatchProjection.field(service.match_snapshot))
+	service.fixture_actions.assign([
+		{"id": "formation-set", "source": "71", "label": "设置阵法", "command": {"type": KernelContract.CommandKind.SetFormation, "card": "71", "replace": "0", "materials": []}},
+		{"id": "formation-replace", "source": "71", "label": "替换阵法", "command": {"type": KernelContract.CommandKind.SetFormation, "card": "71", "replace": "70", "materials": []}}
+	])
+	page._query_title = "设置阵法"
+	page._query_is_decision = false
+	page._query_confirmed = false
+	page._selection.begin("0", KernelContract.CommandKind.SetFormation)
+	await process_frame
+	await process_frame
+	_expect(page._tray_active and page._decision.visible, "global setup first exposes its legal source card")
+	page._selection.choose("71")
+	await process_frame
+	await process_frame
+	_expect(not page._decision.visible, "independent setup does not open a replacement popup")
+	_expect(not page._tray_active, "field selection restores the hand layout after source selection")
+	_expect(page.canvas.formation_slot_target == 1 and page.canvas.target_ids.has("70"), "independent setup highlights the next slot and replacement target")
+	_expect(page.canvas._formation_slot_hits.size() == 1, "the highlighted empty formation slot is clickable")
+	if page.canvas._formation_slot_hits.size() == 1:
+		var click: InputEventMouseButton = InputEventMouseButton.new()
+		click.button_index = MOUSE_BUTTON_LEFT
+		click.position = (page.canvas._formation_slot_hits[0]["rect"] as Rect2).get_center()
+		click.pressed = true
+		page.canvas._gui_input(click)
+		click.pressed = false
+		page.canvas._gui_input(click)
+		await process_frame
+		_expect(service.selected_actions.back() == "formation-set" and service.confirmations == 3, "clicking the highlighted slot selects independent setup")
+		_expect(page.canvas.formation_slot_target == -1, "slot highlight clears after selection")
+
+	service.match_snapshot["revision"] = "9007199254740998"
+	page.canvas.configure(MatchProjection.field(service.match_snapshot))
+	page._query_confirmed = false
+	page._selection.begin("0", KernelContract.CommandKind.SetFormation)
+	await process_frame
+	await process_frame
+	page._selection.choose("71")
+	await process_frame
+	await process_frame
+	var enter: InputEventAction = InputEventAction.new()
+	enter.action = &"ui_accept"
+	enter.pressed = true
+	page.canvas._gui_input(enter)
+	await process_frame
+	_expect(service.selected_actions.back() == "formation-set" and service.confirmations == 4, "keyboard confirm selects the highlighted slot")
+
+	service.match_snapshot["revision"] = "9007199254740999"
+	page.canvas.configure(MatchProjection.field(service.match_snapshot))
+	page._query_confirmed = false
+	page._selection.begin("71", KernelContract.CommandKind.SetFormation)
+	await process_frame
+	await process_frame
+	_expect(page.canvas.target_ids.has("70"), "existing formations remain highlighted as replacement targets")
+	page._pick_action_target("70")
+	await process_frame
+	_expect(service.selected_actions.back() == "formation-replace" and service.confirmations == 5, "clicking the highlighted formation still selects replacement")
 	page.queue_free()
 	await process_frame
 	print("Card selection smoke: %s" % ("PASS" if failures == 0 else "FAIL"))

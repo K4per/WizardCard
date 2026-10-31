@@ -14,19 +14,19 @@
   "effects": [],
   "effectStatus": "structured-candidate",
   "effectBlockers": [],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "正式卡图未匹配"
-  ],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
     "worksheet": "符文卡",
     "row": 2
   },
-  "illustrationId": "v260-seal-0001",
+  "illustrationId": "conduit",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\conduit.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "conduit"
   },
   "migration": {
     "previousId": "conduit"

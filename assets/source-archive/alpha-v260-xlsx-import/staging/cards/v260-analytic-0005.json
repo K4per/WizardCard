@@ -20,19 +20,19 @@
   ],
   "effectStatus": "structured-candidate",
   "effectBlockers": [],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "正式卡图未匹配"
-  ],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 6
   },
-  "illustrationId": "v260-analytic-0005",
+  "illustrationId": "v2-chromatic-orb",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-chromatic-orb.png",
+    "mapping": "历史同类卡图",
+    "manifestId": "v2-chromatic-orb"
   },
   "migration": {
     "previousId": "chromatic-orb"

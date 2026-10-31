@@ -24,19 +24,19 @@
   ],
   "effectStatus": "structured-candidate",
   "effectBlockers": [],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "正式卡图未匹配"
-  ],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 5
   },
-  "illustrationId": "v260-analytic-0004",
+  "illustrationId": "magic-missile",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\magic-missile.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "magic-missile"
   },
   "migration": {
     "previousId": "magic-missile"

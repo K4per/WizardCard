@@ -11,27 +11,39 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "将1张法术卡从己方解析区送去灰烬区，选择1个目标才能发动。对其造成10点钝击伤害。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "discard_analysis",
+      "amount": 1
+    },
+    {
+      "kind": "damage",
+      "amount": 10,
+      "damageType": "bludgeoning",
+      "recipient": "target"
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 39
   },
-  "illustrationId": "v260-analytic-0038",
+  "illustrationId": "v260-art-analytic-0038",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\弹射术.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\弹射术.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0038",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0038.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": null
   },
+  "extraDiscard": 0,
   "level": 3
 }

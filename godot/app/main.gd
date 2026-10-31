@@ -21,7 +21,7 @@ var current_page: StringName = &""
 var page: Control
 var _audio: MatchFeedback
 @onready var _host: Control = %PageHost
-@onready var _background: TextureRect = %Background
+@onready var _background: ColorRect = %Background
 @onready var _dim: ColorRect = $Dim
 var _network_timer: Timer
 var _navigation_tween: Tween
@@ -31,6 +31,7 @@ func _ready() -> void:
 	get_window().close_requested.connect(_on_close_requested)
 	theme = ArtBank.make_theme()
 	var assets: String = ProjectSettings.globalize_path("res://").path_join("../assets").simplify_path()
+	var assets_overridden := false
 	# Exported PCK builds can report different feature flags across Godot
 	# templates. Prefer the portable resource directory whenever it exists so a
 	# release launched from any working directory never falls back to ../assets.
@@ -42,8 +43,18 @@ func _ready() -> void:
 	for index: int in range(arguments.size() - 1):
 		if arguments[index] == "--assets":
 			assets = arguments[index + 1]
+			assets_overridden = true
 		elif arguments[index] == "--user-data":
 			user_directory = arguments[index + 1]
+	# The repository keeps the previous pool for compatibility fixtures, while
+	# the default playable frontend follows the approved Alpha v2.6 snapshot.
+	# Explicit --assets remains authoritative for diagnostics and tests.
+	var release_assets: String = assets.path_join("release-v260")
+	if not assets_overridden and FileAccess.file_exists(release_assets.path_join("catalog.json")):
+		assets = release_assets
+	# The main page is intentionally greyboxed for Alpha v2.6. Keep the banner
+	# artwork on the page, while the page background stays a flat project color.
+	_background.color = DeckTheme.BACKGROUND
 	get_window().min_size = Vector2i(1280, 720)
 	if service.initialize(assets, user_directory):
 		FrontendDisplay.apply(service.settings)
@@ -70,10 +81,9 @@ func navigate(destination: StringName) -> void:
 		page.queue_free()
 	current_page = destination
 	ArtBank.trim_illustrations()
-	var background_id: String = ""
-	if destination == &"menu":
-		background_id = "c2d.v2.menu.background"
-	_background.texture = ArtBank.texture(background_id) if not background_id.is_empty() else null
+	# Main-menu background art is retired from the product surface. Other pages
+	# use the same flat base and their own content-specific panels.
+	_background.color = DeckTheme.BACKGROUND
 	_dim.color = DeckTheme.BACKGROUND
 	_dim.visible = destination != &"menu"
 	page = PAGES[destination].instantiate() as Control

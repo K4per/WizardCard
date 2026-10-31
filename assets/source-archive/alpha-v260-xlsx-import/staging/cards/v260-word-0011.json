@@ -11,27 +11,40 @@
   "analysisTurns": 0,
   "speed": 2,
   "text": "选择1个目标才能发动。对其造成5点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣/光耀中选择。那之后，直到此回合结束阶段结束时，对方不可选择己方为法术卡的目标。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "choose_damage",
+      "amount": 5,
+      "recipient": "target"
+    },
+    {
+      "kind": "target_lock",
+      "amount": 1
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 52
   },
-  "illustrationId": "v260-word-0011",
+  "illustrationId": "v260-art-word-0011",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\七彩喷射.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\七彩喷射.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-word-0011",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0011.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
   },
   "migration": {
     "previousId": null
   },
+  "traits": [
+    "target_lock"
+  ],
   "level": 4
 }

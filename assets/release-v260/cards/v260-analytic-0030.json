@@ -1,0 +1,43 @@
+{
+  "id": "v260-analytic-0030",
+  "number": "020030",
+  "name": "昏昏欲睡",
+  "type": "analytic",
+  "school": "enchantment",
+  "rarity": "common",
+  "rank": 4,
+  "cost": 3,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "直到下个己方抽卡阶段开始时，双方解析法术不可发动。",
+  "effects": [
+    {
+      "kind": "block_analytic",
+      "amount": 0
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 31
+  },
+  "illustrationId": "instantly-sleep",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\instantly-sleep.png",
+    "mapping": "用户确认沿用旧沉默术卡图",
+    "manifestId": "instantly-sleep"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "traits": [
+    "block_analytic"
+  ],
+  "level": 4
+}

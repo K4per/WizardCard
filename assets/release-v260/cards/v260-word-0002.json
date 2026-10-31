@@ -1,0 +1,45 @@
+{
+  "id": "v260-word-0002",
+  "number": "030002",
+  "name": "魔能爆",
+  "type": "word",
+  "school": "evocation",
+  "rarity": "epic",
+  "rank": 1,
+  "cost": 2,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "选择1个目标才能发动，对其造成3点力场伤害。",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 3,
+      "damageType": "force",
+      "recipient": "target"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 43
+  },
+  "illustrationId": "v260-art-word-0002",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\魔能爆.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-word-0002",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0002.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "target": "player",
+  "level": 1
+}

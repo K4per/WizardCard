@@ -11,28 +11,33 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "直到下个己方抽卡阶段开始时，双方解析法术不可发动。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "block_analytic",
+      "amount": 0
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-    "目录只有沉默术.png，不能确认它是否对应昏昏欲睡"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 31
   },
-  "illustrationId": "v260-analytic-0030",
+  "illustrationId": "instantly-sleep",
   "art": {
-    "status": "conflict",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\沉默术.png"
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\instantly-sleep.png",
+    "mapping": "用户确认沿用旧沉默术卡图",
+    "manifestId": "instantly-sleep"
   },
   "migration": {
     "previousId": null
   },
+  "traits": [
+    "block_analytic"
+  ],
   "level": 4
 }

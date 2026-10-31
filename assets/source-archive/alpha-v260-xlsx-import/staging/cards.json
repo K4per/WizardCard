@@ -3,7 +3,7 @@
   "cardSetVersion": "2.6.0-xlsx-baseline",
   "mechanicsRevision": 10,
   "baseLoadCapacity": 2,
-  "status": "staging-blocked",
+  "status": "staging-ready",
   "cards": [
     {
       "id": "v260-analytic-0001",
@@ -28,19 +28,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 2
       },
-      "illustrationId": "v260-analytic-0001",
+      "illustrationId": "fireball",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\fireball.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "fireball"
       },
       "migration": {
         "previousId": "fireball"
@@ -75,19 +75,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 3
       },
-      "illustrationId": "v260-analytic-0002",
+      "illustrationId": "ray-of-frost",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\ray-of-frost.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "ray-of-frost"
       },
       "migration": {
         "previousId": "ray-of-frost"
@@ -121,19 +121,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 4
       },
-      "illustrationId": "v260-analytic-0003",
+      "illustrationId": "lightning-bolt",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\lightning-bolt.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "lightning-bolt"
       },
       "migration": {
         "previousId": "lightning-bolt"
@@ -167,19 +167,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 5
       },
-      "illustrationId": "v260-analytic-0004",
+      "illustrationId": "magic-missile",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\magic-missile.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "magic-missile"
       },
       "migration": {
         "previousId": "magic-missile"
@@ -209,19 +209,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 6
       },
-      "illustrationId": "v260-analytic-0005",
+      "illustrationId": "v2-chromatic-orb",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-chromatic-orb.png",
+        "mapping": "历史同类卡图",
+        "manifestId": "v2-chromatic-orb"
       },
       "migration": {
         "previousId": "chromatic-orb"
@@ -255,19 +255,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 7
       },
-      "illustrationId": "v260-analytic-0006",
+      "illustrationId": "v2-guiding-bolt",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-guiding-bolt.png",
+        "mapping": "历史同类卡图",
+        "manifestId": "v2-guiding-bolt"
       },
       "migration": {
         "previousId": "guiding-bolt"
@@ -290,30 +290,26 @@
       "text": "选择1个目标才能发动。对其造成4点火焰伤害。重复3次，每次可以选择不同目标。",
       "effects": [
         {
-          "kind": "damage",
+          "kind": "ray_volley",
           "amount": 4,
-          "damageType": "fire",
-          "recipient": "target"
+          "damageType": "fire"
         }
       ],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 8
       },
-      "illustrationId": "v260-analytic-0007",
+      "illustrationId": "v2-scorching-ray",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-scorching-ray.png",
+        "mapping": "历史同类卡图",
+        "manifestId": "v2-scorching-ray"
       },
       "migration": {
         "previousId": "scorching-ray"
@@ -344,19 +340,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 9
       },
-      "illustrationId": "v260-analytic-0008",
+      "illustrationId": "ward",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\ward.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "ward"
       },
       "migration": {
         "previousId": "ward"
@@ -400,19 +396,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 10
       },
-      "illustrationId": "v260-analytic-0009",
+      "illustrationId": "v2-sunburst",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-sunburst.png",
+        "mapping": "历史同类卡图",
+        "manifestId": "v2-sunburst"
       },
       "migration": {
         "previousId": "sunburst"
@@ -436,28 +432,36 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "对对方以及对方场上全部目标各造成6点火焰伤害。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "area_damage",
+          "amount": 6,
+          "damageType": "fire",
+          "recipient": "opponent"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 11
       },
-      "illustrationId": "v260-analytic-0010",
+      "illustrationId": "v260-art-analytic-0010",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\燃烧之手.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\燃烧之手.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0010",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0010.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "target": "opponent",
       "level": 4
     },
     {
@@ -473,29 +477,33 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "计时2。选择双方解析区共1至2张解析法术卡，使其直到此法术卡离场不可准备施法。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "lock_analysis",
+          "amount": 2
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 12
       },
-      "illustrationId": "v260-analytic-0011",
+      "illustrationId": "cloud-mist",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261017\\storm-series-atlas.png",
+        "mapping": "历史同类卡图",
+        "manifestId": "cloud-mist"
       },
       "migration": {
         "previousId": "cloud-mist"
       },
+      "duration": 2,
+      "targetCount": 2,
       "level": 2
     },
     {
@@ -519,29 +527,27 @@
           "recipient": "target"
         },
         {
-          "kind": "independent",
+          "kind": "independent_timed",
           "amount": 5,
-          "recipient": "opponent"
+          "recipient": "opponent",
+          "expires": "opponent_end"
         }
       ],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 13
       },
-      "illustrationId": "v260-analytic-0012",
+      "illustrationId": "thunder-summon",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261017\\storm-series-atlas.png",
+        "mapping": "历史同类卡图",
+        "manifestId": "thunder-summon"
       },
       "migration": {
         "previousId": "thunder-summon"
@@ -579,10 +585,14 @@
         "worksheet": "卡表",
         "row": 14
       },
-      "illustrationId": "v260-analytic-0013",
+      "illustrationId": "v260-art-analytic-0013",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\匕首之云.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\匕首之云.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0013",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0013.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
@@ -613,28 +623,43 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注1。双方准备阶段开始时，双方各受到1点毒素伤害。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "both_damage",
+          "amount": 1,
+          "damageType": "poison"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 15
       },
-      "illustrationId": "v260-analytic-0014",
+      "illustrationId": "v260-art-analytic-0014",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\臭云术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\臭云术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0014",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0014.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "concentration": true,
+      "concentrationUpkeep": 1,
+      "onPrepare": [
+        {
+          "kind": "both_damage",
+          "amount": 1,
+          "damageType": "poison"
+        }
+      ],
       "level": 3
     },
     {
@@ -650,28 +675,34 @@
       "analysisTurns": 1,
       "speed": 2,
       "text": "选择对方场上1张阵法卡才能发动。直到下个己方准备阶段开始时，此阵法卡的环位减半。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "halve_rings",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 16
       },
-      "illustrationId": "v260-analytic-0015",
+      "illustrationId": "v260-art-analytic-0015",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\油腻术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\油腻术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0015",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0015.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "target": "enemy_card",
       "level": 3
     },
     {
@@ -687,29 +718,38 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。为其恢复2点生命值。那之后，清除己方6点荷载。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "heal",
+          "amount": 2,
+          "recipient": "target"
+        },
+        {
+          "kind": "clear_all_temporary",
+          "amount": 6,
+          "recipient": "owner"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 17
       },
-      "illustrationId": "v260-analytic-0016",
+      "illustrationId": "lesser-restoration",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\lesser-restoration.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "lesser-restoration"
       },
       "migration": {
         "previousId": null
       },
+      "target": "player",
       "level": 2
     },
     {
@@ -725,28 +765,38 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注1。己方每受到1次强酸/寒冷/火焰/闪电/毒素/雷鸣伤害，获得1点魔素。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "mana_on_elemental_damage",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 18
       },
-      "illustrationId": "v260-analytic-0017",
+      "illustrationId": "v260-art-analytic-0017",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\吸收元素.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\吸收元素.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0017",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0017.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "concentration": true,
+      "concentrationUpkeep": 1,
+      "traits": [
+        "mana_on_elemental_damage"
+      ],
       "level": 4
     },
     {
@@ -779,10 +829,14 @@
         "worksheet": "卡表",
         "row": 19
       },
-      "illustrationId": "v260-analytic-0018",
+      "illustrationId": "v260-art-analytic-0018",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\枯萎术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\枯萎术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0018",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0018.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
@@ -812,19 +866,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 20
       },
-      "illustrationId": "v260-analytic-0019",
+      "illustrationId": "mend",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\mend.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "mend"
       },
       "migration": {
         "previousId": "mend"
@@ -854,19 +908,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 21
       },
-      "illustrationId": "v260-analytic-0020",
+      "illustrationId": "false-life",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\false-life.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "false-life"
       },
       "migration": {
         "previousId": "false-life"
@@ -887,24 +941,21 @@
       "speed": 1,
       "text": "计时4。己方结束阶段开始时，恢复2点生命值。",
       "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 22
       },
-      "illustrationId": "v260-analytic-0021",
+      "illustrationId": "v2-healing-circle",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-healing-circle.png",
+        "mapping": "历史同类卡图",
+        "manifestId": "v2-healing-circle"
       },
       "migration": {
         "previousId": "healing-circle"
@@ -917,6 +968,7 @@
           "recipient": "owner"
         }
       ],
+      "target": "self",
       "level": 2
     },
     {
@@ -938,25 +990,32 @@
           "amount": 4,
           "damageType": "poison",
           "recipient": "target"
+        },
+        {
+          "kind": "setup_damage",
+          "amount": 1,
+          "damageType": "poison",
+          "recipient": "opponent",
+          "expires": "own_draw"
         }
       ],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 23
       },
-      "illustrationId": "v260-analytic-0022",
+      "illustrationId": "v260-art-analytic-0022",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\致病射线.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\致病射线.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0022",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0022.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
@@ -977,28 +1036,38 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "永续。此卡在己方解析区仅可存在1张。当己方生命值归零时，可以将此法术卡抹除作为替代。那之后，己方生命值变为1。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "prevent_lethal",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 24
       },
-      "illustrationId": "v260-analytic-0023",
+      "illustrationId": "v260-art-analytic-0023",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\防死结界.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\防死结界.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0023",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0023.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "perpetual": true,
+      "traits": [
+        "unique",
+        "prevent_lethal"
+      ],
       "level": 7
     },
     {
@@ -1036,10 +1105,14 @@
         "worksheet": "卡表",
         "row": 25
       },
-      "illustrationId": "v260-analytic-0024",
+      "illustrationId": "v260-art-analytic-0024",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\汲血之触.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\汲血之触.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0024",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0024.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
@@ -1075,10 +1148,14 @@
         "worksheet": "卡表",
         "row": 26
       },
-      "illustrationId": "v260-analytic-0025",
+      "illustrationId": "v260-art-analytic-0025",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\沉默术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\沉默术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0025",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0025.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": "instantly-sleep"
@@ -1099,28 +1176,34 @@
       "analysisTurns": 1,
       "speed": 2,
       "text": "选择1个伤害类型才能发动。直到下个己方准备阶段开始时，己方受到的此类型伤害减半。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "choose_resistance",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 27
       },
-      "illustrationId": "v260-analytic-0026",
+      "illustrationId": "v260-art-analytic-0026",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\朦胧术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\朦胧术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0026",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0026.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "target": "player",
       "level": 5
     },
     {
@@ -1136,28 +1219,38 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注4。对方不可选择己方为法术卡的目标。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "target_lock",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 28
       },
-      "illustrationId": "v260-analytic-0027",
+      "illustrationId": "v260-art-analytic-0027",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\恐惧术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\恐惧术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0027",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0027.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "concentration": true,
+      "concentrationUpkeep": 4,
+      "traits": [
+        "target_lock"
+      ],
       "level": 5
     },
     {
@@ -1173,28 +1266,39 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注6。对方结束阶段开始时，对方必须将1张卡从手卡送去灰烬区，否则使对方受到10点心灵伤害。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "hand_or_damage",
+          "amount": 10,
+          "damageType": "psychic"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 29
       },
-      "illustrationId": "v260-analytic-0028",
+      "illustrationId": "v260-art-analytic-0028",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\精神监狱.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\精神监狱.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0028",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0028.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "concentration": true,
+      "concentrationUpkeep": 6,
+      "traits": [
+        "hand_or_psychic"
+      ],
       "level": 6
     },
     {
@@ -1210,25 +1314,27 @@
       "analysisTurns": 2,
       "speed": 1,
       "text": "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "opponent_spell_load",
+          "amount": 4
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 30
       },
-      "illustrationId": "v260-analytic-0029",
+      "illustrationId": "messy-wave",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\messy-wave.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "messy-wave"
       },
       "migration": {
         "previousId": "messy-wave"
@@ -1252,29 +1358,34 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "直到下个己方抽卡阶段开始时，双方解析法术不可发动。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "block_analytic",
+          "amount": 0
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "目录只有沉默术.png，不能确认它是否对应昏昏欲睡"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 31
       },
-      "illustrationId": "v260-analytic-0030",
+      "illustrationId": "instantly-sleep",
       "art": {
-        "status": "conflict",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\沉默术.png"
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\instantly-sleep.png",
+        "mapping": "用户确认沿用旧沉默术卡图",
+        "manifestId": "instantly-sleep"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "block_analytic"
+      ],
       "level": 4
     },
     {
@@ -1290,28 +1401,39 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注2。对方每对己方造成1次伤害，使对方受到2点心灵伤害。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "retaliate_damage",
+          "amount": 2,
+          "damageType": "psychic"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 32
       },
-      "illustrationId": "v260-analytic-0031",
+      "illustrationId": "v260-art-analytic-0031",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\疯狂冠冕.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\疯狂冠冕.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0031",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0031.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "concentration": true,
+      "concentrationUpkeep": 2,
+      "traits": [
+        "retaliate_damage"
+      ],
       "level": 2
     },
     {
@@ -1327,28 +1449,35 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "计时3。己方结束阶段开始时，选择以下1个效果适用：◎恢复2点生命值；◎清除2点荷载；◎获得1点魔素。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "phase_choice",
+          "amount": 3
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 33
       },
-      "illustrationId": "v260-analytic-0032",
+      "illustrationId": "v260-art-analytic-0032",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\祝福术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\祝福术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0032",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0032.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "duration": 3,
+      "onEndChoice": "blessing",
       "level": 4
     },
     {
@@ -1364,28 +1493,35 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "计时3。己方结束阶段开始时，选择以下1个效果适用：◎对对方造成2点暗蚀伤害；◎使对方获得2点独立荷载，对方结束阶段清除；◎对方魔素-1。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "phase_choice_opponent",
+          "amount": 3
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 34
       },
-      "illustrationId": "v260-analytic-0033",
+      "illustrationId": "v260-art-analytic-0033",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\灾祸术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\灾祸术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0033",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0033.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "duration": 3,
+      "onEndChoice": "calamity",
       "level": 4
     },
     {
@@ -1421,10 +1557,14 @@
         "worksheet": "卡表",
         "row": 35
       },
-      "illustrationId": "v260-analytic-0034",
+      "illustrationId": "v260-art-analytic-0034",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\心灵尖刺.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\心灵尖刺.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0034",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0034.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
@@ -1445,25 +1585,27 @@
       "analysisTurns": 2,
       "speed": 1,
       "text": "计时2。己方主要阶段开始时，将双方解析区盖伏卡全部送去灰烬区。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "clear_all_ambush",
+          "amount": 0
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 36
       },
-      "illustrationId": "v260-analytic-0035",
+      "illustrationId": "earthquake",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v254-20261024\\source\\卡图替换\\地震术.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "earthquake"
       },
       "migration": {
         "previousId": "earthquake"
@@ -1490,25 +1632,31 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择对方场上1张空白阵法卡才能发动。将1张阵法卡从副卡组送去灰烬区，销毁那张空白阵法卡。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "discard_formation",
+          "amount": 1
+        },
+        {
+          "kind": "destroy",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 37
       },
-      "illustrationId": "v260-analytic-0036",
+      "illustrationId": "unravel",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\unravel.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "unravel"
       },
       "migration": {
         "previousId": "unravel"
@@ -1528,28 +1676,42 @@
       "analysisTurns": 2,
       "speed": 1,
       "text": "对对方以及对方场上全部目标各造成10点钝击伤害。那之后，直到己方下个准备阶段开始时，对方施法槽数量减半。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "area_damage",
+          "amount": 10,
+          "damageType": "bludgeoning",
+          "recipient": "opponent"
+        },
+        {
+          "kind": "halve_casting_capacity",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 38
       },
-      "illustrationId": "v260-analytic-0037",
+      "illustrationId": "v260-art-analytic-0037",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\土石喷发.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\土石喷发.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0037",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0037.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "halve_casting_capacity"
+      ],
       "level": 5
     },
     {
@@ -1565,28 +1727,40 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "将1张法术卡从己方解析区送去灰烬区，选择1个目标才能发动。对其造成10点钝击伤害。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "discard_analysis",
+          "amount": 1
+        },
+        {
+          "kind": "damage",
+          "amount": 10,
+          "damageType": "bludgeoning",
+          "recipient": "target"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 39
       },
-      "illustrationId": "v260-analytic-0038",
+      "illustrationId": "v260-art-analytic-0038",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\弹射术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\弹射术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0038",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0038.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "extraDiscard": 0,
       "level": 3
     },
     {
@@ -1602,28 +1776,40 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "获得1个额外的己方回合。那之后，直到下个回合结束阶段结束时，己方获得的荷载×2。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "extra_turn",
+          "amount": 1
+        },
+        {
+          "kind": "load_multiplier",
+          "amount": 2
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 40
       },
-      "illustrationId": "v260-analytic-0039",
+      "illustrationId": "v260-art-analytic-0039",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\加速术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\加速术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-analytic-0039",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0039.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "extra_turn_load_double"
+      ],
       "level": 6
     },
     {
@@ -1649,19 +1835,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 42
       },
-      "illustrationId": "v260-word-0001",
+      "illustrationId": "spark",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\spark.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "spark"
       },
       "migration": {
         "previousId": "spark"
@@ -1699,10 +1885,14 @@
         "worksheet": "卡表",
         "row": 43
       },
-      "illustrationId": "v260-word-0002",
+      "illustrationId": "v260-art-word-0002",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\魔能爆.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\魔能爆.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0002",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0002.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
@@ -1737,19 +1927,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 44
       },
-      "illustrationId": "v260-word-0003",
+      "illustrationId": "disrupt",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\disrupt.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "disrupt"
       },
       "migration": {
         "previousId": "disrupt"
@@ -1769,28 +1959,36 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择对方解析区1张法术卡才能发动。将其移入己方解析区。己方准备阶段结束时，返回对方解析区。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "borrow_analysis",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 45
       },
-      "illustrationId": "v260-word-0004",
+      "illustrationId": "v260-art-word-0004",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\法师之手.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\法师之手.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0004",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0004.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "borrow_analysis"
+      ],
       "level": 5
     },
     {
@@ -1806,29 +2004,34 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择己方解析区1张解析法术卡才能发动。使其解析时间-2，获得其实际设置费用的临时荷载。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "accelerate_analysis",
+          "amount": 2
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 46
       },
-      "illustrationId": "v260-word-0005",
+      "illustrationId": "instant-circuit-overload",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\instant-circuit-overload.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "instant-circuit-overload"
       },
       "migration": {
         "previousId": "instant-circuit-overload"
       },
+      "traits": [
+        "accelerate_analysis"
+      ],
       "level": 2
     },
     {
@@ -1858,19 +2061,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 47
       },
-      "illustrationId": "v260-word-0006",
+      "illustrationId": "arcane-recovery",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\arcane-recovery.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "arcane-recovery"
       },
       "migration": {
         "previousId": "arcane-recovery"
@@ -1899,19 +2102,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 48
       },
-      "illustrationId": "v260-word-0007",
+      "illustrationId": "aid",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\aid.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "aid"
       },
       "migration": {
         "previousId": "aid"
@@ -1945,19 +2148,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 49
       },
-      "illustrationId": "v260-word-0008",
+      "illustrationId": "clarity",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\clarity.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "clarity"
       },
       "migration": {
         "previousId": "clarity"
@@ -1978,28 +2181,36 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "直到下个己方主要阶段开始时，双方不可维持专注。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "block_concentration",
+          "amount": 0
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 50
       },
-      "illustrationId": "v260-word-0009",
+      "illustrationId": "v260-art-word-0009",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\扰神曲.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\扰神曲.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0009",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0009.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "block_concentration"
+      ],
       "level": 3
     },
     {
@@ -2015,28 +2226,37 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "直到下个己方抽卡阶段开始时，对方每发动1张言灵法术卡，使对方受到2点暗蚀伤害。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "word_cast_damage",
+          "amount": 2,
+          "damageType": "necrotic"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 51
       },
-      "illustrationId": "v260-word-0010",
+      "illustrationId": "v260-art-word-0010",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\降咒.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\降咒.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0010",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0010.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "word_cast_damage"
+      ],
       "level": 3
     },
     {
@@ -2052,28 +2272,41 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择1个目标才能发动。对其造成5点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣/光耀中选择。那之后，直到此回合结束阶段结束时，对方不可选择己方为法术卡的目标。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "choose_damage",
+          "amount": 5,
+          "recipient": "target"
+        },
+        {
+          "kind": "target_lock",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 52
       },
-      "illustrationId": "v260-word-0011",
+      "illustrationId": "v260-art-word-0011",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\七彩喷射.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\七彩喷射.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0011",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0011.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "target_lock"
+      ],
       "level": 4
     },
     {
@@ -2106,10 +2339,14 @@
         "worksheet": "卡表",
         "row": 53
       },
-      "illustrationId": "v260-word-0012",
+      "illustrationId": "v260-art-word-0012",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\幽影刃.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\幽影刃.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0012",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0012.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
@@ -2150,10 +2387,14 @@
         "worksheet": "卡表",
         "row": 54
       },
-      "illustrationId": "v260-word-0013",
+      "illustrationId": "v260-art-word-0013",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\不谐低语.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\不谐低语.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0013",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0013.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
@@ -2174,28 +2415,37 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "此回合，对方受到的伤害+3。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "increase_damage_taken",
+          "amount": 3,
+          "recipient": "opponent"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 55
       },
-      "illustrationId": "v260-word-0014",
+      "illustrationId": "v260-art-word-0014",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\脆弱诅咒.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\脆弱诅咒.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0014",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0014.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "increase_damage_taken"
+      ],
       "level": 6
     },
     {
@@ -2211,28 +2461,36 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择以下1个效果对对方适用：◎将1张卡从卡组最上方送去灰烬区；◎将1张法术卡从解析区送去灰烬区；◎将1张卡从手卡送去灰烬区。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "command_choice",
+          "amount": 3
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 56
       },
-      "illustrationId": "v260-word-0015",
+      "illustrationId": "v260-art-word-0015",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\命令术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\命令术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0015",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0015.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "command_choice"
+      ],
       "level": 4
     },
     {
@@ -2265,10 +2523,14 @@
         "worksheet": "卡表",
         "row": 57
       },
-      "illustrationId": "v260-word-0016",
+      "illustrationId": "v260-art-word-0016",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\恶言相加.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\恶言相加.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0016",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0016.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
@@ -2289,29 +2551,40 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "将1张法术卡从手卡送去灰烬区才能发动。将1张与那张卡同派系的法术卡从卡组加入手卡。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "discard_hand",
+          "amount": 1,
+          "recipient": "owner"
+        },
+        {
+          "kind": "search_same_school",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 58
       },
-      "illustrationId": "v260-word-0017",
+      "illustrationId": "true-strike",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\true-strike.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "true-strike"
       },
       "migration": {
         "previousId": "true-strike"
       },
+      "extraDiscard": 1,
+      "traits": [
+        "discard_spell_search"
+      ],
       "level": 3
     },
     {
@@ -2341,19 +2614,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 59
       },
-      "illustrationId": "v260-word-0018",
+      "illustrationId": "recall",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\recall.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "recall"
       },
       "migration": {
         "previousId": "recall"
@@ -2373,28 +2646,37 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "将1张卡从手卡送去灰烬区才能发动。查看对方卡组最上方的3张卡，将其中1张送去灰烬区，其余卡返回卡组最下方。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "inspect_opponent_deck",
+          "amount": 3
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 60
       },
-      "illustrationId": "v260-word-0019",
+      "illustrationId": "v260-art-word-0019",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\异界探知.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\异界探知.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0019",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0019.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "extraDiscard": 1,
+      "traits": [
+        "inspect_opponent_deck"
+      ],
       "level": 3
     },
     {
@@ -2410,28 +2692,37 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "将1张卡从手卡送去灰烬区才能发动。查看己方卡组最上方的3张卡，将其中1张加入手卡，其余卡返回卡组最下方。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "inspect_own_deck",
+          "amount": 3
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 61
       },
-      "illustrationId": "v260-word-0020",
+      "illustrationId": "v260-art-word-0020",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\卜筮术.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\卜筮术.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0020",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0020.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "extraDiscard": 1,
+      "traits": [
+        "inspect_own_deck"
+      ],
       "level": 1
     },
     {
@@ -2463,10 +2754,14 @@
         "worksheet": "卡表",
         "row": 62
       },
-      "illustrationId": "v260-word-0021",
+      "illustrationId": "v260-art-word-0021",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\强化属性.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\强化属性.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-word-0021",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0021.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
@@ -2486,28 +2781,38 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "己方受到伤害时才能发动。对对方造成等量火焰伤害。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "reflect_damage",
+          "amount": 0,
+          "damageType": "fire"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 64
       },
-      "illustrationId": "v260-talisman-0001",
+      "illustrationId": "v260-art-talisman-0001",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\炼狱叱喝.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\炼狱叱喝.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-talisman-0001",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-talisman-0001.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "responseOnly": true,
+      "traits": [
+        "reflect_damage"
+      ],
       "level": 5
     },
     {
@@ -2523,28 +2828,37 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "对方发动穿刺/挥砍/钝击伤害法术卡时才能发动。将其无效并盖伏在己方解析区。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "counter_physical",
+          "amount": 0
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 65
       },
-      "illustrationId": "v260-talisman-0002",
+      "illustrationId": "v260-art-talisman-0002",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\捕获打击.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\捕获打击.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-talisman-0002",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-talisman-0002.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "responseOnly": true,
+      "traits": [
+        "counter_physical"
+      ],
       "level": 4
     },
     {
@@ -2568,19 +2882,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 66
       },
-      "illustrationId": "v260-talisman-0003",
+      "illustrationId": "shield",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\shield.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "shield"
       },
       "migration": {
         "previousId": "shield"
@@ -2601,25 +2915,27 @@
       "analysisTurns": 0,
       "speed": 4,
       "text": "对方发动法术卡时才能发动。将其无效并销毁。X为被连锁法术卡的实际设置和发动费用之和。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "counter_spell",
+          "amount": 0
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 67
       },
-      "illustrationId": "v260-talisman-0004",
+      "illustrationId": "counter-spell",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\counter-spell.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "counter-spell"
       },
       "migration": {
         "previousId": "counter-spell"
@@ -2654,19 +2970,19 @@
       ],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 68
       },
-      "illustrationId": "v260-talisman-0005",
+      "illustrationId": "protective-flame",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\protective-flame.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "protective-flame"
       },
       "migration": {
         "previousId": "protective-flame"
@@ -2692,28 +3008,37 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "对方设置法术卡时才能发动。将其无效并弹回持有者手卡。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "cancel_setup_return",
+          "amount": 0
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 69
       },
-      "illustrationId": "v260-talisman-0006",
+      "illustrationId": "v260-art-talisman-0006",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\解除魔法.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\解除魔法.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-talisman-0006",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-talisman-0006.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "responseOnly": true,
+      "traits": [
+        "cancel_setup_return"
+      ],
       "level": 3
     },
     {
@@ -2729,28 +3054,38 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "计时3。己方每受到3点伤害，使对方受到1点暗蚀伤害。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "damage_threshold",
+          "amount": 3,
+          "damageType": "necrotic"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 70
       },
-      "illustrationId": "v260-talisman-0007",
+      "illustrationId": "v260-art-talisman-0007",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\死佑护甲.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\死佑护甲.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-talisman-0007",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-talisman-0007.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "duration": 3,
+      "traits": [
+        "damage_threshold"
+      ],
       "level": 2
     },
     {
@@ -2766,28 +3101,36 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "此回合，对方设置的全部解析法术卡的解析时间+1。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "delay_all_enemy_analysis",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 71
       },
-      "illustrationId": "v260-talisman-0008",
+      "illustrationId": "v260-art-talisman-0008",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\步履维艰.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\步履维艰.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-talisman-0008",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-talisman-0008.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "delay_all_enemy_analysis"
+      ],
       "level": 2
     },
     {
@@ -2803,30 +3146,56 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "对方准备施法时才能发动。将其取消。那之后，可以将对方解析区1张解析法术卡弹回持有者手卡。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "cancel"
+        },
+        {
+          "kind": "return_enemy_analysis"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 72
       },
-      "illustrationId": "v260-talisman-0009",
+      "illustrationId": "barbs",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\barbs.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "barbs"
       },
       "migration": {
         "previousId": "barbs"
       },
       "responseOnly": true,
+      "responses": [
+        {
+          "id": "cancel_preparation",
+          "name": "取消准备并返回解析法术",
+          "sources": [
+            "ambush"
+          ],
+          "windows": [
+            "prepare"
+          ],
+          "eventOwner": "opponent",
+          "target": "preparation_root",
+          "effects": [
+            {
+              "kind": "cancel"
+            },
+            {
+              "kind": "return_enemy_analysis"
+            }
+          ]
+        }
+      ],
       "responseEffects": [
         {
           "kind": "cancel"
@@ -2850,29 +3219,33 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "选择对方灰烬区1张阶级5以下的解析法术卡才能发动。将其盖伏在己方解析区。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "recover_enemy_ash_spell",
+          "amount": 5
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 73
       },
-      "illustrationId": "v260-talisman-0010",
+      "illustrationId": "v2-funny-box",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-funny-box.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "v2-funny-box"
       },
       "migration": {
         "previousId": "funny-box"
       },
+      "target": "enemy_ash_card",
+      "targetCount": 1,
       "level": 5
     },
     {
@@ -2888,28 +3261,37 @@
       "analysisTurns": 0,
       "speed": 4,
       "text": "查看对方解析区1张盖伏卡，若为解析/言灵法术卡，将其返回持有者卡组；若为咒符法术卡，则将其送去灰烬区。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "inspect_and_route",
+          "amount": 1
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 74
       },
-      "illustrationId": "v260-talisman-0011",
+      "illustrationId": "v260-art-talisman-0011",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\侦测善恶.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\侦测善恶.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-talisman-0011",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-talisman-0011.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
+      "responseOnly": true,
+      "traits": [
+        "inspect_and_route"
+      ],
       "level": 4
     },
     {
@@ -2925,28 +3307,38 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "计时2。对方每设置/盖伏1张法术卡，使对方受到2点穿刺伤害。",
-      "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "setup_damage",
+          "amount": 2,
+          "damageType": "piercing"
+        }
       ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
         "row": 75
       },
-      "illustrationId": "v260-talisman-0012",
+      "illustrationId": "v260-art-talisman-0012",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\荆棘丛生.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\荆棘丛生.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-talisman-0012",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-talisman-0012.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
+      "duration": 2,
+      "traits": [
+        "setup_damage"
+      ],
       "level": 3
     },
     {
@@ -2965,19 +3357,19 @@
       "effects": [],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
         "worksheet": "符文卡",
         "row": 2
       },
-      "illustrationId": "v260-seal-0001",
+      "illustrationId": "conduit",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\conduit.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "conduit"
       },
       "migration": {
         "previousId": "conduit"
@@ -3003,19 +3395,19 @@
       "effects": [],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
         "worksheet": "符文卡",
         "row": 3
       },
-      "illustrationId": "v260-seal-0002",
+      "illustrationId": "ring",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\ring.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "ring"
       },
       "migration": {
         "previousId": "ring"
@@ -3042,19 +3434,19 @@
       "effects": [],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "正式卡图未匹配"
-      ],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
         "worksheet": "符文卡",
         "row": 4
       },
-      "illustrationId": "v260-seal-0003",
+      "illustrationId": "uplift",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\uplift.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "uplift"
       },
       "migration": {
         "previousId": "uplift"
@@ -3082,24 +3474,21 @@
       "speed": 1,
       "text": "己方结束阶段开始时，恢复1点生命值。",
       "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 3
       },
-      "illustrationId": "v260-formation-0001",
+      "illustrationId": "v2-upright-cross",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-upright-cross.png",
+        "mapping": "历史对应阵法卡图",
+        "manifestId": "v2-upright-cross"
       },
       "migration": {
         "previousId": null
@@ -3108,6 +3497,17 @@
         "host_heal_plus_one"
       ],
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1,
+          "school": "necromancy"
+        },
+        {
+          "kind": "mana",
+          "amount": 1
+        }
+      ],
       "summonCondition": "解析区死灵派系法术卡×1＋魔素×1",
       "level": 3,
       "body": 2,
@@ -3129,24 +3529,21 @@
       "speed": 1,
       "text": "己方结束阶段开始时，失去1点生命值，获得3点临时生命值。",
       "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 4
       },
-      "illustrationId": "v260-formation-0002",
+      "illustrationId": "v2-inverted-cross",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-inverted-cross.png",
+        "mapping": "历史对应阵法卡图",
+        "manifestId": "v2-inverted-cross"
       },
       "migration": {
         "previousId": null
@@ -3155,6 +3552,17 @@
         "host_cast_life_for_temporary"
       ],
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1,
+          "school": "necromancy"
+        },
+        {
+          "kind": "mana",
+          "amount": 1
+        }
+      ],
       "summonCondition": "解析区死灵派系法术卡×1＋魔素×1",
       "level": 3,
       "body": 2,
@@ -3176,29 +3584,36 @@
       "speed": 1,
       "text": "此阵法卡离场时才能发动。此阵法卡抹除。那之后，可以将1张阵法卡从己方灰烬区返回副卡组。",
       "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 5
       },
-      "illustrationId": "v260-formation-0003",
+      "illustrationId": "v2-ankh",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-ankh.png",
+        "mapping": "历史对应阵法卡图",
+        "manifestId": "v2-ankh"
       },
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "return_formation_from_ash"
+      ],
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1,
+          "school": "necromancy"
+        }
+      ],
       "summonCondition": "解析区死灵派系法术卡×1",
       "level": 3,
       "body": 2,
@@ -3220,29 +3635,40 @@
       "speed": 1,
       "text": "1回合1次，此阵法卡上设置的解析法术卡的解析时间-1。",
       "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 6
       },
-      "illustrationId": "v260-formation-0004",
+      "illustrationId": "engeas-four-point-star",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\engeas-four-point-star.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "engeas-four-point-star"
       },
       "migration": {
         "previousId": "engeas-four-point-star"
       },
+      "traits": [
+        "quick_host_analysis_1"
+      ],
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1,
+          "readyOnly": true
+        },
+        {
+          "kind": "mana",
+          "amount": 3
+        }
+      ],
       "summonCondition": "解析完成的法术卡×1+魔素×3",
       "level": 2,
       "body": 1,
@@ -3264,24 +3690,21 @@
       "speed": 1,
       "text": "此阵法卡上设置的塑能法术卡造成的伤害+1。",
       "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 7
       },
-      "illustrationId": "v260-formation-0005",
+      "illustrationId": "v2-elemental-ring",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-elemental-ring.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "v2-elemental-ring"
       },
       "migration": {
         "previousId": "elemental-ring"
@@ -3290,6 +3713,18 @@
         "host_evocation_damage_plus_one"
       ],
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1,
+          "readyOnly": true,
+          "school": "evocation"
+        },
+        {
+          "kind": "mana",
+          "amount": 1
+        }
+      ],
       "summonCondition": "解析完成的塑能派系法术卡×1＋魔素×1",
       "level": 3,
       "body": 2,
@@ -3311,24 +3746,21 @@
       "speed": 1,
       "text": "此阵法卡上不可同时设置相同派系的法术卡。",
       "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 8
       },
-      "illustrationId": "v260-formation-0006",
+      "illustrationId": "v2-chaos-ring",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-chaos-ring.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "v2-chaos-ring"
       },
       "migration": {
         "previousId": "chaos-ring"
@@ -3337,6 +3769,14 @@
         "distinct_host_schools"
       ],
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_spell",
+          "amount": 2,
+          "readyOnly": true,
+          "distinctSchools": true
+        }
+      ],
       "summonCondition": "解析完成的不同派系法术卡×2",
       "level": 3,
       "body": 2,
@@ -3358,24 +3798,21 @@
       "speed": 1,
       "text": "己方场上阵法卡被销毁时，可以将此阵法送去灰烬区作为替代。",
       "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 9
       },
-      "illustrationId": "v260-formation-0007",
+      "illustrationId": "reservoir",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\reservoir.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "reservoir"
       },
       "migration": {
         "previousId": "reservoir"
@@ -3384,6 +3821,12 @@
         "effect_indestructible"
       ],
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "discard_hand",
+          "amount": 2
+        }
+      ],
       "summonCondition": "手卡×2",
       "level": 0,
       "body": 1,
@@ -3405,35 +3848,42 @@
       "speed": 1,
       "text": "此阵法卡上仅可设置火焰伤害法术卡。己方每有1张法术卡从施法区进入灰烬区，对对方造成2点火焰伤害。",
       "effects": [],
-      "effectStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段"
-      ],
-      "implementationStatus": "blocked",
-      "implementationBlockers": [
-        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-        "硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段",
-        "正式卡图未匹配"
-      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 10
       },
-      "illustrationId": "v260-formation-0008",
+      "illustrationId": "v2-sulfur",
       "art": {
-        "status": "missing",
-        "source": null
+        "status": "matched",
+        "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-sulfur.png",
+        "mapping": "历史同名卡图",
+        "manifestId": "v2-sulfur"
       },
       "migration": {
         "previousId": "sulfur"
+      },
+      "leaveDamage": {
+        "amount": 2,
+        "damageType": "fire"
       },
       "traits": [
         "host_fire_only",
         "ping_on_spell_leave"
       ],
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_spell",
+          "amount": 2,
+          "readyOnly": true,
+          "fireDamage": true
+        }
+      ],
       "summonCondition": "解析完成的火焰伤害法术卡×2",
       "level": 6,
       "body": 2,
@@ -3464,15 +3914,25 @@
         "worksheet": "阵法卡",
         "row": 12
       },
-      "illustrationId": "v260-formation-0009",
+      "illustrationId": "v260-art-formation-0009",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\基础.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\基础.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-formation-0009",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0009.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "discard_hand",
+          "amount": 1
+        }
+      ],
       "summonCondition": "手卡×1",
       "level": 1,
       "body": 1,
@@ -3503,15 +3963,30 @@
         "worksheet": "阵法卡",
         "row": 13
       },
-      "illustrationId": "v260-formation-0010",
+      "illustrationId": "v260-art-formation-0010",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\标准.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\标准.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-formation-0010",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0010.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0009"
+        },
+        {
+          "kind": "mana",
+          "amount": 2
+        }
+      ],
       "summonCondition": "【基础法阵】+魔素×2",
       "level": 2,
       "body": 2,
@@ -3542,15 +4017,30 @@
         "worksheet": "阵法卡",
         "row": 14
       },
-      "illustrationId": "v260-formation-0011",
+      "illustrationId": "v260-art-formation-0011",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\强化.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\强化.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-formation-0011",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0011.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0010"
+        },
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1
+        }
+      ],
       "summonCondition": "【标准法阵】+解析区法术卡×1",
       "level": 3,
       "body": 2,
@@ -3581,15 +4071,31 @@
         "worksheet": "阵法卡",
         "row": 15
       },
-      "illustrationId": "v260-formation-0012",
+      "illustrationId": "v260-art-formation-0012",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\复合.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\复合.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-formation-0012",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0012.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0009"
+        },
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0010"
+        }
+      ],
       "summonCondition": "【基础法阵】+【标准法阵】",
       "level": 4,
       "body": 2,
@@ -3620,15 +4126,34 @@
         "worksheet": "阵法卡",
         "row": 16
       },
-      "illustrationId": "v260-formation-0013",
+      "illustrationId": "v260-art-formation-0013",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\增幅.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\增幅.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-formation-0013",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0013.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0012"
+        },
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1,
+          "schools": [
+            "evocation",
+            "conjuration"
+          ]
+        }
+      ],
       "summonCondition": "【复合法阵】+解析区塑能/咒法派系法术卡×1",
       "level": 5,
       "body": 3,
@@ -3659,15 +4184,39 @@
         "worksheet": "阵法卡",
         "row": 17
       },
-      "illustrationId": "v260-formation-0014",
+      "illustrationId": "v260-art-formation-0014",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\守护.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\守护.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-formation-0014",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0014.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0009"
+        },
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0011"
+        },
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1,
+          "schools": [
+            "abjuration",
+            "necromancy"
+          ]
+        }
+      ],
       "summonCondition": "【基础法阵】+【强化法阵】+解析区防护/死灵派系法术卡×1",
       "level": 5,
       "body": 3,
@@ -3698,15 +4247,39 @@
         "worksheet": "阵法卡",
         "row": 18
       },
-      "illustrationId": "v260-formation-0015",
+      "illustrationId": "v260-art-formation-0015",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\幻象.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\幻象.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-formation-0015",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0015.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0009"
+        },
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0011"
+        },
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1,
+          "schools": [
+            "illusion",
+            "enchantment"
+          ]
+        }
+      ],
       "summonCondition": "【基础法阵】+【强化法阵】+解析区幻术/惑控派系法术卡×1",
       "level": 5,
       "body": 3,
@@ -3737,15 +4310,39 @@
         "worksheet": "阵法卡",
         "row": 19
       },
-      "illustrationId": "v260-formation-0016",
+      "illustrationId": "v260-art-formation-0016",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\高阶.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\高阶.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-formation-0016",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0016.png",
+        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
       },
       "migration": {
         "previousId": null
       },
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definitions": [
+            "v260-formation-0013",
+            "v260-formation-0014",
+            "v260-formation-0015"
+          ]
+        },
+        {
+          "kind": "sacrifice_spell",
+          "amount": 1,
+          "readyOnly": true
+        },
+        {
+          "kind": "mana",
+          "amount": 3
+        }
+      ],
       "summonCondition": "【增幅法阵】或【守护法阵】或【幻象法阵】+解析完成的法术卡×1+魔素×3",
       "level": 6,
       "body": 3,
@@ -3776,15 +4373,35 @@
         "worksheet": "阵法卡",
         "row": 20
       },
-      "illustrationId": "v260-formation-0017",
+      "illustrationId": "v260-art-formation-0017",
       "art": {
         "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\完美.png"
+        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\完美.png",
+        "mapping": "用户指定 Alpha 现有卡池卡图",
+        "manifestId": "v260-art-formation-0017",
+        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0017.png",
+        "processing": "源图已有有效 alpha；保留透明像素"
       },
       "migration": {
         "previousId": null
       },
       "raritySource": "",
+      "recipe": [
+        {
+          "kind": "sacrifice_formation",
+          "amount": 1,
+          "definition": "v260-formation-0016"
+        },
+        {
+          "kind": "sacrifice_spell",
+          "amount": 2,
+          "readyOnly": true
+        },
+        {
+          "kind": "mana",
+          "amount": 5
+        }
+      ],
       "summonCondition": "【高阶法阵】+解析完成的法术卡×2+魔素×5",
       "level": 7,
       "body": 4,

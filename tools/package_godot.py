@@ -14,7 +14,7 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_PACKAGE_VERSION = "2.6.0-staging"
+DEFAULT_PACKAGE_VERSION = "2.6.0-hotfix.1"
 
 
 def run(*args):
@@ -28,13 +28,14 @@ def main():
     parser.add_argument("--configuration", default="Release")
     parser.add_argument("--package-version", default=DEFAULT_PACKAGE_VERSION,
                         help="portable package label; the executable reports its own runtime version")
+    parser.add_argument("--content", type=Path, default=ROOT / "assets/release-v260",
+                        help="runtime content directory containing catalog.json and the approved deck files")
     parser.add_argument("--output", type=Path,
                         help="empty package directory; defaults to dist/WizardCard-<package-version>-windows-x64")
     parser.add_argument("--staging-report", type=Path,
-                        default=ROOT / "assets/source-archive/alpha-v260-xlsx-import/import-report.md",
-                        help="v2.6.0 import report to include in a staging package")
+                        help="optional import report to include in a staging package")
     parser.add_argument("--include-presets", action="store_true",
-                        help="include legacy public presets (disabled for the v2.6.0 staging package)")
+                        help="include legacy public presets (disabled for the v2.6.0 release package)")
     parser.add_argument("--crt", type=Path, help="Directory containing the x64 VC runtime DLLs")
     args = parser.parse_args()
     lock = json.loads((ROOT / "godot/toolchain-lock.json").read_text())
@@ -49,22 +50,26 @@ def main():
         raise SystemExit("Use an empty package directory; existing artifacts are preserved")
     if not (ROOT / "godot/bin/wizard_godot_bridge.release.dll").is_file():
         raise SystemExit("Build the matching Release Godot bridge before packaging")
+    content = args.content.resolve()
+    if not content.is_relative_to(ROOT / "assets") or not (content / "catalog.json").is_file():
+        raise SystemExit("--content must be an assets directory containing catalog.json")
     for name in ("wizard_cli.exe", "wizard_network_probe.exe"):
         if not (args.build / args.configuration / name).is_file():
             raise SystemExit(f"Missing release verification tool: {name}")
     run(args.godot, "--headless", "--path", ROOT / "godot", "--import", "--frame-delay", "1000")
     run(args.godot, "--headless", "--path", ROOT / "godot", "--export-release", "Windows Desktop", output / "WizardCard.exe")
-    manifest = json.loads((ROOT / "assets/catalog.json").read_text(encoding="utf-8"))
+    manifest = json.loads((content / "catalog.json").read_text(encoding="utf-8"))
     data_files = ["catalog.json", "cards.json", "deck.json", "side-deck.json"]
-    if args.include_presets:
+    if args.include_presets or (content / "presets.json").is_file():
         data_files.append("presets.json")
     data_files += [entry["file"] for entry in manifest["definitions"]]
     for relative in data_files:
-        source = ROOT / "assets" / relative
+        source = content / relative
         destination = output / "assets" / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
-    shutil.copytree(ROOT / "assets/audio", output / "assets/audio", ignore=shutil.ignore_patterns("*.py"))
+    audio_source = content / "audio" if (content / "audio").is_dir() else ROOT / "assets/audio"
+    shutil.copytree(audio_source, output / "assets/audio", ignore=shutil.ignore_patterns("*.py"))
     # The extension manifest resolves the native bridge as res://bin/...;
     # keep that layout in the portable package so deck construction and all
     # other native service calls work after export.
@@ -76,7 +81,7 @@ def main():
             shutil.copy2(file, output / file.name)
     for name in ("LICENSE", "THIRD_PARTY_NOTICES.md", "README.md", "CHANGELOG.md", "GLOSSARY.md"):
         shutil.copy2(ROOT / name, output / name)
-    if args.staging_report.is_file():
+    if args.staging_report and args.staging_report.is_file():
         destination = output / "docs" / "releases" / "alpha-v2.6.0-staging-import.md"
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(args.staging_report, destination)
@@ -85,7 +90,8 @@ def main():
     (output / "docs").mkdir(exist_ok=True)
     for name in ("alpha-v2.5-rules.md", "architecture.md", "network-play.md",
                  "card-catalog.md", "card-catalog.html", "sique-cards.md",
-                 "releases/2.6.0-staging.md",
+                 "releases/2.6.0-hotfix.1.md", "reports/2.6.0-hotfix.1.md",
+                 "releases/2.6.0.md", "reports/2.6.0.md",
                  "releases/2.5.5-hotfix.1.md", "reports/2.5.5-hotfix.1.md",
                  "releases/2.5.5.md", "reports/2.5.5.md"):
         source = ROOT / "docs" / name
@@ -97,7 +103,7 @@ def main():
     # repository. Copy only the official cards' runtime art beside the docs.
     art_files = {entry["id"]: entry["file"]
                  for entry in json.loads((ROOT / "godot/art/assets.json").read_text(encoding="utf-8"))["assets"]}
-    cards = json.loads((ROOT / "assets/cards.json").read_text(encoding="utf-8"))["cards"]
+    cards = json.loads((content / "cards.json").read_text(encoding="utf-8"))["cards"]
     for card in cards:
         relative = art_files["illustration." + card.get("illustrationId", card["id"])].removeprefix("res://")
         destination = output / "godot" / relative
@@ -118,7 +124,7 @@ def main():
     release = {key: verified[key] for key in
                ("programVersion", "rulesVersion", "cardSetVersion", "contentHash")}
     release.update({"packageVersion": args.package_version,
-                    "status": "staging-blocked" if args.staging_report.is_file() else "runtime-verified"})
+                    "status": "staging-blocked" if args.staging_report and args.staging_report.is_file() else "released"})
     release.update({"mechanicsRevision": manifest["metadata"]["mechanicsRevision"],
                     "cardCount": len(cards), "engine": version,
                     "catalogSha256": hashlib.sha256((output / "assets/cards.json").read_bytes()).hexdigest(),

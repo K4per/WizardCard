@@ -11,27 +11,36 @@
   "analysisTurns": 0,
   "speed": 3,
   "text": "对方发动穿刺/挥砍/钝击伤害法术卡时才能发动。将其无效并盖伏在己方解析区。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "counter_physical",
+      "amount": 0
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 65
   },
-  "illustrationId": "v260-talisman-0002",
+  "illustrationId": "v260-art-talisman-0002",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\捕获打击.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\捕获打击.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-talisman-0002",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-talisman-0002.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
   },
   "migration": {
     "previousId": null
   },
+  "responseOnly": true,
+  "traits": [
+    "counter_physical"
+  ],
   "level": 4
 }

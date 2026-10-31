@@ -1,0 +1,43 @@
+{
+  "id": "v260-word-0005",
+  "number": "030005",
+  "name": "瞬发回路过载",
+  "type": "word",
+  "school": "conjuration",
+  "rarity": "epic",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "选择己方解析区1张解析法术卡才能发动。使其解析时间-2，获得其实际设置费用的临时荷载。",
+  "effects": [
+    {
+      "kind": "accelerate_analysis",
+      "amount": 2
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 46
+  },
+  "illustrationId": "instant-circuit-overload",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\instant-circuit-overload.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "instant-circuit-overload"
+  },
+  "migration": {
+    "previousId": "instant-circuit-overload"
+  },
+  "traits": [
+    "accelerate_analysis"
+  ],
+  "level": 2
+}

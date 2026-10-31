@@ -1,0 +1,46 @@
+{
+  "id": "v260-analytic-0006",
+  "number": "020006",
+  "name": "曳光弹",
+  "type": "analytic",
+  "school": "evocation",
+  "rarity": "uncommon",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "选择1个目标才能发动。对其造成5点光耀伤害。那之后，可以查看对方解析区1张盖伏卡。",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "radiant",
+      "recipient": "target"
+    },
+    {
+      "kind": "reveal_enemy_ambush"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 7
+  },
+  "illustrationId": "v2-guiding-bolt",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-guiding-bolt.png",
+    "mapping": "历史同类卡图",
+    "manifestId": "v2-guiding-bolt"
+  },
+  "migration": {
+    "previousId": "guiding-bolt"
+  },
+  "target": "player",
+  "level": 2
+}

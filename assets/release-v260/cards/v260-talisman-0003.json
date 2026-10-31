@@ -1,0 +1,41 @@
+{
+  "id": "v260-talisman-0003",
+  "number": "040003",
+  "name": "护盾术",
+  "type": "talisman",
+  "school": "abjuration",
+  "rarity": "common",
+  "rank": 4,
+  "cost": 0,
+  "castCost": 3,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "此回合，每次受到的伤害-3。若为力场伤害，则-6。",
+  "effects": [
+    {
+      "kind": "shield_for_turn",
+      "amount": 3
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 66
+  },
+  "illustrationId": "shield",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\shield.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "shield"
+  },
+  "migration": {
+    "previousId": "shield"
+  },
+  "target": "self",
+  "level": 4
+}

@@ -1,0 +1,43 @@
+{
+  "id": "v260-analytic-0026",
+  "number": "020026",
+  "name": "朦胧术",
+  "type": "analytic",
+  "school": "illusion",
+  "rarity": "common",
+  "rank": 5,
+  "cost": 3,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 2,
+  "text": "选择1个伤害类型才能发动。直到下个己方准备阶段开始时，己方受到的此类型伤害减半。",
+  "effects": [
+    {
+      "kind": "choose_resistance",
+      "amount": 1
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 27
+  },
+  "illustrationId": "v260-art-analytic-0026",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\朦胧术.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0026",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0026.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "target": "player",
+  "level": 5
+}

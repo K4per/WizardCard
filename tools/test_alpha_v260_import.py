@@ -2,10 +2,8 @@
 from __future__ import annotations
 
 import json
-import shutil
 import subprocess
 import sys
-import tempfile
 import unittest
 from collections import Counter
 from pathlib import Path
@@ -86,17 +84,32 @@ class Alpha260ImportTests(unittest.TestCase):
             "seals": 3, "formations": 17, "total": 92,
         })
         self.assertEqual(Counter(card["effectStatus"] for card in staged), {
-            "structured-candidate": 40, "blocked": 52,
+            "structured-candidate": 92,
         })
         self.assertEqual(Counter(card["art"]["status"] for card in staged), {
-            "matched": 49, "missing": 42, "conflict": 1,
+            "matched": 92,
         })
         by_name = {card["name"]: card for card in staged}
         self.assertEqual(by_name["魔力扰动"]["effectStatus"], "structured-candidate")
-        self.assertEqual(by_name["魔力扰动"]["art"]["status"], "missing")
+        self.assertEqual(by_name["魔力扰动"]["art"]["status"], "matched")
         self.assertTrue(by_name["魔力扰动"]["effectBlockers"] == [])
-        self.assertTrue(by_name["火球术"]["implementationBlockers"])
-        self.assertTrue(issues)
+        self.assertEqual(by_name["火球术"]["implementationBlockers"], [])
+        self.assertFalse(issues)
+        self.assertEqual(by_name["昏昏欲睡"]["art"]["manifestId"], "instantly-sleep")
+        self.assertEqual(by_name["沉默术"]["art"]["manifestId"], "v260-art-analytic-0025")
+        self.assertEqual(by_name["沉默术"]["art"]["mapping"], "用户指定 Alpha 现有卡池卡图")
+        self.assertEqual(by_name["沉默术"]["art"]["processedFile"],
+                         "assets/art/alpha-v260/current-pool/v260-art-analytic-0025.png")
+        self.assertEqual(by_name["炼狱叱喝"]["art"]["manifestId"], "v260-art-talisman-0001")
+        self.assertEqual(by_name["基础法阵"]["art"]["manifestId"], "v260-art-formation-0009")
+
+        # Alternatives remain executable data instead of being flattened into
+        # a display string.  The C++ matcher can therefore select any listed
+        # formation/school while preserving the source recipe.
+        self.assertEqual(by_name["高阶法阵"]["recipe"][0]["definitions"], [
+            "v260-formation-0013", "v260-formation-0014", "v260-formation-0015"])
+        self.assertEqual(by_name["增幅法阵"]["recipe"][1]["schools"], ["evocation", "conjuration"])
+        self.assertEqual(by_name["紊乱波动"]["traits"], ["opponent_spell_load_4"])
 
     def test_workbook_static_statistics_are_explained_as_stale(self):
         book = importer.XlsxBook(DESIGN / "法术卡列表.xlsx")
@@ -127,20 +140,12 @@ class Alpha260ImportTests(unittest.TestCase):
         if not binary.is_file():
             self.skipTest("local Release wizard_cli.exe is not built")
 
-        # The temporary version override probes data/schema validation only.
-        # Production's explicit 2.6.0 version rejection remains in force.
-        with tempfile.TemporaryDirectory(prefix="wizardcard-v260-schema-") as temporary:
-            content = Path(temporary) / "content"
-            shutil.copytree(STAGING, content)
-            catalog_path = content / "catalog.json"
-            catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
-            catalog["metadata"].update(
-                rulesVersion="2.5.5", cardSetVersion="2.5.5", mechanicsRevision=9)
-            catalog_path.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-            result = subprocess.run(
-                [str(binary), "validate", str(content)], text=True, capture_output=True, check=False)
-            self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertIn("92 definitions; 40 cards", result.stdout)
+        # The staging loader accepts 2.6.0/revision 10 directly.  GameEngine's
+        # production constructor still keeps the 2.5.5/revision 9 release gate.
+        result = subprocess.run(
+            [str(binary), "validate", str(STAGING)], text=True, capture_output=True, check=False)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("92 definitions; 40 cards", result.stdout)
 
 
 if __name__ == "__main__":

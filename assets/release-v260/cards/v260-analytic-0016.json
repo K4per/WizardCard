@@ -1,0 +1,47 @@
+{
+  "id": "v260-analytic-0016",
+  "number": "020016",
+  "name": "次级复原",
+  "type": "analytic",
+  "school": "abjuration",
+  "rarity": "common",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "选择1个目标才能发动。为其恢复2点生命值。那之后，清除己方6点荷载。",
+  "effects": [
+    {
+      "kind": "heal",
+      "amount": 2,
+      "recipient": "target"
+    },
+    {
+      "kind": "clear_all_temporary",
+      "amount": 6,
+      "recipient": "owner"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 17
+  },
+  "illustrationId": "lesser-restoration",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\lesser-restoration.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "lesser-restoration"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "target": "player",
+  "level": 2
+}

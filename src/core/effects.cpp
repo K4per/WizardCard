@@ -57,6 +57,38 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     const int previousTemporaryLife = s.players[p].temporaryLife;
     const int previousLife = s.players[p].life;
     const auto previousDeck = s.players[t.owner].deck.size();
+    if (e.kind == EffectKind::V260Structured) {
+        // Keep staging effects observable and deterministic even when their
+        // full v2.6 choice/timing contract is not part of the 2.5.5 resolver.
+        // A few unambiguous projections can use existing primitives directly;
+        // all other clauses emit an explicit adapter event instead of silently
+        // being dropped by an unknown enum value.
+        if (e.semantic == "area_damage") {
+            apply(s, cat, t, Effect{EffectKind::Damage, e.amount, e.damageType, e.recipient});
+            return;
+        }
+        if (e.semantic == "both_damage") {
+            apply(s, cat, t, Effect{EffectKind::Damage, e.amount, e.damageType, EffectRecipient::Owner});
+            if (s.result == -1)
+                apply(s, cat, t, Effect{EffectKind::Damage, e.amount, e.damageType, EffectRecipient::Opponent});
+            return;
+        }
+        if (e.semantic == "independent_timed") {
+            apply(s, cat, t, Effect{EffectKind::AddIndependent, e.amount, DamageType::Force, e.recipient});
+            return;
+        }
+        if (e.semantic == "opponent_spell_load") {
+            apply(s, cat, t, Effect{EffectKind::AddTemporary, e.amount, DamageType::Force, EffectRecipient::Opponent});
+            return;
+        }
+        GameEvent event{"v260_staging_adapter", "v2.6 staging effect retained: " + e.semantic,
+                        -1, t.source, e.amount};
+        event.effectType = EffectKind::V260Structured;
+        event.affectedPlayer = p;
+        s.events.push_back(std::move(event));
+        StateMaintenance::check(s, cat);
+        return;
+    }
     switch (e.kind) {
     case EffectKind::Damage: {
         auto adjusted = e;

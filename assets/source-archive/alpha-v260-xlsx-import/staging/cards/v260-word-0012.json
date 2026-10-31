@@ -28,10 +28,14 @@
     "worksheet": "卡表",
     "row": 53
   },
-  "illustrationId": "v260-word-0012",
+  "illustrationId": "v260-art-word-0012",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\幽影刃.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\幽影刃.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-word-0012",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0012.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": null

@@ -21,15 +21,25 @@
     "worksheet": "阵法卡",
     "row": 12
   },
-  "illustrationId": "v260-formation-0009",
+  "illustrationId": "v260-art-formation-0009",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\基础.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\基础.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-formation-0009",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0009.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
   },
   "migration": {
     "previousId": null
   },
   "raritySource": "",
+  "recipe": [
+    {
+      "kind": "discard_hand",
+      "amount": 1
+    }
+  ],
   "summonCondition": "手卡×1",
   "level": 1,
   "body": 1,

@@ -19,29 +19,27 @@
       "recipient": "target"
     },
     {
-      "kind": "independent",
+      "kind": "independent_timed",
       "amount": 5,
-      "recipient": "opponent"
+      "recipient": "opponent",
+      "expires": "opponent_end"
     }
   ],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段"
-  ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段",
-    "正式卡图未匹配"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 13
   },
-  "illustrationId": "v260-analytic-0012",
+  "illustrationId": "thunder-summon",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261017\\storm-series-atlas.png",
+    "mapping": "历史同类卡图",
+    "manifestId": "thunder-summon"
   },
   "migration": {
     "previousId": "thunder-summon"

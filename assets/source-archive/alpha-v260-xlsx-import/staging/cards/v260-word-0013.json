@@ -31,10 +31,14 @@
     "worksheet": "卡表",
     "row": 54
   },
-  "illustrationId": "v260-word-0013",
+  "illustrationId": "v260-art-word-0013",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\不谐低语.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\不谐低语.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-word-0013",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0013.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
   },
   "migration": {
     "previousId": null

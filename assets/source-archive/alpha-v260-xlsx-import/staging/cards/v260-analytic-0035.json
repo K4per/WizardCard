@@ -11,25 +11,27 @@
   "analysisTurns": 2,
   "speed": 1,
   "text": "计时2。己方主要阶段开始时，将双方解析区盖伏卡全部送去灰烬区。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "clear_all_ambush",
+      "amount": 0
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-    "正式卡图未匹配"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 36
   },
-  "illustrationId": "v260-analytic-0035",
+  "illustrationId": "earthquake",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v254-20261024\\source\\卡图替换\\地震术.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "earthquake"
   },
   "migration": {
     "previousId": "earthquake"

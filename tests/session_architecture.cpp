@@ -152,7 +152,7 @@ TEST_CASE("protocol four separates state clocks events and read only queries", "
     CHECK(guest.eventsSince(events.epoch, events.next).events.empty());
     CHECK(encodeOptions(decodeOptions(encodeOptions(*result))) == encodeOptions(*result));
 }
-TEST_CASE("pre refactor current format four golden traces import without an old rules executor", "[architecture][replay]") {
+TEST_CASE("pre refactor current format four golden traces import without an old rules executor", "[legacy][architecture][replay]") {
     const auto content = currentContent();
     for (const auto seed : {42, 71, 314}) {
         const auto path = std::filesystem::path(WIZARD_SOURCE_DIR) / "tests" / "fixtures" /

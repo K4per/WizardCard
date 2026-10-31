@@ -1,0 +1,63 @@
+{
+  "id": "v260-formation-0014",
+  "number": "010014",
+  "name": "守护法阵",
+  "type": "formation",
+  "school": "",
+  "rarity": "common",
+  "rank": 0,
+  "cost": 0,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 1,
+  "text": "无效果。",
+  "effects": [],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "worksheet": "阵法卡",
+    "row": 17
+  },
+  "illustrationId": "v260-art-formation-0014",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\守护.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-formation-0014",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0014.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "raritySource": "",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "v260-formation-0009"
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "v260-formation-0011"
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "schools": [
+        "abjuration",
+        "necromancy"
+      ]
+    }
+  ],
+  "summonCondition": "【基础法阵】+【强化法阵】+解析区防护/死灵派系法术卡×1",
+  "level": 5,
+  "body": 3,
+  "rings": 5,
+  "capacity": 15,
+  "income": 5
+}

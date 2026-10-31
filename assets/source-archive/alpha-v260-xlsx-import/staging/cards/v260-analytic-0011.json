@@ -11,28 +11,32 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "计时2。选择双方解析区共1至2张解析法术卡，使其直到此法术卡离场不可准备施法。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "lock_analysis",
+      "amount": 2
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-    "正式卡图未匹配"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 12
   },
-  "illustrationId": "v260-analytic-0011",
+  "illustrationId": "cloud-mist",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261017\\storm-series-atlas.png",
+    "mapping": "历史同类卡图",
+    "manifestId": "cloud-mist"
   },
   "migration": {
     "previousId": "cloud-mist"
   },
+  "duration": 2,
+  "targetCount": 2,
   "level": 2
 }

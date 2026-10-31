@@ -11,27 +11,33 @@
   "analysisTurns": 1,
   "speed": 2,
   "text": "选择对方场上1张阵法卡才能发动。直到下个己方准备阶段开始时，此阵法卡的环位减半。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "halve_rings",
+      "amount": 1
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 16
   },
-  "illustrationId": "v260-analytic-0015",
+  "illustrationId": "v260-art-analytic-0015",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\油腻术.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\油腻术.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0015",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0015.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": null
   },
+  "target": "enemy_card",
   "level": 3
 }

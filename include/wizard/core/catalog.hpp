@@ -26,15 +26,21 @@ enum class Capability : std::uint8_t {
     QixingTianquan, QixingTianshu, QixingTianxuan, QixingYuheng, SiqueAromaLure,
     SiqueCampfire, SiqueCauldron, StormCrest, StormHeart, SwiftWind, ThunderSummon,
     WindStrike, QixingGaze, QixingReturn, ArcanaWorld, MoonMaterialFormation,
-    SiqueBoilingSurge, SiqueChili, SiqueSugar, SiqueVinegar, CounterSpell
+    SiqueBoilingSurge, SiqueChili, SiqueSugar, SiqueVinegar, CounterSpell,
+    // v2.6 staging traits are parsed and retained as executable identities.
+    // Their card-specific timing/choice adapter is keyed by the trait/effect
+    // semantic rather than by inventing a new enum for every workbook clause.
+    V260Structured
 };
 struct Effect {
     EffectKind kind{};
     int amount{};
     DamageType damageType{DamageType::Force};
     EffectRecipient recipient{};
+    std::string semantic;
     bool operator==(const Effect &other) const {
-        return kind == other.kind && amount == other.amount && damageType == other.damageType && recipient == other.recipient;
+        return kind == other.kind && amount == other.amount && damageType == other.damageType &&
+            recipient == other.recipient && semantic == other.semantic;
     }
     bool operator!=(const Effect &other) const { return !(*this == other); }
 };
@@ -56,6 +62,7 @@ struct RecipeCost {
     RecipeCostKind kind{RecipeCostKind::Mana};
     int amount{};
     std::string definition, school;
+    std::vector<std::string> definitions, schools;
     bool readyOnly{}, distinctSchools{}, fireDamage{};
 };
 struct CardDefinition {

@@ -989,7 +989,13 @@ bool isFireSpell(const CardDefinition &d) {
     if (hasCapability(d, Capability::FireDamageSpell))
         return isSpell(d);
     const auto fire = [](const Effect &e) {
-        return e.kind == EffectKind::Damage && e.damageType == DamageType::Fire;
+        if (e.damageType != DamageType::Fire) return false;
+        if (e.kind == EffectKind::Damage || e.kind == EffectKind::ChooseDamage ||
+            e.kind == EffectKind::RayVolley) return true;
+        // These v2.6 structured damage effects are adapted to regular Damage
+        // effects by EffectResolver before they resolve.
+        return e.kind == EffectKind::V260Structured &&
+            (e.semantic == "area_damage" || e.semantic == "both_damage");
     };
     return isSpell(d) && (std::any_of(d.effects.begin(), d.effects.end(), fire) ||
         std::any_of(d.responses.begin(), d.responses.end(), [&](const ResponseAbility &ability) {

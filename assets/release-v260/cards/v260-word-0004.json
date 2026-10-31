@@ -1,0 +1,45 @@
+{
+  "id": "v260-word-0004",
+  "number": "030004",
+  "name": "法师之手",
+  "type": "word",
+  "school": "conjuration",
+  "rarity": "common",
+  "rank": 5,
+  "cost": 3,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "选择对方解析区1张法术卡才能发动。将其移入己方解析区。己方准备阶段结束时，返回对方解析区。",
+  "effects": [
+    {
+      "kind": "borrow_analysis",
+      "amount": 1
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 45
+  },
+  "illustrationId": "v260-art-word-0004",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\法师之手.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-word-0004",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0004.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "traits": [
+    "borrow_analysis"
+  ],
+  "level": 5
+}

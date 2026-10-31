@@ -8,6 +8,7 @@ signal selection_cleared()
 signal hand_toggle_requested()
 signal placement_requested(card_id: String, host_id: String, ring_index: int)
 signal ring_selected(host_id: String, ring_index: int)
+signal formation_slot_selected(slot_index: int)
 signal zone_clicked(kind: String, owner: int)
 signal layout_changed()
 
@@ -57,6 +58,7 @@ var hand_side_clearance: float = 0.0:
 var _card_hits: Array[Dictionary] = []
 var _opponent_hand_hits: Array[Dictionary] = []
 var _ring_hits: Array[Dictionary] = []
+var _formation_slot_hits: Array[Dictionary] = []
 var _zone_hits: Array[Dictionary] = []
 var _hover_id: String = ""
 var _keyboard_index: int = -1
@@ -71,6 +73,7 @@ var _opponent_region: Rect2
 var _own_casting_region: Rect2
 var _opponent_casting_region: Rect2
 var selected_id: String = ""
+var formation_slot_target: int = -1
 var target_ids: Dictionary[String, bool] = {}
 var target_rings: Dictionary[String, PackedInt32Array] = {}
 var _transition: FieldTransition = FieldTransition.new()
@@ -83,6 +86,7 @@ func set_action_targets(ids: Array[String], rings: Dictionary[String, PackedInt3
 	for id: String in ids:
 		target_ids[id] = true
 	target_rings = rings.duplicate()
+	formation_slot_target = -1
 	_dragged = null
 	_drag_active = false
 	queue_redraw()
@@ -90,7 +94,18 @@ func set_action_targets(ids: Array[String], rings: Dictionary[String, PackedInt3
 func clear_action_targets() -> void:
 	target_ids.clear()
 	target_rings.clear()
+	formation_slot_target = -1
 	queue_redraw()
+
+func highlight_next_formation_slot() -> bool:
+	var next_slot: int = 0
+	for formation: FormationPresentation in field.own_formations:
+		next_slot += maxi(1, formation.body_size)
+	if next_slot >= maxi(1, layout.formation_slot_count):
+		return false
+	formation_slot_target = next_slot
+	queue_redraw()
+	return true
 
 func set_background_theme(theme_id: String) -> void:
 	background_theme = theme_id if theme_id in ["arcane", "slate", "ember"] else "arcane"
@@ -145,9 +160,11 @@ func configure(value: FieldPresentation) -> void:
 	_card_hits.clear()
 	_opponent_hand_hits.clear()
 	_ring_hits.clear()
+	_formation_slot_hits.clear()
 	_zone_hits.clear()
 	target_ids.clear()
 	target_rings.clear()
+	formation_slot_target = -1
 	_clear_hover()
 
 func _begin_transition(next: FieldPresentation) -> void:
@@ -194,6 +211,7 @@ func set_privacy(enabled: bool) -> void:
 	_card_hits.clear()
 	_opponent_hand_hits.clear()
 	_ring_hits.clear()
+	_formation_slot_hits.clear()
 	_zone_hits.clear()
 	_keyboard_index = -1
 	tooltip_text = ""
@@ -210,6 +228,7 @@ func _draw() -> void:
 	_card_hits.clear()
 	_opponent_hand_hits.clear()
 	_ring_hits.clear()
+	_formation_slot_hits.clear()
 	_zone_hits.clear()
 	if size.x < 1.0 or size.y < 1.0:
 		return
@@ -393,7 +412,10 @@ func _draw_formations(formations: Array[FormationPresentation], region: Rect2, _
 		var empty: Rect2 = _formation_slot(region, empty_slot, own)
 		draw_rect(empty, Color("152632"), true)
 		draw_rect(empty, Color("465e6c"), false, 1)
-		_draw_empty_formation_lane(empty, empty_slot, own)
+		var highlighted: bool = own and empty_slot == formation_slot_target
+		_draw_empty_formation_lane(empty, empty_slot, own, highlighted)
+		if highlighted:
+			_formation_slot_hits.append({"rect": empty, "slot": empty_slot})
 	var inset: Vector2 = region.size * layout.analysis_safe_margin
 	var header_position: Vector2 = region.position + inset if own else Vector2(region.position.x + inset.x, region.end.y - inset.y - 24)
 	_draw_label(("我方" if own else "对手") + " · 解析区（%d槽）" % layout.formation_slot_count, Rect2(header_position, Vector2(region.size.x - inset.x * 2, 24)), 16, Color("b7c6ce"))
@@ -428,7 +450,7 @@ func _draw_formation_cluster(formation: FormationPresentation, region: Rect2, ow
 			_draw_label(str(ring + 1), ring_rect, 11, Color("77929f"), true)
 	_draw_card(formation.card, host_rect, not own)
 
-func _draw_empty_formation_lane(region: Rect2, slot: int, own: bool) -> void:
+func _draw_empty_formation_lane(region: Rect2, slot: int, own: bool, highlighted: bool = false) -> void:
 	var padding: float = 4.0
 	var host_width: float = maxf(48.0, region.size.x * layout.formation_slot_width_ratio)
 	var host: Rect2 = Rect2(region.position + Vector2.ONE * padding, Vector2(host_width, region.size.y - padding * 2))
@@ -436,11 +458,14 @@ func _draw_empty_formation_lane(region: Rect2, slot: int, own: bool) -> void:
 	if not own:
 		host.position.x = region.end.x - padding - host_width
 		lane.position.x = region.position.x + padding
-	draw_rect(host, Color("223642"), true)
-	draw_rect(host, Color("567180"), false, 1)
-	draw_rect(lane, Color("1d2f3c"), true)
-	draw_rect(lane, Color("3f5968"), false, 1)
-	_draw_label("阵法槽 %d" % (slot + 1), host.grow(-2), 12, Color("829aa8"), true)
+	draw_rect(host, Color("493d24") if highlighted else Color("223642"), true)
+	draw_rect(host.grow(-1), Color("f2cb62") if highlighted else Color("567180"), false, 2 if highlighted else 1)
+	draw_rect(lane, Color("3c3525") if highlighted else Color("1d2f3c"), true)
+	draw_rect(lane.grow(-1), Color("c99e42") if highlighted else Color("3f5968"), false, 2 if highlighted else 1)
+	if highlighted:
+		_draw_glow(region.grow(-2), Color("f2cb62"))
+	_draw_label("点击设置" if highlighted else "阵法槽 %d" % (slot + 1), host.grow(-2), 12,
+		Color("ffe69c") if highlighted else Color("829aa8"), true)
 
 func _draw_editor_analysis(region: Rect2, own: bool) -> void:
 	# Editor preview mirrors the runtime lane structure but never creates card
@@ -707,6 +732,13 @@ func _gui_input(event: InputEvent) -> void:
 						placement_requested.emit(_dragged.instance_id, str(hit["host"]), int(hit["ring"]))
 						break
 			else:
+				for hit: Dictionary in _formation_slot_hits:
+					if (hit["rect"] as Rect2).has_point(mouse.position):
+						formation_slot_selected.emit(int(hit["slot"]))
+						_dragged = null
+						_drag_active = false
+						accept_event()
+						return
 				for hit: Dictionary in _ring_hits:
 					var host: String = str(hit["host"])
 					var ring: int = int(hit["ring"])
@@ -738,9 +770,13 @@ func _gui_input(event: InputEvent) -> void:
 		card_hovered.emit(card)
 		queue_redraw()
 		accept_event()
-	elif event.is_action_pressed(&"ui_accept") and _keyboard_index >= 0 and _keyboard_index < _card_hits.size():
-		card_selected.emit(_card_hits[_keyboard_index]["card"] as CardPresentation)
-		accept_event()
+	elif event.is_action_pressed(&"ui_accept"):
+		if formation_slot_target >= 0:
+			formation_slot_selected.emit(formation_slot_target)
+			accept_event()
+		elif _keyboard_index >= 0 and _keyboard_index < _card_hits.size():
+			card_selected.emit(_card_hits[_keyboard_index]["card"] as CardPresentation)
+			accept_event()
 
 func _scroll_formations(point: Vector2, direction: int) -> void:
 	var region: Rect2 = _own_region if _own_region.has_point(point) else _opponent_region

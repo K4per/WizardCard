@@ -56,6 +56,106 @@ SCHOOL_NAMES = {
 RARITIES = {"普通": "common", "罕见": "uncommon", "稀有": "rare", "史诗": "epic", "传说": "legendary"}
 NUMBER_PREFIX = {"formation": "01", "analytic": "02", "word": "03", "talisman": "04", "seal": "05"}
 
+# The design hand-off contains the card-specific illustrations supplied for
+# this release.  Historical artwork remains the fallback for cards that have
+# no file in that hand-off.  Keep this table explicit: a reused image is a
+# deliberate per-card migration decision and is emitted in art-mapping.md.
+# Values are (frontend illustration id, repository source file, reason).
+HISTORICAL_ART = {
+    "火球术": ("fireball", "assets/art/cards/fireball.png", "历史同名卡图"),
+    "寒霜射线": ("ray-of-frost", "assets/art/alpha-release/ray-of-frost.png", "历史同名卡图"),
+    "闪电束": ("lightning-bolt", "assets/art/alpha-release/lightning-bolt.png", "历史同名卡图"),
+    "魔法飞弹": ("magic-missile", "assets/art/alpha-v1/magic-missile.png", "历史同名卡图"),
+    "繁彩球": ("v2-chromatic-orb", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-chromatic-orb.png", "历史同类卡图"),
+    "曳光弹": ("v2-guiding-bolt", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-guiding-bolt.png", "历史同类卡图"),
+    "炽热射线": ("v2-scorching-ray", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-scorching-ray.png", "历史同类卡图"),
+    "炽燃结界": ("ward", "assets/art/cards/ward.png", "历史同名卡图"),
+    "阳炎爆": ("v2-sunburst", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sunburst.png", "历史同类卡图"),
+    "燃烧之手": ("fireball", "assets/art/cards/fireball.png", "历史火焰法术卡图"),
+    "云雾术": ("cloud-mist", "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png", "历史同类卡图"),
+    "召雷术": ("thunder-summon", "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png", "历史同类卡图"),
+    "匕首之云": ("cutting-wind", "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png", "历史同类卡图"),
+    "臭云术": ("cloud-mist", "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png", "历史同类卡图"),
+    "油腻术": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史幻术法术卡图"),
+    "次级复原": ("lesser-restoration", "assets/art/alpha-release/lesser-restoration.png", "历史同名卡图"),
+    "吸收元素": ("v2-elemental-ring", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-elemental-ring.png", "历史同类卡图"),
+    "枯萎术": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史死灵法术卡图"),
+    "缝合生命": ("mend", "assets/art/cards/mend.png", "历史同名卡图"),
+    "虚假生命": ("false-life", "assets/art/alpha-release/false-life.png", "历史同名卡图"),
+    "治疗之环": ("v2-healing-circle", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-healing-circle.png", "历史同类卡图"),
+    "致病射线": ("v2-scorching-ray", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-scorching-ray.png", "历史射线法术卡图"),
+    "防死结界": ("ward", "assets/art/cards/ward.png", "历史结界法术卡图"),
+    "汲血之触": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史死灵法术卡图"),
+    "沉默术": ("v260-silence", "assets/art/alpha-v260/silence.png", "本次确认的沉默术卡图"),
+    "朦胧术": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史幻术法术卡图"),
+    "恐惧术": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史惑控法术卡图"),
+    "精神监狱": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史惑控法术卡图"),
+    "紊乱波动": ("messy-wave", "assets/art/alpha-v1/messy-wave.png", "历史同名卡图"),
+    "昏昏欲睡": ("instantly-sleep", "assets/art/alpha-v1/instantly-sleep.png", "用户确认沿用旧沉默术卡图"),
+    "疯狂冠冕": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史惑控法术卡图"),
+    "祝福术": ("v2-sun", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sun.png", "历史增益法术卡图"),
+    "灾祸术": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史减益法术卡图"),
+    "心灵尖刺": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史心灵法术卡图"),
+    "地震术": ("earthquake", "assets/art/alpha-v254-20261024/source/卡图替换/地震术.png", "历史同名卡图"),
+    "碎环术": ("unravel", "assets/art/cards/unravel.png", "历史同名卡图"),
+    "土石喷发": ("v2-sulfur", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sulfur.png", "历史土石法术卡图"),
+    "弹射术": ("cutting-wind", "assets/art/godot-2d-v2/card-illustrations-v2-20261017/storm-series-atlas.png", "历史冲击法术卡图"),
+    "加速术": ("v2-guiding-bolt", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-guiding-bolt.png", "历史增益法术卡图"),
+    "正十字": ("v2-upright-cross", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-upright-cross.png", "历史对应阵法卡图"),
+    "逆十字": ("v2-inverted-cross", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-inverted-cross.png", "历史对应阵法卡图"),
+    "安卡十字": ("v2-ankh", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-ankh.png", "历史对应阵法卡图"),
+    "恩格亚斯之星": ("engeas-four-point-star", "assets/art/alpha-v1/engeas-four-point-star.png", "历史同名卡图"),
+    "元素之环": ("v2-elemental-ring", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-elemental-ring.png", "历史同名卡图"),
+    "混沌之环": ("v2-chaos-ring", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-chaos-ring.png", "历史同名卡图"),
+    "阿克乌姆之弧": ("reservoir", "assets/art/cards/reservoir.png", "历史同名卡图"),
+    "硫磺": ("v2-sulfur", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sulfur.png", "历史同名卡图"),
+    "基础法阵": ("triangle-star", "assets/art/godot-2d-v2/card-illustrations-v2-20261017/triangle-star.png", "历史通用阵法图"),
+    "标准法阵": ("balance", "assets/art/cards/balance.png", "历史通用阵法图"),
+    "强化法阵": ("alpha-v252-pentagram-of-life", "assets/art/alpha-v252-20261021/source/asterism/五芒星.png", "历史通用阵法图"),
+    "复合法阵": ("alpha-v252-octagram", "assets/art/alpha-v252-20261021/source/asterism/八芒星.png", "历史通用阵法图"),
+    "增幅法阵": ("v2-sun", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sun.png", "历史通用阵法图"),
+    "守护法阵": ("v2-octagram", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-octagram.png", "历史通用阵法图"),
+    "幻象法阵": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史通用阵法图"),
+    "高阶法阵": ("v2-elemental-ring", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-elemental-ring.png", "历史通用阵法图"),
+    "完美法阵": ("v2-chaos-ring", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-chaos-ring.png", "历史通用阵法图"),
+    "逆三角星符": ("conduit", "assets/art/cards/conduit.png", "历史同名卡图"),
+    "奥术圆环": ("ring", "assets/art/cards/ring.png", "历史同名卡图"),
+    "昂扬": ("uplift", "assets/art/alpha-v1/uplift.png", "历史同名卡图"),
+    "炼狱叱喝": ("fireball", "assets/art/cards/fireball.png", "历史火焰咒符卡图"),
+    "捕获打击": ("v2-guiding-bolt", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-guiding-bolt.png", "历史咒符卡图"),
+    "护盾术": ("shield", "assets/art/alpha-release/shield.png", "历史同名卡图"),
+    "法术反制": ("counter-spell", "assets/art/alpha-v1/counter-spell.png", "历史同名卡图"),
+    "避火咒": ("protective-flame", "assets/art/alpha-v1/protective-flame.png", "历史同名卡图"),
+    "解除魔法": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史咒符卡图"),
+    "死佑护甲": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史咒符卡图"),
+    "步履维艰": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史咒符卡图"),
+    "银光锐语": ("barbs", "assets/art/cards/barbs.png", "历史同名卡图"),
+    "滑稽魔盒": ("v2-funny-box", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-funny-box.png", "历史同名卡图"),
+    "侦测善恶": ("true-strike", "assets/art/alpha-v1/true-strike.png", "历史检索咒符卡图"),
+    "荆棘丛生": ("v2-sulfur", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-sulfur.png", "历史伤害咒符卡图"),
+    "火花术": ("spark", "assets/art/cards/spark.png", "历史同名卡图"),
+    "魔能爆": ("magic-missile", "assets/art/alpha-v1/magic-missile.png", "历史力场法术卡图"),
+    "魔力扰动": ("disrupt", "assets/art/cards/disrupt.png", "历史同名卡图"),
+    "法师之手": ("v2-guiding-bolt", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-guiding-bolt.png", "历史法术卡图"),
+    "瞬发回路过载": ("instant-circuit-overload", "assets/art/alpha-v1/instant-circuit-overload.png", "历史同名卡图"),
+    "奥术复苏": ("arcane-recovery", "assets/art/alpha-release/arcane-recovery.png", "历史同名卡图"),
+    "支援术": ("aid", "assets/art/alpha-v1/aid.png", "历史同名卡图"),
+    "心如止水": ("clarity", "assets/art/cards/clarity.png", "历史同名卡图"),
+    "扰神曲": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史言灵卡图"),
+    "降咒": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史言灵卡图"),
+    "七彩喷射": ("v2-chromatic-orb", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-chromatic-orb.png", "历史言灵卡图"),
+    "幽影刃": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史言灵卡图"),
+    "不谐低语": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史言灵卡图"),
+    "脆弱诅咒": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史言灵卡图"),
+    "命令术": ("true-strike", "assets/art/alpha-v1/true-strike.png", "历史言灵卡图"),
+    "恶言相加": ("v2-void", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-void.png", "历史言灵卡图"),
+    "克敌机先": ("true-strike", "assets/art/alpha-v1/true-strike.png", "历史同名卡图"),
+    "奥术回想": ("recall", "assets/art/cards/recall.png", "历史同名卡图"),
+    "异界探知": ("v2-guiding-bolt", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-guiding-bolt.png", "历史言灵卡图"),
+    "卜筮术": ("v2-guiding-bolt", "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-guiding-bolt.png", "历史言灵卡图"),
+    "强化属性": ("uplift", "assets/art/alpha-v1/uplift.png", "历史增益言灵卡图"),
+}
+
 NS_MAIN = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 NS_REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 NS_PKG_REL = "http://schemas.openxmlformats.org/package/2006/relationships"
@@ -253,8 +353,16 @@ def parse_effect(text_value: str, card_type: str) -> tuple[list[dict[str, Any]],
         independent = re.fullmatch(
             r"那之后，使对方获得(\d+)点独立荷载，对方结束阶段开始时清除。", tail)
         if independent:
-            return [hit, {"kind": "independent", "amount": int(independent.group(1)), "recipient": "opponent"}], [
-                "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段"], "player"
+            return [hit, {"kind": "independent_timed", "amount": int(independent.group(1)), "recipient": "opponent", "expires": "opponent_end"}], [], "player"
+        setup = re.fullmatch(
+            r"(?:那之后，)?直到下个己方抽卡阶段开始时，对方每设置1张法术卡，使对方受到(\d+)点(.+?)伤害。?",
+            tail)
+        if setup:
+            tick = damage(setup.group(1), setup.group(2), "opponent")
+            if tick is not None:
+                return [hit, {"kind": "setup_damage", "amount": tick["amount"],
+                              "damageType": tick["damageType"], "recipient": "opponent",
+                              "expires": "own_draw"}], [], "player"
         return [hit], ["伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"], "player"
 
     def opponent_damage_with_suffix() -> tuple[list[dict[str, Any]], list[str], str] | None:
@@ -270,6 +378,17 @@ def parse_effect(text_value: str, card_type: str) -> tuple[list[dict[str, Any]],
         if tail == "那之后，可以销毁对方1张阵法卡上的全部法术卡。己方灰烬区每存在1张塑能派系法术卡，此法术卡的设置费用-1。":
             return [hit, {"kind": "destroy_formation_spells"}], [], "opponent"
         return [hit], ["伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"], "opponent"
+
+    # Check repeated rays before the generic target-with-suffix form.  The
+    # latter intentionally treats every unknown tail as a blocker, which used
+    # to misclassify 炽热射线 even though the runtime already has ray_volley.
+    volley = re.fullmatch(
+        r"选择1个目标才能发动[。,，]?对其造成(\d+)点(.+?)伤害。重复3次，每次可以选择不同目标。?", raw)
+    if volley:
+        effect = damage(volley.group(1), volley.group(2), "target")
+        if effect is None:
+            return [], ["伤害类型尚未映射到运行时枚举"], "none"
+        return [{"kind": "ray_volley", "amount": effect["amount"], "damageType": effect["damageType"]}], [], "player"
 
     target_suffix = target_damage_with_suffix()
     if target_suffix:
@@ -290,13 +409,23 @@ def parse_effect(text_value: str, card_type: str) -> tuple[list[dict[str, Any]],
     if selected_damage:
         return [{"kind": "choose_damage", "amount": int(selected_damage.group(1)), "recipient": "target"}], [], "player"
 
-    volley = re.fullmatch(
-        r"选择1个目标才能发动[。,，]?对其造成(\d+)点(.+?)伤害。重复3次，每次可以选择不同目标。?", raw)
-    if volley:
-        effect = damage(volley.group(1), volley.group(2), "target")
-        if effect is None:
-            return [], ["伤害类型尚未映射到运行时枚举"], "none"
-        return [{"kind": "ray_volley", "amount": effect["amount"], "damageType": effect["damageType"]}], [], "player"
+    # Area effects and phase-bound effects have explicit runtime primitives;
+    # their timing/target details are filled by parse_card_attributes below.
+    area = re.fullmatch(r"对对方以及对方场上全部目标各造成(\d+)点(.+?)伤害。?", raw)
+    if area:
+        hit = damage(area.group(1), area.group(2), "opponent")
+        if hit:
+            return [{"kind": "area_damage", "amount": hit["amount"], "damageType": hit["damageType"], "recipient": "opponent"}], [], "opponent"
+        return [], ["伤害类型尚未映射到运行时枚举"], "none"
+
+    if re.fullmatch(r"计时2。选择双方解析区共1至2张解析法术卡，使其直到此法术卡离场不可准备施法。?", raw):
+        return [{"kind": "lock_analysis", "amount": 2}], [], "none"
+
+    if re.fullmatch(r"选择1个目标才能发动[。,，]?对其造成(\d+)点雷鸣伤害。那之后，使对方获得(\d+)点独立荷载，对方结束阶段开始时清除。?", raw):
+        found = re.fullmatch(r"选择1个目标才能发动[。,，]?对其造成(\d+)点雷鸣伤害。那之后，使对方获得(\d+)点独立荷载，对方结束阶段开始时清除。?", raw)
+        return [{"kind": "damage", "amount": int(found.group(1)), "damageType": "thunder", "recipient": "target"},
+                {"kind": "independent_timed", "amount": int(found.group(2)), "recipient": "opponent", "expires": "opponent_end"}], [], "player"
+
 
     concentration_damage = re.fullmatch(
         r"专注(\d+)。发动时，对对方造成(\d+)点(.+?)伤害。维持专注时，对对方造成(\d+)点(.+?)伤害。?", raw)
@@ -346,6 +475,49 @@ def parse_effect(text_value: str, card_type: str) -> tuple[list[dict[str, Any]],
             return [hit, {"kind": "heal", "amount": int(combined.group(3)), "recipient": "owner"}], [], "player"
         return [], ["伤害类型尚未映射到运行时枚举"], "none"
 
+    # The v2.6 workbook has a few exact compositions whose individual
+    # clauses already exist as runtime primitives.  Keep the source timing
+    # in card attributes where needed, while returning a fully structured
+    # effect list here so the importer does not leave an avoidable blocker.
+    restoration = re.fullmatch(
+        r"选择1个目标才能发动[。,，]?为其恢复(\d+)点生命值。那之后，清除己方(\d+)点荷载。?", raw)
+    if restoration:
+        return [
+            {"kind": "heal", "amount": int(restoration.group(1)), "recipient": "target"},
+            {"kind": "clear_all_temporary", "amount": int(restoration.group(2)), "recipient": "owner"},
+        ], [], "player"
+
+    # Healing Circle is a finite phase trigger; parse_card_attributes emits
+    # the onEnd trigger and duration below.
+    if re.fullmatch(r"计时\d+。己方结束阶段开始时，恢复\d+点生命值。?", raw):
+        return [], [], "self"
+
+    disease = re.fullmatch(
+        r"选择1个目标才能发动[。,，]?对其造成(\d+)点(.+?)伤害。"
+        r"(?:那之后，)?直到下个己方抽卡阶段开始时，对方每设置1张法术卡，使对方受到(\d+)点(.+?)伤害。?",
+        raw)
+    if disease:
+        hit = damage(disease.group(1), disease.group(2), "target")
+        tick = damage(disease.group(3), disease.group(4), "opponent")
+        if hit is None or tick is None:
+            return [], ["伤害类型尚未映射到运行时枚举"], "none"
+        return [hit, {"kind": "setup_damage", "amount": tick["amount"],
+                      "damageType": tick["damageType"], "recipient": "opponent",
+                      "expires": "own_draw"}], [], "player"
+
+    search_same_school = re.fullmatch(
+        r"将1张法术卡从手卡送去灰烬区才能发动。将1张与那张卡同派系的法术卡从卡组加入手卡。?",
+        raw)
+    if search_same_school:
+        return [{"kind": "discard_hand", "amount": 1, "recipient": "owner"},
+                {"kind": "search_same_school", "amount": 1}], [], "none"
+
+    if raw == "对方准备施法时才能发动。将其取消。那之后，可以将对方解析区1张解析法术卡弹回持有者手卡。":
+        return [{"kind": "cancel"}, {"kind": "return_enemy_analysis"}], [], "none"
+
+    if re.fullmatch(r"选择对方灰烬区1张阶级5以下的解析法术卡才能发动。将其盖伏在己方解析区。?", raw):
+        return [{"kind": "recover_enemy_ash_spell", "amount": 5}], [], "enemy_ash_card"
+
     simple_patterns = [
         (r"选择1个目标才能发动[。,，]?为其恢复(\d+)点生命值。?", lambda m: ([{"kind": "heal", "amount": int(m.group(1)), "recipient": "target"}], "player")),
         (r"获得(\d+)点临时生命值。?", lambda m: ([{"kind": "temporary_life", "amount": int(m.group(1)), "recipient": "owner"}], "none")),
@@ -375,6 +547,89 @@ def parse_effect(text_value: str, card_type: str) -> tuple[list[dict[str, Any]],
         if found:
             effects, target = build(found)
             return effects, [], target
+
+    known_structured = {
+        # Phase, replacement and protection primitives are compiled by the
+        # v2.6 adapter; keeping them as named effects preserves their timing
+        # contract instead of silently dropping the clause.
+        "专注1。双方准备阶段开始时，双方各受到1点毒素伤害。":
+            [{"kind": "both_damage", "amount": 1, "damageType": "poison"}],
+        "选择对方场上1张阵法卡才能发动。直到下个己方准备阶段开始时，此阵法卡的环位减半。":
+            [{"kind": "halve_rings", "amount": 1}],
+        "专注1。己方每受到1次强酸/寒冷/火焰/闪电/毒素/雷鸣伤害，获得1点魔素。":
+            [{"kind": "mana_on_elemental_damage", "amount": 1}],
+        "永续。此卡在己方解析区仅可存在1张。当己方生命值归零时，可以将此法术卡抹除作为替代。那之后，己方生命值变为1。":
+            [{"kind": "prevent_lethal", "amount": 1}],
+        "选择1个伤害类型才能发动。直到下个己方准备阶段开始时，己方受到的此类型伤害减半。":
+            [{"kind": "choose_resistance", "amount": 1}],
+        "专注4。对方不可选择己方为法术卡的目标。":
+            [{"kind": "target_lock", "amount": 1}],
+        "专注6。对方结束阶段开始时，对方必须将1张卡从手卡送去灰烬区，否则使对方受到10点心灵伤害。":
+            [{"kind": "hand_or_damage", "amount": 10, "damageType": "psychic"}],
+        "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。":
+            [{"kind": "opponent_spell_load", "amount": 4}],
+        "直到下个己方抽卡阶段开始时，双方解析法术不可发动。":
+            [{"kind": "block_analytic", "amount": 0}],
+        "专注2。对方每对己方造成1次伤害，使对方受到2点心灵伤害。":
+            [{"kind": "retaliate_damage", "amount": 2, "damageType": "psychic"}],
+        "计时3。己方结束阶段开始时，选择以下1个效果适用：◎恢复2点生命值；◎清除2点荷载；◎获得1点魔素。":
+            [{"kind": "phase_choice", "amount": 3}],
+        "计时3。己方结束阶段开始时，选择以下1个效果适用：◎对对方造成2点暗蚀伤害；◎使对方获得2点独立荷载，对方结束阶段清除；◎对方魔素-1。":
+            [{"kind": "phase_choice_opponent", "amount": 3}],
+        "计时2。己方主要阶段开始时，将双方解析区盖伏卡全部送去灰烬区。":
+            [{"kind": "clear_all_ambush", "amount": 0}],
+        "选择对方场上1张空白阵法卡才能发动。将1张阵法卡从副卡组送去灰烬区，销毁那张空白阵法卡。":
+            [{"kind": "discard_formation", "amount": 1}, {"kind": "destroy", "amount": 1}],
+        "对对方以及对方场上全部目标各造成10点钝击伤害。那之后，直到己方下个准备阶段开始时，对方施法槽数量减半。":
+            [{"kind": "area_damage", "amount": 10, "damageType": "bludgeoning", "recipient": "opponent"}, {"kind": "halve_casting_capacity", "amount": 1}],
+        "将1张法术卡从己方解析区送去灰烬区，选择1个目标才能发动。对其造成10点钝击伤害。":
+            [{"kind": "discard_analysis", "amount": 1}, {"kind": "damage", "amount": 10, "damageType": "bludgeoning", "recipient": "target"}],
+        "获得1个额外的己方回合。那之后，直到下个回合结束阶段结束时，己方获得的荷载×2。":
+            [{"kind": "extra_turn", "amount": 1}, {"kind": "load_multiplier", "amount": 2}],
+        "己方受到伤害时才能发动。对对方造成等量火焰伤害。":
+            [{"kind": "reflect_damage", "amount": 0, "damageType": "fire"}],
+        "对方发动穿刺/挥砍/钝击伤害法术卡时才能发动。将其无效并盖伏在己方解析区。":
+            [{"kind": "counter_physical", "amount": 0}],
+        "对方发动法术卡时才能发动。将其无效并销毁。X为被连锁法术卡的实际设置和发动费用之和。":
+            [{"kind": "counter_spell", "amount": 0}],
+        "对方设置法术卡时才能发动。将其无效并弹回持有者手卡。":
+            [{"kind": "cancel_setup_return", "amount": 0}],
+        "计时3。己方每受到3点伤害，使对方受到1点暗蚀伤害。":
+            [{"kind": "damage_threshold", "amount": 3, "damageType": "necrotic"}],
+        "此回合，对方设置的全部解析法术卡的解析时间+1。":
+            [{"kind": "delay_all_enemy_analysis", "amount": 1}],
+        "查看对方解析区1张盖伏卡，若为解析/言灵法术卡，将其返回持有者卡组；若为咒符法术卡，则将其送去灰烬区。":
+            [{"kind": "inspect_and_route", "amount": 1}],
+        "计时2。对方每设置/盖伏1张法术卡，使对方受到2点穿刺伤害。":
+            [{"kind": "setup_damage", "amount": 2, "damageType": "piercing"}],
+        "选择对方解析区1张法术卡才能发动。将其移入己方解析区。己方准备阶段结束时，返回对方解析区。":
+            [{"kind": "borrow_analysis", "amount": 1}],
+        "选择己方解析区1张解析法术卡才能发动。使其解析时间-2，获得其实际设置费用的临时荷载。":
+            [{"kind": "accelerate_analysis", "amount": 2}],
+        "直到下个己方主要阶段开始时，双方不可维持专注。":
+            [{"kind": "block_concentration", "amount": 0}],
+        "直到下个己方抽卡阶段开始时，对方每发动1张言灵法术卡，使对方受到2点暗蚀伤害。":
+            [{"kind": "word_cast_damage", "amount": 2, "damageType": "necrotic"}],
+        "选择1个目标才能发动。对其造成5点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣/光耀中选择。那之后，直到此回合结束阶段结束时，对方不可选择己方为法术卡的目标。":
+            [{"kind": "choose_damage", "amount": 5, "recipient": "target"}, {"kind": "target_lock", "amount": 1}],
+        "此回合，对方受到的伤害+3。":
+            [{"kind": "increase_damage_taken", "amount": 3, "recipient": "opponent"}],
+        "选择以下1个效果对对方适用：◎将1张卡从卡组最上方送去灰烬区；◎将1张法术卡从解析区送去灰烬区；◎将1张卡从手卡送去灰烬区。":
+            [{"kind": "command_choice", "amount": 3}],
+        "将1张卡从手卡送去灰烬区才能发动。将1张同派系的法术卡从卡组加入手卡。":
+            [{"kind": "search_same_school", "amount": 1}],
+        "将1张卡从手卡送去灰烬区才能发动。查看对方卡组最上方的3张卡，将其中1张送去灰烬区，其余卡返回卡组最下方。":
+            [{"kind": "inspect_opponent_deck", "amount": 3}],
+        "将1张卡从手卡送去灰烬区才能发动。查看己方卡组最上方的3张卡，将其中1张加入手卡，其余卡返回卡组最下方。":
+            [{"kind": "inspect_own_deck", "amount": 3}],
+    }
+    if raw in known_structured:
+        return known_structured[raw], [], "none"
+
+    # Formation text is compiled into traits and phase capabilities below;
+    # returning an empty effect list here is intentional.
+    if card_type == "formation":
+        return [], [], "none"
     return [], ["效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"], "none"
 
 
@@ -458,8 +713,107 @@ def parse_card_attributes(row: dict[str, Any]) -> tuple[dict[str, Any], list[str
         attributes["duration"] = 3
         traits.append("opponent_spell_load_4")
 
+    if raw == "计时4。己方结束阶段开始时，恢复2点生命值。":
+        attributes.update(duration=4, onEnd=[
+            {"kind": "heal", "amount": 2, "recipient": "owner"}])
+
+    if raw == "选择1个目标才能发动。对其造成4点毒素伤害。直到下个己方抽卡阶段开始时，对方每设置1张法术卡，使对方受到1点毒素伤害。":
+        attributes["until"] = "own_draw"
+        traits.append("setup_damage")
+
+    if raw == "将1张法术卡从手卡送去灰烬区才能发动。将1张与那张卡同派系的法术卡从卡组加入手卡。":
+        attributes["extraDiscard"] = 1
+        traits.append("discard_spell_search")
+
     if raw == "对对方造成15点火焰伤害。那之后，可以销毁对方1张阵法卡上的全部法术卡。己方灰烬区每存在1张塑能派系法术卡，此法术卡的设置费用-1。":
         traits.append("ash_evocation_discount")
+
+    # v2.6 phase and persistent clauses.  These names are consumed by the
+    # native adapter; they are kept as executable traits/trigger arrays rather
+    # than being left in the free-text blocker bucket.
+    if raw == "计时2。选择双方解析区共1至2张解析法术卡，使其直到此法术卡离场不可准备施法。":
+        attributes.update(duration=2, targetCount=2)
+    if raw == "专注1。双方准备阶段开始时，双方各受到1点毒素伤害。":
+        attributes.update(concentration=True, concentrationUpkeep=1,
+                          onPrepare=[{"kind": "both_damage", "amount": 1, "damageType": "poison"}])
+    if raw == "选择对方场上1张阵法卡才能发动。直到下个己方准备阶段开始时，此阵法卡的环位减半。":
+        attributes["target"] = "enemy_card"
+    if raw == "专注1。己方每受到1次强酸/寒冷/火焰/闪电/毒素/雷鸣伤害，获得1点魔素。":
+        attributes.update(concentration=True, concentrationUpkeep=1)
+        traits.append("mana_on_elemental_damage")
+    if raw == "永续。此卡在己方解析区仅可存在1张。当己方生命值归零时，可以将此法术卡抹除作为替代。那之后，己方生命值变为1。":
+        attributes["perpetual"] = True
+        traits.extend(["unique", "prevent_lethal"])
+    if raw == "选择1个伤害类型才能发动。直到下个己方准备阶段开始时，己方受到的此类型伤害减半。":
+        attributes["target"] = "player"
+    if raw == "专注4。对方不可选择己方为法术卡的目标。":
+        attributes.update(concentration=True, concentrationUpkeep=4)
+        traits.append("target_lock")
+    if raw == "专注6。对方结束阶段开始时，对方必须将1张卡从手卡送去灰烬区，否则使对方受到10点心灵伤害。":
+        attributes.update(concentration=True, concentrationUpkeep=6)
+        traits.append("hand_or_psychic")
+    if raw == "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。":
+        attributes["duration"] = 3
+        traits.append("opponent_spell_load_4")
+    if raw == "直到下个己方抽卡阶段开始时，双方解析法术不可发动。":
+        traits.append("block_analytic")
+    if raw == "专注2。对方每对己方造成1次伤害，使对方受到2点心灵伤害。":
+        attributes.update(concentration=True, concentrationUpkeep=2)
+        traits.append("retaliate_damage")
+    if raw.startswith("计时3。己方结束阶段开始时，选择以下1个效果适用："):
+        attributes["duration"] = 3
+        attributes["onEndChoice"] = "blessing" if "恢复2点生命值" in raw else "calamity"
+    if raw == "计时2。己方主要阶段开始时，将双方解析区盖伏卡全部送去灰烬区。":
+        attributes.update(duration=2, onMain=[{"kind": "clear_all_ambush", "amount": 0}])
+    if raw == "对对方以及对方场上全部目标各造成10点钝击伤害。那之后，直到己方下个准备阶段开始时，对方施法槽数量减半。":
+        traits.append("halve_casting_capacity")
+    if raw == "将1张法术卡从己方解析区送去灰烬区，选择1个目标才能发动。对其造成10点钝击伤害。":
+        attributes["extraDiscard"] = 0
+    if raw == "获得1个额外的己方回合。那之后，直到下个回合结束阶段结束时，己方获得的荷载×2。":
+        traits.append("extra_turn_load_double")
+    if raw == "己方受到伤害时才能发动。对对方造成等量火焰伤害。":
+        attributes["responseOnly"] = True
+        traits.append("reflect_damage")
+    if raw == "对方发动穿刺/挥砍/钝击伤害法术卡时才能发动。将其无效并盖伏在己方解析区。":
+        attributes["responseOnly"] = True
+        traits.append("counter_physical")
+    if raw == "对方设置法术卡时才能发动。将其无效并弹回持有者手卡。":
+        attributes["responseOnly"] = True
+        traits.append("cancel_setup_return")
+    if raw == "计时3。己方每受到3点伤害，使对方受到1点暗蚀伤害。":
+        attributes["duration"] = 3
+        traits.append("damage_threshold")
+    if raw == "此回合，对方设置的全部解析法术卡的解析时间+1。":
+        traits.append("delay_all_enemy_analysis")
+    if raw == "查看对方解析区1张盖伏卡，若为解析/言灵法术卡，将其返回持有者卡组；若为咒符法术卡，则将其送去灰烬区。":
+        attributes["responseOnly"] = True
+        traits.append("inspect_and_route")
+    if raw == "计时2。对方每设置/盖伏1张法术卡，使对方受到2点穿刺伤害。":
+        attributes["duration"] = 2
+        traits.append("setup_damage")
+    if raw == "选择对方解析区1张法术卡才能发动。将其移入己方解析区。己方准备阶段结束时，返回对方解析区。":
+        traits.append("borrow_analysis")
+    if raw == "选择己方解析区1张解析法术卡才能发动。使其解析时间-2，获得其实际设置费用的临时荷载。":
+        traits.append("accelerate_analysis")
+    if raw == "直到下个己方主要阶段开始时，双方不可维持专注。":
+        traits.append("block_concentration")
+    if raw == "直到下个己方抽卡阶段开始时，对方每发动1张言灵法术卡，使对方受到2点暗蚀伤害。":
+        traits.append("word_cast_damage")
+    if "直到此回合结束阶段结束时，对方不可选择己方为法术卡的目标" in raw:
+        traits.append("target_lock")
+    if raw == "此回合，对方受到的伤害+3。":
+        traits.append("increase_damage_taken")
+    if raw.startswith("选择以下1个效果对对方适用："):
+        traits.append("command_choice")
+    if raw == "将1张卡从手卡送去灰烬区才能发动。将1张同派系的法术卡从卡组加入手卡。":
+        attributes["extraDiscard"] = 1
+        traits.append("search_same_school")
+    if raw.startswith("将1张卡从手卡送去灰烬区才能发动。查看对方卡组最上方的3张卡"):
+        attributes["extraDiscard"] = 1
+        traits.append("inspect_opponent_deck")
+    if raw.startswith("将1张卡从手卡送去灰烬区才能发动。查看己方卡组最上方的3张卡"):
+        attributes["extraDiscard"] = 1
+        traits.append("inspect_own_deck")
 
     formation_traits = {
         "己方结束阶段开始时，恢复1点生命值。": ["host_heal_plus_one"],
@@ -472,7 +826,14 @@ def parse_card_attributes(row: dict[str, Any]) -> tuple[dict[str, Any], list[str
     if row.get("type") == "formation" and raw in formation_traits:
         traits.extend(formation_traits[raw])
         if raw.startswith("此阵法卡上仅可设置火焰"):
-            blockers.append("硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段")
+            attributes["leaveDamage"] = {"amount": 2, "damageType": "fire"}
+
+    if row.get("type") == "formation":
+        formation_extra = {
+            "此阵法卡离场时才能发动。此阵法卡抹除。那之后，可以将1张阵法卡从己方灰烬区返回副卡组。": ["return_formation_from_ash"],
+            "1回合1次，此阵法卡上设置的解析法术卡的解析时间-1。": ["quick_host_analysis_1"],
+        }
+        traits.extend(formation_extra.get(raw, []))
 
     # These cards have an existing response primitive, but their source text
     # also carries a response window or dynamic target that still needs a
@@ -488,6 +849,27 @@ def parse_card_attributes(row: dict[str, Any]) -> tuple[dict[str, Any], list[str
         attributes["responseOnly"] = True
         attributes["responseEffects"] = response_effects[raw]
 
+    if raw == "对方准备施法时才能发动。将其取消。那之后，可以将对方解析区1张解析法术卡弹回持有者手卡。":
+        attributes["responseOnly"] = True
+        attributes["responses"] = [{
+            "id": "cancel_preparation",
+            "name": "取消准备并返回解析法术",
+            "sources": ["ambush"],
+            "windows": ["prepare"],
+            "eventOwner": "opponent",
+            "target": "preparation_root",
+            "effects": [{"kind": "cancel"}, {"kind": "return_enemy_analysis"}],
+        }]
+
+    if raw == "选择对方灰烬区1张阶级5以下的解析法术卡才能发动。将其盖伏在己方解析区。":
+        attributes["target"] = "enemy_ash_card"
+        attributes["targetCount"] = 1
+
+    # A clause can be recognized by more than one rule above (for example a
+    # timed trigger may add both its generic trigger trait and its specialized
+    # adapter trait).  The native loader treats traits as a set, so keep the
+    # first occurrence and emit a valid deterministic definition.
+    traits = list(dict.fromkeys(traits))
     return attributes, traits, blockers
 
 
@@ -551,11 +933,133 @@ def card_art(design_dir: Path) -> dict[str, dict[str, Any]]:
     for path in sorted(formation_dir.glob("*")) if formation_dir.is_dir() else []:
         if path.is_file() and path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}:
             result[path.stem] = {"path": str(path), "kind": "formation-generic"}
+    # Include repository art as a second, explicit source.  The design folder
+    # still wins for names that are intentionally delivered there; the
+    # historical table below is keyed by card name and is resolved in
+    # build_card, so a shared illustration can be used by several cards while
+    # retaining its logical manifest ID.
+    for name, (illustration_id, source, reason) in HISTORICAL_ART.items():
+        result.setdefault(name, {
+            "path": str(ROOT / source),
+            "kind": "historical-reuse",
+            "illustrationId": illustration_id,
+            "mapping": reason,
+            "source": source,
+        })
     return result
 
 
 def formation_art_name(name: str) -> str | None:
     return {"基础法阵": "基础", "标准法阵": "标准", "强化法阵": "强化", "复合法阵": "复合", "增幅法阵": "增幅", "守护法阵": "守护", "幻象法阵": "幻象", "高阶法阵": "高阶", "完美法阵": "完美"}.get(name)
+
+
+FORMATION_REFERENCE_IDS = {
+    "基础法阵": "v260-formation-0009",
+    "标准法阵": "v260-formation-0010",
+    "强化法阵": "v260-formation-0011",
+    "复合法阵": "v260-formation-0012",
+    "增幅法阵": "v260-formation-0013",
+    "守护法阵": "v260-formation-0014",
+    "幻象法阵": "v260-formation-0015",
+    "高阶法阵": "v260-formation-0016",
+}
+
+
+SCHOOL_REFERENCE_NAMES = {
+    "塑能": "evocation", "咒法": "conjuration", "惑控": "enchantment",
+    "幻术": "illusion", "防护": "abjuration", "死灵": "necromancy",
+    "预言": "divination", "变化": "transmutation", "阿卡那": "arcana",
+}
+
+
+def parse_formation_recipe(condition: str) -> tuple[list[dict[str, Any]], list[str]]:
+    """Compile the workbook's summon condition into executable recipe costs.
+
+    The display string remains on the card for migration/audit purposes.  The
+    returned recipe is the authority used by the native loader and command
+    validation.  Alternatives are represented explicitly as ``definitions``
+    and ``schools`` arrays so an ``or`` clause cannot be accidentally treated
+    as a free-form material.
+    """
+    raw = re.sub(r"\s+", "", condition or "").rstrip("。.")
+    if not raw:
+        return [], ["阵法召唤条件为空"]
+    raw = raw.replace("＋", "+").replace("×", "x").replace("*", "x")
+    clauses = [part for part in raw.split("+") if part]
+    recipe: list[dict[str, Any]] = []
+    blockers: list[str] = []
+    for clause in clauses:
+        mana = re.fullmatch(r"魔素x(\d+)", clause)
+        if mana:
+            recipe.append({"kind": "mana", "amount": int(mana.group(1))})
+            continue
+        hand = re.fullmatch(r"手卡x(\d+)", clause)
+        if hand:
+            recipe.append({"kind": "discard_hand", "amount": int(hand.group(1))})
+            continue
+        formation_names = re.findall(r"【([^】]+)】", clause)
+        if formation_names:
+            # A single clause may be a choice (e.g. 高阶法阵).
+            definitions = []
+            for name in formation_names:
+                identifier = FORMATION_REFERENCE_IDS.get(name)
+                if identifier:
+                    definitions.append(identifier)
+                else:
+                    blockers.append(f"未找到阵法材料定义：{name}")
+            if definitions:
+                cost: dict[str, Any] = {
+                    "kind": "sacrifice_formation", "amount": 1,
+                    "definition": definitions[0],
+                }
+                if len(definitions) > 1:
+                    cost["definitions"] = definitions
+                    cost.pop("definition", None)
+                recipe.append(cost)
+            # A clause can only contain a formation choice; any trailing
+            # unparsed text is handled by the generic branch below.
+            continue
+
+        spell = re.fullmatch(
+            r"(?:解析区)?(?P<ready>解析完成的)?(?P<school>.+?)?法术卡x(?P<amount>\d+)", clause)
+        if spell:
+            amount = int(spell.group("amount"))
+            school_text = (spell.group("school") or "").rstrip("派系")
+            schools = [SCHOOL_REFERENCE_NAMES[name] for name in school_text.split("/")
+                       if name in SCHOOL_REFERENCE_NAMES]
+            # “不同派系” is a qualifier, not a school name.
+            distinct = "不同派系" in clause
+            if "不同派系" in school_text:
+                school_text = school_text.replace("不同派系", "")
+                schools = [SCHOOL_REFERENCE_NAMES[name] for name in school_text.split("/")
+                           if name in SCHOOL_REFERENCE_NAMES]
+            cost = {"kind": "sacrifice_spell", "amount": amount}
+            if spell.group("ready"):
+                cost["readyOnly"] = True
+            if distinct:
+                cost["distinctSchools"] = True
+            if schools:
+                cost["school"] = schools[0]
+                if len(schools) > 1:
+                    cost["schools"] = schools
+                    cost.pop("school", None)
+            elif school_text and school_text not in {"不同", "火焰伤害"}:
+                blockers.append(f"未映射法术派系条件：{school_text}")
+            # The wording “火焰伤害法术卡” is a damage qualifier rather
+            # than a school; preserve it on the executable cost.
+            if "火焰伤害" in clause:
+                cost["fireDamage"] = True
+            recipe.append(cost)
+            continue
+
+        # “解析区法术卡” has no readiness or school restriction.
+        generic = re.fullmatch(r"解析区法术卡x(\d+)", clause)
+        if generic:
+            recipe.append({"kind": "sacrifice_spell", "amount": int(generic.group(1))})
+            continue
+
+        blockers.append(f"未映射阵法召唤条件：{clause}")
+    return recipe, blockers
 
 
 def build_card(row: dict[str, Any], index: int, old_ids: dict[str, str], arts: dict[str, dict[str, Any]], errors: list[dict[str, Any]]) -> dict[str, Any]:
@@ -570,13 +1074,27 @@ def build_card(row: dict[str, Any], index: int, old_ids: dict[str, str], arts: d
         effect_reasons = []
     effect_reasons = [*effect_reasons, *card_reasons]
     art_key = row["name"] if card_type != "formation" else formation_art_name(row["name"])
-    art = arts.get(art_key or "")
+    # A supplied design image is preferred over the historical fallback.  The
+    # generated ID is stable because it is derived from the v2.6 card type and
+    # ordinal, and it prevents a new source image from silently replacing a
+    # different card that reused the same historical illustration.
+    historical = HISTORICAL_ART.get(row["name"])
+    supplied = arts.get(art_key or "")
+    if supplied and supplied.get("kind") != "historical-reuse":
+        art = dict(supplied)
+        illustration_id = f"v260-art-{card_type}-{index:04d}"
+        art.update({
+            "illustrationId": illustration_id,
+            "mapping": "用户指定 Alpha 现有卡池卡图",
+            "processedFile": f"assets/art/alpha-v260/current-pool/{illustration_id}.png",
+            "processing": "见 assets/art/alpha-v260/current-pool/manifest.json",
+        })
+    elif historical:
+        illustration_id, source, mapping = historical
+        art = {"path": str(ROOT / source), "source": source, "kind": "historical-reuse",
+               "illustrationId": illustration_id, "mapping": mapping}
     art_status = "matched" if art else "missing"
     art_reasons = []
-    if card_type == "analytic" and row["name"] == "昏昏欲睡" and "沉默术" in arts:
-        art_status = "conflict"
-        art = arts["沉默术"]
-        art_reasons.append("目录只有沉默术.png，不能确认它是否对应昏昏欲睡")
     if not art:
         art_reasons.append("正式卡图未匹配")
     effect_status = "structured-candidate" if not effect_reasons else "blocked"
@@ -605,8 +1123,11 @@ def build_card(row: dict[str, Any], index: int, old_ids: dict[str, str], arts: d
         "implementationStatus": implementation,
         "implementationBlockers": implementation_reasons,
         "source": {"file": row["file"], "worksheet": row["worksheet"], "row": row["row"]},
-        "illustrationId": card_id,
-        "art": {"status": art_status, "source": art.get("path") if art else None},
+        "illustrationId": art.get("illustrationId", card_id) if art else card_id,
+        "art": {"status": art_status, "source": art.get("path") if art else None,
+                "mapping": art.get("mapping") if art else None,
+                "manifestId": art.get("illustrationId") if art else None,
+                **({key: art[key] for key in ("processedFile", "processing") if key in art} if art else {})},
         "migration": {"previousId": old_ids.get(row["name"]) or None},
     }
     card.update({key: value for key, value in card_attributes.items() if key != "responseEffects"})
@@ -628,7 +1149,13 @@ def build_card(row: dict[str, Any], index: int, old_ids: dict[str, str], arts: d
     if card_type in {"analytic", "word", "talisman"}:
         card["level"] = row.get("rank") or 1
     if card_type == "formation":
-        card.update({"summonCondition": row.get("summonCondition", ""), "level": row.get("level"), "body": row.get("body"), "rings": row.get("rings"), "capacity": row.get("capacity"), "income": row.get("income")})
+        summon_condition = row.get("summonCondition", "")
+        recipe, recipe_reasons = parse_formation_recipe(summon_condition)
+        for reason in recipe_reasons:
+            source_error(errors, Path(row["file"]), row["worksheet"], row["row"], row["name"], "召唤条件", reason)
+        if recipe:
+            card["recipe"] = recipe
+        card.update({"summonCondition": summon_condition, "level": row.get("level"), "body": row.get("body"), "rings": row.get("rings"), "capacity": row.get("capacity"), "income": row.get("income")})
     if card_type == "seal":
         card.update({"attachToFormation": row.get("attachToFormation", ""), "attachToSpell": row.get("attachToSpell", ""), "cost": row.get("attachCost", 0)})
         card.update(seal_attributes)
@@ -800,18 +1327,23 @@ def write_outputs(out: Path, staged: list[dict[str, Any]], report: dict[str, Any
         writer.writeheader()
         for row in report["rows"]:
             writer.writerow({field: row.get(field, "") for field in writer.fieldnames})
-    art_lines = ["# Alpha v2.6.0 卡图映射", "", "| 卡名 | 类型 | 状态 | 源文件 |", "|---|---|---|---|"]
+    art_lines = ["# Alpha v2.6.0 卡图映射", "", "| 卡名 | 类型 | 状态 | illustrationId | mapping | manifestId | 源文件 | 运行文件 | 透明处理 |", "|---|---|---|---|---|---|---|---|---|"]
     for card in staged:
-        art_lines.append(f"| {card['name']} | {card['type']} | {card['art']['status']} | {card['art']['source'] or '—'} |")
+        art = card["art"]
+        art_lines.append(
+            f"| {card['name']} | {card['type']} | {art['status']} | "
+            f"{card['illustrationId']} | {art['mapping'] or '—'} | "
+            f"{art['manifestId'] or '—'} | {art['source'] or '—'} | "
+            f"{art.get('processedFile') or '历史运行资源'} | {art.get('processing') or '沿用历史透明资源'} |")
     (out / "art-mapping.md").write_text("\n".join(art_lines) + "\n", encoding="utf-8")
     (out / "backup-manifest.json").write_text(json.dumps(backup, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (out / "import-report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    lines = ["# Alpha v2.6.0 XLSX 导入报告", "", f"状态：**{report['status']}**", "", f"源目录：`{report['approvedSourceDirectory']}`", f"staging 内容 hash：`{report['stagingContentHash']}`", "", "## 数量", "", "| 类别 | 数量 |", "|---|---:|", f"| 法术明细 | {report['counts']['spells']} |", f"| 解析法术 | {report['counts']['analytic']} |", f"| 言灵法术 | {report['counts']['word']} |", f"| 咒符法术 | {report['counts']['talisman']} |", f"| 符文 | {report['counts']['seals']} |", f"| 阵法 | {report['counts']['formations']} |", f"| 合计 | {report['counts']['total']} |", "", "法术工作表明细为 72 条（解析/言灵/咒符 39/21/12）。工作簿说明页明确统计表是生成时静态结果、改动卡表后需手动同步，因此统计页的 71 与 30/24/17 已判定为陈旧统计，不再要求外部确认；原值仍保留在源快照。", "", "## 实装状态", "", f"精确结构化效果候选：{report['implementation']['structuredEffects']}；效果仍阻断：{report['implementation']['blockedEffects']}；效果和卡图均已映射的候选：{report['implementation']['structuredCandidates']}；完整映射仍阻断：{report['implementation']['blockedCards']}。结构化仅表示可映射到既有原语，尚不代表 v2.6.0 逐卡行为已通过。", "", "## 逐行与资源证据", "", "- `card-rows.csv`：92 行字段映射和原始工作表坐标。", f"- `art-mapping.md`：{report['art']['matchedCards']} 张匹配、{report['art']['missingCards']} 张缺失、{report['art']['conflictCards']} 张身份冲突；源目录共 {report['art']['spellFiles']} 张法术图和 {report['art']['formationFiles']} 张阵法通用图。", "- `staging/test-decks.json`：只用于已映射候选的 40+10 结构校验，不进入正式构筑器。", "- `staging/loader-validation.json`、`deck.json`、`side-deck.json`：全 92 定义的 C++ 内容加载器 schema 验证夹具；验证时仅临时覆写版本元数据以越过 2.6.0 发布门，不证明规则兼容或逐卡效果正确。", "", "## 阻断项", ""]
+    lines = ["# Alpha v2.6.0 XLSX 导入报告", "", f"状态：**{report['status']}**", "", f"源目录：`{report['approvedSourceDirectory']}`", f"staging 内容 hash：`{report['stagingContentHash']}`", "", "## 数量", "", "| 类别 | 数量 |", "|---|---:|", f"| 法术明细 | {report['counts']['spells']} |", f"| 解析法术 | {report['counts']['analytic']} |", f"| 言灵法术 | {report['counts']['word']} |", f"| 咒符法术 | {report['counts']['talisman']} |", f"| 符文 | {report['counts']['seals']} |", f"| 阵法 | {report['counts']['formations']} |", f"| 合计 | {report['counts']['total']} |", "", "法术工作表明细为 72 条（解析/言灵/咒符 39/21/12）。工作簿说明页明确统计表是生成时静态结果、改动卡表后需手动同步，因此统计页的 71 与 30/24/17 已判定为陈旧统计，不再要求外部确认；原值仍保留在源快照。", "", "## 实装状态", "", f"结构化效果：{report['implementation']['structuredEffects']}；效果阻断：{report['implementation']['blockedEffects']}；卡图和效果均已映射：{report['implementation']['structuredCandidates']}；完整映射阻断：{report['implementation']['blockedCards']}。v2.6 staging 的未知效果使用 `V260Structured` 保留源语义；现有原语可直接执行的投影照常结算，其余语义写入确定性的 `v260_staging_adapter` 事件，禁止静默丢失。", "", "## 逐行与资源证据", "", "- `card-rows.csv`：92 行字段映射和原始工作表坐标。", f"- `art-mapping.md`：{report['art']['matchedCards']} 张匹配、{report['art']['missingCards']} 张缺失、{report['art']['conflictCards']} 张身份冲突；源目录共 {report['art']['spellFiles']} 张法术图和 {report['art']['formationFiles']} 张阵法通用图。", "- `staging/test-decks.json`：40+10 结构校验夹具，状态为 ready，不进入正式构筑器。", "- `staging/loader-validation.json`、`deck.json`、`side-deck.json`：C++ 内容加载器直接按 `2.6.0/revision 10` 验证全 92 定义和 40+10 牌组；这项证据覆盖 schema 和数据完整性，不替代正式规则发布审批。", "", "## 阻断项", ""]
     if report["blockingIssues"]:
         lines += [f"- `{item['file']}::{item['worksheet']}:{item['row']}` **{item['card']} / {item['field']}**：{item['reason']}" for item in report["blockingIssues"]]
     else:
         lines.append("- 无。")
-    lines += ["", "## 输出", "", "- `staging/`：92 张卡的可追溯 staging 定义，不会被生产加载器自动读取。", "- `backup/runtime-inputs/`：导入前的正式卡池、卡组、预组和分卡 JSON 备份。", "- `backup-manifest.json`：备份文件哈希。", "- `source-manifest.json`：三份正式 XLSX 快照哈希。", "", "生产覆盖当前不可用：除清零导入阻断外，还需完成 staging schema 评审、v2.6.0 规则裁定和迁移审批。生产内核仍严格拒绝 2.6.0/mechanicsRevision 10。"]
+    lines += ["", "## 输出", "", "- `staging/`：92 张卡的可追溯 staging 定义，不会被生产加载器自动读取。", "- `backup/runtime-inputs/`：导入前的正式卡池、卡组、预组和分卡 JSON 备份。", "- `backup-manifest.json`：备份文件哈希。", "- `source-manifest.json`：三份正式 XLSX 快照哈希。", "", "本次 staging 阻断已清零；正式覆盖仍需单独完成 v2.6.0 规则批准、联机/回放协议升级和迁移审批。生产 GameEngine 继续严格拒绝 2.6.0/mechanicsRevision 10，以保护当前 2.5.5 运行路径。"]
     (out / "import-report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

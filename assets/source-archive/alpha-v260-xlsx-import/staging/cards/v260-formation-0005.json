@@ -12,24 +12,21 @@
   "speed": 1,
   "text": "此阵法卡上设置的塑能法术卡造成的伤害+1。",
   "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-    "正式卡图未匹配"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
     "worksheet": "阵法卡",
     "row": 7
   },
-  "illustrationId": "v260-formation-0005",
+  "illustrationId": "v2-elemental-ring",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-elemental-ring.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "v2-elemental-ring"
   },
   "migration": {
     "previousId": "elemental-ring"
@@ -38,6 +35,18 @@
     "host_evocation_damage_plus_one"
   ],
   "raritySource": "",
+  "recipe": [
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "readyOnly": true,
+      "school": "evocation"
+    },
+    {
+      "kind": "mana",
+      "amount": 1
+    }
+  ],
   "summonCondition": "解析完成的塑能派系法术卡×1＋魔素×1",
   "level": 3,
   "body": 2,

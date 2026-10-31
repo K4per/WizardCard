@@ -1,0 +1,53 @@
+{
+  "id": "v260-analytic-0008",
+  "number": "020008",
+  "name": "炽燃结界",
+  "type": "analytic",
+  "school": "evocation",
+  "rarity": "common",
+  "rank": 3,
+  "cost": 2,
+  "castCost": 0,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "专注2。发动时，对对方造成4点火焰伤害。维持专注时，对对方造成3点火焰伤害。",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 4,
+      "damageType": "fire",
+      "recipient": "opponent"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 9
+  },
+  "illustrationId": "ward",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\ward.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "ward"
+  },
+  "migration": {
+    "previousId": "ward"
+  },
+  "concentration": true,
+  "concentrationUpkeep": 2,
+  "onCast": [
+    {
+      "kind": "damage",
+      "amount": 3,
+      "damageType": "fire",
+      "recipient": "opponent"
+    }
+  ],
+  "target": "opponent",
+  "level": 3
+}

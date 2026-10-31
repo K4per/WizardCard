@@ -53,7 +53,7 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 	card.type_key = ["incantation", "analysis", "incantation", "formation", "rune", "talisman"][clampi(type_index, 0, 5)]
 	card.type_label = str(data.get("typeLabel", ["行动（旧版）", "解析", "言灵", "阵法", "符文", "咒符"][clampi(type_index, 0, 5)]))
 	card.setting_cost = int(data.get("cost", 0)) if type_index != 5 else 0
-	card.cast_cost = int(data.get("cost", 0)) if type_index in [2, 5] else int(data.get("castCost", 0))
+	card.cast_cost = int(data.get("castCost", 0)) if type_index == 5 else int(data.get("cost", 0)) if type_index == 2 else int(data.get("castCost", 0))
 	card.dynamic_cost = bool(data.get("dynamicCost", false))
 	card._update_cost_label()
 	card.secondary_value = str(data.get("level", data.get("rank", 0)))

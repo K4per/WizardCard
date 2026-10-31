@@ -2,11 +2,11 @@
   "format": 2,
   "scope": "Current production source collections and required runtime inputs; Godot runtime mirror listed separately. Retired design archives and unused legacy exports are excluded.",
   "comparison": {
-    "previousSourceFiles": 976,
-    "currentSourceFiles": 976,
-    "sourceFileDelta": 0,
-    "previousBytes": 432616004,
-    "currentBytes": 432616004
+    "previousSourceFiles": 977,
+    "currentSourceFiles": 1027,
+    "sourceFileDelta": 50,
+    "previousBytes": 433691644,
+    "currentBytes": 493893328
   },
   "sourceFiles": [
     {
@@ -1504,6 +1504,764 @@
       ],
       "runtimeAssetIds": [
         "illustration.blood-transfusion"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/manifest.json",
+      "extension": ".json",
+      "bytes": 30847,
+      "sha256": "5ea46c614ecb3a535691c69766844c76f6d60888c8e535a2f917225ae44d78a3",
+      "category": "alpha-v260",
+      "usage": "candidate-or-legacy; verify references before removal"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0010.png",
+      "extension": ".png",
+      "bytes": 1432713,
+      "sha256": "a93ef31e786e0a5506742470e99d323dcbc0f97f8043aa1401c91ed727d8bbc8",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0010"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0013.png",
+      "extension": ".png",
+      "bytes": 1140888,
+      "sha256": "12968060fe0817d451b15ed676684257e9e8963bdfa7ccd5d494deac360c491d",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0013"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0014.png",
+      "extension": ".png",
+      "bytes": 1121585,
+      "sha256": "5e4e5ffc670d8dc6c569fe190d7eb0adbff0caf1ecf0ab0fad0074a0dc3c4aeb",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0014"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0015.png",
+      "extension": ".png",
+      "bytes": 827719,
+      "sha256": "d1b7772470f56bafe11d2366d1b660cd82c31c9e7616aca07c3737ac235ea379",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0015"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0017.png",
+      "extension": ".png",
+      "bytes": 1732990,
+      "sha256": "355e619516b9c70d8f2346742d3c8b0fcf79211967b5952d1be9772eb0520055",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0017"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0018.png",
+      "extension": ".png",
+      "bytes": 1346197,
+      "sha256": "ce404d349808c5e11b63b455cee70d228b14827afd316cdecd9ac26d5b612df5",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0018"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0022.png",
+      "extension": ".png",
+      "bytes": 1239145,
+      "sha256": "31a39dc5f30ab1d41f7e2aded709bd2b507d92ca44aea7fb025ea45e02c09884",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0022"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0023.png",
+      "extension": ".png",
+      "bytes": 1466688,
+      "sha256": "2ac709694bf9cd843dd1b7d2cea6458de454bdb3e2d5f300b808d4dc33d3818e",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0023"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0024.png",
+      "extension": ".png",
+      "bytes": 1315899,
+      "sha256": "cfd42e6be8d06c5e91086458ccd008c1c6f36ba094f995b54fdacd938ae71758",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0024"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0025.png",
+      "extension": ".png",
+      "bytes": 1067656,
+      "sha256": "8319e0f9e600be2a39afbc28612475486da8b7596fb5d07b60fa36c1b1d50f51",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0025"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0026.png",
+      "extension": ".png",
+      "bytes": 998205,
+      "sha256": "635acf3fd5fba4ff1ddb7a5c671494442d42a196a37b7d1a9d55f2272894ccbc",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0026"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0027.png",
+      "extension": ".png",
+      "bytes": 774105,
+      "sha256": "9a4a89bcdf40adcd8993b21ea7c7a75a148a5c983c7b575ffb8d8b457f7257ef",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0027"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0028.png",
+      "extension": ".png",
+      "bytes": 1632123,
+      "sha256": "174f07042d4711877743cd3c7396120ee51f17251be2e4f4686a96dc44b971bf",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0028"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0031.png",
+      "extension": ".png",
+      "bytes": 1473218,
+      "sha256": "e93a8980bdb819d316d29bd5443b631cf86b94e0cab0b8e60edf3f2f759f656e",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0031"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0032.png",
+      "extension": ".png",
+      "bytes": 1414109,
+      "sha256": "636b1a2919486f6d70a4b602e96055a8bb2450bbaa88d9424756cab1e7297d8b",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0032"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0033.png",
+      "extension": ".png",
+      "bytes": 754241,
+      "sha256": "97f8a067f446280c06087a92038502e7ba161d8b1ed709ebf629184a85e5f5c0",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0033"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0034.png",
+      "extension": ".png",
+      "bytes": 739605,
+      "sha256": "8ba057e230293a861a53f88f5c3ba6e0e18f1af4d7e5859f41ac3668079c40b7",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0034"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0037.png",
+      "extension": ".png",
+      "bytes": 1671333,
+      "sha256": "4a880fcf44bc39a65fc50f8931a09ce42ce37d5a846857a9b8375948c3c0e59f",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0037"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0038.png",
+      "extension": ".png",
+      "bytes": 952153,
+      "sha256": "a89565f8938df8b9c94b9dfeb893ffb568bb46e59075b6262afca5253d663f33",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0038"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-analytic-0039.png",
+      "extension": ".png",
+      "bytes": 1276000,
+      "sha256": "0256077e7c97e7cfe459ef5a9b32b0c7402ad7df3f12b2b153cef00cc82c185a",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-analytic-0039"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-formation-0009.png",
+      "extension": ".png",
+      "bytes": 998082,
+      "sha256": "7330423e7e3b00bf04a072533219182c1070076fa360595113cf184c0241a85c",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-formation-0009"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-formation-0010.png",
+      "extension": ".png",
+      "bytes": 1229737,
+      "sha256": "27e8d252a3c68e3fe490a726d393f1e4f93e60ebdcb81d5bd02d88213c298f5d",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-formation-0010"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-formation-0011.png",
+      "extension": ".png",
+      "bytes": 1380149,
+      "sha256": "88dc4f7a44dae2a9a89d5621259ce6e5657e7f1a9b52c071d3dd9932a0af19a4",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-formation-0011"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-formation-0012.png",
+      "extension": ".png",
+      "bytes": 1324001,
+      "sha256": "b95c4ebe4c6639a27875da9251e949e40f7c16455785e7c7a97fe7c13ae23622",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-formation-0012"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-formation-0013.png",
+      "extension": ".png",
+      "bytes": 885158,
+      "sha256": "9447ec06dbb60a56a11b6d6714721457da9fe38f7ff4e5a60830e703d30199ce",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-formation-0013"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-formation-0014.png",
+      "extension": ".png",
+      "bytes": 1636998,
+      "sha256": "2d7c4fffe879e081612939c994f369ac7c78a2ef9bced0658ba1c700eccef7e0",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-formation-0014"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-formation-0015.png",
+      "extension": ".png",
+      "bytes": 862308,
+      "sha256": "fafe23702c6ec7c4b75604b9bee39a1b0bc46e21489d227ad7cfc57d92e9575e",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-formation-0015"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-formation-0016.png",
+      "extension": ".png",
+      "bytes": 1433512,
+      "sha256": "70c0b1aeebd2be00ff92ea38acd9aa62699ea240ce3360c08e44982d03e8695a",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-formation-0016"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-formation-0017.png",
+      "extension": ".png",
+      "bytes": 1034535,
+      "sha256": "ad0743dc3491179875c416fb7aa27462b9a8c4229c660c5816b0087a7214a6ab",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-formation-0017"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-talisman-0001.png",
+      "extension": ".png",
+      "bytes": 1372289,
+      "sha256": "80de57e26dc4f280bc0660029578a5bcb1f11ac72c4c6b7af464a4534f615bb3",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-talisman-0001"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-talisman-0002.png",
+      "extension": ".png",
+      "bytes": 1617445,
+      "sha256": "ac41186b83e79ba5508ef6c0958574dce1869db78e3fca438fb29979f6dedf11",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-talisman-0002"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-talisman-0006.png",
+      "extension": ".png",
+      "bytes": 828213,
+      "sha256": "0ae977201db8b663df36fd02930002dc28f725debb94667b879c5755a523cc67",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-talisman-0006"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-talisman-0007.png",
+      "extension": ".png",
+      "bytes": 1321801,
+      "sha256": "13a22ed8bea39ac18f0c11e23e1da38e4d0355df6506c89df712fa732e27c57d",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-talisman-0007"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-talisman-0008.png",
+      "extension": ".png",
+      "bytes": 1727116,
+      "sha256": "a2c04453b0576887040f01d360250827f4d4bb5acb249bb27aae1297ad52fd98",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-talisman-0008"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-talisman-0011.png",
+      "extension": ".png",
+      "bytes": 1316623,
+      "sha256": "04aa250afe03788e60fb97ab7b7145459ce5fa7697a3ac537e8e26ad8107e6cd",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-talisman-0011"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-talisman-0012.png",
+      "extension": ".png",
+      "bytes": 1207516,
+      "sha256": "742179d37479b9cfc4f591b2691e66cf476248ee5b4ccc522d0ca3f0b8f889ac",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-talisman-0012"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0002.png",
+      "extension": ".png",
+      "bytes": 873985,
+      "sha256": "c0b550b92efd29ae9902830449dbae83529daefd9361ba9e2be776fd4853685b",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0002"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0004.png",
+      "extension": ".png",
+      "bytes": 936937,
+      "sha256": "4c8770b3491d52e37c87a702d888e4bc2832f6c2fb8cfadd5fae3e0de4b9e53d",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0004"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0009.png",
+      "extension": ".png",
+      "bytes": 1269666,
+      "sha256": "7627b572dc2df950fc9b28adad53fe58d7b3e0cacdf52d3f467be66696c66878",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0009"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0010.png",
+      "extension": ".png",
+      "bytes": 1260924,
+      "sha256": "844e8946fefa06bffb0bc24411aac0e8e3541f916acbf461521bf553cae55d5c",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0010"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0011.png",
+      "extension": ".png",
+      "bytes": 1430340,
+      "sha256": "1be04ebeb5a1eaf7639abfb512b770e0da003d53c2d699f3b2a3c70d21fadf28",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0011"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0012.png",
+      "extension": ".png",
+      "bytes": 845250,
+      "sha256": "88fd536847c5ff11abb071a03dd7e0005d4c9878ed325502b1ab3e112cc5361b",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0012"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0013.png",
+      "extension": ".png",
+      "bytes": 1418267,
+      "sha256": "7ed036aaa9a55df8e832e780b05229ba9f5feb1cc363116eec8cf53d3daa756e",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0013"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0014.png",
+      "extension": ".png",
+      "bytes": 1370629,
+      "sha256": "8ee6b630a35d535152275b23912c080ed3216ecae814b41d15f3b89af9723943",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0014"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0015.png",
+      "extension": ".png",
+      "bytes": 1415484,
+      "sha256": "688b9cfb4b33f2c6002d2e342781112300b00a83796dc42b9e4d27868ced3d87",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0015"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0016.png",
+      "extension": ".png",
+      "bytes": 1272379,
+      "sha256": "dd77875d2eee1dfdc8edb07fa430d0e896ec1836b084de15cb7ed6b2fd832f0a",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0016"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0019.png",
+      "extension": ".png",
+      "bytes": 1456045,
+      "sha256": "71235abe233c4042e9abf3bb6ae37d69184371bd5c5b3c097775e5f093dceeb7",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0019"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0020.png",
+      "extension": ".png",
+      "bytes": 905601,
+      "sha256": "a56c041ed844fdfa6c9a0acddb5879cf35ed5dd2a19735c6e27494fe31d87914",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0020"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/current-pool/v260-art-word-0021.png",
+      "extension": ".png",
+      "bytes": 1163275,
+      "sha256": "1329c61708a7af68c236c194762c7d32d2a58bae0d88c0b4d77eee32a0c8b88b",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-art-word-0021"
+      ],
+      "usage": "registered-runtime-source"
+    },
+    {
+      "file": "assets/art/alpha-v260/silence.png",
+      "extension": ".png",
+      "bytes": 1075640,
+      "sha256": "451807bf68e87c41e4ec6f8df34ad45d190f3fa4732ed7d45df6c687b9ed1d74",
+      "category": "alpha-v260",
+      "size": [
+        1024,
+        1024
+      ],
+      "runtimeAssetIds": [
+        "illustration.v260-silence"
       ],
       "usage": "registered-runtime-source"
     },
@@ -12031,6 +12789,356 @@
       "sha256": "c332ad57d2a7da7f4a5ce5138f0ae5ffee739faaf8a5d5ee79a18f72963bfcbc"
     },
     {
+      "file": "godot/art/card/v260-art-analytic-0010.png",
+      "assetId": "illustration.v260-art-analytic-0010",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0010.png",
+      "bytes": 1432713,
+      "sha256": "a93ef31e786e0a5506742470e99d323dcbc0f97f8043aa1401c91ed727d8bbc8"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0013.png",
+      "assetId": "illustration.v260-art-analytic-0013",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0013.png",
+      "bytes": 1140888,
+      "sha256": "12968060fe0817d451b15ed676684257e9e8963bdfa7ccd5d494deac360c491d"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0014.png",
+      "assetId": "illustration.v260-art-analytic-0014",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0014.png",
+      "bytes": 1121585,
+      "sha256": "5e4e5ffc670d8dc6c569fe190d7eb0adbff0caf1ecf0ab0fad0074a0dc3c4aeb"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0015.png",
+      "assetId": "illustration.v260-art-analytic-0015",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0015.png",
+      "bytes": 827719,
+      "sha256": "d1b7772470f56bafe11d2366d1b660cd82c31c9e7616aca07c3737ac235ea379"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0017.png",
+      "assetId": "illustration.v260-art-analytic-0017",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0017.png",
+      "bytes": 1732990,
+      "sha256": "355e619516b9c70d8f2346742d3c8b0fcf79211967b5952d1be9772eb0520055"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0018.png",
+      "assetId": "illustration.v260-art-analytic-0018",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0018.png",
+      "bytes": 1346197,
+      "sha256": "ce404d349808c5e11b63b455cee70d228b14827afd316cdecd9ac26d5b612df5"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0022.png",
+      "assetId": "illustration.v260-art-analytic-0022",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0022.png",
+      "bytes": 1239145,
+      "sha256": "31a39dc5f30ab1d41f7e2aded709bd2b507d92ca44aea7fb025ea45e02c09884"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0023.png",
+      "assetId": "illustration.v260-art-analytic-0023",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0023.png",
+      "bytes": 1466688,
+      "sha256": "2ac709694bf9cd843dd1b7d2cea6458de454bdb3e2d5f300b808d4dc33d3818e"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0024.png",
+      "assetId": "illustration.v260-art-analytic-0024",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0024.png",
+      "bytes": 1315899,
+      "sha256": "cfd42e6be8d06c5e91086458ccd008c1c6f36ba094f995b54fdacd938ae71758"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0025.png",
+      "assetId": "illustration.v260-art-analytic-0025",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0025.png",
+      "bytes": 1067656,
+      "sha256": "8319e0f9e600be2a39afbc28612475486da8b7596fb5d07b60fa36c1b1d50f51"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0026.png",
+      "assetId": "illustration.v260-art-analytic-0026",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0026.png",
+      "bytes": 998205,
+      "sha256": "635acf3fd5fba4ff1ddb7a5c671494442d42a196a37b7d1a9d55f2272894ccbc"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0027.png",
+      "assetId": "illustration.v260-art-analytic-0027",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0027.png",
+      "bytes": 774105,
+      "sha256": "9a4a89bcdf40adcd8993b21ea7c7a75a148a5c983c7b575ffb8d8b457f7257ef"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0028.png",
+      "assetId": "illustration.v260-art-analytic-0028",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0028.png",
+      "bytes": 1632123,
+      "sha256": "174f07042d4711877743cd3c7396120ee51f17251be2e4f4686a96dc44b971bf"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0031.png",
+      "assetId": "illustration.v260-art-analytic-0031",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0031.png",
+      "bytes": 1473218,
+      "sha256": "e93a8980bdb819d316d29bd5443b631cf86b94e0cab0b8e60edf3f2f759f656e"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0032.png",
+      "assetId": "illustration.v260-art-analytic-0032",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0032.png",
+      "bytes": 1414109,
+      "sha256": "636b1a2919486f6d70a4b602e96055a8bb2450bbaa88d9424756cab1e7297d8b"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0033.png",
+      "assetId": "illustration.v260-art-analytic-0033",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0033.png",
+      "bytes": 754241,
+      "sha256": "97f8a067f446280c06087a92038502e7ba161d8b1ed709ebf629184a85e5f5c0"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0034.png",
+      "assetId": "illustration.v260-art-analytic-0034",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0034.png",
+      "bytes": 739605,
+      "sha256": "8ba057e230293a861a53f88f5c3ba6e0e18f1af4d7e5859f41ac3668079c40b7"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0037.png",
+      "assetId": "illustration.v260-art-analytic-0037",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0037.png",
+      "bytes": 1671333,
+      "sha256": "4a880fcf44bc39a65fc50f8931a09ce42ce37d5a846857a9b8375948c3c0e59f"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0038.png",
+      "assetId": "illustration.v260-art-analytic-0038",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0038.png",
+      "bytes": 952153,
+      "sha256": "a89565f8938df8b9c94b9dfeb893ffb568bb46e59075b6262afca5253d663f33"
+    },
+    {
+      "file": "godot/art/card/v260-art-analytic-0039.png",
+      "assetId": "illustration.v260-art-analytic-0039",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0039.png",
+      "bytes": 1276000,
+      "sha256": "0256077e7c97e7cfe459ef5a9b32b0c7402ad7df3f12b2b153cef00cc82c185a"
+    },
+    {
+      "file": "godot/art/card/v260-art-formation-0009.png",
+      "assetId": "illustration.v260-art-formation-0009",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0009.png",
+      "bytes": 998082,
+      "sha256": "7330423e7e3b00bf04a072533219182c1070076fa360595113cf184c0241a85c"
+    },
+    {
+      "file": "godot/art/card/v260-art-formation-0010.png",
+      "assetId": "illustration.v260-art-formation-0010",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0010.png",
+      "bytes": 1229737,
+      "sha256": "27e8d252a3c68e3fe490a726d393f1e4f93e60ebdcb81d5bd02d88213c298f5d"
+    },
+    {
+      "file": "godot/art/card/v260-art-formation-0011.png",
+      "assetId": "illustration.v260-art-formation-0011",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0011.png",
+      "bytes": 1380149,
+      "sha256": "88dc4f7a44dae2a9a89d5621259ce6e5657e7f1a9b52c071d3dd9932a0af19a4"
+    },
+    {
+      "file": "godot/art/card/v260-art-formation-0012.png",
+      "assetId": "illustration.v260-art-formation-0012",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0012.png",
+      "bytes": 1324001,
+      "sha256": "b95c4ebe4c6639a27875da9251e949e40f7c16455785e7c7a97fe7c13ae23622"
+    },
+    {
+      "file": "godot/art/card/v260-art-formation-0013.png",
+      "assetId": "illustration.v260-art-formation-0013",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0013.png",
+      "bytes": 885158,
+      "sha256": "9447ec06dbb60a56a11b6d6714721457da9fe38f7ff4e5a60830e703d30199ce"
+    },
+    {
+      "file": "godot/art/card/v260-art-formation-0014.png",
+      "assetId": "illustration.v260-art-formation-0014",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0014.png",
+      "bytes": 1636998,
+      "sha256": "2d7c4fffe879e081612939c994f369ac7c78a2ef9bced0658ba1c700eccef7e0"
+    },
+    {
+      "file": "godot/art/card/v260-art-formation-0015.png",
+      "assetId": "illustration.v260-art-formation-0015",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0015.png",
+      "bytes": 862308,
+      "sha256": "fafe23702c6ec7c4b75604b9bee39a1b0bc46e21489d227ad7cfc57d92e9575e"
+    },
+    {
+      "file": "godot/art/card/v260-art-formation-0016.png",
+      "assetId": "illustration.v260-art-formation-0016",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0016.png",
+      "bytes": 1433512,
+      "sha256": "70c0b1aeebd2be00ff92ea38acd9aa62699ea240ce3360c08e44982d03e8695a"
+    },
+    {
+      "file": "godot/art/card/v260-art-formation-0017.png",
+      "assetId": "illustration.v260-art-formation-0017",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0017.png",
+      "bytes": 1034535,
+      "sha256": "ad0743dc3491179875c416fb7aa27462b9a8c4229c660c5816b0087a7214a6ab"
+    },
+    {
+      "file": "godot/art/card/v260-art-talisman-0001.png",
+      "assetId": "illustration.v260-art-talisman-0001",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0001.png",
+      "bytes": 1372289,
+      "sha256": "80de57e26dc4f280bc0660029578a5bcb1f11ac72c4c6b7af464a4534f615bb3"
+    },
+    {
+      "file": "godot/art/card/v260-art-talisman-0002.png",
+      "assetId": "illustration.v260-art-talisman-0002",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0002.png",
+      "bytes": 1617445,
+      "sha256": "ac41186b83e79ba5508ef6c0958574dce1869db78e3fca438fb29979f6dedf11"
+    },
+    {
+      "file": "godot/art/card/v260-art-talisman-0006.png",
+      "assetId": "illustration.v260-art-talisman-0006",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0006.png",
+      "bytes": 828213,
+      "sha256": "0ae977201db8b663df36fd02930002dc28f725debb94667b879c5755a523cc67"
+    },
+    {
+      "file": "godot/art/card/v260-art-talisman-0007.png",
+      "assetId": "illustration.v260-art-talisman-0007",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0007.png",
+      "bytes": 1321801,
+      "sha256": "13a22ed8bea39ac18f0c11e23e1da38e4d0355df6506c89df712fa732e27c57d"
+    },
+    {
+      "file": "godot/art/card/v260-art-talisman-0008.png",
+      "assetId": "illustration.v260-art-talisman-0008",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0008.png",
+      "bytes": 1727116,
+      "sha256": "a2c04453b0576887040f01d360250827f4d4bb5acb249bb27aae1297ad52fd98"
+    },
+    {
+      "file": "godot/art/card/v260-art-talisman-0011.png",
+      "assetId": "illustration.v260-art-talisman-0011",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0011.png",
+      "bytes": 1316623,
+      "sha256": "04aa250afe03788e60fb97ab7b7145459ce5fa7697a3ac537e8e26ad8107e6cd"
+    },
+    {
+      "file": "godot/art/card/v260-art-talisman-0012.png",
+      "assetId": "illustration.v260-art-talisman-0012",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0012.png",
+      "bytes": 1207516,
+      "sha256": "742179d37479b9cfc4f591b2691e66cf476248ee5b4ccc522d0ca3f0b8f889ac"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0002.png",
+      "assetId": "illustration.v260-art-word-0002",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0002.png",
+      "bytes": 873985,
+      "sha256": "c0b550b92efd29ae9902830449dbae83529daefd9361ba9e2be776fd4853685b"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0004.png",
+      "assetId": "illustration.v260-art-word-0004",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0004.png",
+      "bytes": 936937,
+      "sha256": "4c8770b3491d52e37c87a702d888e4bc2832f6c2fb8cfadd5fae3e0de4b9e53d"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0009.png",
+      "assetId": "illustration.v260-art-word-0009",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0009.png",
+      "bytes": 1269666,
+      "sha256": "7627b572dc2df950fc9b28adad53fe58d7b3e0cacdf52d3f467be66696c66878"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0010.png",
+      "assetId": "illustration.v260-art-word-0010",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0010.png",
+      "bytes": 1260924,
+      "sha256": "844e8946fefa06bffb0bc24411aac0e8e3541f916acbf461521bf553cae55d5c"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0011.png",
+      "assetId": "illustration.v260-art-word-0011",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0011.png",
+      "bytes": 1430340,
+      "sha256": "1be04ebeb5a1eaf7639abfb512b770e0da003d53c2d699f3b2a3c70d21fadf28"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0012.png",
+      "assetId": "illustration.v260-art-word-0012",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0012.png",
+      "bytes": 845250,
+      "sha256": "88fd536847c5ff11abb071a03dd7e0005d4c9878ed325502b1ab3e112cc5361b"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0013.png",
+      "assetId": "illustration.v260-art-word-0013",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0013.png",
+      "bytes": 1418267,
+      "sha256": "7ed036aaa9a55df8e832e780b05229ba9f5feb1cc363116eec8cf53d3daa756e"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0014.png",
+      "assetId": "illustration.v260-art-word-0014",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0014.png",
+      "bytes": 1370629,
+      "sha256": "8ee6b630a35d535152275b23912c080ed3216ecae814b41d15f3b89af9723943"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0015.png",
+      "assetId": "illustration.v260-art-word-0015",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0015.png",
+      "bytes": 1415484,
+      "sha256": "688b9cfb4b33f2c6002d2e342781112300b00a83796dc42b9e4d27868ced3d87"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0016.png",
+      "assetId": "illustration.v260-art-word-0016",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0016.png",
+      "bytes": 1272379,
+      "sha256": "dd77875d2eee1dfdc8edb07fa430d0e896ec1836b084de15cb7ed6b2fd832f0a"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0019.png",
+      "assetId": "illustration.v260-art-word-0019",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0019.png",
+      "bytes": 1456045,
+      "sha256": "71235abe233c4042e9abf3bb6ae37d69184371bd5c5b3c097775e5f093dceeb7"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0020.png",
+      "assetId": "illustration.v260-art-word-0020",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0020.png",
+      "bytes": 905601,
+      "sha256": "a56c041ed844fdfa6c9a0acddb5879cf35ed5dd2a19735c6e27494fe31d87914"
+    },
+    {
+      "file": "godot/art/card/v260-art-word-0021.png",
+      "assetId": "illustration.v260-art-word-0021",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0021.png",
+      "bytes": 1163275,
+      "sha256": "1329c61708a7af68c236c194762c7d32d2a58bae0d88c0b4d77eee32a0c8b88b"
+    },
+    {
+      "file": "godot/art/card/v260-silence.png",
+      "assetId": "illustration.v260-silence",
+      "source": "assets/art/alpha-v260/silence.png",
+      "bytes": 1075640,
+      "sha256": "451807bf68e87c41e4ec6f8df34ad45d190f3fa4732ed7d45df6c687b9ed1d74"
+    },
+    {
       "file": "godot/art/card/ward.png",
       "assetId": "illustration.ward",
       "source": "assets/art/cards/ward.png",
@@ -13680,6 +14788,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "0256077e7c97e7cfe459ef5a9b32b0c7402ad7df3f12b2b153cef00cc82c185a",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0039.png",
+        "godot/art/card/v260-art-analytic-0039.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "02e783270972d01fe480172caf372f4e26579dcc8f3ca1ce9ae68483fa73fc7c",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_type_formation.png",
@@ -13704,6 +14820,14 @@
         "godot/art/ui/c2d_panel_detail.png",
         "godot/art/ui/c2d_panel_log.png",
         "godot/art/ui/c2d_panel_privacy.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "04aa250afe03788e60fb97ab7b7145459ce5fa7697a3ac537e8e26ad8107e6cd",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-talisman-0011.png",
+        "godot/art/card/v260-art-talisman-0011.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -13797,6 +14921,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "0ae977201db8b663df36fd02930002dc28f725debb94667b879c5755a523cc67",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-talisman-0006.png",
+        "godot/art/card/v260-art-talisman-0006.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "0c019d244af65214cd7273f2e9fc8add9a9b4d8548ee5449858d68267a55c074",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_2.png",
@@ -13869,6 +15001,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "12968060fe0817d451b15ed676684257e9e8963bdfa7ccd5d494deac360c491d",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0013.png",
+        "godot/art/card/v260-art-analytic-0013.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "12a441754813f76fcc40e9ad54634b46f84c91747c245322764be184e8083002",
       "files": [
         "assets/art/alpha-v1/instantly-sleep.png",
@@ -13877,10 +15017,26 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "1329c61708a7af68c236c194762c7d32d2a58bae0d88c0b4d77eee32a0c8b88b",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0021.png",
+        "godot/art/card/v260-art-word-0021.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "1343187a17c79589fe6f83856d050489b62f169a59e3b320cb4067b037eebf6e",
       "files": [
         "assets/art/cards/recall.png",
         "godot/art/card/recall.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "13a22ed8bea39ac18f0c11e23e1da38e4d0355df6506c89df712fa732e27c57d",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-talisman-0007.png",
+        "godot/art/card/v260-art-talisman-0007.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -13898,6 +15054,14 @@
       "files": [
         "assets/art/alpha-v254-20261024/source/血契卡图/血契·同源.png",
         "godot/art/cards/blood-same-origin.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "174f07042d4711877743cd3c7396120ee51f17251be2e4f4686a96dc44b971bf",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0028.png",
+        "godot/art/card/v260-art-analytic-0028.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -13942,6 +15106,14 @@
       "files": [
         "assets/art/alpha-v254-20261024/export/qixing/qixing-awaken.png",
         "godot/art/cards/qixing-awaken.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "1be04ebeb5a1eaf7639abfb512b770e0da003d53c2d699f3b2a3c70d21fadf28",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0011.png",
+        "godot/art/card/v260-art-word-0011.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -14154,6 +15326,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "27e8d252a3c68e3fe490a726d393f1e4f93e60ebdcb81d5bd02d88213c298f5d",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-formation-0010.png",
+        "godot/art/card/v260-art-formation-0010.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "281398d1081464a9bbba02eeaa4bacbb071b9f2997fce594b9e2462224269f2b",
       "files": [
         "assets/art/godot-2d-v1/source/c-pixel-v1/svg/effects/c2d_fx_analysis-loop_mask.svg",
@@ -14187,6 +15367,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "2ac709694bf9cd843dd1b7d2cea6458de454bdb3e2d5f300b808d4dc33d3818e",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0023.png",
+        "godot/art/card/v260-art-analytic-0023.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "2bc4297c0d12cc72a929307db6767ea2f11a6e4b724aef781d40559691c63f43",
       "files": [
         "assets/art/godot-2d-v2/deck-builder-1080p-v1/export/background-1080p.png",
@@ -14199,6 +15387,14 @@
       "files": [
         "assets/art/alpha-v254-20261024/source/血契卡图/血契·血脉.png",
         "godot/art/cards/blood-vein.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "2d7c4fffe879e081612939c994f369ac7c78a2ef9bced0658ba1c700eccef7e0",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-formation-0014.png",
+        "godot/art/card/v260-art-formation-0014.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -14265,6 +15461,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "31a39dc5f30ab1d41f7e2aded709bd2b507d92ca44aea7fb025ea45e02c09884",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0022.png",
+        "godot/art/card/v260-art-analytic-0022.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "326e095ba836913685e67d9e9db7b491b7d33adb046a7bc1d2e2ed3780b02627",
       "files": [
         "assets/art/sique-20261020/export/sique-parsley.png",
@@ -14303,6 +15507,14 @@
         "assets/art/godot-2d-v1/source/c-pixel-v1/svg/ui/c2d_control_tab_disabled.svg"
       ],
       "reason": "Same hash; retain pending purpose and visual-reference review"
+    },
+    {
+      "sha256": "355e619516b9c70d8f2346742d3c8b0fcf79211967b5952d1be9772eb0520055",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0017.png",
+        "godot/art/card/v260-art-analytic-0017.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
     },
     {
       "sha256": "35d6730ebec74aa4a115bffd937ee1d231d665cd84f9984a0641986e652d6192",
@@ -14433,6 +15645,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "451807bf68e87c41e4ec6f8df34ad45d190f3fa4732ed7d45df6c687b9ed1d74",
+      "files": [
+        "assets/art/alpha-v260/silence.png",
+        "godot/art/card/v260-silence.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "4608b07536b0b1389af991d4430a1a8c63087486c61a5da630f31d02f98667e2",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/brand/c2d_brand_logo.png",
@@ -14493,12 +15713,28 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "4a880fcf44bc39a65fc50f8931a09ce42ce37d5a846857a9b8375948c3c0e59f",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0037.png",
+        "godot/art/card/v260-art-analytic-0037.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "4c3ae655e2246017cf6b6f8d7657cdc2944a139dd8091afba9938d179709bf4d",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/effects/c2d_fx_end-cleanup_mask.png",
         "assets/art/godot-2d-v1/export/c-pixel-v1/effects/c2d_fx_leave_mask.png"
       ],
       "reason": "Same hash; retain pending purpose and visual-reference review"
+    },
+    {
+      "sha256": "4c8770b3491d52e37c87a702d888e4bc2832f6c2fb8cfadd5fae3e0de4b9e53d",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0004.png",
+        "godot/art/card/v260-art-word-0004.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
     },
     {
       "sha256": "4d16650c861bc59100a748f3cd4cc8fc0ced398b442fc218e53d42636c0b8e2c",
@@ -14858,6 +16094,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "5e4e5ffc670d8dc6c569fe190d7eb0adbff0caf1ecf0ab0fad0074a0dc3c4aeb",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0014.png",
+        "godot/art/card/v260-art-analytic-0014.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "5e816b5a07b8813df869b8960a5943d8537f70432cdebc46dc5a7edddcd93568",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_zone_ash.png",
@@ -14883,6 +16127,22 @@
       "reason": "Same hash; retain pending purpose and visual-reference review"
     },
     {
+      "sha256": "635acf3fd5fba4ff1ddb7a5c671494442d42a196a37b7d1a9d55f2272894ccbc",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0026.png",
+        "godot/art/card/v260-art-analytic-0026.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "636b1a2919486f6d70a4b602e96055a8bb2450bbaa88d9424756cab1e7297d8b",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0032.png",
+        "godot/art/card/v260-art-analytic-0032.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "6499d76026d1240c3a7f7db5ecc95b67556c54f492bb53067553cef989c1fd09",
       "files": [
         "assets/art/godot-2d-v2/deck-builder-1080p-v1/export/list-entry-1080p.png",
@@ -14903,6 +16163,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_overlay_cost-candidate.png",
         "godot/art/board/c2d_overlay_cost-candidate.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "688b9cfb4b33f2c6002d2e342781112300b00a83796dc42b9e4d27868ced3d87",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0015.png",
+        "godot/art/card/v260-art-word-0015.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -14963,6 +16231,22 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "70c0b1aeebd2be00ff92ea38acd9aa62699ea240ce3360c08e44982d03e8695a",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-formation-0016.png",
+        "godot/art/card/v260-art-formation-0016.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "71235abe233c4042e9abf3bb6ae37d69184371bd5c5b3c097775e5f093dceeb7",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0019.png",
+        "godot/art/card/v260-art-word-0019.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "71293e5819d14de47f409df76f1fe3cd97e63caa2f8012c4c885150c4b95b478",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_control_scroll-thumb.png",
@@ -14995,10 +16279,26 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "7330423e7e3b00bf04a072533219182c1070076fa360595113cf184c0241a85c",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-formation-0009.png",
+        "godot/art/card/v260-art-formation-0009.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "7348a2a634a2fd313e3d766fdcf48cc894cd3cd73f25db62c30cd015a8702406",
       "files": [
         "assets/art/sique-20261020/export/sique-flavor-shift.png",
         "godot/art/card/sique-flavor-shift.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "742179d37479b9cfc4f591b2691e66cf476248ee5b4ccc522d0ca3f0b8f889ac",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-talisman-0012.png",
+        "godot/art/card/v260-art-talisman-0012.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -15017,6 +16317,14 @@
       "files": [
         "assets/art/alpha-v252-20261021/source/asterism/八芒星.png",
         "godot/art/card/alpha-v252-octagram.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "7627b572dc2df950fc9b28adad53fe58d7b3e0cacdf52d3f467be66696c66878",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0009.png",
+        "godot/art/card/v260-art-word-0009.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -15153,10 +16461,26 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "7ed036aaa9a55df8e832e780b05229ba9f5feb1cc363116eec8cf53d3daa756e",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0013.png",
+        "godot/art/card/v260-art-word-0013.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "7f52386b8ae127cf16d4f9e24d029c7d1cbf9b002d9c46013d82e961c857d740",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_off.png",
         "godot/art/ui/c2d_control_off.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "80de57e26dc4f280bc0660029578a5bcb1f11ac72c4c6b7af464a4534f615bb3",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-talisman-0001.png",
+        "godot/art/card/v260-art-talisman-0001.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -15191,12 +16515,28 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "8319e0f9e600be2a39afbc28612475486da8b7596fb5d07b60fa36c1b1d50f51",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0025.png",
+        "godot/art/card/v260-art-analytic-0025.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "8353c7404c132d227e9a5da3571584ff999e57525c1728fab38c5adec20b9eaf",
       "files": [
         "assets/art/godot-2d-v1/source/c-pixel-v1/svg/effects/c2d_fx_end-cleanup_reduced.svg",
         "assets/art/godot-2d-v1/source/c-pixel-v1/svg/effects/c2d_fx_leave_reduced.svg"
       ],
       "reason": "Same hash; retain pending purpose and visual-reference review"
+    },
+    {
+      "sha256": "844e8946fefa06bffb0bc24411aac0e8e3541f916acbf461521bf553cae55d5c",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0010.png",
+        "godot/art/card/v260-art-word-0010.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
     },
     {
       "sha256": "84e762cf541de2acae6340016b8d3ecd6b1038a7eaf084a31ddc5e02d935cd32",
@@ -15243,6 +16583,22 @@
       "files": [
         "assets/art/alpha-v252-20261021/source/asterism/月亮.png",
         "godot/art/card/moon.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "88dc4f7a44dae2a9a89d5621259ce6e5657e7f1a9b52c071d3dd9932a0af19a4",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-formation-0011.png",
+        "godot/art/card/v260-art-formation-0011.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "88fd536847c5ff11abb071a03dd7e0005d4c9878ed325502b1ab3e112cc5361b",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0012.png",
+        "godot/art/card/v260-art-word-0012.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -15325,6 +16681,14 @@
       "reason": "Same hash; retain pending purpose and visual-reference review"
     },
     {
+      "sha256": "8ba057e230293a861a53f88f5c3ba6e0e18f1af4d7e5859f41ac3668079c40b7",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0034.png",
+        "godot/art/card/v260-art-analytic-0034.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "8d3c014713556151128d3d519d7d3dd38f1cc48e6eb18ea614bca3cd23d404b4",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_decision_wait-turn.png",
@@ -15358,6 +16722,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_chain_resolving.png",
         "godot/art/icons/c2d_icon_chain_resolving.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "8ee6b630a35d535152275b23912c080ed3216ecae814b41d15f3b89af9723943",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0014.png",
+        "godot/art/card/v260-art-word-0014.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -15410,6 +16782,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "9447ec06dbb60a56a11b6d6714721457da9fe38f7ff4e5a60830e703d30199ce",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-formation-0013.png",
+        "godot/art/card/v260-art-formation-0013.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "94ca31f862263435e35dc60c0cca51da380983bde02c3acc9f2965cffa5d54d0",
       "files": [
         "assets/art/alpha-v252-20261021/source/arcana/愚者.png",
@@ -15450,10 +16830,26 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "97f8a067f446280c06087a92038502e7ba161d8b1ed709ebf629184a85e5f5c0",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0033.png",
+        "godot/art/card/v260-art-analytic-0033.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "98a68ceb94d4ca2f5d6e99f8cd9e632ce6be6ca691a69a177b1b4400e2db9521",
       "files": [
         "assets/art/godot-2d-v2/card-illustrations-v2-20261011/v2-octagram.png",
         "godot/art/card/v2-octagram.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "9a4a89bcdf40adcd8993b21ea7c7a75a148a5c983c7b575ffb8d8b457f7257ef",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0027.png",
+        "godot/art/card/v260-art-analytic-0027.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -15538,6 +16934,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "a2c04453b0576887040f01d360250827f4d4bb5acb249bb27aae1297ad52fd98",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-talisman-0008.png",
+        "godot/art/card/v260-art-talisman-0008.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "a3a74458f8f488556380d871e5270512e3d9b47255cccfdb5b0508a99e50cf1d",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_button_secondary_hover.png",
@@ -15550,6 +16954,14 @@
       "files": [
         "assets/art/alpha-v252-20261021/source/arcana/恋人.png",
         "godot/art/card/arcana-lovers.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "a56c041ed844fdfa6c9a0acddb5879cf35ed5dd2a19735c6e27494fe31d87914",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0020.png",
+        "godot/art/card/v260-art-word-0020.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -15604,10 +17016,42 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "a89565f8938df8b9c94b9dfeb893ffb568bb46e59075b6262afca5253d663f33",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0038.png",
+        "godot/art/card/v260-art-analytic-0038.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "a93ef31e786e0a5506742470e99d323dcbc0f97f8043aa1401c91ed727d8bbc8",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0010.png",
+        "godot/art/card/v260-art-analytic-0010.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "aa93e39dcb627906d4ca0f9d12ccf5972ceb5aeff7e6ea745e02e25b73a0b66d",
       "files": [
         "assets/art/alpha-v254-20261024/source/血契卡图/血契·祭品.png",
         "godot/art/cards/blood-offering.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "ac41186b83e79ba5508ef6c0958574dce1869db78e3fca438fb29979f6dedf11",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-talisman-0002.png",
+        "godot/art/card/v260-art-talisman-0002.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "ad0743dc3491179875c416fb7aa27462b9a8c4229c660c5816b0087a7214a6ab",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-formation-0017.png",
+        "godot/art/card/v260-art-formation-0017.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -15737,6 +17181,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "b95c4ebe4c6639a27875da9251e949e40f7c16455785e7c7a97fe7c13ae23622",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-formation-0012.png",
+        "godot/art/card/v260-art-formation-0012.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "bc85f62fbebcc31cb452452823a3d33c46adef1d45439c3e4b93431f248b17f9",
       "files": [
         "assets/art/alpha-v252-20261021/source/arcana/隐士.png",
@@ -15783,6 +17235,14 @@
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/board/c2d_overlay_selected.png",
         "godot/art/board/c2d_overlay_selected.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "c0b550b92efd29ae9902830449dbae83529daefd9361ba9e2be776fd4853685b",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0002.png",
+        "godot/art/card/v260-art-word-0002.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -15890,6 +17350,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "ce404d349808c5e11b63b455cee70d228b14827afd316cdecd9ac26d5b612df5",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0018.png",
+        "godot/art/card/v260-art-analytic-0018.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "ce414ec9ffce89d95aaa8d0cacaf73a4c9368be16e5c5bb4fec0581829be9050",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/cards/c2d_card_detail_rune_ai.png",
@@ -15915,6 +17383,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "cfd42e6be8d06c5e91086458ccd008c1c6f36ba094f995b54fdacd938ae71758",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0024.png",
+        "godot/art/card/v260-art-analytic-0024.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "d0031132c07124961efb001b331481843331bc5e755550af260e5720cde0042d",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/icons/c2d_icon_level_7.png",
@@ -15935,6 +17411,14 @@
       "files": [
         "assets/art/alpha-v252-20261021/source/asterism/二芒星.png",
         "godot/art/card/two-star.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "d1b7772470f56bafe11d2366d1b660cd82c31c9e7616aca07c3737ac235ea379",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0015.png",
+        "godot/art/card/v260-art-analytic-0015.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },
@@ -16071,6 +17555,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "dd77875d2eee1dfdc8edb07fa430d0e896ec1836b084de15cb7ed6b2fd832f0a",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-word-0016.png",
+        "godot/art/card/v260-art-word-0016.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "dda29ae7e24ab6ea3d6fef3181816cb360b634f19861b71f21d5ae851239eddb",
       "files": [
         "assets/art/godot-2d-v1/source/c-pixel-v1/svg/effects/c2d_fx_cast_normal.svg",
@@ -16183,6 +17675,14 @@
       "reason": "Manifest-registered source/runtime byte copy"
     },
     {
+      "sha256": "e93a8980bdb819d316d29bd5443b631cf86b94e0cab0b8e60edf3f2f759f656e",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-analytic-0031.png",
+        "godot/art/card/v260-art-analytic-0031.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
       "sha256": "e96e1e95cb3a3827f28a4895ab70c424a2276dde388ce7f4b448a963f9678d63",
       "files": [
         "assets/art/godot-2d-v1/export/c-pixel-v1/ui/c2d_control_input_hover.png",
@@ -16291,6 +17791,14 @@
       "files": [
         "assets/art/sique-20261020/export/sique-chili.png",
         "godot/art/card/sique-chili.png"
+      ],
+      "reason": "Manifest-registered source/runtime byte copy"
+    },
+    {
+      "sha256": "fafe23702c6ec7c4b75604b9bee39a1b0bc46e21489d227ad7cfc57d92e9575e",
+      "files": [
+        "assets/art/alpha-v260/current-pool/v260-art-formation-0015.png",
+        "godot/art/card/v260-art-formation-0015.png"
       ],
       "reason": "Manifest-registered source/runtime byte copy"
     },

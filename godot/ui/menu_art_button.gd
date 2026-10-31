@@ -7,24 +7,11 @@ static var _hit_polygon: PackedVector2Array = PackedVector2Array([
 	Vector2(560, 50), Vector2(514, 100), Vector2(46, 100),
 ])
 
-var _skin: TextureRect
 var _state: String = ""
 
 func _ready() -> void:
-	_skin = get_node_or_null("Skin") as TextureRect
-	if _skin == null:
-		var template: Button = load("res://ui/menu_art_button.tscn").instantiate() as Button
-		_skin = template.get_node("Skin") as TextureRect
-		template.remove_child(_skin)
-		add_child(_skin)
-		template.free()
 	for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
-		var empty: StyleBoxEmpty = StyleBoxEmpty.new()
-		empty.set_content_margin(SIDE_LEFT, 72)
-		empty.set_content_margin(SIDE_RIGHT, 72)
-		empty.set_content_margin(SIDE_TOP, 6)
-		empty.set_content_margin(SIDE_BOTTOM, 6)
-		add_theme_stylebox_override(StringName(state), empty)
+		add_theme_stylebox_override(StringName(state), _greybox_style(state))
 	add_theme_color_override(&"font_color", Color("fff0d0"))
 	add_theme_color_override(&"font_pressed_color", Color("fff0d0"))
 	add_theme_color_override(&"font_hover_color", Color("fff0d0"))
@@ -39,7 +26,8 @@ func _ready() -> void:
 	_refresh_skin()
 
 func _refresh_skin() -> void:
-	# A single skin avoids an opaque focus texture covering the pressed state.
+	# Keep the state label for input/smoke diagnostics; the menu uses only flat
+	# primitive styles and never resolves the retired button textures.
 	var next: String = "normal"
 	var mode: DrawMode = get_draw_mode()
 	if disabled:
@@ -52,12 +40,28 @@ func _refresh_skin() -> void:
 		next = "hover"
 	if next != _state:
 		_state = next
-		_skin.texture = ArtBank.texture("c2d.v2.menu.button-" + next)
+		queue_redraw()
 
 func _has_point(point: Vector2) -> bool:
-	if size.x <= 0 or size.y <= 0:
-		return false
-	return Geometry2D.is_point_in_polygon(point * DESIGN_SIZE / size, _hit_polygon)
+	return Rect2(Vector2.ZERO, size).has_point(point)
+
+func _greybox_style(state: String) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = {
+		"normal": DeckTheme.CONTROL,
+		"hover": DeckTheme.HOVER,
+		"pressed": DeckTheme.CONTROL,
+		"disabled": DeckTheme.PANEL,
+		"focus": Color.TRANSPARENT,
+	}.get(state, DeckTheme.CONTROL)
+	style.border_color = DeckTheme.ACCENT if state in ["pressed", "focus"] else DeckTheme.BORDER
+	style.set_border_width_all(2 if state == "focus" else 1)
+	style.set_corner_radius_all(3)
+	style.set_content_margin(SIDE_LEFT, 72)
+	style.set_content_margin(SIDE_RIGHT, 72)
+	style.set_content_margin(SIDE_TOP, 6)
+	style.set_content_margin(SIDE_BOTTOM, 6)
+	return style
 
 func _animate_press() -> void:
 	if UiFactory.reduced_motion or disabled:

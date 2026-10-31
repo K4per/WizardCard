@@ -1,0 +1,48 @@
+{
+  "id": "v260-talisman-0004",
+  "number": "040004",
+  "name": "法术反制",
+  "type": "talisman",
+  "school": "abjuration",
+  "rarity": "legendary",
+  "rank": 5,
+  "cost": 0,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 4,
+  "text": "对方发动法术卡时才能发动。将其无效并销毁。X为被连锁法术卡的实际设置和发动费用之和。",
+  "effects": [
+    {
+      "kind": "counter_spell",
+      "amount": 0
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 67
+  },
+  "illustrationId": "counter-spell",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\counter-spell.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "counter-spell"
+  },
+  "migration": {
+    "previousId": "counter-spell"
+  },
+  "responseOnly": true,
+  "responseEffects": [
+    {
+      "kind": "counter_spell"
+    }
+  ],
+  "dynamicCost": true,
+  "castCostSource": "X",
+  "level": 5
+}

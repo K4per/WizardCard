@@ -11,28 +11,32 @@
   "analysisTurns": 0,
   "speed": 3,
   "text": "选择对方灰烬区1张阶级5以下的解析法术卡才能发动。将其盖伏在己方解析区。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "recover_enemy_ash_spell",
+      "amount": 5
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-    "正式卡图未匹配"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 73
   },
-  "illustrationId": "v260-talisman-0010",
+  "illustrationId": "v2-funny-box",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-funny-box.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "v2-funny-box"
   },
   "migration": {
     "previousId": "funny-box"
   },
+  "target": "enemy_ash_card",
+  "targetCount": 1,
   "level": 5
 }

@@ -11,27 +11,34 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "计时3。己方结束阶段开始时，选择以下1个效果适用：◎对对方造成2点暗蚀伤害；◎使对方获得2点独立荷载，对方结束阶段清除；◎对方魔素-1。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "phase_choice_opponent",
+      "amount": 3
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 34
   },
-  "illustrationId": "v260-analytic-0033",
+  "illustrationId": "v260-art-analytic-0033",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\灾祸术.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\灾祸术.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0033",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0033.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": null
   },
+  "duration": 3,
+  "onEndChoice": "calamity",
   "level": 4
 }

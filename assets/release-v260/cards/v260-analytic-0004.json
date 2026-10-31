@@ -1,0 +1,46 @@
+{
+  "id": "v260-analytic-0004",
+  "number": "020004",
+  "name": "魔法飞弹",
+  "type": "analytic",
+  "school": "evocation",
+  "rarity": "common",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 2,
+  "text": "选择1个目标才能发动。对其造成4点力场伤害。那之后，可以销毁对方解析区1张盖伏卡。",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 4,
+      "damageType": "force",
+      "recipient": "target"
+    },
+    {
+      "kind": "destroy_ambush"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 5
+  },
+  "illustrationId": "magic-missile",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\magic-missile.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "magic-missile"
+  },
+  "migration": {
+    "previousId": "magic-missile"
+  },
+  "target": "player",
+  "level": 2
+}

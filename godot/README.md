@@ -1,13 +1,12 @@
-# Godot Alpha v2.5.5-hotfix.1 frontend
+# Godot Alpha v2.6.0-hotfix.1 frontend
 
 This directory contains the native bridge and Godot 4.7.2 frontend for WizardCard
-2.5.5-hotfix.1. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
+2.6.0-hotfix.1. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
 GDScript displays viewer projections and submits intents.
 
 The frontend includes menu, library, settings, deck construction, setup,
 hotseat, AI, tutorial, LAN rooms, matches, replay and a display-only field
-showcase. The official library reads the 135-card native catalogue, including the
-19-card Sique series, 16-card Qixing series and 20-card Blood series. Historical
+showcase. The official library reads the 92-card v2.6 native catalogue. Historical
 illustrated previews in `data/card-previews-v2.json` are display-only and cannot
 enter playable decks.
 
@@ -63,11 +62,11 @@ input hitboxes or submit commands in the editor.
 
 ## Menu, settings and deck exchange
 
-The main menu keeps the existing logo on the left and seven equal primary
+The main menu keeps the banner and seven equal primary
 buttons in a single right-hand column: single player, multiplayer, deck
 construction, card library, replay, settings and quit. Keyboard and controller
-focus follow the same order and wrap at either end. The menu background and
-button art remain in use.
+focus follow the same order and wrap at either end. The menu keeps its banner
+and layout while background and button art are removed for the v2.6 greybox.
 
 Settings offer 1280x720, 1600x900, 1440x900, 1600x1000, 1920x1080 and 2560x1440, preserve
 saved custom sizes and support free resizing down to 1280x720. Font sizes are

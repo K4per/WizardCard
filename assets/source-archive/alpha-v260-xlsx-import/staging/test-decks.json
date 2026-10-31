@@ -1,47 +1,63 @@
 {
   "format": 1,
-  "status": "blocked",
-  "contentHash": "a77282b8a5b1934610f02e978b90c0042e7ac157d79bca3965bad220123828a7",
+  "status": "ready",
+  "contentHash": "7be2ff658099e84560589e24b89df22928ddcc1646abd6371faa18d6bac55c30",
   "main": [
+    {
+      "id": "v260-analytic-0001",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0002",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0003",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0004",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0005",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0006",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0007",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0008",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0009",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0010",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0011",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0012",
+      "count": 3
+    },
     {
       "id": "v260-analytic-0013",
       "count": 3
     },
     {
-      "id": "v260-analytic-0018",
-      "count": 3
-    },
-    {
-      "id": "v260-analytic-0024",
-      "count": 3
-    },
-    {
-      "id": "v260-analytic-0025",
-      "count": 3
-    },
-    {
-      "id": "v260-analytic-0034",
-      "count": 3
-    },
-    {
-      "id": "v260-word-0002",
-      "count": 3
-    },
-    {
-      "id": "v260-word-0012",
-      "count": 3
-    },
-    {
-      "id": "v260-word-0013",
-      "count": 3
-    },
-    {
-      "id": "v260-word-0016",
-      "count": 3
-    },
-    {
-      "id": "v260-word-0021",
-      "count": 3
+      "id": "v260-analytic-0014",
+      "count": 1
     }
   ],
   "side": [
@@ -88,12 +104,10 @@
   ],
   "initialFormation": "v260-formation-0009",
   "validation": {
-    "mainCount": 30,
+    "mainCount": 40,
     "sideCount": 10,
     "mainSameNameLimit": true,
     "hasLevelOneFormation": true,
-    "errors": [
-      "structured candidate effects are insufficient to build a legal 40-card main deck"
-    ]
+    "errors": []
   }
 }

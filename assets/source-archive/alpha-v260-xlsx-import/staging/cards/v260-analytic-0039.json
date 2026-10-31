@@ -11,27 +11,39 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "获得1个额外的己方回合。那之后，直到下个回合结束阶段结束时，己方获得的荷载×2。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "extra_turn",
+      "amount": 1
+    },
+    {
+      "kind": "load_multiplier",
+      "amount": 2
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 40
   },
-  "illustrationId": "v260-analytic-0039",
+  "illustrationId": "v260-art-analytic-0039",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\加速术.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\加速术.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0039",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0039.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": null
   },
+  "traits": [
+    "extra_turn_load_double"
+  ],
   "level": 6
 }

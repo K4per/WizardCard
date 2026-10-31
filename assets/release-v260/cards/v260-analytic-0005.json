@@ -1,0 +1,42 @@
+{
+  "id": "v260-analytic-0005",
+  "number": "020005",
+  "name": "繁彩球",
+  "type": "analytic",
+  "school": "evocation",
+  "rarity": "common",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "选择1个目标才能发动。对其造成7点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择。",
+  "effects": [
+    {
+      "kind": "choose_damage",
+      "amount": 7,
+      "recipient": "target"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 6
+  },
+  "illustrationId": "v2-chromatic-orb",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-chromatic-orb.png",
+    "mapping": "历史同类卡图",
+    "manifestId": "v2-chromatic-orb"
+  },
+  "migration": {
+    "previousId": "chromatic-orb"
+  },
+  "target": "player",
+  "level": 2
+}

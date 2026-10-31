@@ -12,13 +12,15 @@ TYPES = {"formation": "阵法", "analytic": "解析法术", "word": "言灵法�
 SCHOOLS = {"evocation": "塑能", "transmutation": "变化", "conjuration": "咒法", "enchantment": "惑控", "illusion": "幻术", "abjuration": "防护", "necromancy": "死灵", "divination": "预言", "arcana": "阿卡那"}
 PREFIXES = {"formation": "01", "analytic": "02", "word": "03", "talisman": "04", "seal": "05"}
 
+DEFAULT_CATALOG_DIR = ROOT / "assets/release-v260"
+
 def load(path):
-    return json.loads((ROOT / path).read_text(encoding="utf-8-sig"))
+    return json.loads(Path(path).read_text(encoding="utf-8-sig"))
 
 def attributes(card):
     pairs = [("编号", card["number"]), ("类型", TYPES[card["type"]])]
     if card["type"] == "formation":
-        pairs += [("等级", card["level"]), ("阵体", card["body"]), ("荷载上限", card["capacity"]), ("魔素收入", card["income"]), ("环位", card["rings"]), ("承载位阶", card["maxRank"]), ("召唤条件", card.get("summonCondition", "—"))]
+        pairs += [("等级", card["level"]), ("阵体", card["body"]), ("荷载上限", card["capacity"]), ("魔素收入", card["income"]), ("环位", card["rings"]), ("承载位阶", card.get("maxRank", card.get("rank", "—"))), ("召唤条件", card.get("summonCondition", "—"))]
     elif card["type"] == "seal":
         pairs += [("附着费用", card["cost"])]
     else:
@@ -43,14 +45,23 @@ def validate_deck(rows, size, formation, by_id):
     assert max(counts.values()) <= 3
 
 def main():
-    catalog = load_catalog()
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--catalog-dir", type=Path, default=DEFAULT_CATALOG_DIR,
+                        help="canonical runtime content directory")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "docs",
+                        help="directory receiving card-catalog.md and card-catalog.html")
+    args = parser.parse_args()
+    catalog_dir = args.catalog_dir.resolve()
+    output_dir = args.output_dir.resolve()
+    catalog = load_catalog(catalog_dir)
     cards = sorted(catalog["cards"], key=lambda card: card["number"])
     by_id = {card["id"]: card for card in cards}
     assert len(by_id) == len(cards)
     assert len({card["number"] for card in cards}) == len(cards)
-    art = {entry["id"]: entry["file"] for entry in load("godot/art/assets.json")["assets"]}
-    side = load("assets/side-deck.json")
-    presets = [{"id": "default", "name": "综合示范", "description": "练习解析、言灵、咒符、符文与阵法配方。", "baseFormation": side["initialFormation"], "cards": load("assets/deck.json"), "sideCards": side["cards"]}] + load("assets/presets.json")
+    art = {entry["id"]: entry["file"] for entry in load(ROOT / "godot/art/assets.json")["assets"]}
+    side = load(catalog_dir / "side-deck.json")
+    presets = load(catalog_dir / "presets.json")
     for preset in presets:
         validate_deck(preset["cards"], 40, False, by_id)
         validate_deck(preset["sideCards"], 10, True, by_id)
@@ -58,7 +69,9 @@ def main():
         assert initial["level"] == 1 and any(row["id"] == initial["id"] for row in preset["sideCards"])
     version = catalog["cardSetVersion"]
     intro = f"规则 {catalog['rulesVersion']} · 卡池 {version} · {len(cards)} 种正式卡牌 · {len(presets)} 套 40+10 预设。"
-    md = ["# 巫师牌卡池图鉴", "", intro, "", "本页由正式定义生成。规则见 [Alpha v2.5](alpha-v2.5-rules.md)，卡面召唤条件由正式字段生成，效果以正式规则为准。", "", "编号前两位：01 阵法、02 解析、03 言灵、04 咒符、05 符文；后四位为该类序号。稳定内容 ID 用于存档和资源关联。", "", "| 编号 | 卡名 | 类型 |", "|---|---|---|"]
+    rules_link = "releases/2.6.0.md" if version == "2.6.0" else "alpha-v2.5-rules.md"
+    rules_label = "Alpha v2.6.0" if version == "2.6.0" else "Alpha v2.5"
+    md = ["# 巫师牌卡池图鉴", "", intro, "", f"本页由正式定义生成。规则见 [{rules_label}]({rules_link})，卡面召唤条件由正式字段生成，效果以正式规则为准。", "", "编号前两位：01 阵法、02 解析、03 言灵、04 咒符、05 符文；后四位为该类序号。稳定内容 ID 用于存档和资源关联。", "", "| 编号 | 卡名 | 类型 |", "|---|---|---|"]
     sections = []
     for card in cards:
         assert re.fullmatch(r"[0-9]{6}", card["number"])
@@ -83,9 +96,10 @@ def main():
             md += [f"| {by_id[row['id']]['name']} | {row['count']} |" for row in preset[key]]
     digest = hashlib.sha256(json.dumps(catalog, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     md += ["", "## 生成依据", "", "运行 `python tools/generate_card_catalog.py` 更新。", "", f"规范化 JSON SHA256：`{digest}`。", ""]
-    (ROOT / "docs/card-catalog.md").write_text("\n".join(md), encoding="utf-8")
-    page = '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>巫师牌卡池图鉴</title><style>body{margin:32px auto;max-width:1400px;padding:0 24px;background:#111923;color:#e8e1cf;font:16px/1.7 sans-serif}a{color:#9ed8cc}input{box-sizing:border-box;width:100%;padding:14px;font:inherit;margin-bottom:24px}main{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}article{background:#1c2935;border:1px solid #53615b;padding:20px}article[hidden]{display:none}img{width:100%;height:220px;object-fit:contain}h2{font-size:21px}dl{display:grid;grid-template-columns:1fr 1fr}dd{margin:0}summary{cursor:pointer}footer{margin-top:30px}</style><h1>巫师牌卡池图鉴</h1><p>' + html.escape(intro) + '</p><p><a href="alpha-v2.5-rules.md">规则</a> · <a href="card-catalog.md">完整牌表与文字版</a></p><input id="search" type="search" aria-label="搜索卡名、编号、类型或效果" placeholder="搜索卡名、编号、类型或效果"><main>' + "".join(sections) + '</main><footer>数据来自正式卡池；通常法术效果处理后留在施法区，至结束阶段清理。</footer><script>document.getElementById("search").addEventListener("input",event=>{const q=event.target.value.trim().toLowerCase();document.querySelectorAll("article").forEach(card=>card.hidden=!card.dataset.search.toLowerCase().includes(q))});</script></html>'
-    (ROOT / "docs/card-catalog.html").write_text(page, encoding="utf-8")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "card-catalog.md").write_text("\n".join(md), encoding="utf-8")
+    page = '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>巫师牌卡池图鉴</title><style>body{margin:32px auto;max-width:1400px;padding:0 24px;background:#111923;color:#e8e1cf;font:16px/1.7 sans-serif}a{color:#9ed8cc}input{box-sizing:border-box;width:100%;padding:14px;font:inherit;margin-bottom:24px}main{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}article{background:#1c2935;border:1px solid #53615b;padding:20px}article[hidden]{display:none}img{width:100%;height:220px;object-fit:contain}h2{font-size:21px}dl{display:grid;grid-template-columns:1fr 1fr}dd{margin:0}summary{cursor:pointer}footer{margin-top:30px}</style><h1>巫师牌卡池图鉴</h1><p>' + html.escape(intro) + '</p><p><a href="' + rules_link + '">规则</a> · <a href="card-catalog.md">完整牌表与文字版</a></p><input id="search" type="search" aria-label="搜索卡名、编号、类型或效果" placeholder="搜索卡名、编号、类型或效果"><main>' + "".join(sections) + '</main><footer>数据来自正式卡池；通常法术效果处理后留在施法区，至结束阶段清理。</footer><script>document.getElementById("search").addEventListener("input",event=>{const q=event.target.value.trim().toLowerCase();document.querySelectorAll("article").forEach(card=>card.hidden=!card.dataset.search.toLowerCase().includes(q))});</script></html>'
+    (output_dir / "card-catalog.html").write_text(page, encoding="utf-8")
     print(f"Generated catalogue: {len(cards)} cards, {len(presets)} validated 40+10 decks, all images present.")
 
 if __name__ == "__main__":

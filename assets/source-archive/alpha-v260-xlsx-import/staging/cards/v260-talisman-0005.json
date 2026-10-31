@@ -18,19 +18,19 @@
   ],
   "effectStatus": "structured-candidate",
   "effectBlockers": [],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "正式卡图未匹配"
-  ],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 68
   },
-  "illustrationId": "v260-talisman-0005",
+  "illustrationId": "protective-flame",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\protective-flame.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "protective-flame"
   },
   "migration": {
     "previousId": "protective-flame"

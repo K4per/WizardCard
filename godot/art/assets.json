@@ -6648,6 +6648,798 @@
       "sha256": "c332ad57d2a7da7f4a5ce5138f0ae5ffee739faaf8a5d5ee79a18f72963bfcbc"
     },
     {
+      "id": "illustration.v260-art-analytic-0010",
+      "file": "res://art/card/v260-art-analytic-0010.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0010.png",
+      "sourceSha256": "32f88a3d30db4c4e729d52940f8a54ef9f30368631ab751c464767c88ceb63b1",
+      "sha256": "a93ef31e786e0a5506742470e99d323dcbc0f97f8043aa1401c91ed727d8bbc8",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 616507
+    },
+    {
+      "id": "illustration.v260-art-analytic-0013",
+      "file": "res://art/card/v260-art-analytic-0013.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0013.png",
+      "sourceSha256": "7295623aab2e41098667863d45927958ef902d5bd94eff7c5e22a9c9b0d20e1e",
+      "sha256": "12968060fe0817d451b15ed676684257e9e8963bdfa7ccd5d494deac360c491d",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 442653
+    },
+    {
+      "id": "illustration.v260-art-analytic-0014",
+      "file": "res://art/card/v260-art-analytic-0014.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0014.png",
+      "sourceSha256": "f4e573dff63dd36d2a3bfe63b80ed4f3419e79af2e698b403f42e3229f743368",
+      "sha256": "5e4e5ffc670d8dc6c569fe190d7eb0adbff0caf1ecf0ab0fad0074a0dc3c4aeb",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 648323
+    },
+    {
+      "id": "illustration.v260-art-analytic-0015",
+      "file": "res://art/card/v260-art-analytic-0015.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0015.png",
+      "sourceSha256": "82950e50380a2999881938db151676429c956b5002f4ea8bc75a0e44d9d6afb6",
+      "sha256": "d1b7772470f56bafe11d2366d1b660cd82c31c9e7616aca07c3737ac235ea379",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 660241
+    },
+    {
+      "id": "illustration.v260-art-analytic-0017",
+      "file": "res://art/card/v260-art-analytic-0017.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0017.png",
+      "sourceSha256": "98711d4e07f981b5a579cdd73b38f5e84fa1254dc6ec06df5ffc2cfd65f11084",
+      "sha256": "355e619516b9c70d8f2346742d3c8b0fcf79211967b5952d1be9772eb0520055",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 578049
+    },
+    {
+      "id": "illustration.v260-art-analytic-0018",
+      "file": "res://art/card/v260-art-analytic-0018.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0018.png",
+      "sourceSha256": "f21f7ccdf1440456922b42ccd1ed95d8fd15b34ef701d2f1f2a9e6f8fcd4d5d7",
+      "sha256": "ce404d349808c5e11b63b455cee70d228b14827afd316cdecd9ac26d5b612df5",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 758210
+    },
+    {
+      "id": "illustration.v260-art-analytic-0022",
+      "file": "res://art/card/v260-art-analytic-0022.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0022.png",
+      "sourceSha256": "5558fc8def1b5d9456d83fab596d8f97301ce194b2b99b88023b89d6ccb6a6d6",
+      "sha256": "31a39dc5f30ab1d41f7e2aded709bd2b507d92ca44aea7fb025ea45e02c09884",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 839473
+    },
+    {
+      "id": "illustration.v260-art-analytic-0023",
+      "file": "res://art/card/v260-art-analytic-0023.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0023.png",
+      "sourceSha256": "36afcebb97a92502d0bfd93c12cc72993b69a089b8f8df4bc6f67c5a51fe30db",
+      "sha256": "2ac709694bf9cd843dd1b7d2cea6458de454bdb3e2d5f300b808d4dc33d3818e",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 737319
+    },
+    {
+      "id": "illustration.v260-art-analytic-0024",
+      "file": "res://art/card/v260-art-analytic-0024.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0024.png",
+      "sourceSha256": "37525c2248e7e914372bb5bdcb2c1ded4fe6b48372f71ce50e0ed20db7d56948",
+      "sha256": "cfd42e6be8d06c5e91086458ccd008c1c6f36ba094f995b54fdacd938ae71758",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 749487
+    },
+    {
+      "id": "illustration.v260-art-analytic-0025",
+      "file": "res://art/card/v260-art-analytic-0025.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0025.png",
+      "sourceSha256": "451807bf68e87c41e4ec6f8df34ad45d190f3fa4732ed7d45df6c687b9ed1d74",
+      "sha256": "8319e0f9e600be2a39afbc28612475486da8b7596fb5d07b60fa36c1b1d50f51",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 426165
+    },
+    {
+      "id": "illustration.v260-art-analytic-0026",
+      "file": "res://art/card/v260-art-analytic-0026.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0026.png",
+      "sourceSha256": "34261f95fe72cb6f28e6d3d8f366a1c984b3d24f47877e7fbd26d3f8cc4f079b",
+      "sha256": "635acf3fd5fba4ff1ddb7a5c671494442d42a196a37b7d1a9d55f2272894ccbc",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 559567
+    },
+    {
+      "id": "illustration.v260-art-analytic-0027",
+      "file": "res://art/card/v260-art-analytic-0027.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0027.png",
+      "sourceSha256": "d0fb5c9ed46f6b01d581c22a7c091130dd28ed6db85c05c4033408c6ccd5f08e",
+      "sha256": "9a4a89bcdf40adcd8993b21ea7c7a75a148a5c983c7b575ffb8d8b457f7257ef",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 566337
+    },
+    {
+      "id": "illustration.v260-art-analytic-0028",
+      "file": "res://art/card/v260-art-analytic-0028.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0028.png",
+      "sourceSha256": "59f8f44270aa35819dcaefd5da45bcdffa4f07a932f9ab276d750a679c56f76f",
+      "sha256": "174f07042d4711877743cd3c7396120ee51f17251be2e4f4686a96dc44b971bf",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 706564
+    },
+    {
+      "id": "illustration.v260-art-analytic-0031",
+      "file": "res://art/card/v260-art-analytic-0031.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0031.png",
+      "sourceSha256": "82f26502c880b3968de66d2e22ed291686e000c6e76987f3d05064a7ebb005fd",
+      "sha256": "e93a8980bdb819d316d29bd5443b631cf86b94e0cab0b8e60edf3f2f759f656e",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 708098
+    },
+    {
+      "id": "illustration.v260-art-analytic-0032",
+      "file": "res://art/card/v260-art-analytic-0032.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0032.png",
+      "sourceSha256": "0476a54bc6b71110eb356d9632e21e25c4a19626ce712eae13e4a793c0f72b2c",
+      "sha256": "636b1a2919486f6d70a4b602e96055a8bb2450bbaa88d9424756cab1e7297d8b",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 814713
+    },
+    {
+      "id": "illustration.v260-art-analytic-0033",
+      "file": "res://art/card/v260-art-analytic-0033.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0033.png",
+      "sourceSha256": "12ce38d8e25d7f6e2c10d6559d40c062c15f072c959c0667f9be4c96af27e8d0",
+      "sha256": "97f8a067f446280c06087a92038502e7ba161d8b1ed709ebf629184a85e5f5c0",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 690461
+    },
+    {
+      "id": "illustration.v260-art-analytic-0034",
+      "file": "res://art/card/v260-art-analytic-0034.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0034.png",
+      "sourceSha256": "0c0f399cde858ac4ee7d4c56036126d66d88319650b437a5cee62f5ba80f4660",
+      "sha256": "8ba057e230293a861a53f88f5c3ba6e0e18f1af4d7e5859f41ac3668079c40b7",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 682980
+    },
+    {
+      "id": "illustration.v260-art-analytic-0037",
+      "file": "res://art/card/v260-art-analytic-0037.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0037.png",
+      "sourceSha256": "5292aa33a8300569d87e25ee2c332ef4a69b468466e85e52e9d3d946a9ae0b96",
+      "sha256": "4a880fcf44bc39a65fc50f8931a09ce42ce37d5a846857a9b8375948c3c0e59f",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 594169
+    },
+    {
+      "id": "illustration.v260-art-analytic-0038",
+      "file": "res://art/card/v260-art-analytic-0038.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0038.png",
+      "sourceSha256": "745a43a361b87579cc7813325706856f8aa2b5726da466364f780f1c8d0dec7b",
+      "sha256": "a89565f8938df8b9c94b9dfeb893ffb568bb46e59075b6262afca5253d663f33",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 566342
+    },
+    {
+      "id": "illustration.v260-art-analytic-0039",
+      "file": "res://art/card/v260-art-analytic-0039.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-analytic-0039.png",
+      "sourceSha256": "2a2261b4ad2bc754a65c176cbd585867365520c5521b50e6d264299101ea9984",
+      "sha256": "0256077e7c97e7cfe459ef5a9b32b0c7402ad7df3f12b2b153cef00cc82c185a",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 425293
+    },
+    {
+      "id": "illustration.v260-art-formation-0009",
+      "file": "res://art/card/v260-art-formation-0009.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0009.png",
+      "sourceSha256": "52f3697051d98affcd8505f3d10e4bb3d1d97d6ea10b65c9e4ae6c4eacc7fa16",
+      "sha256": "7330423e7e3b00bf04a072533219182c1070076fa360595113cf184c0241a85c",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 974716
+    },
+    {
+      "id": "illustration.v260-art-formation-0010",
+      "file": "res://art/card/v260-art-formation-0010.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0010.png",
+      "sourceSha256": "11a4a25fb87404da1cd2cf224eb52b2611dcc3eaa24e26908a4542d46b0e50b4",
+      "sha256": "27e8d252a3c68e3fe490a726d393f1e4f93e60ebdcb81d5bd02d88213c298f5d",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 778358
+    },
+    {
+      "id": "illustration.v260-art-formation-0011",
+      "file": "res://art/card/v260-art-formation-0011.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0011.png",
+      "sourceSha256": "f31ecc108cb69076dd98e577a8562662f5c5a659286d5f7fe1540e4104faa521",
+      "sha256": "88dc4f7a44dae2a9a89d5621259ce6e5657e7f1a9b52c071d3dd9932a0af19a4",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 609563
+    },
+    {
+      "id": "illustration.v260-art-formation-0012",
+      "file": "res://art/card/v260-art-formation-0012.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0012.png",
+      "sourceSha256": "b920480b87eda8cd0e1b2df9cad937857de5e9e41bb66cbafa5e6883c3c1df76",
+      "sha256": "b95c4ebe4c6639a27875da9251e949e40f7c16455785e7c7a97fe7c13ae23622",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 756397
+    },
+    {
+      "id": "illustration.v260-art-formation-0013",
+      "file": "res://art/card/v260-art-formation-0013.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0013.png",
+      "sourceSha256": "c292d371d958708c548b900a8b2f038885f9a5137e7f70135b0ab91e1a65d130",
+      "sha256": "9447ec06dbb60a56a11b6d6714721457da9fe38f7ff4e5a60830e703d30199ce",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 647936
+    },
+    {
+      "id": "illustration.v260-art-formation-0014",
+      "file": "res://art/card/v260-art-formation-0014.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0014.png",
+      "sourceSha256": "c469197332d78b98b61d039ed67ac7256febd2f2f7d3001d664470ee57afc9da",
+      "sha256": "2d7c4fffe879e081612939c994f369ac7c78a2ef9bced0658ba1c700eccef7e0",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 617181
+    },
+    {
+      "id": "illustration.v260-art-formation-0015",
+      "file": "res://art/card/v260-art-formation-0015.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0015.png",
+      "sourceSha256": "bcca46e496a2185df9dc95fb14f5d9e9a8165c90a536ced9159b8bb6b884dadf",
+      "sha256": "fafe23702c6ec7c4b75604b9bee39a1b0bc46e21489d227ad7cfc57d92e9575e",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 616084
+    },
+    {
+      "id": "illustration.v260-art-formation-0016",
+      "file": "res://art/card/v260-art-formation-0016.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0016.png",
+      "sourceSha256": "30cee372606d835fdcff29eb068e71ead0f3ef34370ab0d9d4a6fc05236c5d61",
+      "sha256": "70c0b1aeebd2be00ff92ea38acd9aa62699ea240ce3360c08e44982d03e8695a",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 715062
+    },
+    {
+      "id": "illustration.v260-art-formation-0017",
+      "file": "res://art/card/v260-art-formation-0017.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-formation-0017.png",
+      "sourceSha256": "94957641d72fc37485c41814e2c7910ce5fd781c6d68d5eaa7c8a5681409d651",
+      "sha256": "ad0743dc3491179875c416fb7aa27462b9a8c4229c660c5816b0087a7214a6ab",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 584767
+    },
+    {
+      "id": "illustration.v260-art-talisman-0001",
+      "file": "res://art/card/v260-art-talisman-0001.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0001.png",
+      "sourceSha256": "fd21115c020e10ed6d9aa8937f12812b01f88f1583e14e4a858dc8814d67186b",
+      "sha256": "80de57e26dc4f280bc0660029578a5bcb1f11ac72c4c6b7af464a4534f615bb3",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 722361
+    },
+    {
+      "id": "illustration.v260-art-talisman-0002",
+      "file": "res://art/card/v260-art-talisman-0002.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0002.png",
+      "sourceSha256": "c347a3748dda5bfe7c1db8cefc18159b1b05c5c4790aeb466bf0f15eb3d653c4",
+      "sha256": "ac41186b83e79ba5508ef6c0958574dce1869db78e3fca438fb29979f6dedf11",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 742578
+    },
+    {
+      "id": "illustration.v260-art-talisman-0006",
+      "file": "res://art/card/v260-art-talisman-0006.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0006.png",
+      "sourceSha256": "1c6f16449523a8d22096e739b80fed8f7291533a927fccbf99e4a306b5702f51",
+      "sha256": "0ae977201db8b663df36fd02930002dc28f725debb94667b879c5755a523cc67",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 625423
+    },
+    {
+      "id": "illustration.v260-art-talisman-0007",
+      "file": "res://art/card/v260-art-talisman-0007.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0007.png",
+      "sourceSha256": "3ee2104b19cd7b7ea47f9bdd26829e8a24c82fbd1c09e490e3621c91e4e7e5e9",
+      "sha256": "13a22ed8bea39ac18f0c11e23e1da38e4d0355df6506c89df712fa732e27c57d",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 678530
+    },
+    {
+      "id": "illustration.v260-art-talisman-0008",
+      "file": "res://art/card/v260-art-talisman-0008.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0008.png",
+      "sourceSha256": "b8e5c400166133952355a80912fb58e19b9baf61c77d90e191c60512faa31b99",
+      "sha256": "a2c04453b0576887040f01d360250827f4d4bb5acb249bb27aae1297ad52fd98",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 480445
+    },
+    {
+      "id": "illustration.v260-art-talisman-0011",
+      "file": "res://art/card/v260-art-talisman-0011.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0011.png",
+      "sourceSha256": "0eab197ce19552ffac5298ebe3786ee8a17a25c43e8087b2fee62c653688fb07",
+      "sha256": "04aa250afe03788e60fb97ab7b7145459ce5fa7697a3ac537e8e26ad8107e6cd",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 819770
+    },
+    {
+      "id": "illustration.v260-art-talisman-0012",
+      "file": "res://art/card/v260-art-talisman-0012.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-talisman-0012.png",
+      "sourceSha256": "c445a3c9edf9078c3eb773855eb70bdbb96ae1aad15f2dc6fd76db6032c298d7",
+      "sha256": "742179d37479b9cfc4f591b2691e66cf476248ee5b4ccc522d0ca3f0b8f889ac",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 426479
+    },
+    {
+      "id": "illustration.v260-art-word-0002",
+      "file": "res://art/card/v260-art-word-0002.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0002.png",
+      "sourceSha256": "4277df1f118f28e2fefb0faa51f6c85f473ccc5100ca58442e30e475c815b969",
+      "sha256": "c0b550b92efd29ae9902830449dbae83529daefd9361ba9e2be776fd4853685b",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 598195
+    },
+    {
+      "id": "illustration.v260-art-word-0004",
+      "file": "res://art/card/v260-art-word-0004.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0004.png",
+      "sourceSha256": "53c43bdbf02b46a188ae2b1be0b293a872f0225216230079f69e03023afb9d85",
+      "sha256": "4c8770b3491d52e37c87a702d888e4bc2832f6c2fb8cfadd5fae3e0de4b9e53d",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 493407
+    },
+    {
+      "id": "illustration.v260-art-word-0009",
+      "file": "res://art/card/v260-art-word-0009.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0009.png",
+      "sourceSha256": "05b49adb500b4fc6f08fbc9e91ced9aae1714c1f5cd3ad20788acaa1ee719ae0",
+      "sha256": "7627b572dc2df950fc9b28adad53fe58d7b3e0cacdf52d3f467be66696c66878",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 379023
+    },
+    {
+      "id": "illustration.v260-art-word-0010",
+      "file": "res://art/card/v260-art-word-0010.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0010.png",
+      "sourceSha256": "a33b78af83eff031374acc3d7f01151758e99ba5cbc75433ad0805dcb77389e1",
+      "sha256": "844e8946fefa06bffb0bc24411aac0e8e3541f916acbf461521bf553cae55d5c",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 924224
+    },
+    {
+      "id": "illustration.v260-art-word-0011",
+      "file": "res://art/card/v260-art-word-0011.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0011.png",
+      "sourceSha256": "86240d940ced374946d7b0469b58a96def959759201490347ce0051904440c63",
+      "sha256": "1be04ebeb5a1eaf7639abfb512b770e0da003d53c2d699f3b2a3c70d21fadf28",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 766907
+    },
+    {
+      "id": "illustration.v260-art-word-0012",
+      "file": "res://art/card/v260-art-word-0012.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0012.png",
+      "sourceSha256": "bca240a22b3e6086cf0d8c0ac48865231349ab9f16e8e99c8343b23022956585",
+      "sha256": "88fd536847c5ff11abb071a03dd7e0005d4c9878ed325502b1ab3e112cc5361b",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 565853
+    },
+    {
+      "id": "illustration.v260-art-word-0013",
+      "file": "res://art/card/v260-art-word-0013.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0013.png",
+      "sourceSha256": "48385daecd5876a6fd393e5f7181868541274f0e45ae89775cdbca5e52d4d2a4",
+      "sha256": "7ed036aaa9a55df8e832e780b05229ba9f5feb1cc363116eec8cf53d3daa756e",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 661380
+    },
+    {
+      "id": "illustration.v260-art-word-0014",
+      "file": "res://art/card/v260-art-word-0014.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0014.png",
+      "sourceSha256": "ee096b354e014837813761dd6604de6587ca03f8593556bc74776a4b1ecb5228",
+      "sha256": "8ee6b630a35d535152275b23912c080ed3216ecae814b41d15f3b89af9723943",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 762742
+    },
+    {
+      "id": "illustration.v260-art-word-0015",
+      "file": "res://art/card/v260-art-word-0015.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0015.png",
+      "sourceSha256": "bce1b2ff5eb6a4439f0cc9df4dc1d545244a8f482989bdf803bd42cb32358b82",
+      "sha256": "688b9cfb4b33f2c6002d2e342781112300b00a83796dc42b9e4d27868ced3d87",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 784275
+    },
+    {
+      "id": "illustration.v260-art-word-0016",
+      "file": "res://art/card/v260-art-word-0016.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0016.png",
+      "sourceSha256": "f3d0c1afc12ac75f337fff2ec601aceec55d5ec70cca907fa918173b63d25ed5",
+      "sha256": "dd77875d2eee1dfdc8edb07fa430d0e896ec1836b084de15cb7ed6b2fd832f0a",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 849285
+    },
+    {
+      "id": "illustration.v260-art-word-0019",
+      "file": "res://art/card/v260-art-word-0019.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0019.png",
+      "sourceSha256": "9f8dd5d4a6f5c1095de43cfd2e44a30795ece1de237abeee40a6b970964dfbc2",
+      "sha256": "71235abe233c4042e9abf3bb6ae37d69184371bd5c5b3c097775e5f093dceeb7",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGB",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; edge-connected-neutral-matte-removal",
+      "processing": "脚本移除边缘连通及大面积浅色棋盘背景",
+      "transparentPixels": 698388
+    },
+    {
+      "id": "illustration.v260-art-word-0020",
+      "file": "res://art/card/v260-art-word-0020.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0020.png",
+      "sourceSha256": "46a3333cf3dcdf7ad64e9da953cd7dac2ded0f1156dc7165f847d28ed68bdd25",
+      "sha256": "a56c041ed844fdfa6c9a0acddb5879cf35ed5dd2a19735c6e27494fe31d87914",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 606209
+    },
+    {
+      "id": "illustration.v260-art-word-0021",
+      "file": "res://art/card/v260-art-word-0021.png",
+      "source": "assets/art/alpha-v260/current-pool/v260-art-word-0021.png",
+      "sourceSha256": "ad5f9bd26f362e5d8cdfc5a25c5e67e309f27d726cf0f4b63ada4b3bb796c097",
+      "sha256": "1329c61708a7af68c236c194762c7d32d2a58bae0d88c0b4d77eee32a0c8b88b",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceMode": "RGBA",
+      "sampling": "nearest",
+      "origin": "User-supplied Alpha v2.6 current-pool card art; source-alpha-preserved",
+      "processing": "源图已有有效 alpha；保留透明像素",
+      "transparentPixels": 377667
+    },
+    {
+      "sampling": "nearest",
+      "origin": "Confirmed Alpha v2.6 staging illustration",
+      "id": "illustration.v260-silence",
+      "file": "res://art/card/v260-silence.png",
+      "source": "assets/art/alpha-v260/silence.png",
+      "sha256": "451807bf68e87c41e4ec6f8df34ad45d190f3fa4732ed7d45df6c687b9ed1d74"
+    },
+    {
       "sampling": "linear",
       "origin": "Existing WizardCard illustration",
       "id": "illustration.ward",

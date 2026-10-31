@@ -28,10 +28,14 @@
     "worksheet": "卡表",
     "row": 14
   },
-  "illustrationId": "v260-analytic-0013",
+  "illustrationId": "v260-art-analytic-0013",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\匕首之云.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\匕首之云.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0013",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0013.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": null

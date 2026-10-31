@@ -1,0 +1,42 @@
+{
+  "id": "v260-analytic-0007",
+  "number": "020007",
+  "name": "炽热射线",
+  "type": "analytic",
+  "school": "evocation",
+  "rarity": "common",
+  "rank": 5,
+  "cost": 4,
+  "castCost": 2,
+  "analysisTurns": 2,
+  "speed": 1,
+  "text": "选择1个目标才能发动。对其造成4点火焰伤害。重复3次，每次可以选择不同目标。",
+  "effects": [
+    {
+      "kind": "ray_volley",
+      "amount": 4,
+      "damageType": "fire"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 8
+  },
+  "illustrationId": "v2-scorching-ray",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-scorching-ray.png",
+    "mapping": "历史同类卡图",
+    "manifestId": "v2-scorching-ray"
+  },
+  "migration": {
+    "previousId": "scorching-ray"
+  },
+  "target": "player",
+  "level": 5
+}

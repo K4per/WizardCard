@@ -1,0 +1,50 @@
+{
+  "id": "v260-analytic-0024",
+  "number": "020024",
+  "name": "汲血之触",
+  "type": "analytic",
+  "school": "necromancy",
+  "rarity": "rare",
+  "rank": 3,
+  "cost": 2,
+  "castCost": 2,
+  "analysisTurns": 0,
+  "speed": 1,
+  "text": "选择1个目标才能发动。对其造成5点暗蚀伤害，己方恢复2点生命值。",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "necrotic",
+      "recipient": "target"
+    },
+    {
+      "kind": "heal",
+      "amount": 2,
+      "recipient": "owner"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 25
+  },
+  "illustrationId": "v260-art-analytic-0024",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\汲血之触.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0024",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0024.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "target": "player",
+  "level": 3
+}

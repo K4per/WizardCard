@@ -4,7 +4,7 @@ extends Button
 signal card_selected(card: CardPresentation)
 
 var card: CardPresentation
-@export var simple_style: bool = false
+@export var simple_style: bool = true
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(176, 242)

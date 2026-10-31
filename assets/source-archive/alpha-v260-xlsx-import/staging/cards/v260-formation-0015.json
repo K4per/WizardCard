@@ -21,15 +21,39 @@
     "worksheet": "阵法卡",
     "row": 18
   },
-  "illustrationId": "v260-formation-0015",
+  "illustrationId": "v260-art-formation-0015",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\幻象.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\幻象.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-formation-0015",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0015.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": null
   },
   "raritySource": "",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "v260-formation-0009"
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "v260-formation-0011"
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "schools": [
+        "illusion",
+        "enchantment"
+      ]
+    }
+  ],
   "summonCondition": "【基础法阵】+【强化法阵】+解析区幻术/惑控派系法术卡×1",
   "level": 5,
   "body": 3,

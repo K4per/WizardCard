@@ -28,10 +28,14 @@
     "worksheet": "卡表",
     "row": 43
   },
-  "illustrationId": "v260-word-0002",
+  "illustrationId": "v260-art-word-0002",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\魔能爆.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\魔能爆.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-word-0002",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-word-0002.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": null

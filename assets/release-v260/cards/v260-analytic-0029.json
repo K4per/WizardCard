@@ -1,0 +1,44 @@
+{
+  "id": "v260-analytic-0029",
+  "number": "020029",
+  "name": "紊乱波动",
+  "type": "analytic",
+  "school": "enchantment",
+  "rarity": "common",
+  "rank": 4,
+  "cost": 4,
+  "castCost": 4,
+  "analysisTurns": 2,
+  "speed": 1,
+  "text": "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。",
+  "effects": [
+    {
+      "kind": "opponent_spell_load",
+      "amount": 4
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 30
+  },
+  "illustrationId": "messy-wave",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\messy-wave.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "messy-wave"
+  },
+  "migration": {
+    "previousId": "messy-wave"
+  },
+  "duration": 3,
+  "traits": [
+    "opponent_spell_load_4"
+  ],
+  "level": 4
+}

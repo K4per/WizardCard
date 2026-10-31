@@ -137,6 +137,7 @@ func _ready() -> void:
 	canvas.hand_toggle_requested.connect(_toggle_hand)
 	canvas.placement_requested.connect(_placement_requested)
 	canvas.ring_selected.connect(_ring_selected)
+	canvas.formation_slot_selected.connect(_formation_slot_selected)
 	canvas.zone_clicked.connect(_zone_clicked)
 	canvas.layout_changed.connect(_position_selected_actions)
 	canvas.layout_changed.connect(_position_phase_button)
@@ -818,6 +819,22 @@ func _query_changed(options: ActionOptions) -> void:
 				_detail.hide()
 				_notice.text = "选择高亮环位完成回位。"
 				return
+	if options.field == KernelContract.ActionField.Replacement and _has_option(options, "0"):
+		var replacement_targets: Array[String] = []
+		for option: Dictionary in options.options:
+			var target_id: String = str(option.get("card", "0"))
+			if target_id != "0":
+				replacement_targets.append(target_id)
+		canvas.set_action_targets(replacement_targets)
+		if canvas.highlight_next_formation_slot():
+			_restore_tray_hand()
+			_decision.hide()
+			_action_popup.hide()
+			_detail.hide()
+			_detail_shade.hide()
+			canvas.grab_focus()
+			_notice.text = "点击高亮空槽独立设置，或点选高亮阵法进行替换。"
+			return
 	if options.options.size() == 1 and not options.has_more and options.field in [KernelContract.ActionField.Host, KernelContract.ActionField.Ability, KernelContract.ActionField.Replacement]:
 		_selection.choose(str(options.options[0]["value"]))
 		return
@@ -907,6 +924,19 @@ func _ring_selected(_host_id: String, ring_index: int) -> void:
 	if _selection.current() and _selection.options != null and _selection.options.field == KernelContract.ActionField.Ring:
 		_query_confirmed = true
 		_selection.choose(str(ring_index))
+
+func _formation_slot_selected(_slot_index: int) -> void:
+	if not _selection.current() or _selection.options == null or _selection.options.field != KernelContract.ActionField.Replacement:
+		return
+	if _has_option(_selection.options, "0"):
+		_query_confirmed = true
+		_selection.choose("0")
+
+func _has_option(options: ActionOptions, value: String) -> bool:
+	for option: Dictionary in options.options:
+		if str(option.get("value", "")) == value:
+			return true
+	return false
 
 func _clear_action_targets() -> void:
 	_selection.cancel()

@@ -26,10 +26,14 @@
     "worksheet": "卡表",
     "row": 26
   },
-  "illustrationId": "v260-analytic-0025",
+  "illustrationId": "v260-art-analytic-0025",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\沉默术.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\沉默术.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0025",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0025.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": "instantly-sleep"

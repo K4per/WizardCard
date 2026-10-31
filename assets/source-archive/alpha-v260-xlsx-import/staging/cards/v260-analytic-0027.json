@@ -11,27 +11,37 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "专注4。对方不可选择己方为法术卡的目标。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "target_lock",
+      "amount": 1
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 28
   },
-  "illustrationId": "v260-analytic-0027",
+  "illustrationId": "v260-art-analytic-0027",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\恐惧术.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\恐惧术.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0027",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0027.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
   },
   "migration": {
     "previousId": null
   },
+  "concentration": true,
+  "concentrationUpkeep": 4,
+  "traits": [
+    "target_lock"
+  ],
   "level": 5
 }

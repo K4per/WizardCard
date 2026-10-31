@@ -21,15 +21,30 @@
     "worksheet": "阵法卡",
     "row": 13
   },
-  "illustrationId": "v260-formation-0010",
+  "illustrationId": "v260-art-formation-0010",
   "art": {
     "status": "matched",
-    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\标准.png"
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\标准.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-formation-0010",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0010.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
   },
   "migration": {
     "previousId": null
   },
   "raritySource": "",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "v260-formation-0009"
+    },
+    {
+      "kind": "mana",
+      "amount": 2
+    }
+  ],
   "summonCondition": "【基础法阵】+魔素×2",
   "level": 2,
   "body": 2,

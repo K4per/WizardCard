@@ -26,6 +26,11 @@ struct Trigger {
             consume(static_cast<std::uint64_t>(static_cast<std::int64_t>(effect.amount)));
             consume(static_cast<std::uint64_t>(effect.damageType));
             consume(static_cast<std::uint64_t>(effect.recipient));
+            for (const auto byte : effect.semantic) {
+                hash ^= static_cast<std::uint8_t>(byte);
+                hash *= 1099511628211ull;
+            }
+            consume(effect.semantic.size());
         }
         effectFingerprint = hash;
         effectFingerprintReady = true;

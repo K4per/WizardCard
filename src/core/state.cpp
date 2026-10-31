@@ -55,7 +55,33 @@ std::optional<Capability> findCapability(const std::string &name) {
         {"sique_boiling_surge", Capability::SiqueBoilingSurge}, {"sique_chili", Capability::SiqueChili},
         {"sique_sugar", Capability::SiqueSugar}, {"sique_vinegar", Capability::SiqueVinegar},
         {"moon_material_formation", Capability::MoonMaterialFormation}, {"counter_spell", Capability::CounterSpell},
-        {"unique", Capability::Unique}
+        {"unique", Capability::Unique},
+        // Alpha v2.6 staging traits share one runtime capability.  The
+        // original string remains on CardDefinition::traits and is used by
+        // the deterministic staging adapter when it needs the exact clause.
+        {"accelerate_analysis", Capability::V260Structured},
+        {"block_analytic", Capability::V260Structured},
+        {"block_concentration", Capability::V260Structured},
+        {"borrow_analysis", Capability::V260Structured},
+        {"cancel_setup_return", Capability::V260Structured},
+        {"command_choice", Capability::V260Structured},
+        {"counter_physical", Capability::V260Structured},
+        {"damage_threshold", Capability::V260Structured},
+        {"delay_all_enemy_analysis", Capability::V260Structured},
+        {"extra_turn_load_double", Capability::V260Structured},
+        {"halve_casting_capacity", Capability::V260Structured},
+        {"hand_or_psychic", Capability::V260Structured},
+        {"increase_damage_taken", Capability::V260Structured},
+        {"inspect_and_route", Capability::V260Structured},
+        {"inspect_opponent_deck", Capability::V260Structured},
+        {"inspect_own_deck", Capability::V260Structured},
+        {"mana_on_elemental_damage", Capability::V260Structured},
+        {"prevent_lethal", Capability::V260Structured},
+        {"reflect_damage", Capability::V260Structured},
+        {"retaliate_damage", Capability::V260Structured},
+        {"setup_damage", Capability::V260Structured},
+        {"target_lock", Capability::V260Structured},
+        {"word_cast_damage", Capability::V260Structured}
     };
     const auto found = registry.find(name);
     return found == registry.end() ? std::nullopt : std::optional<Capability>(found->second);

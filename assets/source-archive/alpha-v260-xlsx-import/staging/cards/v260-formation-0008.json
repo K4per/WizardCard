@@ -12,35 +12,42 @@
   "speed": 1,
   "text": "此阵法卡上仅可设置火焰伤害法术卡。己方每有1张法术卡从施法区进入灰烬区，对对方造成2点火焰伤害。",
   "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-    "硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段"
-  ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-    "硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段",
-    "正式卡图未匹配"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
     "worksheet": "阵法卡",
     "row": 10
   },
-  "illustrationId": "v260-formation-0008",
+  "illustrationId": "v2-sulfur",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-sulfur.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "v2-sulfur"
   },
   "migration": {
     "previousId": "sulfur"
+  },
+  "leaveDamage": {
+    "amount": 2,
+    "damageType": "fire"
   },
   "traits": [
     "host_fire_only",
     "ping_on_spell_leave"
   ],
   "raritySource": "",
+  "recipe": [
+    {
+      "kind": "sacrifice_spell",
+      "amount": 2,
+      "readyOnly": true,
+      "fireDamage": true
+    }
+  ],
   "summonCondition": "解析完成的火焰伤害法术卡×2",
   "level": 6,
   "body": 2,

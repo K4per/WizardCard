@@ -11,25 +11,27 @@
   "analysisTurns": 2,
   "speed": 1,
   "text": "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。",
-  "effects": [],
-  "effectStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "opponent_spell_load",
+      "amount": 4
+    }
   ],
-  "implementationStatus": "blocked",
-  "implementationBlockers": [
-    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
-    "正式卡图未匹配"
-  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
     "row": 30
   },
-  "illustrationId": "v260-analytic-0029",
+  "illustrationId": "messy-wave",
   "art": {
-    "status": "missing",
-    "source": null
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\messy-wave.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "messy-wave"
   },
   "migration": {
     "previousId": "messy-wave"

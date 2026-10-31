@@ -1,14 +1,14 @@
 # 巫师牌 / WizardCard
 
-**Alpha v2.5.5-hotfix.1**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序版本为 `2.5.5-hotfix.1`，规则与卡池版本为 `2.5.5`，机制修订为 `9`。
+**Alpha v2.6.0-hotfix.1**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序版本为 `2.6.0-hotfix.1`，规则与卡池版本为 `2.6.0`，机制修订为 `10`。
 
-正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.5.5](docs/alpha-v2.5-rules.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本次规则修正和验证结果见[2.5.5-hotfix.1发行说明](docs/releases/2.5.5-hotfix.1.md)与[交付报告](docs/reports/2.5.5-hotfix.1.md)。历史文档与报告集中在[归档说明](docs/archive/README.md)；卡池导入源快照位于[卡池源归档](assets/source-archive/card-pool-snapshots.zip)。
+正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.6.0发行说明](docs/releases/2.6.0.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本次 hotfix 说明见[2.6.0-hotfix.1发行说明](docs/releases/2.6.0-hotfix.1.md)与[交付报告](docs/reports/2.6.0-hotfix.1.md)；历史文档与报告集中在[归档说明](docs/archive/README.md)，卡池导入源快照位于[卡池源归档](assets/source-archive/card-pool-snapshots.zip)。
 
 ## 运行便携包
 
 Windows x64 便携包解压后运行 `WizardCard.exe`。保留同级 `WizardCard.pck`、`bin/`、`assets/` 和运行库 DLL；`SHA256.json` 提供逐文件校验。无需安装 Godot。
 
-主菜单保留当前 Logo，左侧标识、右侧七个纵向主按钮依次为单人游戏、多人游戏、卡组构筑、卡牌图鉴、对局复盘、游戏设置、退出游戏。单人游戏可选择挑战 AI、本地双人换手或新手教学。AI 有入门、标准、进阶三档；当前提供10套合法40+10预设，也可使用保存的合法自建卡组。普通对局使用随机种子；开发 CLI 可指定种子复现。
+主菜单保留 banner 和布局，左侧标识、右侧七个纵向主按钮依次为单人游戏、多人游戏、卡组构筑、卡牌图鉴、对局复盘、游戏设置、退出游戏。单人游戏可选择挑战 AI、本地双人换手或新手教学。AI 有入门、标准、进阶三档；当前提供1套合法40+10预设，也可使用保存的合法自建卡组。普通对局使用随机种子；开发 CLI 可指定种子复现。
 
 每方开局私下从自己的副卡组选择一张合法等级1阵法，双方确认后同时公开。初始阵法不保存在卡组草稿中。本地换手时先显示交接遮挡，确认接手后才显示该玩家的手牌；AI 模式始终采用本方视角。
 
@@ -28,7 +28,7 @@ Windows x64 便携包解压后运行 `WizardCard.exe`。保留同级 `WizardCard
 
 ## 卡组构筑
 
-主卡组固定40张，包含解析、言灵、咒符和符文；副卡组固定10张阵法。主、副卡组分别限制同名最多3张，副卡组必须包含可用于开局选择的等级1阵法。正式卡池119种：23张阵法、40张解析法术、26张言灵法术、16张咒符法术和14张符文，保留味契（19张）、风契（15张）、血契（20张）和阿卡那机制；七星系列已移出正式卡池。正十字、逆十字和安卡十字保留为不可构筑草稿；完整迁移裁定及输入快照见[卡池源归档](assets/source-archive/card-pool-snapshots.zip)。
+主卡组固定40张，包含解析、言灵、咒符和符文；副卡组固定10张阵法。主、副卡组分别限制同名最多3张，副卡组必须包含可用于开局选择的等级1阵法。正式 v2.6 卡池92种：17张阵法、39张解析法术、21张言灵法术、12张咒符法术和3张符文；完整迁移裁定及输入快照见[卡池源归档](assets/source-archive/card-pool-snapshots.zip)。
 
 从卡组列表新建草稿、复制预设或修改自建卡组。构筑页采用与对局同色的深蓝灰三栏布局：左侧插画与完整详情，中间同时显示40张主卡组和10张副卡组，右侧卡池与搜索筛选。保留卡牌插画，取消装饰背景、卡框和按钮素材。右键卡池加入一张，右键已构筑卡牌移除一张，也可拖动到另一栏增减；悬停或点击查看完整详情，Esc 或右键取消拖动。
 
@@ -38,9 +38,9 @@ Windows x64 便携包解压后运行 `WizardCard.exe`。保留同级 `WizardCard
 
 设置包含总音量、音效音量、窗口/无边框/全屏、分辨率、精简动态效果、自动阶段推进及场地背景。提供1280×720、1600×900、1440×900、1600×1000、1920×1080和2560×1440，也支持自由缩放窗口；全局字号支持90%、100%（默认）、110%、120%。修改后显式保存。无强制选择的非主要阶段可自动推进，主要阶段仍需显式结束。
 
-Godot 默认数据目录为 `user://alpha-v2-frontend`，Windows 对应 `%APPDATA%/Godot/app_userdata/WizardCard Alpha v2.5.4/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
+Godot 默认数据目录为 `user://alpha-v2-frontend`，Windows 对应 `%APPDATA%/Godot/app_userdata/WizardCard Alpha v2.6.0-hotfix.1/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
 
-当前复盘格式5显式记录内容、命令与摘要 schema，并包含规则版本、卡池版本、内容哈希、种子、双方实际主卡组与副卡组、每条接受命令及状态摘要。只适配读取当前 `2.5.5-hotfix.1` 的格式4记录。离线对局在首条命令、之后每32条命令、终局或技术暂停时自动保存；离开和手动保存会完整落盘。自动保存失败会在后续操作中持续重试并显示错误。完整联机复盘在终局后开放。更早版本或内容不匹配的记录明确拒绝。旧牌组草稿可保留稳定ID修复；导入导出采用独立的 `wizardcard-deck` 格式1。复盘用于完整重放，不提供中断对局存档恢复。完整离线记录包含双方私有信息，玩家投影与日志按权限过滤；哈希用于复现校验。
+当前复盘格式5显式记录内容、命令与摘要 schema，并包含规则版本、卡池版本、内容哈希、种子、双方实际主卡组与副卡组、每条接受命令及状态摘要。只适配读取当前 `2.6.0-hotfix.1` 的格式5记录。离线对局在首条命令、之后每32条命令、终局或技术暂停时自动保存；离开和手动保存会完整落盘。自动保存失败会在后续操作中持续重试并显示错误。完整联机复盘在终局后开放。更早版本或内容不匹配的记录明确拒绝。旧牌组草稿可保留稳定ID修复；导入导出采用独立的 `wizardcard-deck` 格式1。复盘用于完整重放，不提供中断对局存档恢复。完整离线记录包含双方私有信息，玩家投影与日志按权限过滤；哈希用于复现校验。
 
 ## 开发构建与验证
 
@@ -77,7 +77,7 @@ CLI 和网络探针属于开发工具，不随玩家便携包分发。构建后�
 
 ## 内容与版本控制
 
-`assets/catalog.json` 与分卡 JSON 为正式内容入口，`assets/cards.json` 为一致性聚合。新效果需同步扩展规则实现、内容校验和有效回归；对局创建后冻结内容，重启加载新版本。卡池图鉴由 `tools/generate_card_catalog.py` 生成，包含119种卡牌、完整插图映射和10套合法预设。最新设计快照、来源哈希和可重复导入流程见[卡池源归档](assets/source-archive/card-pool-snapshots.zip)及 `tools/import_alpha_v254_content.py`。
+`assets/release-v260/catalog.json` 与分卡 JSON 为正式 v2.6 内容入口，`assets/release-v260/cards.json` 为一致性聚合；仓库中的 `assets/` 保留历史兼容内容。新效果需同步扩展规则实现、内容校验和有效回归；对局创建后冻结内容，重启加载新版本。卡池图鉴由 `tools/generate_card_catalog.py` 生成，默认读取 `assets/release-v260/`，包含92种卡牌、完整插图映射和1套合法预设。最新设计快照、来源哈希和可重复导入流程见[卡池源归档](assets/source-archive/card-pool-snapshots.zip)及 `tools/import_alpha_v260_xlsx.py`。
 
 远程保留 `master` 与 `dev`：`dev` 用于开发验证，确认交付后合入 `master`，见[分支约定](docs/branching.md)。规则变更同步文档、JSON 与回归。自动验收与仍需实机确认的范围以本轮交付报告为准。
 

@@ -85,7 +85,7 @@ if(BUILD_TESTING AND GODOT_BIN)
     RUN_SERIAL TRUE TIMEOUT 180 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_frontend_smoke COMMAND "${GODOT_BIN}" --headless
     --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/frontend_smoke.gd --
-    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260
     --user-data ${CMAKE_CURRENT_BINARY_DIR}/frontend-smoke-data
     --report ${CMAKE_CURRENT_BINARY_DIR}/frontend-report.json)
   set_tests_properties(godot_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import

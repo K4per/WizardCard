@@ -5,7 +5,7 @@
     "cardSetVersion": "2.6.0-xlsx-baseline",
     "mechanicsRevision": 10,
     "baseLoadCapacity": 2,
-    "status": "staging-blocked"
+    "status": "staging-ready"
   },
   "definitions": [
     {

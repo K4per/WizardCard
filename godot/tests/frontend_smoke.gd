@@ -26,6 +26,7 @@ func _settle() -> void:
 func _run() -> void:
 	var arguments: PackedStringArray = OS.get_cmdline_user_args()
 	_capture = arguments.has("--capture")
+	var talisman_cost_only: bool = arguments.has("--talisman-cost-only")
 	for index: int in range(arguments.size() - 1):
 		if arguments[index] == "--output":
 			_output = arguments[index + 1]
@@ -39,6 +40,13 @@ func _run() -> void:
 	_check(_app.service.error.is_empty(), "Native service must load actual content: " + _app.service.error)
 	if not _app.service.error.is_empty():
 		quit(2)
+		return
+	var talisman_cost_count: int = await _talisman_cost_checks(arguments)
+	if talisman_cost_only:
+		print("Talisman cost smoke: ", "PASS" if _failures.is_empty() else "FAIL", "; cards=", talisman_cost_count)
+		_app.queue_free()
+		await _settle()
+		quit(0 if _failures.is_empty() else 1)
 		return
 	_official_card_count = _app.service.cards.size()
 	_check(_official_card_count >= 45, "The official card pool must remain browsable")
@@ -139,7 +147,7 @@ func _run() -> void:
 				_check(previous.get_global_rect().end.y < button.global_position.y, "Primary menu entries remain ordered without overlap")
 			if button is MenuArtButton:
 				var art_button: MenuArtButton = button as MenuArtButton
-				_check(art_button._has_point(art_button.size * 0.5) and not art_button._has_point(Vector2.ZERO), "Menu hit test follows the pointed silhouette")
+				_check(art_button._has_point(art_button.size * 0.5) and art_button._has_point(Vector2.ZERO), "Greybox menu hit test follows the rectangular layout")
 				var menu_font: Font = art_button.get_theme_font(&"font")
 				var menu_size: int = art_button.get_theme_font_size(&"font_size")
 				var skin: StyleBox = art_button.get_theme_stylebox(&"normal")
@@ -149,7 +157,9 @@ func _run() -> void:
 				_check(text_size.x + outline <= art_button.size.x - skin.get_minimum_size().x and menu_font.get_height(menu_size) + outline <= art_button.size.y - skin.get_minimum_size().y, "Heavy menu text and outline fit without clipping at " + str(dimensions))
 				for character: String in art_button.text:
 					_check(menu_font.has_char(character.unicode_at(0)), "Menu Chinese glyph comes from the bundled font: " + character)
-		_check(menu._logo.texture is AtlasTexture and (menu._buttons[0] as MenuArtButton)._skin.texture is AtlasTexture, "Menu crops full HD alpha margins using declared texture regions")
+		_check(menu._logo.texture is AtlasTexture, "The main menu retains the banner crop")
+		var menu_style: StyleBox = menu._buttons[0].get_theme_stylebox(&"normal")
+		_check(menu_style is StyleBoxFlat and (menu_style as StyleBoxFlat).bg_color == DeckTheme.CONTROL, "Greybox menu buttons use primitive flat styles")
 		_check(menu._buttons.all(func(button: Button) -> bool: return button is MenuArtButton), "Replay and library use the same primary buttons")
 		for entry: Array in [[3, &"library"], [4, &"replay"]]:
 			menu._buttons[entry[0]].pressed.emit()
@@ -201,8 +211,8 @@ func _run() -> void:
 		var first_tile: CardTile = tiled._grid.get_child(0) as CardTile
 		first_tile.pressed.emit()
 		await _settle()
-		_check(tiled._detail._art.card == first_tile.card, "Selecting a card displays its complete framed face")
-		_check(Rect2(Vector2.ZERO, Vector2(dimensions)).encloses(tiled._detail.get_global_rect()), "Framed details fit inside the viewport at " + str(dimensions))
+		_check(first_tile.simple_style and tiled._detail._art.simple_style and tiled._detail._art.card == first_tile.card, "Selecting a card displays the greybox illustrated face")
+		_check(Rect2(Vector2.ZERO, Vector2(dimensions)).encloses(tiled._detail.get_global_rect()), "Greybox details fit inside the viewport at " + str(dimensions))
 		await _screenshot("library-ai-detail-%dx%d" % [dimensions.x, dimensions.y])
 		tiled._kind_filter.select(4)
 		tiled._kind_filter.item_selected.emit(4)
@@ -327,11 +337,60 @@ func _catalogue_checks(library: LibraryPage) -> void:
 		var tile: CardTile = library._grid.get_child(0) as CardTile
 		tile.pressed.emit()
 		await _settle()
-		_check(library._detail.card.title == "阿克乌姆之弧" and library._detail._body.text.contains("环位：0"), "Established formation name and zero-ring data are retained")
+	_check(not library._detail.card.title.is_empty() and library._detail._body.text.contains("环位："), "Current release formation retains its name and ring data")
 	library._close_detail()
 	library._search.text = ""
 	library._search.text_changed.emit("")
 	await _settle()
+
+func _talisman_cost_checks(arguments: PackedStringArray) -> int:
+	var selected_id: String = ""
+	var assets_path: String = ProjectSettings.globalize_path("res://../assets/release-v260")
+	for index: int in range(arguments.size() - 1):
+		if arguments[index] == "--card-id":
+			selected_id = arguments[index + 1]
+		elif arguments[index] == "--assets":
+			assets_path = arguments[index + 1]
+	var cost_file: FileAccess = FileAccess.open(assets_path.path_join("cards.json"), FileAccess.READ)
+	_check(cost_file != null, "Talisman cost smoke reads the official release definitions")
+	if cost_file == null:
+		return 0
+	var aggregate: Variant = JSON.parse_string(cost_file.get_as_text())
+	_check(aggregate is Dictionary, "Official card aggregate is valid JSON")
+	if not aggregate is Dictionary:
+		return 0
+	var expected_costs: Dictionary[String, int] = {}
+	var official_definitions: Dictionary[String, Dictionary] = {}
+	for definition: Dictionary in (aggregate as Dictionary).get("cards", []):
+		if definition.get("type") == "talisman" and definition.get("id") != "v260-talisman-0004":
+			var definition_id: String = str(definition["id"])
+			expected_costs[definition_id] = int(definition.get("castCost", -1))
+			official_definitions[definition_id] = definition
+	_check(expected_costs.size() == 11, "Official definitions provide all fixed-cost talisman spells")
+	var tested: int = 0
+	for card: CardPresentation in _app.service.cards:
+		if card.type_key != "talisman":
+			continue
+		if not selected_id.is_empty() and card.definition_id != selected_id:
+			continue
+		var face: CardFace = CardFace.new()
+		face.size = Vector2(320, 440)
+		root.add_child(face)
+		face.configure(card)
+		await _settle()
+		if card.title == "法术反制":
+			_check(card.dynamic_cost and face.card.primary_value == "X", "Spell Counter displays its dynamic X cost")
+		else:
+			var expected_cost: int = expected_costs.get(card.definition_id, -1)
+			var normalized_definition: Dictionary = official_definitions.get(card.definition_id, {}).duplicate()
+			normalized_definition["type"] = 5
+			var direct: CardPresentation = CardPresentation.from_definition(normalized_definition)
+			_check(direct.cast_cost == expected_cost and direct.primary_value == str(expected_cost), "Definition mapping cost mismatch: %s expected=%d actual=%d displayed=%s" % [card.title, expected_cost, direct.cast_cost, direct.primary_value])
+			_check(expected_cost > 0 and card.cast_cost == expected_cost and face.card.primary_value == str(expected_cost), "Talisman face cost mismatch: %s expected=%d actual=%d displayed=%s" % [card.title, expected_cost, card.cast_cost, face.card.primary_value])
+		face.queue_free()
+		tested += 1
+	_check(tested > 0 and (selected_id.is_empty() or tested == 1), "Talisman cost smoke selected the expected official cards")
+	return tested
 
 func _decision_checks(panel: DecisionPanel) -> void:
 	_confirmed.clear()

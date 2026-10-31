@@ -11,11 +11,21 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "选择1个目标才能发动。对其造成5点光耀伤害。那之后，可以查看对方解析区1张盖伏卡。",
-  "flavor": "",
-  "effects": [],
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "radiant",
+      "recipient": "target"
+    },
+    {
+      "kind": "reveal_enemy_ambush"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
   "implementationStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+  "implementationBlockers": [
     "正式卡图未匹配"
   ],
   "source": {
@@ -30,5 +40,7 @@
   },
   "migration": {
     "previousId": "guiding-bolt"
-  }
+  },
+  "target": "player",
+  "level": 2
 }

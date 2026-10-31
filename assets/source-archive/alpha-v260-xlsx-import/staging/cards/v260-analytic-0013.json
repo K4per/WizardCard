@@ -11,12 +11,18 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "专注1。发动时，对对方造成5点挥砍伤害。维持专注时，对对方造成2点挥砍伤害。",
-  "flavor": "",
-  "effects": [],
-  "implementationStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "slashing",
+      "recipient": "opponent"
+    }
   ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
@@ -29,5 +35,17 @@
   },
   "migration": {
     "previousId": null
-  }
+  },
+  "concentration": true,
+  "concentrationUpkeep": 1,
+  "onCast": [
+    {
+      "kind": "damage",
+      "amount": 2,
+      "damageType": "slashing",
+      "recipient": "opponent"
+    }
+  ],
+  "target": "opponent",
+  "level": 3
 }

@@ -6,7 +6,7 @@
       "file": "法术卡列表.xlsx",
       "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "snapshot": "sources/法术卡列表.xlsx",
-      "sha256": "8e31bab216d756a0521d0319a65d36eabf787634890a978ebdc1a317c1750b0c"
+      "sha256": "cc364f9bf300c0faf56b0fc893ae2dc2705b7e6c71a061e003587deefa0d8b87"
     },
     {
       "key": "seals",
@@ -20,7 +20,7 @@
       "file": "阵法卡列表-共17张卡.xlsx",
       "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
       "snapshot": "sources/阵法卡列表-共17张卡.xlsx",
-      "sha256": "749389e328482c05ce2ce6e47635aee4dc453be43e10dfcd1405f8c67f23ca11"
+      "sha256": "b6561677beb6588965b8550f71b6d15b0d7b4165015f66f2abbd3dc3543280b2"
     }
   ]
 }

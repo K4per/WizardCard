@@ -11,11 +11,15 @@
   "analysisTurns": 0,
   "speed": 2,
   "text": "专注2。受到的火焰伤害减半，此效果不可叠加。",
-  "flavor": "",
-  "effects": [],
+  "effects": [
+    {
+      "kind": "grant_resistance"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
   "implementationStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+  "implementationBlockers": [
     "正式卡图未匹配"
   ],
   "source": {
@@ -30,5 +34,12 @@
   },
   "migration": {
     "previousId": "protective-flame"
-  }
+  },
+  "concentration": true,
+  "concentrationUpkeep": 2,
+  "resistances": [
+    "fire"
+  ],
+  "target": "self",
+  "level": 4
 }

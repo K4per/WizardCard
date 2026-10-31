@@ -11,7 +11,6 @@
   "analysisTurns": 0,
   "speed": 2,
   "text": "选择1个目标才能发动。对其造成3点火焰伤害。",
-  "flavor": "",
   "effects": [
     {
       "kind": "damage",
@@ -20,8 +19,10 @@
       "recipient": "target"
     }
   ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
   "implementationStatus": "blocked",
-  "effectBlockers": [
+  "implementationBlockers": [
     "正式卡图未匹配"
   ],
   "source": {
@@ -36,5 +37,7 @@
   },
   "migration": {
     "previousId": "spark"
-  }
+  },
+  "target": "player",
+  "level": 1
 }

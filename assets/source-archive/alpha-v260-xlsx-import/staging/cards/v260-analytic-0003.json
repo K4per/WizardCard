@@ -11,11 +11,21 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "选择1个目标才能发动。对其造成8点闪电伤害。那之后，可以销毁对方解析区1张解析法术卡。",
-  "flavor": "",
-  "effects": [],
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 8,
+      "damageType": "lightning",
+      "recipient": "target"
+    },
+    {
+      "kind": "destroy_enemy_analysis"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
   "implementationStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+  "implementationBlockers": [
     "正式卡图未匹配"
   ],
   "source": {
@@ -30,5 +40,7 @@
   },
   "migration": {
     "previousId": "lightning-bolt"
-  }
+  },
+  "target": "player",
+  "level": 4
 }

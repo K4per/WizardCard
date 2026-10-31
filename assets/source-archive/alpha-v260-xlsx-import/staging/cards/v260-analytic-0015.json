@@ -11,11 +11,14 @@
   "analysisTurns": 1,
   "speed": 2,
   "text": "选择对方场上1张阵法卡才能发动。直到下个己方准备阶段开始时，此阵法卡的环位减半。",
-  "flavor": "",
   "effects": [],
-  "implementationStatus": "blocked",
+  "effectStatus": "blocked",
   "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  ],
+  "implementationStatus": "blocked",
+  "implementationBlockers": [
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
   ],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -29,5 +32,6 @@
   },
   "migration": {
     "previousId": null
-  }
+  },
+  "level": 3
 }

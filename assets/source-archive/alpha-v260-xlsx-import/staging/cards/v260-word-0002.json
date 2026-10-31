@@ -9,14 +9,20 @@
   "cost": 2,
   "castCost": 0,
   "analysisTurns": 0,
-  "speed": 1,
+  "speed": 2,
   "text": "选择1个目标才能发动，对其造成3点力场伤害。",
-  "flavor": "",
-  "effects": [],
-  "implementationStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 3,
+      "damageType": "force",
+      "recipient": "target"
+    }
   ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
@@ -29,5 +35,7 @@
   },
   "migration": {
     "previousId": null
-  }
+  },
+  "target": "player",
+  "level": 1
 }

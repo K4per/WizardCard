@@ -11,11 +11,17 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "选择1个目标才能发动。对其造成7点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择。",
-  "flavor": "",
-  "effects": [],
+  "effects": [
+    {
+      "kind": "choose_damage",
+      "amount": 7,
+      "recipient": "target"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
   "implementationStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+  "implementationBlockers": [
     "正式卡图未匹配"
   ],
   "source": {
@@ -30,5 +36,7 @@
   },
   "migration": {
     "previousId": "chromatic-orb"
-  }
+  },
+  "target": "player",
+  "level": 2
 }

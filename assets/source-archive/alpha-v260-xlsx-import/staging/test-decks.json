@@ -1,14 +1,38 @@
 {
   "format": 1,
   "status": "blocked",
-  "contentHash": "cc287c6ce51eecc77aebf994f1caf72895d87bb105a5986dff3238f160434860",
+  "contentHash": "a77282b8a5b1934610f02e978b90c0042e7ac157d79bca3965bad220123828a7",
   "main": [
+    {
+      "id": "v260-analytic-0013",
+      "count": 3
+    },
     {
       "id": "v260-analytic-0018",
       "count": 3
     },
     {
+      "id": "v260-analytic-0024",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0025",
+      "count": 3
+    },
+    {
+      "id": "v260-analytic-0034",
+      "count": 3
+    },
+    {
+      "id": "v260-word-0002",
+      "count": 3
+    },
+    {
       "id": "v260-word-0012",
+      "count": 3
+    },
+    {
+      "id": "v260-word-0013",
       "count": 3
     },
     {
@@ -64,7 +88,7 @@
   ],
   "initialFormation": "v260-formation-0009",
   "validation": {
-    "mainCount": 12,
+    "mainCount": 30,
     "sideCount": 10,
     "mainSameNameLimit": true,
     "hasLevelOneFormation": true,

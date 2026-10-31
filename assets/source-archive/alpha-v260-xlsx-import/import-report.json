@@ -11,7 +11,7 @@
         "file": "法术卡列表.xlsx",
         "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "snapshot": "sources/法术卡列表.xlsx",
-        "sha256": "8e31bab216d756a0521d0319a65d36eabf787634890a978ebdc1a317c1750b0c"
+        "sha256": "cc364f9bf300c0faf56b0fc893ae2dc2705b7e6c71a061e003587deefa0d8b87"
       },
       {
         "key": "seals",
@@ -25,7 +25,7 @@
         "file": "阵法卡列表-共17张卡.xlsx",
         "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "snapshot": "sources/阵法卡列表-共17张卡.xlsx",
-        "sha256": "749389e328482c05ce2ce6e47635aee4dc453be43e10dfcd1405f8c67f23ca11"
+        "sha256": "b6561677beb6588965b8550f71b6d15b0d7b4165015f66f2abbd3dc3543280b2"
       }
     ]
   },
@@ -41,7 +41,10 @@
   "art": {
     "sourceFiles": 49,
     "spellFiles": 40,
-    "formationFiles": 9
+    "formationFiles": 9,
+    "matchedCards": 49,
+    "missingCards": 42,
+    "conflictCards": 1
   },
   "blockingIssues": [
     {
@@ -49,7 +52,7 @@
       "worksheet": "卡表",
       "row": 2,
       "card": "火球术",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -57,15 +60,7 @@
       "worksheet": "卡表",
       "row": 3,
       "card": "寒霜射线",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 3,
-      "card": "寒霜射线",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -73,15 +68,7 @@
       "worksheet": "卡表",
       "row": 4,
       "card": "闪电束",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 4,
-      "card": "闪电束",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -89,15 +76,7 @@
       "worksheet": "卡表",
       "row": 5,
       "card": "魔法飞弹",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 5,
-      "card": "魔法飞弹",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -105,15 +84,7 @@
       "worksheet": "卡表",
       "row": 6,
       "card": "繁彩球",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 6,
-      "card": "繁彩球",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -121,15 +92,7 @@
       "worksheet": "卡表",
       "row": 7,
       "card": "曳光弹",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 7,
-      "card": "曳光弹",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -137,15 +100,15 @@
       "worksheet": "卡表",
       "row": 8,
       "card": "炽热射线",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 8,
       "card": "炽热射线",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -153,15 +116,7 @@
       "worksheet": "卡表",
       "row": 9,
       "card": "炽燃结界",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 9,
-      "card": "炽燃结界",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -169,15 +124,7 @@
       "worksheet": "卡表",
       "row": 10,
       "card": "阳炎爆",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 10,
-      "card": "阳炎爆",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -185,23 +132,23 @@
       "worksheet": "卡表",
       "row": 11,
       "card": "燃烧之手",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 12,
       "card": "云雾术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 12,
       "card": "云雾术",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -209,55 +156,47 @@
       "worksheet": "卡表",
       "row": 13,
       "card": "召雷术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 13,
       "card": "召雷术",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 14,
-      "card": "匕首之云",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 15,
       "card": "臭云术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 16,
       "card": "油腻术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 17,
       "card": "次级复原",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 17,
       "card": "次级复原",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -265,15 +204,15 @@
       "worksheet": "卡表",
       "row": 18,
       "card": "吸收元素",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 20,
       "card": "缝合生命",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -281,7 +220,7 @@
       "worksheet": "卡表",
       "row": 21,
       "card": "虚假生命",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -289,15 +228,15 @@
       "worksheet": "卡表",
       "row": 22,
       "card": "治疗之环",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 22,
       "card": "治疗之环",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -305,71 +244,55 @@
       "worksheet": "卡表",
       "row": 23,
       "card": "致病射线",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 24,
       "card": "防死结界",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 25,
-      "card": "汲血之触",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 26,
-      "card": "沉默术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 27,
       "card": "朦胧术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 28,
       "card": "恐惧术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 29,
       "card": "精神监狱",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 30,
       "card": "紊乱波动",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 30,
       "card": "紊乱波动",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -377,15 +300,15 @@
       "worksheet": "卡表",
       "row": 31,
       "card": "昏昏欲睡",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 31,
       "card": "昏昏欲睡",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "目录只有沉默术.png，不能确认它是否对应昏昏欲睡"
     },
     {
@@ -393,47 +316,39 @@
       "worksheet": "卡表",
       "row": 32,
       "card": "疯狂冠冕",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 33,
       "card": "祝福术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 34,
       "card": "灾祸术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 35,
-      "card": "心灵尖刺",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 36,
       "card": "地震术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 36,
       "card": "地震术",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -441,15 +356,15 @@
       "worksheet": "卡表",
       "row": 37,
       "card": "碎环术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 37,
       "card": "碎环术",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -457,55 +372,39 @@
       "worksheet": "卡表",
       "row": 38,
       "card": "土石喷发",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 39,
       "card": "弹射术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 40,
       "card": "加速术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 42,
       "card": "火花术",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
-      "row": 43,
-      "card": "魔能爆",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
       "row": 44,
       "card": "魔力扰动",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 44,
-      "card": "魔力扰动",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -513,23 +412,23 @@
       "worksheet": "卡表",
       "row": 45,
       "card": "法师之手",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 46,
       "card": "瞬发回路过载",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 46,
       "card": "瞬发回路过载",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -537,15 +436,7 @@
       "worksheet": "卡表",
       "row": 47,
       "card": "奥术复苏",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 47,
-      "card": "奥术复苏",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -553,7 +444,7 @@
       "worksheet": "卡表",
       "row": 48,
       "card": "支援术",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -561,15 +452,7 @@
       "worksheet": "卡表",
       "row": 49,
       "card": "心如止水",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 49,
-      "card": "心如止水",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -577,63 +460,55 @@
       "worksheet": "卡表",
       "row": 50,
       "card": "扰神曲",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 51,
       "card": "降咒",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 52,
       "card": "七彩喷射",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 54,
-      "card": "不谐低语",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 55,
       "card": "脆弱诅咒",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 56,
       "card": "命令术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 58,
       "card": "克敌机先",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 58,
       "card": "克敌机先",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -641,15 +516,7 @@
       "worksheet": "卡表",
       "row": 59,
       "card": "奥术回想",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 59,
-      "card": "奥术回想",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -657,47 +524,39 @@
       "worksheet": "卡表",
       "row": 60,
       "card": "异界探知",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 61,
       "card": "卜筮术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 64,
       "card": "炼狱叱喝",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 65,
       "card": "捕获打击",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 66,
       "card": "护盾术",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 66,
-      "card": "护盾术",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -705,15 +564,15 @@
       "worksheet": "卡表",
       "row": 67,
       "card": "法术反制",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 67,
       "card": "法术反制",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -721,15 +580,7 @@
       "worksheet": "卡表",
       "row": 68,
       "card": "避火咒",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
-      "worksheet": "卡表",
-      "row": 68,
-      "card": "避火咒",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -737,39 +588,39 @@
       "worksheet": "卡表",
       "row": 69,
       "card": "解除魔法",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 70,
       "card": "死佑护甲",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 71,
       "card": "步履维艰",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 72,
       "card": "银光锐语",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 72,
       "card": "银光锐语",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -777,15 +628,15 @@
       "worksheet": "卡表",
       "row": 73,
       "card": "滑稽魔盒",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 73,
       "card": "滑稽魔盒",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -793,31 +644,23 @@
       "worksheet": "卡表",
       "row": 74,
       "card": "侦测善恶",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
       "worksheet": "卡表",
       "row": 75,
       "card": "荆棘丛生",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
       "worksheet": "符文卡",
       "row": 2,
       "card": "逆三角星符",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
-      "worksheet": "符文卡",
-      "row": 2,
-      "card": "逆三角星符",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -825,15 +668,7 @@
       "worksheet": "符文卡",
       "row": 3,
       "card": "奥术圆环",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
-      "worksheet": "符文卡",
-      "row": 3,
-      "card": "奥术圆环",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -841,15 +676,7 @@
       "worksheet": "符文卡",
       "row": 4,
       "card": "昂扬",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
-    },
-    {
-      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
-      "worksheet": "符文卡",
-      "row": 4,
-      "card": "昂扬",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -857,15 +684,15 @@
       "worksheet": "阵法卡",
       "row": 3,
       "card": "正十字",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
       "worksheet": "阵法卡",
       "row": 3,
       "card": "正十字",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -873,15 +700,15 @@
       "worksheet": "阵法卡",
       "row": 4,
       "card": "逆十字",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
       "worksheet": "阵法卡",
       "row": 4,
       "card": "逆十字",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -889,15 +716,15 @@
       "worksheet": "阵法卡",
       "row": 5,
       "card": "安卡十字",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
       "worksheet": "阵法卡",
       "row": 5,
       "card": "安卡十字",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -905,15 +732,15 @@
       "worksheet": "阵法卡",
       "row": 6,
       "card": "恩格亚斯之星",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
       "worksheet": "阵法卡",
       "row": 6,
       "card": "恩格亚斯之星",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -921,15 +748,15 @@
       "worksheet": "阵法卡",
       "row": 7,
       "card": "元素之环",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
       "worksheet": "阵法卡",
       "row": 7,
       "card": "元素之环",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -937,15 +764,15 @@
       "worksheet": "阵法卡",
       "row": 8,
       "card": "混沌之环",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
       "worksheet": "阵法卡",
       "row": 8,
       "card": "混沌之环",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -953,15 +780,15 @@
       "worksheet": "阵法卡",
       "row": 9,
       "card": "阿克乌姆之弧",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
       "worksheet": "阵法卡",
       "row": 9,
       "card": "阿克乌姆之弧",
-      "field": "效果/卡图",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     },
     {
@@ -969,23 +796,33 @@
       "worksheet": "阵法卡",
       "row": 10,
       "card": "硫磺",
-      "field": "效果/卡图",
-      "reason": "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "field": "效果",
+      "reason": "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
     },
     {
       "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
       "worksheet": "阵法卡",
       "row": 10,
       "card": "硫磺",
-      "field": "效果/卡图",
+      "field": "效果",
+      "reason": "硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段"
+    },
+    {
+      "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+      "worksheet": "阵法卡",
+      "row": 10,
+      "card": "硫磺",
+      "field": "卡图",
       "reason": "正式卡图未匹配"
     }
   ],
   "implementation": {
-    "structuredCandidates": 13,
-    "blockedCards": 79
+    "structuredEffects": 40,
+    "blockedEffects": 52,
+    "structuredCandidates": 19,
+    "blockedCards": 73
   },
-  "stagingContentHash": "cc287c6ce51eecc77aebf994f1caf72895d87bb105a5986dff3238f160434860",
+  "stagingContentHash": "a77282b8a5b1934610f02e978b90c0042e7ac157d79bca3965bad220123828a7",
   "cards": [
     {
       "id": "v260-analytic-0001",
@@ -1000,7 +837,6 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成7点火焰伤害。",
-      "flavor": "",
       "effects": [
         {
           "kind": "damage",
@@ -1009,8 +845,10 @@
           "recipient": "target"
         }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1025,7 +863,9 @@
       },
       "migration": {
         "previousId": "fireball"
-      }
+      },
+      "target": "player",
+      "level": 3
     },
     {
       "id": "v260-analytic-0002",
@@ -1040,11 +880,22 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成5点寒冷伤害。那之后，可以使对方解析区1张解析法术卡的解析时间+1。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 5,
+          "damageType": "cold",
+          "recipient": "target"
+        },
+        {
+          "kind": "delay_enemy_analysis",
+          "amount": 1
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1059,7 +910,9 @@
       },
       "migration": {
         "previousId": "ray-of-frost"
-      }
+      },
+      "target": "player",
+      "level": 2
     },
     {
       "id": "v260-analytic-0003",
@@ -1074,11 +927,21 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成8点闪电伤害。那之后，可以销毁对方解析区1张解析法术卡。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 8,
+          "damageType": "lightning",
+          "recipient": "target"
+        },
+        {
+          "kind": "destroy_enemy_analysis"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1093,7 +956,9 @@
       },
       "migration": {
         "previousId": "lightning-bolt"
-      }
+      },
+      "target": "player",
+      "level": 4
     },
     {
       "id": "v260-analytic-0004",
@@ -1108,11 +973,21 @@
       "analysisTurns": 1,
       "speed": 2,
       "text": "选择1个目标才能发动。对其造成4点力场伤害。那之后，可以销毁对方解析区1张盖伏卡。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 4,
+          "damageType": "force",
+          "recipient": "target"
+        },
+        {
+          "kind": "destroy_ambush"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1127,7 +1002,9 @@
       },
       "migration": {
         "previousId": "magic-missile"
-      }
+      },
+      "target": "player",
+      "level": 2
     },
     {
       "id": "v260-analytic-0005",
@@ -1142,11 +1019,17 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成7点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣中选择。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "choose_damage",
+          "amount": 7,
+          "recipient": "target"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1161,7 +1044,9 @@
       },
       "migration": {
         "previousId": "chromatic-orb"
-      }
+      },
+      "target": "player",
+      "level": 2
     },
     {
       "id": "v260-analytic-0006",
@@ -1176,11 +1061,21 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成5点光耀伤害。那之后，可以查看对方解析区1张盖伏卡。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 5,
+          "damageType": "radiant",
+          "recipient": "target"
+        },
+        {
+          "kind": "reveal_enemy_ambush"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1195,7 +1090,9 @@
       },
       "migration": {
         "previousId": "guiding-bolt"
-      }
+      },
+      "target": "player",
+      "level": 2
     },
     {
       "id": "v260-analytic-0007",
@@ -1210,11 +1107,21 @@
       "analysisTurns": 2,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成4点火焰伤害。重复3次，每次可以选择不同目标。",
-      "flavor": "",
-      "effects": [],
-      "implementationStatus": "blocked",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 4,
+          "damageType": "fire",
+          "recipient": "target"
+        }
+      ],
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -1229,7 +1136,9 @@
       },
       "migration": {
         "previousId": "scorching-ray"
-      }
+      },
+      "target": "player",
+      "level": 5
     },
     {
       "id": "v260-analytic-0008",
@@ -1244,11 +1153,18 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注2。发动时，对对方造成4点火焰伤害。维持专注时，对对方造成3点火焰伤害。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 4,
+          "damageType": "fire",
+          "recipient": "opponent"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1263,7 +1179,19 @@
       },
       "migration": {
         "previousId": "ward"
-      }
+      },
+      "concentration": true,
+      "concentrationUpkeep": 2,
+      "onCast": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "fire",
+          "recipient": "opponent"
+        }
+      ],
+      "target": "opponent",
+      "level": 3
     },
     {
       "id": "v260-analytic-0009",
@@ -1278,11 +1206,21 @@
       "analysisTurns": 2,
       "speed": 3,
       "text": "对对方造成15点火焰伤害。那之后，可以销毁对方1张阵法卡上的全部法术卡。己方灰烬区每存在1张塑能派系法术卡，此法术卡的设置费用-1。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 15,
+          "damageType": "fire",
+          "recipient": "opponent"
+        },
+        {
+          "kind": "destroy_formation_spells"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1297,7 +1235,12 @@
       },
       "migration": {
         "previousId": "sunburst"
-      }
+      },
+      "traits": [
+        "ash_evocation_discount"
+      ],
+      "target": "opponent",
+      "level": 6
     },
     {
       "id": "v260-analytic-0010",
@@ -1312,11 +1255,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "对对方以及对方场上全部目标各造成6点火焰伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -1330,7 +1276,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 4
     },
     {
       "id": "v260-analytic-0011",
@@ -1345,11 +1292,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "计时2。选择双方解析区共1至2张解析法术卡，使其直到此法术卡离场不可准备施法。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -1364,7 +1314,8 @@
       },
       "migration": {
         "previousId": "cloud-mist"
-      }
+      },
+      "level": 2
     },
     {
       "id": "v260-analytic-0012",
@@ -1379,11 +1330,26 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成9点雷鸣伤害。那之后，使对方获得5点独立荷载，对方结束阶段开始时清除。",
-      "flavor": "",
-      "effects": [],
-      "implementationStatus": "blocked",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 9,
+          "damageType": "thunder",
+          "recipient": "target"
+        },
+        {
+          "kind": "independent",
+          "amount": 5,
+          "recipient": "opponent"
+        }
+      ],
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段",
         "正式卡图未匹配"
       ],
       "source": {
@@ -1398,7 +1364,9 @@
       },
       "migration": {
         "previousId": "thunder-summon"
-      }
+      },
+      "target": "player",
+      "level": 4
     },
     {
       "id": "v260-analytic-0013",
@@ -1413,12 +1381,18 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注1。发动时，对对方造成5点挥砍伤害。维持专注时，对对方造成2点挥砍伤害。",
-      "flavor": "",
-      "effects": [],
-      "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 5,
+          "damageType": "slashing",
+          "recipient": "opponent"
+        }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -1431,7 +1405,19 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "concentration": true,
+      "concentrationUpkeep": 1,
+      "onCast": [
+        {
+          "kind": "damage",
+          "amount": 2,
+          "damageType": "slashing",
+          "recipient": "opponent"
+        }
+      ],
+      "target": "opponent",
+      "level": 3
     },
     {
       "id": "v260-analytic-0014",
@@ -1446,11 +1432,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注1。双方准备阶段开始时，双方各受到1点毒素伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -1464,7 +1453,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-analytic-0015",
@@ -1479,11 +1469,14 @@
       "analysisTurns": 1,
       "speed": 2,
       "text": "选择对方场上1张阵法卡才能发动。直到下个己方准备阶段开始时，此阵法卡的环位减半。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -1497,7 +1490,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-analytic-0016",
@@ -1512,11 +1506,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。为其恢复2点生命值。那之后，清除己方6点荷载。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -1531,7 +1528,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 2
     },
     {
       "id": "v260-analytic-0017",
@@ -1546,11 +1544,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注1。己方每受到1次强酸/寒冷/火焰/闪电/毒素/雷鸣伤害，获得1点魔素。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -1564,7 +1565,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 4
     },
     {
       "id": "v260-analytic-0018",
@@ -1579,7 +1581,6 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成8点暗蚀伤害。",
-      "flavor": "",
       "effects": [
         {
           "kind": "damage",
@@ -1588,8 +1589,10 @@
           "recipient": "target"
         }
       ],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -1602,7 +1605,9 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "target": "player",
+      "level": 4
     },
     {
       "id": "v260-analytic-0019",
@@ -1617,7 +1622,6 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。为其恢复6点生命值。",
-      "flavor": "",
       "effects": [
         {
           "kind": "heal",
@@ -1625,8 +1629,10 @@
           "recipient": "target"
         }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1641,7 +1647,9 @@
       },
       "migration": {
         "previousId": "mend"
-      }
+      },
+      "target": "player",
+      "level": 3
     },
     {
       "id": "v260-analytic-0020",
@@ -1656,7 +1664,6 @@
       "analysisTurns": 1,
       "speed": 2,
       "text": "获得6点临时生命值。",
-      "flavor": "",
       "effects": [
         {
           "kind": "temporary_life",
@@ -1664,8 +1671,10 @@
           "recipient": "owner"
         }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -1680,7 +1689,8 @@
       },
       "migration": {
         "previousId": "false-life"
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-analytic-0021",
@@ -1695,11 +1705,14 @@
       "analysisTurns": 2,
       "speed": 1,
       "text": "计时4。己方结束阶段开始时，恢复2点生命值。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -1714,7 +1727,16 @@
       },
       "migration": {
         "previousId": "healing-circle"
-      }
+      },
+      "duration": 4,
+      "onEnd": [
+        {
+          "kind": "heal",
+          "amount": 2,
+          "recipient": "owner"
+        }
+      ],
+      "level": 2
     },
     {
       "id": "v260-analytic-0022",
@@ -1729,11 +1751,21 @@
       "analysisTurns": 1,
       "speed": 2,
       "text": "选择1个目标才能发动。对其造成4点毒素伤害。那之后，直到下个己方抽卡阶段开始时，对方每设置1张法术卡，使对方受到1点毒素伤害。",
-      "flavor": "",
-      "effects": [],
-      "implementationStatus": "blocked",
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 4,
+          "damageType": "poison",
+          "recipient": "target"
+        }
+      ],
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "伤害后的条件、时点或区域操作尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -1747,7 +1779,9 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "target": "player",
+      "level": 2
     },
     {
       "id": "v260-analytic-0023",
@@ -1762,11 +1796,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "永续。此卡在己方解析区仅可存在1张。当己方生命值归零时，可以将此法术卡抹除作为替代。那之后，己方生命值变为1。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -1780,7 +1817,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 7
     },
     {
       "id": "v260-analytic-0024",
@@ -1795,12 +1833,23 @@
       "analysisTurns": 0,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成5点暗蚀伤害，己方恢复2点生命值。",
-      "flavor": "",
-      "effects": [],
-      "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 5,
+          "damageType": "necrotic",
+          "recipient": "target"
+        },
+        {
+          "kind": "heal",
+          "amount": 2,
+          "recipient": "owner"
+        }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -1813,7 +1862,9 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "target": "player",
+      "level": 3
     },
     {
       "id": "v260-analytic-0025",
@@ -1828,12 +1879,16 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "直到下个己方抽卡阶段开始时，双方言灵法术不可发动。",
-      "flavor": "",
-      "effects": [],
-      "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "block_actions",
+          "amount": 0
+        }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -1846,7 +1901,9 @@
       },
       "migration": {
         "previousId": "instantly-sleep"
-      }
+      },
+      "target": "opponent",
+      "level": 4
     },
     {
       "id": "v260-analytic-0026",
@@ -1861,11 +1918,14 @@
       "analysisTurns": 1,
       "speed": 2,
       "text": "选择1个伤害类型才能发动。直到下个己方准备阶段开始时，己方受到的此类型伤害减半。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -1879,7 +1939,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 5
     },
     {
       "id": "v260-analytic-0027",
@@ -1894,11 +1955,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注4。对方不可选择己方为法术卡的目标。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -1912,7 +1976,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 5
     },
     {
       "id": "v260-analytic-0028",
@@ -1927,11 +1992,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注6。对方结束阶段开始时，对方必须将1张卡从手卡送去灰烬区，否则使对方受到10点心灵伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -1945,7 +2013,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 6
     },
     {
       "id": "v260-analytic-0029",
@@ -1960,11 +2029,14 @@
       "analysisTurns": 2,
       "speed": 1,
       "text": "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -1979,7 +2051,12 @@
       },
       "migration": {
         "previousId": "messy-wave"
-      }
+      },
+      "duration": 3,
+      "traits": [
+        "opponent_spell_load_4"
+      ],
+      "level": 4
     },
     {
       "id": "v260-analytic-0030",
@@ -1994,11 +2071,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "直到下个己方抽卡阶段开始时，双方解析法术不可发动。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "目录只有沉默术.png，不能确认它是否对应昏昏欲睡"
       ],
       "source": {
@@ -2013,7 +2093,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 4
     },
     {
       "id": "v260-analytic-0031",
@@ -2028,11 +2109,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "专注2。对方每对己方造成1次伤害，使对方受到2点心灵伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2046,7 +2130,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 2
     },
     {
       "id": "v260-analytic-0032",
@@ -2061,11 +2146,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "计时3。己方结束阶段开始时，选择以下1个效果适用：◎恢复2点生命值；◎清除2点荷载；◎获得1点魔素。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2079,7 +2167,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 4
     },
     {
       "id": "v260-analytic-0033",
@@ -2094,11 +2183,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "计时3。己方结束阶段开始时，选择以下1个效果适用：◎对对方造成2点暗蚀伤害；◎使对方获得2点独立荷载，对方结束阶段清除；◎对方魔素-1。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2112,7 +2204,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 4
     },
     {
       "id": "v260-analytic-0034",
@@ -2127,12 +2220,21 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成10点心灵伤害。那之后，可以查看对方解析区全部盖伏卡。",
-      "flavor": "",
-      "effects": [],
-      "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 10,
+          "damageType": "psychic",
+          "recipient": "target"
+        },
+        {
+          "kind": "reveal_all_ambush"
+        }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -2145,7 +2247,9 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "target": "player",
+      "level": 5
     },
     {
       "id": "v260-analytic-0035",
@@ -2160,11 +2264,14 @@
       "analysisTurns": 2,
       "speed": 1,
       "text": "计时2。己方主要阶段开始时，将双方解析区盖伏卡全部送去灰烬区。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -2179,7 +2286,15 @@
       },
       "migration": {
         "previousId": "earthquake"
-      }
+      },
+      "duration": 2,
+      "onMain": [
+        {
+          "kind": "clear_all_ambush",
+          "amount": 0
+        }
+      ],
+      "level": 4
     },
     {
       "id": "v260-analytic-0036",
@@ -2194,11 +2309,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "选择对方场上1张空白阵法卡才能发动。将1张阵法卡从副卡组送去灰烬区，销毁那张空白阵法卡。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -2213,7 +2331,8 @@
       },
       "migration": {
         "previousId": "unravel"
-      }
+      },
+      "level": 5
     },
     {
       "id": "v260-analytic-0037",
@@ -2228,11 +2347,14 @@
       "analysisTurns": 2,
       "speed": 1,
       "text": "对对方以及对方场上全部目标各造成10点钝击伤害。那之后，直到己方下个准备阶段开始时，对方施法槽数量减半。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2246,7 +2368,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 5
     },
     {
       "id": "v260-analytic-0038",
@@ -2261,11 +2384,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "将1张法术卡从己方解析区送去灰烬区，选择1个目标才能发动。对其造成10点钝击伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2279,7 +2405,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-analytic-0039",
@@ -2294,11 +2421,14 @@
       "analysisTurns": 1,
       "speed": 1,
       "text": "获得1个额外的己方回合。那之后，直到下个回合结束阶段结束时，己方获得的荷载×2。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2312,7 +2442,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 6
     },
     {
       "id": "v260-word-0001",
@@ -2327,7 +2458,6 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择1个目标才能发动。对其造成3点火焰伤害。",
-      "flavor": "",
       "effects": [
         {
           "kind": "damage",
@@ -2336,8 +2466,10 @@
           "recipient": "target"
         }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -2352,7 +2484,9 @@
       },
       "migration": {
         "previousId": "spark"
-      }
+      },
+      "target": "player",
+      "level": 1
     },
     {
       "id": "v260-word-0002",
@@ -2365,14 +2499,20 @@
       "cost": 2,
       "castCost": 0,
       "analysisTurns": 0,
-      "speed": 1,
+      "speed": 2,
       "text": "选择1个目标才能发动，对其造成3点力场伤害。",
-      "flavor": "",
-      "effects": [],
-      "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "force",
+          "recipient": "target"
+        }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -2385,7 +2525,9 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "target": "player",
+      "level": 1
     },
     {
       "id": "v260-word-0003",
@@ -2400,11 +2542,22 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "获得3点临时荷载，使对方获得6点临时荷载。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "temporary",
+          "amount": 3,
+          "recipient": "owner"
+        },
+        {
+          "kind": "temporary",
+          "amount": 6,
+          "recipient": "opponent"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -2419,7 +2572,8 @@
       },
       "migration": {
         "previousId": "disrupt"
-      }
+      },
+      "level": 2
     },
     {
       "id": "v260-word-0004",
@@ -2434,11 +2588,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择对方解析区1张法术卡才能发动。将其移入己方解析区。己方准备阶段结束时，返回对方解析区。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2452,7 +2609,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 5
     },
     {
       "id": "v260-word-0005",
@@ -2467,11 +2625,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择己方解析区1张解析法术卡才能发动。使其解析时间-2，获得其实际设置费用的临时荷载。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -2486,7 +2647,8 @@
       },
       "migration": {
         "previousId": "instant-circuit-overload"
-      }
+      },
+      "level": 2
     },
     {
       "id": "v260-word-0006",
@@ -2501,11 +2663,22 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "获得3点魔素和3点独立荷载。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "mana",
+          "amount": 3,
+          "recipient": "owner"
+        },
+        {
+          "kind": "independent",
+          "amount": 3,
+          "recipient": "owner"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -2520,7 +2693,8 @@
       },
       "migration": {
         "previousId": "arcane-recovery"
-      }
+      },
+      "level": 1
     },
     {
       "id": "v260-word-0007",
@@ -2535,7 +2709,6 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "获得3点临时生命值。",
-      "flavor": "",
       "effects": [
         {
           "kind": "temporary_life",
@@ -2543,8 +2716,10 @@
           "recipient": "owner"
         }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -2559,7 +2734,8 @@
       },
       "migration": {
         "previousId": "aid"
-      }
+      },
+      "level": 1
     },
     {
       "id": "v260-word-0008",
@@ -2574,11 +2750,22 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "将1张卡从手卡送去灰烬区才能发动。清除己方全部临时荷载。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "discard_hand",
+          "amount": 1,
+          "recipient": "owner"
+        },
+        {
+          "kind": "clear_all_temporary",
+          "amount": 0,
+          "recipient": "owner"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -2593,7 +2780,9 @@
       },
       "migration": {
         "previousId": "clarity"
-      }
+      },
+      "target": "self",
+      "level": 2
     },
     {
       "id": "v260-word-0009",
@@ -2608,11 +2797,14 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "直到下个己方主要阶段开始时，双方不可维持专注。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2626,7 +2818,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-word-0010",
@@ -2641,11 +2834,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "直到下个己方抽卡阶段开始时，对方每发动1张言灵法术卡，使对方受到2点暗蚀伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2659,7 +2855,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-word-0011",
@@ -2674,11 +2871,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择1个目标才能发动。对其造成5点自选伤害，伤害类型从强酸/寒冷/火焰/闪电/毒素/雷鸣/光耀中选择。那之后，直到此回合结束阶段结束时，对方不可选择己方为法术卡的目标。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2692,7 +2892,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 4
     },
     {
       "id": "v260-word-0012",
@@ -2707,7 +2908,6 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "对对方造成5点心灵伤害。",
-      "flavor": "",
       "effects": [
         {
           "kind": "damage",
@@ -2716,8 +2916,10 @@
           "recipient": "opponent"
         }
       ],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -2730,7 +2932,9 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "target": "opponent",
+      "level": 3
     },
     {
       "id": "v260-word-0013",
@@ -2745,12 +2949,21 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择1个目标才能发动。对其造成3点心灵伤害。那之后，可以将对方解析区1张盖伏卡弹回持有者手卡。",
-      "flavor": "",
-      "effects": [],
-      "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+      "effects": [
+        {
+          "kind": "damage",
+          "amount": 3,
+          "damageType": "psychic",
+          "recipient": "target"
+        },
+        {
+          "kind": "return_enemy_analysis"
+        }
       ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -2763,7 +2976,9 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "target": "player",
+      "level": 2
     },
     {
       "id": "v260-word-0014",
@@ -2778,11 +2993,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "此回合，对方受到的伤害+3。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2796,7 +3014,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 6
     },
     {
       "id": "v260-word-0015",
@@ -2811,11 +3030,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择以下1个效果对对方适用：◎将1张卡从卡组最上方送去灰烬区；◎将1张法术卡从解析区送去灰烬区；◎将1张卡从手卡送去灰烬区。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2829,7 +3051,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 4
     },
     {
       "id": "v260-word-0016",
@@ -2844,7 +3067,6 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "选择1个目标才能发动。对其造成3点心灵伤害。",
-      "flavor": "",
       "effects": [
         {
           "kind": "damage",
@@ -2853,8 +3075,10 @@
           "recipient": "target"
         }
       ],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -2867,7 +3091,9 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "target": "player",
+      "level": 1
     },
     {
       "id": "v260-word-0017",
@@ -2882,11 +3108,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "将1张法术卡从手卡送去灰烬区才能发动。将1张与那张卡同派系的法术卡从卡组加入手卡。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -2901,7 +3130,8 @@
       },
       "migration": {
         "previousId": "true-strike"
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-word-0018",
@@ -2916,11 +3146,22 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "抽2张卡，获得2点独立荷载。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "draw",
+          "amount": 2,
+          "recipient": "owner"
+        },
+        {
+          "kind": "independent",
+          "amount": 2,
+          "recipient": "owner"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -2935,7 +3176,8 @@
       },
       "migration": {
         "previousId": "recall"
-      }
+      },
+      "level": 1
     },
     {
       "id": "v260-word-0019",
@@ -2950,11 +3192,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "将1张卡从手卡送去灰烬区才能发动。查看对方卡组最上方的3张卡，将其中1张送去灰烬区，其余卡返回卡组最下方。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -2968,7 +3213,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-word-0020",
@@ -2983,11 +3229,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "将1张卡从手卡送去灰烬区才能发动。查看己方卡组最上方的3张卡，将其中1张加入手卡，其余卡返回卡组最下方。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -3001,7 +3250,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 1
     },
     {
       "id": "v260-word-0021",
@@ -3016,7 +3266,6 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "获得10点临时生命值。",
-      "flavor": "",
       "effects": [
         {
           "kind": "temporary_life",
@@ -3024,8 +3273,10 @@
           "recipient": "owner"
         }
       ],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
         "worksheet": "卡表",
@@ -3038,7 +3289,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 5
     },
     {
       "id": "v260-talisman-0001",
@@ -3053,11 +3305,14 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "己方受到伤害时才能发动。对对方造成等量火焰伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -3071,7 +3326,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 5
     },
     {
       "id": "v260-talisman-0002",
@@ -3086,11 +3342,14 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "对方发动穿刺/挥砍/钝击伤害法术卡时才能发动。将其无效并盖伏在己方解析区。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -3104,7 +3363,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 4
     },
     {
       "id": "v260-talisman-0003",
@@ -3119,11 +3379,16 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "此回合，每次受到的伤害-3。若为力场伤害，则-6。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "shield_for_turn",
+          "amount": 3
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -3138,7 +3403,9 @@
       },
       "migration": {
         "previousId": "shield"
-      }
+      },
+      "target": "self",
+      "level": 4
     },
     {
       "id": "v260-talisman-0004",
@@ -3149,15 +3416,18 @@
       "rarity": "legendary",
       "rank": 5,
       "cost": 0,
-      "castCost": "X",
+      "castCost": 0,
       "analysisTurns": 0,
       "speed": 4,
       "text": "对方发动法术卡时才能发动。将其无效并销毁。X为被连锁法术卡的实际设置和发动费用之和。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3172,7 +3442,16 @@
       },
       "migration": {
         "previousId": "counter-spell"
-      }
+      },
+      "responseOnly": true,
+      "responseEffects": [
+        {
+          "kind": "counter_spell"
+        }
+      ],
+      "dynamicCost": true,
+      "castCostSource": "X",
+      "level": 5
     },
     {
       "id": "v260-talisman-0005",
@@ -3187,11 +3466,15 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "专注2。受到的火焰伤害减半，此效果不可叠加。",
-      "flavor": "",
-      "effects": [],
+      "effects": [
+        {
+          "kind": "grant_resistance"
+        }
+      ],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -3206,7 +3489,14 @@
       },
       "migration": {
         "previousId": "protective-flame"
-      }
+      },
+      "concentration": true,
+      "concentrationUpkeep": 2,
+      "resistances": [
+        "fire"
+      ],
+      "target": "self",
+      "level": 4
     },
     {
       "id": "v260-talisman-0006",
@@ -3221,11 +3511,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "对方设置法术卡时才能发动。将其无效并弹回持有者手卡。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -3239,7 +3532,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-talisman-0007",
@@ -3254,11 +3548,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "计时3。己方每受到3点伤害，使对方受到1点暗蚀伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -3272,7 +3569,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 2
     },
     {
       "id": "v260-talisman-0008",
@@ -3287,11 +3585,14 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "此回合，对方设置的全部解析法术卡的解析时间+1。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -3305,7 +3606,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 2
     },
     {
       "id": "v260-talisman-0009",
@@ -3320,11 +3622,14 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "对方准备施法时才能发动。将其取消。那之后，可以将对方解析区1张解析法术卡弹回持有者手卡。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3339,7 +3644,17 @@
       },
       "migration": {
         "previousId": "barbs"
-      }
+      },
+      "responseOnly": true,
+      "responseEffects": [
+        {
+          "kind": "cancel"
+        },
+        {
+          "kind": "return_enemy_analysis"
+        }
+      ],
+      "level": 3
     },
     {
       "id": "v260-talisman-0010",
@@ -3354,11 +3669,14 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "选择对方灰烬区1张阶级5以下的解析法术卡才能发动。将其盖伏在己方解析区。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3373,7 +3691,8 @@
       },
       "migration": {
         "previousId": "funny-box"
-      }
+      },
+      "level": 5
     },
     {
       "id": "v260-talisman-0011",
@@ -3388,11 +3707,14 @@
       "analysisTurns": 0,
       "speed": 4,
       "text": "查看对方解析区1张盖伏卡，若为解析/言灵法术卡，将其返回持有者卡组；若为咒符法术卡，则将其送去灰烬区。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -3406,7 +3728,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 4
     },
     {
       "id": "v260-talisman-0012",
@@ -3421,11 +3744,14 @@
       "analysisTurns": 0,
       "speed": 2,
       "text": "计时2。对方每设置/盖伏1张法术卡，使对方受到2点穿刺伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
       ],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -3439,7 +3765,8 @@
       },
       "migration": {
         "previousId": null
-      }
+      },
+      "level": 3
     },
     {
       "id": "v260-seal-0001",
@@ -3447,18 +3774,18 @@
       "name": "逆三角星符",
       "type": "seal",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 1,
       "cost": 3,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "/",
-      "flavor": "",
       "effects": [],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -3474,8 +3801,10 @@
       "migration": {
         "previousId": "conduit"
       },
+      "raritySource": "",
       "attachToFormation": "魔素收入+1。",
-      "attachToSpell": "无效果。"
+      "attachToSpell": "无效果。",
+      "incomeBonus": 1
     },
     {
       "id": "v260-seal-0002",
@@ -3483,18 +3812,18 @@
       "name": "奥术圆环",
       "type": "seal",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 1,
       "cost": 2,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "/",
-      "flavor": "",
       "effects": [],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -3510,8 +3839,11 @@
       "migration": {
         "previousId": "ring"
       },
+      "raritySource": "",
       "attachToFormation": "环位+2。",
-      "attachToSpell": "发动时，获得其实际设置费用的魔素。"
+      "attachToSpell": "发动时，获得其实际设置费用的魔素。",
+      "ringBonus": 2,
+      "refundSetting": 1
     },
     {
       "id": "v260-seal-0003",
@@ -3519,18 +3851,18 @@
       "name": "昂扬",
       "type": "seal",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 1,
       "cost": 2,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "/",
-      "flavor": "",
       "effects": [],
+      "effectStatus": "structured-candidate",
+      "effectBlockers": [],
       "implementationStatus": "blocked",
-      "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+      "implementationBlockers": [
         "正式卡图未匹配"
       ],
       "source": {
@@ -3546,8 +3878,14 @@
       "migration": {
         "previousId": "uplift"
       },
+      "raritySource": "",
       "attachToFormation": "阵法等级+1，环位+1，魔素收入-1。",
-      "attachToSpell": "发动费用+1，额外造成5点力场伤害。"
+      "attachToSpell": "发动费用+1，额外造成5点力场伤害。",
+      "rankBonus": 1,
+      "ringBonus": 1,
+      "incomeBonus": -1,
+      "castCostBonus": 1,
+      "damageBonus": 5
     },
     {
       "id": "v260-formation-0001",
@@ -3555,18 +3893,21 @@
       "name": "正十字",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "己方结束阶段开始时，恢复1点生命值。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3582,6 +3923,10 @@
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "host_heal_plus_one"
+      ],
+      "raritySource": "",
       "summonCondition": "解析区死灵派系法术卡×1＋魔素×1",
       "level": 3,
       "body": 2,
@@ -3595,18 +3940,21 @@
       "name": "逆十字",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "己方结束阶段开始时，失去1点生命值，获得3点临时生命值。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3622,6 +3970,10 @@
       "migration": {
         "previousId": null
       },
+      "traits": [
+        "host_cast_life_for_temporary"
+      ],
+      "raritySource": "",
       "summonCondition": "解析区死灵派系法术卡×1＋魔素×1",
       "level": 3,
       "body": 2,
@@ -3635,18 +3987,21 @@
       "name": "安卡十字",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "此阵法卡离场时才能发动。此阵法卡抹除。那之后，可以将1张阵法卡从己方灰烬区返回副卡组。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3662,6 +4017,7 @@
       "migration": {
         "previousId": null
       },
+      "raritySource": "",
       "summonCondition": "解析区死灵派系法术卡×1",
       "level": 3,
       "body": 2,
@@ -3675,18 +4031,21 @@
       "name": "恩格亚斯之星",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "1回合1次，此阵法卡上设置的解析法术卡的解析时间-1。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3702,6 +4061,7 @@
       "migration": {
         "previousId": "engeas-four-point-star"
       },
+      "raritySource": "",
       "summonCondition": "解析完成的法术卡×1+魔素×3",
       "level": 2,
       "body": 1,
@@ -3715,18 +4075,21 @@
       "name": "元素之环",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "此阵法卡上设置的塑能法术卡造成的伤害+1。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3742,6 +4105,10 @@
       "migration": {
         "previousId": "elemental-ring"
       },
+      "traits": [
+        "host_evocation_damage_plus_one"
+      ],
+      "raritySource": "",
       "summonCondition": "解析完成的塑能派系法术卡×1＋魔素×1",
       "level": 3,
       "body": 2,
@@ -3755,18 +4122,21 @@
       "name": "混沌之环",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "此阵法卡上不可同时设置相同派系的法术卡。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3782,6 +4152,10 @@
       "migration": {
         "previousId": "chaos-ring"
       },
+      "traits": [
+        "distinct_host_schools"
+      ],
+      "raritySource": "",
       "summonCondition": "解析完成的不同派系法术卡×2",
       "level": 3,
       "body": 2,
@@ -3795,18 +4169,21 @@
       "name": "阿克乌姆之弧",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "己方场上阵法卡被销毁时，可以将此阵法送去灰烬区作为替代。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3822,6 +4199,10 @@
       "migration": {
         "previousId": "reservoir"
       },
+      "traits": [
+        "effect_indestructible"
+      ],
+      "raritySource": "",
       "summonCondition": "手卡×2",
       "level": 0,
       "body": 1,
@@ -3835,18 +4216,23 @@
       "name": "硫磺",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "此阵法卡上仅可设置火焰伤害法术卡。己方每有1张法术卡从施法区进入灰烬区，对对方造成2点火焰伤害。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "blocked",
+      "effectStatus": "blocked",
       "effectBlockers": [
-        "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
+        "硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段"
+      ],
+      "implementationStatus": "blocked",
+      "implementationBlockers": [
+        "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
+        "硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段",
         "正式卡图未匹配"
       ],
       "source": {
@@ -3862,6 +4248,11 @@
       "migration": {
         "previousId": "sulfur"
       },
+      "traits": [
+        "host_fire_only",
+        "ping_on_spell_leave"
+      ],
+      "raritySource": "",
       "summonCondition": "解析完成的火焰伤害法术卡×2",
       "level": 6,
       "body": 2,
@@ -3875,17 +4266,18 @@
       "name": "基础法阵",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "无效果。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
@@ -3899,6 +4291,7 @@
       "migration": {
         "previousId": null
       },
+      "raritySource": "",
       "summonCondition": "手卡×1",
       "level": 1,
       "body": 1,
@@ -3912,17 +4305,18 @@
       "name": "标准法阵",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "无效果。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
@@ -3936,6 +4330,7 @@
       "migration": {
         "previousId": null
       },
+      "raritySource": "",
       "summonCondition": "【基础法阵】+魔素×2",
       "level": 2,
       "body": 2,
@@ -3949,17 +4344,18 @@
       "name": "强化法阵",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "无效果。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
@@ -3973,6 +4369,7 @@
       "migration": {
         "previousId": null
       },
+      "raritySource": "",
       "summonCondition": "【标准法阵】+解析区法术卡×1",
       "level": 3,
       "body": 2,
@@ -3986,17 +4383,18 @@
       "name": "复合法阵",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "无效果。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
@@ -4010,7 +4408,8 @@
       "migration": {
         "previousId": null
       },
-      "summonCondition": "【基础法阵】+【强化法阵】",
+      "raritySource": "",
+      "summonCondition": "【基础法阵】+【标准法阵】",
       "level": 4,
       "body": 2,
       "rings": 3,
@@ -4023,17 +4422,18 @@
       "name": "增幅法阵",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "无效果。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
@@ -4047,7 +4447,8 @@
       "migration": {
         "previousId": null
       },
-      "summonCondition": "【基础法阵】+【强化法阵】+解析区塑能/咒法派系法术卡×1",
+      "raritySource": "",
+      "summonCondition": "【复合法阵】+解析区塑能/咒法派系法术卡×1",
       "level": 5,
       "body": 3,
       "rings": 5,
@@ -4060,17 +4461,18 @@
       "name": "守护法阵",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "无效果。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
@@ -4084,6 +4486,7 @@
       "migration": {
         "previousId": null
       },
+      "raritySource": "",
       "summonCondition": "【基础法阵】+【强化法阵】+解析区防护/死灵派系法术卡×1",
       "level": 5,
       "body": 3,
@@ -4097,17 +4500,18 @@
       "name": "幻象法阵",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "无效果。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
@@ -4121,7 +4525,8 @@
       "migration": {
         "previousId": null
       },
-      "summonCondition": "【复合法阵】+解析区幻术/惑控派系法术卡×1",
+      "raritySource": "",
+      "summonCondition": "【基础法阵】+【强化法阵】+解析区幻术/惑控派系法术卡×1",
       "level": 5,
       "body": 3,
       "rings": 5,
@@ -4134,17 +4539,18 @@
       "name": "高阶法阵",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "无效果。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
@@ -4158,6 +4564,7 @@
       "migration": {
         "previousId": null
       },
+      "raritySource": "",
       "summonCondition": "【增幅法阵】或【守护法阵】或【幻象法阵】+解析完成的法术卡×1+魔素×3",
       "level": 6,
       "body": 3,
@@ -4171,17 +4578,18 @@
       "name": "完美法阵",
       "type": "formation",
       "school": "",
-      "rarity": "",
-      "rank": null,
+      "rarity": "common",
+      "rank": 0,
       "cost": 0,
       "castCost": 0,
       "analysisTurns": 0,
       "speed": 1,
       "text": "无效果。",
-      "flavor": "",
       "effects": [],
-      "implementationStatus": "structured-candidate",
+      "effectStatus": "structured-candidate",
       "effectBlockers": [],
+      "implementationStatus": "structured-candidate",
+      "implementationBlockers": [],
       "source": {
         "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
@@ -4195,6 +4603,7 @@
       "migration": {
         "previousId": null
       },
+      "raritySource": "",
       "summonCondition": "【高阶法阵】+解析完成的法术卡×2+魔素×5",
       "level": 7,
       "body": 4,
@@ -4892,7 +5301,7 @@
       "settingCost": 2,
       "castCost": 0,
       "analysisTurns": 0,
-      "speed": 1,
+      "speed": 2,
       "effect": "选择1个目标才能发动，对其造成3点力场伤害。",
       "flavor": "",
       "rarity": "epic",
@@ -5660,7 +6069,7 @@
     {
       "name": "复合法阵",
       "type": "formation",
-      "summonCondition": "【基础法阵】+【强化法阵】",
+      "summonCondition": "【基础法阵】+【标准法阵】",
       "level": 4,
       "body": 2,
       "rings": 3,
@@ -5677,7 +6086,7 @@
     {
       "name": "增幅法阵",
       "type": "formation",
-      "summonCondition": "【基础法阵】+【强化法阵】+解析区塑能/咒法派系法术卡×1",
+      "summonCondition": "【复合法阵】+解析区塑能/咒法派系法术卡×1",
       "level": 5,
       "body": 3,
       "rings": 5,
@@ -5711,7 +6120,7 @@
     {
       "name": "幻象法阵",
       "type": "formation",
-      "summonCondition": "【复合法阵】+解析区幻术/惑控派系法术卡×1",
+      "summonCondition": "【基础法阵】+【强化法阵】+解析区幻术/惑控派系法术卡×1",
       "level": 5,
       "body": 3,
       "rings": 5,

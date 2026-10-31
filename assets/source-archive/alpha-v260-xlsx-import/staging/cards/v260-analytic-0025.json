@@ -11,12 +11,16 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "直到下个己方抽卡阶段开始时，双方言灵法术不可发动。",
-  "flavor": "",
-  "effects": [],
-  "implementationStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+  "effects": [
+    {
+      "kind": "block_actions",
+      "amount": 0
+    }
   ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
@@ -29,5 +33,7 @@
   },
   "migration": {
     "previousId": "instantly-sleep"
-  }
+  },
+  "target": "opponent",
+  "level": 4
 }

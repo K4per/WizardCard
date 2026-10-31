@@ -11,7 +11,6 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "选择1个目标才能发动。对其造成8点暗蚀伤害。",
-  "flavor": "",
   "effects": [
     {
       "kind": "damage",
@@ -20,8 +19,10 @@
       "recipient": "target"
     }
   ],
-  "implementationStatus": "structured-candidate",
+  "effectStatus": "structured-candidate",
   "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
     "worksheet": "卡表",
@@ -34,5 +35,7 @@
   },
   "migration": {
     "previousId": null
-  }
+  },
+  "target": "player",
+  "level": 4
 }

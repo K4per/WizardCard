@@ -11,11 +11,14 @@
   "analysisTurns": 0,
   "speed": 2,
   "text": "将1张法术卡从手卡送去灰烬区才能发动。将1张与那张卡同派系的法术卡从卡组加入手卡。",
-  "flavor": "",
   "effects": [],
-  "implementationStatus": "blocked",
+  "effectStatus": "blocked",
   "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  ],
+  "implementationStatus": "blocked",
+  "implementationBlockers": [
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
     "正式卡图未匹配"
   ],
   "source": {
@@ -30,5 +33,6 @@
   },
   "migration": {
     "previousId": "true-strike"
-  }
+  },
+  "level": 3
 }

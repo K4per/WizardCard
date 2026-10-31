@@ -11,11 +11,18 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "专注2。发动时，对对方造成4点火焰伤害。维持专注时，对对方造成3点火焰伤害。",
-  "flavor": "",
-  "effects": [],
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 4,
+      "damageType": "fire",
+      "recipient": "opponent"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
   "implementationStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+  "implementationBlockers": [
     "正式卡图未匹配"
   ],
   "source": {
@@ -30,5 +37,17 @@
   },
   "migration": {
     "previousId": "ward"
-  }
+  },
+  "concentration": true,
+  "concentrationUpkeep": 2,
+  "onCast": [
+    {
+      "kind": "damage",
+      "amount": 3,
+      "damageType": "fire",
+      "recipient": "opponent"
+    }
+  ],
+  "target": "opponent",
+  "level": 3
 }

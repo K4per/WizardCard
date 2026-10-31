@@ -11,11 +11,14 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "对对方以及对方场上全部目标各造成6点火焰伤害。",
-  "flavor": "",
   "effects": [],
-  "implementationStatus": "blocked",
+  "effectStatus": "blocked",
   "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义"
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  ],
+  "implementationStatus": "blocked",
+  "implementationBlockers": [
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
   ],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -29,5 +32,6 @@
   },
   "migration": {
     "previousId": null
-  }
+  },
+  "level": 4
 }

@@ -4,18 +4,23 @@
   "name": "硫磺",
   "type": "formation",
   "school": "",
-  "rarity": "",
-  "rank": null,
+  "rarity": "common",
+  "rank": 0,
   "cost": 0,
   "castCost": 0,
   "analysisTurns": 0,
   "speed": 1,
   "text": "此阵法卡上仅可设置火焰伤害法术卡。己方每有1张法术卡从施法区进入灰烬区，对对方造成2点火焰伤害。",
-  "flavor": "",
   "effects": [],
-  "implementationStatus": "blocked",
+  "effectStatus": "blocked",
   "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
+    "硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段"
+  ],
+  "implementationStatus": "blocked",
+  "implementationBlockers": [
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
+    "硫磺离场触发伤害从现有能力固定值1改为源数据2，尚未有可参数化字段",
     "正式卡图未匹配"
   ],
   "source": {
@@ -31,6 +36,11 @@
   "migration": {
     "previousId": "sulfur"
   },
+  "traits": [
+    "host_fire_only",
+    "ping_on_spell_leave"
+  ],
+  "raritySource": "",
   "summonCondition": "解析完成的火焰伤害法术卡×2",
   "level": 6,
   "body": 2,

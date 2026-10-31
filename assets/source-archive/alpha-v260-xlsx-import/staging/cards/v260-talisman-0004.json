@@ -7,15 +7,18 @@
   "rarity": "legendary",
   "rank": 5,
   "cost": 0,
-  "castCost": "X",
+  "castCost": 0,
   "analysisTurns": 0,
   "speed": 4,
   "text": "对方发动法术卡时才能发动。将其无效并销毁。X为被连锁法术卡的实际设置和发动费用之和。",
-  "flavor": "",
   "effects": [],
-  "implementationStatus": "blocked",
+  "effectStatus": "blocked",
   "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义"
+  ],
+  "implementationStatus": "blocked",
+  "implementationBlockers": [
+    "效果包含条件、时点、持续或未确认的组合语义，尚无可验证的一一对应结构化定义",
     "正式卡图未匹配"
   ],
   "source": {
@@ -30,5 +33,14 @@
   },
   "migration": {
     "previousId": "counter-spell"
-  }
+  },
+  "responseOnly": true,
+  "responseEffects": [
+    {
+      "kind": "counter_spell"
+    }
+  ],
+  "dynamicCost": true,
+  "castCostSource": "X",
+  "level": 5
 }

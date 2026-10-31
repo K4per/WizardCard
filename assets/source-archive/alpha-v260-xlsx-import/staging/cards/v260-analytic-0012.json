@@ -11,11 +11,26 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "选择1个目标才能发动。对其造成9点雷鸣伤害。那之后，使对方获得5点独立荷载，对方结束阶段开始时清除。",
-  "flavor": "",
-  "effects": [],
-  "implementationStatus": "blocked",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 9,
+      "damageType": "thunder",
+      "recipient": "target"
+    },
+    {
+      "kind": "independent",
+      "amount": 5,
+      "recipient": "opponent"
+    }
+  ],
+  "effectStatus": "blocked",
   "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+    "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段"
+  ],
+  "implementationStatus": "blocked",
+  "implementationBlockers": [
+    "对方独立荷载的结束阶段清除时点尚未映射到现有触发字段",
     "正式卡图未匹配"
   ],
   "source": {
@@ -30,5 +45,7 @@
   },
   "migration": {
     "previousId": "thunder-summon"
-  }
+  },
+  "target": "player",
+  "level": 4
 }

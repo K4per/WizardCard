@@ -11,11 +11,21 @@
   "analysisTurns": 2,
   "speed": 3,
   "text": "对对方造成15点火焰伤害。那之后，可以销毁对方1张阵法卡上的全部法术卡。己方灰烬区每存在1张塑能派系法术卡，此法术卡的设置费用-1。",
-  "flavor": "",
-  "effects": [],
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 15,
+      "damageType": "fire",
+      "recipient": "opponent"
+    },
+    {
+      "kind": "destroy_formation_spells"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
   "implementationStatus": "blocked",
-  "effectBlockers": [
-    "效果包含条件、时点、持续或组合语义，当前内核没有可验证的一一对应结构化定义",
+  "implementationBlockers": [
     "正式卡图未匹配"
   ],
   "source": {
@@ -30,5 +40,10 @@
   },
   "migration": {
     "previousId": "sunburst"
-  }
+  },
+  "traits": [
+    "ash_evocation_discount"
+  ],
+  "target": "opponent",
+  "level": 6
 }

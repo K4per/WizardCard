@@ -1,0 +1,8 @@
+{
+  "status": "validation-only",
+  "contentHash": "a77282b8a5b1934610f02e978b90c0042e7ac157d79bca3965bad220123828a7",
+  "mainCount": 40,
+  "sideCount": 10,
+  "includesBlockedCards": true,
+  "command": "wizard_cli validate assets/source-archive/alpha-v260-xlsx-import/staging"
+}

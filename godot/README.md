@@ -14,7 +14,7 @@ enter playable decks.
 
 The pinned engine is `4.7.2.stable.official.ed1daf0bf`; godot-cpp is pinned to
 `507ed9d840c01a3c5b2a39af8bb4000bfac30bf5`. See `toolchain-lock.json`.
-Configure with `WIZARD_BUILD_CLIENT=OFF`, `WIZARD_BUILD_GODOT=ON` and
+Configure with `WIZARD_BUILD_GODOT=ON` and
 `GODOT_BIN=<pinned console executable>`. Use separate build directories for
 `GODOTCPP_TARGET=template_debug` and `template_release`.
 
@@ -27,8 +27,32 @@ ctest --test-dir build/godot-debug -C Debug --output-on-failure
 `tools/run_godot_frontend.ps1` is another development entry point. Native
 content is loaded from the filesystem; `tools/package_godot.py` exports the
 frontend and copies content and dependencies into a distribution directory.
-Default Godot persistence is isolated under `user://alpha-v2-frontend`;
-`--user-data` overrides it for native persistence tests.
+Windows Godot persistence is isolated under `user://alpha-v2-frontend`;
+on Linux it is `$XDG_DATA_HOME/WizardCard`, falling back to
+`$HOME/.local/share/WizardCard`. `--user-data` overrides either default.
+
+Linux development uses Ninja and accepts the official engine or an Arch build
+with the same `4.7.2`/`ed1daf0bf` version and commit:
+
+```sh
+cmake --preset linux-godot-debug -DGODOT_BIN="$(command -v godot)"
+cmake --build --preset linux-godot-debug --parallel 4
+ctest --preset linux-godot-debug
+tools/run_godot_frontend.sh --editor-path godot \
+  --assets assets/release-v260 --user-data build/linux-local-data
+# Pass native display options after --:
+tools/run_godot_frontend.sh --editor-path godot -- --display-driver wayland
+```
+
+The launcher imports before starting from a temporary working directory. Linux
+bridges use the system C++ runtime (`GODOTCPP_USE_STATIC_CPP=OFF`), with separate
+`linux-godot-release`/`template_release` output for exports. Build official release
+archives on Ubuntu 24.04; Arch builds are for development and local acceptance.
+Put matching official `linux_{debug,release}.x86_64` templates in
+`.cache/godot-templates/templates/`, then export `Linux Desktop`. This preset
+supports both X11 and native Wayland and writes `WizardCard.x86_64` plus an
+external `WizardCard.pck`; `res://bin/libwizard_godot_bridge.release.so` stays
+beside the export. See `docs/releases/2.6.0-hotfix.1-linux.md` for packaging.
 
 ## Editable scenes
 

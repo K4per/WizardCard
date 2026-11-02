@@ -8,6 +8,12 @@
 
 Windows x64 便携包解压后运行 `WizardCard.exe`。保留同级 `WizardCard.pck`、`bin/`、`assets/` 和运行库 DLL；`SHA256.json` 提供逐文件校验。无需安装 Godot。
 
+Linux 支持 Ubuntu 24.04+、Arch x86_64 的 X11 和原生 Wayland。解压
+`WizardCard-2.6.0-hotfix.1-linux-x86_64.tar.gz` 后运行 `./run.sh`；可传
+`--display-driver x11` 或 `--display-driver wayland`。需要系统 glibc、libstdc++、
+OpenGL 3.3 驱动及桌面图形/音频库；中文字体随包发布。安装、依赖及故障排查见
+[Linux 发行说明](docs/releases/2.6.0-hotfix.1-linux.md)。
+
 主菜单保留 banner 和布局，左侧标识、右侧七个纵向主按钮依次为单人游戏、多人游戏、卡组构筑、卡牌图鉴、对局复盘、游戏设置、退出游戏。单人游戏可选择挑战 AI、本地双人换手或新手教学。AI 有入门、标准、进阶三档；当前提供1套合法40+10预设，也可使用保存的合法自建卡组。普通对局使用随机种子；开发 CLI 可指定种子复现。
 
 每方开局私下从自己的副卡组选择一张合法等级1阵法，双方确认后同时公开。初始阵法不保存在卡组草稿中。本地换手时先显示交接遮挡，确认接手后才显示该玩家的手牌；AI 模式始终采用本方视角。
@@ -38,7 +44,10 @@ Windows x64 便携包解压后运行 `WizardCard.exe`。保留同级 `WizardCard
 
 设置包含总音量、音效音量、窗口/无边框/全屏、分辨率、精简动态效果、自动阶段推进及场地背景。提供1280×720、1600×900、1440×900、1600×1000、1920×1080和2560×1440，也支持自由缩放窗口；全局字号支持90%、100%（默认）、110%、120%。修改后显式保存。无强制选择的非主要阶段可自动推进，主要阶段仍需显式结束。
 
-Godot 默认数据目录为 `user://alpha-v2-frontend`，Windows 对应 `%APPDATA%/Godot/app_userdata/WizardCard Alpha v2.6.0-hotfix.1/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
+Windows Godot 默认数据目录为 `user://alpha-v2-frontend`，对应 `%APPDATA%/Godot/app_userdata/WizardCard Alpha v2.6.0-hotfix.1/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
+
+Linux 默认使用 `$XDG_DATA_HOME/WizardCard`，未设置或为空时回退到
+`$HOME/.local/share/WizardCard`，同样支持 `-- --user-data <目录>`。
 
 当前复盘格式5显式记录内容、命令与摘要 schema，并包含规则版本、卡池版本、内容哈希、种子、双方实际主卡组与副卡组、每条接受命令及状态摘要。只适配读取当前 `2.6.0-hotfix.1` 的格式5记录。离线对局在首条命令、之后每32条命令、终局或技术暂停时自动保存；离开和手动保存会完整落盘。自动保存失败会在后续操作中持续重试并显示错误。完整联机复盘在终局后开放。更早版本或内容不匹配的记录明确拒绝。旧牌组草稿可保留稳定ID修复；导入导出采用独立的 `wizardcard-deck` 格式1。复盘用于完整重放，不提供中断对局存档恢复。完整离线记录包含双方私有信息，玩家投影与日志按权限过滤；哈希用于复现校验。
 
@@ -62,6 +71,20 @@ ctest --preset headless
 ```
 
 Godot 开发配置见源码中的 `godot/README.md`。使用固定引擎 `4.7.2.stable.official.ed1daf0bf`、对应 Windows 导出模板和 `godot/bin/wizard_godot_bridge.release.dll`；Debug 与 Release 桥接分别构建。项目不再下载或链接 SFML。`tools/package_godot.py` 根据 `godot/export_presets.cfg` 导出前端，复制正式内容、运行库和文档，并在发布 EXE 启动、CLI 对局与复盘验证后生成 SHA256 清单及 ZIP。
+
+Linux 桌面构建使用独立 Ninja 预设，允许同 commit 的 Arch Godot 用于开发：
+
+```sh
+cmake --preset linux-godot-debug -DGODOT_BIN="$(command -v godot)"
+cmake --build --preset linux-godot-debug --parallel 4
+ctest --preset linux-godot-debug
+tools/run_godot_frontend.sh --editor-path godot -- --display-driver wayland
+```
+
+Linux Release 使用 `linux-godot-release` 预设和 `Linux Desktop` 导出预设，
+`tools/package_godot.py --platform linux` 生成 tar.gz、`RELEASE.json` 与 SHA256
+清单并解压验证。发布包始终在 Ubuntu 24.04 x86_64 使用官方引擎/模板构建；
+Arch 构建用于本地开发和实机验收。Linux 桥接强制动态链接系统 C++ 运行库。
 
 CLI 和网络探针属于开发工具，不随玩家便携包分发。构建后从仓库运行：
 

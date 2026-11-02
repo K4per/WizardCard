@@ -12,6 +12,11 @@ endif()
 if(MSVC)
   set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL" CACHE STRING "Bridge CRT" FORCE)
 endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  # A private static libstdc++ collides with the desktop Godot process's locale
+  # state during fingerprint()/iostream initialization. Use the system runtime.
+  set(GODOTCPP_USE_STATIC_CPP OFF CACHE BOOL "Linux bridge uses the system C++ runtime" FORCE)
+endif()
 FetchContent_Declare(godot_cpp
   GIT_REPOSITORY https://github.com/godotengine/godot-cpp.git
   GIT_TAG 507ed9d840c01a3c5b2a39af8bb4000bfac30bf5 EXCLUDE_FROM_ALL)
@@ -45,7 +50,15 @@ if(BUILD_TESTING AND GODOT_BIN)
   find_package(Python3 REQUIRED COMPONENTS Interpreter)
   execute_process(COMMAND "${GODOT_BIN}" --version OUTPUT_VARIABLE godot_version
     OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE godot_version_result TIMEOUT 10)
-  if(NOT godot_version_result EQUAL 0 OR NOT godot_version STREQUAL "4.7.2.stable.official.ed1daf0bf")
+  set(godot_version_matches FALSE)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    if(godot_version MATCHES "^4[.]7[.]2[.]stable[.][A-Za-z0-9_-]+[.]ed1daf0bf$")
+      set(godot_version_matches TRUE)
+    endif()
+  elseif(godot_version STREQUAL "4.7.2.stable.official.ed1daf0bf")
+    set(godot_version_matches TRUE)
+  endif()
+  if(NOT godot_version_result EQUAL 0 OR NOT godot_version_matches)
     message(FATAL_ERROR "GODOT_BIN must match godot/toolchain-lock.json")
   endif()
   set(probe_dir "${CMAKE_CURRENT_BINARY_DIR}/godot-probe")
@@ -90,6 +103,31 @@ if(BUILD_TESTING AND GODOT_BIN)
     --report ${CMAKE_CURRENT_BINARY_DIR}/frontend-report.json)
   set_tests_properties(godot_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    foreach(mode xdg home override)
+      set(data_root "${CMAKE_CURRENT_BINARY_DIR}/linux-user-data-${mode}")
+      if(mode STREQUAL "home")
+        set(data_environment "--unset=XDG_DATA_HOME" "HOME=${data_root}")
+        set(expected_data "${data_root}/.local/share/WizardCard")
+        set(data_arguments "")
+      else()
+        set(data_environment "XDG_DATA_HOME=${data_root}/xdg")
+        set(expected_data "${data_root}/xdg/WizardCard")
+        set(data_arguments "")
+        if(mode STREQUAL "override")
+          set(expected_data "${data_root}/explicit")
+          set(data_arguments --user-data "${expected_data}")
+        endif()
+      endif()
+      add_test(NAME godot_linux_user_data_${mode} COMMAND "${CMAKE_COMMAND}" -E env
+        ${data_environment} "WIZARD_EXPECTED_USER_DATA=${expected_data}"
+        "${GODOT_BIN}" --headless --path ${CMAKE_CURRENT_SOURCE_DIR}/godot
+        --script res://tests/linux_user_data_smoke.gd --
+        --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260 ${data_arguments})
+      set_tests_properties(godot_linux_user_data_${mode} PROPERTIES FIXTURES_REQUIRED frontend_import
+        RUN_SERIAL TRUE TIMEOUT 30 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+    endforeach()
+  endif()
   add_test(NAME godot_match_frontend_smoke COMMAND "${GODOT_BIN}" --headless
     --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/match_frontend_smoke.gd --
     --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets

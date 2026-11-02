@@ -105,6 +105,43 @@ powershell -ExecutionPolicy Bypass -File tools/run_godot_frontend.ps1
 
 桥库输出到 `godot/bin/wizard_godot_bridge.debug.dll` 或 `.release.dll`，描述文件为 `godot/wizard_bridge.gdextension`。debug 与 release 使用独立构建目录。需要注册 Godot CTest 时，配置 `-DGODOT_BIN=引擎绝对路径`；测试配置会验证其版本。
 
+### 2.4 Linux 桌面开发与发布
+
+支持 Ubuntu 24.04+ 和 Arch x86_64，使用 CMake 3.28+、Ninja、C++17 和
+Python 3.12+。X11 与原生 Wayland 均使用 GL Compatibility；需要 OpenGL 3.3
+驱动、系统 glibc/libstdc++/libgcc、X11 或 Wayland/xkbcommon、fontconfig 和
+音频库。具体包名与故障排查见 [Linux 发行说明](releases/2.6.0-hotfix.1-linux.md)。
+
+```sh
+cmake --preset linux-godot-debug -DGODOT_BIN=/absolute/path/to/godot
+cmake --build --preset linux-godot-debug --parallel 4
+ctest --preset linux-godot-debug
+tools/run_godot_frontend.sh --editor-path /absolute/path/to/godot \
+  --assets assets/release-v260 --user-data build/linux-local-data
+```
+
+Linux 开发校验接受 `4.7.2.stable.<channel>.ed1daf0bf`，包括官方和 Arch 同
+commit 构建。`GODOT_BIN` 是本机 CMake cache 参数；共享预设不包含绝对路径。
+Linux 强制 `GODOTCPP_USE_STATIC_CPP=OFF`：静态 C++ 运行库桥接曾在桌面 Godot
+的 `fingerprint()`/iostream 路径崩溃。检查 `.so` 的 `readelf -d` 应显示
+`libstdc++.so.6`，`ldd` 不应出现 `not found`。
+
+`linux-godot-release` 输出 `godot/bin/libwizard_godot_bridge.release.so`，
+`Linux Desktop` 导出外置 `WizardCard.pck` 和 `WizardCard.x86_64`。
+官方 Linux 模板放在 `.cache/godot-templates/templates/`，保持可执行权限。
+`python3 tools/package_godot.py --platform linux --godot <official> --build
+build/linux-godot-release` 只能在 Ubuntu 24.04 x86_64 生成正式 tar.gz；
+Arch 只用于开发和实机验收，防止较新 GLIBC/GLIBCXX 符号破坏兼容性。
+Windows 默认 ZIP/CRT 参数保持兼容。
+
+Linux 数据默认存于 `$XDG_DATA_HOME/WizardCard`，缺失/为空时回退到
+`$HOME/.local/share/WizardCard`；`--user-data` 可隔离设置、卡组和复盘。
+CI 的 `linux-godot` job 在 Ubuntu 24.04 校验下载 SHA512，运行完整 CTest、
+网络 smoke、Xvfb 真实键盘输入、Weston 原生 Wayland 和归档解压启动检查。
+`tools/linux_desktop_smoke.py` 可在现有显示服务器下重复运行并输出截图/报告；
+X11 需要 `xdotool`。平铺 compositor 可控制窗口尺寸，音频听感、IME、多屏和
+物理局域网仍需实机验收。不要将 headless 通过等同于桌面后端通过。
+
 ## 3. 模块地图与依赖方向
 
 下图箭头表示“使用/依赖”，不是运行时消息方向。桥的纯模型与实际 Godot 扩展分开，应用层通过工厂获得房间适配器。

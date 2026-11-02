@@ -39,6 +39,14 @@ func _ready() -> void:
 	if FileAccess.file_exists(packaged_assets.path_join("cards.json")):
 		assets = packaged_assets
 	var user_directory: String = ProjectSettings.globalize_path("user://alpha-v2-frontend")
+	if OS.has_feature("linux"):
+		user_directory = OS.get_environment("XDG_DATA_HOME")
+		if user_directory.is_empty():
+			var home_directory: String = OS.get_environment("HOME")
+			if not home_directory.is_empty():
+				user_directory = home_directory.path_join(".local/share")
+		if not user_directory.is_empty():
+			user_directory = user_directory.path_join("WizardCard")
 	var arguments: PackedStringArray = OS.get_cmdline_user_args()
 	for index: int in range(arguments.size() - 1):
 		if arguments[index] == "--assets":

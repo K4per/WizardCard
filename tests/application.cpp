@@ -2,10 +2,32 @@
 #include <atomic>
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
+#include <cstdlib>
 #include <fstream>
+#include <optional>
 using namespace wizard;
 using namespace wizard::app;
 namespace {
+#ifdef __linux__
+struct ScopedEnvironment {
+    const char *name;
+    std::optional<std::string> previous;
+    ScopedEnvironment(const char *key, const char *value) : name(key) {
+        if (const auto *current = std::getenv(name))
+            previous = current;
+        if (value)
+            setenv(name, value, 1);
+        else
+            unsetenv(name);
+    }
+    ~ScopedEnvironment() {
+        if (previous)
+            setenv(name, previous->c_str(), 1);
+        else
+            unsetenv(name);
+    }
+};
+#endif
 struct AppFixture {
     Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     std::filesystem::path directory;
@@ -36,6 +58,28 @@ void start(Application &a, const MatchConfig &c) {
     REQUIRE(a.start(c, error));
 }
 } // namespace
+#ifdef __linux__
+TEST_CASE("Linux user data honors XDG and falls back to HOME") {
+    ScopedEnvironment home("HOME", "/tmp/wizardcard-home");
+    SECTION("XDG takes precedence") {
+        ScopedEnvironment xdg("XDG_DATA_HOME", "/tmp/wizardcard-xdg");
+        REQUIRE(userDataDirectory() == "/tmp/wizardcard-xdg/WizardCard");
+    }
+    SECTION("missing XDG uses HOME") {
+        ScopedEnvironment xdg("XDG_DATA_HOME", nullptr);
+        REQUIRE(userDataDirectory() == "/tmp/wizardcard-home/.local/share/WizardCard");
+    }
+    SECTION("empty XDG uses HOME") {
+        ScopedEnvironment xdg("XDG_DATA_HOME", "");
+        REQUIRE(userDataDirectory() == "/tmp/wizardcard-home/.local/share/WizardCard");
+    }
+    SECTION("missing environment requires an explicit directory") {
+        ScopedEnvironment xdg("XDG_DATA_HOME", nullptr);
+        ScopedEnvironment no_home("HOME", nullptr);
+        REQUIRE_THROWS(userDataDirectory());
+    }
+}
+#endif
 TEST_CASE("settings serialize strictly and multiply master and sound volume") {
     Settings s;
     s.masterVolume = 50;

@@ -624,6 +624,8 @@ def parse_effect(text_value: str, card_type: str) -> tuple[list[dict[str, Any]],
             [{"kind": "inspect_own_deck", "amount": 3}],
     }
     if raw in known_structured:
+        if known_structured[raw][0]["kind"] == "accelerate_analysis":
+            return known_structured[raw], [], "own_analyzing_spell"
         return known_structured[raw], [], "none"
 
     # Formation text is compiled into traits and phase capabilities below;
@@ -1158,6 +1160,11 @@ def build_card(row: dict[str, Any], index: int, old_ids: dict[str, str], arts: d
         card.update({"summonCondition": summon_condition, "level": row.get("level"), "body": row.get("body"), "rings": row.get("rings"), "capacity": row.get("capacity"), "income": row.get("income")})
     if card_type == "seal":
         card.update({"attachToFormation": row.get("attachToFormation", ""), "attachToSpell": row.get("attachToSpell", ""), "cost": row.get("attachCost", 0)})
+        sections = [] if effect_text in {"", "/"} else [effect_text]
+        for field, label in (("attachToFormation", "附着于阵法"), ("attachToSpell", "附着于法术")):
+            if card[field]:
+                sections.append(f"{label}：{card[field]}")
+        card["text"] = " ".join(sections) or "无效果。"
         card.update(seal_attributes)
     return card
 

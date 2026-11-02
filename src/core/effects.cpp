@@ -132,6 +132,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         ResourceRules::increasedLoad(s, cat, p, e.amount);
         break;
     case EffectKind::AccelerateAnalysis: {
+        if (!Rules::targetValid(s, TargetKind::OwnAnalyzingSpell, t.owner, t.targetCard)) break;
         auto &c = s.cards.at(t.targetCard);
         card_rules::advanceAnalysis(s, cat, c.id, std::max(1, e.amount));
         s.temporary.push_back(
@@ -324,6 +325,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     case EffectKind::DiscardHand:
     case EffectKind::DiscardFormation:
     case EffectKind::OptionalPrepare:
+    case EffectKind::InspectOwnDeck:
         throw std::logic_error("effect requires a decision");
     case EffectKind::CancelPreparation:
     case EffectKind::NegateLink:
@@ -456,6 +458,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     case EffectKind::ArcanaDevil:
     case EffectKind::ArcanaTower:
     case EffectKind::ArcanaWorld:
+    case EffectKind::InspectOwnDeck:
         message = "选择卡牌效果";
         break;
     case EffectKind::SiqueNegateDestroy:

@@ -76,6 +76,7 @@ std::vector<Effect> effects(const Json &j, const std::string &path, bool allowSt
         {"search_action", EffectKind::SearchAction},
         {"destroy_ambush", EffectKind::DestroyAmbush},
         {"accelerate_analysis", EffectKind::AccelerateAnalysis},
+        {"inspect_own_deck", EffectKind::InspectOwnDeck},
         {"grant_resistance", EffectKind::GrantResistance},
         {"conceal", EffectKind::Conceal},
         {"delay_enemy_analysis", EffectKind::DelayEnemyAnalysis},

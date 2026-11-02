@@ -43,6 +43,9 @@ class Alpha260ImportTests(unittest.TestCase):
                 {"kind": "independent", "amount": 2, "recipient": "owner"},
             ], [], "none"))
         self.assertEqual(importer.parse_effect(
+            "选择己方解析区1张解析法术卡才能发动。使其解析时间-2，获得其实际设置费用的临时荷载。", "word"), (
+            [{"kind": "accelerate_analysis", "amount": 2}], [], "own_analyzing_spell"))
+        self.assertEqual(importer.parse_effect(
             "选择1个目标才能发动。对其造成5点寒冷伤害。那之后，可以使对方解析区1张解析法术卡的解析时间+1。", "analytic"), (
             [
                 {"kind": "damage", "amount": 5, "damageType": "cold", "recipient": "target"},
@@ -90,6 +93,13 @@ class Alpha260ImportTests(unittest.TestCase):
             "matched": 92,
         })
         by_name = {card["name"]: card for card in staged}
+        for card in staged:
+            if card["type"] == "seal":
+                self.assertIn("附着于阵法：" + card["attachToFormation"], card["text"])
+                self.assertIn("附着于法术：" + card["attachToSpell"], card["text"])
+        self.assertEqual(by_name["卜筮术"]["extraDiscard"], 1)
+        self.assertEqual(by_name["卜筮术"]["effects"], [{"kind": "inspect_own_deck", "amount": 3}])
+        self.assertEqual(by_name["瞬发回路过载"]["target"], "own_analyzing_spell")
         self.assertEqual(by_name["魔力扰动"]["effectStatus"], "structured-candidate")
         self.assertEqual(by_name["魔力扰动"]["art"]["status"], "matched")
         self.assertTrue(by_name["魔力扰动"]["effectBlockers"] == [])

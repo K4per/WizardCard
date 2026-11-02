@@ -58,6 +58,15 @@ Effect arrays (`effects` and trigger arrays) contain objects with:
 `damageType` and `recipient` are validated enums and are interpreted only by
 implemented rule effects.
 
+In v2.6, `inspect_own_deck` with `amount: 3` privately offers the top three
+cards (or the remaining deck), puts the selected card in hand and returns
+the others to the bottom in their original order. `extraDiscard: 1` on a
+non-analytic spell requires another hand card at activation. Circuit overload
+uses `accelerate_analysis` with `target: own_analyzing_spell`; it advances
+analysis by `amount` and adds temporary load equal to the target's actual
+setting payment. Rune `text` includes both attachment clauses, composed from
+the workbook's `attachToFormation` and `attachToSpell` columns.
+
 Alpha v2.5.1 adds the validated `sique_*` effects for rune detachment,
 filtered searches/recovery, the damage cap, alternate life payment, recycling,
 optional draws, hand shuffling and negation. Their timing and the executable

@@ -98,7 +98,8 @@ enum class EffectKind {
     SevenReturn, SevenGaze, SevenSetup, SevenKaiyang, BloodTube,
     // v2.6 staging effects retain their source semantic on Effect so the
     // adapter can route timing/choice behaviour without inventing free text.
-    V260Structured
+    V260Structured,
+    InspectOwnDeck
 };
 enum class ResponseWindow { PhaseStart, PhaseEnd, Action, Prepare, Cast, Trigger };
 enum class EventOwner { Any, Self, Opponent };

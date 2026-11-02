@@ -247,9 +247,9 @@ void bottomViewed(MutationContext &s, PlayerId owner, const std::vector<CardId> 
         auto &card = s.cards.at(selected);
         card.zone = Zone::Hand; card.faceDown = card.publiclyRevealed = false;
         card.host = card.sourceFormation = 0; card.spell = SpellState::None;
-        s.events.push_back({"search", "遥鉴：从查看卡牌加入手牌", owner, selected});
+        s.events.push_back({"search", "从查看卡牌加入手牌", owner, selected});
     }
-    s.events.push_back({"deck_bottom", "遥鉴：其余卡牌按原顺序置底（不洗牌）", owner});
+    s.events.push_back({"deck_bottom", "其余查看卡牌按原顺序置底（不洗牌）", owner});
 }
 void concealGaze(MutationContext &s, const CardCatalog &cat, CardId target, CardId host, int ring) {
     auto &card = s.cards.at(target);
@@ -564,8 +564,10 @@ std::string activationError(const GameState &s, const CardCatalog &cat, PlayerId
 std::vector<CardId> costOptions(const GameState &s, const CardCatalog &cat, PlayerId owner, CardId source) {
     {
         const auto &c = s.cards.at(source);
+        const auto &definition = cat.at(c.definition);
         const int mode = card_rules::aspectMode(s, cat, owner);
-        if ((hasCapability(cat.at(c.definition), Capability::QixingDivination) && mode == 1) ||
+        if ((definition.extraDiscard && definition.type != CardType::Analytic) ||
+            (hasCapability(cat.at(c.definition), Capability::QixingDivination) && mode == 1) ||
             (hasCapability(cat.at(c.definition), Capability::QixingShift) && mode == 2)) {
             std::vector<CardId> options;
             for (const auto &[id, material] : s.cards)
@@ -739,6 +741,19 @@ bool GameEngine::resolveSpellEffect() {
     if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
     const auto effect = f.item.effects[f.cursor];
+    if (effect.kind == EffectKind::InspectOwnDeck) {
+        const auto owner = f.item.owner;
+        const auto &deck = s.players[owner].deck;
+        const auto amount = std::min<std::size_t>(effect.amount, deck.size());
+        f.item.targetCards.assign(deck.end() - static_cast<std::ptrdiff_t>(amount), deck.end());
+        if (f.item.targetCards.empty()) ++f.cursor;
+        else {
+            for (auto id : f.item.targetCards)
+                s.events.push_back({"inspect", "卜筮术：查看卡组顶部卡牌", owner, id});
+            decision(owner, DecisionKind::EffectChoice, f.item.targetCards);
+        }
+        return true;
+    }
     if (!arcanaKind(effect.kind)) return false;
     const auto owner = f.item.owner;
     const auto finish = [&] { ++f.cursor; f.resume<RepeatedChoiceContinuation>().remaining = -1; f.resume<RepeatedChoiceContinuation>().completed = 0; };
@@ -897,6 +912,15 @@ bool GameEngine::chooseSpellEffect(PlayerId actor, ChoiceValue choice) {
     if (!s.effect || s.effect->cursor >= s.effect->item.effects.size()) return false;
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
+    if (e.kind == EffectKind::InspectOwnDeck) {
+        if (choice.kind != ChoiceKind::Card ||
+            std::find(f.item.targetCards.begin(), f.item.targetCards.end(), selected) == f.item.targetCards.end())
+            return false;
+        bottomViewed(s, f.item.owner, f.item.targetCards, selected);
+        ++f.cursor;
+        f.continuation = RepeatedChoiceContinuation{};
+        return true;
+    }
     if (!arcanaKind(e.kind)) return false;
     const auto owner = f.item.owner;
     const auto finish = [&] { ++f.cursor; f.resume<RepeatedChoiceContinuation>().remaining = -1; f.resume<RepeatedChoiceContinuation>().completed = 0; };

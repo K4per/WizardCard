@@ -1,0 +1,43 @@
+{
+  "id": "v260-analytic-0025",
+  "number": "020025",
+  "name": "沉默术",
+  "type": "analytic",
+  "school": "illusion",
+  "rarity": "common",
+  "rank": 4,
+  "cost": 3,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "直到下个己方抽卡阶段开始时，双方言灵法术不可发动。",
+  "effects": [
+    {
+      "kind": "block_actions",
+      "amount": 0
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 26
+  },
+  "illustrationId": "v260-art-analytic-0025",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\沉默术.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0025",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0025.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
+  },
+  "migration": {
+    "previousId": "instantly-sleep"
+  },
+  "target": "opponent",
+  "level": 4
+}

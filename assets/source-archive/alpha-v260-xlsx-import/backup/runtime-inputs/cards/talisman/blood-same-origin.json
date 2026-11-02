@@ -1,0 +1,25 @@
+{
+  "id": "blood-same-origin",
+  "name": "血契·同源",
+  "type": "talisman",
+  "rarity": "rare",
+  "cost": 1,
+  "castCost": 0,
+  "rank": 4,
+  "level": 4,
+  "speed": 4,
+  "number": "040019",
+  "illustrationId": "blood-same-origin",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [],
+  "text": "永续。每次对方恢复生命值时，为己方恢复等量生命值。",
+  "analysisTurns": 0,
+  "school": "abjuration",
+  "traits": [
+    "blood_same_origin"
+  ],
+  "perpetual": true
+}

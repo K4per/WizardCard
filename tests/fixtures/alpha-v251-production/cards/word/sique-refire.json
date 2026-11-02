@@ -1,0 +1,29 @@
+{
+  "id": "sique-refire",
+  "name": "味契·烈火回炉",
+  "type": "word",
+  "rarity": "rare",
+  "cost": 3,
+  "rank": 3,
+  "level": 1,
+  "speed": 2,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "030016",
+  "illustrationId": "sique-refire",
+  "school": "transmutation",
+  "effects": [
+    {
+      "kind": "sique_recycle",
+      "amount": 5
+    },
+    {
+      "kind": "sique_optional_draw",
+      "amount": 1
+    }
+  ],
+  "text": "将己方灰烬区最多5张味契卡返回牌库或副卡组。那之后，可以抽1张牌。",
+  "analysisTurns": 0
+}

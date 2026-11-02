@@ -1,0 +1,10 @@
+[configuration]
+entry_symbol = "wizard_bridge_init"
+compatibility_minimum = "4.7"
+reloadable = false
+
+[libraries]
+windows.debug.x86_64 = "res://bin/wizard_godot_bridge.debug.dll"
+windows.release.x86_64 = "res://bin/wizard_godot_bridge.release.dll"
+linux.debug.x86_64 = "res://bin/libwizard_godot_bridge.debug.so"
+linux.release.x86_64 = "res://bin/libwizard_godot_bridge.release.so"

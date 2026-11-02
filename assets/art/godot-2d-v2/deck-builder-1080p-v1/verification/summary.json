@@ -1,0 +1,62 @@
+{
+  "headless": {
+    "checks": 355,
+    "failures": [],
+    "renderer": "headless"
+  },
+  "rendered": {
+    "checks": 364,
+    "failures": [],
+    "renderer": "rendered"
+  },
+  "frontend": {
+    "checks": 756,
+    "failures": [],
+    "fieldMode": "showcase-only",
+    "officialCards": 30,
+    "previewCards": 32,
+    "renderer": "headless",
+    "sizes": [
+      "1280x720",
+      "1600x1000",
+      "1920x1080"
+    ],
+    "success": true
+  },
+  "native": {
+    "casesPassed": 223,
+    "constructionAssertionsPassed": 16,
+    "legacyMatchCompatibility": "format-2 drafts rejected by legacy match engine"
+  },
+  "assets": {
+    "newAssets": 7,
+    "exactExportSize": [
+      1920,
+      1080
+    ],
+    "previewScreenshots": 9,
+    "runtimeAssetCountAtValidation": 266,
+    "runtimeBytesAtValidation": 115238832
+  },
+  "design": {
+    "mainCards": 40,
+    "formationSideCards": 10,
+    "mainCardsPerPage": 30,
+    "mainColumns": 6,
+    "poolColumns": 3,
+    "poolRows": 3
+  },
+  "scope": {
+    "constructionAndPersistence": true,
+    "newMatchRules": false,
+    "nativeCardDefinitions": 30,
+    "displayOnlyV2Definitions": 32
+  },
+  "bridgeReplay": {
+    "digest": "78116a78d64b0d90",
+    "ok": true,
+    "replay": "E:/Project/WizardCard/build/deck-art-integration-smoke/user-replay\\replays\\match-17916589810644438-1.json",
+    "steps": 289,
+    "defaultCtestLimit": "120-second timeout; identical standalone script passed"
+  }
+}

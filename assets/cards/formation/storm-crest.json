@@ -1,0 +1,31 @@
+{
+  "id": "storm-crest",
+  "name": "风契·风暴纹章",
+  "type": "formation",
+  "rarity": "rare",
+  "level": 1,
+  "body": 2,
+  "rings": 1,
+  "capacity": 5,
+  "income": 1,
+  "maxRank": 1,
+  "cost": 0,
+  "baseEligible": false,
+  "text": "此阵法卡在己方场上仅可存在1张。 此阵法卡的阵法属性由此阵法卡上存在的【风契指示物】决定： 【风契指示物】为0-2时：阵法等级为1，环位为1，荷载上限为5，魔素收入为1。 【风契指示物】为3-4时：阵法等级为2，环位为2，荷载上限为8，魔素收入为1。 【风契指示物】为5以上时，阵法等级为3，环位为3，荷载上限为10，魔素收入为2。 每发动1张【风契】法术卡，此阵法卡获得1个【风契指示物】。 1回合1次，移除此阵法卡上的2个【风契指示物】，从卡组将1张【风契】法术卡加入手卡。",
+  "summonCondition": "魔素x1",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 1
+    }
+  ],
+  "traits": [
+    "unique",
+    "activate_storm_search"
+  ],
+  "tags": [
+    "风契"
+  ],
+  "number": "010014",
+  "illustrationId": "storm-crest"
+}

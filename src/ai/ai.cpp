@@ -10,8 +10,8 @@ const CardView *card(const GameView &v, CardId id) {
     for (const auto &c : v.cards)
         if (c.instance.id == id &&
             (c.instance.zone != Zone::Deck ||
-             (v.decision && v.decision->kind == DecisionKind::SearchDeck &&
-              std::find(v.decision->options.begin(), v.decision->options.end(), id) !=
+             (v.decision && (v.decision->kind == DecisionKind::SearchDeck || v.decision->kind == DecisionKind::EffectChoice) &&
+              std::find(v.decision->options.begin(), v.decision->options.end(), ChoiceValue::card(id)) !=
                   v.decision->options.end())) &&
             (c.instance.zone != Zone::Hand || c.instance.owner == v.viewer))
             return &c;
@@ -39,7 +39,15 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
     const auto p = v.viewer, enemy = 1 - p;
     if (owner < 0)
         owner = p;
-    const int targetRecipient = target == TargetKind::Opponent ? 1 - owner : owner;
+    // Player targets are encoded explicitly in the command/view contract.  A
+    // projection must score the selected player, rather than silently treating
+    // every player-targeted effect as self-targeted.
+    int targetRecipient = owner;
+    if (target == TargetKind::Opponent)
+        targetRecipient = 1 - owner;
+    else if (target == TargetKind::Player &&
+             targetCard >= playerTarget(0) && targetCard <= playerTarget(1))
+        targetRecipient = static_cast<PlayerId>(targetCard - playerTarget(0));
     double score = 0;
     std::array<int, 2> loads{v.players[0].load, v.players[1].load};
     for (const auto &e : list) {
@@ -48,6 +56,7 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
                                                                          : targetRecipient;
         auto &load = loads[recipient];
         switch (e.kind) {
+        case EffectKind::ChooseDamage:
         case EffectKind::Damage: {
             const auto &pl = v.players[recipient];
             int amount = e.amount;
@@ -62,15 +71,22 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
         }
         case EffectKind::AddTemporaryLife:
             score +=
-                (recipient == p ? 1 : -1) * std::max(0, e.amount - v.players[recipient].temporaryLife) * 2;
+                (recipient == p ? 1 : -1) * e.amount * 2;
             break;
         case EffectKind::BlockActions:
             score += recipient == enemy ? 10 : -10;
+            break;
+        case EffectKind::ShieldForTurn:
+            // A response-only shield is valuable before the opponent's pending
+            // action resolves; account for the damage it can absorb so the AI
+            // does not always prefer passing the response window.
+            score += owner == p ? std::max(0, e.amount) * 3.0 : -std::max(0, e.amount) * 3.0;
             break;
         case EffectKind::GrantResistance:
             score += owner == p ? 12 : -12;
             break;
         case EffectKind::SearchAction:
+        case EffectKind::SearchSameSchool:
             score += owner == p ? 12 : -12;
             break;
         case EffectKind::DestroyAmbush:
@@ -86,7 +102,25 @@ double effects(const GameView &v, const std::vector<Effect> &list, TargetKind ta
             break;
         }
         case EffectKind::Conceal:
+        case EffectKind::ConcealEnemySpell:
+        case EffectKind::DelayEnemyAnalysis:
+        case EffectKind::AdvanceAllEnemyAnalysis:
             score += 2;
+            break;
+        case EffectKind::ReturnEnemyAnalysis:
+        case EffectKind::RecoverEnemyAshSpell:
+        case EffectKind::RecoverFormation:
+            score += 8;
+            break;
+        case EffectKind::RevealEnemyAmbush:
+        case EffectKind::RevealAllAmbush:
+            score += 2;
+            break;
+        case EffectKind::DestroyFormationSpells:
+            score += 12;
+            break;
+        case EffectKind::ReduceSpellDamage:
+            score += 15;
             break;
         case EffectKind::Heal:
             score += (recipient == p ? 1 : -1) * std::min(e.amount, maximumLife - v.players[recipient].life) *
@@ -154,7 +188,8 @@ double counterRisk(const GameView &v) {
     for (const auto &c : v.cards)
         if (c.instance.owner != v.viewer && c.instance.zone == Zone::Words)
             for (const auto &r : c.definition.responses)
-                if (r.fromWords && r.eventOwner != EventOwner::Self &&
+                if ((r.fromWords || r.fromAmbush || c.instance.zone == Zone::Words) &&
+                    r.eventOwner != EventOwner::Self &&
                     r.extraDiscard <= v.players[1 - v.viewer].handCount &&
                     r.preloadedCost <= v.players[1 - v.viewer].mana &&
                     std::find(r.windows.begin(), r.windows.end(), ResponseWindow::Prepare) !=
@@ -172,7 +207,7 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
     return std::visit(
         [&](const auto &cmd) -> double {
             using T = std::decay_t<decltype(cmd)>;
-            if constexpr (std::is_same_v<T, Surrender>)
+            if constexpr (std::is_same_v<T, Surrender> || std::is_same_v<T, Timeout>)
                 return -1e9;
             else if constexpr (std::is_same_v<T, Advance> || std::is_same_v<T, AdvancePhase> ||
                                std::is_same_v<T, PassResponse>)
@@ -183,8 +218,10 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
             else if constexpr (std::is_same_v<T, Choose>) {
                 if (!v.decision)
                     return -100;
-                const auto *c = card(v, cmd.option);
+                const auto *c = cmd.option.kind == ChoiceKind::Card ? card(v, static_cast<CardId>(cmd.option.value)) : nullptr;
                 switch (v.decision->kind) {
+                case DecisionKind::Payment:
+                    return cmd.option ? 25 - static_cast<int>(cmd.option.value) : -50;
                 case DecisionKind::SearchDeck:
                     return 20 + value(c);
                 case DecisionKind::DestroyAmbush:
@@ -195,9 +232,11 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
                     return cmd.option ? 100 - value(c) : -100;
                 case DecisionKind::ClearLoad:
                     for (const auto &l : v.temporary)
-                        if (l.id == cmd.option)
+                        if (cmd.option.kind == ChoiceKind::Load && l.id == cmd.option.value)
                             return 10 + l.amount;
                     return 0;
+                case DecisionKind::ClearAnyLoad:
+                    return cmd.option ? 20 : 0;
                 case DecisionKind::DestroyOwnFormation:
                     // Optional self-destruction is safely skipped; removing useful capacity is not a benefit.
                     return cmd.option ? -100 - value(c) : 0;
@@ -218,7 +257,7 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
                              : -10;
                 case DecisionKind::TriggerOrder:
                     for (const auto &t : v.triggers)
-                        if (t.id == cmd.option)
+                        if (cmd.option.kind == ChoiceKind::Trigger && t.id == cmd.option.value)
                             return 10 + effects(v, t.effects, t.target, t.targetCard) +
                                    (hard && std::any_of(t.effects.begin(), t.effects.end(),
                                                         [](const Effect &e) {
@@ -231,13 +270,31 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
                     return cmd.option ? 10 : 0;
                 case DecisionKind::Response:
                     return cmd.option ? 20 : 0;
+                case DecisionKind::ReturnSpell:
+                    return cmd.option && c ? 25 + c->effectiveRings - c->occupiedRings : -50;
+                case DecisionKind::DamageChoice: {
+                    const auto type = static_cast<DamageType>(cmd.option.value - static_cast<std::uint32_t>(ChoiceMode::DamageTypeBase));
+                    const auto &enemy = v.players[1 - p];
+                    if (std::find(enemy.immunities.begin(), enemy.immunities.end(), type) != enemy.immunities.end()) return -10;
+                    if (std::find(enemy.resistances.begin(), enemy.resistances.end(), type) != enemy.resistances.end()) return 1;
+                    return 20;
+                }
+                case DecisionKind::EffectChoice:
+                    if (!cmd.option) return -5;
+                    if (!c) return 1;
+                    if (c->instance.owner != p || c->instance.zone == Zone::Deck || c->instance.zone == Zone::Ash)
+                        return 10 + value(c);
+                    if (c->definition.type == CardType::Formation) return 10 + c->effectiveRings - c->occupiedRings;
+                    return 10 - value(c); // Same-school search sacrifices the least valuable own spell.
                 }
                 return 0;
             } else {
                 if (!source)
                     return -100;
                 const auto &d = source->definition;
-                if constexpr (std::is_same_v<T, SetAmbush>) {
+                if constexpr (std::is_same_v<T, SelectInitialFormation>) {
+                    return 100 + d.income * 6 + d.capacity * 2 + d.rings * 3;
+                } else if constexpr (std::is_same_v<T, SetAmbush>) {
                     return d.responseOnly ? 6 - d.cost : -5;
                 } else if constexpr (std::is_same_v<T, FlipAmbush>) {
                     return 12 + effects(v, d.effects, d.target, cmd.target) - d.cost * 2;
@@ -272,6 +329,14 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
                     double utility = effects(v, d.effects, d.target, cmd.target);
                     if (utility < -1000)
                         return utility;
+                    // Preparing a spell immediately commits its activation load.  A
+                    // projection may expose a legal preparation at the capacity edge,
+                    // but selecting it blindly can force avoidable overload damage.
+                    // Treat the edge as unsafe unless the player has an explicit
+                    // infinite-load debug capability.
+                    if (!v.players[p].infiniteLoad &&
+                        v.players[p].load + source->effectiveCastCost >= v.players[p].capacity)
+                        return -25000;
                     if (easy)
                         return 90;
                     double score = 18 + utility - d.castCost * 2 - value(card(v, cmd.discard));
@@ -289,7 +354,7 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
                     if (easy)
                         return cmd.release ? 65 : 30;
                     if (cmd.release)
-                        return 8 + effects(v, d.effects, d.target, 0) - d.cost;
+                        return 8 + effects(v, d.effects, d.target, cmd.target) - d.cost;
                     bool readyEnemy = false;
                     for (const auto &c : v.cards)
                         if (c.instance.owner != p && c.instance.spell == SpellState::Ready)
@@ -355,35 +420,33 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
 std::string difficultyLabel(Difficulty d) {
     return std::array<const char *, 3>{"简单", "普通", "困难"}.at(static_cast<std::size_t>(d));
 }
-std::optional<Selection> choose(const GameView &view, Difficulty difficulty, std::size_t budget) {
-    if (view.result != -1 || view.actions.empty() || view.viewer < 0 || view.viewer > 1 || budget == 0)
+std::optional<Selection> choose(const GameView &view, const CandidateSource &source, Difficulty difficulty, std::size_t budget) {
+    if (view.result != -1 || view.technicalPaused || view.viewer < 0 || view.viewer > 1 || budget == 0)
         return {};
     budget = std::min<std::size_t>(budget, 4096);
-    const LegalAction *best = nullptr;
-    double score = -std::numeric_limits<double>::infinity();
+    std::optional<Command> best = view.actionSummary.safeAdvance;
+    double score = best ? 0 : -std::numeric_limits<double>::infinity();
     std::size_t evaluated = 0;
-    // Always retain a safe pass/advance even when the candidate budget is exhausted.
-    for (const auto &a : view.actions)
-        if (std::holds_alternative<Advance>(a.command) || std::holds_alternative<AdvancePhase>(a.command) ||
-            std::holds_alternative<PassResponse>(a.command)) {
-            best = &a;
-            score = 0;
-            break;
-        }
-    for (const auto &a : view.actions) {
-        if (evaluated == budget)
-            break;
-        if (std::holds_alternative<Surrender>(a.command))
-            continue;
-        const double n = evaluate(view, a, difficulty);
+    source([&](const LegalAction &action) {
+        if (evaluated == budget) return false;
+        if (std::holds_alternative<Surrender>(action.command)) return true;
+        const double value = evaluate(view, action, difficulty);
         ++evaluated;
-        if (!best || n > score) {
-            best = &a;
-            score = n;
+        if (!best || value > score) { best = action.command; score = value; }
+        return evaluated < budget;
+    });
+    if (!best) return {};
+    return Selection{*best, score, evaluated};
+}
+std::optional<Selection> choose(const GameView &view, const std::vector<LegalAction> &candidates,
+                              Difficulty difficulty, std::size_t budget) {
+    auto projected = view;
+    for (const auto &action : candidates)
+        if (std::holds_alternative<AdvancePhase>(action.command) || std::holds_alternative<PassResponse>(action.command)) {
+            projected.actionSummary.safeAdvance = action.command; break;
         }
-    }
-    if (!best)
-        return {};
-    return Selection{best->command, score, evaluated};
+    return choose(projected, [&](const auto &visitor) {
+        for (const auto &action : candidates) if (!visitor(action)) break;
+    }, difficulty, budget);
 }
 } // namespace wizard::ai

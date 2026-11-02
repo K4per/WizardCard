@@ -1,0 +1,27 @@
+{
+  "id": "arcana-chariot",
+  "rarity": "rare",
+  "target": "player",
+  "illustrationId": "arcana-chariot",
+  "number": "020030",
+  "name": "战车",
+  "type": "analytic",
+  "text": "选择1个目标才能发动。对其造成20点力场伤害。此法术卡在己方解析区存在，每当己方【战车】以外的解析法术卡的解析时间-X时，此法术卡的解析时间-1。",
+  "rank": 4,
+  "level": 4,
+  "school": "arcana",
+  "cost": 5,
+  "castCost": 0,
+  "analysisTurns": 8,
+  "speed": 1,
+  "traits": [
+    "arcana_chariot"
+  ],
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 20,
+      "damageType": "force"
+    }
+  ]
+}

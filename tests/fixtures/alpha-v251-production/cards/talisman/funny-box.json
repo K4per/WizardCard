@@ -1,0 +1,23 @@
+{
+  "id": "funny-box",
+  "name": "滑稽魔盒",
+  "type": "talisman",
+  "rarity": "epic",
+  "rank": 5,
+  "level": 5,
+  "speed": 3,
+  "school": "enchantment",
+  "cost": 4,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "target": "enemy_ash_card",
+  "effects": [
+    {
+      "kind": "recover_enemy_ash_spell"
+    }
+  ],
+  "text": "选择对方灰烬区一张5级及以下解析法术，将其在己方有合法空环位的阵法上盖伏。",
+  "responseOnly": false,
+  "number": "040004",
+  "illustrationId": "v2-funny-box"
+}

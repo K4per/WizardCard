@@ -1,0 +1,11 @@
+{
+  "id": "conduit",
+  "name": "逆三角星符",
+  "rarity": "common",
+  "type": "seal",
+  "cost": 1,
+  "incomeBonus": 2,
+  "text": "阵法附着效果：该阵法在自己的准备阶段提供的魔素收入+2。法术附着效果：无特殊效果。",
+  "flavor": "聚能并非环。",
+  "speed": 1
+}

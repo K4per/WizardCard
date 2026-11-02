@@ -1,0 +1,49 @@
+{
+  "id": "v260-analytic-0009",
+  "number": "020009",
+  "name": "阳炎爆",
+  "type": "analytic",
+  "school": "evocation",
+  "rarity": "legendary",
+  "rank": 6,
+  "cost": 20,
+  "castCost": 2,
+  "analysisTurns": 2,
+  "speed": 3,
+  "text": "对对方造成15点火焰伤害。那之后，可以销毁对方1张阵法卡上的全部法术卡。己方灰烬区每存在1张塑能派系法术卡，此法术卡的设置费用-1。",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 15,
+      "damageType": "fire",
+      "recipient": "opponent"
+    },
+    {
+      "kind": "destroy_formation_spells"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 10
+  },
+  "illustrationId": "v2-sunburst",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-sunburst.png",
+    "mapping": "历史同类卡图",
+    "manifestId": "v2-sunburst"
+  },
+  "migration": {
+    "previousId": "sunburst"
+  },
+  "traits": [
+    "ash_evocation_discount"
+  ],
+  "target": "opponent",
+  "level": 6
+}

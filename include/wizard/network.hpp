@@ -1,0 +1,258 @@
+#pragma once
+#include "wizard/replay.hpp"
+#include "wizard/room.hpp"
+#include <chrono>
+#include <atomic>
+#include <future>
+#include <memory>
+
+namespace wizard::net {
+inline constexpr std::size_t maxMessage = 1024 * 1024, maxReceive = 2 * maxMessage, maxSend = 4 * maxMessage;
+Json encodeView(const GameView &);
+GameView decodeView(const Json &, const CardCatalog &);
+Json encodeClock(const MatchClockView &);
+MatchClockView decodeClock(Json);
+Json encodeEvents(const EventBatch &);
+EventBatch decodeEvents(const Json &);
+Json encodeIntent(const ActionIntent &);
+ActionIntent decodeIntent(const Json &);
+Json encodeOptions(const ActionOptions &);
+ActionOptions decodeOptions(const Json &);
+Json wireCommand(const Command &);
+Command unwireCommand(Json);
+std::uint64_t number(const Json &);
+std::string token();
+Json hello(const Content &);
+std::vector<unsigned char> frame(const Json &);
+class Decoder {
+    std::vector<unsigned char> bytes_;
+
+  public:
+    std::vector<Json> feed(const unsigned char *, std::size_t);
+    void clear() {
+        bytes_.clear();
+    }
+};
+// Protocol and authoritative rules have no socket or frontend dependency.
+class HostSession {
+    Content content_;
+    std::unique_ptr<MatchSession> match_;
+    std::array<PlayerDeck, 2> decks_;
+    std::array<bool, 2> ready_{};
+    std::map<std::uint64_t, Json> replies_;
+    std::uint64_t nextSequence_{1}, revision_{};
+    PlayerId hostPlayer_{};
+    bool joined_{}, frozen_{}, ended_{}, automatic_{true};
+    std::string session_{token()}, credential_{token()};
+
+  public:
+    explicit HostSession(Content);
+    Json receive(const Json &); // only the guest connection calls this
+    void deck(const PlayerDeck &);
+    void configure(bool hostFirst, bool automatic);
+    void ready();
+    CommandResult submit(const Command &);
+    bool advance();
+    void freeze(bool value);
+    void tick();
+    void end() {
+        ended_ = true;
+        freeze(true);
+    }
+    bool started() const {
+        return bool(match_);
+    }
+    bool frozen() const {
+        return frozen_;
+    }
+    bool ended() const {
+        return ended_;
+    }
+    PlayerId player() const {
+        return hostPlayer_;
+    }
+    std::uint64_t revision() const {
+        return revision_;
+    }
+    const std::string &session() const {
+        return session_;
+    }
+    Json snapshot(PlayerId) const;
+    Json clockUpdate() const;
+    Json eventUpdate(PlayerId, std::uint64_t epoch, std::uint64_t cursor) const;
+    EventBatch eventsSince(PlayerId p, std::uint64_t epoch, std::uint64_t cursor) const {
+        return match_ ? match_->eventsSince(p, epoch, cursor) : EventBatch{};
+    }
+    bool technicalPaused() const { return match_ && match_->technicalPaused(); }
+    const MatchClockView &clock() const { return match_->clock(); }
+    const Json &diagnostic() const;
+    ActionOptions queryActions(PlayerId, std::uint64_t generation, std::uint64_t revision, const ActionIntent &);
+    Json room() const;
+    Json recording() const;
+    GameView view() const;
+};
+class GuestSession {
+    Content content_;
+    std::string session_, credential_;
+    std::uint64_t sequence_{1}, revision_{};
+    std::optional<Json> pending_;
+    GameView view_;
+    Json room_;
+    bool started_{}, resumed_{};
+    bool technicalPaused_{};
+    EventBatch events_;
+    std::uint64_t nextQuery_{1};
+    std::optional<Json> query_;
+    std::optional<ActionOptions> queryResult_;
+
+  public:
+    explicit GuestSession(Content c) : content_(std::move(c)) {}
+    void receive(const Json &);
+    Json command(const Command &);
+    Json resume() const;
+    bool canResume() const {
+        return !credential_.empty();
+    }
+    bool pending() const {
+        return bool(pending_);
+    }
+    const std::optional<Json> &retry() const {
+        return pending_;
+    }
+    bool started() const {
+        return started_;
+    }
+    bool takeResumed() {
+        bool r = resumed_;
+        resumed_ = false;
+        return r;
+    }
+    std::uint64_t revision() const {
+        return revision_;
+    }
+    const GameView &view() const {
+        return view_;
+    }
+    bool technicalPaused() const { return technicalPaused_; }
+    EventBatch eventsSince(std::uint64_t epoch, std::uint64_t cursor) const;
+    Json query(std::uint64_t generation, std::uint64_t revision, const ActionIntent &);
+    std::optional<ActionOptions> queryResult(std::uint64_t generation, std::uint64_t revision,
+                                            const ActionIntent &) const;
+    const Json &room() const {
+        return room_;
+    }
+};
+// Nonblocking byte-stream adapter, replaceable by Godot transport.
+class Tcp {
+    struct Impl;
+    std::unique_ptr<Impl> impl_;
+
+  public:
+    Tcp();
+    ~Tcp();
+    Tcp(const Tcp &) = delete;
+    Tcp &operator=(const Tcp &) = delete;
+    void listen(unsigned short);
+    void connect(const std::string &, unsigned short);
+    bool connected() const;
+    bool connecting() const;
+    bool listening() const;
+    std::size_t queued() const;
+    void close();
+    void disconnect();
+    void send(const Json &);
+    std::vector<Json> poll();
+};
+// Frontend-independent controller: poll every frame, even while settings/animations are open.
+class Peer : public RoomSession {
+    Content content_;
+    Tcp tcp_;
+    std::unique_ptr<HostSession> host_;
+    std::unique_ptr<GuestSession> guest_;
+    Json room_, roomSent_, replay_;
+    GameView view_;
+    bool connected_{}, authenticated_{}, closing_{}, ended_{}, reset_{}, replayRequested_{}, departure_{};
+    std::uint64_t revision_{}, sentRevision_{~std::uint64_t{0}};
+    std::uint64_t sentEventEpoch_{}, sentEventCursor_{};
+    std::string address_, notice_, saveError_;
+    std::string outgoingReplay_, incomingReplay_;
+    std::shared_ptr<std::atomic_bool> replayValidationCanceled_;
+    std::future<Json> replayValidation_;
+    std::size_t replayOffset_{}, replaySize_{};
+    bool endQueued_{};
+    bool replayDelivered_{};
+    unsigned short port_{};
+    std::filesystem::path replayPath_;
+    std::chrono::steady_clock::time_point received_, heartbeat_, lost_, retry_, connecting_, clockSent_;
+    bool persist();
+    void queueReplay(const Json &);
+    void streamReplay();
+
+  public:
+    explicit Peer(Content, std::filesystem::path);
+    ~Peer() override;
+    GameView viewFor(PlayerId) const override { return view_; }
+    MatchClockView clockView() const override { return view_.clock; }
+    EventBatch eventsSince(PlayerId, std::uint64_t epoch, std::uint64_t cursor) const override;
+    bool technicalPaused() const override {
+        return host_ ? host_->technicalPaused() : guest_ && guest_->technicalPaused();
+    }
+    ActionOptions queryActions(PlayerId, std::uint64_t generation, std::uint64_t revision,
+                               const ActionIntent &) override;
+    CommandResult submit(PlayerId actor, const Command &command) override {
+        if (!started() || actor != view_.viewer)
+            return {false, "当前不是本机玩家", {}, {}, "wrong_player"};
+        return submit(command);
+    }
+    void host(unsigned short, const PlayerDeck &);
+    void join(const std::string &, unsigned short);
+    void tick();
+    void deck(const PlayerDeck &);
+    void configure(bool hostFirst, bool automatic);
+    void ready();
+    CommandResult submit(const Command &);
+    bool save(std::string &);
+    bool leave(std::string &, bool force = false);
+    void stop();
+    void reconnect(); // preserves credentials and pending request; also used by integration probes
+    bool isHost() const {
+        return bool(host_);
+    }
+    bool started() const {
+        return host_ ? host_->started() : guest_ && guest_->started();
+    }
+    bool connected() const {
+        return authenticated_ && connected_;
+    }
+    bool ended() const {
+        return ended_;
+    }
+    bool closing() const {
+        return closing_;
+    }
+    bool replayDelivered() const {
+        return replayDelivered_;
+    }
+    bool takeReset() {
+        bool r = reset_;
+        reset_ = false;
+        return r;
+    }
+    bool blocked() const {
+        return !connected() || ended_ || closing_ || technicalPaused() || (guest_ && guest_->pending());
+    }
+    std::uint64_t revision() const {
+        return revision_;
+    }
+    const GameView &view() const {
+        return view_;
+    }
+    const Json &room() const {
+        return room_;
+    }
+    const std::string &notice() const {
+        return notice_;
+    }
+};
+std::unique_ptr<RoomSession> createRoom(Content, std::filesystem::path);
+} // namespace wizard::net

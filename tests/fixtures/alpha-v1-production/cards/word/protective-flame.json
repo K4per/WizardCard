@@ -1,0 +1,47 @@
+{
+  "id": "protective-flame",
+  "name": "避火咒",
+  "type": "word",
+  "rarity": "common",
+  "cost": 2,
+  "rank": 1,
+  "speed": 2,
+  "concentration": true,
+  "school": "abjuration",
+  "target": "self",
+  "resistances": [
+    "fire"
+  ],
+  "effects": [
+    {
+      "kind": "grant_resistance",
+      "amount": 0
+    }
+  ],
+  "responses": [
+    {
+      "id": "protect",
+      "name": "获得火焰抗性",
+      "sources": [
+        "words",
+        "ambush"
+      ],
+      "windows": [
+        "phase_start",
+        "phase_end",
+        "action",
+        "prepare",
+        "cast",
+        "trigger"
+      ],
+      "target": "self",
+      "effects": [
+        {
+          "kind": "grant_resistance",
+          "amount": 0
+        }
+      ]
+    }
+  ],
+  "text": "专注。自身获得火焰伤害抗性，伤害减半并向下取整；抗性不叠加，销毁本法术后失去此抗性。"
+}

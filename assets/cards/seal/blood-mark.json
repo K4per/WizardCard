@@ -1,0 +1,23 @@
+{
+  "id": "blood-mark",
+  "name": "血契·血印",
+  "type": "seal",
+  "rarity": "rare",
+  "cost": 2,
+  "castCost": 0,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "number": "050012",
+  "illustrationId": "blood-mark",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [],
+  "text": "附着于阵法：魔素收入+2，己方生命值上限-6。 附着于法术：无效果。",
+  "traits": [
+    "blood_mark"
+  ],
+  "incomeBonus": 2
+}

@@ -1,0 +1,44 @@
+{
+  "id": "counter-spell",
+  "name": "法术反制",
+  "type": "talisman",
+  "rarity": "legendary",
+  "cost": 5,
+  "rank": 5,
+  "speed": 4,
+  "school": "abjuration",
+  "responseOnly": true,
+  "dynamicCost": true,
+  "effects": [
+    {
+      "kind": "counter_spell"
+    }
+  ],
+  "responses": [
+    {
+      "id": "counter_cast",
+      "name": "无效并销毁法术",
+      "sources": [
+        "ambush"
+      ],
+      "windows": [
+        "cast"
+      ],
+      "target": "enemy_spell_link",
+      "effects": [
+        {
+          "kind": "counter_spell"
+        }
+      ],
+      "eventOwner": "opponent"
+    }
+  ],
+  "text": "对方发动法术卡时才能发动。将其无效并销毁。X为被连锁法术卡的实际设置费用与实际发动费用之和。支付X。",
+  "flavor": "火球术！反制！反制你的反制！温馨提示，这种场景在奥术决斗中不会出现。",
+  "castCost": 0,
+  "level": 5,
+  "analysisTurns": 0,
+  "number": "040002",
+  "illustrationId": "counter-spell",
+  "target": "self"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "pentagram-of-life",
+  "name": "生命之五芒星",
+  "type": "formation",
+  "rarity": "common",
+  "cost": 1,
+  "body": 2,
+  "capacity": 5,
+  "income": 2,
+  "rings": 5,
+  "maxRank": 3,
+  "baseEligible": true,
+  "baseAnalysisDiscount": true,
+  "text": "作为基础阵法时，在本阵法上解析的塑能系或咒法系法术的解析费用减1，最低为0。",
+  "flavor": "生命之五芒星以魔素高活跃性和高控制性著称。"
+}

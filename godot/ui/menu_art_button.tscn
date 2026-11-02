@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://ui/menu_art_button.gd" id="1"]
+[node name="MenuArtButton" type="Button"]
+custom_minimum_size = Vector2(560, 72)
+theme_override_font_sizes/font_size = 30
+script = ExtResource("1")

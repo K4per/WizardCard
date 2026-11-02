@@ -1,0 +1,66 @@
+{
+  "style": "WizardCard refined pixel-art game UI matching the reference: deep midnight navy #08131f, dark blue stone, restrained antique brass/gold trim, small teal crystals, sharp intentional pixel clusters. Flat orthographic screen-space assets. Professional clean production asset, no watermarks, NO text or letters or numerals, no cards, no illustrations of cards, no card frames. Blank areas for runtime content. Preserve pixel fantasy style, restrained ornament. ",
+  "reference": "../battle-layout-concepts-20261011/dungeon-topdown/source-v2.png",
+  "jobs": [
+    {
+      "name": "01-dungeon-background",
+      "alpha": false,
+      "prompt": "Standalone seamless-looking battle ROOM BACKGROUND only, landscape 1920x1080. Strict overhead view of full rectangular underground dungeon room. Narrow wall tops, warm torches and teal crystal fixtures at perimeter only. Center 75% is subdued dark slate irregular stone floor, quiet uniform low contrast. No UI, no zone outlines, no etched large circles, no cards, no HUD, no decks, no interface border. Keep central and bottom play surface clear. Based on reference environment but all interface removed."
+    },
+    {
+      "name": "02-field-structure-atlas",
+      "alpha": true,
+      "prompt": "Transparent production atlas, landscape 1920x1080, THREE separate components vertically arranged with generous transparent gutters. Top: one wide continuous transparent casting-area outline with faint arcane circle engraved lines, no individual slots, no internal grid, no opaque stone backing. Middle: one analysis-row outline, narrow square formation socket at LEFT joined to one long undivided spell strip right, transparent inside, very thin subdued brass inlay. Bottom: one thin separator line with tiny teal center gem. These are SINGLE reusable components, not entire battlefield. No background floor. Straight orthographic, precisely aligned."
+    },
+    {
+      "name": "03-card-detail-panel",
+      "alpha": true,
+      "prompt": "One transparent standalone enlarged-card DETAIL UI PANEL, tall portrait ~640x1000. Outer dark navy panel with modest gold trim, small teal accents, soft shadow, opaque dark interior. Large EMPTY tall content recess on left/top for runtime complete card, auxiliary blank narrow information area below and to right for scrollable description. Tiny close X control at upper right is allowed, no other text. No action buttons: actions are separate. Generous internal padding, use full portrait image, isolated on transparent exterior. No card frame; the large empty recess is a UI panel area not an illustrated parchment card."
+    },
+    {
+      "name": "04-card-actions-atlas",
+      "alpha": true,
+      "prompt": "Transparent UI atlas, 2 columns by 3 rows of SEPARATE context popover bars with transparent gutters. Each bar is a small horizontal dark navy toolbar, thin gold edges and a small downward pointer centered below, to float ABOVE selected thumbnail. Row1: one blank action button normal and hovered teal versions. Row2: two blank adjacent buttons normal and hovered versions. Row3: three blank adjacent buttons normal and a muted disabled version. No text, no card, no card frames. Broad button faces for runtime Chinese labels, delicate padding, subdued shadows. Six components total."
+    },
+    {
+      "name": "05-search-decision-modal",
+      "alpha": true,
+      "prompt": "ONE large landscape transparent-exterior modal panel for card search, retrieval, target/material selection. ~1400x900 composition. Dark navy opaque panel with gold thin trim and teal accent. Empty title header, X close icon upper right. Empty search input field with small magnifying glass top left, three small blank filter tabs next to it. Very large blank results content region center-left, empty narrow preview region right; DO NOT draw grid card slots or card frames. Slim scrollbar track right edge of results. Bottom blank status strip and two broad blank action buttons aligned right. All fields empty, no text, numerals, card illustrations. Center content placeholder flat quiet navy. Isolated, no dungeon."
+    },
+    {
+      "name": "06-common-controls-atlas",
+      "alpha": true,
+      "prompt": "Transparent practical game UI CONTROL SPRITE ATLAS, landscape, exact 4 columns by 4 rows, 16 separated components with uniform generous gutters, no captions. Row1 four wide rectangular blank buttons: normal dark navy gold trim; hover brighter teal; pressed dark inset; disabled muted gray brass. Row2: empty text input with search icon; empty dropdown with down chevron; thin horizontal slider track and teal thumb; thin vertical scrollbar track and thumb. Row3: empty checkbox; checked checkbox; unselected radio circle; selected radio circle. Row4: square X close button; left arrow button; right arrow button; small blank tooltip panel with downward pointer. No lettering, numbers, cards, opaque sheet backing, icons are crisp pixel-art."
+    },
+    {
+      "name": "07-hud-load-bar-atlas",
+      "alpha": true,
+      "prompt": "Transparent HUD assembly atlas, landscape, neatly separated components with generous gutters. TOP: one wide blank player HUD background plate, navy opaque interior gold slim trim, three OPEN blank sections for life mana load content, no icons or numbers baked in. MIDDLE: three separated horizontal LOAD PROGRESS BAR parts all exactly same shape and width: empty dark navy gold-trim track; teal fill strip with subtle pixel glow on transparent exterior; amber warning fill strip with same dimensions. Fill strips are separate reusable full-width rectangles to clip at runtime, NOT baked percent bars. BOTTOM: small blank round/phase badge plate and a narrow blank phase banner. No text, glyphs, numbers, sample values, cards."
+    },
+    {
+      "name": "08-resource-icons-atlas",
+      "alpha": true,
+      "prompt": "Refined transparent resource ICON ATLAS, square canvas 1024x1024, exactly THREE isolated icons side by side horizontally across middle with generous transparent margins. Left LIFE: richly shaded red ruby heart with small brass edge and bright pixel highlights. Center MANA: elegant cyan-blue elongated arcane crystal diamond, clear cyan glow tightly confined to silhouette. Right LOAD: elegant antique gold arcane weight/gauge emblem, a small brass balance-scale over a teal energy core, unmistakable burden/capacity symbol, NOT card shape. Equal apparent sizes, detailed polished crisp pixel clusters, readable at 32-64 px. No labels, letters, numbers, HUD plates, ground shadows, background or frames."
+    },
+    {
+      "name": "09-selection-state-atlas",
+      "alpha": true,
+      "prompt": "Transparent game UI feedback atlas, landscape, exactly 4 columns by 2 rows of separated reusable overlays. All are hollow square overlays for art-only battlefield thumbnails with COMPLETELY TRANSPARENT center. Top row: thin teal selection glow; subdued gold hover outline; bright teal valid-target corner brackets; amber selected-material corner brackets. Bottom row: gray disabled veil square with faint transparent tint; muted teal pulsing-state square ring (static keyframe); small arcane eye icon for visibility; small padlock icon for unavailable. No card frames, no parchment, no text, no thumbnail illustrations. Minimal precise pixel-art edge treatment, ample transparent gutters."
+    },
+    {
+      "name": "10-zone-plates-atlas",
+      "alpha": true,
+      "prompt": "Transparent pixel fantasy UI atlas 2 columns by 2 rows, four separate small peripheral zone baseplates. Top left main-deck stand: small dark navy square recessed UI plate with gold corners, EMPTY center for existing card back, tiny blank count badge outside bottom right. Top right side-deck stand: similar with teal diamond accent, empty center. Bottom left ash pile plate: dark navy square with subtle gold crescent emblem and empty count badge. Bottom right compact hand-area underline shelf: wide thin gold divider with two teal end gems, no card slots. No card backs, no cards, no text. Independent sprites with generous gaps."
+    },
+    {
+      "name": "11-information-panels-atlas",
+      "alpha": true,
+      "prompt": "Transparent production UI atlas four separate panels in 2x2 arrangement. Top left compact confirmation modal, blank title and message area, two broad blank bottom buttons. Top right compact tooltip panel, empty opaque navy interior and small downward pointer. Bottom left wide slim chain/response notification strip, small gold diamond at left, large empty message area and two small blank buttons at right. Bottom right medium information/list popup, empty title header with X close, blank scrollable navy body and one blank bottom button. Gold thin trim teal corners, no letters/numbers/cards. Generous transparent gutters, each panel standalone."
+    },
+    {
+      "name": "12-utility-icons-atlas",
+      "alpha": true,
+      "prompt": "Transparent refined pixel-art UI utility ICON atlas, exact 4 columns by 3 rows, 12 equally sized standalone icons no captions. Row1 magnifying glass, filter funnel, sort up/down arrows, small gear. Row2 back curved arrow, confirm checkmark, cancel X, information i symbol. Row3 arcane hourglass for pending analysis, teal sparkling star for ready, gold chain link for attachment, eye-slash for hidden. Intentional crisp pixel clusters, gold and teal and silver harmonized with reference, legible at small sizes, no square button plates, no cards, no extra letters except information i, generous clear gutters."
+    }
+  ]
+}

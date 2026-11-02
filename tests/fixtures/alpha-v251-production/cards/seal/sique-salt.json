@@ -1,0 +1,32 @@
+{
+  "id": "sique-salt",
+  "name": "味契·海盐",
+  "type": "seal",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "050008",
+  "illustrationId": "sique-salt",
+  "traits": [
+    "sique_cauldron_only"
+  ],
+  "onLeave": [
+    {
+      "kind": "sique_recover_spell",
+      "amount": 0
+    }
+  ],
+  "effects": [
+    {
+      "kind": "sique_mill_seal",
+      "amount": 0
+    }
+  ],
+  "text": "仅可附着于味契·魔力坩埚。附着时，将牌库中1张味契符文送入灰烬区。解除附着时，将灰烬区1张味契法术加入手牌。"
+}

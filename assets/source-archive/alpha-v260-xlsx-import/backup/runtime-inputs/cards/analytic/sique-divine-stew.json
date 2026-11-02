@@ -1,0 +1,29 @@
+{
+  "id": "sique-divine-stew",
+  "name": "味契·神恩炖肉",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 5,
+  "level": 5,
+  "speed": 2,
+  "castCost": 1,
+  "tags": [
+    "味契"
+  ],
+  "number": "020025",
+  "illustrationId": "sique-divine-stew",
+  "analysisTurns": 5,
+  "school": "necromancy",
+  "traits": [
+    "sique_detach_3"
+  ],
+  "target": "self",
+  "effects": [
+    {
+      "kind": "sique_life_payment",
+      "amount": 0
+    }
+  ],
+  "text": "将3张【味契】符文卡从己方场上送去灰烬区才能发动。此回合，将对方生命值作为己方费用支付的替代。"
+}

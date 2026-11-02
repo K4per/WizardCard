@@ -1,0 +1,11 @@
+{
+  "modelVersion": "0.1.0",
+  "cardPriceMana": 2.5,
+  "cardPriceRange": [2.0, 3.0],
+  "temporaryLoadPriceMana": 0.15,
+  "temporaryLoadPriceRange": [0.0, 0.3],
+  "futureDiscount": 0.85,
+  "incomeHorizon": 3,
+  "drawCandidateCosts": [1, 2, 3],
+  "description": "设计先验，未经胜率拟合；临时荷载价格仅用于安全且不接近过载的抽牌情景。"
+}

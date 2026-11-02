@@ -1,0 +1,46 @@
+{
+  "id": "v260-word-0018",
+  "number": "030018",
+  "name": "奥术回想",
+  "type": "word",
+  "school": "divination",
+  "rarity": "epic",
+  "rank": 1,
+  "cost": 3,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "抽2张卡，获得2点独立荷载。",
+  "effects": [
+    {
+      "kind": "draw",
+      "amount": 2,
+      "recipient": "owner"
+    },
+    {
+      "kind": "independent",
+      "amount": 2,
+      "recipient": "owner"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 59
+  },
+  "illustrationId": "recall",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\recall.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "recall"
+  },
+  "migration": {
+    "previousId": "recall"
+  },
+  "level": 1
+}

@@ -1,0 +1,23 @@
+{
+  "id": "arcana-hermit",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "arcana-hermit",
+  "number": "020032",
+  "name": "隐士",
+  "type": "analytic",
+  "text": "将双方解析区法术卡全部盖伏。",
+  "rank": 6,
+  "level": 6,
+  "school": "arcana",
+  "cost": 9,
+  "castCost": 0,
+  "analysisTurns": 1,
+  "speed": 2,
+  "effects": [
+    {
+      "kind": "arcana_hermit",
+      "amount": 0
+    }
+  ]
+}

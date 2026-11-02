@@ -1,0 +1,32 @@
+{
+  "id": "sique-parsley",
+  "name": "味契·欧芹",
+  "type": "seal",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "050010",
+  "illustrationId": "sique-parsley",
+  "traits": [
+    "sique_cauldron_only"
+  ],
+  "onLeave": [
+    {
+      "kind": "sique_recover_seal",
+      "amount": 0
+    }
+  ],
+  "effects": [
+    {
+      "kind": "sique_mill_spell",
+      "amount": 0
+    }
+  ],
+  "text": "仅可附着于【味契·魔力坩埚】。解除附着时，将1张【味契】符文卡从己方灰烬区加入手卡。 附着于阵法卡：附着时，将1张【味契】法术卡从卡组送去灰烬区。 附着于法术卡：无效果。"
+}

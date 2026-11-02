@@ -1,0 +1,57 @@
+{
+  "id": "v260-formation-0008",
+  "number": "010008",
+  "name": "硫磺",
+  "type": "formation",
+  "school": "",
+  "rarity": "common",
+  "rank": 0,
+  "cost": 0,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 1,
+  "text": "此阵法卡上仅可设置火焰伤害法术卡。己方每有1张法术卡从施法区进入灰烬区，对对方造成2点火焰伤害。",
+  "effects": [],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "worksheet": "阵法卡",
+    "row": 10
+  },
+  "illustrationId": "v2-sulfur",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-sulfur.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "v2-sulfur"
+  },
+  "migration": {
+    "previousId": "sulfur"
+  },
+  "leaveDamage": {
+    "amount": 2,
+    "damageType": "fire"
+  },
+  "traits": [
+    "host_fire_only",
+    "ping_on_spell_leave"
+  ],
+  "raritySource": "",
+  "recipe": [
+    {
+      "kind": "sacrifice_spell",
+      "amount": 2,
+      "readyOnly": true,
+      "fireDamage": true
+    }
+  ],
+  "summonCondition": "解析完成的火焰伤害法术卡×2",
+  "level": 6,
+  "body": 2,
+  "rings": 6,
+  "capacity": 6,
+  "income": 3
+}

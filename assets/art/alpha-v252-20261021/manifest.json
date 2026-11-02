@@ -1,0 +1,352 @@
+{
+  "format": 1,
+  "collection": "Alpha 2.5.2 supplied Arcana, Asterism and Sique art",
+  "assets": [
+    {
+      "id": "illustration.arcana-fool",
+      "cardId": "arcana-fool",
+      "file": "source/arcana/愚者.png",
+      "sha256": "94ca31f862263435e35dc60c0cca51da380983bde02c3acc9f2965cffa5d54d0",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-magician",
+      "cardId": "arcana-magician",
+      "file": "source/arcana/魔术师.png",
+      "sha256": "3f9b3a9c172239911ba49b29118c2b7a3515ff2c66d5584411755764b0f64e36",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-priestess",
+      "cardId": "arcana-priestess",
+      "file": "source/arcana/女祭司.png",
+      "sha256": "50a9745dddf95dda28e3e4fcc2be4a3375ef9d48ad8ea18b71d7607c5913fdd8",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-empress",
+      "cardId": "arcana-empress",
+      "file": "source/arcana/皇后.png",
+      "sha256": "012a4203379f148234a29da0f46eafa269ec78755cd1490947d3473375ac0279",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-emperor",
+      "cardId": "arcana-emperor",
+      "file": "source/arcana/皇帝.png",
+      "sha256": "4e5ce6af044467f59a72ceeff50ffda6f2de9542492a8f4f72c179f02fd110ea",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-hierophant",
+      "cardId": "arcana-hierophant",
+      "file": "source/arcana/教皇.png",
+      "sha256": "95fa1aaee4699eb4c87be7eb413b68b809f18a64e198953ea42faf88bea3aa8d",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-lovers",
+      "cardId": "arcana-lovers",
+      "file": "source/arcana/恋人.png",
+      "sha256": "a3e45a1984b84e34e0470b638d8e89ea2ebf0aa481956ef6e231c107a2ab90d9",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-chariot",
+      "cardId": "arcana-chariot",
+      "file": "source/arcana/战车.png",
+      "sha256": "21b67fbc0573e05946828df6d74292c5b0dfa67356951cd38c96c7a0e1e88843",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-strength",
+      "cardId": "arcana-strength",
+      "file": "source/arcana/力量.png",
+      "sha256": "3f16746833a72923d779175e726ec7493722ce1f6169c31d100dcd7ad065d6f9",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-hermit",
+      "cardId": "arcana-hermit",
+      "file": "source/arcana/隐士.png",
+      "sha256": "bc85f62fbebcc31cb452452823a3d33c46adef1d45439c3e4b93431f248b17f9",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-justice",
+      "cardId": "arcana-justice",
+      "file": "source/arcana/正义.png",
+      "sha256": "81ab7fe7ac52b16e3c501132b151e66d4b3215a7bd459ac4a8bccd4421f6cdc0",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-hanged-man",
+      "cardId": "arcana-hanged-man",
+      "file": "source/arcana/倒吊人.png",
+      "sha256": "1f50c2a1bd961c205f0651cc819ca7ab29eca9a62bad2c86ef4ed9db3bc7a969",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-death",
+      "cardId": "arcana-death",
+      "file": "source/arcana/死神.png",
+      "sha256": "2ef8252929b05df4c30828b52a0dc4fa17784ba714657d9318a3d83af8b4f22f",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-temperance",
+      "cardId": "arcana-temperance",
+      "file": "source/arcana/节制.png",
+      "sha256": "00698cccf4ca252d695d2b62c19c00be3b8608ff01d759a5b871cb0c4eb8ebd1",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-devil",
+      "cardId": "arcana-devil",
+      "file": "source/arcana/恶魔.png",
+      "sha256": "0a56ecadca0c30b1d1650f669f7354870032a8e6fdd07e5e5326327edb671ba6",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-tower",
+      "cardId": "arcana-tower",
+      "file": "source/arcana/高塔.png",
+      "sha256": "3453d4c7bcbdfcd5842d2e30bb1a9507ef673bdd87316bab7630df26974d229e",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.arcana-world",
+      "cardId": "arcana-world",
+      "file": "source/arcana/世界.png",
+      "sha256": "ea2b6a5722edcbe259691a71a916032d8c2d614523a504f24c9bec7a14bdf19d",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.alpha-v252-small-hexagram",
+      "cardId": "small-hexagram",
+      "file": "source/asterism/四芒星.png",
+      "sha256": "160f0b0c332976753e446a3d63f7190d3d6a3be110c0cdd3850d451e4279dd62",
+      "size": [
+        1448,
+        1086
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.three-star",
+      "cardId": "three-star",
+      "file": "source/asterism/三芒星.png",
+      "sha256": "52626cd1822467e04ef266d41fb74cf66a979ccd425d4f780cb588814b2648da",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.two-star",
+      "cardId": "two-star",
+      "file": "source/asterism/二芒星.png",
+      "sha256": "d14b4e01f01b6f80dc04c274e220e87e1c8588884a2a2d56995ae0c5709a5369",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.alpha-v252-hexagram",
+      "cardId": "hexagram",
+      "file": "source/asterism/六芒星.png",
+      "sha256": "d72286c181b23800f7551d7797b9a0d1cc79fc961d2b6b420a6b0340d54829f4",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.alpha-v252-pentagram-of-life",
+      "cardId": "pentagram-of-life",
+      "file": "source/asterism/五芒星.png",
+      "sha256": "0c2faded3a69d360f923fc85c61257280a5526d30e135a1a71a7fe210b38fbcd",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.alpha-v252-octagram",
+      "cardId": "octagram",
+      "file": "source/asterism/八芒星.png",
+      "sha256": "7616013f866881c1a0094f11671dc7f03827b586710ec266aff45bef8bc7324e",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.alpha-v252-sun",
+      "cardId": "sun",
+      "file": "source/asterism/太阳.png",
+      "sha256": "37150aa2601e55ab8432168b6e29aa72da938ab0d214abdbe22e6a69f9f00d91",
+      "size": [
+        1448,
+        1086
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.moon",
+      "cardId": "moon",
+      "file": "source/asterism/月亮.png",
+      "sha256": "886a90bb05583ce9a7180f1d0edf7234fdfbd31856a7aafd95d82f01a2dcb184",
+      "size": [
+        1024,
+        1024
+      ],
+      "sampling": "linear",
+      "origin": "User-supplied latest Alpha 2.5.2 artwork; unchanged PNG"
+    },
+    {
+      "id": "illustration.sique-roast",
+      "cardId": "sique-roast",
+      "file": "processed/sique-roast.png",
+      "sha256": "55a9f91e5d6f2a58e448ac099fcb3cfb9920c688c7f2dc2e8f1e4892a5e47a10",
+      "size": [
+        1280,
+        1280
+      ],
+      "sampling": "nearest",
+      "original": "source/sique/sique-roast.jpg",
+      "originalSha256": "2899b249179693f6fe8cc4995c3dbf4e92f684212e7ac45c1b5bb01edc0850dc",
+      "origin": "User-supplied Sique JPEG; original RGB pixels with local transparency mask"
+    },
+    {
+      "id": "illustration.sique-blowfire",
+      "cardId": "sique-blowfire",
+      "file": "processed/sique-blowfire.png",
+      "sha256": "3eeb6f5c0bf4aa424be9c8b0130ac367e59b81ed283f6a80c4f7e9cbcf0f2904",
+      "size": [
+        1280,
+        1280
+      ],
+      "sampling": "nearest",
+      "original": "source/sique/sique-blowfire.jpg",
+      "originalSha256": "9d60bb1bcaf7a44e47be5e8a3d2870e8e260de6b63ced1a6970785d6389f1116",
+      "origin": "User-supplied Sique JPEG; original RGB pixels with local transparency mask"
+    },
+    {
+      "id": "illustration.sique-backfire",
+      "cardId": "sique-backfire",
+      "file": "processed/sique-backfire.png",
+      "sha256": "a1384b9890a9e36bbce46fa2e055711554f56ae95223c3a6e18d30ca3adef5e9",
+      "size": [
+        1280,
+        1280
+      ],
+      "sampling": "nearest",
+      "original": "source/sique/sique-backfire.jpg",
+      "originalSha256": "e13aa01030070b827b0258050f4ffd93b2cfcc81d37ab5b99c8e9bb4e4a024ca",
+      "origin": "User-supplied Sique JPEG; original RGB pixels with local transparency mask"
+    }
+  ],
+  "sharedIllustrations": {
+    "earthquake": "unravel"
+  },
+  "processing": "Arcana/Asterism unchanged; Sique JPEG backgrounds removed by tools/extract_alpha_v252_sique_art.py; no image generation"
+}

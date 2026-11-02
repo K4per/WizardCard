@@ -1,0 +1,24 @@
+{
+  "id": "fireball",
+  "name": "火球术",
+  "rarity": "rare",
+  "type": "analytic",
+  "cost": 3,
+  "castCost": 1,
+  "rank": 2,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 10,
+      "damageType": "fire"
+    },
+    {
+      "kind": "optional_destroy_own_formation"
+    }
+  ],
+  "text": "对对方玩家造成10点火焰伤害。那之后，可以销毁自己的一个空白阵法。",
+  "flavor": "没错，这确实是经典之选。“伟大的法师都精通了火球术使用！”阿克莉娅如是说，她本人是个术士。",
+  "speed": 1,
+  "school": "evocation"
+}

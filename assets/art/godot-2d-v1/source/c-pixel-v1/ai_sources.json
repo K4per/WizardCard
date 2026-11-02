@@ -1,0 +1,95 @@
+[
+  {
+    "id": "c2d.background.realm",
+    "kind": "background",
+    "prompt": "Create a new landscape 16:9 pixel fantasy game background for WizardCard matching style image C. Background art ONLY, no UI, text, titles, frames, cards, silhouettes of cards or rectangles. Beautiful 16-bit detailed pixel scenery: moonlit dark-blue magical citadel on distant LEFT, small warm bronze/amber window lights; dark rock arches and quiet teal magical geometry at RIGHT edge; subtly textured deep navy-teal quiet empty CENTER 65% suitable for 2D game UI. Low contrast background, elegant visible pixel clusters, stepped hard edges and flat-tone highlights, no blurry painting, no photorealistic 3D. Corners and bottom edge gently decorative, no bright moon or busy motif in center, opaque full canvas.",
+    "refs": [
+      "E:/Project/WizardCard/assets/art/godot-2d-v1/concepts/directions-20261009/C-clean-pixel.png"
+    ],
+    "transparent": false,
+    "sourceFile": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-8223f344-458a-4f63-8169-726796e901fe.png",
+    "file": "export/c-pixel-v1/background/c2d_background_realm.png"
+  },
+  {
+    "id": "c2d.brand.logo",
+    "kind": "brand",
+    "prompt": "A standalone transparent-background pixel fantasy TITLE LOGO reading exactly WizardCard, capital W and C, no other letters. Match C style reference: clean 16-bit angular serif letters in cream/honey bronze highlights, dark navy outline, subtle emerald faceted diamond centered above or between words, restrained small geometric bronze side flourishes. One horizontal wordmark, excellent readability, pixel clusters and stepped hard edges, no blurred glow, no 3D realism, no huge illustration. Transparent exterior including holes between letters; no plaque backdrop, no scenery.",
+    "refs": [
+      "E:/Project/WizardCard/assets/art/godot-2d-v1/concepts/directions-20261009/C-clean-pixel.png"
+    ],
+    "transparent": true,
+    "sourceFile": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-369ad97c-de38-42cb-99fb-85f2d9188bce.png",
+    "file": "export/c-pixel-v1/brand/c2d_brand_logo.png"
+  },
+  {
+    "id": "c2d.card.back.ai",
+    "kind": "cards",
+    "prompt": "Create ONE standalone anonymous portrait CARD BACK for WizardCard, ratio3:4, pixel fantasy style of C reference. Clean narrow honey bronze stepped border, navy and dark teal enamel, restrained symmetric geometric arcane diamond/hexagram motif centered with muted jade accents. Same generic back for opponent hand and any facedown cards, no type or rarity jewels, no digits/letters, no text, no illustrations or card fronts. Mostly quiet texture, crisp deliberate 16-bit pixels, little ornament, transparent outside card silhouette, no background, no perspective.",
+    "refs": [
+      "E:/Project/WizardCard/assets/art/godot-2d-v1/concepts/directions-20261009/C-clean-pixel.png"
+    ],
+    "transparent": true,
+    "sourceFile": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-e46fc5f0-4b3e-4496-86e5-81514575b62f.png",
+    "file": "export/c-pixel-v1/cards/c2d_card_back_ai.png"
+  },
+  {
+    "id": "c2d.card.detail.analysis.ai",
+    "kind": "cards",
+    "prompt": "Card reference image is LAYOUT only; style image is C STYLE only. One empty portrait spellcard body, aspect 3:4, flat front view, all edges visible. Name plaque top LEFT, empty circular numeric socket TOP RIGHT, LARGE TRUE TRANSPARENT rectangular art aperture y14%-57%, metadata y59%-65% type/speed left and EMPTY rarity bezel at right (a gemstone will be separate overlay), broad blank cream rules area y66%-91%, circular numeric socket BOTTOM LEFT, small empty ID plaque BOTTOM RIGHT. No words, numbers, artwork, characters or fake letters. Both circular socket centers may have blank cream fill. Richly crafted but CLEAN 16-bit pixel UI, stepped dark navy contours, restrained honey-bronze corners, navy/teal backing, light cream readable surfaces, sparse ornamental detail, visible square clusters, no blur/painterly rendering. Transparent exterior and art aperture, no checkerboard or black painted background. Keep decoration outside content fields. Type and rarity independent positions. Create the 解析 type: teal/navy accents, a tiny open arcane-ring or hourglass type emblem at LEFT metadata.",
+    "refs": [
+      "C:/Users/home_/AppData/Local/Temp/codex-clipboard-2eb93a58-c540-426e-a8ad-a27e1a9163ff.png",
+      "E:/Project/WizardCard/assets/art/godot-2d-v1/concepts/directions-20261009/C-clean-pixel.png"
+    ],
+    "transparent": true,
+    "sourceFile": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-0fcf6bc0-6cbf-498d-9c16-474037bc6bbe.png",
+    "file": "export/c-pixel-v1/cards/c2d_card_detail_analysis_ai.png"
+  },
+  {
+    "id": "c2d.card.detail.talisman.ai",
+    "kind": "cards",
+    "prompt": "Card reference image is LAYOUT only; style image is C STYLE only. One empty portrait spellcard body, aspect 3:4, flat front view, all edges visible. Name plaque top LEFT, empty circular numeric socket TOP RIGHT, LARGE TRUE TRANSPARENT rectangular art aperture y14%-57%, metadata y59%-65% type/speed left and EMPTY rarity bezel at right (a gemstone will be separate overlay), broad blank cream rules area y66%-91%, circular numeric socket BOTTOM LEFT, small empty ID plaque BOTTOM RIGHT. No words, numbers, artwork, characters or fake letters. Both circular socket centers may have blank cream fill. Richly crafted but CLEAN 16-bit pixel UI, stepped dark navy contours, restrained honey-bronze corners, navy/teal backing, light cream readable surfaces, sparse ornamental detail, visible square clusters, no blur/painterly rendering. Transparent exterior and art aperture, no checkerboard or black painted background. Keep decoration outside content fields. Type and rarity independent positions. Create the 咒符 type: muted cyan slate accents, a tiny angular folded talisman-paper type emblem at LEFT metadata.",
+    "refs": [
+      "C:/Users/home_/AppData/Local/Temp/codex-clipboard-2eb93a58-c540-426e-a8ad-a27e1a9163ff.png",
+      "E:/Project/WizardCard/assets/art/godot-2d-v1/concepts/directions-20261009/C-clean-pixel.png"
+    ],
+    "transparent": true,
+    "sourceFile": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-c7df2608-fafb-47af-80c2-4e4462f6e096.png",
+    "file": "export/c-pixel-v1/cards/c2d_card_detail_talisman_ai.png"
+  },
+  {
+    "id": "c2d.card.detail.incantation.ai",
+    "kind": "cards",
+    "prompt": "Card reference image is LAYOUT only; style image is C STYLE only. One empty portrait spellcard body, aspect 3:4, flat front view, all edges visible. Name plaque top LEFT, empty circular numeric socket TOP RIGHT, LARGE TRUE TRANSPARENT rectangular art aperture y14%-57%, metadata y59%-65% type/speed left and EMPTY rarity bezel at right (a gemstone will be separate overlay), broad blank cream rules area y66%-91%, circular numeric socket BOTTOM LEFT, small empty ID plaque BOTTOM RIGHT. No words, numbers, artwork, characters or fake letters. Both circular socket centers may have blank cream fill. Richly crafted but CLEAN 16-bit pixel UI, stepped dark navy contours, restrained honey-bronze corners, navy/teal backing, light cream readable surfaces, sparse ornamental detail, visible square clusters, no blur/painterly rendering. Transparent exterior and art aperture, no checkerboard or black painted background. Keep decoration outside content fields. Type and rarity independent positions. Create the 言灵 type: muted violet/navy accents, a tiny three-arc voice/radiating rune type emblem at LEFT metadata.",
+    "refs": [
+      "C:/Users/home_/AppData/Local/Temp/codex-clipboard-2eb93a58-c540-426e-a8ad-a27e1a9163ff.png",
+      "E:/Project/WizardCard/assets/art/godot-2d-v1/concepts/directions-20261009/C-clean-pixel.png"
+    ],
+    "transparent": true,
+    "sourceFile": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-4c0edaa9-157f-44c3-b94c-610e4c33dba9.png",
+    "file": "export/c-pixel-v1/cards/c2d_card_detail_incantation_ai.png"
+  },
+  {
+    "id": "c2d.card.detail.formation.ai",
+    "kind": "cards",
+    "prompt": "Card reference image is LAYOUT only; style image is C STYLE only. One empty portrait spellcard body, aspect 3:4, flat front view, all edges visible. Name plaque top LEFT, empty circular numeric socket TOP RIGHT, LARGE TRUE TRANSPARENT rectangular art aperture y14%-57%, metadata y59%-65% type/speed left and EMPTY rarity bezel at right (a gemstone will be separate overlay), broad blank cream rules area y66%-91%, circular numeric socket BOTTOM LEFT, small empty ID plaque BOTTOM RIGHT. No words, numbers, artwork, characters or fake letters. Both circular socket centers may have blank cream fill. Richly crafted but CLEAN 16-bit pixel UI, stepped dark navy contours, restrained honey-bronze corners, navy/teal backing, light cream readable surfaces, sparse ornamental detail, visible square clusters, no blur/painterly rendering. Transparent exterior and art aperture, no checkerboard or black painted background. Keep decoration outside content fields. Type and rarity independent positions. Create the 阵法 type: muted emerald/navy accents, a tiny six-point geometric formation type emblem at LEFT metadata. In lower rules area add one VERY fine horizontal divider at y80% to separate effects above and formation recipe list below, preserving wide blank cream areas.",
+    "refs": [
+      "C:/Users/home_/AppData/Local/Temp/codex-clipboard-2eb93a58-c540-426e-a8ad-a27e1a9163ff.png",
+      "E:/Project/WizardCard/assets/art/godot-2d-v1/concepts/directions-20261009/C-clean-pixel.png"
+    ],
+    "transparent": true,
+    "sourceFile": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-0ffe5857-4b17-43bc-a2da-a85475d97daa.png",
+    "file": "export/c-pixel-v1/cards/c2d_card_detail_formation_ai.png"
+  },
+  {
+    "id": "c2d.card.detail.rune.ai",
+    "kind": "cards",
+    "prompt": "Card reference image is LAYOUT only; style image is C STYLE only. One empty portrait spellcard body, aspect 3:4, flat front view, all edges visible. Name plaque top LEFT, empty circular numeric socket TOP RIGHT, LARGE TRUE TRANSPARENT rectangular art aperture y14%-57%, metadata y59%-65% type/speed left and EMPTY rarity bezel at right (a gemstone will be separate overlay), broad blank cream rules area y66%-91%, circular numeric socket BOTTOM LEFT, small empty ID plaque BOTTOM RIGHT. No words, numbers, artwork, characters or fake letters. Both circular socket centers may have blank cream fill. Richly crafted but CLEAN 16-bit pixel UI, stepped dark navy contours, restrained honey-bronze corners, navy/teal backing, light cream readable surfaces, sparse ornamental detail, visible square clusters, no blur/painterly rendering. Transparent exterior and art aperture, no checkerboard or black painted background. Keep decoration outside content fields. Type and rarity independent positions. Create the 符文 type: muted bronze/navy accents, a tiny diamond rune/attachment type emblem at LEFT metadata.",
+    "refs": [
+      "C:/Users/home_/AppData/Local/Temp/codex-clipboard-2eb93a58-c540-426e-a8ad-a27e1a9163ff.png",
+      "E:/Project/WizardCard/assets/art/godot-2d-v1/concepts/directions-20261009/C-clean-pixel.png"
+    ],
+    "transparent": true,
+    "sourceFile": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-baa6bded-6b0c-4d12-8923-d3514c60678c.png",
+    "file": "export/c-pixel-v1/cards/c2d_card_detail_rune_ai.png"
+  }
+]

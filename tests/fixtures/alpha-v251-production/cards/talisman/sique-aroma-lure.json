@@ -1,0 +1,53 @@
+{
+  "id": "sique-aroma-lure",
+  "name": "味契·飘香诱惑",
+  "type": "talisman",
+  "rarity": "rare",
+  "cost": 4,
+  "rank": 5,
+  "level": 5,
+  "speed": 3,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "040010",
+  "illustrationId": "sique-aroma-lure",
+  "school": "enchantment",
+  "traits": [
+    "sique_requires_cauldron"
+  ],
+  "effects": [
+    {
+      "kind": "sique_shuffle_hands",
+      "amount": 0
+    }
+  ],
+  "responses": [
+    {
+      "id": "aroma_lure",
+      "name": "双方手牌返回牌库并可重抽",
+      "sources": [
+        "ambush",
+        "casting"
+      ],
+      "windows": [
+        "phase_start",
+        "phase_end",
+        "action",
+        "prepare",
+        "cast",
+        "trigger"
+      ],
+      "target": "none",
+      "effects": [
+        {
+          "kind": "sique_shuffle_hands",
+          "amount": 0
+        }
+      ]
+    }
+  ],
+  "text": "己方场上存在味契·魔力坩埚才能发动。双方手牌全部返回各自牌库，然后各自可以抽取与放回数量相同的牌。",
+  "analysisTurns": 0
+}

@@ -1,0 +1,7997 @@
+{
+  "cardSetVersion": "0.2.0",
+  "commands": [
+    {
+      "actor": 1,
+      "command": {
+        "gate": 1,
+        "type": 14
+      },
+      "digest": "79e44b54a0054854"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 2,
+        "type": 14
+      },
+      "digest": "a07945532de8b3ed"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 47,
+        "replace": 0,
+        "type": 0
+      },
+      "digest": "a5f88a2d7be104e6"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 52,
+        "formation": 32,
+        "type": 2
+      },
+      "digest": "1061ca0bd528b868"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 48,
+        "host": 32,
+        "type": 6
+      },
+      "digest": "ed460867f0efdab6"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 6,
+        "type": 14
+      },
+      "digest": "715c25c04e5f78f5"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 7,
+        "type": 14
+      },
+      "digest": "6249c995f6ae8443"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 8,
+        "type": 14
+      },
+      "digest": "f33cd763f3d6994a"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 9,
+        "type": 14
+      },
+      "digest": "e27a064bda672ed8"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 10,
+        "type": 14
+      },
+      "digest": "173bb7c45769544d"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 28,
+        "host": 1,
+        "type": 6
+      },
+      "digest": "0ee33c97edf84c51"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 15,
+        "replace": 0,
+        "type": 0
+      },
+      "digest": "2211fa074df5cb0a"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 20,
+        "formation": 1,
+        "type": 2
+      },
+      "digest": "c84b88b097597d48"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 14,
+        "type": 14
+      },
+      "digest": "1e406bf2e79b2151"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 15,
+        "type": 14
+      },
+      "digest": "1373e93de3e36b1f"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 16,
+        "type": 14
+      },
+      "digest": "55e8be61daf37621"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 17,
+        "type": 14
+      },
+      "digest": "4bb10b8682f70f76"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 18,
+        "type": 14
+      },
+      "digest": "e550a5633313b430"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 52,
+        "discard": 0,
+        "target": 0,
+        "type": 3
+      },
+      "digest": "d883f53600b59f3a"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 49,
+        "host": 47,
+        "type": 6
+      },
+      "digest": "19bc1229a9571248"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 21,
+        "type": 14
+      },
+      "digest": "6745a6d7b8cd84e2"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 22,
+        "option": 52,
+        "type": 10
+      },
+      "digest": "ac51c2b18f82aeda"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 23,
+        "type": 14
+      },
+      "digest": "dd8c3d9e6956a2de"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 24,
+        "type": 14
+      },
+      "digest": "4c1e0aad5fd876a5"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 25,
+        "type": 14
+      },
+      "digest": "013307fc0d8ec39a"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 26,
+        "type": 14
+      },
+      "digest": "567e1930328e4a5b"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 20,
+        "discard": 0,
+        "target": 0,
+        "type": 3
+      },
+      "digest": "a643e35941706125"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 8,
+        "formation": 1,
+        "type": 2
+      },
+      "digest": "33a01ea3335b03a6"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 12,
+        "target": 0,
+        "type": 4
+      },
+      "digest": "8e5d6d4fbfab8338"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 14,
+        "replace": 0,
+        "type": 0
+      },
+      "digest": "6f6cd9b48f58aa77"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 31,
+        "type": 14
+      },
+      "digest": "d092965c0cdc4de1"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 32,
+        "option": 20,
+        "type": 10
+      },
+      "digest": "17769494c5b4af85"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 33,
+        "type": 14
+      },
+      "digest": "0e082a32f18e49ad"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 34,
+        "type": 14
+      },
+      "digest": "a54e92a113db1321"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 35,
+        "type": 14
+      },
+      "digest": "ffd5f4bcf00816e7"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 36,
+        "option": 0,
+        "type": 10
+      },
+      "digest": "68dcbb10b049f93f"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 37,
+        "type": 14
+      },
+      "digest": "09e6d1e255e551b2"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 36,
+        "type": 5
+      },
+      "digest": "45fc282cb340b11c"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 43,
+        "target": 0,
+        "type": 4
+      },
+      "digest": "36f981a943a24ba8"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 40,
+        "type": 14
+      },
+      "digest": "24e0ee8c23ac64aa"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 41,
+        "type": 14
+      },
+      "digest": "398752612b407f66"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 42,
+        "type": 14
+      },
+      "digest": "4dd7954d88caa443"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 43,
+        "type": 14
+      },
+      "digest": "347e70d05f50116e"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 44,
+        "option": 20,
+        "type": 10
+      },
+      "digest": "b1901c3ac95f67de"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 45,
+        "type": 14
+      },
+      "digest": "c108e2ed5cc3e537"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 3,
+        "formation": 1,
+        "type": 2
+      },
+      "digest": "0f941a7fd12be372"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 11,
+        "target": 0,
+        "type": 4
+      },
+      "digest": "ec0a040c43f17735"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 48,
+        "type": 14
+      },
+      "digest": "f6ab1d359eb6321d"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 49,
+        "type": 14
+      },
+      "digest": "3de85852f024a8c8"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 50,
+        "type": 14
+      },
+      "digest": "9509f5d9277232a3"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 51,
+        "type": 14
+      },
+      "digest": "b624ce24281be076"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 52,
+        "type": 14
+      },
+      "digest": "6aef0d4be1244527"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 44,
+        "target": 0,
+        "type": 4
+      },
+      "digest": "5e69e269d04831ec"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 42,
+        "target": 0,
+        "type": 4
+      },
+      "digest": "76b995de715d0217"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 55,
+        "type": 14
+      },
+      "digest": "ab10630f8dbba526"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 56,
+        "type": 14
+      },
+      "digest": "68b5d0d2d335dfc0"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 57,
+        "type": 14
+      },
+      "digest": "305d4c07591cb82e"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 58,
+        "type": 14
+      },
+      "digest": "1940582548156140"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 59,
+        "option": 0,
+        "type": 10
+      },
+      "digest": "d86541d3f5ad882e"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 60,
+        "type": 14
+      },
+      "digest": "a1814cb320fc73a5"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 4,
+        "formation": 1,
+        "type": 2
+      },
+      "digest": "3c732ff7a3f175e5"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 3,
+        "discard": 0,
+        "target": 0,
+        "type": 3
+      },
+      "digest": "83aeda5e72720f39"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 63,
+        "type": 14
+      },
+      "digest": "8bc9dd9a3bd63344"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 64,
+        "option": 3,
+        "type": 10
+      },
+      "digest": "97474fc3879768cd"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 65,
+        "option": 0,
+        "type": 10
+      },
+      "digest": "9d0ca8aa5bae62ff"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 66,
+        "type": 14
+      },
+      "digest": "cff1fe7caa897167"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 67,
+        "type": 14
+      },
+      "digest": "df2ca85728b31493"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 68,
+        "type": 14
+      },
+      "digest": "dd7d2023b1143652"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 69,
+        "type": 14
+      },
+      "digest": "597aa0b89520d114"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 39,
+        "formation": 32,
+        "type": 2
+      },
+      "digest": "030dea38e983ec55"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 50,
+        "host": 39,
+        "type": 6
+      },
+      "digest": "e21ff78470aba350"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 72,
+        "type": 14
+      },
+      "digest": "2d69aff7e608ab0f"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 73,
+        "type": 14
+      },
+      "digest": "4ec00b00530db26b"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 74,
+        "type": 14
+      },
+      "digest": "61f49d3a7fd0bd5d"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 75,
+        "type": 14
+      },
+      "digest": "4183342e8e2f41dc"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 76,
+        "type": 14
+      },
+      "digest": "f462648db5806775"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 10,
+        "formation": 1,
+        "type": 2
+      },
+      "digest": "a0b7932929c695d8"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 4,
+        "discard": 0,
+        "target": 0,
+        "type": 3
+      },
+      "digest": "e6c50d3f2f978928"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 31,
+        "formation": 1,
+        "type": 2
+      },
+      "digest": "f94824f0714b7cfd"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 80,
+        "type": 14
+      },
+      "digest": "d3c3986996a40e4a"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 81,
+        "option": 4,
+        "type": 10
+      },
+      "digest": "1a97d43b414967b5"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 82,
+        "option": 0,
+        "type": 10
+      },
+      "digest": "18cb6e91dd3acfd2"
+    }
+  ],
+  "contentHash": "bbf712aec0221146",
+  "events": [
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 20,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 15,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 4,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 12,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 28,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 5,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 5 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 52,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 49,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 36,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 47,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 48,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 5,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 5 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #1"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #1"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #2"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #2"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 2 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 2"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #3"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #3"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #4"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #4"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #5"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #5"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 47,
+      "kind": "command",
+      "text": "玩家 2 操作 阿克乌姆之弧"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 52,
+      "kind": "pay",
+      "text": "支付 2 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 52,
+      "kind": "command",
+      "text": "玩家 2 操作 炽燃结界"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 48,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 48,
+      "kind": "command",
+      "text": "玩家 2 操作 奥术圆环"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #6"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #6"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #7"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #7"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #8"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #8"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "施法阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入结束阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #9"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #9"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #10"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #10"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "结束阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 8,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 1 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #11"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #11"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #12"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #12"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 2 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 2"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #13"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #13"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #14"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #14"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #15"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #15"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 28,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 28,
+      "kind": "command",
+      "text": "玩家 1 操作 逆三角星符"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 15,
+      "kind": "command",
+      "text": "玩家 1 操作 阿克乌姆之弧"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 20,
+      "kind": "pay",
+      "text": "支付 2 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "command",
+      "text": "玩家 1 操作 炽燃结界"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #16"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #16"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #17"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #17"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #18"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #18"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "施法阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入结束阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #19"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #19"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #20"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #20"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "结束阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 44,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 1 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #21"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #21"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #22"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #22"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 2 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 2"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #23"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #23"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #24"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #24"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #25"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #25"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 52,
+      "kind": "pay",
+      "text": "准备支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：准备施法"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 52,
+      "kind": "link_declared",
+      "text": "宣告链节 #26"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 52,
+      "kind": "command",
+      "text": "玩家 2 操作 炽燃结界"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 52,
+      "kind": "prepared",
+      "text": "法术进入施法区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 52,
+      "kind": "link_resolved",
+      "text": "结算链节 #26"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 49,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 49,
+      "kind": "command",
+      "text": "玩家 2 操作 奥术圆环"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #27"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #27"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #28"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #28"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "choice",
+      "text": "玩家 2 完成选择"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：释放法术"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 52,
+      "kind": "link_declared",
+      "text": "宣告链节 #29"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 52,
+      "kind": "effect",
+      "text": "造成 2 点伤害"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 52,
+      "kind": "link_resolved",
+      "text": "结算链节 #29"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #30"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #30"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "施法阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入结束阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #31"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #31"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #32"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #32"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "结束阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 3,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 1 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #33"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #33"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #34"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #34"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 4,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 4 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 4"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #35"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #35"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #36"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #36"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #37"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #37"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 20,
+      "kind": "pay",
+      "text": "准备支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：准备施法"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "link_declared",
+      "text": "宣告链节 #38"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "command",
+      "text": "玩家 1 操作 炽燃结界"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "prepared",
+      "text": "法术进入施法区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "link_resolved",
+      "text": "结算链节 #38"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 8,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 8,
+      "kind": "command",
+      "text": "玩家 1 操作 生命缝合"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 12,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：行动宣告"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 12,
+      "kind": "link_declared",
+      "text": "宣告链节 #39"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 12,
+      "kind": "command",
+      "text": "玩家 1 操作 奥术回想"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 24,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 14,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 12,
+      "kind": "effect",
+      "text": "抽取 2 张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 12,
+      "kind": "effect",
+      "text": "增加 1 点临时荷载"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 12,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 12,
+      "kind": "link_resolved",
+      "text": "结算链节 #39"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 14,
+      "kind": "command",
+      "text": "玩家 1 操作 阿克乌姆之弧"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #40"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #40"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #41"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #41"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "choice",
+      "text": "玩家 1 完成选择"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：释放法术"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "link_declared",
+      "text": "宣告链节 #42"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 20,
+      "kind": "effect",
+      "text": "造成 2 点伤害"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "link_resolved",
+      "text": "结算链节 #42"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #43"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #43"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "施法阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入结束阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #44"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #44"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #45"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #45"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "结束阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 43,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 1 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #46"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #46"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #47"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #47"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "choice",
+      "text": "玩家 2 完成选择"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 52,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 2 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 2"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #48"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #48"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #49"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #49"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #50"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #50"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 36,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：释放法术"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 36,
+      "kind": "link_declared",
+      "text": "宣告链节 #51"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 36,
+      "kind": "command",
+      "text": "玩家 2 操作 火花术"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 36,
+      "kind": "effect",
+      "text": "造成 2 点伤害"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 36,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 36,
+      "kind": "link_resolved",
+      "text": "结算链节 #51"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 43,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：行动宣告"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 43,
+      "kind": "link_declared",
+      "text": "宣告链节 #52"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 43,
+      "kind": "command",
+      "text": "玩家 2 操作 奥术回想"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 55,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 34,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 43,
+      "kind": "effect",
+      "text": "抽取 2 张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 43,
+      "kind": "effect",
+      "text": "增加 1 点临时荷载"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 43,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 43,
+      "kind": "link_resolved",
+      "text": "结算链节 #52"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #53"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #53"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #54"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #54"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #55"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #55"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "施法阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入结束阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #56"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #56"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #57"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #57"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "结束阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 11,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 1 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #58"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #58"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #59"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #59"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "choice",
+      "text": "玩家 1 完成选择"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 20,
+      "kind": "concentration",
+      "text": "维持专注：支付 1 魔素及荷载"
+    },
+    {
+      "amount": 4,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 4 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 4"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #60"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #60"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #61"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #61"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #62"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #62"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 3,
+      "audience": -1,
+      "card": 3,
+      "kind": "pay",
+      "text": "支付 3 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 3,
+      "kind": "command",
+      "text": "玩家 1 操作 火球术"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 11,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：行动宣告"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 11,
+      "kind": "link_declared",
+      "text": "宣告链节 #63"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 11,
+      "kind": "command",
+      "text": "玩家 1 操作 奥术回想"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 31,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 18,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 11,
+      "kind": "effect",
+      "text": "抽取 2 张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 11,
+      "kind": "effect",
+      "text": "增加 1 点临时荷载"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 11,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 11,
+      "kind": "link_resolved",
+      "text": "结算链节 #63"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #64"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #64"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：被动触发"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "link_declared",
+      "text": "宣告链节 #65"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 20,
+      "kind": "effect",
+      "text": "造成 1 点伤害"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "link_resolved",
+      "text": "结算链节 #65"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #66"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #66"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #67"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #67"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "施法阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入结束阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #68"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #68"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #69"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #69"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "结束阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 54,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 1 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #70"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #70"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #71"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #71"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 2 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 2"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #72"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #72"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #73"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #73"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #74"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #74"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 44,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：行动宣告"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 44,
+      "kind": "link_declared",
+      "text": "宣告链节 #75"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 44,
+      "kind": "command",
+      "text": "玩家 2 操作 奥术回想"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 42,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 50,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 44,
+      "kind": "effect",
+      "text": "抽取 2 张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 44,
+      "kind": "effect",
+      "text": "增加 1 点临时荷载"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 44,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 44,
+      "kind": "link_resolved",
+      "text": "结算链节 #75"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 42,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：行动宣告"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 42,
+      "kind": "link_declared",
+      "text": "宣告链节 #76"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 42,
+      "kind": "command",
+      "text": "玩家 2 操作 奥术回想"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 60,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 57,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 42,
+      "kind": "effect",
+      "text": "抽取 2 张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 42,
+      "kind": "effect",
+      "text": "增加 1 点临时荷载"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 42,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 42,
+      "kind": "link_resolved",
+      "text": "结算链节 #76"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #77"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #77"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #78"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #78"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #79"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #79"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "施法阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入结束阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #80"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #80"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #81"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #81"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "结束阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 13,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 1 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #82"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #82"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #83"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #83"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "choice",
+      "text": "玩家 1 完成选择"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 20,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 4,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 4 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 4"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #84"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #84"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #85"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #85"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #86"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #86"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 3,
+      "audience": -1,
+      "card": 4,
+      "kind": "pay",
+      "text": "支付 3 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 4,
+      "kind": "command",
+      "text": "玩家 1 操作 火球术"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 3,
+      "kind": "pay",
+      "text": "准备支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：准备施法"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 3,
+      "kind": "link_declared",
+      "text": "宣告链节 #87"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 3,
+      "kind": "command",
+      "text": "玩家 1 操作 火球术"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 3,
+      "kind": "prepared",
+      "text": "法术进入施法区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 3,
+      "kind": "link_resolved",
+      "text": "结算链节 #87"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #88"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #88"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #89"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #89"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "choice",
+      "text": "玩家 1 完成选择"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：释放法术"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 3,
+      "kind": "link_declared",
+      "text": "宣告链节 #90"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 10,
+      "audience": -1,
+      "card": 3,
+      "kind": "effect",
+      "text": "造成 10 点伤害"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "choice",
+      "text": "玩家 1 完成选择"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 3,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 3,
+      "kind": "link_resolved",
+      "text": "结算链节 #90"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #91"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #91"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "施法阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入结束阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #92"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #92"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #93"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #93"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "结束阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": 1,
+      "card": 39,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 1 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #94"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #94"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #95"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #95"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 2 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 2"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #96"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #96"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #97"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #97"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #98"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #98"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 39,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 39,
+      "kind": "command",
+      "text": "玩家 2 操作 生命缝合"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 50,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 50,
+      "kind": "command",
+      "text": "玩家 2 操作 奥术圆环"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #99"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #99"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #100"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #100"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #101"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #101"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "施法阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入结束阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #102"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #102"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #103"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #103"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "结束阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入抽卡阶段"
+    },
+    {
+      "amount": 0,
+      "audience": 0,
+      "card": 10,
+      "kind": "draw",
+      "text": "抽取一张牌"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "抽取 1 张牌"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #104"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #104"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #105"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #105"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "抽卡阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入准备阶段"
+    },
+    {
+      "amount": 4,
+      "audience": -1,
+      "card": 0,
+      "kind": "effect",
+      "text": "获得 4 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "income",
+      "text": "准备阶段收入 4"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #106"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #106"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #107"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #107"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "准备阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入主要阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #108"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #108"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 10,
+      "kind": "pay",
+      "text": "支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 10,
+      "kind": "command",
+      "text": "玩家 1 操作 生命缝合"
+    },
+    {
+      "amount": 1,
+      "audience": -1,
+      "card": 4,
+      "kind": "pay",
+      "text": "准备支付 1 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：准备施法"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 4,
+      "kind": "link_declared",
+      "text": "宣告链节 #109"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 4,
+      "kind": "command",
+      "text": "玩家 1 操作 火球术"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 4,
+      "kind": "prepared",
+      "text": "法术进入施法区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 4,
+      "kind": "link_resolved",
+      "text": "结算链节 #109"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 2,
+      "audience": -1,
+      "card": 31,
+      "kind": "pay",
+      "text": "支付 2 魔素"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 31,
+      "kind": "command",
+      "text": "玩家 1 操作 碎环术"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #110"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #110"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_end",
+      "text": "主要阶段结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "phase_enter",
+      "text": "进入施法阶段"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：阶段开始"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_declared",
+      "text": "宣告链节 #111"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "link_resolved",
+      "text": "结算链节 #111"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "choice",
+      "text": "玩家 1 完成选择"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_open",
+      "text": "建立连锁：释放法术"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 4,
+      "kind": "link_declared",
+      "text": "宣告链节 #112"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "response_pass",
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_resolve",
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "amount": 10,
+      "audience": -1,
+      "card": 4,
+      "kind": "effect",
+      "text": "造成 10 点伤害"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "choice",
+      "text": "玩家 1 完成选择"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 4,
+      "kind": "leave",
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 4,
+      "kind": "link_resolved",
+      "text": "结算链节 #112"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "chain_closed",
+      "text": "连锁结束"
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "defeat_reason",
+      "text": "玩家 2 败北：生命归零 "
+    },
+    {
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "kind": "game_over",
+      "text": "玩家 1 获胜"
+    }
+  ],
+  "finalDigest": "18cb6e91dd3acfd2",
+  "format": 2,
+  "players": [
+    {
+      "baseFormation": "balance",
+      "cards": [
+        "fireball",
+        "fireball",
+        "fireball",
+        "spark",
+        "spark",
+        "spark",
+        "mend",
+        "mend",
+        "mend",
+        "recall",
+        "recall",
+        "recall",
+        "reservoir",
+        "reservoir",
+        "reservoir",
+        "ring",
+        "ring",
+        "ring",
+        "ward",
+        "ward",
+        "barbs",
+        "barbs",
+        "disrupt",
+        "disrupt",
+        "clarity",
+        "clarity",
+        "conduit",
+        "conduit",
+        "unravel",
+        "unravel"
+      ]
+    },
+    {
+      "baseFormation": "balance",
+      "cards": [
+        "fireball",
+        "fireball",
+        "fireball",
+        "spark",
+        "spark",
+        "spark",
+        "mend",
+        "mend",
+        "mend",
+        "recall",
+        "recall",
+        "recall",
+        "reservoir",
+        "reservoir",
+        "reservoir",
+        "ring",
+        "ring",
+        "ring",
+        "ward",
+        "ward",
+        "barbs",
+        "barbs",
+        "disrupt",
+        "disrupt",
+        "clarity",
+        "clarity",
+        "conduit",
+        "conduit",
+        "unravel",
+        "unravel"
+      ]
+    }
+  ],
+  "programVersion": "0.6.1-dev",
+  "rulesVersion": "0.3.1",
+  "seed": 2,
+  "statistics": {
+    "commandCount": 82,
+    "firstPlayer": 1,
+    "result": 0,
+    "turns": [
+      5,
+      5
+    ]
+  }
+}

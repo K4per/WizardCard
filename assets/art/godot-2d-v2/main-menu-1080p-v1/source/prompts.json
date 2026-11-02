@@ -1,0 +1,83 @@
+{
+  "tool": "built-in image_gen",
+  "normalizationApproved": true,
+  "images": [
+    {
+      "key": "background",
+      "alpha": false,
+      "file": "background-1080p.png",
+      "prompt": "Use case: ui-mockup. Redraw the attached WizardCard C-style MAIN MENU BACKGROUND as a refined production-quality 2D pixel fantasy environment at 1920x1080, wide 16:9 full frame. Reference is the approved composition and palette, not final texture quality. Remove ALL logo, buttons, menu text and lettering, leave scene only. Preserve moonlit distant wizard castle on right, layered navy clouds and towers, medieval stone arch and hanging teal/gold banners on left and right, warm torches, books and armillary sphere at lower left, cyan crystals, stone balcony floor with restrained gold magic circle at bottom. Significantly improve deliberate pixel clusters, clean masonry, carved ornament, controlled smooth-looking pixel lighting, sophisticated layered scenery and crisp silhouette readability. Fine high-resolution pixel art, NOT coarse tiny sprites blown up; avoid gritty random noise, jagged AI scratches, muddy texture, painterly blur, 3D. Deep midnight navy, teal, muted honey bronze gold, amber torchlight, turquoise crystals. Critical composition: reserve a quiet dark central vertical safe area x=620..1300, y=90..960 for independently layered logo and five buttons; keep luminous moon/castle and intricate props mainly sides, center no large bright magical circle behind buttons. Scene polished but UI legibility first. No UI frames, no embedded logo/buttons/text, no watermark.",
+      "source": "source/background-original.png",
+      "originalToolPath": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-05375c61-b10c-4d32-9292-34cbac291362.png",
+      "references": [
+        "C:/Users/home_/AppData/Local/Temp/codex-clipboard-b68d5cd0-3429-4a0a-a867-f9f32ad12903.png"
+      ]
+    },
+    {
+      "key": "logo",
+      "alpha": true,
+      "file": "logo-1080p.png",
+      "prompt": "Redraw the WizardCard title LOGO from this C-style main menu reference as ONE independent transparent-background PNG, wide 16:9 1920x1080 canvas. Place only logo centered with generous fully transparent margins. Exact letters WizardCard (W i z a r d C a r d), no other text. Elegant legible fantasy serif in crisp high-resolution pixel art; warm honey gold beveled metal letters with deliberate highlight/shadow bands and restrained dark navy extrusion, faceted turquoise diamond over central letters with symmetrical slender gold setting, subtle small teal arcane halo behind logo only. Refine craftsmanship and contours substantially, avoid chunky blown-up pixels, scratchy noise, thin unreadable ornament, blurry glow, painterly or 3D look. Preserve original brand identity and silhouette from reference, make balanced beautiful game title. No background scene, no opaque rectangle, no checkerboard, no menu buttons. Transparent pixels outside logo. Logo wide about 1100x320 when exported on full HD canvas.",
+      "source": "source/logo-original.png",
+      "originalToolPath": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-42285b0c-a8af-43ca-80c5-3aa7bac6e6be.png",
+      "references": [
+        "C:/Users/home_/AppData/Local/Temp/codex-clipboard-b68d5cd0-3429-4a0a-a867-f9f32ad12903.png"
+      ]
+    },
+    {
+      "key": "button-normal",
+      "alpha": true,
+      "file": "button-normal-1080p.png",
+      "prompt": "Create ONE isolated blank MAIN MENU BUTTON in the exact C pixel fantasy family of attached WizardCard menu. 1920x1080 wide 16:9 transparent PNG canvas, single horizontal button centered, body width-to-height exactly 5.45:1, meant to render 480x88 pixels. NORMAL state: dark midnight navy enamel inset, refined gold stepped perimeter with clean high-resolution pixel art facets, tiny matching turquoise diamond gems at both pointed ends, slight teal accent along bevel. Symmetric perfectly horizontal frame, spacious completely blank center for Chinese text supplied by game. Sharply authored pixel clusters, fine gilded craft, restrained richness rather than noisy ornament. Outline silhouette pointed hexagon ends, thin double gold bevel, generous inner text safe area. No words, icons, labels, numbers, shadows extending far, checkerboard or background. ONE component only.",
+      "source": "source/button-normal-original.png",
+      "originalToolPath": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-ba6db3bc-aae4-4812-b422-cde5bba0ca8d.png",
+      "references": [
+        "C:/Users/home_/AppData/Local/Temp/codex-clipboard-b68d5cd0-3429-4a0a-a867-f9f32ad12903.png"
+      ]
+    },
+    {
+      "key": "button-hover",
+      "alpha": true,
+      "file": "button-hover-1080p.png",
+      "prompt": "Edit the supplied single blank pixel fantasy main-menu button into HOVER state: fill enamel with rich teal; stronger warm gold highlights, cyan gems glow softly. No outer light bloom that changes silhouette. Preserve EXACT outer dimensions, symmetric hexagonal/pointed contour, gem placements, frame ornament and text-safe area of reference. Change only visual interaction state. Keep background fully transparent and canvas framing identical. One isolated component, no words, no labels, no checkerboard, no scene, no added components. High-quality controlled gold/teal pixel craft.",
+      "source": "source/button-hover-original.png",
+      "originalToolPath": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-f4c70fd6-a647-4a55-82ee-4608a32466aa.png",
+      "references": [
+        "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-ba6db3bc-aae4-4812-b422-cde5bba0ca8d.png"
+      ]
+    },
+    {
+      "key": "button-pressed",
+      "alpha": true,
+      "file": "button-pressed-1080p.png",
+      "prompt": "Edit the supplied single blank pixel fantasy main-menu button into PRESSED state: darker teal inset, depressed inner bevel, upper gold lip shaded, lower lip catches light. Preserve outer contour and thickness, no geometry translation. Preserve EXACT outer dimensions, symmetric hexagonal/pointed contour, gem placements, frame ornament and text-safe area of reference. Change only visual interaction state. Keep background fully transparent and canvas framing identical. One isolated component, no words, no labels, no checkerboard, no scene, no added components. High-quality controlled gold/teal pixel craft.",
+      "source": "source/button-pressed-original.png",
+      "originalToolPath": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-f46c85e1-c845-4bbf-a481-d4320cdedd5e.png",
+      "references": [
+        "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-ba6db3bc-aae4-4812-b422-cde5bba0ca8d.png"
+      ]
+    },
+    {
+      "key": "button-focus",
+      "alpha": true,
+      "file": "button-focus-1080p.png",
+      "prompt": "Edit the supplied single blank pixel fantasy main-menu button into KEYBOARD FOCUS state: retain normal navy center and gold bevel; add a thin clean cyan inner focus line and four short bright corner accents within existing contour. Focus obvious by outline rather than color alone. Preserve EXACT outer dimensions, symmetric hexagonal/pointed contour, gem placements, frame ornament and text-safe area of reference. Change only visual interaction state. Keep background fully transparent and canvas framing identical. One isolated component, no words, no labels, no checkerboard, no scene, no added components. High-quality controlled gold/teal pixel craft.",
+      "source": "source/button-focus-original.png",
+      "originalToolPath": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-7853cedf-5ef2-42b9-b7ec-5fb31d204eaa.png",
+      "references": [
+        "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-ba6db3bc-aae4-4812-b422-cde5bba0ca8d.png"
+      ]
+    },
+    {
+      "key": "button-disabled",
+      "alpha": true,
+      "file": "button-disabled-1080p.png",
+      "prompt": "Edit the supplied single blank pixel fantasy main-menu button into DISABLED state: muted slate navy enamel, desaturated bronze gold and grey blue diamonds, subdued highlights. Retain outline and geometry, no lock icon or text. Preserve EXACT outer dimensions, symmetric hexagonal/pointed contour, gem placements, frame ornament and text-safe area of reference. Change only visual interaction state. Keep background fully transparent and canvas framing identical. One isolated component, no words, no labels, no checkerboard, no scene, no added components. High-quality controlled gold/teal pixel craft.",
+      "source": "source/button-disabled-original.png",
+      "originalToolPath": "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-5102d4ff-6d10-4b85-bc45-1a2e2f70bd1c.png",
+      "references": [
+        "C:\\Users\\home_\\.codex\\generated_images\\01a1031f-0510-78a2-8dac-7e119a663ac0\\exec-ba6db3bc-aae4-4812-b422-cde5bba0ca8d.png"
+      ]
+    }
+  ]
+}

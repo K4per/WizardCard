@@ -1,0 +1,22 @@
+{
+  "id": "blood-vein",
+  "name": "血契·血脉",
+  "type": "seal",
+  "rarity": "rare",
+  "cost": 4,
+  "castCost": 0,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "number": "050013",
+  "illustrationId": "blood-vein",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [],
+  "text": "附着于阵法：己方设置/发动法术卡时，可以将每1点生命值作为1点费用支付的替代。 附着于法术：无效果。",
+  "traits": [
+    "blood_vein"
+  ]
+}

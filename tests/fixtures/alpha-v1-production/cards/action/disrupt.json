@@ -1,0 +1,17 @@
+{
+  "id": "disrupt",
+  "name": "魔力扰动",
+  "rarity": "uncommon",
+  "type": "action",
+  "cost": 2,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "temporary",
+      "amount": 4
+    }
+  ],
+  "text": "对方玩家获得4点临时荷载。",
+  "flavor": "捣蛋鬼别捣蛋！",
+  "speed": 1
+}

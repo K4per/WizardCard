@@ -1,0 +1,130 @@
+#include "wizard/network.hpp"
+#include <algorithm>
+#include <iostream>
+#include <thread>
+using namespace wizard;
+int main(int argc, char **argv) {
+    try {
+        if (argc != 7)
+            throw std::runtime_error("Usage: wizard_network_probe host|guest assets output port "
+                                     "normal|surrender|reconnect address");
+        auto c = loadContent(argv[2]);
+        net::Peer peer(c, std::filesystem::path(argv[3]));
+        PlayerDeck d;
+        d.cards = c.deck;
+        d.sideDeck = c.sideDeck;
+        auto port = std::stoul(argv[4]);
+        if (!port || port > 65535)
+            throw std::runtime_error("Invalid port");
+        bool host = std::string(argv[1]) == "host";
+        std::string scenario = argv[5];
+        if (host)
+            peer.host(static_cast<unsigned short>(port), d);
+        else
+            peer.join(argv[6], static_cast<unsigned short>(port));
+        bool deck = host, reconnected = false;
+        std::size_t commands = 0;
+        ActionIntent intent;
+        std::uint64_t queryRevision = ~std::uint64_t{0};
+        std::string lastNotice;
+        auto terminal = std::chrono::steady_clock::time_point{};
+        // Current-card-pool matches can exceed three minutes on a busy CI host.
+        // This watchdog bounds only the verification process, not transport timeouts.
+        auto until = std::chrono::steady_clock::now() + std::chrono::seconds(420);
+        while (std::chrono::steady_clock::now() < until) {
+            peer.tick();
+            if (lastNotice != peer.notice()) {
+                lastNotice = peer.notice();
+                std::cerr << "status: " << lastNotice << " revision=" << peer.revision()
+                          << " result=" << (peer.started() ? peer.view().result : -1) << '\n';
+            }
+            if (peer.ended() && (!peer.started() || peer.view().result == -1))
+                throw std::runtime_error(peer.notice());
+            if (peer.connected() && !peer.started()) {
+                if (!deck) {
+                    peer.deck(d);
+                    deck = true;
+                }
+                const auto &room = peer.room();
+                auto player = room.at("hostPlayer").get<int>();
+                if (!host)
+                    player = 1 - player;
+                if (!room.at("ready").at(player).get<bool>()) {
+                    peer.ready();
+                }
+            }
+            if (peer.started() && (peer.view().result != -1 || !peer.blocked())) {
+                const auto &v = peer.view();
+                if (v.result != -1) {
+                    if (host) {
+                        if (terminal == std::chrono::steady_clock::time_point{})
+                            terminal = std::chrono::steady_clock::now();
+                        if (!peer.replayDelivered()) {
+                            std::this_thread::sleep_for(std::chrono::milliseconds(2));
+                            continue;
+                        }
+                    }
+                    std::string e;
+                    if (peer.save(e)) {
+                        peer.tick(); // flush the guest's delivery acknowledgement before exit
+                        auto record = readJson(argv[3]);
+                        auto result = replay(c, record);
+                        std::cout << Json{{"scenario", scenario},
+                                          {"host", host},
+                                          {"result", result.state().result},
+                                          {"digest", result.digest()},
+                                          {"commands", record.at("commands").size()},
+                                          {"reconnected", reconnected}}
+                                         .dump()
+                                  << '\n';
+                        return 0;
+                    }
+                } else if (!host && scenario == "surrender" && commands >= 2) {
+                    auto r = peer.submit(Surrender{});
+                    if (!r.accepted)
+                        throw std::runtime_error(r.error);
+                    ++commands;
+                } else if (!host && scenario == "reconnect" && commands >= 3 && !reconnected) {
+                    peer.reconnect();
+                    reconnected = true;
+                } else {
+                    if (queryRevision != peer.revision()) { intent = {}; queryRevision = peer.revision(); }
+                    auto options = peer.queryActions(v.viewer, 1, queryRevision, intent);
+                    if (!options.pending && options.error.empty()) {
+                        if (options.complete) {
+                            auto result = peer.submit(*options.complete);
+                            if (!result.accepted) throw std::runtime_error(result.error);
+                            ++commands; intent = {};
+                        } else if (!options.options.empty()) {
+                            auto choice = options.options.begin();
+                            if (options.field == ActionField::Operation) {
+                                const auto preferred = v.actionSummary.safeAdvance ?
+                                    std::to_string(static_cast<unsigned>(commandKind(*v.actionSummary.safeAdvance))) : std::string{};
+                                auto found = std::find_if(options.options.begin(), options.options.end(), [&](const ActionOption &o) {
+                                    return o.value == preferred;
+                                });
+                                if (found != options.options.end()) choice = found;
+                                else {
+                                    found = std::find_if(options.options.begin(), options.options.end(), [](const ActionOption &o) {
+                                        return o.value != std::to_string(static_cast<unsigned>(CommandKind::Surrender));
+                                    });
+                                    if (found == options.options.end()) {
+                                        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+                                        continue;
+                                    }
+                                    choice = found;
+                                }
+                            }
+                            intent.selections.push_back({options.field, choice->value});
+                        }
+                    }
+                }
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(2));
+        }
+        throw std::runtime_error("Network probe timed out: " + peer.notice());
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << '\n';
+        return 1;
+    }
+}

@@ -1,0 +1,288 @@
+{
+  "version": 1,
+  "designSize": [
+    1920,
+    1080
+  ],
+  "mainDeckSize": 40,
+  "sideDeckSize": 10,
+  "style": "C refined pixel fantasy",
+  "assets": [
+    {
+      "id": "c2d.v2.deck.background",
+      "file": "export/background-1080p.png",
+      "source": "source/background-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1672,
+        941
+      ],
+      "sourceBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "targetSize": [
+        1920,
+        1080
+      ],
+      "region": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "transparent": false,
+      "sampling": "nearest",
+      "sha256": "2bc4297c0d12cc72a929307db6767ea2f11a6e4b724aef781d40559691c63f43",
+      "sourceSha256": "6e8ed6a3d56997e44f96739712ab1f1c2308548dae31c04db0aa958ff2de2492",
+      "origin": "OpenAI built-in ImageGen",
+      "runtimeIntegrated": true,
+      "normalization": "User-approved dimension normalization and empty-alpha trim only"
+    },
+    {
+      "id": "c2d.v2.deck.detail-panel",
+      "file": "export/detail-panel-1080p.png",
+      "source": "source/detail-panel-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        827,
+        1902
+      ],
+      "sourceBounds": [
+        59,
+        64,
+        768,
+        1836
+      ],
+      "targetSize": [
+        360,
+        760
+      ],
+      "region": [
+        780,
+        160,
+        360,
+        760
+      ],
+      "transparent": true,
+      "sampling": "nearest",
+      "sha256": "696cc12385628d05ef429bb39c3b841bfd00cad6378e529315c773f6d8fbf9c4",
+      "sourceSha256": "34d3e54685b427df189963891cbf8dc73b8ee77913dfbc9eccde7d19ff936754",
+      "origin": "OpenAI built-in ImageGen",
+      "runtimeIntegrated": true,
+      "normalization": "User-approved dimension normalization and empty-alpha trim only",
+      "nineSlice": [
+        56,
+        66,
+        56,
+        66
+      ]
+    },
+    {
+      "id": "c2d.v2.deck.grid-panel",
+      "file": "export/grid-panel-1080p.png",
+      "source": "source/grid-panel-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": [
+        69,
+        119,
+        1186,
+        1134
+      ],
+      "targetSize": [
+        640,
+        640
+      ],
+      "region": [
+        640,
+        220,
+        640,
+        640
+      ],
+      "transparent": true,
+      "sampling": "nearest",
+      "sha256": "4f5558c0f5b412129c8107c49caddaa14809be3291ae833445cd346f7d35ce66",
+      "sourceSha256": "cf02c8fd48623799bf12e609c83b2320636ad5b59a7972937bb737ad2f7113d3",
+      "origin": "OpenAI built-in ImageGen",
+      "runtimeIntegrated": true,
+      "normalization": "User-approved dimension normalization and empty-alpha trim only",
+      "nineSlice": [
+        70,
+        70,
+        70,
+        70
+      ]
+    },
+    {
+      "id": "c2d.v2.deck.list-entry",
+      "file": "export/list-entry-1080p.png",
+      "source": "source/list-entry-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        2172,
+        724
+      ],
+      "sourceBounds": [
+        32,
+        224,
+        2139,
+        515
+      ],
+      "targetSize": [
+        1200,
+        112
+      ],
+      "region": [
+        360,
+        484,
+        1200,
+        112
+      ],
+      "transparent": true,
+      "sampling": "nearest",
+      "sha256": "6499d76026d1240c3a7f7db5ecc95b67556c54f492bb53067553cef989c1fd09",
+      "sourceSha256": "f3dd853191be824822e7852cbd56a55d329534ec94069ee0910df239d3827385",
+      "origin": "OpenAI built-in ImageGen",
+      "runtimeIntegrated": true,
+      "normalization": "User-approved dimension normalization and empty-alpha trim only",
+      "nineSlice": [
+        100,
+        48,
+        100,
+        48
+      ]
+    },
+    {
+      "id": "c2d.v2.deck.empty-slot",
+      "file": "export/empty-slot-1080p.png",
+      "source": "source/empty-slot-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1087,
+        1447
+      ],
+      "sourceBounds": [
+        64,
+        79,
+        1023,
+        1331
+      ],
+      "targetSize": [
+        150,
+        200
+      ],
+      "region": [
+        885,
+        440,
+        150,
+        200
+      ],
+      "transparent": true,
+      "sampling": "nearest",
+      "sha256": "56af68ffda69a293f31d3b0ebf8677e8a2bc603ca6dba252a7aad688b9011d93",
+      "sourceSha256": "7eb49a9389abf60cecd13729fad94cc15d2d2c241834f62a11037d89b4c600af",
+      "origin": "OpenAI built-in ImageGen",
+      "runtimeIntegrated": true,
+      "normalization": "User-approved dimension normalization and empty-alpha trim only"
+    },
+    {
+      "id": "c2d.v2.deck.quantity-badge",
+      "file": "export/quantity-badge-1080p.png",
+      "source": "source/quantity-badge-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1859,
+        846
+      ],
+      "sourceBounds": [
+        230,
+        256,
+        1630,
+        585
+      ],
+      "targetSize": [
+        64,
+        26
+      ],
+      "region": [
+        928,
+        527,
+        64,
+        26
+      ],
+      "transparent": true,
+      "sampling": "nearest",
+      "sha256": "f1a057cc99ee9a878f1b6f3979c5565df678f905ac34c3740da20daa6df32f4a",
+      "sourceSha256": "6dbd091501ab42d265ee3bf2cd56fc48970250c61b4d745d521c946200f993c3",
+      "origin": "OpenAI built-in ImageGen",
+      "runtimeIntegrated": true,
+      "normalization": "User-approved dimension normalization and empty-alpha trim only"
+    },
+    {
+      "id": "c2d.v2.deck.drop-highlight",
+      "file": "export/drop-highlight-1080p.png",
+      "source": "source/drop-highlight-original.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "originalSize": [
+        1086,
+        1448
+      ],
+      "sourceBounds": [
+        30,
+        34,
+        1055,
+        1380
+      ],
+      "targetSize": [
+        150,
+        200
+      ],
+      "region": [
+        885,
+        440,
+        150,
+        200
+      ],
+      "transparent": true,
+      "sampling": "nearest",
+      "sha256": "50b8d4349a635095077bed5b3567894d57d4a4c53075de7cbfdde567eff05c23",
+      "sourceSha256": "ca78e87940d10ac6bbfb9ac6e8253205d250e604485687bb77107a5b44f3cef7",
+      "origin": "OpenAI built-in ImageGen",
+      "runtimeIntegrated": true,
+      "normalization": "User-approved dimension normalization and empty-alpha trim only",
+      "nineSlice": [
+        32,
+        32,
+        32,
+        32
+      ]
+    }
+  ]
+}

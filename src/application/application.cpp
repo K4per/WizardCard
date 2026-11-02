@@ -32,11 +32,14 @@ Json encodeSettings(const Settings &s) {
     return {{"format", 1},
             {"masterVolume", s.masterVolume},
             {"soundVolume", s.soundVolume},
+            {"fontScale", s.fontScale},
             {"windowMode", static_cast<int>(s.windowMode)},
             {"width", s.width},
             {"height", s.height},
             {"automaticPhases", s.automaticPhases},
-            {"reducedMotion", s.reducedMotion}};
+            {"reducedMotion", s.reducedMotion},
+            {"responseTimingSound", s.responseTimingSound},
+            {"fieldBackground", s.fieldBackground}};
 }
 Settings decodeSettings(const Json &j) {
     if (integer(j, "format", 1, 1) != 1)
@@ -44,6 +47,11 @@ Settings decodeSettings(const Json &j) {
     Settings s;
     s.masterVolume = integer(j, "masterVolume", 0, 100);
     s.soundVolume = integer(j, "soundVolume", 0, 100);
+    if (j.contains("fontScale")) {
+        s.fontScale = integer(j, "fontScale", 90, 120);
+        if (s.fontScale % 10 != 0)
+            throw std::runtime_error("设置字段无效：fontScale");
+    }
     s.windowMode = static_cast<WindowMode>(integer(j, "windowMode", 0, 2));
     s.width = static_cast<unsigned>(integer(j, "width", 960, 3840));
     s.height = static_cast<unsigned>(integer(j, "height", 600, 2160));
@@ -55,6 +63,14 @@ Settings decodeSettings(const Json &j) {
             throw std::runtime_error("动画设置无效");
         s.reducedMotion = j.at("reducedMotion").get<bool>();
     }
+    if (j.contains("responseTimingSound")) {
+        if (!j.at("responseTimingSound").is_boolean())
+            throw std::runtime_error("时点音效设置无效");
+        s.responseTimingSound = j.at("responseTimingSound").get<bool>();
+    }
+    s.fieldBackground = j.value("fieldBackground", std::string("arcane"));
+    if (s.fieldBackground != "arcane" && s.fieldBackground != "slate" && s.fieldBackground != "ember")
+        throw std::runtime_error("背景主题无效");
     return s;
 }
 std::filesystem::path userDataDirectory() {
@@ -76,40 +92,12 @@ std::filesystem::path userDataDirectory() {
 #endif
     throw std::runtime_error("无法定位用户数据目录，请使用 --user-data 指定目录");
 }
-void atomicWriteJson(const std::filesystem::path &path, const Json &j) {
-    std::filesystem::create_directories(path.parent_path());
-    auto temporary = path;
-    temporary += ".tmp-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
-    try {
-        {
-            std::ofstream file(temporary, std::ios::binary | std::ios::trunc);
-            if (!file)
-                throw std::runtime_error("无法写入用户数据文件");
-            file << j.dump(2) << '\n';
-            file.flush();
-            if (!file)
-                throw std::runtime_error("用户数据写入失败");
-            file.close();
-            if (file.fail())
-                throw std::runtime_error("用户数据保存失败");
-        }
-#ifdef _WIN32
-        if (!MoveFileExW(temporary.c_str(), path.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
-            throw std::runtime_error("无法替换用户数据文件");
-#else
-        std::filesystem::rename(temporary, path);
-#endif
-    } catch (...) {
-        std::error_code ignored;
-        std::filesystem::remove(temporary, ignored);
-        throw;
-    }
-}
+
 std::vector<DeckPreset> loadPresets(const Content &content, const std::filesystem::path &assets) {
     std::vector<DeckPreset> out{
         {"default",
          "示范卡组",
-         {"balance", content.deck},
+         content.defaultPlayerDeck(),
          "覆盖解析、言灵和荷载的综合入门卡组。先建立荷载空间，解析火球术，再选择施法顺序。"}};
     if (!std::filesystem::exists(assets / "presets.json"))
         return out;
@@ -117,6 +105,9 @@ std::vector<DeckPreset> loadPresets(const Content &content, const std::filesyste
     if (!j.is_array())
         throw std::runtime_error("预设卡组格式错误");
     std::set<std::string> ids{"default"};
+    const auto sameDeck = [](const PlayerDeck &left, const PlayerDeck &right) {
+        return left.cards == right.cards && left.sideDeck == right.sideDeck;
+    };
     for (const auto &row : j) {
         DeckPreset p;
         p.id = row.at("id").get<std::string>();
@@ -124,20 +115,36 @@ std::vector<DeckPreset> loadPresets(const Content &content, const std::filesyste
         p.description = row.value("description", std::string{});
         if (p.id.empty() || p.name.empty() || !ids.insert(p.id).second)
             throw std::runtime_error("预设卡组ID或名称无效");
-        p.deck.baseFormation = row.at("baseFormation").get<std::string>();
+        p.deck.baseFormation = row.value("baseFormation", std::string{});
         p.deck.cards = parseDeck(row.at("cards"), content.catalog, "presets.json/" + p.id);
+        if (!row.contains("sideCards") || !row.at("sideCards").is_array())
+            throw std::runtime_error("预设缺少副卡组：" + p.id);
+        for (const auto &entry : row.at("sideCards")) {
+            const auto id = entry.at("id").get<std::string>();
+            const int count = entry.at("count").get<int>();
+            if (count < 1 || count > 3)
+                throw std::runtime_error("副卡组数量无效：" + p.id);
+            p.deck.sideDeck.insert(p.deck.sideDeck.end(), count, id);
+        }
         auto errors = Rules::deckErrors(content.catalog, p.deck);
         if (!errors.empty())
             throw std::runtime_error(errors.front());
+        // The canonical content deck is also shipped as the first practice
+        // preset. Keep one selectable entry for an identical deck so preset
+        // selection always represents an independent configuration.
+        if (std::any_of(out.begin(), out.end(), [&](const DeckPreset &existing) {
+                return sameDeck(existing.deck, p.deck);
+            }))
+            continue;
         out.push_back(std::move(p));
     }
     return out;
 }
-Application::Application(Content content, std::filesystem::path directory, std::vector<DeckPreset> presets)
+Application::Application(Content content, std::filesystem::path directory, std::vector<DeckPreset> presets, RoomFactory roomFactory)
     : content_(std::move(content)), directory_(std::move(directory)), presets_(std::move(presets)),
-      decks_(content_.catalog, directory_) {
+      decks_(content_.catalog, directory_), roomFactory_(std::move(roomFactory)) {
     if (presets_.empty())
-        presets_.push_back({"default", "示范卡组", {"balance", content_.deck}});
+        presets_.push_back({"default", "示范卡组", content_.defaultPlayerDeck()});
     for (const auto &preset : presets_) {
         auto errors = Rules::deckErrors(content_.catalog, preset.deck);
         if (!errors.empty())
@@ -167,10 +174,11 @@ const MatchSession &Application::match() const {
     return *match_;
 }
 void Application::navigate(Page page) {
-    if (match_)
+    if (hasMatch())
         return;
     if (page == Page::Menu || page == Page::HotseatSetup || page == Page::AiSetup || page == Page::Decks ||
-        page == Page::DeckEditor || page == Page::ConfirmDeckDelete || page == Page::ConfirmDeckDiscard)
+        page == Page::DeckEditor || page == Page::ConfirmDeckDelete || page == Page::ConfirmDeckDiscard ||
+        page == Page::NetworkSetup || page == Page::NetworkRoom)
         page_ = page;
 }
 void Application::openSettings() {
@@ -196,7 +204,7 @@ bool Application::applySettings(const Settings &s, std::string &error) {
     }
 }
 bool Application::start(const MatchConfig &config, std::string &error, SessionOptions options) {
-    if (match_) {
+    if (match_ || network_) {
         error = "请先结束当前对局";
         return false;
     }
@@ -206,6 +214,7 @@ bool Application::start(const MatchConfig &config, std::string &error, SessionOp
             options.mode != MatchMode::Tutorial)
             throw std::invalid_argument("无效对局模式");
         auto next = std::make_unique<MatchSession>(content_, config);
+        next->enableDebug(options.mode == MatchMode::Ai);
         auto path = directory_ / "replays" /
                     ("match-" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) +
                      "-" + std::to_string(generation_ + 1) + ".json");
@@ -251,19 +260,36 @@ CommandResult Application::submit(PlayerId actor, const Command &command, std::u
         return {false, "对局操作已过期", {}, {}, "stale_match"};
     if (paused())
         return {false, "对局已暂停", {}, {}, "match_paused"};
+    if (network_) {
+        if (actor != network_->view().viewer)
+            return {false, "无权操作对方席位", {}, {}, "wrong_player"};
+        auto result = static_cast<Session &>(*network_).submit(actor, command);
+        revision_ = network_->revision();
+        return result;
+    }
     if (mode() == MatchMode::Tutorial && actor == 0 &&
-        !tutorial_.allows(match_->engine().viewFor(0), command))
+        !tutorial_.allows(viewFor(0), command, [&](const auto &visitor) { match_->engine().visitLegalActions(0, visitor); }))
         return {false, tutorial_.hint(match_->engine().viewFor(0)), {}, {}, "tutorial_hint"};
+    const auto beforeRevision = match_->revision();
     auto result = match_->submit(actor, command);
+    revision_ += match_->revision() - beforeRevision;
+    if (technicalPaused()) { std::string error; if (!saveDiagnostic(error)) notice_ = error; }
     if (result.accepted) {
-        ++revision_;
         if (mode() == MatchMode::Tutorial)
             tutorial_.observe(actor, command, match_->engine().viewFor(0), result.events);
     }
     return result;
 }
+CommandResult Application::debug(const DebugOperation &op) {
+    if (!debugAvailable()) return {false, "调试控制台仅限本地 AI 单人对局，教学、双人、联机及观战不可用", {}, {}, "debug_unavailable"};
+    const auto beforeRevision = match_->revision();
+    const auto result = match_->debug(op);
+    revision_ += match_->revision() - beforeRevision;
+    return result;
+}
 bool Application::aiTurn() const {
-    if (paused() || mode() == MatchMode::Hotseat || match_->engine().state().result != -1)
+    if (paused() || mode() == MatchMode::Hotseat || mode() == MatchMode::Network ||
+        match_->engine().state().result != -1)
         return false;
     const auto &s = match_->engine().state();
     if ((s.decision ? s.decision->player : s.active) != 1)
@@ -275,9 +301,9 @@ bool Application::aiTurn() const {
 std::optional<AiPlan> Application::planAi() const {
     if (!aiTurn())
         return {};
-    const auto view = match_->engine().viewFor(1);
-    auto selection =
-        mode() == MatchMode::Tutorial ? tutorial_.opponent(view) : ai::choose(view, options_.difficulty);
+    const auto view = viewFor(1);
+    ai::CandidateSource source = [&](const auto &visitor) { visitActions(1, visitor); };
+    auto selection = mode() == MatchMode::Tutorial ? tutorial_.opponent(view, source) : ai::choose(view, source, options_.difficulty);
     if (!selection)
         return {};
     return AiPlan{generation_, revision_, *selection};
@@ -301,12 +327,14 @@ void Application::continueTutorial() {
     ++revision_;
 }
 bool Application::saveReplay(std::string &error) const {
+    if (network_)
+        return network_->save(error);
     if (!match_) {
         error = "没有可保存的对局";
         return false;
     }
     try {
-        atomicWriteJson(replayPath_, match_->recording());
+        match_->save(replayPath_);
         return true;
     } catch (const std::exception &e) {
         error = std::string("复盘未保存：") + e.what();
@@ -314,6 +342,14 @@ bool Application::saveReplay(std::string &error) const {
     }
 }
 void Application::requestLeave(bool quit) {
+    if (network_) {
+        if (page_ == Page::ConfirmLeave || page_ == Page::ConfirmSurrender)
+            return;
+        confirmationReturn_ = page_;
+        leaveQuits_ = quit;
+        page_ = Page::ConfirmLeave;
+        return;
+    }
     if (!match_) {
         if (quit)
             quit_ = true;
@@ -332,18 +368,20 @@ void Application::cancelConfirmation() {
         page_ = confirmationReturn_;
 }
 bool Application::confirmLeave(PlayerId actor, std::string &error) {
+    if (network_)
+        return leaveNetwork(error);
     if (page_ != Page::ConfirmLeave || !match_) {
         error = "离开确认已失效";
         return false;
     }
     try {
         auto finished = *match_;
-        if (finished.engine().state().result == -1) {
+        if (finished.engine().state().result == -1 && !finished.technicalPaused()) {
             auto r = finished.submit(actor, Surrender{});
             if (!r.accepted)
                 throw std::runtime_error(r.error);
         }
-        atomicWriteJson(replayPath_, finished.recording());
+        finished.save(replayPath_);
         match_.reset();
         options_ = {};
         tutorial_ = {};
@@ -357,12 +395,26 @@ bool Application::confirmLeave(PlayerId actor, std::string &error) {
     }
 }
 void Application::requestSurrender() {
+    if (network_) {
+        if (hasMatch() && network_->view().result == -1) {
+            confirmationReturn_ = page_;
+            page_ = Page::ConfirmSurrender;
+        }
+        return;
+    }
     if (!match_ || match_->engine().state().result != -1 || (page_ != Page::Settings && page_ != Page::Match))
         return;
     confirmationReturn_ = page_;
     page_ = Page::ConfirmSurrender;
 }
 bool Application::confirmSurrender(PlayerId actor, std::string &error) {
+    if (network_) {
+        auto r = network_->submit(Surrender{});
+        error = r.error;
+        if (r.accepted)
+            page_ = Page::Match;
+        return r.accepted;
+    }
     if (page_ != Page::ConfirmSurrender || !match_) {
         error = "投降确认已失效";
         return false;
@@ -374,11 +426,149 @@ bool Application::confirmSurrender(PlayerId actor, std::string &error) {
             throw std::runtime_error(r.error);
         atomicWriteJson(replayPath_, finished->recording());
         match_ = std::move(finished);
+        ++revision_;
         page_ = Page::Match;
         return true;
     } catch (const std::exception &e) {
         error = std::string("投降未完成：") + e.what();
         return false;
     }
+}
+GameView Application::viewFor(PlayerId player) const {
+    if (network_)
+        return network_->viewFor(player);
+    return match().viewFor(player);
+}
+MatchClockView Application::clock() const {
+    return network_ ? network_->clockView() : match_ ? match_->clockView() : MatchClockView{};
+}
+bool Application::technicalPaused() const {
+    return network_ ? network_->technicalPaused() : match_ && match_->technicalPaused();
+}
+void Application::tick() {
+    if (network_) { tickNetwork(); return; }
+    if (!match_) return;
+    const auto before = match_->revision();
+    match_->tick();
+    revision_ += match_->revision() - before;
+}
+EventBatch Application::eventsSince(PlayerId viewer, std::uint64_t epoch, std::uint64_t cursor) const {
+    if (network_) return network_->eventsSince(viewer,epoch,cursor);
+    return match_ ? match_->eventsSince(viewer,epoch,cursor) : EventBatch{};
+}
+bool Application::saveDiagnostic(std::string &error) const {
+    if (!match_ || !match_->technicalPaused()) { error="没有本地技术暂停诊断"; return false; }
+    try { match_->saveDiagnostic(directory_ / "technical-pause.json"); return true; }
+    catch(const std::exception &e) { error=std::string("诊断保存失败：")+e.what(); return false; }
+}
+void Application::visitActions(PlayerId viewer, const std::function<bool(const LegalAction &)> &visitor) const {
+    if (!match_ || network_ || match_->technicalPaused()) return;
+    const auto view = viewFor(viewer);
+    ai::CandidateSource raw = [&](const auto &next) { match_->engine().visitLegalActions(viewer,next); };
+    raw([&](const LegalAction &action) {
+        if (mode()==MatchMode::Tutorial && viewer==0 && !tutorial_.allows(view,action.command,raw)) return true;
+        return visitor(action);
+    });
+}
+ActionOptions Application::queryActions(PlayerId viewer, std::uint64_t generation, std::uint64_t revision,
+                                        const ActionIntent &intent) {
+    ActionOptions result;
+    if(generation!=generation_ || revision!=revision_) { result.error="stale_query"; return result; }
+    if(technicalPaused()) { result.error="technical_paused"; return result; }
+    if (paused()) { result.error="match_paused"; return result; }
+    if(network_) {
+        if (revision_ != network_->revision()) { result.error="stale_query"; return result; }
+        return network_->queryActions(viewer,generation,revision,intent);
+    }
+    if(!match_) { result.error="no_match"; return result; }
+    if(mode()!=MatchMode::Tutorial || viewer!=0)
+        return match_->queryActions(viewer,generation,match_->revision(),intent);
+    const auto view=viewFor(viewer);
+    ai::CandidateSource raw=[&](const auto &next){ match_->engine().visitLegalActions(viewer,next); };
+    return match_->engine().queryActions(viewer,intent,[&](const Command &command){return tutorial_.allows(view,command,raw);});
+}
+PlayerId Application::actingPlayer() const {
+    if (network_)
+        return network_->view().viewer;
+    const auto &s = match().engine().state();
+    if (s.opening)
+        for (int player = 0; player < 2; ++player)
+            if (!s.initialFormations[player]) return player;
+    return s.decision ? s.decision->player : s.active;
+}
+bool Application::startNetwork(bool host, const std::string &address, unsigned short port,
+                               const PlayerDeck &d, std::string &error) {
+    if (hasMatch() || network_) {
+        error = "请先离开当前房间或对局";
+        return false;
+    }
+    try {
+        if (!roomFactory_)
+            throw std::runtime_error("当前应用未配置联机会话适配器");
+        auto serial = std::chrono::steady_clock::now().time_since_epoch().count();
+        auto path = directory_ / "replays" / ("network-" + std::to_string(serial) + ".json");
+        auto peer = roomFactory_(content_, path);
+        if (!peer)
+            throw std::runtime_error("联机会话适配器创建失败");
+        if (host)
+            peer->host(port, d);
+        else
+            peer->join(address, port);
+        network_ = std::move(peer);
+        replayPath_ = path;
+        options_.mode = MatchMode::Network;
+        ++generation_;
+        page_ = Page::NetworkRoom;
+        revision_ = 0;
+        return true;
+    } catch (const std::exception &e) {
+        error = e.what();
+        return false;
+    }
+}
+bool Application::tickNetwork() {
+    if (!network_)
+        return false;
+    network_->tick();
+    if (!network_->closing() && !network_->ended())
+        leavePending_ = false;
+    if (network_->closing())
+        notice_ = "等待投降确认和复盘保存…";
+    else
+        notice_ = network_->notice();
+    if (network_->ended() && leavePending_) {
+        network_.reset();
+        options_ = {};
+        ++generation_;
+        page_ = Page::Menu;
+        quit_ = leaveQuits_;
+        leavePending_ = false;
+        return false;
+    }
+    if (!network_->started())
+        return false;
+    bool reset = network_->takeReset();
+    networkReset_ = reset;
+    if (page_ == Page::NetworkRoom)
+        page_ = Page::Match;
+    auto r = network_->revision();
+    bool changed = r != revision_ || reset;
+    revision_ = r;
+    return changed;
+}
+bool Application::leaveNetwork(std::string &error, bool force) {
+    if (!network_)
+        return true;
+    bool done = network_->leave(error, force);
+    if (done) {
+        network_.reset();
+        options_ = {};
+        ++generation_;
+        page_ = Page::Menu;
+        quit_ = leaveQuits_;
+        leavePending_ = false;
+    } else if (network_->closing())
+        leavePending_ = true;
+    return done;
 }
 } // namespace wizard::app

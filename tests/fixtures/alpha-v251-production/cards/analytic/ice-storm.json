@@ -1,0 +1,31 @@
+{
+  "id": "ice-storm",
+  "name": "冰风暴",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 4,
+  "castCost": 1,
+  "rank": 4,
+  "level": 4,
+  "speed": 1,
+  "school": "evocation",
+  "analysisTurns": 1,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 8,
+      "damageType": "cold"
+    },
+    {
+      "kind": "advance_all_enemy_analysis",
+      "amount": 1
+    }
+  ],
+  "text": "对目标造成8点寒冷伤害，选择对方解析区的所有解析法术卡使解析进度+1。",
+  "tags": [
+    "风暴"
+  ],
+  "number": "020018",
+  "illustrationId": "ice-storm"
+}

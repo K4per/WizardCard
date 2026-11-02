@@ -1,0 +1,383 @@
+{
+  "format": 1,
+  "collection": "Sique supplied art for Alpha v2.5.1",
+  "license": "User-supplied project art; original provenance retained in source filenames and hashes",
+  "processing": {
+    "script": "tools/prepare_sique_art.py",
+    "sourceSize": [
+      1536,
+      1536
+    ],
+    "alpha": "clamp((max(R,G,B)-24)/12,0,1)",
+    "removeSourceMark": [
+      1360,
+      1380,
+      176,
+      156
+    ],
+    "cropAlphaThreshold": 48,
+    "maximumSubjectSize": [
+      900,
+      900
+    ],
+    "canvasSize": [
+      1024,
+      1024
+    ],
+    "resample": "nearest"
+  },
+  "assets": [
+    {
+      "id": "illustration.sique-aroma-lure",
+      "cardId": "sique-aroma-lure",
+      "name": "味契·飘香诱惑",
+      "file": "export/sique-aroma-lure.png",
+      "source": "source/F3198D1EAE79031285C21BB9B84798D8.jpg",
+      "sourceSha256": "2c0997850b4d1e3fbcad11aba335b2ae578a6045dd55978ab9f8ed751560f5d0",
+      "sha256": "58f1ab1044a7d2143d88d5fb02264d81c5cbc3cea0369016098369d6d86f8266",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        0,
+        103,
+        1512,
+        1536
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-boiling-surge",
+      "cardId": "sique-boiling-surge",
+      "name": "味契·沸汤滚袭",
+      "file": "export/sique-boiling-surge.png",
+      "source": "source/FC90017D1C7F281972F41341E9CE4E0B.jpg",
+      "sourceSha256": "80aed8cba24b1fb0cbf6dc9276d5beeac50210d88fa5cdcbaf973768bc9dc0a9",
+      "sha256": "220f0eec9d4f9d9a3c351191148df3eb9282f769880353331f2803ab36fe5f6b",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        251,
+        30,
+        1353,
+        1504
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-campfire",
+      "cardId": "sique-campfire",
+      "name": "味契·篝火",
+      "file": "export/sique-campfire.png",
+      "source": "source/DF1EEAAC1C9F882244791946E66E7098.jpg",
+      "sourceSha256": "41fb6f2516f444fd4a3eeceb87daa27dd3d0edbb3da18b33ec47eb8b95cf8b29",
+      "sha256": "0989d083edd3a0dd00952e5375213af682a5bfa36fd6d958a48a445310634529",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        132,
+        114,
+        1424,
+        1449
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-cauldron",
+      "cardId": "sique-cauldron",
+      "name": "味契·魔力坩埚",
+      "file": "export/sique-cauldron.png",
+      "source": "source/C0861238A9675BA5D3263F1CF155DC76.jpg",
+      "sourceSha256": "c5e90c4c9ec270d8134b8c09f0df56789ede4fd44e2365f4f2ce6f9a35427f66",
+      "sha256": "9bf2aab646be5c41a4dfe72cf922f2033987e7ef898042ba39870619fc19aa81",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        146,
+        120,
+        1399,
+        1439
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-chili",
+      "cardId": "sique-chili",
+      "name": "味契·辣椒",
+      "file": "export/sique-chili.png",
+      "source": "source/7230DE37440586EEADA84E040BBB3287.jpg",
+      "sourceSha256": "8202b482506c7fa0af82c08ad4eba4203dff0d515180dd1b8d12290bc5f97b74",
+      "sha256": "f937ce6c755d071c8c089f2463f418d6b4df6f793df30fb1c028af9ca611a0c2",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        126,
+        100,
+        1420,
+        1448
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-divine-stew",
+      "cardId": "sique-divine-stew",
+      "name": "味契·神恩炖肉",
+      "file": "export/sique-divine-stew.png",
+      "source": "source/E42C1620D308CAB12834E5620722C85F.jpg",
+      "sourceSha256": "a87a6b98e57f1b252ec7a0a24491e01c714fede2752b2d5eac25a8c8290ef9e4",
+      "sha256": "ecfa5946b0b1643464f6caedf048f1508bfe844d439204ae2fb00a79bcd802f4",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        0,
+        167,
+        1402,
+        1536
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-flavor-shift",
+      "cardId": "sique-flavor-shift",
+      "name": "味契·风味转化",
+      "file": "export/sique-flavor-shift.png",
+      "source": "source/F461857F8870A11FB905DB5B7711F0A3.jpg",
+      "sourceSha256": "f836a504cb5e3acadfb0104c7db2ccdb9cd6ee1fd99c559dfb013943fd0869e9",
+      "sha256": "7348a2a634a2fd313e3d766fdcf48cc894cd3cd73f25db62c30cd015a8702406",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        73,
+        145,
+        1440,
+        1414
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-ingredients",
+      "cardId": "sique-ingredients",
+      "name": "味契·原料召来",
+      "file": "export/sique-ingredients.png",
+      "source": "source/9E66331A8F097F2E7198AD651AA6D555.jpg",
+      "sourceSha256": "ee29cc2f393e8ca03dc257ba5219dab1c5b1a516f597f666d9478563f8faf2db",
+      "sha256": "425fd4eb11085257e1279a1f9d5a5125c90c8563e34cf868b863f0c26ba0e346",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        406,
+        120,
+        1199,
+        1382
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-mushroom-soup",
+      "cardId": "sique-mushroom-soup",
+      "name": "味契·奶油蘑菇浓汤",
+      "file": "export/sique-mushroom-soup.png",
+      "source": "source/5786E479ED805F4C5A7542362ECC444D.jpg",
+      "sourceSha256": "c7c9c284f6912ed3c1b9d36f611cf60b768a9055ed0f643e4e6239fdd907d249",
+      "sha256": "1f22f1a30930741e60846b4ee32f700061254ed1c760fe97e3b257b2bae98553",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        128,
+        0,
+        1536,
+        1458
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-pancakes",
+      "cardId": "sique-pancakes",
+      "name": "味契·糖浆煎饼",
+      "file": "export/sique-pancakes.png",
+      "source": "source/F810FE21182B8B04CB60B37180C01968.jpg",
+      "sourceSha256": "7333364639d33c63243d1a6e1226dcbd88a04b010eec821e7359f3b1c091e192",
+      "sha256": "896aab19106f6889f631aa9b5ff2fd61fb19a6f7299889abde083a7307b576a8",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        117,
+        139,
+        1445,
+        1481
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-parsley",
+      "cardId": "sique-parsley",
+      "name": "味契·欧芹",
+      "file": "export/sique-parsley.png",
+      "source": "source/17BEFF374B770A63726A15D41EE4989E.jpg",
+      "sourceSha256": "131a8212b69a5d8e4654cfb9a7607785d20b3eac841175b70632bcab5f9920c1",
+      "sha256": "326e095ba836913685e67d9e9db7b491b7d33adb046a7bc1d2e2ed3780b02627",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        143,
+        96,
+        1404,
+        1450
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-refire",
+      "cardId": "sique-refire",
+      "name": "味契·烈火回炉",
+      "file": "export/sique-refire.png",
+      "source": "source/FAD884B74490E63F1E9A6D1C0CB974FB.jpg",
+      "sourceSha256": "d7b421b6c7884e30caf05298bc1839b3de8f6b92392573d8d05cd88b7fd4f5c0",
+      "sha256": "54978be86ca87adc1240e6f78977a26d12416e01f6cb189f8802926b3df65b05",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        0,
+        0,
+        1536,
+        1536
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-salt",
+      "cardId": "sique-salt",
+      "name": "味契·海盐",
+      "file": "export/sique-salt.png",
+      "source": "source/9CF664CD78F632A9877E3E0353E6A6BE.jpg",
+      "sourceSha256": "5b3c6ce653eed195f04f31c9f7534acacd6d01527dd778ac7d5985aed9a06e78",
+      "sha256": "9d9edc3737082e88408c5ea2d69a5aca145499bf97a9c19d302c3eb643f8753f",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        136,
+        95,
+        1414,
+        1457
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-sugar",
+      "cardId": "sique-sugar",
+      "name": "味契·冰糖",
+      "file": "export/sique-sugar.png",
+      "source": "source/ECBFB61D4CA3610ADC661014183999B2.jpg",
+      "sourceSha256": "1bfd8ddf311ae902c084808cf074b618ad0ad1208d904883bac46e1ff3560a9e",
+      "sha256": "cad8a55f66e7e51596f66bd831bf36a8a1a0397bd9cf7313cb9d419cda131959",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        93,
+        78,
+        1458,
+        1490
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-vinegar",
+      "cardId": "sique-vinegar",
+      "name": "味契·香醋",
+      "file": "export/sique-vinegar.png",
+      "source": "source/8996E989FAC5DC2009620132D4629F25.jpg",
+      "sourceSha256": "3ea9de28f2980147131305d6e3c0ccd7e2203118e63b7d29314efd57dceac448",
+      "sha256": "1f1b0978143e5ad1d63568de35e205a4a4048fdf259eb0a23804d0b62a1a8d72",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        109,
+        76,
+        1437,
+        1472
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    },
+    {
+      "id": "illustration.sique-woodpile",
+      "cardId": "sique-woodpile",
+      "name": "味契·柴堆",
+      "file": "export/sique-woodpile.png",
+      "source": "source/D8AD87A172CDA719D9257CB9B7A7EB62.jpg",
+      "sourceSha256": "d313fbb28685a8c4fc1c5a799cf191a23a00a2db44590a570d3d9dc263e3b63c",
+      "sha256": "e0cb21ca35cf4ff5e94a675465a6f410ed058a9ee9e2a58f05745d8af4eab4e2",
+      "size": [
+        1024,
+        1024
+      ],
+      "sourceCrop": [
+        142,
+        134,
+        1411,
+        1419
+      ],
+      "sampling": "nearest",
+      "transparent": true,
+      "origin": "User-supplied Sique JPEG; deterministic matte removal and crop"
+    }
+  ]
+}

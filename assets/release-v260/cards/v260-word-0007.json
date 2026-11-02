@@ -1,0 +1,41 @@
+{
+  "id": "v260-word-0007",
+  "number": "030007",
+  "name": "支援术",
+  "type": "word",
+  "school": "abjuration",
+  "rarity": "common",
+  "rank": 1,
+  "cost": 2,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 2,
+  "text": "获得3点临时生命值。",
+  "effects": [
+    {
+      "kind": "temporary_life",
+      "amount": 3,
+      "recipient": "owner"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 48
+  },
+  "illustrationId": "aid",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v1\\aid.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "aid"
+  },
+  "migration": {
+    "previousId": "aid"
+  },
+  "level": 1
+}

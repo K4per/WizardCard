@@ -1,0 +1,46 @@
+{
+  "id": "v260-analytic-0003",
+  "number": "020003",
+  "name": "闪电束",
+  "type": "analytic",
+  "school": "evocation",
+  "rarity": "rare",
+  "rank": 4,
+  "cost": 3,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "选择1个目标才能发动。对其造成8点闪电伤害。那之后，可以销毁对方解析区1张解析法术卡。",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 8,
+      "damageType": "lightning",
+      "recipient": "target"
+    },
+    {
+      "kind": "destroy_enemy_analysis"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 4
+  },
+  "illustrationId": "lightning-bolt",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\lightning-bolt.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "lightning-bolt"
+  },
+  "migration": {
+    "previousId": "lightning-bolt"
+  },
+  "target": "player",
+  "level": 4
+}

@@ -1,0 +1,46 @@
+{
+  "id": "v260-talisman-0011",
+  "number": "040011",
+  "name": "侦测善恶",
+  "type": "talisman",
+  "school": "divination",
+  "rarity": "common",
+  "rank": 4,
+  "cost": 0,
+  "castCost": 5,
+  "analysisTurns": 0,
+  "speed": 4,
+  "text": "查看对方解析区1张盖伏卡，若为解析/言灵法术卡，将其返回持有者卡组；若为咒符法术卡，则将其送去灰烬区。",
+  "effects": [
+    {
+      "kind": "inspect_and_route",
+      "amount": 1
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 74
+  },
+  "illustrationId": "v260-art-talisman-0011",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\侦测善恶.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-talisman-0011",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-talisman-0011.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "responseOnly": true,
+  "traits": [
+    "inspect_and_route"
+  ],
+  "level": 4
+}

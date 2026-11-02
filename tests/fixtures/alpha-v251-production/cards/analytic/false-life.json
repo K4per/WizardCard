@@ -1,0 +1,23 @@
+{
+  "id": "false-life",
+  "name": "虚假生命",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 2,
+  "castCost": 1,
+  "rank": 3,
+  "speed": 2,
+  "school": "necromancy",
+  "analysisTurns": 1,
+  "target": "self",
+  "effects": [
+    {
+      "kind": "temporary_life",
+      "amount": 6
+    }
+  ],
+  "text": "获得6点临时生命值（不叠加，取较高值）。",
+  "level": 3,
+  "number": "020012",
+  "illustrationId": "false-life"
+}

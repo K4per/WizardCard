@@ -1,0 +1,28 @@
+{
+  "id": "cutting-wind",
+  "name": "风契·切割之风",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 1,
+  "castCost": 1,
+  "rank": 1,
+  "level": 1,
+  "speed": 1,
+  "school": "transmutation",
+  "analysisTurns": 1,
+  "target": "player",
+  "effects": [
+    {
+      "kind": "cutting_wind"
+    }
+  ],
+  "text": "己方场上存在【风契】阵法卡才能设置。选择1个目标才能发动。对其造成4点挥砍伤害。那之后，可以销毁己方场上1张空白阵法卡，额外造成其等级的雷鸣伤害。",
+  "tags": [
+    "风契"
+  ],
+  "traits": [
+    "requires_storm_setup"
+  ],
+  "number": "020019",
+  "illustrationId": "cutting-wind"
+}

@@ -1,0 +1,42 @@
+{
+  "id": "v260-analytic-0019",
+  "number": "020019",
+  "name": "缝合生命",
+  "type": "analytic",
+  "school": "necromancy",
+  "rarity": "common",
+  "rank": 3,
+  "cost": 2,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "选择1个目标才能发动。为其恢复6点生命值。",
+  "effects": [
+    {
+      "kind": "heal",
+      "amount": 6,
+      "recipient": "target"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 20
+  },
+  "illustrationId": "mend",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\mend.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "mend"
+  },
+  "migration": {
+    "previousId": "mend"
+  },
+  "target": "player",
+  "level": 3
+}

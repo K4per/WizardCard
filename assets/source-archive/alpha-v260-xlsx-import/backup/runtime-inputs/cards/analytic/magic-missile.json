@@ -1,0 +1,29 @@
+{
+  "id": "magic-missile",
+  "name": "魔法飞弹",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 2,
+  "castCost": 2,
+  "rank": 2,
+  "speed": 2,
+  "school": "evocation",
+  "target": "player",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 4,
+      "damageType": "force"
+    },
+    {
+      "kind": "destroy_ambush",
+      "amount": 0
+    }
+  ],
+  "text": "选择1个目标才能发动。对其造成4点力场伤害。那之后，可以销毁对方解析区1张盖伏的法术卡。",
+  "flavor": "折磨你的对手。",
+  "level": 2,
+  "analysisTurns": 1,
+  "number": "020007",
+  "illustrationId": "magic-missile"
+}

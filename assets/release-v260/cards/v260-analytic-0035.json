@@ -1,0 +1,47 @@
+{
+  "id": "v260-analytic-0035",
+  "number": "020035",
+  "name": "地震术",
+  "type": "analytic",
+  "school": "transmutation",
+  "rarity": "common",
+  "rank": 4,
+  "cost": 4,
+  "castCost": 0,
+  "analysisTurns": 2,
+  "speed": 1,
+  "text": "计时2。己方主要阶段开始时，将双方解析区盖伏卡全部送去灰烬区。",
+  "effects": [
+    {
+      "kind": "clear_all_ambush",
+      "amount": 0
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 36
+  },
+  "illustrationId": "earthquake",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-v254-20261024\\source\\卡图替换\\地震术.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "earthquake"
+  },
+  "migration": {
+    "previousId": "earthquake"
+  },
+  "duration": 2,
+  "onMain": [
+    {
+      "kind": "clear_all_ambush",
+      "amount": 0
+    }
+  ],
+  "level": 4
+}

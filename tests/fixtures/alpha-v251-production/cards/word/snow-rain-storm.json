@@ -1,0 +1,33 @@
+{
+  "id": "snow-rain-storm",
+  "name": "雪雨暴",
+  "type": "word",
+  "rarity": "common",
+  "cost": 3,
+  "rank": 3,
+  "level": 3,
+  "speed": 2,
+  "school": "transmutation",
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "temporary",
+      "amount": 2,
+      "recipient": "opponent"
+    }
+  ],
+  "text": "专注2。对方使用计时法术需要支付额外的2魔素，对方维持专注所需的魔素翻倍。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "concentration": true,
+  "concentrationUpkeep": 2,
+  "tags": [
+    "风暴"
+  ],
+  "traits": [
+    "surcharge_enemy_timed_cast",
+    "double_enemy_concentration_upkeep"
+  ],
+  "number": "030011",
+  "illustrationId": "snow-rain-storm"
+}

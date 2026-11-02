@@ -1,0 +1,44 @@
+{
+  "id": "shield",
+  "name": "护盾术",
+  "type": "word",
+  "rarity": "common",
+  "cost": 2,
+  "rank": 1,
+  "speed": 2,
+  "concentration": false,
+  "school": "abjuration",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "temporary_life",
+      "amount": 6
+    }
+  ],
+  "responses": [
+    {
+      "id": "shield",
+      "name": "展开护盾",
+      "sources": [
+        "words",
+        "ambush"
+      ],
+      "windows": [
+        "phase_start",
+        "phase_end",
+        "action",
+        "prepare",
+        "cast",
+        "trigger"
+      ],
+      "target": "self",
+      "effects": [
+        {
+          "kind": "temporary_life",
+          "amount": 6
+        }
+      ]
+    }
+  ],
+  "text": "获得6点临时生命（取较高值，不叠加）。可以单独设置，在合法时点响应或主动释放。"
+}

@@ -1,0 +1,386 @@
+[
+  {
+    "id": "analysis-practice",
+    "name": "解析练习",
+    "baseFormation": "balance",
+    "cards": [
+      {
+        "id": "fireball",
+        "count": 3
+      },
+      {
+        "id": "mend",
+        "count": 3
+      },
+      {
+        "id": "unravel",
+        "count": 3
+      },
+      {
+        "id": "ward",
+        "count": 3
+      },
+      {
+        "id": "spark",
+        "count": 3
+      },
+      {
+        "id": "recall",
+        "count": 3
+      },
+      {
+        "id": "reservoir",
+        "count": 3
+      },
+      {
+        "id": "conduit",
+        "count": 3
+      },
+      {
+        "id": "ring",
+        "count": 3
+      },
+      {
+        "id": "clarity",
+        "count": 3
+      }
+    ],
+    "description": "优先解析火球术与炽燃结界。用逆三角星符提高魔素收入，再安排准备与释放顺序，练习费用和环位管理。"
+  },
+  {
+    "id": "counter-load",
+    "name": "言灵与荷载",
+    "description": "先建立荷载空间，再预置银光锐语反制对方准备；魔力扰动配合对方已有荷载施压。练习响应时机和荷载上限。",
+    "baseFormation": "balance",
+    "cards": [
+      {
+        "id": "barbs",
+        "count": 3
+      },
+      {
+        "id": "disrupt",
+        "count": 3
+      },
+      {
+        "id": "ward",
+        "count": 3
+      },
+      {
+        "id": "spark",
+        "count": 3
+      },
+      {
+        "id": "mend",
+        "count": 3
+      },
+      {
+        "id": "clarity",
+        "count": 3
+      },
+      {
+        "id": "recall",
+        "count": 3
+      },
+      {
+        "id": "conduit",
+        "count": 3
+      },
+      {
+        "id": "reservoir",
+        "count": 3
+      },
+      {
+        "id": "ring",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "id": "concentration-practice",
+    "name": "专注练习",
+    "description": "用炽燃结界练习专注维持与持续伤害，保留魔素和荷载空间。火球术负责结束对局，银光锐语保护节奏。",
+    "baseFormation": "balance",
+    "cards": [
+      {
+        "id": "ward",
+        "count": 3
+      },
+      {
+        "id": "fireball",
+        "count": 3
+      },
+      {
+        "id": "mend",
+        "count": 3
+      },
+      {
+        "id": "barbs",
+        "count": 3
+      },
+      {
+        "id": "recall",
+        "count": 3
+      },
+      {
+        "id": "clarity",
+        "count": 3
+      },
+      {
+        "id": "conduit",
+        "count": 3
+      },
+      {
+        "id": "reservoir",
+        "count": 3
+      },
+      {
+        "id": "ring",
+        "count": 3
+      },
+      {
+        "id": "spark",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "id": "quick-circuit",
+    "name": "速解与支援",
+    "baseFormation": "balance",
+    "cards": [
+      {
+        "id": "magic-missile",
+        "count": 3
+      },
+      {
+        "id": "aid",
+        "count": 3
+      },
+      {
+        "id": "instantly-sleep",
+        "count": 3
+      },
+      {
+        "id": "true-strike",
+        "count": 3
+      },
+      {
+        "id": "instant-circuit-overload",
+        "count": 3
+      },
+      {
+        "id": "engeas-four-point-star",
+        "count": 3
+      },
+      {
+        "id": "reservoir",
+        "count": 3
+      },
+      {
+        "id": "conduit",
+        "count": 3
+      },
+      {
+        "id": "spark",
+        "count": 3
+      },
+      {
+        "id": "arcane-recovery",
+        "count": 3
+      }
+    ],
+    "description": "先用恩格亚斯四角星立即完成低位阶解析；魔法飞弹保留到对手施法阶段响应，支援术吸收伤害，克敌机先寻找行动卡。"
+  },
+  {
+    "id": "source-load",
+    "name": "持续荷载与防护",
+    "baseFormation": "balance",
+    "cards": [
+      {
+        "id": "messy-wave",
+        "count": 3
+      },
+      {
+        "id": "disrupt",
+        "count": 3
+      },
+      {
+        "id": "counter-spell",
+        "count": 3
+      },
+      {
+        "id": "protective-flame",
+        "count": 3
+      },
+      {
+        "id": "uplift",
+        "count": 3
+      },
+      {
+        "id": "reservoir",
+        "count": 3
+      },
+      {
+        "id": "conduit",
+        "count": 3
+      },
+      {
+        "id": "clarity",
+        "count": 3
+      },
+      {
+        "id": "recall",
+        "count": 3
+      },
+      {
+        "id": "engeas-four-point-star",
+        "count": 3
+      }
+    ],
+    "description": "先扩展荷载空间与收入，再释放紊乱波动持续施压；避火咒保护自身，法术反制阻止关键释放并承担延迟清除的荷载。"
+  },
+  {
+    "id": "pentagram-evocation",
+    "name": "五芒星塑能",
+    "baseFormation": "pentagram-of-life",
+    "cards": [
+      {
+        "id": "fireball",
+        "count": 3
+      },
+      {
+        "id": "spark",
+        "count": 3
+      },
+      {
+        "id": "ray-of-frost",
+        "count": 3
+      },
+      {
+        "id": "engeas-four-point-star",
+        "count": 3
+      },
+      {
+        "id": "recall",
+        "count": 3
+      },
+      {
+        "id": "clarity",
+        "count": 3
+      },
+      {
+        "id": "lightning-bolt",
+        "count": 3
+      },
+      {
+        "id": "reservoir",
+        "count": 3
+      },
+      {
+        "id": "uplift",
+        "count": 3
+      },
+      {
+        "id": "magic-missile",
+        "count": 3
+      }
+    ],
+    "description": "五芒星为塑能解析减费，以寒霜射线铺开、火球术与闪电束收尾。昂扬扩展容量和位阶，留意施法费用与荷载；对避火咒使用非火焰伤害。"
+  },
+  {
+    "id": "fortress-sustain",
+    "name": "防护与续航",
+    "baseFormation": "balance",
+    "cards": [
+      {
+        "id": "shield",
+        "count": 3
+      },
+      {
+        "id": "protective-flame",
+        "count": 3
+      },
+      {
+        "id": "false-life",
+        "count": 3
+      },
+      {
+        "id": "lesser-restoration",
+        "count": 3
+      },
+      {
+        "id": "ward",
+        "count": 3
+      },
+      {
+        "id": "ray-of-frost",
+        "count": 3
+      },
+      {
+        "id": "mend",
+        "count": 3
+      },
+      {
+        "id": "recall",
+        "count": 3
+      },
+      {
+        "id": "reservoir",
+        "count": 3
+      },
+      {
+        "id": "conduit",
+        "count": 3
+      }
+    ],
+    "description": "用护盾和虚假生命延缓伤害，以炽燃结界持续压制，寒霜射线补足伤害。次级复原处理临时荷载；虚假生命的独立荷载不会自行消失，避免反复堆叠。"
+  },
+  {
+    "id": "word-tempo",
+    "name": "言灵与节奏",
+    "baseFormation": "balance",
+    "cards": [
+      {
+        "id": "spark",
+        "count": 3
+      },
+      {
+        "id": "shield",
+        "count": 3
+      },
+      {
+        "id": "true-strike",
+        "count": 3
+      },
+      {
+        "id": "barbs",
+        "count": 3
+      },
+      {
+        "id": "magic-missile",
+        "count": 3
+      },
+      {
+        "id": "fireball",
+        "count": 3
+      },
+      {
+        "id": "aid",
+        "count": 3
+      },
+      {
+        "id": "arcane-recovery",
+        "count": 3
+      },
+      {
+        "id": "recall",
+        "count": 3
+      },
+      {
+        "id": "reservoir",
+        "count": 3
+      }
+    ],
+    "description": "言灵先设置再选择时机：护盾响应伤害，银光锐语打断准备，克敌机先检索行动。用奥术复苏换取施法资源，以火花术和魔法飞弹施压，火球术收尾。"
+  }
+]

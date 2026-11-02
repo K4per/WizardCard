@@ -1,0 +1,55 @@
+{
+  "id": "v260-analytic-0013",
+  "number": "020013",
+  "name": "匕首之云",
+  "type": "analytic",
+  "school": "conjuration",
+  "rarity": "uncommon",
+  "rank": 3,
+  "cost": 2,
+  "castCost": 2,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "专注1。发动时，对对方造成5点挥砍伤害。维持专注时，对对方造成2点挥砍伤害。",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 5,
+      "damageType": "slashing",
+      "recipient": "opponent"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 14
+  },
+  "illustrationId": "v260-art-analytic-0013",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\匕首之云.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0013",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0013.png",
+    "processing": "源图已有有效 alpha；保留透明像素"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "concentration": true,
+  "concentrationUpkeep": 1,
+  "onCast": [
+    {
+      "kind": "damage",
+      "amount": 2,
+      "damageType": "slashing",
+      "recipient": "opponent"
+    }
+  ],
+  "target": "opponent",
+  "level": 3
+}

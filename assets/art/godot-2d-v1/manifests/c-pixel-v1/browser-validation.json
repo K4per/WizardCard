@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "resolutions": [
+    [
+      1920,
+      1080
+    ],
+    [
+      1280,
+      720
+    ],
+    [
+      1600,
+      1000
+    ]
+  ],
+  "pageGroups": 12,
+  "states": 80,
+  "checks": 240,
+  "errors": [],
+  "failures": [],
+  "assetImages": {
+    "brokenImages": [],
+    "count": 292
+  },
+  "scope": "Browser design assembly, not Godot game logic or human input acceptance"
+}

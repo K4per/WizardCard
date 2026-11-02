@@ -1,0 +1,45 @@
+{
+  "id": "qixing-gaze",
+  "name": "七星的注视",
+  "type": "talisman",
+  "rarity": "rare",
+  "cost": 5,
+  "castCost": 0,
+  "rank": 5,
+  "level": 5,
+  "speed": 2,
+  "number": "040014",
+  "illustrationId": "qixing-gaze",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [
+    {
+      "kind": "seven_stars_gaze"
+    }
+  ],
+  "text": "对方连锁【七星】卡的发动把法术卡发动时才能发动。将其无效并盖伏。",
+  "analysisTurns": 0,
+  "school": "abjuration",
+  "responseOnly": true,
+  "responses": [
+    {
+      "id": "seven_stars_gaze",
+      "name": "无效并盖伏连锁法术",
+      "sources": [
+        "ambush"
+      ],
+      "windows": [
+        "cast"
+      ],
+      "eventOwner": "any",
+      "target": "enemy_spell_link",
+      "effects": [
+        {
+          "kind": "seven_stars_gaze"
+        }
+      ]
+    }
+  ]
+}

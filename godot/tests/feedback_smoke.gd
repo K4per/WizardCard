@@ -1,0 +1,100 @@
+extends SceneTree
+
+var _failures: Array[String] = []
+var _checks: int = 0
+
+func _initialize() -> void:
+	_run.call_deferred()
+
+func _check(condition: bool, message: String) -> void:
+	_checks += 1
+	if not condition:
+		_failures.append(message)
+		push_error(message)
+
+func _settle() -> void:
+	await process_frame
+	await process_frame
+
+func _card(id: String) -> CardPresentation:
+	var card: CardPresentation = CardPresentation.new()
+	card.instance_id = id
+	card.title = id
+	card.type_key = "analysis"
+	return card
+
+func _run() -> void:
+	var canvas: FieldCanvas = load("res://ui/field_canvas.tscn").instantiate() as FieldCanvas
+	canvas.greybox = true
+	root.add_child(canvas)
+	root.size = Vector2i(1280, 720)
+	var first: FieldPresentation = FieldPresentation.new()
+	first.hand.assign([_card("one")])
+	canvas.configure(first)
+	await _settle()
+	var second: FieldPresentation = FieldPresentation.new()
+	second.hand.assign([_card("one"), _card("two")])
+	second.own_life = 35
+	canvas.configure(second)
+	await _settle()
+	_check(canvas.field == second and canvas.field.hand.size() == 2, "New projection is applied before animation completes")
+	_check(canvas._transition.changed.has("two") and canvas._transition.life[0].a > 0, "Draw and damage have feedback")
+	var card_bounds: Rect2 = canvas.card_bounds(second.hand[0])
+	canvas._set_transition_strength(0.0)
+	await _settle()
+	_check(canvas.card_bounds(second.hand[0]).is_equal_approx(card_bounds), "Animation never shifts card hit regions")
+	var third: FieldPresentation = FieldPresentation.new()
+	var casting: CardPresentation = _card("two")
+	casting.status = "准备施法"
+	third.own_casting.assign([casting])
+	third.own_life = 42
+	canvas.configure(third)
+	await _settle()
+	_check(canvas.field.hand.is_empty() and canvas.field.own_casting.size() == 1, "Rapid transitions preserve the latest projection")
+	_check(canvas._transition.changed.has("two") and not canvas._transition.departures.is_empty(), "Zone changes and departures have feedback")
+	_check(canvas._transition.life[0].g > canvas._transition.life[0].r, "Healing uses a distinct feedback color")
+	canvas.set_privacy(true)
+	_check(canvas._transition_strength == 0.0 and canvas._transition.changed.is_empty() and canvas._transition.departures.is_empty(), "Privacy immediately clears all old feedback")
+	canvas.set_action_targets(["two"])
+	canvas.set_privacy(true)
+	_check(canvas.target_ids.is_empty() and canvas.target_rings.is_empty(), "Privacy discards all old target hit regions")
+	canvas._dragged = casting
+	canvas._drag_active = true
+	canvas._cancel_pointer_state()
+	_check(canvas._dragged == null and not canvas._drag_active, "Focus loss cancels drag without changing the projection")
+	canvas.set_privacy(false)
+	UiFactory.reduced_motion = true
+	canvas.configure(first)
+	_check(canvas.field == first and canvas._transition_strength == 0.0, "Reduced motion applies the result without animation")
+	UiFactory.reduced_motion = false
+	canvas.configure(second)
+	await create_timer(0.35).timeout
+	_check(is_zero_approx(canvas._transition_strength), "Feedback converges after completion")
+	canvas.queue_free()
+	await _settle()
+	var page: MatchPage = (load("res://pages/match_page.tscn") as PackedScene).instantiate() as MatchPage
+	root.add_child(page)
+	page.service = FrontendService.new()
+	page._show_cue({"cues": [{"text": "first", "duration": 0.2}]})
+	await create_timer(0.1).timeout
+	page._show_cue({"cues": [{"text": "latest", "duration": 1.5}]})
+	await create_timer(0.7).timeout
+	_check(page._cue.visible and page._cue.text == "latest" and page._cue.modulate.a > 0.99, "A superseded cue tween cannot hide the newest authoritative feedback")
+	page._clear_cue()
+	_check(not page._cue.visible and page._cue_tween == null, "Projection interruption immediately removes queued cue animation")
+	page.queue_free()
+	await _settle()
+	var feedback: MatchFeedback = MatchFeedback.new()
+	root.add_child(feedback)
+	feedback.service = FrontendService.new()
+	feedback.service.assets_directory = ProjectSettings.globalize_path("res://../assets")
+	feedback.service.settings = {"masterVolume": 80, "soundVolume": 80, "responseTimingSound": false}
+	feedback.present({"sounds": [{"file": "response.mp3", "gain": 1.0}]})
+	_check(not feedback._last_played.has("response.mp3"), "Response popup sound is disabled by the presentation setting")
+	feedback.service.settings["responseTimingSound"] = true
+	feedback.present({"sounds": [{"file": "response.mp3", "gain": 1.0}]})
+	_check(feedback._last_played.has("response.mp3"), "Response popup sound can be restored independently")
+	feedback.queue_free()
+	await _settle()
+	print(JSON.stringify({"checks": _checks, "failures": _failures}))
+	quit(0 if _failures.is_empty() else 1)

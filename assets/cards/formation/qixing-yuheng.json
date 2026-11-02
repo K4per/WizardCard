@@ -1,0 +1,30 @@
+{
+  "id": "qixing-yuheng",
+  "name": "七星·玉衡",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "castCost": 0,
+  "rank": 0,
+  "level": 5,
+  "speed": 1,
+  "number": "010026",
+  "illustrationId": "qixing-yuheng",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [],
+  "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。设置时，将1张【七星】卡从灰烬区加入手卡。",
+  "body": 5,
+  "rings": 3,
+  "capacity": 21,
+  "income": 5,
+  "maxRank": 5,
+  "summonCondition": "通过【七星】卡的效果才能设置",
+  "baseEligible": false,
+  "traits": [
+    "seven_stars_effect_only"
+  ],
+  "recipe": []
+}

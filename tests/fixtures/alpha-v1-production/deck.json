@@ -1,0 +1,8 @@
+[
+  {"id":"fireball","count":3},{"id":"spark","count":3},
+  {"id":"mend","count":3},{"id":"recall","count":3},
+  {"id":"reservoir","count":3},{"id":"ring","count":3},
+  {"id":"ward","count":2},{"id":"barbs","count":2},
+  {"id":"disrupt","count":2},{"id":"clarity","count":2},
+  {"id":"conduit","count":2},{"id":"unravel","count":2}
+]

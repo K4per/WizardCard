@@ -1,0 +1,21 @@
+{
+  "id": "lightning-bolt",
+  "name": "闪电束",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 3,
+  "castCost": 2,
+  "rank": 2,
+  "speed": 1,
+  "school": "evocation",
+  "analysisTurns": 1,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 8,
+      "damageType": "lightning"
+    }
+  ],
+  "text": "对对方造成8点闪电伤害。"
+}

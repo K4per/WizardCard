@@ -1,0 +1,30 @@
+{
+  "id": "qixing-tianquan",
+  "name": "七星·天权",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "castCost": 0,
+  "rank": 0,
+  "level": 4,
+  "speed": 1,
+  "number": "010025",
+  "illustrationId": "qixing-tianquan",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [],
+  "text": "己方【七星】卡在奇数回合获得耀，在偶数回合获得黯。设置时，将1张【七星·星移】从己方灰烬区加入手卡。",
+  "body": 5,
+  "rings": 2,
+  "capacity": 14,
+  "income": 4,
+  "maxRank": 4,
+  "summonCondition": "通过【七星】卡的效果才能设置",
+  "baseEligible": false,
+  "traits": [
+    "seven_stars_effect_only"
+  ],
+  "recipe": []
+}

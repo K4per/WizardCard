@@ -1,0 +1,34 @@
+{
+  "id": "sun",
+  "name": "太阳",
+  "type": "formation",
+  "rarity": "legendary",
+  "level": 7,
+  "body": 5,
+  "rings": 7,
+  "capacity": 24,
+  "income": 8,
+  "maxRank": 7,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "此阵法卡不受其他卡的效果影响。双方结束阶段开始时，对方解析区盖伏的法术卡全部送去灰烬区。",
+  "summonCondition": "【五芒星】+【八芒星】",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "pentagram-of-life"
+    },
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "octagram"
+    }
+  ],
+  "traits": [
+    "effect_immune",
+    "destroy_enemy_ambush_end"
+  ],
+  "number": "010007",
+  "illustrationId": "alpha-v252-sun"
+}

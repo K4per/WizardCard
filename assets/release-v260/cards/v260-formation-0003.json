@@ -1,0 +1,51 @@
+{
+  "id": "v260-formation-0003",
+  "number": "010003",
+  "name": "安卡十字",
+  "type": "formation",
+  "school": "",
+  "rarity": "common",
+  "rank": 0,
+  "cost": 0,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 1,
+  "text": "此阵法卡离场时才能发动。此阵法卡抹除。那之后，可以将1张阵法卡从己方灰烬区返回副卡组。",
+  "effects": [],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "worksheet": "阵法卡",
+    "row": 5
+  },
+  "illustrationId": "v2-ankh",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\godot-2d-v2\\card-illustrations-v2-20261011\\v2-ankh.png",
+    "mapping": "历史对应阵法卡图",
+    "manifestId": "v2-ankh"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "traits": [
+    "return_formation_from_ash"
+  ],
+  "raritySource": "",
+  "recipe": [
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "school": "necromancy"
+    }
+  ],
+  "summonCondition": "解析区死灵派系法术卡×1",
+  "level": 3,
+  "body": 2,
+  "rings": 1,
+  "capacity": 5,
+  "income": 1
+}

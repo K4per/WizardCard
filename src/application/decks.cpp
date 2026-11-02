@@ -23,14 +23,14 @@ std::string rarityLabel(const std::string &rarity) {
     return rarity;
 }
 bool hasSpellRank(CardType type) {
-    return type == CardType::Analytic || type == CardType::Word;
+    return type == CardType::Analytic || type == CardType::Word || type == CardType::Talisman;
 }
 std::string cardTypeLabel(CardType type) {
-    return std::array<const char *, 5>{"行动卡", "解析法术", "言灵法术", "阵法卡", "符文卡"}.at(
+    return std::array<const char *, 6>{"行动卡", "解析法术", "言灵法术", "阵法卡", "符文卡", "咒符法术"}.at(
         static_cast<std::size_t>(type));
 }
 std::string primaryCostLabel(CardType type) {
-    return std::array<const char *, 5>{"使用费用", "解析费用", "设置费用", "设置费用", "附着费用"}.at(
+    return std::array<const char *, 6>{"使用费用", "解析费用", "发动费用", "设置费用", "附着费用", "发动费用"}.at(
         static_cast<std::size_t>(type));
 }
 namespace {
@@ -60,19 +60,44 @@ PlayerDeck DeckDraft::playerDeck() const {
             throw std::invalid_argument("卡牌份数无效");
         result.cards.insert(result.cards.end(), static_cast<std::size_t>(count), cardId);
     }
+    if (format >= 2)
+        for (const auto &[cardId, count] : sideCards) {
+            if (count < 1 || count > 1000)
+                throw std::invalid_argument("副卡组卡牌份数无效");
+            result.sideDeck.insert(result.sideDeck.end(), static_cast<std::size_t>(count), cardId);
+        }
     return result;
 }
 Json encodeDraft(const DeckDraft &d) {
-    return {{"id", d.id}, {"name", d.name}, {"baseFormation", d.baseFormation}, {"cards", d.cards}};
+    Json result = {{"id", d.id}, {"name", d.name}, {"baseFormation", d.baseFormation}, {"cards", d.cards}};
+    if (d.format >= 2) {
+        result["format"] = d.format;
+        result["sideCards"] = d.sideCards;
+    }
+    if (d.format == 3) result.erase("baseFormation");
+    return result;
+}
+int DeckDraft::sideSize() const {
+    int n = 0;
+    for (const auto &[cardId, count] : sideCards) {
+        (void)cardId;
+        n += count;
+    }
+    return n;
 }
 DeckDraft decodeDraft(const Json &j) {
     DeckDraft d;
-    for (const auto *field : {"id", "name", "baseFormation"})
+    if (j.contains("format")) {
+        if (!j.at("format").is_number_integer() || (j.at("format") != 1 && j.at("format") != 2 && j.at("format") != 3))
+            throw std::runtime_error("卡组草稿版本无效");
+        d.format = j.at("format").get<int>();
+    }
+    for (const auto *field : {"id", "name"})
         if (!j.at(field).is_string())
             throw std::runtime_error(std::string("卡组字段无效：") + field);
     d.id = j.at("id").get<std::string>();
     d.name = j.at("name").get<std::string>();
-    d.baseFormation = j.at("baseFormation").get<std::string>();
+    d.baseFormation = j.value("baseFormation", std::string{});
     if (d.id.empty() || d.id.size() > 160 || d.name.size() > 240 || d.baseFormation.size() > 160)
         throw std::runtime_error("卡组ID或名称长度无效");
     const auto &cards = j.at("cards");
@@ -84,34 +109,49 @@ DeckDraft decodeDraft(const Json &j) {
             throw std::runtime_error("卡组卡牌ID或份数无效：" + id);
         d.cards.emplace(id, count.get<int>());
     }
+    if (j.contains("sideCards")) {
+        const auto &side = j.at("sideCards");
+        if (!side.is_object() || side.size() > 1000 || (d.format < 2 && !side.empty()))
+            throw std::runtime_error("副卡组牌表格式无效");
+        for (const auto &[id, count] : side.items()) {
+            if (id.empty() || id.size() > 160 || !count.is_number_integer() || count.get<std::int64_t>() < 1 || count.get<std::int64_t>() > 1000)
+                throw std::runtime_error("副卡组卡牌ID或份数无效：" + id);
+            d.sideCards.emplace(id, count.get<int>());
+        }
+    }
     return d;
 }
-std::vector<std::string> deckProblems(const CardCatalog &cat, const DeckDraft &d) {
+std::vector<std::string> constructionProblems(const CardCatalog &cat, const DeckDraft &d) {
     std::vector<std::string> errors;
-    if (blank(d.name))
-        errors.push_back("请输入卡组名称");
-    if (d.size() != 30)
-        errors.push_back("主卡组需30张，当前" + std::to_string(d.size()) + "张");
-    std::map<std::string, int> names;
-    for (const auto &[id, count] : d.cards) {
-        if (count < 1 || count > 1000)
-            errors.push_back("份数无效：" + id);
-        const auto it = cat.cards.find(id);
-        if (it == cat.cards.end()) {
-            errors.push_back("卡池已无此卡：" + id);
-            continue;
+    if (blank(d.name)) errors.push_back("请输入卡组名称");
+    if (d.size() != 40) errors.push_back("主卡组需40张，当前" + std::to_string(d.size()) + "张");
+    if (d.sideSize() != 10) errors.push_back("副卡组需10张，当前" + std::to_string(d.sideSize()) + "张");
+    std::map<std::string, int> mainNames, sideNames;
+    auto check = [&](const std::map<std::string, int> &cards, bool side) {
+        for (const auto &[id, count] : cards) {
+            if (count < 1 || count > 1000) errors.push_back("份数无效：" + id);
+            const auto it = cat.cards.find(id);
+            if (it == cat.cards.end()) { errors.push_back("卡池已无此卡：" + id); continue; }
+            const bool formation = it->second.type == CardType::Formation;
+            if (formation != side) errors.push_back(it->second.name + (side ? "只能进入主卡组" : "只能进入副卡组"));
+            (side ? sideNames : mainNames)[it->second.name] += count;
         }
-        names[it->second.name] += count;
-    }
-    for (const auto &[name, count] : names)
-        if (count > 3)
-            errors.push_back(name + "同名最多3张，当前" + std::to_string(count) + "张");
-    auto base = cat.cards.find(d.baseFormation);
-    if (base == cat.cards.end())
-        errors.push_back("基础阵法已不存在：" + d.baseFormation);
-    else if (!base->second.baseEligible || base->second.type != CardType::Formation)
-        errors.push_back("该卡不具有基础阵法资格");
-    // The engine remains the authority on all additional formation constraints.
+    };
+    check(d.cards, false);
+    check(d.sideCards, true);
+    for (const auto &[name, count] : mainNames)
+        if (count > 3) errors.push_back(name + "同名最多3张，当前" + std::to_string(count) + "张");
+    for (const auto &[name, count] : sideNames)
+        if (count > 3) errors.push_back(name + "同名最多3张，当前" + std::to_string(count) + "张");
+    if (std::none_of(d.sideCards.begin(), d.sideCards.end(), [&](const auto &entry) {
+        const auto card = cat.cards.find(entry.first);
+        return entry.second > 0 && card != cat.cards.end() &&
+               card->second.type == CardType::Formation && card->second.level == 1;
+    })) errors.push_back("副卡组需含至少一张等级1阵法；初始阵法在开局时选择");
+    return errors;
+}
+std::vector<std::string> deckProblems(const CardCatalog &cat, const DeckDraft &d) {
+    auto errors = constructionProblems(cat, d);
     if (errors.empty())
         for (const auto &error : Rules::deckErrors(cat, d.playerDeck()))
             errors.push_back(error);
@@ -145,6 +185,7 @@ std::vector<std::string> cardTags(const CardDefinition &d) {
         for (const auto &e : list)
             switch (e.kind) {
             case EffectKind::Damage:
+            case EffectKind::ChooseDamage:
                 tags.insert("伤害");
                 tags.insert(damageName(e.damageType));
                 break;
@@ -164,6 +205,7 @@ std::vector<std::string> cardTags(const CardDefinition &d) {
                 break;
             case EffectKind::DestroyAmbush:
             case EffectKind::Destroy:
+            case EffectKind::DestroyFormationSpells:
             case EffectKind::OptionalDestroyOwnFormation:
                 tags.insert("销毁");
                 break;
@@ -189,6 +231,7 @@ std::vector<std::string> cardTags(const CardDefinition &d) {
                 tags.insert("行动封锁");
                 break;
             case EffectKind::SearchAction:
+            case EffectKind::SearchSameSchool:
                 tags.insert("检索");
                 break;
             case EffectKind::AccelerateAnalysis:
@@ -198,7 +241,28 @@ std::vector<std::string> cardTags(const CardDefinition &d) {
                 tags.insert("抗性");
                 break;
             case EffectKind::Conceal:
+            case EffectKind::ConcealEnemySpell:
                 tags.insert("埋伏");
+                break;
+            case EffectKind::DelayEnemyAnalysis:
+                tags.insert("延迟解析");
+                break;
+            case EffectKind::AdvanceAllEnemyAnalysis:
+                tags.insert("延迟解析");
+                break;
+            case EffectKind::RevealEnemyAmbush:
+            case EffectKind::RevealAllAmbush:
+                tags.insert("揭示");
+                break;
+            case EffectKind::ReduceSpellDamage:
+                tags.insert("减伤");
+                break;
+            case EffectKind::ReturnEnemyAnalysis:
+                tags.insert("回手");
+                break;
+            case EffectKind::RecoverEnemyAshSpell:
+            case EffectKind::RecoverFormation:
+                tags.insert("灰烬回收");
                 break;
             }
     };
@@ -226,6 +290,13 @@ std::vector<std::string> queryCards(const CardCatalog &cat, const CardQuery &q) 
             (q.rank && d.rank != *q.rank))
             continue;
         const auto tags = cardTags(d);
+        const auto hasAll = [&](const std::vector<std::string> &values) {
+            return std::all_of(values.begin(), values.end(), [&](const std::string &value) {
+                return std::find(tags.begin(), tags.end(), value) != tags.end();
+            });
+        };
+        if (!hasAll(q.factions) || !hasAll(q.speeds) || !hasAll(q.damageTypes))
+            continue;
         if (!std::all_of(q.tags.begin(), q.tags.end(), [&](const std::string &tag) {
                 return std::find(tags.begin(), tags.end(), tag) != tags.end();
             }))
@@ -266,6 +337,7 @@ DeckDraft DeckLibrary::create(const std::string &name) const {
     static std::atomic<std::uint64_t> serial{};
     DeckDraft d;
     d.name = name;
+    d.format = 3;
     do {
         d.id = "deck-" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) + "-" +
                std::to_string(++serial);

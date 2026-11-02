@@ -1,0 +1,41 @@
+{
+  "id": "pentagram-of-life",
+  "name": "生命之五芒星",
+  "type": "formation",
+  "rarity": "common",
+  "cost": 0,
+  "body": 2,
+  "capacity": 8,
+  "income": 3,
+  "rings": 3,
+  "maxRank": 5,
+  "baseAnalysisDiscount": false,
+  "text": "己方准备阶段开始时，获得1点独立荷载。",
+  "flavor": "生命之五芒星以魔素高活跃性和高控制性著称。",
+  "castCost": 0,
+  "rank": 0,
+  "speed": 1,
+  "level": 5,
+  "baseEligible": false,
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "hexagram"
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "readyOnly": true
+    }
+  ],
+  "summonCondition": "【均衡之六芒星】+已解析的法术。",
+  "onPrepare": [
+    {
+      "kind": "independent",
+      "amount": 1
+    }
+  ],
+  "number": "010002",
+  "illustrationId": "pentagram-of-life"
+}

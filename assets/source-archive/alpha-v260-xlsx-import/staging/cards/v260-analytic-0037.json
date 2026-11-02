@@ -1,0 +1,51 @@
+{
+  "id": "v260-analytic-0037",
+  "number": "020037",
+  "name": "土石喷发",
+  "type": "analytic",
+  "school": "transmutation",
+  "rarity": "common",
+  "rank": 5,
+  "cost": 5,
+  "castCost": 3,
+  "analysisTurns": 2,
+  "speed": 1,
+  "text": "对对方以及对方场上全部目标各造成10点钝击伤害。那之后，直到己方下个准备阶段开始时，对方施法槽数量减半。",
+  "effects": [
+    {
+      "kind": "area_damage",
+      "amount": 10,
+      "damageType": "bludgeoning",
+      "recipient": "opponent"
+    },
+    {
+      "kind": "halve_casting_capacity",
+      "amount": 1
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 38
+  },
+  "illustrationId": "v260-art-analytic-0037",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\土石喷发.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0037",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0037.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "traits": [
+    "halve_casting_capacity"
+  ],
+  "level": 5
+}

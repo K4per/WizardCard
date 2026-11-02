@@ -1,0 +1,31 @@
+{
+  "id": "ice-storm",
+  "name": "风契·冰风暴",
+  "type": "analytic",
+  "rarity": "rare",
+  "cost": 4,
+  "castCost": 1,
+  "rank": 4,
+  "level": 4,
+  "speed": 1,
+  "school": "evocation",
+  "analysisTurns": 1,
+  "target": "player",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 8,
+      "damageType": "cold"
+    },
+    {
+      "kind": "delay_all_enemy_analysis",
+      "amount": 1
+    }
+  ],
+  "text": "选择1个目标才能发动。对其造成8点寒冷伤害。那之后，可以使对方解析区全部解析法术卡的解析时间+1。",
+  "tags": [
+    "风契"
+  ],
+  "number": "020018",
+  "illustrationId": "ice-storm"
+}

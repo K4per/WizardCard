@@ -1,11 +1,7 @@
 # 运行时美术资源
 
-程序 0.4.2-dev 的运行映射现包含全部 13 张透明 PNG。2026-10-04 补齐奥术回想、火花术、生命缝合、结构瓦解、魔力扰动、清心、蓄能阵、导流阵、炽燃结界；原有 pixel_fantasy_v2 的均衡、火球术、银光锐语、奥术圆环逐字节保留。
+当前发布资源由 `runtime.json`（传统卡牌插画）及 `godot/art/assets.json`（Godot 前端资源）登记。运行时副本位于 `godot/art/`；源文件位置、SHA-256、许可和制作来源保存在对应清单中。
 
-runtime.json 按稳定卡牌 ID 映射图片。provenance.json 保存来源版本、原始生成文件名、SHA-256 和许可说明，发布包无需原型目录即可追溯。原图来源为项目内 OpenAI imagegen 生成素材，不额外声明第三方图库授权，也不改变项目既有许可。
+源美术按用途保留在 `alpha-release`、`alpha-v1`、`alpha-v252-20261021`、`alpha-v254-20261024`、`cards`、`fonts`、`godot-2d-v1`、`godot-2d-v2`、`sique-20261020` 等目录。不要仅凭目录年代删除文件：先检查 `godot/art/assets.json` 的 `source` / `authoringSource` 映射，以及 `runtime.json`。旧探索稿与未使用原型已从工作区移除。
 
-卡面、场内缩略图及卡牌详情使用同一透明插图，保持比例、最近邻采样。图片缺失或无法读取时沿用代码绘制的类别纹章回退。
-
-新增 [像素奇幻 UI 资源](design/v1/index.html)：190 个独立 PNG、对应 SVG 源稿、46 张设计稿及 13 组流程，详见 [交付说明](design/v1/README.md)、[接入规范](design/v1/integration.md) 和 [资源清单](ui/manifest.json)。客户端已通过 ui/manifest.json 接入卡框、牌背、区域、按钮各状态、图标、高亮和主要面板。九宫格保留边饰，插画保持比例；场地底图与装饰叠加程序绘制的低对比石纹，区域保持半透明。设计示例图不作为运行背景。
-
-UI 使用固定色板和二值透明度；AI 插画保持原始像素风生成结果，未宣称严格限色或网格精修。安装脚本排除 `prototypes` 与 `design`，发布包保留13张插画、190张UI PNG、映射与来源记录；设计源稿留在仓库。
+`ART_INVENTORY.json` 是源素材盘点，运行时副本单独登记。更新素材后运行 `python tools/check_art_assets.py --update-inventory`，验证时运行 `python tools/check_art_assets.py --check` 与 `python tools/prepare_godot_frontend_assets.py --check`。

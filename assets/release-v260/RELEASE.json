@@ -1,0 +1,11 @@
+{
+  "format": 1,
+  "status": "released",
+  "rulesVersion": "2.6.0",
+  "cardSetVersion": "2.6.0",
+  "mechanicsRevision": 10,
+  "cardCount": 92,
+  "source": "assets/source-archive/alpha-v260-xlsx-import/staging",
+  "sourceCatalogSha256": "e1a664966d49e120b7056bdc89f65e9e70cf422886fa619583902418c6d87306",
+  "sourceAggregateSha256": "46a9fd95250ec90584a7be2e3eec360cab3dfeeb8f1579204c1842cb74d30f83"
+}

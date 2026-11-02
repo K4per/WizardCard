@@ -1,0 +1,33 @@
+{
+  "id": "blood-rain",
+  "name": "血契·血雨",
+  "type": "talisman",
+  "rarity": "rare",
+  "cost": 3,
+  "castCost": 0,
+  "rank": 3,
+  "level": 3,
+  "speed": 2,
+  "number": "040018",
+  "illustrationId": "blood-rain",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [
+    {
+      "kind": "change_life_limit",
+      "amount": -4,
+      "recipient": "owner"
+    },
+    {
+      "kind": "damage",
+      "amount": 12,
+      "damageType": "necrotic",
+      "recipient": "opponent"
+    }
+  ],
+  "text": "己方生命值上限-4，对对方造成12点暗蚀伤害。",
+  "analysisTurns": 0,
+  "school": "evocation"
+}

@@ -1,0 +1,15 @@
+# 场地示意图样稿
+
+依据用户最新场地示意图，采用古金、深蓝绿奇幻像素风。顶部整条施法区，中层五阵法位，下层五长解析列，左牌库、右灰烬区。五列是本次用户布局指定，不推导固定规则。单方空场视觉样稿，不是完整双方对局或运行背景；标签和牌库图样为概念展示，正式组件需分层制作。
+
+工具：内置 image_gen。文件：[field-pixel-fantasy.png](field-pixel-fantasy.png)。
+
+## 实际提示词
+
+```text
+Use case: ui-mockup. Transform the provided battlefield diagram into ONE polished fantasy PIXEL ART 2D battlefield visual mockup for WizardCard. Input is a STRICT SPATIAL LAYOUT REFERENCE, not decoration to reuse. Landscape image close to 1798x1042 aspect. Flat top-down orthographic 2D board, all rectangles remain axis aligned, no camera perspective, no isometric geometry.
+EXACT placement and counts, matching input: ONE long wide horizontal CASTING AREA '施法区' at top center from x22%-81%, y11%-25%. Directly beneath it ONE formation strip y28%-41% with EXACTLY FIVE broad rectangular formation slots in a horizontal row, centered caption '阵法区' on or above strip. Lower central ANALYSIS AREA x20%-85%, y42%-97%, holding EXACTLY FIVE very tall rectangular lanes running vertically, one lane aligned precisely under each formation slot. These analysis lanes are long columns intended for multiple cards, NOT five short card slots and NOT ten lanes. Caption '解析区' on a small horizontal plaque in the lower central panel without blocking lanes. Standalone portrait DECK stack zone at far LEFT x5%-16%, y43%-67%, label '牌库'. Standalone portrait ASH zone at far RIGHT x87%-97%, y44%-68%, label '灰烬区'. Preserve side-zone relative height and gap. Show only this ONE player's field as diagram; do not add opponent half, hands, HUD, chain panel, menu, card detail, side deck, actions or extra zones.
+Art direction: richly crafted but restrained 16-bit fantasy pixel art, dark navy teal cloth/stone inlay, warm antique gold or bronze borders, subtle jade small gemstones, stepped engraved corner trims, sparse arcane geometric embossing. Clear visible pixel clusters and crisp edges. Quiet empty interior surfaces suitable for placing cards later. Distinguish casting with muted navy, formation strip with dark bronze edged teal, analysis with deep desaturated green and very low-contrast thin jade outer edge (replace loud neon green layout outline), ash with muted charcoal wine. Gold pale parchment-colored readable Chinese section titles ONLY: '施法区', '阵法区', '解析区', '牌库', '灰烬区'. No other text, numerals, fake runes resembling writing, watermark or brand headline.
+All FIVE formation rectangles empty except tiny low-contrast geometric placeholder emblem if needed. All FIVE tall analysis lanes completely empty and equally readable, straight top and bottom. Casting wide interior empty, no fixed slot count baked into it. Deck can contain a single anonymous symmetrical card-back stack; ash a subdued empty discard well. No illustrated cards, characters, objects or particle glows filling the card regions. Background a quiet dark textured mat with decorative edge corners and subtle shadow separation; opaque full scene. Layout fidelity matters more than elaborate ornament. This is a UI layout concept, not a painting of a 3D table.
+```
+

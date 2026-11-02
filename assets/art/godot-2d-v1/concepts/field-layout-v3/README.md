@@ -1,0 +1,15 @@
+# 五条横向解析行样稿
+
+用户最新示意图替代前两稿的解析布局：顶部施法区；下方五条横向行，每行左端阵法槽、右侧连续解析空间。副卡组在左上、主卡组在左下，灰烬区在右下。五行仅是本次指定展示，不推导固定规则容量。
+
+图稿：[field-five-horizontal-rows.png](field-five-horizontal-rows.png)。单方空场概念图，内置 image_gen 生成；沿用古金与深蓝绿像素奇幻风。前两稿保留，未改运行资源。
+
+## 实际提示词
+
+```text
+Generate ONE fantasy pixel-art battlefield mockup following Image 1's EXACT layout. Image 1 is authoritative spatial wireframe, not an image to retain white background. Landscape 16:9, flat orthographic 2D UI. Warm antique gold borders, deep navy-teal textured surfaces, subtle jade corner gems, restrained 16-bit square pixel detailing, matching a mature fantasy card game's dark blue-green and antique gold style. Quiet empty card surfaces and beautiful restrained edge ornament.
+Critical geometry: ONE central rectangular board x22%-75%, y18%-92%. Board TOP section y18%-35% is ONE uninterrupted wide CASTING area, caption '施法区'. Below y35%-92% board is divided into EXACTLY FIVE HORIZONTAL ROWS stacked vertically. Every row spans almost full board width. EACH row has ONE compact almost-square FORMATION slot at its LEFT END taking 12% of board width, and to its RIGHT ONE very long uninterrupted ANALYSIS LANE taking remaining 88% of board width. Formation slots form a single vertical column on left; analysis lanes form five horizontal strips to their right. Their association is unambiguous, shared boundary line per row. Do not add a separate formation row. Do not subdivide analysis strips into short rectangular slots or grids. Do not create five vertical columns. Keep right lanes completely empty, suitable for dynamically laid out cards. Each row fine antique-gold outline, low contrast interior. Captions left slots only '阵法槽1', '阵法槽2', '阵法槽3', '阵法槽4', '阵法槽5', in top-to-bottom order. Small unobtrusive overall label '解析区' on the lower outer border or in a tiny edge plaque, no extra region.
+Outside board LEFT: two small separate portrait deck containers at x14%-21%. UPPER one y60%-74% caption '副卡组'; LOWER one y77%-92% caption '主卡组'. SIDE DECK IS ABOVE MAIN DECK, preserve this exact order. Anonymous closed card-back stack motif inside each container, distinct external identification but no card faces. Outside board RIGHT: ONE small portrait ash container x78%-85%, y77%-92%, caption '灰烬区', aligned with LOWER main deck. These side containers are small relative to entire board, not giant sidebars.
+Wide margins decorate subtly with small symmetric engraved motifs; all frame edges visible. No opposite player's field, hands, HUD, action bar, logos, menu, chain list, actual cards, characters or dramatic glowing spells. No perspective, isometric projection or 3D table. Empty single-player board layout concept. Label only the requested short Chinese captions, pale parchment gold high readability. Dark opaque navy background replaces sketch white. Layout fidelity is highest priority; literally central full-width casting rectangle over five rows, each with left square and long right lane, side deck above main left, ash lower right.
+```
+

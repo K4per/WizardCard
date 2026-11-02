@@ -1,0 +1,677 @@
+{
+  "load_fill_normal": {
+    "region": [
+      225,
+      451,
+      1215,
+      52
+    ],
+    "file": "res://art/battle-v3/07-hud-load-bar-atlas.png"
+  },
+  "effect_preview_body": {
+    "region": [
+      1430,
+      280,
+      350,
+      370
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "icon_sort": {
+    "region": [
+      776,
+      102,
+      269,
+      249
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "resource_mana": {
+    "region": [
+      929,
+      65,
+      315,
+      562
+    ],
+    "file": "res://art/battle-v3/08-resource-icons-atlas.png"
+  },
+  "icon_cancel": {
+    "region": [
+      770,
+      427,
+      270,
+      268
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "state_hover": {
+    "region": [
+      483,
+      43,
+      379,
+      354
+    ],
+    "file": "res://art/battle-v3/09-selection-state-atlas.png"
+  },
+  "checkbox_off": {
+    "region": [
+      172,
+      506,
+      153,
+      144
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "detail_panel": {
+    "region": [
+      16,
+      28,
+      972,
+      1487
+    ],
+    "file": "res://art/battle-v3/03-card-detail-panel.png"
+  },
+  "icon_back": {
+    "region": [
+      62,
+      362,
+      291,
+      324
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "icon_ready": {
+    "region": [
+      412,
+      733,
+      276,
+      291
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "button_hover": {
+    "region": [
+      456,
+      71,
+      374,
+      167
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "effect_instruction_header": {
+    "region": [
+      220,
+      140,
+      1220,
+      130
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "previous_button": {
+    "region": [
+      460,
+      710,
+      176,
+      168
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "tooltip_small": {
+    "region": [
+      1165,
+      703,
+      429,
+      169
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "information_list_panel": {
+    "region": [
+      993,
+      387,
+      509,
+      588
+    ],
+    "file": "res://art/battle-v3/11-information-panels-atlas.png"
+  },
+  "effect_page_next": {
+    "region": [
+      1340,
+      390,
+      125,
+      135
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "effect_candidates_body": {
+    "region": [
+      90,
+      280,
+      1320,
+      370
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "resource_load": {
+    "region": [
+      1459,
+      79,
+      606,
+      562
+    ],
+    "file": "res://art/battle-v3/08-resource-icons-atlas.png"
+  },
+  "confirmation_panel": {
+    "region": [
+      79,
+      34,
+      713,
+      441
+    ],
+    "file": "res://art/battle-v3/11-information-panels-atlas.png"
+  },
+  "icon_information": {
+    "region": [
+      1125,
+      362,
+      276,
+      338
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "state_material_selected": {
+    "region": [
+      1364,
+      42,
+      368,
+      401
+    ],
+    "file": "res://art/battle-v3/09-selection-state-atlas.png"
+  },
+  "hand_divider": {
+    "region": [
+      620,
+      684,
+      860,
+      125
+    ],
+    "file": "res://art/battle-v3/10-zone-plates-atlas.png"
+  },
+  "state_disabled": {
+    "region": [
+      45,
+      472,
+      380,
+      350
+    ],
+    "file": "res://art/battle-v3/09-selection-state-atlas.png"
+  },
+  "action_two_normal": {
+    "region": [
+      55,
+      412,
+      686,
+      197
+    ],
+    "file": "res://art/battle-v3/04-card-actions-atlas.png"
+  },
+  "effect_page_previous": {
+    "region": [
+      30,
+      390,
+      120,
+      135
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "action_three_normal": {
+    "region": [
+      45,
+      696,
+      701,
+      202
+    ],
+    "file": "res://art/battle-v3/04-card-actions-atlas.png"
+  },
+  "load_fill_warning": {
+    "region": [
+      225,
+      557,
+      1215,
+      53
+    ],
+    "file": "res://art/battle-v3/07-hud-load-bar-atlas.png"
+  },
+  "main_deck_plate": {
+    "region": [
+      136,
+      55,
+      482,
+      405
+    ],
+    "file": "res://art/battle-v3/10-zone-plates-atlas.png"
+  },
+  "close_button": {
+    "region": [
+      82,
+      710,
+      188,
+      166
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "icon_analysis_pending": {
+    "region": [
+      64,
+      724,
+      270,
+      309
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "side_deck_plate": {
+    "region": [
+      810,
+      41,
+      521,
+      420
+    ],
+    "file": "res://art/battle-v3/10-zone-plates-atlas.png"
+  },
+  "state_valid_target": {
+    "region": [
+      923,
+      39,
+      377,
+      404
+    ],
+    "file": "res://art/battle-v3/09-selection-state-atlas.png"
+  },
+  "effect_optional_return_button": {
+    "region": [
+      1170,
+      650,
+      205,
+      121
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "phase_banner": {
+    "region": [
+      658,
+      718,
+      634,
+      98
+    ],
+    "file": "res://art/battle-v3/07-hud-load-bar-atlas.png"
+  },
+  "input_search": {
+    "region": [
+      45,
+      306,
+      464,
+      121
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "analysis_row": {
+    "region": [
+      101,
+      641,
+      1470,
+      114
+    ],
+    "file": "res://art/battle-v3/02b-field-structure-atlas.png"
+  },
+  "icon_settings": {
+    "region": [
+      1125,
+      95,
+      286,
+      267
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "dungeon_background": {
+    "region": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "file": "res://art/battle-v3/01-dungeon-background.png"
+  },
+  "action_three_disabled": {
+    "region": [
+      796,
+      694,
+      703,
+      204
+    ],
+    "file": "res://art/battle-v3/04-card-actions-atlas.png"
+  },
+  "effect_confirm_button": {
+    "region": [
+      1380,
+      650,
+      350,
+      121
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "radio_on": {
+    "region": [
+      1290,
+      493,
+      142,
+      166
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "state_sustained": {
+    "region": [
+      481,
+      469,
+      384,
+      355
+    ],
+    "file": "res://art/battle-v3/09-selection-state-atlas.png"
+  },
+  "resource_life": {
+    "region": [
+      181,
+      139,
+      495,
+      464
+    ],
+    "file": "res://art/battle-v3/08-resource-icons-atlas.png"
+  },
+  "button_pressed": {
+    "region": [
+      863,
+      74,
+      358,
+      160
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "state_unavailable": {
+    "region": [
+      1360,
+      443,
+      377,
+      381
+    ],
+    "file": "res://art/battle-v3/09-selection-state-atlas.png"
+  },
+  "effect_popup_complete": {
+    "region": [
+      30,
+      48,
+      1780,
+      729
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "dropdown": {
+    "region": [
+      548,
+      306,
+      459,
+      122
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "load_track": {
+    "region": [
+      147,
+      323,
+      1378,
+      95
+    ],
+    "file": "res://art/battle-v3/07-hud-load-bar-atlas.png"
+  },
+  "slider": {
+    "region": [
+      1046,
+      334,
+      464,
+      75
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "icon_confirm": {
+    "region": [
+      411,
+      439,
+      291,
+      244
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "field_divider": {
+    "region": [
+      63,
+      829,
+      1546,
+      60
+    ],
+    "file": "res://art/battle-v3/02b-field-structure-atlas.png"
+  },
+  "ash_plate": {
+    "region": [
+      137,
+      554,
+      483,
+      394
+    ],
+    "file": "res://art/battle-v3/10-zone-plates-atlas.png"
+  },
+  "response_notification": {
+    "region": [
+      33,
+      669,
+      912,
+      133
+    ],
+    "file": "res://art/battle-v3/11-information-panels-atlas.png"
+  },
+  "icon_attached": {
+    "region": [
+      762,
+      758,
+      264,
+      255
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "tooltip_large": {
+    "region": [
+      954,
+      90,
+      528,
+      230
+    ],
+    "file": "res://art/battle-v3/11-information-panels-atlas.png"
+  },
+  "icon_search": {
+    "region": [
+      38,
+      68,
+      321,
+      294
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "button_normal": {
+    "region": [
+      40,
+      74,
+      378,
+      160
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "radio_off": {
+    "region": [
+      900,
+      493,
+      145,
+      166
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "round_badge": {
+    "region": [
+      381,
+      652,
+      237,
+      230
+    ],
+    "file": "res://art/battle-v3/07-hud-load-bar-atlas.png"
+  },
+  "icon_filter": {
+    "region": [
+      411,
+      88,
+      284,
+      260
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "scrollbar": {
+    "region": [
+      1510,
+      256,
+      91,
+      286
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "action_one_hover": {
+    "region": [
+      813,
+      120,
+      620,
+      199
+    ],
+    "file": "res://art/battle-v3/04-card-actions-atlas.png"
+  },
+  "state_selected": {
+    "region": [
+      38,
+      36,
+      392,
+      366
+    ],
+    "file": "res://art/battle-v3/09-selection-state-atlas.png"
+  },
+  "button_disabled": {
+    "region": [
+      1260,
+      74,
+      373,
+      206
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "casting_continuous": {
+    "region": [
+      69,
+      91,
+      1534,
+      461
+    ],
+    "file": "res://art/battle-v3/02b-field-structure-atlas.png"
+  },
+  "next_button": {
+    "region": [
+      860,
+      710,
+      145,
+      168
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "effect_count_badge": {
+    "region": [
+      1440,
+      140,
+      130,
+      130
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "player_hud": {
+    "region": [
+      38,
+      32,
+      1597,
+      266
+    ],
+    "file": "res://art/battle-v3/07-hud-load-bar-atlas.png"
+  },
+  "action_two_hover": {
+    "region": [
+      795,
+      412,
+      688,
+      197
+    ],
+    "file": "res://art/battle-v3/04-card-actions-atlas.png"
+  },
+  "icon_hidden": {
+    "region": [
+      1095,
+      760,
+      318,
+      255
+    ],
+    "file": "res://art/battle-v3/12-utility-icons-atlas.png"
+  },
+  "state_visible": {
+    "region": [
+      920,
+      443,
+      377,
+      381
+    ],
+    "file": "res://art/battle-v3/09-selection-state-atlas.png"
+  },
+  "checkbox_on": {
+    "region": [
+      523,
+      505,
+      152,
+      144
+    ],
+    "file": "res://art/battle-v3/06-common-controls-atlas.png"
+  },
+  "action_one_normal": {
+    "region": [
+      103,
+      120,
+      620,
+      199
+    ],
+    "file": "res://art/battle-v3/04-card-actions-atlas.png"
+  },
+  "effect_footer_repeatable": {
+    "region": [
+      210,
+      655,
+      800,
+      71
+    ],
+    "file": "res://art/battle-v3/05b-effect-selection-popup.png"
+  },
+  "detail_information_box": {
+    "region": [
+      45,
+      50,
+      935,
+      1420
+    ],
+    "file": "res://art/battle-v3/13-detail-information-panel.png"
+  }
+}

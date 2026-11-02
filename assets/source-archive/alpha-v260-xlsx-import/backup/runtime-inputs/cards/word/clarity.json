@@ -1,0 +1,29 @@
+{
+  "id": "clarity",
+  "name": "心如止水",
+  "rarity": "common",
+  "type": "word",
+  "cost": 2,
+  "target": "self",
+  "effects": [
+    {
+      "kind": "discard_hand"
+    },
+    {
+      "kind": "clear_all_temporary"
+    }
+  ],
+  "text": "将1张卡从手卡送去灰烬区才能发动。清除己方全部临时荷载。",
+  "flavor": "向月亮诉说吧。",
+  "speed": 2,
+  "castCost": 0,
+  "rank": 2,
+  "level": 2,
+  "tags": [
+    "former-action"
+  ],
+  "number": "030004",
+  "illustrationId": "clarity",
+  "school": "abjuration",
+  "analysisTurns": 0
+}

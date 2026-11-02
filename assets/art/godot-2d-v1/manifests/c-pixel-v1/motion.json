@@ -1,0 +1,228 @@
+{
+  "requirements": [
+    "FX-01",
+    "FX-06"
+  ],
+  "clips": {
+    "draw": {
+      "duration": 0.32,
+      "track": "position",
+      "from": "deckAnchor",
+      "to": "handAnchor",
+      "easing": "cubicOut",
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "place": {
+      "duration": 0.26,
+      "track": "position",
+      "from": "dragAnchor",
+      "to": "zoneAnchor",
+      "easing": "cubicOut",
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "flip": {
+      "duration": 0.28,
+      "track": "scaleX",
+      "keyframes": [
+        [
+          0,
+          1
+        ],
+        [
+          0.14,
+          0
+        ],
+        [
+          0.28,
+          1
+        ]
+      ],
+      "swapTextureAt": 0.14,
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "raise": {
+      "duration": 0.12,
+      "track": "visualOffsetY",
+      "keyframes": [
+        [
+          0,
+          0
+        ],
+        [
+          0.12,
+          -12
+        ]
+      ],
+      "easing": "quadOut",
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "return": {
+      "duration": 0.2,
+      "track": "position",
+      "from": "cancelAnchor",
+      "to": "originalAnchor",
+      "easing": "quadOut",
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "discard": {
+      "duration": 0.28,
+      "track": "position",
+      "from": "cardAnchor",
+      "to": "ashAnchor",
+      "easing": "cubicIn",
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "page-enter": {
+      "duration": 0.18,
+      "track": "opacity",
+      "keyframes": [
+        [
+          0,
+          0
+        ],
+        [
+          0.18,
+          1
+        ]
+      ],
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "popup-enter": {
+      "duration": 0.16,
+      "track": "scale",
+      "keyframes": [
+        [
+          0,
+          0.96
+        ],
+        [
+          0.16,
+          1
+        ]
+      ],
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "opening": {
+      "duration": 0.45,
+      "track": "opacity",
+      "keyframes": [
+        [
+          0,
+          0
+        ],
+        [
+          0.45,
+          1
+        ]
+      ],
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "victory": {
+      "duration": 0.45,
+      "track": "scale",
+      "keyframes": [
+        [
+          0,
+          0.9
+        ],
+        [
+          0.45,
+          1
+        ]
+      ],
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "defeat": {
+      "duration": 0.32,
+      "track": "opacity",
+      "keyframes": [
+        [
+          0,
+          0
+        ],
+        [
+          0.32,
+          1
+        ]
+      ],
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    },
+    "draw-result": {
+      "duration": 0.32,
+      "track": "opacity",
+      "keyframes": [
+        [
+          0,
+          0
+        ],
+        [
+          0.32,
+          1
+        ]
+      ],
+      "reduced": {
+        "duration": 0.1,
+        "cameraMotion": false
+      },
+      "target": "Visual child only; never move input root or submit rules"
+    }
+  },
+  "effectsPolicy": {
+    "spawnOnlyOnConfirmedVisualCue": true,
+    "facedownAnonymous": true,
+    "loopAllowed": [
+      "analysis-loop"
+    ],
+    "reducedLoops": false,
+    "maxSimultaneous": 12,
+    "clearOnPauseHandoffOrExit": true,
+    "clearOnComplete": true,
+    "numbersAndSourceLabels": "real-time core projection",
+    "cancelDoesNotPlaySuccess": true,
+    "endCleanup": "one batch sweep, not N repeated flashes"
+  }
+}

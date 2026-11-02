@@ -1,0 +1,26 @@
+{
+  "id": "true-strike",
+  "name": "克敌机先",
+  "type": "word",
+  "rarity": "uncommon",
+  "cost": 3,
+  "rank": 3,
+  "speed": 2,
+  "school": "divination",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "search_same_school"
+    }
+  ],
+  "text": "将另一张手牌中的法术送入灰烬区作为发动成本。从牌库检索一张同学派法术加入手牌，然后洗切牌库。",
+  "flavor": "魔法之洞见，它能指引你看到多远？",
+  "castCost": 0,
+  "level": 3,
+  "analysisTurns": 0,
+  "number": "030005",
+  "illustrationId": "true-strike",
+  "traits": [
+    "discard_spell_search"
+  ]
+}

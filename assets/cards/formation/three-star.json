@@ -1,0 +1,33 @@
+{
+  "id": "three-star",
+  "rarity": "rare",
+  "target": "none",
+  "illustrationId": "three-star",
+  "number": "010019",
+  "name": "三芒星",
+  "type": "formation",
+  "text": "此阵法卡在己方场上仅可存在1张。此阵法卡上设置法术卡时，使其解析时间-1，获得1点荷载。",
+  "level": 2,
+  "body": 1,
+  "rings": 3,
+  "capacity": 5,
+  "income": 2,
+  "maxRank": 2,
+  "summonCondition": "【四芒星】+手卡×1",
+  "cost": 0,
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "small-hexagram"
+    },
+    {
+      "kind": "discard_hand",
+      "amount": 1
+    }
+  ],
+  "traits": [
+    "unique",
+    "quick_host_analysis_1"
+  ]
+}

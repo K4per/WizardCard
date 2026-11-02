@@ -1,0 +1,22 @@
+{
+  "id": "qixing-banner",
+  "name": "七星星帜",
+  "type": "seal",
+  "rarity": "rare",
+  "cost": 2,
+  "castCost": 0,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "number": "050011",
+  "illustrationId": "qixing-banner",
+  "target": "none",
+  "tags": [
+    "七星"
+  ],
+  "effects": [],
+  "text": "附着于阵法：此阵法卡被销毁时，可以将此符文卡解除附着作为替代。 附着于法术：发动费用-3。",
+  "traits": [
+    "seven_stars_banner"
+  ]
+}

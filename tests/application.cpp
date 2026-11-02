@@ -2,10 +2,32 @@
 #include <atomic>
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
+#include <cstdlib>
 #include <fstream>
+#include <optional>
 using namespace wizard;
 using namespace wizard::app;
 namespace {
+#ifdef __linux__
+struct ScopedEnvironment {
+    const char *name;
+    std::optional<std::string> previous;
+    ScopedEnvironment(const char *key, const char *value) : name(key) {
+        if (const auto *current = std::getenv(name))
+            previous = current;
+        if (value)
+            setenv(name, value, 1);
+        else
+            unsetenv(name);
+    }
+    ~ScopedEnvironment() {
+        if (previous)
+            setenv(name, previous->c_str(), 1);
+        else
+            unsetenv(name);
+    }
+};
+#endif
 struct AppFixture {
     Content content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets");
     std::filesystem::path directory;
@@ -26,8 +48,7 @@ struct AppFixture {
     }
     MatchConfig config() {
         MatchConfig c;
-        for (auto &p : c.players)
-            p.cards = content.deck;
+        for (auto &p : c.players) { p.cards = content.deck; p.sideDeck = content.sideDeck; }
         return c;
     }
 };
@@ -37,16 +58,40 @@ void start(Application &a, const MatchConfig &c) {
     REQUIRE(a.start(c, error));
 }
 } // namespace
+#ifdef __linux__
+TEST_CASE("Linux user data honors XDG and falls back to HOME") {
+    ScopedEnvironment home("HOME", "/tmp/wizardcard-home");
+    SECTION("XDG takes precedence") {
+        ScopedEnvironment xdg("XDG_DATA_HOME", "/tmp/wizardcard-xdg");
+        REQUIRE(userDataDirectory() == "/tmp/wizardcard-xdg/WizardCard");
+    }
+    SECTION("missing XDG uses HOME") {
+        ScopedEnvironment xdg("XDG_DATA_HOME", nullptr);
+        REQUIRE(userDataDirectory() == "/tmp/wizardcard-home/.local/share/WizardCard");
+    }
+    SECTION("empty XDG uses HOME") {
+        ScopedEnvironment xdg("XDG_DATA_HOME", "");
+        REQUIRE(userDataDirectory() == "/tmp/wizardcard-home/.local/share/WizardCard");
+    }
+    SECTION("missing environment requires an explicit directory") {
+        ScopedEnvironment xdg("XDG_DATA_HOME", nullptr);
+        ScopedEnvironment no_home("HOME", nullptr);
+        REQUIRE_THROWS(userDataDirectory());
+    }
+}
+#endif
 TEST_CASE("settings serialize strictly and multiply master and sound volume") {
     Settings s;
     s.masterVolume = 50;
     s.soundVolume = 20;
+    s.fontScale = 110;
     s.width = 1920;
     s.height = 1080;
     s.automaticPhases = false;
+    s.responseTimingSound = true;
     REQUIRE(s.effectiveSoundVolume() == 10.f);
     REQUIRE(encodeSettings(decodeSettings(encodeSettings(s))) == encodeSettings(s));
-    for (const auto *field : {"masterVolume", "soundVolume", "windowMode", "width", "height", "format"}) {
+    for (const auto *field : {"masterVolume", "soundVolume", "fontScale", "windowMode", "width", "height", "format"}) {
         auto j = encodeSettings(s);
         j[field] = -1;
         REQUIRE_THROWS(decodeSettings(j));
@@ -60,6 +105,26 @@ TEST_CASE("settings serialize strictly and multiply master and sound volume") {
     j = encodeSettings(s);
     j["masterVolume"] = 101;
     REQUIRE_THROWS(decodeSettings(j));
+    j = encodeSettings(s);
+    j["responseTimingSound"] = 1;
+    REQUIRE_THROWS(decodeSettings(j));
+}
+TEST_CASE("font scale accepts supported sizes and preserves legacy settings defaults") {
+    Settings s;
+    REQUIRE(s.fontScale == 100);
+    auto j = encodeSettings(s);
+    j.erase("fontScale");
+    REQUIRE(decodeSettings(j).fontScale == 100);
+    for (const int scale : {90, 100, 110, 120}) {
+        s.fontScale = scale;
+        REQUIRE(decodeSettings(encodeSettings(s)).fontScale == scale);
+    }
+    for (const auto &invalid :
+         {Json(89), Json(121), Json(95), Json(115), Json(100.0), Json("100"), Json(true), Json(nullptr)}) {
+        j = encodeSettings(s);
+        j["fontScale"] = invalid;
+        REQUIRE_THROWS(decodeSettings(j));
+    }
 }
 TEST_CASE("menu starts without constructing a match and settings survive recreation") {
     AppFixture f;
@@ -73,6 +138,7 @@ TEST_CASE("menu starts without constructing a match and settings survive recreat
     Settings s;
     s.masterVolume = 0;
     s.soundVolume = 35;
+    s.fontScale = 120;
     s.windowMode = WindowMode::Borderless;
     s.width = 1280;
     s.height = 800;
@@ -157,7 +223,7 @@ TEST_CASE("illegal match configuration or unavailable replay directory never cre
     REQUIRE_FALSE(a.start(f.config(), error));
     REQUIRE_FALSE(a.hasMatch());
 }
-TEST_CASE("match settings pause all submissions and retain decision gate and digest") {
+TEST_CASE("match settings pause all submissions and retain decision gate and digest", "[legacy]") {
     AppFixture f;
     auto a = f.app();
     start(a, f.config());
@@ -257,9 +323,11 @@ TEST_CASE("surrender through settings yields a result and restart preserves both
     a.requestSurrender();
     std::string error;
     auto actor = a.match().engine().state().active;
+    const auto revision = a.revision();
     REQUIRE(a.confirmSurrender(actor, error));
     REQUIRE(a.page() == Page::Match);
     REQUIRE(a.match().engine().state().result == 1 - actor);
+    REQUIRE(a.revision() > revision);
     REQUIRE(replay(f.content, readJson(a.replayPath())).digest() == a.match().engine().digest());
     const auto epoch = a.generation();
     REQUIRE(a.restart(91, error));
@@ -286,6 +354,7 @@ TEST_CASE("surrender save failure leaves the live session unmodified") {
     start(a, f.config());
     a.openSettings();
     const auto digest = a.match().engine().digest();
+    const auto revision = a.revision();
     std::filesystem::remove(a.replayPath());
     std::filesystem::create_directory(a.replayPath());
     a.requestSurrender();
@@ -293,6 +362,7 @@ TEST_CASE("surrender save failure leaves the live session unmodified") {
     REQUIRE_FALSE(a.confirmSurrender(a.match().engine().state().active, error));
     REQUIRE(a.page() == Page::ConfirmSurrender);
     REQUIRE(a.match().engine().digest() == digest);
+    REQUIRE(a.revision() == revision);
     a.cancelConfirmation();
     REQUIRE(a.page() == Page::Settings);
 }

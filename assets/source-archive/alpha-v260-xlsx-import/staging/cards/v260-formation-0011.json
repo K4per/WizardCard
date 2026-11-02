@@ -1,0 +1,54 @@
+{
+  "id": "v260-formation-0011",
+  "number": "010011",
+  "name": "强化法阵",
+  "type": "formation",
+  "school": "",
+  "rarity": "common",
+  "rank": 0,
+  "cost": 0,
+  "castCost": 0,
+  "analysisTurns": 0,
+  "speed": 1,
+  "text": "无效果。",
+  "effects": [],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "worksheet": "阵法卡",
+    "row": 14
+  },
+  "illustrationId": "v260-art-formation-0011",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\强化.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-formation-0011",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0011.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "raritySource": "",
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "v260-formation-0010"
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1
+    }
+  ],
+  "summonCondition": "【标准法阵】+解析区法术卡×1",
+  "level": 3,
+  "body": 2,
+  "rings": 3,
+  "capacity": 10,
+  "income": 3
+}

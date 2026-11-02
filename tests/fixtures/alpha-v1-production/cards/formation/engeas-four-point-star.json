@@ -1,0 +1,15 @@
+{
+  "id": "engeas-four-point-star",
+  "name": "恩格亚斯四角星",
+  "type": "formation",
+  "rarity": "epic",
+  "cost": 0,
+  "body": 1,
+  "capacity": 2,
+  "income": 4,
+  "rings": 1,
+  "maxRank": 3,
+  "quickRankOne": true,
+  "text": "每个自己的回合一次：在本阵法上开始解析的第一张位阶不超过1、需要解析时间的法术，立即完成解析。",
+  "flavor": "贤者恩格亚斯发明的精简阵法，以快速聚能和快速释放闻名。"
+}

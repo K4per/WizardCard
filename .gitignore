@@ -7,3 +7,6 @@
 /logs/
 __pycache__/
 /.agents/
+/.presentation-build/
+/.rulebook-build/
+/output/

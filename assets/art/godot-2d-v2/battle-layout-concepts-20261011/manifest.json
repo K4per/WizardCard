@@ -1,0 +1,41 @@
+{
+  "generator": "OpenAI built-in imagegen",
+  "variants": [
+    {
+      "exportWidth": 1920,
+      "exportSha256": "7A37CA3244B559B88B2F110F1F2F32E4B83FB0CBB43E16A607E9F59719231A8F",
+      "exportHeight": 1080,
+      "originalWidth": 1672,
+      "sourceSha256": "66B16737FF0649D4EE8D88FFE3B86A37B7672455E3E9B36D75B430441ACF0DC1",
+      "exportFile": "1080p/a-formation-rows.png",
+      "sourceFile": "source/a-formation-rows.png",
+      "originalHeight": 941,
+      "id": "a-formation-rows"
+    },
+    {
+      "exportWidth": 1920,
+      "exportSha256": "DDCBDE692FEFCC2B36D6A5B6FA9FFA2841CAC5F26270694C3E5293CF20068B87",
+      "exportHeight": 1080,
+      "originalWidth": 1672,
+      "sourceSha256": "DBD76BC4AF18FEF2AC6F23B1060F6BDA404D4F53BCFE64CFE36C893D61E6B6F9",
+      "exportFile": "1080p/b-formation-groups.png",
+      "sourceFile": "source/b-formation-groups.png",
+      "originalHeight": 941,
+      "id": "b-formation-groups"
+    },
+    {
+      "exportWidth": 1920,
+      "exportSha256": "B29D798A8602C2B4B83F1378375AD98546169A5AB6F1755734E3C81F6D4E7DCF",
+      "exportHeight": 1080,
+      "originalWidth": 1672,
+      "sourceSha256": "367C3B51F6191EE8E648486635D1178ED7EF1339968D396DA3EE6C4CF442C3FA",
+      "exportFile": "1080p/c-central-casting.png",
+      "sourceFile": "source/c-central-casting.png",
+      "originalHeight": 941,
+      "id": "c-central-casting"
+    }
+  ],
+  "date": "2026-10-11",
+  "purpose": "Layout concept review, not runtime field assets",
+  "exportOperation": "Proportional fit to 1920x1080 with nearest-neighbor sampling; original retained"
+}

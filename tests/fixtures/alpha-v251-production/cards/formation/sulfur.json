@@ -1,0 +1,30 @@
+{
+  "id": "sulfur",
+  "name": "硫磺",
+  "type": "formation",
+  "rarity": "epic",
+  "level": 6,
+  "body": 2,
+  "rings": 6,
+  "capacity": 6,
+  "income": 3,
+  "maxRank": 6,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "此阵法只能解析火焰伤害法术。每当己方法术从施法区进入灰烬区，对对方玩家造成1点火焰伤害。",
+  "summonCondition": "已解析的火焰伤害法术×2。",
+  "recipe": [
+    {
+      "kind": "sacrifice_spell",
+      "amount": 2,
+      "readyOnly": true,
+      "fireDamage": true
+    }
+  ],
+  "traits": [
+    "host_fire_only",
+    "ping_on_spell_leave"
+  ],
+  "number": "010013",
+  "illustrationId": "v2-sulfur"
+}

@@ -1,0 +1,144 @@
+#include "engine_internal.hpp"
+#include "wizard/core/card_rules.hpp"
+#include <algorithm>
+#include <set>
+#include <stdexcept>
+#include <type_traits>
+namespace wizard::detail {
+std::uint32_t legacyChoice(ChoiceValue option, DecisionKind kind) {
+    if (option.kind == ChoiceKind::Pass) return 0;
+    if (option.kind == ChoiceKind::Player) return playerTarget(static_cast<PlayerId>(option.value));
+    if (option.kind == ChoiceKind::Load && kind == DecisionKind::ClearAnyLoad) return static_cast<std::uint32_t>(option.value) | 0x80000000u;
+    if (option.kind == ChoiceKind::Mode) {
+        const auto mode = static_cast<ChoiceMode>(option.value);
+        switch (mode) {
+        case ChoiceMode::Confirm: return 0xffffffa1u;
+        case ChoiceMode::SevenDamage: return 0xffffffb1u;
+        case ChoiceMode::SevenLoad: return 0xffffffb2u;
+        case ChoiceMode::DelayAnalysis: return 0xffffffd1u;
+        case ChoiceMode::CycloneDamage: return 0xffffffd2u;
+        case ChoiceMode::Draw: return 0xffffffe1u;
+        case ChoiceMode::StormSearch: return 0xfffffff1u;
+        case ChoiceMode::StormPoints: return 0xfffffff2u;
+        case ChoiceMode::SupportingSearch: return 0xfffffff3u;
+        case ChoiceMode::HeartDraw: return 1;
+        case ChoiceMode::HeartRecover: return 2;
+        case ChoiceMode::ArcanaDeathNecrotic: return 1;
+        case ChoiceMode::ArcanaDeathRadiant: return 2;
+        default: return static_cast<std::uint32_t>(option.value - static_cast<unsigned>(ChoiceMode::DamageTypeBase) + 1);
+        }
+    }
+    return static_cast<std::uint32_t>(option.value);
+}
+std::string choiceKey(ChoiceValue choice) {
+    return std::to_string(static_cast<unsigned>(choice.kind)) + ":" + std::to_string(choice.value);
+}
+std::uint32_t random32(MutationContext &s) {
+    auto x = s.rng;
+    x ^= x << 13;
+    x ^= x >> 17;
+    x ^= x << 5;
+    return s.rng = x;
+}
+std::uint32_t bounded(MutationContext &s, std::uint32_t n) {
+    const auto threshold = (std::uint32_t{0} - n) % n;
+    std::uint32_t x;
+    do {
+        x = random32(s);
+    } while (x < threshold);
+    return x % n;
+}
+std::vector<CardId> inZone(const GameState &s, PlayerId p, Zone z) {
+    std::vector<CardId> out;
+    for (const auto &[id, c] : s.cards)
+        if (controllerOf(c) == p && c.zone == z)
+            out.push_back(id);
+    return out;
+}
+int seals(const GameState &s, CardId host) {
+    int n = 0;
+    for (const auto &[id, c] : s.cards)
+        if (c.host == host && c.zone == Zone::Attached)
+            ++n;
+    return n;
+}
+int usedBody(const GameState &s, const CardCatalog &cat, PlayerId p) {
+    int n = 0;
+    for (auto id : inZone(s, p, Zone::Analysis))
+        if (cat.at(s.cards.at(id).definition).type == CardType::Formation)
+            n += cat.at(s.cards.at(id).definition).body;
+    return n;
+}
+bool hasOverflow(const GameState &s, const CardCatalog &cat) {
+    for (const auto &[id, c] : s.cards)
+        if (c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation &&
+            Rules::occupied(s, id) > Rules::rings(s, cat, id))
+            return true;
+    return false;
+}
+bool cardTarget(TargetKind t) {
+    return t == TargetKind::EmptyEnemyFormation || t == TargetKind::EnemyCard || t == TargetKind::OwnCard ||
+           t == TargetKind::AnyCard || t == TargetKind::OwnAnalyzingSpell || t == TargetKind::EnemyAshCard;
+}
+std::vector<CardId> targetCards(CardId target, const std::vector<CardId> &targets) {
+    return targets.empty() ? (target ? std::vector<CardId>{target} : std::vector<CardId>{}) : targets;
+}
+bool validTargets(const GameState &s, TargetKind kind, int count, PlayerId p, CardId target,
+                  const std::vector<CardId> &targets) {
+    auto ids = targetCards(target, targets);
+    if (kind == TargetKind::Player)
+        return ids.size() == 1 && ids.front() == target && Rules::targetValid(s, kind, p, target);
+    if (!cardTarget(kind))
+        return target == 0 && targets.empty() && kind != TargetKind::PendingLink &&
+               kind != TargetKind::PreparationRoot && kind != TargetKind::EnemySpellLink;
+    if (count < 1 || count > 5 || ids.size() != static_cast<std::size_t>(count) || ids.front() != target)
+        return false;
+    std::set<CardId> seen;
+    for (auto id : ids)
+        if (!seen.insert(id).second || !Rules::targetValid(s, kind, p, id))
+            return false;
+    return true;
+}
+Combinations sets(const GameState &s, TargetKind kind, int count, PlayerId p, const ActionIntent *intent) {
+    if (kind == TargetKind::Player) return {{playerTarget(0), playerTarget(1)}, 1, intentPrefix(intent, ActionField::Target)};
+    if (!cardTarget(kind)) return {{}, 0, intentPrefix(intent, ActionField::Target)};
+    if (count < 1 || count > 5) return Combinations::empty();
+    std::vector<CardId> ids;
+    for (const auto &[id, c] : s.cards)
+        if (Rules::targetValid(s, kind, p, id)) ids.push_back(id);
+    return {std::move(ids), static_cast<std::size_t>(count), intentPrefix(intent, ActionField::Target)};
+}
+Combinations activationSets(const GameState &s, const CardCatalog &cat, PlayerId p, const CardDefinition &d, const ActionIntent *intent) {
+    const auto count = card_rules::detachCost(d);
+    if (!count) return sets(s, d.target, d.targetCount, p, intent);
+    std::vector<CardId> pool;
+    for (const auto &[id, c] : s.cards)
+        if (c.owner == p && c.zone == Zone::Attached && cat.at(c.definition).type == CardType::Seal &&
+            card_rules::member(cat.at(c.definition), "味契")) pool.push_back(id);
+    return {std::move(pool), static_cast<std::size_t>(count), intentPrefix(intent, ActionField::Target)};
+}
+const ResponseAbility *ability(const CardDefinition &d, const std::string &id) {
+    for (const auto &a : d.responses)
+        if (a.id == id)
+            return &a;
+    return nullptr;
+}
+MatchConfig shared(std::array<std::vector<std::string>, 2> decks, std::uint32_t seed) {
+    MatchConfig c;
+    c.seed = seed;
+    for (int p = 0; p < 2; ++p)
+        c.players[p].cards = std::move(decks[p]);
+    return c;
+}
+Trigger snapshot(const CardInstance &c, const CardDefinition &d) {
+    Trigger t;
+    t.owner = controllerOf(c);
+    t.source = c.id;
+    t.targetCard = c.targetCard;
+    t.targetPlayer = d.target == TargetKind::Player && c.targetCard ? static_cast<PlayerId>(c.targetCard - playerTarget(0)) : c.targetPlayer;
+    t.target = d.target;
+    t.targetCards = c.targets;
+    t.effects = d.effects;
+    return t;
+}
+}

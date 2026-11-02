@@ -1,0 +1,32 @@
+{
+  "id": "blood-letting",
+  "name": "血契·放血",
+  "type": "word",
+  "rarity": "rare",
+  "cost": 1,
+  "castCost": 0,
+  "rank": 1,
+  "level": 1,
+  "speed": 2,
+  "number": "030028",
+  "illustrationId": "blood-letting",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [
+    {
+      "kind": "change_life_limit",
+      "amount": -6,
+      "recipient": "owner"
+    },
+    {
+      "kind": "mana",
+      "amount": 6,
+      "recipient": "owner"
+    }
+  ],
+  "text": "己方生命值上限-6，获得6点魔素。",
+  "analysisTurns": 0,
+  "school": "evocation"
+}

@@ -1,0 +1,73 @@
+{
+  "id": "v260-talisman-0009",
+  "number": "040009",
+  "name": "银光锐语",
+  "type": "talisman",
+  "school": "enchantment",
+  "rarity": "epic",
+  "rank": 3,
+  "cost": 0,
+  "castCost": 5,
+  "analysisTurns": 0,
+  "speed": 3,
+  "text": "对方准备施法时才能发动。将其取消。那之后，可以将对方解析区1张解析法术卡弹回持有者手卡。",
+  "effects": [
+    {
+      "kind": "cancel"
+    },
+    {
+      "kind": "return_enemy_analysis"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 72
+  },
+  "illustrationId": "barbs",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\cards\\barbs.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "barbs"
+  },
+  "migration": {
+    "previousId": "barbs"
+  },
+  "responseOnly": true,
+  "responses": [
+    {
+      "id": "cancel_preparation",
+      "name": "取消准备并返回解析法术",
+      "sources": [
+        "ambush"
+      ],
+      "windows": [
+        "prepare"
+      ],
+      "eventOwner": "opponent",
+      "target": "preparation_root",
+      "effects": [
+        {
+          "kind": "cancel"
+        },
+        {
+          "kind": "return_enemy_analysis"
+        }
+      ]
+    }
+  ],
+  "responseEffects": [
+    {
+      "kind": "cancel"
+    },
+    {
+      "kind": "return_enemy_analysis"
+    }
+  ],
+  "level": 3
+}

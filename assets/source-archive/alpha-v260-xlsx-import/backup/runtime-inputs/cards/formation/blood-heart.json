@@ -1,0 +1,40 @@
+{
+  "id": "blood-heart",
+  "name": "血契·心脏",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "castCost": 0,
+  "rank": 0,
+  "level": 6,
+  "speed": 1,
+  "number": "010033",
+  "illustrationId": "blood-heart",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [],
+  "text": "设置时，己方生命值上限-5。此阵法卡在己方场上存在，己方设置/发动法术卡时，可以将每1点生命值作为1点费用支付的替代。己方【血契】法术卡造成伤害时，为己方恢复等量生命值。",
+  "body": 3,
+  "rings": 4,
+  "capacity": 12,
+  "income": 3,
+  "maxRank": 6,
+  "summonCondition": "【血契·血池】＋魔素×5",
+  "baseEligible": false,
+  "traits": [
+    "blood_heart"
+  ],
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "blood-pool"
+    },
+    {
+      "kind": "mana",
+      "amount": 5
+    }
+  ]
+}

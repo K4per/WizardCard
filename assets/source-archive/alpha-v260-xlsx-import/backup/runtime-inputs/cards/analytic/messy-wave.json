@@ -1,0 +1,24 @@
+{
+  "id": "messy-wave",
+  "name": "紊乱波动",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 4,
+  "castCost": 4,
+  "rank": 4,
+  "speed": 1,
+  "analysisTurns": 2,
+  "duration": 3,
+  "school": "enchantment",
+  "target": "opponent",
+  "effects": [],
+  "onCast": [],
+  "text": "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。",
+  "flavor": "为什么要使用这么坏心眼的法术？",
+  "level": 4,
+  "number": "020005",
+  "illustrationId": "messy-wave",
+  "traits": [
+    "opponent_spell_load_4"
+  ]
+}

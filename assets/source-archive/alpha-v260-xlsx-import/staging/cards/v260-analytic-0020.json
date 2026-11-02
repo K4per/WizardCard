@@ -1,0 +1,41 @@
+{
+  "id": "v260-analytic-0020",
+  "number": "020020",
+  "name": "虚假生命",
+  "type": "analytic",
+  "school": "necromancy",
+  "rarity": "common",
+  "rank": 3,
+  "cost": 2,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 2,
+  "text": "获得6点临时生命值。",
+  "effects": [
+    {
+      "kind": "temporary_life",
+      "amount": 6,
+      "recipient": "owner"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 21
+  },
+  "illustrationId": "false-life",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard\\assets\\art\\alpha-release\\false-life.png",
+    "mapping": "历史同名卡图",
+    "manifestId": "false-life"
+  },
+  "migration": {
+    "previousId": "false-life"
+  },
+  "level": 3
+}

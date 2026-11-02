@@ -1,0 +1,19 @@
+{
+  "id": "clarity",
+  "name": "心如止水",
+  "rarity": "common",
+  "type": "action",
+  "cost": 1,
+  "target": "self",
+  "effects": [
+    {
+      "kind": "discard_hand"
+    },
+    {
+      "kind": "clear_all_temporary"
+    }
+  ],
+  "text": "弃置一张手牌，移除自身所有的临时荷载。",
+  "flavor": "向月亮诉说吧。",
+  "speed": 1
+}

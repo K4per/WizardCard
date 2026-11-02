@@ -1,0 +1,28 @@
+{
+  "id": "aid",
+  "name": "支援术",
+  "type": "word",
+  "rarity": "common",
+  "cost": 1,
+  "castCost": 0,
+  "rank": 1,
+  "speed": 2,
+  "analysisTurns": 0,
+  "school": "abjuration",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "temporary_life",
+      "amount": 5
+    },
+    {
+      "kind": "temporary",
+      "amount": 2
+    }
+  ],
+  "text": "获得5点临时生命值和2点临时荷载。",
+  "flavor": "你被增强了！",
+  "level": 1,
+  "number": "030017",
+  "illustrationId": "aid"
+}

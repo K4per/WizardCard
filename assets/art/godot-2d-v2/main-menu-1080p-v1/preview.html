@@ -1,0 +1,18 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>WizardCard · 1080p 主界面重绘</title>
+<style>
+@font-face{font-family:MenuText;src:url('../../../fonts/NotoSansCJKsc-Regular.otf')}
+*{box-sizing:border-box}html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#03172a}
+.scene{position:relative;width:1920px;height:1080px;background:url('export/background-1080p.png') no-repeat}
+.logo{position:absolute;inset:-235px 0 auto;width:1920px;height:1080px;pointer-events:none;image-rendering:pixelated}
+.menu{position:absolute;top:480px;left:680px;display:grid;gap:12px}
+.menu-button{position:relative;width:560px;height:100px;border:0;padding:0 72px;background:transparent url('export/button-normal-1080p.png') -680px -490px /1920px 1080px no-repeat;color:#fff0d0;font:500 36px MenuText,sans-serif;letter-spacing:4px;text-shadow:0 2px 2px #00101e;cursor:pointer;outline:none;image-rendering:pixelated;clip-path:polygon(0 50%,8.2% 0,91.8% 0,100% 50%,91.8% 100%,8.2% 100%)}
+.menu-button.primary,.menu-button:hover{background-image:url('export/button-hover-1080p.png')}
+.menu-button:focus-visible{background-image:url('export/button-focus-1080p.png')}
+.menu-button:active{background-image:url('export/button-pressed-1080p.png')}
+.menu-button:disabled{background-image:url('export/button-disabled-1080p.png');color:#a6b0b9;cursor:default}
+.states{display:none;position:absolute;inset:80px 680px auto;gap:50px}.states .menu-button:nth-child(2){background-image:url('export/button-hover-1080p.png')}.states .menu-button:nth-child(3){background-image:url('export/button-pressed-1080p.png')}.states .menu-button:nth-child(4){background-image:url('export/button-focus-1080p.png')}
+.state-mode .logo,.state-mode .menu{display:none}.state-mode .states{display:grid}
+</style>
+<main class="scene"><img class="logo" src="export/logo-1080p.png" alt="WizardCard"><nav class="menu" aria-label="主菜单"><button class="menu-button primary">单人游戏</button><button class="menu-button">多人游戏</button><button class="menu-button">卡组构筑</button><button class="menu-button">游戏设置</button><button class="menu-button">退出游戏</button></nav><div class="states"><button class="menu-button">普通</button><button class="menu-button">悬停</button><button class="menu-button">按下</button><button class="menu-button">键盘焦点</button><button class="menu-button" disabled>禁用</button></div></main>
+<script>if(new URLSearchParams(location.search).has('states'))document.body.classList.add('state-mode');window.previewReady=document.fonts.ready.then(()=>Promise.all(Array.from(document.images).map(i=>i.complete?null:new Promise(r=>{i.onload=r;i.onerror=r}))));</script>
+</html>

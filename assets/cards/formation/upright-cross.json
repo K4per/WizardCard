@@ -1,0 +1,32 @@
+{
+  "id": "upright-cross",
+  "name": "正十字",
+  "type": "formation",
+  "rarity": "uncommon",
+  "level": 3,
+  "body": 1,
+  "rings": 2,
+  "capacity": 5,
+  "income": 0,
+  "maxRank": 3,
+  "baseEligible": false,
+  "cost": 0,
+  "text": "于该法阵释放的法术，回复生命时额外回复1点生命。",
+  "summonCondition": "1魔素+【死灵】法术。",
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 1
+    },
+    {
+      "kind": "sacrifice_spell",
+      "amount": 1,
+      "school": "necromancy"
+    }
+  ],
+  "traits": [
+    "host_heal_plus_one"
+  ],
+  "number": "010008",
+  "illustrationId": "v2-upright-cross"
+}

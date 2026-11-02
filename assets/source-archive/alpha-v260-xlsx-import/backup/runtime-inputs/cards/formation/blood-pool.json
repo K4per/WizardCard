@@ -1,0 +1,40 @@
+{
+  "id": "blood-pool",
+  "name": "血契·血池",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "castCost": 0,
+  "rank": 0,
+  "level": 4,
+  "speed": 1,
+  "number": "010032",
+  "illustrationId": "blood-pool",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [],
+  "text": "设置时，己方生命值上限-5。此阵法卡在己方场上存在，己方设置/发动法术卡时，可以将每1点生命值作为1点费用支付的替代。己方临时生命值清除时，为己方恢复等量生命值。",
+  "body": 2,
+  "rings": 3,
+  "capacity": 9,
+  "income": 2,
+  "maxRank": 4,
+  "summonCondition": "【血契·祭坛】＋魔素×3",
+  "baseEligible": false,
+  "traits": [
+    "blood_pool"
+  ],
+  "recipe": [
+    {
+      "kind": "sacrifice_formation",
+      "amount": 1,
+      "definition": "blood-altar"
+    },
+    {
+      "kind": "mana",
+      "amount": 3
+    }
+  ]
+}

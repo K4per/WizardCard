@@ -1,0 +1,36 @@
+{
+  "id": "blood-transfusion",
+  "name": "血契·输血管",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "castCost": 0,
+  "rank": 0,
+  "level": 1,
+  "speed": 1,
+  "number": "010030",
+  "illustrationId": "blood-transfusion",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [],
+  "text": "此阵法卡在己方场上仅可存在1张。己方准备阶段开始时，可以支付2点生命值，获得2点魔素。",
+  "body": 1,
+  "rings": 1,
+  "capacity": 4,
+  "income": 0,
+  "maxRank": 1,
+  "summonCondition": "魔素×3",
+  "baseEligible": true,
+  "traits": [
+    "unique",
+    "blood_transfusion"
+  ],
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 3
+    }
+  ]
+}

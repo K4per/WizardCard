@@ -1,0 +1,90 @@
+[
+  {
+    "id": "fireball",
+    "count": 3
+  },
+  {
+    "id": "mend",
+    "count": 3
+  },
+  {
+    "id": "unravel",
+    "count": 3
+  },
+  {
+    "id": "ward",
+    "count": 3
+  },
+  {
+    "id": "spark",
+    "count": 3
+  },
+  {
+    "id": "recall",
+    "count": 3
+  },
+  {
+    "id": "conduit",
+    "count": 3
+  },
+  {
+    "id": "ring",
+    "count": 3
+  },
+  {
+    "id": "clarity",
+    "count": 3
+  },
+  {
+    "id": "arcane-recovery",
+    "count": 1
+  },
+  {
+    "id": "barbs",
+    "count": 1
+  },
+  {
+    "id": "disrupt",
+    "count": 1
+  },
+  {
+    "id": "messy-wave",
+    "count": 1
+  },
+  {
+    "id": "instantly-sleep",
+    "count": 1
+  },
+  {
+    "id": "magic-missile",
+    "count": 1
+  },
+  {
+    "id": "aid",
+    "count": 1
+  },
+  {
+    "id": "counter-spell",
+    "count": 1
+  },
+  {
+    "id": "true-strike",
+    "count": 1
+  },
+  {
+    "id": "protective-flame",
+    "count": 1
+  },
+  {
+    "id": "uplift",
+    "count": 1
+  },
+  {
+    "id": "instant-circuit-overload",
+    "count": 1
+  },
+  {
+    "id": "ray-of-frost",
+    "count": 1
+  }
+]

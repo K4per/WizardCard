@@ -1,20 +1,25 @@
 #pragma once
-#include "wizard/content.hpp"
+#include "wizard/replay.hpp"
 
 namespace wizard::app {
 struct DeckDraft {
     std::string id, name, baseFormation{"balance"};
     std::map<std::string, int> cards;
+    int format{1};
+    std::map<std::string, int> sideCards;
     int size() const;
+    int sideSize() const;
     PlayerDeck playerDeck() const;
 };
 Json encodeDraft(const DeckDraft &);
 DeckDraft decodeDraft(const Json &);
 std::vector<std::string> deckProblems(const CardCatalog &, const DeckDraft &);
+std::vector<std::string> constructionProblems(const CardCatalog &, const DeckDraft &);
 struct CardQuery {
     std::string name, rarity;
     std::optional<CardType> type;
     std::optional<int> cost, castCost, rank;
+    std::vector<std::string> factions, speeds, damageTypes;
     std::vector<std::string> tags;
 };
 std::vector<std::string> cardTags(const CardDefinition &);

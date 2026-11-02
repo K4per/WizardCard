@@ -1,0 +1,31 @@
+{
+  "id": "messy-wave",
+  "name": "紊乱波动",
+  "type": "analytic",
+  "rarity": "common",
+  "cost": 4,
+  "castCost": 4,
+  "rank": 2,
+  "speed": 1,
+  "analysisTurns": 1,
+  "duration": 3,
+  "school": "evocation",
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "source_temporary",
+      "amount": 5
+    }
+  ],
+  "onCast": [
+    {
+      "kind": "source_temporary",
+      "amount": 3
+    }
+  ],
+  "text": "计时3。首次发动时对方获得5点来源关联临时荷载；之后每个己方施法阶段对方获得3点来源关联临时荷载。这些荷载不在抽牌阶段清除，在本法术离场时清除。",
+  "flavor": "为什么要使用这么坏心眼的法术？",
+  "level": 2,
+  "number": "020005",
+  "illustrationId": "messy-wave"
+}

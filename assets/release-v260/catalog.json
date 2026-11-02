@@ -1,0 +1,380 @@
+{
+  "format": 1,
+  "metadata": {
+    "rulesVersion": "2.6.0",
+    "cardSetVersion": "2.6.0",
+    "mechanicsRevision": 10,
+    "baseLoadCapacity": 2,
+    "status": "released"
+  },
+  "definitions": [
+    {
+      "id": "v260-analytic-0001",
+      "file": "cards/v260-analytic-0001.json"
+    },
+    {
+      "id": "v260-analytic-0002",
+      "file": "cards/v260-analytic-0002.json"
+    },
+    {
+      "id": "v260-analytic-0003",
+      "file": "cards/v260-analytic-0003.json"
+    },
+    {
+      "id": "v260-analytic-0004",
+      "file": "cards/v260-analytic-0004.json"
+    },
+    {
+      "id": "v260-analytic-0005",
+      "file": "cards/v260-analytic-0005.json"
+    },
+    {
+      "id": "v260-analytic-0006",
+      "file": "cards/v260-analytic-0006.json"
+    },
+    {
+      "id": "v260-analytic-0007",
+      "file": "cards/v260-analytic-0007.json"
+    },
+    {
+      "id": "v260-analytic-0008",
+      "file": "cards/v260-analytic-0008.json"
+    },
+    {
+      "id": "v260-analytic-0009",
+      "file": "cards/v260-analytic-0009.json"
+    },
+    {
+      "id": "v260-analytic-0010",
+      "file": "cards/v260-analytic-0010.json"
+    },
+    {
+      "id": "v260-analytic-0011",
+      "file": "cards/v260-analytic-0011.json"
+    },
+    {
+      "id": "v260-analytic-0012",
+      "file": "cards/v260-analytic-0012.json"
+    },
+    {
+      "id": "v260-analytic-0013",
+      "file": "cards/v260-analytic-0013.json"
+    },
+    {
+      "id": "v260-analytic-0014",
+      "file": "cards/v260-analytic-0014.json"
+    },
+    {
+      "id": "v260-analytic-0015",
+      "file": "cards/v260-analytic-0015.json"
+    },
+    {
+      "id": "v260-analytic-0016",
+      "file": "cards/v260-analytic-0016.json"
+    },
+    {
+      "id": "v260-analytic-0017",
+      "file": "cards/v260-analytic-0017.json"
+    },
+    {
+      "id": "v260-analytic-0018",
+      "file": "cards/v260-analytic-0018.json"
+    },
+    {
+      "id": "v260-analytic-0019",
+      "file": "cards/v260-analytic-0019.json"
+    },
+    {
+      "id": "v260-analytic-0020",
+      "file": "cards/v260-analytic-0020.json"
+    },
+    {
+      "id": "v260-analytic-0021",
+      "file": "cards/v260-analytic-0021.json"
+    },
+    {
+      "id": "v260-analytic-0022",
+      "file": "cards/v260-analytic-0022.json"
+    },
+    {
+      "id": "v260-analytic-0023",
+      "file": "cards/v260-analytic-0023.json"
+    },
+    {
+      "id": "v260-analytic-0024",
+      "file": "cards/v260-analytic-0024.json"
+    },
+    {
+      "id": "v260-analytic-0025",
+      "file": "cards/v260-analytic-0025.json"
+    },
+    {
+      "id": "v260-analytic-0026",
+      "file": "cards/v260-analytic-0026.json"
+    },
+    {
+      "id": "v260-analytic-0027",
+      "file": "cards/v260-analytic-0027.json"
+    },
+    {
+      "id": "v260-analytic-0028",
+      "file": "cards/v260-analytic-0028.json"
+    },
+    {
+      "id": "v260-analytic-0029",
+      "file": "cards/v260-analytic-0029.json"
+    },
+    {
+      "id": "v260-analytic-0030",
+      "file": "cards/v260-analytic-0030.json"
+    },
+    {
+      "id": "v260-analytic-0031",
+      "file": "cards/v260-analytic-0031.json"
+    },
+    {
+      "id": "v260-analytic-0032",
+      "file": "cards/v260-analytic-0032.json"
+    },
+    {
+      "id": "v260-analytic-0033",
+      "file": "cards/v260-analytic-0033.json"
+    },
+    {
+      "id": "v260-analytic-0034",
+      "file": "cards/v260-analytic-0034.json"
+    },
+    {
+      "id": "v260-analytic-0035",
+      "file": "cards/v260-analytic-0035.json"
+    },
+    {
+      "id": "v260-analytic-0036",
+      "file": "cards/v260-analytic-0036.json"
+    },
+    {
+      "id": "v260-analytic-0037",
+      "file": "cards/v260-analytic-0037.json"
+    },
+    {
+      "id": "v260-analytic-0038",
+      "file": "cards/v260-analytic-0038.json"
+    },
+    {
+      "id": "v260-analytic-0039",
+      "file": "cards/v260-analytic-0039.json"
+    },
+    {
+      "id": "v260-word-0001",
+      "file": "cards/v260-word-0001.json"
+    },
+    {
+      "id": "v260-word-0002",
+      "file": "cards/v260-word-0002.json"
+    },
+    {
+      "id": "v260-word-0003",
+      "file": "cards/v260-word-0003.json"
+    },
+    {
+      "id": "v260-word-0004",
+      "file": "cards/v260-word-0004.json"
+    },
+    {
+      "id": "v260-word-0005",
+      "file": "cards/v260-word-0005.json"
+    },
+    {
+      "id": "v260-word-0006",
+      "file": "cards/v260-word-0006.json"
+    },
+    {
+      "id": "v260-word-0007",
+      "file": "cards/v260-word-0007.json"
+    },
+    {
+      "id": "v260-word-0008",
+      "file": "cards/v260-word-0008.json"
+    },
+    {
+      "id": "v260-word-0009",
+      "file": "cards/v260-word-0009.json"
+    },
+    {
+      "id": "v260-word-0010",
+      "file": "cards/v260-word-0010.json"
+    },
+    {
+      "id": "v260-word-0011",
+      "file": "cards/v260-word-0011.json"
+    },
+    {
+      "id": "v260-word-0012",
+      "file": "cards/v260-word-0012.json"
+    },
+    {
+      "id": "v260-word-0013",
+      "file": "cards/v260-word-0013.json"
+    },
+    {
+      "id": "v260-word-0014",
+      "file": "cards/v260-word-0014.json"
+    },
+    {
+      "id": "v260-word-0015",
+      "file": "cards/v260-word-0015.json"
+    },
+    {
+      "id": "v260-word-0016",
+      "file": "cards/v260-word-0016.json"
+    },
+    {
+      "id": "v260-word-0017",
+      "file": "cards/v260-word-0017.json"
+    },
+    {
+      "id": "v260-word-0018",
+      "file": "cards/v260-word-0018.json"
+    },
+    {
+      "id": "v260-word-0019",
+      "file": "cards/v260-word-0019.json"
+    },
+    {
+      "id": "v260-word-0020",
+      "file": "cards/v260-word-0020.json"
+    },
+    {
+      "id": "v260-word-0021",
+      "file": "cards/v260-word-0021.json"
+    },
+    {
+      "id": "v260-talisman-0001",
+      "file": "cards/v260-talisman-0001.json"
+    },
+    {
+      "id": "v260-talisman-0002",
+      "file": "cards/v260-talisman-0002.json"
+    },
+    {
+      "id": "v260-talisman-0003",
+      "file": "cards/v260-talisman-0003.json"
+    },
+    {
+      "id": "v260-talisman-0004",
+      "file": "cards/v260-talisman-0004.json"
+    },
+    {
+      "id": "v260-talisman-0005",
+      "file": "cards/v260-talisman-0005.json"
+    },
+    {
+      "id": "v260-talisman-0006",
+      "file": "cards/v260-talisman-0006.json"
+    },
+    {
+      "id": "v260-talisman-0007",
+      "file": "cards/v260-talisman-0007.json"
+    },
+    {
+      "id": "v260-talisman-0008",
+      "file": "cards/v260-talisman-0008.json"
+    },
+    {
+      "id": "v260-talisman-0009",
+      "file": "cards/v260-talisman-0009.json"
+    },
+    {
+      "id": "v260-talisman-0010",
+      "file": "cards/v260-talisman-0010.json"
+    },
+    {
+      "id": "v260-talisman-0011",
+      "file": "cards/v260-talisman-0011.json"
+    },
+    {
+      "id": "v260-talisman-0012",
+      "file": "cards/v260-talisman-0012.json"
+    },
+    {
+      "id": "v260-seal-0001",
+      "file": "cards/v260-seal-0001.json"
+    },
+    {
+      "id": "v260-seal-0002",
+      "file": "cards/v260-seal-0002.json"
+    },
+    {
+      "id": "v260-seal-0003",
+      "file": "cards/v260-seal-0003.json"
+    },
+    {
+      "id": "v260-formation-0001",
+      "file": "cards/v260-formation-0001.json"
+    },
+    {
+      "id": "v260-formation-0002",
+      "file": "cards/v260-formation-0002.json"
+    },
+    {
+      "id": "v260-formation-0003",
+      "file": "cards/v260-formation-0003.json"
+    },
+    {
+      "id": "v260-formation-0004",
+      "file": "cards/v260-formation-0004.json"
+    },
+    {
+      "id": "v260-formation-0005",
+      "file": "cards/v260-formation-0005.json"
+    },
+    {
+      "id": "v260-formation-0006",
+      "file": "cards/v260-formation-0006.json"
+    },
+    {
+      "id": "v260-formation-0007",
+      "file": "cards/v260-formation-0007.json"
+    },
+    {
+      "id": "v260-formation-0008",
+      "file": "cards/v260-formation-0008.json"
+    },
+    {
+      "id": "v260-formation-0009",
+      "file": "cards/v260-formation-0009.json"
+    },
+    {
+      "id": "v260-formation-0010",
+      "file": "cards/v260-formation-0010.json"
+    },
+    {
+      "id": "v260-formation-0011",
+      "file": "cards/v260-formation-0011.json"
+    },
+    {
+      "id": "v260-formation-0012",
+      "file": "cards/v260-formation-0012.json"
+    },
+    {
+      "id": "v260-formation-0013",
+      "file": "cards/v260-formation-0013.json"
+    },
+    {
+      "id": "v260-formation-0014",
+      "file": "cards/v260-formation-0014.json"
+    },
+    {
+      "id": "v260-formation-0015",
+      "file": "cards/v260-formation-0015.json"
+    },
+    {
+      "id": "v260-formation-0016",
+      "file": "cards/v260-formation-0016.json"
+    },
+    {
+      "id": "v260-formation-0017",
+      "file": "cards/v260-formation-0017.json"
+    }
+  ]
+}

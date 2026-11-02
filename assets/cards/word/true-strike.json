@@ -1,0 +1,26 @@
+{
+  "id": "true-strike",
+  "name": "克敌机先",
+  "type": "word",
+  "rarity": "uncommon",
+  "cost": 3,
+  "rank": 3,
+  "speed": 2,
+  "school": "divination",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "search_same_school"
+    }
+  ],
+  "text": "将1张法术卡从手卡送去灰烬区才能发动。将1张同派系的法术卡从卡组加入手卡。",
+  "flavor": "魔法之洞见，它能指引你看到多远？",
+  "castCost": 0,
+  "level": 3,
+  "analysisTurns": 0,
+  "number": "030005",
+  "illustrationId": "true-strike",
+  "traits": [
+    "discard_spell_search"
+  ]
+}

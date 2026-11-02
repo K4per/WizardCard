@@ -1,0 +1,182 @@
+# Godot dependencies are discovered only when explicitly enabled.
+set(WIZARD_GODOT_VERSION "4.7.2" CACHE STRING "Pinned editor/export-template version")
+set(GODOTCPP_API_VERSION "4.7" CACHE STRING "Pinned extension API")
+set(GODOTCPP_TARGET "template_debug" CACHE STRING "Godot extension target")
+set(GODOTCPP_BUILD_PROFILE "${CMAKE_CURRENT_SOURCE_DIR}/godot/bridge_profile.json" CACHE FILEPATH "Minimal bridge API")
+set(GODOTCPP_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
+set(GODOTCPP_DISABLE_EXCEPTIONS OFF CACHE BOOL "" FORCE)
+set(GODOTCPP_SYSTEM_HEADERS ON CACHE BOOL "" FORCE)
+if(NOT WIZARD_GODOT_VERSION STREQUAL "4.7.2" OR NOT GODOTCPP_API_VERSION STREQUAL "4.7")
+  message(FATAL_ERROR "Update godot/toolchain-lock.json and validate before changing the Godot/API version")
+endif()
+if(MSVC)
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL" CACHE STRING "Bridge CRT" FORCE)
+endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  # A private static libstdc++ collides with the desktop Godot process's locale
+  # state during fingerprint()/iostream initialization. Use the system runtime.
+  set(GODOTCPP_USE_STATIC_CPP OFF CACHE BOOL "Linux bridge uses the system C++ runtime" FORCE)
+endif()
+FetchContent_Declare(godot_cpp
+  GIT_REPOSITORY https://github.com/godotengine/godot-cpp.git
+  GIT_TAG 507ed9d840c01a3c5b2a39af8bb4000bfac30bf5 EXCLUDE_FROM_ALL)
+FetchContent_MakeAvailable(godot_cpp)
+foreach(target wizard_core wizard_content wizard_codec wizard_replay wizard_ai wizard_application wizard_interaction wizard_bridge_model wizard_network)
+  set_property(TARGET ${target} PROPERTY POSITION_INDEPENDENT_CODE ON)
+  if(MSVC)
+    set_property(TARGET ${target} PROPERTY MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}")
+  endif()
+endforeach()
+add_library(wizard_godot_bridge SHARED src/bridge/godot_bridge.cpp)
+target_link_libraries(wizard_godot_bridge PRIVATE wizard_bridge_model wizard_network godot::cpp)
+wizard_warnings(wizard_godot_bridge)
+if(GODOTCPP_TARGET STREQUAL "template_release")
+  set(bridge_flavor release)
+else()
+  set(bridge_flavor debug)
+endif()
+set_target_properties(wizard_godot_bridge PROPERTIES OUTPUT_NAME "wizard_godot_bridge.${bridge_flavor}")
+foreach(config Debug Release RelWithDebInfo MinSizeRel)
+  string(TOUPPER "${config}" upper_config)
+  set_target_properties(wizard_godot_bridge PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY_${upper_config} "${CMAKE_CURRENT_SOURCE_DIR}/godot/bin"
+    LIBRARY_OUTPUT_DIRECTORY_${upper_config} "${CMAKE_CURRENT_SOURCE_DIR}/godot/bin")
+endforeach()
+set_target_properties(wizard_godot_bridge PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/godot/bin"
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/godot/bin")
+set(GODOT_BIN "" CACHE FILEPATH "Pinned Godot executable")
+if(BUILD_TESTING AND GODOT_BIN)
+  find_package(Python3 REQUIRED COMPONENTS Interpreter)
+  execute_process(COMMAND "${GODOT_BIN}" --version OUTPUT_VARIABLE godot_version
+    OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE godot_version_result TIMEOUT 10)
+  set(godot_version_matches FALSE)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    if(godot_version MATCHES "^4[.]7[.]2[.]stable[.][A-Za-z0-9_-]+[.]ed1daf0bf$")
+      set(godot_version_matches TRUE)
+    endif()
+  elseif(godot_version STREQUAL "4.7.2.stable.official.ed1daf0bf")
+    set(godot_version_matches TRUE)
+  endif()
+  if(NOT godot_version_result EQUAL 0 OR NOT godot_version_matches)
+    message(FATAL_ERROR "GODOT_BIN must match godot/toolchain-lock.json")
+  endif()
+  set(probe_dir "${CMAKE_CURRENT_BINARY_DIR}/godot-probe")
+  file(MAKE_DIRECTORY "${probe_dir}/tests")
+  file(WRITE "${probe_dir}/project.godot"
+    "config_version=5\n[application]\nconfig/name=\"WizardCard Bridge Probe\"\n[rendering]\nrenderer/rendering_method=\"gl_compatibility\"\n")
+  foreach(script bridge_smoke boundary_smoke)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/godot/tests/${script}.gd" "${probe_dir}/tests/${script}.gd" COPYONLY)
+  endforeach()
+  file(GENERATE OUTPUT "${probe_dir}/wizard_bridge.gdextension" CONTENT
+    "[configuration]\nentry_symbol=\"wizard_bridge_init\"\ncompatibility_minimum=\"4.7\"\nreloadable=false\n[libraries]\nwindows.debug.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\nwindows.release.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\nlinux.debug.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\nlinux.release.x86_64=\"$<TARGET_FILE:wizard_godot_bridge>\"\n")
+  # Cold GDExtension docs can race immediate editor shutdown (Godot #111048).
+  # Keep --import's completion check; allow deferred docs callbacks to finish.
+  add_test(NAME godot_import COMMAND "${GODOT_BIN}" --headless --path ${probe_dir} --import --frame-delay 1000)
+  set_tests_properties(godot_import PROPERTIES FIXTURES_SETUP godot_import RUN_SERIAL TRUE TIMEOUT 120)
+  add_test(NAME godot_bridge_boundary COMMAND "${GODOT_BIN}" --headless --path ${probe_dir}
+    --script res://tests/boundary_smoke.gd -- --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    --user-data ${CMAKE_CURRENT_BINARY_DIR}/boundary-data)
+  set_tests_properties(godot_bridge_boundary PROPERTIES FIXTURES_REQUIRED godot_import TIMEOUT 30)
+  add_test(NAME godot_reference COMMAND wizard_cli smoke ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/godot-reference.json 42)
+  set_tests_properties(godot_reference PROPERTIES FIXTURES_SETUP godot_reference)
+  add_test(NAME godot_cold_import COMMAND "${Python3_EXECUTABLE}"
+    ${CMAKE_CURRENT_SOURCE_DIR}/tools/godot_cold_import.py --godot "${GODOT_BIN}"
+    --probe ${probe_dir} --output ${CMAKE_CURRENT_BINARY_DIR}/cold-import)
+  set_tests_properties(godot_cold_import PROPERTIES TIMEOUT 60 RUN_SERIAL TRUE
+    FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_bridge_replay COMMAND "${GODOT_BIN}" --headless --path ${probe_dir}
+    --script res://tests/bridge_smoke.gd -- --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    --user-data ${CMAKE_CURRENT_BINARY_DIR}/replay-data --reference ${CMAKE_CURRENT_BINARY_DIR}/godot-reference.json
+    --report ${CMAKE_CURRENT_BINARY_DIR}/godot-replay-report.json)
+  # The full 556-command bridge replay exercises every projected transition and
+  # takes several minutes on the pinned Windows Godot runtime.
+  set_tests_properties(godot_bridge_replay PROPERTIES FIXTURES_REQUIRED "godot_import;godot_reference" TIMEOUT 600)
+  add_test(NAME godot_frontend_import COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --import --frame-delay 1000)
+  set_tests_properties(godot_frontend_import PROPERTIES FIXTURES_SETUP frontend_import
+    RUN_SERIAL TRUE TIMEOUT 180 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_frontend_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/frontend_smoke.gd --
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260
+    --user-data ${CMAKE_CURRENT_BINARY_DIR}/frontend-smoke-data
+    --report ${CMAKE_CURRENT_BINARY_DIR}/frontend-report.json)
+  set_tests_properties(godot_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    foreach(mode xdg home override)
+      set(data_root "${CMAKE_CURRENT_BINARY_DIR}/linux-user-data-${mode}")
+      if(mode STREQUAL "home")
+        set(data_environment "--unset=XDG_DATA_HOME" "HOME=${data_root}")
+        set(expected_data "${data_root}/.local/share/WizardCard")
+        set(data_arguments "")
+      else()
+        set(data_environment "XDG_DATA_HOME=${data_root}/xdg")
+        set(expected_data "${data_root}/xdg/WizardCard")
+        set(data_arguments "")
+        if(mode STREQUAL "override")
+          set(expected_data "${data_root}/explicit")
+          set(data_arguments --user-data "${expected_data}")
+        endif()
+      endif()
+      add_test(NAME godot_linux_user_data_${mode} COMMAND "${CMAKE_COMMAND}" -E env
+        ${data_environment} "WIZARD_EXPECTED_USER_DATA=${expected_data}"
+        "${GODOT_BIN}" --headless --path ${CMAKE_CURRENT_SOURCE_DIR}/godot
+        --script res://tests/linux_user_data_smoke.gd --
+        --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260 ${data_arguments})
+      set_tests_properties(godot_linux_user_data_${mode} PROPERTIES FIXTURES_REQUIRED frontend_import
+        RUN_SERIAL TRUE TIMEOUT 30 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+    endforeach()
+  endif()
+  add_test(NAME godot_match_frontend_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/match_frontend_smoke.gd --
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    --user-data ${CMAKE_CURRENT_BINARY_DIR}/match-frontend-smoke-data)
+  set_tests_properties(godot_match_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 90 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_field_v25_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/field_v25_smoke.gd)
+  set_tests_properties(godot_field_v25_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_phase_selector_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/phase_selector_smoke.gd)
+  set_tests_properties(godot_phase_selector_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 30 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_card_selection_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/card_selection_smoke.gd)
+  set_tests_properties(godot_card_selection_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_card_tray_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/card_tray_smoke.gd)
+  set_tests_properties(godot_card_tray_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  foreach(smoke response_collection response_timing)
+    add_test(NAME godot_${smoke}_smoke COMMAND "${GODOT_BIN}" --headless
+      --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/${smoke}_smoke.gd)
+    set_tests_properties(godot_${smoke}_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+      RUN_SERIAL TRUE TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  endforeach()
+  add_test(NAME godot_deck_frontend_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/deck_frontend_smoke.gd --
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    --user-data ${CMAKE_CURRENT_BINARY_DIR}/deck-frontend-smoke-data
+    --output ${CMAKE_CURRENT_BINARY_DIR}/deck-frontend-smoke-output)
+  set_tests_properties(godot_deck_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  foreach(smoke typography feedback deck_exchange network_frontend art_residency incremental_kernel)
+    add_test(NAME godot_${smoke}_smoke COMMAND "${GODOT_BIN}" --headless
+      --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/${smoke}_smoke.gd --
+      --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+      --user-data ${CMAKE_CURRENT_BINARY_DIR}/${smoke}-smoke-data)
+    set_tests_properties(godot_${smoke}_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+      RUN_SERIAL TRUE TIMEOUT 120 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  endforeach()
+  # Windows hot-reload copies of the same extension DLL collide across Godot
+  # processes. Serialize all extension users even when ctest runs with -j.
+  set_tests_properties(godot_bridge_boundary godot_bridge_replay
+    godot_frontend_smoke godot_match_frontend_smoke godot_deck_frontend_smoke godot_field_v25_smoke godot_card_selection_smoke godot_phase_selector_smoke godot_card_tray_smoke
+    PROPERTIES RUN_SERIAL TRUE)
+  foreach(test godot_import godot_bridge_boundary godot_bridge_replay)
+    set_tests_properties(${test} PROPERTIES FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  endforeach()
+endif()

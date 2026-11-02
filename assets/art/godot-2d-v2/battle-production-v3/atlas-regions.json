@@ -1,0 +1,703 @@
+{
+  "version": 3,
+  "styleReference": "../battle-layout-concepts-20261011/dungeon-topdown/source-v2.png",
+  "generator": "built-in imagegen",
+  "units": "pixels; rect=[x,y,width,height] on unscaled PNG",
+  "status": "generated visual assets; not yet runtime-integrated",
+  "superseded": [
+    "02-field-structure-atlas.png",
+    "05-search-decision-modal.png"
+  ],
+  "sheets": {
+    "01-dungeon-background.png": [
+      {
+        "name": "dungeon_background",
+        "rect": [
+          0,
+          0,
+          1672,
+          941
+        ]
+      }
+    ],
+    "02b-field-structure-atlas.png": [
+      {
+        "name": "casting_continuous",
+        "rect": [
+          40,
+          60,
+          1592,
+          510
+        ]
+      },
+      {
+        "name": "analysis_row",
+        "rect": [
+          70,
+          600,
+          1532,
+          180
+        ]
+      },
+      {
+        "name": "field_divider",
+        "rect": [
+          40,
+          800,
+          1592,
+          125
+        ]
+      }
+    ],
+    "03-card-detail-panel.png": [
+      {
+        "name": "detail_panel",
+        "rect": [
+          0,
+          0,
+          1003,
+          1568
+        ]
+      }
+    ],
+    "04-card-actions-atlas.png": [
+      {
+        "name": "action_one_normal",
+        "rect": [
+          0,
+          0,
+          768,
+          350
+        ]
+      },
+      {
+        "name": "action_one_hover",
+        "rect": [
+          768,
+          0,
+          768,
+          350
+        ]
+      },
+      {
+        "name": "action_two_normal",
+        "rect": [
+          0,
+          350,
+          768,
+          300
+        ]
+      },
+      {
+        "name": "action_two_hover",
+        "rect": [
+          768,
+          350,
+          768,
+          300
+        ]
+      },
+      {
+        "name": "action_three_normal",
+        "rect": [
+          0,
+          650,
+          768,
+          374
+        ]
+      },
+      {
+        "name": "action_three_disabled",
+        "rect": [
+          768,
+          650,
+          768,
+          374
+        ]
+      }
+    ],
+    "05b-effect-selection-popup.png": [
+      {
+        "name": "effect_popup_complete",
+        "rect": [
+          0,
+          0,
+          1840,
+          855
+        ]
+      },
+      {
+        "name": "effect_instruction_header",
+        "rect": [
+          220,
+          140,
+          1220,
+          130
+        ]
+      },
+      {
+        "name": "effect_candidates_body",
+        "rect": [
+          90,
+          280,
+          1320,
+          370
+        ]
+      },
+      {
+        "name": "effect_preview_body",
+        "rect": [
+          1430,
+          280,
+          350,
+          370
+        ]
+      },
+      {
+        "name": "effect_count_badge",
+        "rect": [
+          1440,
+          140,
+          130,
+          130
+        ]
+      },
+      {
+        "name": "effect_page_previous",
+        "rect": [
+          25,
+          390,
+          125,
+          135
+        ]
+      },
+      {
+        "name": "effect_page_next",
+        "rect": [
+          1340,
+          390,
+          125,
+          135
+        ]
+      },
+      {
+        "name": "effect_confirm_button",
+        "rect": [
+          1380,
+          650,
+          350,
+          130
+        ]
+      },
+      {
+        "name": "effect_optional_return_button",
+        "rect": [
+          1170,
+          650,
+          205,
+          130
+        ]
+      },
+      {
+        "name": "effect_footer_repeatable",
+        "rect": [
+          210,
+          655,
+          800,
+          85
+        ]
+      }
+    ],
+    "06-common-controls-atlas.png": [
+      {
+        "name": "button_normal",
+        "rect": [
+          0,
+          0,
+          420,
+          280
+        ]
+      },
+      {
+        "name": "button_hover",
+        "rect": [
+          420,
+          0,
+          420,
+          280
+        ]
+      },
+      {
+        "name": "button_pressed",
+        "rect": [
+          840,
+          0,
+          420,
+          280
+        ]
+      },
+      {
+        "name": "button_disabled",
+        "rect": [
+          1260,
+          0,
+          412,
+          280
+        ]
+      },
+      {
+        "name": "input_search",
+        "rect": [
+          0,
+          280,
+          530,
+          170
+        ]
+      },
+      {
+        "name": "dropdown",
+        "rect": [
+          530,
+          280,
+          500,
+          170
+        ]
+      },
+      {
+        "name": "slider",
+        "rect": [
+          1030,
+          280,
+          480,
+          170
+        ]
+      },
+      {
+        "name": "scrollbar",
+        "rect": [
+          1510,
+          240,
+          162,
+          310
+        ]
+      },
+      {
+        "name": "checkbox_off",
+        "rect": [
+          130,
+          470,
+          240,
+          215
+        ]
+      },
+      {
+        "name": "checkbox_on",
+        "rect": [
+          470,
+          470,
+          240,
+          215
+        ]
+      },
+      {
+        "name": "radio_off",
+        "rect": [
+          900,
+          470,
+          225,
+          215
+        ]
+      },
+      {
+        "name": "radio_on",
+        "rect": [
+          1290,
+          470,
+          235,
+          215
+        ]
+      },
+      {
+        "name": "close_button",
+        "rect": [
+          50,
+          690,
+          240,
+          210
+        ]
+      },
+      {
+        "name": "previous_button",
+        "rect": [
+          460,
+          690,
+          240,
+          210
+        ]
+      },
+      {
+        "name": "next_button",
+        "rect": [
+          860,
+          690,
+          240,
+          210
+        ]
+      },
+      {
+        "name": "tooltip_small",
+        "rect": [
+          1160,
+          690,
+          470,
+          210
+        ]
+      }
+    ],
+    "07-hud-load-bar-atlas.png": [
+      {
+        "name": "player_hud",
+        "rect": [
+          0,
+          0,
+          1672,
+          310
+        ]
+      },
+      {
+        "name": "load_track",
+        "rect": [
+          140,
+          315,
+          1390,
+          110
+        ]
+      },
+      {
+        "name": "load_fill_normal",
+        "rect": [
+          225,
+          451,
+          1215,
+          52
+        ]
+      },
+      {
+        "name": "load_fill_warning",
+        "rect": [
+          225,
+          557,
+          1215,
+          53
+        ]
+      },
+      {
+        "name": "round_badge",
+        "rect": [
+          345,
+          640,
+          285,
+          260
+        ]
+      },
+      {
+        "name": "phase_banner",
+        "rect": [
+          645,
+          690,
+          665,
+          145
+        ]
+      }
+    ],
+    "08-resource-icons-atlas.png": [
+      {
+        "name": "resource_life",
+        "rect": [
+          0,
+          0,
+          724,
+          724
+        ]
+      },
+      {
+        "name": "resource_mana",
+        "rect": [
+          724,
+          0,
+          724,
+          724
+        ]
+      },
+      {
+        "name": "resource_load",
+        "rect": [
+          1448,
+          0,
+          724,
+          724
+        ]
+      }
+    ],
+    "09-selection-state-atlas.png": [
+      {
+        "name": "state_selected",
+        "rect": [
+          0,
+          0,
+          443,
+          443
+        ]
+      },
+      {
+        "name": "state_hover",
+        "rect": [
+          443,
+          0,
+          443,
+          443
+        ]
+      },
+      {
+        "name": "state_valid_target",
+        "rect": [
+          886,
+          0,
+          443,
+          443
+        ]
+      },
+      {
+        "name": "state_material_selected",
+        "rect": [
+          1329,
+          0,
+          445,
+          443
+        ]
+      },
+      {
+        "name": "state_disabled",
+        "rect": [
+          0,
+          443,
+          443,
+          444
+        ]
+      },
+      {
+        "name": "state_sustained",
+        "rect": [
+          443,
+          443,
+          443,
+          444
+        ]
+      },
+      {
+        "name": "state_visible",
+        "rect": [
+          886,
+          443,
+          443,
+          444
+        ]
+      },
+      {
+        "name": "state_unavailable",
+        "rect": [
+          1329,
+          443,
+          445,
+          444
+        ]
+      }
+    ],
+    "10-zone-plates-atlas.png": [
+      {
+        "name": "main_deck_plate",
+        "rect": [
+          0,
+          0,
+          700,
+          500
+        ]
+      },
+      {
+        "name": "side_deck_plate",
+        "rect": [
+          760,
+          0,
+          700,
+          500
+        ]
+      },
+      {
+        "name": "ash_plate",
+        "rect": [
+          0,
+          510,
+          620,
+          514
+        ]
+      },
+      {
+        "name": "hand_divider",
+        "rect": [
+          620,
+          510,
+          916,
+          514
+        ]
+      }
+    ],
+    "11-information-panels-atlas.png": [
+      {
+        "name": "confirmation_panel",
+        "rect": [
+          0,
+          0,
+          810,
+          510
+        ]
+      },
+      {
+        "name": "tooltip_large",
+        "rect": [
+          900,
+          0,
+          636,
+          355
+        ]
+      },
+      {
+        "name": "response_notification",
+        "rect": [
+          0,
+          620,
+          970,
+          230
+        ]
+      },
+      {
+        "name": "information_list_panel",
+        "rect": [
+          970,
+          350,
+          566,
+          674
+        ]
+      }
+    ],
+    "12-utility-icons-atlas.png": [
+      {
+        "name": "icon_search",
+        "rect": [
+          0,
+          0,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_filter",
+        "rect": [
+          362,
+          0,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_sort",
+        "rect": [
+          724,
+          0,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_settings",
+        "rect": [
+          1086,
+          0,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_back",
+        "rect": [
+          0,
+          362,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_confirm",
+        "rect": [
+          362,
+          362,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_cancel",
+        "rect": [
+          724,
+          362,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_information",
+        "rect": [
+          1086,
+          362,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_analysis_pending",
+        "rect": [
+          0,
+          724,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_ready",
+        "rect": [
+          362,
+          724,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_attached",
+        "rect": [
+          724,
+          724,
+          362,
+          362
+        ]
+      },
+      {
+        "name": "icon_hidden",
+        "rect": [
+          1086,
+          724,
+          362,
+          362
+        ]
+      }
+    ]
+  }
+}

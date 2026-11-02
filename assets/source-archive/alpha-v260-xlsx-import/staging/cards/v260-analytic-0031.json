@@ -1,0 +1,48 @@
+{
+  "id": "v260-analytic-0031",
+  "number": "020031",
+  "name": "疯狂冠冕",
+  "type": "analytic",
+  "school": "enchantment",
+  "rarity": "rare",
+  "rank": 2,
+  "cost": 2,
+  "castCost": 1,
+  "analysisTurns": 1,
+  "speed": 1,
+  "text": "专注2。对方每对己方造成1次伤害，使对方受到2点心灵伤害。",
+  "effects": [
+    {
+      "kind": "retaliate_damage",
+      "amount": 2,
+      "damageType": "psychic"
+    }
+  ],
+  "effectStatus": "structured-candidate",
+  "effectBlockers": [],
+  "implementationStatus": "structured-candidate",
+  "implementationBlockers": [],
+  "source": {
+    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "worksheet": "卡表",
+    "row": 32
+  },
+  "illustrationId": "v260-art-analytic-0031",
+  "art": {
+    "status": "matched",
+    "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡卡图\\疯狂冠冕.png",
+    "mapping": "用户指定 Alpha 现有卡池卡图",
+    "manifestId": "v260-art-analytic-0031",
+    "processedFile": "assets/art/alpha-v260/current-pool/v260-art-analytic-0031.png",
+    "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
+  },
+  "migration": {
+    "previousId": null
+  },
+  "concentration": true,
+  "concentrationUpkeep": 2,
+  "traits": [
+    "retaliate_damage"
+  ],
+  "level": 2
+}

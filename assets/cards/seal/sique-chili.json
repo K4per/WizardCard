@@ -1,0 +1,29 @@
+{
+  "id": "sique-chili",
+  "name": "味契·辣椒",
+  "type": "seal",
+  "rarity": "rare",
+  "cost": 2,
+  "rank": 1,
+  "level": 0,
+  "speed": 1,
+  "castCost": 0,
+  "tags": [
+    "味契"
+  ],
+  "number": "050009",
+  "illustrationId": "sique-chili",
+  "traits": [
+    "sique_cauldron_only"
+  ],
+  "onLeave": [
+    {
+      "kind": "damage",
+      "amount": 4,
+      "damageType": "fire",
+      "recipient": "opponent"
+    }
+  ],
+  "effects": [],
+  "text": "仅可附着于【味契·魔力坩埚】。解除附着时，对对方造成4点火焰伤害。 附着于阵法卡：对方每抽1张卡，对对方造成1点火焰伤害。 附着于法术卡：无效果。"
+}

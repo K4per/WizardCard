@@ -1,0 +1,28 @@
+{
+  "id": "storm-guidance",
+  "name": "风契·风暴导向",
+  "type": "word",
+  "rarity": "uncommon",
+  "cost": 3,
+  "rank": 2,
+  "level": 2,
+  "speed": 2,
+  "school": "divination",
+  "target": "self",
+  "effects": [
+    {
+      "kind": "storm_guidance"
+    }
+  ],
+  "text": "己方场上存在【风契】阵法卡才能发动。将1张卡从场上送去灰烬区。那之后，可以选择以下1个效果适用： 将1张 【风契】法术卡从卡组加入手卡。 获得2个 【风契指示物】。 将1张【云雾术】/【召雷术】从卡组加入手卡。",
+  "castCost": 0,
+  "analysisTurns": 0,
+  "tags": [
+    "风契"
+  ],
+  "number": "030013",
+  "illustrationId": "storm-guidance",
+  "traits": [
+    "requires_storm_formation"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "sunburst",
+  "name": "阳炎爆",
+  "type": "analytic",
+  "rarity": "legendary",
+  "rank": 6,
+  "level": 6,
+  "speed": 3,
+  "school": "evocation",
+  "cost": 20,
+  "castCost": 2,
+  "analysisTurns": 2,
+  "target": "opponent",
+  "effects": [
+    {
+      "kind": "damage",
+      "amount": 15,
+      "damageType": "fire"
+    },
+    {
+      "kind": "destroy_formation_spells"
+    }
+  ],
+  "text": "对对方造成15点火焰伤害。那之后，可以销毁对方1张阵法卡上的全部法术卡。己方灰烬区每存在1张塑能派系法术卡，此法术卡的设置费用-1。",
+  "traits": [
+    "ash_evocation_discount"
+  ],
+  "number": "020016",
+  "illustrationId": "v2-sunburst"
+}

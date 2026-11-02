@@ -1,0 +1,39 @@
+{
+  "id": "blood-sacrificial-table",
+  "name": "血契·祭品台",
+  "type": "formation",
+  "rarity": "rare",
+  "cost": 0,
+  "castCost": 0,
+  "rank": 0,
+  "level": 3,
+  "speed": 1,
+  "number": "010031",
+  "illustrationId": "blood-sacrificial-table",
+  "target": "none",
+  "tags": [
+    "血契"
+  ],
+  "effects": [],
+  "text": "己方回合首次支付生命值时，抽1张卡。",
+  "body": 1,
+  "rings": 2,
+  "capacity": 7,
+  "income": 1,
+  "maxRank": 3,
+  "summonCondition": "魔素×4＋生命值×5",
+  "baseEligible": false,
+  "traits": [
+    "blood_sacrifice_reward"
+  ],
+  "recipe": [
+    {
+      "kind": "mana",
+      "amount": 4
+    },
+    {
+      "kind": "life",
+      "amount": 5
+    }
+  ]
+}

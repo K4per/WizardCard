@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ui/deck_detail_pane.gd" id="1"]
+[ext_resource type="Script" path="res://ui/deck_card_painter.gd" id="face"]
+
+[node name="DeckDetailPane" type="PanelContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("1")
+
+[node name="Column" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "卡牌详情"
+clip_text = true
+
+[node name="Face" type="Control" parent="Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("face")
+illustration_only = true
+
+[node name="Body" type="RichTextLabel" parent="Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 15
+text = "悬停卡牌查看完整效果。"
+scroll_active = true
+selection_enabled = true
+
+[node name="Number" type="Label" parent="Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+text = ""
+
+[node name="Hint" type="Label" parent="Column"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "左键加入 · 右键移出\n拖动移动卡牌"
+autowrap_mode = 3

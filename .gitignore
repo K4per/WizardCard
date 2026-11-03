@@ -10,3 +10,5 @@ __pycache__/
 /.presentation-build/
 /.rulebook-build/
 /output/
+/.worktrees/
+/.superpowers/

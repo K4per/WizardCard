@@ -88,6 +88,12 @@ Produces wizard_server, native TLS probe, validated config, structured logs, hea
 - [x] Run original headless suite, P2P smoke against both card pools, central unit/TLS/Godot integration, catalogue/DAG/core-only checks and capacity report.
 - [x] Build Linux Release and Windows Godot CI jobs; report local versus CI verification accurately.
 - [x] Fresh whole-branch code review; fix important findings with failing regression tests and rerun relevant full suite.
-- [ ] Fast-forward local dev, push origin dev, verify remote SHA.
-- [ ] Deploy release to WizardGameServer non-destructively; verify TLS, readiness, real remote match and restart-abort semantics. Record release SHA, certificate trust instructions and rollback command.
-- [ ] Audit every spec deliverable against authoritative evidence before marking the goal complete.
+- [x] Fast-forward local dev, push origin dev, verify remote SHA.
+- [x] Deploy release to WizardGameServer non-destructively; verify TLS, readiness, real remote match and restart-abort semantics. Record release SHA, certificate trust instructions and rollback command.
+- [x] Audit every spec deliverable against authoritative evidence before marking the goal complete.
+
+## Completion record
+
+All deliverables were audited against the spec and the evidence in `docs/central-server-delivery.md` and `docs/validation/central-server/`. Implementation commit `126fd98e5022aed44b24f9ec6296744a8ba9040d` was fast-forwarded to dev, pushed to origin/dev and verified via ls-remote. Deployment, original-hostname verified TLS, two actual remote Godot clients, restart-abort semantics and binary/archive checksums passed. The remote deployment manifest records that implementation commit.
+
+The planned native C++ TLS probe was replaced by real Python TLS probes and Godot native TLS integration, with C++ client behavior covered by injected transports. The implementation ledger and delivery record document the ruling. GitHub Actions status could not be read because its API returned HTTP 403 rate limiting; Windows and official desktop export verification remain subject to CI results.

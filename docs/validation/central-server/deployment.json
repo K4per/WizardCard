@@ -1,0 +1,14 @@
+{
+  "archive": "WizardCard-CentralServer-2.6.0-hotfix.1-linux-x86_64.tar.gz",
+  "archiveSha256": "6c06a5303e43c15691516c71488400d791cb6daeb981715ce7a76235cd582f3b",
+  "certificateSha256": "ef0679bb81227c0088feb1b11e6fcfd2093ed3059113c34eb976036f5ef74d67",
+  "contentHash": "41eac6fc263abd5e",
+  "format": 1,
+  "internalTcpPort": 24443,
+  "publicEndpoint": "aq.rainplay.cn:23513",
+  "serverBinarySha256": "75ca7f51052e22d32b8015aa6f111680850d7c656aec1259b268826e09b953d8",
+  "sourceBranch": "dev",
+  "sourceCommit": "126fd98e5022aed44b24f9ec6296744a8ba9040d",
+  "sourceRepository": "https://github.com/K4per/WizardCard",
+  "verifiedAtUtc": "2026-11-03T13:02:28.511917+00:00"
+}

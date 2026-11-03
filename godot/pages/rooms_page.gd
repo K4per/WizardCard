@@ -6,6 +6,8 @@ signal navigation_requested(page: StringName)
 var service: FrontendService
 var _address: LineEdit
 var _port: SpinBox
+var _room_code: LineEdit
+var _trusted_ca: LineEdit
 var _decks: OptionButton
 var _host_first: CheckButton
 var _automatic: CheckButton
@@ -21,6 +23,8 @@ var _configure: Button
 func _ready() -> void:
 	_address = %Address
 	_port = %Port
+	_room_code = %RoomCode
+	_trusted_ca = %TrustedCa
 	_decks = %Decks
 	_host_first = %HostFirst
 	_automatic = %Automatic
@@ -37,6 +41,7 @@ func _ready() -> void:
 	_decks.item_selected.connect(_deck_changed)
 	_host.pressed.connect(_host_room)
 	_join.pressed.connect(_join_room)
+	_room_code.text_changed.connect(_room_code_changed)
 	_ready_button.pressed.connect(_ready_room)
 	_leave.pressed.connect(_leave_room)
 	_reconnect.pressed.connect(_reconnect_room)
@@ -51,7 +56,7 @@ func configure(value: FrontendService) -> void:
 		_decks.add_item(str(deck.get("name", deck.get("id", ""))))
 		_decks.set_item_metadata(_decks.item_count - 1, str(deck.get("id", "")))
 	if not service.network_available():
-		_notice.text = "当前原生模块未加载局域网房间接口。"
+		_notice.text = "当前原生模块未加载中央房间接口。"
 	_network_buttons(service.network_available())
 	if service.network_active:
 		network_updated(service.poll_network())
@@ -63,7 +68,7 @@ func _hotseat() -> void:
 func _network_buttons(available: bool) -> void:
 	var has_room: bool = available and service.network_active
 	_host.disabled = not available or has_room or _decks.selected < 0
-	_join.disabled = not available or has_room or _decks.selected < 0
+	_join.disabled = not available or has_room or _decks.selected < 0 or _room_code.text.strip_edges().length() != 8
 	_ready_button.disabled = not has_room
 	_leave.disabled = not has_room
 	_reconnect.disabled = not has_room
@@ -87,10 +92,17 @@ func _send(request: Dictionary) -> void:
 		_network_buttons(service.network_available())
 
 func _host_room() -> void:
-	_send({"operation": "host", "address": "0.0.0.0", "port": int(_port.value), "deck": _deck_id()})
+	_send({"operation": "central_create", "hostname": _address.text.strip_edges(), "port": int(_port.value), "trustedCa": _trusted_ca.text.strip_edges(), "deck": _deck_id()})
 
 func _join_room() -> void:
-	_send({"operation": "join", "address": _address.text.strip_edges(), "port": int(_port.value), "deck": _deck_id()})
+	var code: String = _room_code.text.strip_edges().to_upper()
+	if code.length() != 8:
+		_notice.text = "请输入 8 位房间码。"
+		return
+	_send({"operation": "central_join", "hostname": _address.text.strip_edges(), "port": int(_port.value), "trustedCa": _trusted_ca.text.strip_edges(), "roomCode": code, "deck": _deck_id()})
+
+func _room_code_changed(_value: String) -> void:
+	_network_buttons(service != null and service.network_available())
 
 func _deck_changed(_index: int) -> void:
 	_network_buttons(service != null and service.network_available())
@@ -117,23 +129,38 @@ func network_updated(state: Dictionary) -> void:
 	_network_buttons(service.network_available())
 	var room_value: Variant = state.get("room", {})
 	var room: Dictionary = room_value as Dictionary if room_value is Dictionary else {}
+	var room_notice: String = str(state.get("notice", ""))
 	if bool(state.get("exists", state.has("room"))):
 		var ready: Array = room.get("ready", [false, false])
-		var host_player: int = int(room.get("hostPlayer", 0))
-		var own_player: int = host_player if bool(state.get("host", false)) else 1 - host_player
-		_ready_button.disabled = not bool(room.get("joined", false)) or (ready.size() == 2 and bool(ready[own_player]))
+		var own_player: int = int(room.get("seat", 0))
+		var owner: bool = bool(room.get("owner", state.get("host", false)))
+		var phase: String = str(room.get("phase", "waiting"))
+		var occupied: Array = room.get("occupied", [false, false])
+		var both_present: bool = occupied.size() == 2 and bool(occupied[0]) and bool(occupied[1])
+		_ready_button.disabled = not bool(state.get("connected", false)) or phase != "waiting" or not both_present or (ready.size() == 2 and bool(ready[own_player]))
 		_ready_button.text = "已准备" if ready.size() == 2 and bool(ready[own_player]) else "准备"
-		_room.text = "你是%s · %s\n房主：%s　访客：%s\n%s先手 · %s自动通过阶段" % [
-			"房主" if bool(state.get("host", false)) else "访客",
-			"已连接" if bool(state.get("connected", false)) else "等待连接",
-			"已准备" if ready.size() == 2 and bool(ready[host_player]) else "未准备",
-			"已准备" if ready.size() == 2 and bool(ready[1 - host_player]) else "未准备",
-			"房主" if int(room.get("hostPlayer", 0)) == 0 else "访客",
+		_configure.disabled = not owner or phase != "waiting" or not bool(state.get("connected", false))
+		_host_first.disabled = _configure.disabled
+		_automatic.disabled = _configure.disabled
+		var seats: Array[String] = []
+		for seat: int in range(2):
+			var occupied_seat: bool = occupied.size() == 2 and bool(occupied[seat])
+			var seat_ready: bool = ready.size() == 2 and bool(ready[seat])
+			seats.append("席位 %d：%s%s" % [seat + 1, "已准备" if seat_ready else "未准备" if occupied_seat else "等待加入", " · 你" if seat == own_player else ""])
+		var code: String = str(room.get("code", ""))
+		_room.text = "房间码：%s\n你是%s · %s\n%s · %s\n%s先手 · %s自动通过阶段" % [
+			code if not code.is_empty() else "正在连接…",
+			"房主" if owner else "玩家 2",
+			"已连接" if bool(state.get("connected", false)) else "正在连接服务器",
+			seats[0], seats[1],
+			"房主" if bool(room.get("ownerFirst", true)) else "玩家 2",
 			"已开启" if bool(room.get("automatic", true)) else "已关闭"]
-		_host_first.set_pressed_no_signal(int(room.get("hostPlayer", 0)) == 0)
+		_host_first.set_pressed_no_signal(bool(room.get("ownerFirst", true)))
 		_automatic.set_pressed_no_signal(bool(room.get("automatic", true)))
+		if bool(room.get("aborted", false)) or phase == "aborted":
+			room_notice = "本房间已中止，无胜者。原因：%s" % str(room.get("abortReason", "未知"))
 	else:
-		_room.text = "当前没有房间"
-	_notice.text = str(state.get("notice", ""))
+		_room.text = "当前没有中央房间"
+	_notice.text = room_notice
 	if bool(state.get("started", false)):
 		navigation_requested.emit(&"match")

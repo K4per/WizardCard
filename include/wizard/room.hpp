@@ -24,6 +24,10 @@ class RoomSession : public Session {
     using Session::submit;
     virtual void host(unsigned short, const PlayerDeck &) = 0;
     virtual void join(const std::string &, unsigned short) = 0;
+    virtual void connect(const RoomConnectOptions &options, const PlayerDeck &deck) {
+        if (options.entry == RoomEntry::Create) host(options.endpoint.port, deck);
+        else join(options.endpoint.hostname, options.endpoint.port);
+    }
     virtual void deck(const PlayerDeck &) = 0;
     virtual void configure(bool hostFirst, bool automatic) = 0;
     virtual void ready() = 0;
@@ -41,6 +45,16 @@ class RoomSession : public Session {
     virtual const GameView &view() const = 0;
     virtual const Json &room() const = 0;
     virtual const std::string &notice() const = 0;
+};
+class ExternalRoomTransport {
+  public:
+    virtual ~ExternalRoomTransport() = default;
+    virtual const ServerEndpoint &endpoint() const = 0;
+    virtual bool transportIsOpen() const = 0;
+    virtual void transportOpened() = 0;
+    virtual void transportLost(const std::string &) = 0;
+    virtual void receiveTransportMessage(const Json &) = 0;
+    virtual std::vector<Json> drainTransport() = 0;
 };
 using RoomFactory = std::function<std::unique_ptr<RoomSession>(Content, std::filesystem::path)>;
 } // namespace wizard

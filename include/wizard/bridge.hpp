@@ -15,7 +15,8 @@ Json clockDto(const MatchClockView &);
 
 class LocalSession {
   public:
-    explicit LocalSession(RoomFactory roomFactory = {}) : roomFactory_(std::move(roomFactory)) {}
+    explicit LocalSession(RoomFactory roomFactory = {}, RoomFactory centralRoomFactory = {})
+        : roomFactory_(std::move(roomFactory)), centralRoomFactory_(std::move(centralRoomFactory)) {}
     Json initialize(const std::filesystem::path &assets, const std::filesystem::path &userDirectory);
     Json start(const Json &options);
     Json snapshot(PlayerId viewer) const;
@@ -45,6 +46,11 @@ class LocalSession {
     Json interact(PlayerId, const Json &, const std::string &generation, const std::string &revision);
     Json networkRequest(const Json &request);
     Json pollNetwork();
+    Json networkTransportState() const;
+    Json networkTransportOpened();
+    Json networkTransportLost(const std::string &reason);
+    Json networkTransportMessage(const Json &message);
+    Json networkTransportDrain();
     // Explicit OFFLINE verification tools, not part of the player snapshot or network protocol.
     Json readReplayPlan(const std::filesystem::path &path) const;
     Json verifyReplay(const std::filesystem::path &path) const;
@@ -82,6 +88,7 @@ class LocalSession {
     // session dirty so each following command retries until persistence works.
     mutable bool replaySaveHealthy_{true};
     RoomFactory roomFactory_;
+    RoomFactory centralRoomFactory_;
     void prepareReplay(const std::filesystem::path &) const;
     bool visibleTo(PlayerId viewer) const;
     bool current(const std::string &generation, const std::string &revision) const;

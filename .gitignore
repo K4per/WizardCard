@@ -1,6 +1,8 @@
 /build/
 /.cache/
 /dist/
+/deploy/certs/
+/deploy/.env
 /.vs/
 /CMakeUserPresets.json
 *.user

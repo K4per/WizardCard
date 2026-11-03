@@ -64,8 +64,8 @@ void MatchSession::tick() {
     if (expired >= 0) syncClock();
     else if (elapsed) ++clock_.sequence;
 }
-void MatchSession::freezeClock(bool frozen) {
-    tick();
+void MatchSession::freezeClock(bool frozen, bool settle) {
+    if (settle) tick();
     clockFrozen_ = frozen || technicalPaused_;
     if (now_) clockAt_ = now_();
     syncClock();

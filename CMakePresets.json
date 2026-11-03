@@ -3,18 +3,24 @@
   "configurePresets": [
     {"name":"windows","generator":"Visual Studio 17 2022","architecture":"x64","binaryDir":"${sourceDir}/build/windows"},
     {"name":"headless","generator":"Ninja","binaryDir":"${sourceDir}/build/headless","cacheVariables":{"CMAKE_BUILD_TYPE":"Debug"}},
+    {"name":"server-debug","generator":"Ninja","binaryDir":"${sourceDir}/build/server-debug","condition":{"type":"equals","lhs":"${hostSystemName}","rhs":"Linux"},"cacheVariables":{"CMAKE_BUILD_TYPE":"Debug","WIZARD_BUILD_SERVER":"ON"}},
+    {"name":"server-release","generator":"Ninja","binaryDir":"${sourceDir}/build/server-release","condition":{"type":"equals","lhs":"${hostSystemName}","rhs":"Linux"},"cacheVariables":{"CMAKE_BUILD_TYPE":"Release","WIZARD_BUILD_SERVER":"ON"}},
     {"name":"linux-godot-debug","generator":"Ninja","binaryDir":"${sourceDir}/build/linux-godot-debug","condition":{"type":"equals","lhs":"${hostSystemName}","rhs":"Linux"},"cacheVariables":{"CMAKE_BUILD_TYPE":"Debug","WIZARD_BUILD_GODOT":"ON","GODOTCPP_TARGET":"template_debug","GODOTCPP_USE_STATIC_CPP":"OFF"}},
     {"name":"linux-godot-release","generator":"Ninja","binaryDir":"${sourceDir}/build/linux-godot-release","condition":{"type":"equals","lhs":"${hostSystemName}","rhs":"Linux"},"cacheVariables":{"CMAKE_BUILD_TYPE":"Release","WIZARD_BUILD_GODOT":"ON","GODOTCPP_TARGET":"template_release","GODOTCPP_USE_STATIC_CPP":"OFF"}}
   ],
   "buildPresets": [
     {"name":"windows","configurePreset":"windows","configuration":"Release"},
     {"name":"headless","configurePreset":"headless"},
+    {"name":"server-debug","configurePreset":"server-debug"},
+    {"name":"server-release","configurePreset":"server-release"},
     {"name":"linux-godot-debug","configurePreset":"linux-godot-debug"},
     {"name":"linux-godot-release","configurePreset":"linux-godot-release"}
   ],
   "testPresets": [
     {"name":"windows","configurePreset":"windows","configuration":"Release","output":{"outputOnFailure":true}},
     {"name":"headless","configurePreset":"headless","output":{"outputOnFailure":true}},
+    {"name":"server-debug","configurePreset":"server-debug","output":{"outputOnFailure":true}},
+    {"name":"server-release","configurePreset":"server-release","output":{"outputOnFailure":true}},
     {"name":"linux-godot-debug","configurePreset":"linux-godot-debug","output":{"outputOnFailure":true}},
     {"name":"linux-godot-release","configurePreset":"linux-godot-release","output":{"outputOnFailure":true}}
   ]

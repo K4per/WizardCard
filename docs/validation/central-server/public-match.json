@@ -1,0 +1,23 @@
+{
+  "endpoint": "aq.rainplay.cn:23513",
+  "roomCode": "N8B728RC",
+  "reports": [
+    {
+      "connected": true,
+      "phase": "completed",
+      "replayDelivered": true,
+      "result": 0,
+      "role": "host",
+      "roomCode": "N8B728RC"
+    },
+    {
+      "left": true,
+      "phase": "completed",
+      "replayDelivered": true,
+      "role": "guest",
+      "roomCode": "N8B728RC"
+    }
+  ],
+  "sameVerifiedReplay": true,
+  "finalDigest": "3a825d208605c8ef"
+}

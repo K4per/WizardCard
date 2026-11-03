@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+bin_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+release_dir=$(CDPATH= cd -- "$bin_dir/.." && pwd -P)
+: "${WIZARD_CERT:?Set WIZARD_CERT to the TLS certificate chain file}"
+: "${WIZARD_KEY:?Set WIZARD_KEY to the TLS private key file}"
+
+exec "$bin_dir/wizard_server" \
+  --assets "$release_dir/assets/release-v260" \
+  --data "${WIZARD_DATA_DIR:-$HOME/.local/share/wizardcard-central-server}" \
+  --cert "$WIZARD_CERT" \
+  --key "$WIZARD_KEY" \
+  --bind "${WIZARD_BIND:-0.0.0.0}" \
+  --port "${WIZARD_PORT:-24443}" \
+  --health-port "${WIZARD_HEALTH_PORT:-24444}"

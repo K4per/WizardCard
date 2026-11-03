@@ -1,0 +1,20 @@
+{
+  "rooms": 20,
+  "clients": 40,
+  "durationSeconds": 600.0,
+  "acceptedCommands": 23956,
+  "duplicateRetries": 960,
+  "reconnects": 5,
+  "matchesStarted": 20,
+  "peakRssKiB": 65104,
+  "environment": "Linux-7.2.14-zen1-1-zen-x86_64-with-glibc2.41",
+  "cpuAffinity": [
+    0,
+    1
+  ],
+  "addressSpaceLimitBytes": 4294967296,
+  "slowPeerDisconnected": true,
+  "elapsedSeconds": 600.496,
+  "p95ReceiptMs": 12.208,
+  "commandsPerRoomPerSecond": 1.996
+}

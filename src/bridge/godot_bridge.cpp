@@ -1,4 +1,5 @@
 #include "wizard/bridge.hpp"
+#include "wizard/central_client.hpp"
 #include "wizard/network.hpp"
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/core/class_db.hpp>
@@ -72,7 +73,7 @@ template<class F> Dictionary bridgeCall(F &&function) {
 
 class WizardBridge : public godot::RefCounted {
     GDCLASS(WizardBridge, godot::RefCounted)
-    wizard::bridge::LocalSession session_{wizard::net::createRoom};
+    wizard::bridge::LocalSession session_{wizard::net::createRoom, wizard::central::createClientRoom};
   protected:
     static void _bind_methods() {
         using namespace godot;
@@ -109,6 +110,11 @@ class WizardBridge : public godot::RefCounted {
         ClassDB::bind_method(D_METHOD("interact", "viewer", "request", "generation", "revision"), &WizardBridge::interact);
         ClassDB::bind_method(D_METHOD("network_request", "request"), &WizardBridge::network_request);
         ClassDB::bind_method(D_METHOD("poll_network"), &WizardBridge::poll_network);
+        ClassDB::bind_method(D_METHOD("network_transport_state"), &WizardBridge::network_transport_state);
+        ClassDB::bind_method(D_METHOD("network_transport_opened"), &WizardBridge::network_transport_opened);
+        ClassDB::bind_method(D_METHOD("network_transport_lost", "reason"), &WizardBridge::network_transport_lost);
+        ClassDB::bind_method(D_METHOD("network_transport_message", "message"), &WizardBridge::network_transport_message);
+        ClassDB::bind_method(D_METHOD("network_transport_drain"), &WizardBridge::network_transport_drain);
     }
   public:
     Dictionary initialize(const String &assets, const String &user_directory) {
@@ -188,6 +194,15 @@ class WizardBridge : public godot::RefCounted {
         return bridgeCall([&] { return session_.networkRequest(json(request)); });
     }
     Dictionary poll_network() { return bridgeCall([&] { return session_.pollNetwork(); }); }
+    Dictionary network_transport_state() { return bridgeCall([&] { return session_.networkTransportState(); }); }
+    Dictionary network_transport_opened() { return bridgeCall([&] { return session_.networkTransportOpened(); }); }
+    Dictionary network_transport_lost(const String &reason) {
+        return bridgeCall([&] { return session_.networkTransportLost(utf8(reason)); });
+    }
+    Dictionary network_transport_message(const Dictionary &message) {
+        return bridgeCall([&] { return session_.networkTransportMessage(json(message)); });
+    }
+    Dictionary network_transport_drain() { return bridgeCall([&] { return session_.networkTransportDrain(); }); }
 };
 
 extern "C" GDExtensionBool GDE_EXPORT wizard_bridge_init(GDExtensionInterfaceGetProcAddress get_proc_address,

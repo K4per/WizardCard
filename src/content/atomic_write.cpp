@@ -7,7 +7,9 @@
 #endif
 namespace wizard {
 void writeAtomicJson(const std::filesystem::path &path, const Json &j) {
-    std::filesystem::create_directories(path.parent_path());
+    std::error_code filesystemError;
+    std::filesystem::create_directories(path.parent_path(), filesystemError);
+    if (filesystemError) throw std::runtime_error("无法创建用户数据目录：" + filesystemError.message());
     auto temporary = path;
     temporary += ".tmp-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count());
     try {
@@ -27,7 +29,8 @@ void writeAtomicJson(const std::filesystem::path &path, const Json &j) {
         if (!MoveFileExW(temporary.c_str(), path.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
             throw std::runtime_error("无法替换用户数据文件");
 #else
-        std::filesystem::rename(temporary, path);
+        std::filesystem::rename(temporary, path, filesystemError);
+        if (filesystemError) throw std::runtime_error("无法替换用户数据文件：" + filesystemError.message());
 #endif
     } catch (...) {
         std::error_code ignored;

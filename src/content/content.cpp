@@ -174,6 +174,8 @@ std::vector<Effect> effects(const Json &j, const std::string &path, bool allowSt
 }
 } // namespace
 Json readJson(const std::filesystem::path &p) {
+    if (!std::filesystem::is_regular_file(p))
+        fail(p.string(), "not a regular JSON file");
     std::ifstream f(p);
     if (!f)
         fail(p.string(), "cannot open");

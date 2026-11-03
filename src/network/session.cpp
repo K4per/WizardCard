@@ -274,7 +274,14 @@ Json HostSession::receive(const Json &j) {
 }
 void GuestSession::receive(const Json &j) {
     auto type = j.at("type").get<std::string>();
-    if (type == "Joined") {
+    if (type == "RoomJoined") {
+        session_ = j.at("session");
+        room_ = j.at("room");
+        if (j.value("resumed", false)) {
+            resumed_ = true;
+            query_.reset(); queryResult_.reset();
+        }
+    } else if (type == "Joined") {
         session_ = j.at("session");
         credential_ = j.at("credential");
         room_ = j.at("room");

@@ -70,6 +70,42 @@ jobs:
         with:
           name: linux-core-cli
           path: build/headless/wizard_cli
+  central-server:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install cmake==3.31.6 ninja==1.11.1.3
+      - run: sudo apt-get update && sudo apt-get install -y libssl-dev
+      - run: cmake --preset server-release
+      - run: cmake --build --preset server-release --parallel 4
+      - run: ctest --preset server-release --parallel 4
+      - name: Build and test Debian 13 delivery
+        run: |
+          docker build --target build -f deploy/Dockerfile -t wizard-central-debian13 .
+          docker run --rm --user "$(id -u):$(id -g)" --cpus=2 --memory=4g \
+            -v "$PWD:/workspace:ro" -v "$PWD/build:/reports" -w /workspace \
+            wizard-central-debian13 python3 tools/central_smoke.py \
+            --exe /src/build/server-release/wizard_server --rooms 20 --duration 600 \
+            --report /reports/central-capacity-debian13.json
+          mkdir -p dist
+          docker run --rm --user "$(id -u):$(id -g)" \
+            -v "$PWD:/workspace:ro" -v "$PWD/dist:/output" -w /workspace \
+            wizard-central-debian13 python3 tools/package_central_server.py \
+            --build /src/build/server-release \
+            --output /output/WizardCard-CentralServer-2.6.0-hotfix.1-linux-x86_64
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: central-server-evidence
+          path: |
+            build/server-release/Testing/Temporary/
+            build/server-release/central-smoke.json
+            build/central-capacity-debian13.json
+            dist/WizardCard-CentralServer-*.tar.gz*
   godot-bridge:
     runs-on: windows-2022
     steps:
@@ -135,7 +171,7 @@ jobs:
           sudo apt-get install -y binutils libgl1-mesa-dri libglx-mesa0 libegl1 \
             libx11-6 libxcursor1 libxinerama1 libxi6 libxrandr2 libxrender1 \
             libwayland-client0 libwayland-cursor0 libwayland-egl1 libxkbcommon0 \
-            libfontconfig1 libasound2t64 libpulse0 xvfb xauth xdotool weston
+            libfontconfig1 libasound2t64 libpulse0 libssl-dev xvfb xauth xdotool weston
       - name: Download and verify pinned official Linux toolchain
         run: |
           mkdir -p build/godot-editor .cache/godot-templates
@@ -157,7 +193,7 @@ jobs:
           bash -n tools/run_godot_frontend.sh
       - name: Build Linux Debug bridge and native tools
         run: |
-          cmake --preset linux-godot-debug -DGODOT_BIN="$GODOT_BIN"
+          cmake --preset linux-godot-debug -DGODOT_BIN="$GODOT_BIN" -DWIZARD_BUILD_SERVER=ON
           cmake --build --preset linux-godot-debug --parallel 4
           readelf -d godot/bin/libwizard_godot_bridge.debug.so
           ldd godot/bin/libwizard_godot_bridge.debug.so

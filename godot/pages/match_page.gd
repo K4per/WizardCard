@@ -66,6 +66,7 @@ var _debug_infinite_load: CheckBox
 var _debug_rewind: Button
 var _clock_received: int = 0
 var _clock_poll_elapsed: float = 0.0
+var _reconnect_started_at_msec: int = -1
 var _hovering: bool = false
 var _selection_id: String = ""
 var _match_menu: PanelContainer
@@ -1376,6 +1377,39 @@ func network_updated(state: Dictionary) -> void:
 		else:
 			_notice.text = str(state.get("notice", "房间已关闭"))
 		return
+	var room_value: Variant = state.get("room", {})
+	var room: Dictionary = room_value as Dictionary if room_value is Dictionary else {}
+	var phase: String = str(room.get("phase", "playing"))
+	var connected: bool = bool(state.get("connected", false))
+	var reconnecting: bool = not connected or bool(room.get("reconnecting", false))
+	var lifecycle_notices: PackedStringArray = []
+	if phase == "aborted" or bool(room.get("aborted", false)) or (bool(state.get("ended", false)) and phase != "completed"):
+		var reason: String = str(room.get("abortReason", ""))
+		if reason.is_empty():
+			reason = "服务器已重启或房间已关闭"
+		lifecycle_notices.append("本局已中止，无胜者。原因：%s" % reason)
+		_reconnect_started_at_msec = -1
+	else:
+		if bool(room.get("storageBlocked", false)):
+			lifecycle_notices.append("服务器记录写入暂停，正在恢复存储；对局操作已冻结。")
+		if bool(room.get("technicalPaused", false)):
+			lifecycle_notices.append("规则引擎已技术暂停，规则时钟已冻结。")
+		if reconnecting:
+			var now: int = Time.get_ticks_msec()
+			if _reconnect_started_at_msec < 0:
+				_reconnect_started_at_msec = now
+			var remaining_ms: int = int(room.get("reconnectRemainingMs", 0))
+			var local_remaining_ms: int = maxi(0, 60000 - (now - _reconnect_started_at_msec))
+			if remaining_ms <= 0:
+				remaining_ms = local_remaining_ms
+			else:
+				remaining_ms = mini(remaining_ms, local_remaining_ms)
+			var seconds: int = ceili(float(remaining_ms) / 1000.0)
+			lifecycle_notices.append("连接中断 · 剩余 %d 秒%s" % [seconds, "，正在重连" if not connected else "，等待对方重连"])
+		else:
+			_reconnect_started_at_msec = -1
+		if phase == "completed":
+			lifecycle_notices.append("对局已结束，复盘已验证并保存。" if bool(state.get("replayDelivered", false)) else "对局已结束，正在接收并验证复盘…")
 	if _network_recovery.blocked:
 		_clear_action_targets()
 		_clear_cue()
@@ -1384,8 +1418,12 @@ func network_updated(state: Dictionary) -> void:
 		_confirm.close_popup()
 		_cancel_pending()
 		_notice.text = _network_recovery.notice
-	_reconnect.visible = _network_recovery.blocked and not bool(state.get("host", false))
-	_force_leave.visible = _network_recovery.blocked or _leaving_network
+	_reconnect.visible = not connected and phase not in ["aborted", "completed"] and not bool(state.get("ended", false))
+	_force_leave.visible = _network_recovery.blocked or _leaving_network or phase == "aborted"
+	if not lifecycle_notices.is_empty():
+		_notice.text = "\n".join(lifecycle_notices)
+	elif not str(state.get("notice", "")).is_empty():
+		_notice.text = str(state.get("notice", ""))
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event.is_action_pressed(&"ui_cancel"):

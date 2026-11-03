@@ -43,7 +43,7 @@ compact = false
 [node name="Title" type="Label" parent="Margin/Column/Heading"]
 layout_mode = 2
 unique_name_in_owner = true
-text = "多人游戏"
+text = "中央房间"
 theme_override_font_sizes/font_size = 28
 size_flags_horizontal = 3
 
@@ -85,13 +85,13 @@ layout_mode = 2
 [node name="LanHeading" type="Label" parent="Margin/Column/Scroll/Body"]
 layout_mode = 2
 unique_name_in_owner = true
-text = "局域网房间"
+text = "游戏服务器"
 theme_override_font_sizes/font_size = 28
 
 [node name="LanDescription" type="Label" parent="Margin/Column/Scroll/Body"]
 layout_mode = 2
 unique_name_in_owner = true
-text = "对方输入房主的局域网地址和相同端口。双方使用合法的 40+10 卡组。"
+text = "通过经过验证的 TLS 连接服务器。双方使用合法卡组，房主可设置先手和自动阶段。"
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 size_flags_horizontal = 3
@@ -99,16 +99,44 @@ size_flags_horizontal = 3
 [node name="Address" type="LineEdit" parent="Margin/Column/Scroll/Body"]
 layout_mode = 2
 unique_name_in_owner = true
-placeholder_text = "房主地址，例如 192.168.1.20"
-text = "127.0.0.1"
+placeholder_text = "服务器主机名"
+text = "localhost"
 custom_minimum_size = Vector2(0, 48)
+
+[node name="PortCaption" type="Label" parent="Margin/Column/Scroll/Body"]
+layout_mode = 2
+text = "TLS 端口"
+theme_override_font_sizes/font_size = 18
 
 [node name="Port" type="SpinBox" parent="Margin/Column/Scroll/Body"]
 layout_mode = 2
 unique_name_in_owner = true
 min_value = 1024.0
 max_value = 65535.0
-value = 18761.0
+value = 24443.0
+custom_minimum_size = Vector2(0, 48)
+
+[node name="RoomCodeCaption" type="Label" parent="Margin/Column/Scroll/Body"]
+layout_mode = 2
+text = "房间码"
+theme_override_font_sizes/font_size = 18
+
+[node name="RoomCode" type="LineEdit" parent="Margin/Column/Scroll/Body"]
+layout_mode = 2
+unique_name_in_owner = true
+placeholder_text = "8 位房间码"
+max_length = 8
+custom_minimum_size = Vector2(0, 48)
+
+[node name="TrustedCaCaption" type="Label" parent="Margin/Column/Scroll/Body"]
+layout_mode = 2
+text = "受信 CA 证书（可选）"
+theme_override_font_sizes/font_size = 18
+
+[node name="TrustedCa" type="LineEdit" parent="Margin/Column/Scroll/Body"]
+layout_mode = 2
+unique_name_in_owner = true
+placeholder_text = "证书文件路径；留空时使用系统信任链"
 custom_minimum_size = Vector2(0, 48)
 
 [node name="DeckCaption" type="Label" parent="Margin/Column/Scroll/Body"]

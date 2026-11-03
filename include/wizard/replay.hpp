@@ -10,6 +10,8 @@ Json encodeDebugOperation(const DebugOperation &);
 DebugOperation decodeDebugOperation(const Json &);
 CommandResult applyRecordedCommand(GameEngine &, const Json &, bool legacy = false);
 struct RecordedCommand { PlayerId actor{}; Command command; std::string digest; std::optional<DebugOperation> debug; };
+struct RecordingCursor { std::size_t commands{}, events{}; };
+struct RecordingDelta { RecordingCursor next; Json commands = Json::array(), events = Json::array(); };
 class MatchSession : public Session {
 public:
     using Clock = std::chrono::steady_clock;
@@ -37,9 +39,11 @@ public:
     std::size_t debugCheckpointCount() const { return turnCheckpoints_.size(); }
     void tick() override;
     void enableClock(bool automaticPhases, TimeSource now = [] { return std::chrono::steady_clock::now(); });
-    void freezeClock(bool frozen);
+    void freezeClock(bool frozen, bool settle = true);
     const GameEngine& engine() const { return engine_; }
     Json recording() const;
+    Json recordingHeader() const;
+    RecordingDelta recordingSince(RecordingCursor) const;
     void save(const std::filesystem::path&) const;
 private:
     Content content_; MatchConfig config_; GameEngine engine_; std::vector<RecordedCommand> commands_;

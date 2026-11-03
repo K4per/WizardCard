@@ -2,6 +2,8 @@
 
 WizardCard uses Godot, godot-cpp and nlohmann/json. Godot includes additional third-party libraries; its bundled copyright and license information applies to the exported runtime. Original license texts and historical dependency notices are retained in licenses/. The former SFML client is no longer built or distributed; retained historical license texts do not imply that its runtime libraries are included.
 
+The optional Linux central server uses standalone Asio 1.36.0, copyright Christopher M. Kohlhoff and contributors, under the Boost Software License 1.0 (licenses/Asio-BOOST-1.0.txt), and OpenSSL 3 under Apache License 2.0 (licenses/Apache-2.0.txt). OpenSSL is supplied by the operating system; its package copyright notices also apply. https://think-async.com/Asio/ and https://www.openssl.org/ .
+
 Noto Sans CJK SC font: assets/fonts/OFL.txt (SIL Open Font License). User-provided AI-generated P0 audio: assets/audio/LICENSE.md and manifest.json, CC0-1.0 as specified by the user. Project illustrations and logo/icon provenance: assets/art/provenance.json; additional built-in imagegen prompts: assets/art/alpha-release/manifest.json and assets/art/branding/icon-manifest.json. Original generated raster files are retained; the icon ICO is a size-format export for Windows.
 
 This product includes software developed by the FreeType Project (https://www.freetype.org). Microsoft Visual C++ runtime DLLs are copied by the CMake install runtime mechanism; source licenses do not replace the runtime's redistribution terms.

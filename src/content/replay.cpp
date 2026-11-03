@@ -82,7 +82,7 @@ CommandResult MatchSession::submit(PlayerId p, const Command &c) {
     else handleFault(p, c, result);
     return result;
 }
-Json MatchSession::recording() const {
+Json MatchSession::recordingHeader() const {
     Json players = Json::array();
     for (const auto &p : config_.players) {
         Json player = {{"cards", p.cards}, {"sideDeck", p.sideDeck}};
@@ -98,12 +98,6 @@ Json MatchSession::recording() const {
               {"players", players},
               {"commands", Json::array()},
               {"finalDigest", engine_.digest()}};
-    for (const auto &c : commands_) {
-        Json row = {{"actor", c.actor}, {"digest", c.digest}};
-        if (c.debug) row["debug"] = encodeDebugOperation(*c.debug);
-        else row["command"] = encodeCommand(c.command);
-        j["commands"].push_back(std::move(row));
-    }
     j["containsDebugOperations"] = engine_.state().debugUsed;
     j["technicalPaused"] = technicalPaused_;
     const auto &s = engine_.state();
@@ -112,8 +106,22 @@ Json MatchSession::recording() const {
                        {"firstPlayer", s.first},
                        {"commandCount", commands_.size()}};
     j["events"] = Json::array();
-    for (const auto &e : events_)
-        j["events"].push_back({{"kind", e.kind},
+    return j;
+}
+RecordingDelta MatchSession::recordingSince(RecordingCursor cursor) const {
+    if (cursor.commands > commands_.size() || cursor.events > events_.size())
+        throw std::invalid_argument("recording cursor invalidated");
+    RecordingDelta delta{{commands_.size(), events_.size()}};
+    for (auto i = cursor.commands; i < commands_.size(); ++i) {
+        const auto &c = commands_[i];
+        Json row = {{"actor", c.actor}, {"digest", c.digest}};
+        if (c.debug) row["debug"] = encodeDebugOperation(*c.debug);
+        else row["command"] = encodeCommand(c.command);
+        delta.commands.push_back(std::move(row));
+    }
+    for (auto i = cursor.events; i < events_.size(); ++i) {
+        const auto &e = events_[i];
+        delta.events.push_back({{"kind", e.kind},
                                {"text", e.text},
                                {"audience", e.audience},
                                {"card", e.card},
@@ -122,6 +130,14 @@ Json MatchSession::recording() const {
                                {"actualAmount", e.actualAmount},
                                {"affectedPlayer", e.affectedPlayer},
                                {"spellReleased", e.spellReleased}});
+    }
+    return delta;
+}
+Json MatchSession::recording() const {
+    auto j = recordingHeader();
+    auto delta = recordingSince({});
+    j["commands"] = std::move(delta.commands);
+    j["events"] = std::move(delta.events);
     return j;
 }
 void MatchSession::save(const std::filesystem::path &path) const {

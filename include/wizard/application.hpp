@@ -116,6 +116,7 @@ class Application {
     }
     bool startNetwork(bool host, const std::string &address, unsigned short port, const PlayerDeck &,
                       std::string &);
+    bool startNetwork(const RoomConnectOptions &, const PlayerDeck &, std::string &, RoomFactory = {});
     bool tickNetwork();
     bool networkReset() const {
         return networkReset_;

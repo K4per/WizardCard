@@ -24,6 +24,7 @@ var _audio: MatchFeedback
 @onready var _background: ColorRect = %Background
 @onready var _dim: ColorRect = $Dim
 var _network_timer: Timer
+var _central_transport: CentralTlsTransport
 var _navigation_tween: Tween
 
 func _ready() -> void:
@@ -73,10 +74,11 @@ func _ready() -> void:
 	add_child(_audio)
 	navigate(&"menu")
 	_network_timer = Timer.new()
-	_network_timer.wait_time = 0.25
+	_network_timer.wait_time = 0.05
 	_network_timer.timeout.connect(_poll_network)
 	add_child(_network_timer)
 	_network_timer.start()
+	_central_transport = CentralTlsTransport.new()
 
 func navigate(destination: StringName) -> void:
 	if not PAGES.has(destination):
@@ -169,6 +171,8 @@ func _on_close_requested() -> void:
 		get_tree().quit()
 
 func _poll_network() -> void:
+	if _central_transport != null:
+		_central_transport.pump(service)
 	if service.network_active:
 		var state: Dictionary = service.poll_network()
 		if current_page == &"rooms" and bool(state.get("started", false)):
@@ -180,4 +184,6 @@ func _poll_network() -> void:
 	service.poll_session()
 
 func _exit_tree() -> void:
+	if _central_transport != null:
+		_central_transport.stop()
 	service.release()

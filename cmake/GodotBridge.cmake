@@ -21,14 +21,14 @@ FetchContent_Declare(godot_cpp
   GIT_REPOSITORY https://github.com/godotengine/godot-cpp.git
   GIT_TAG 507ed9d840c01a3c5b2a39af8bb4000bfac30bf5 EXCLUDE_FROM_ALL)
 FetchContent_MakeAvailable(godot_cpp)
-foreach(target wizard_core wizard_content wizard_codec wizard_replay wizard_ai wizard_application wizard_interaction wizard_bridge_model wizard_network)
+foreach(target wizard_core wizard_content wizard_codec wizard_replay wizard_ai wizard_application wizard_interaction wizard_bridge_model wizard_network wizard_central)
   set_property(TARGET ${target} PROPERTY POSITION_INDEPENDENT_CODE ON)
   if(MSVC)
     set_property(TARGET ${target} PROPERTY MSVC_RUNTIME_LIBRARY "${CMAKE_MSVC_RUNTIME_LIBRARY}")
   endif()
 endforeach()
 add_library(wizard_godot_bridge SHARED src/bridge/godot_bridge.cpp)
-target_link_libraries(wizard_godot_bridge PRIVATE wizard_bridge_model wizard_network godot::cpp)
+target_link_libraries(wizard_godot_bridge PRIVATE wizard_bridge_model wizard_network wizard_central godot::cpp)
 wizard_warnings(wizard_godot_bridge)
 if(GODOTCPP_TARGET STREQUAL "template_release")
   set(bridge_flavor release)
@@ -103,6 +103,10 @@ if(BUILD_TESTING AND GODOT_BIN)
     --report ${CMAKE_CURRENT_BINARY_DIR}/frontend-report.json)
   set_tests_properties(godot_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_central_rooms_ui_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/central_rooms_ui_smoke.gd)
+  set_tests_properties(godot_central_rooms_ui_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    RUN_SERIAL TRUE TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     foreach(mode xdg home override)
       set(data_root "${CMAKE_CURRENT_BINARY_DIR}/linux-user-data-${mode}")
@@ -163,7 +167,7 @@ if(BUILD_TESTING AND GODOT_BIN)
     --output ${CMAKE_CURRENT_BINARY_DIR}/deck-frontend-smoke-output)
   set_tests_properties(godot_deck_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
-  foreach(smoke typography feedback deck_exchange network_frontend art_residency incremental_kernel)
+  foreach(smoke typography feedback deck_exchange art_residency incremental_kernel)
     add_test(NAME godot_${smoke}_smoke COMMAND "${GODOT_BIN}" --headless
       --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/${smoke}_smoke.gd --
       --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets

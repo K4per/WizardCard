@@ -1,5 +1,6 @@
 #pragma once
 #include "wizard/central.hpp"
+#include "wizard/central_journal.hpp"
 #include <chrono>
 #include <functional>
 #include <map>
@@ -9,75 +10,94 @@
 
 namespace wizard::central {
 using Connection = std::uint64_t;
-struct Delivery {
-    Connection connection{};
-    Json message;
-};
+struct Delivery { Connection connection{}; Json message; };
 using TokenSource = std::function<std::string()>;
 using SeedSource = std::function<std::uint32_t()>;
 using TimeSource = std::function<std::chrono::steady_clock::time_point()>;
-
-// In-process authoritative room registry. The TLS runtime feeds decoded JSON
-// here; no socket type crosses this boundary, which keeps rule tests fast and
-// lets the production runtime serialize a room on its own strand.
+struct AuthorityLimits {
+    std::size_t rooms{20}, connections{64};
+    std::size_t replayBytes{32 * net::maxMessage};
+    std::chrono::milliseconds reconnect{60000}, waiting{900000}, match{14400000}, terminal{600000};
+};
+// Registry locks protect bindings only; each room has independent authority
+// serialization. The runtime additionally schedules each room on its own strand.
 class Authority {
   public:
-    Authority(Content, std::string instanceId, TokenSource = {}, SeedSource = {},
-              std::filesystem::path dataDirectory = {}, TimeSource = {});
+    Authority(Content, std::string instanceId, TokenSource, SeedSource,
+              AuthorityLimits = {}, TimeSource = {});
     std::vector<Delivery> receive(Connection, const Json &);
     std::vector<Delivery> disconnect(Connection);
     std::vector<Delivery> tick();
+    std::vector<Delivery> tickRoom(const std::string &);
+    std::vector<Delivery> abortRoom(const std::string &, const std::string &reason);
+    std::vector<std::string> roomCodes() const;
+    std::string route(Connection) const;
     std::size_t roomCount() const;
+    std::size_t credentialCount() const;
+    std::optional<JournalWrite> takeWrite(const std::string &);
+    std::vector<Delivery> persisted(const JournalResult &);
     const std::string &instanceId() const { return instanceId_; }
 
   private:
-    struct Client {
-        std::string token;
-        bool welcomed{};
-        std::string room;
-        int seat{-1};
-        bool connected{};
-        std::chrono::steady_clock::time_point disconnected{};
-    };
+    using Clock = std::chrono::steady_clock;
+    struct Client { std::string token, room; int seat{-1}; Json entry; };
+    struct CachedReply { std::string payload; Json reply; };
     struct Room {
-        std::string code;
-        Connection owner{};
+        mutable std::mutex mutex;
+        std::string code, storageId;
         std::array<Connection, 2> connections{};
         std::array<std::string, 2> tokens;
         std::array<PlayerDeck, 2> decks;
-        std::array<bool, 2> ready{};
-        bool ownerFirst{true};
-        bool automatic{true};
+        std::array<bool, 2> ready{}, left{};
+        std::array<std::optional<Clock::time_point>, 2> deadline;
+        std::array<std::uint64_t, 2> sequence{1, 1}, eventEpoch{}, eventCursor{};
+        std::array<std::map<std::uint64_t, CachedReply>, 2> replies;
+        std::array<std::size_t, 2> replyBytes{};
+        bool ownerFirst{true}, automatic{true}, clockFrozen{}, storageBlocked{};
         RoomPhase phase{RoomPhase::Waiting};
         std::string abortReason;
         std::uint32_t seed{};
-        std::unique_ptr<MatchSession> match;
-        std::chrono::steady_clock::time_point created{};
-        std::chrono::steady_clock::time_point disconnectedAt{};
+        std::shared_ptr<MatchSession> match;
+        Clock::time_point touched{}, started{}, terminal{}, clockSent{};
+        RecordingCursor recordingCursor{};
+        std::size_t recordingBytes{};
+        RecordingCursor journalCursor{};
+        bool journalStarted{}, writeQueued{}, terminalStored{};
+        std::uint64_t writeSerial{}, durableOffset{};
+        Clock::time_point retryAt{};
+        std::string journalTail, journalState;
+        std::optional<JournalWrite> pendingWrite;
+        std::shared_ptr<const std::string> replay;
     };
+    struct Credential { std::weak_ptr<Room> room; int seat{}; };
     Content content_;
     std::string instanceId_;
     TokenSource tokenSource_;
     SeedSource seedSource_;
-    std::filesystem::path dataDirectory_;
+    AuthorityLimits limits_;
     TimeSource now_;
     mutable std::mutex mutex_;
     std::map<Connection, Client> clients_;
-    std::map<std::string, Room> rooms_;
-    std::uint64_t codeCounter_{};
+    std::map<std::string, std::shared_ptr<Room>> rooms_;
+    std::map<std::string, Credential> credentials_;
+    std::uint64_t roomSerial_{};
 
-    std::vector<Delivery> receiveLocked(Connection, const Json &);
-    std::vector<Delivery> roomMessage(Room &, Connection, const Json &);
-    std::vector<Delivery> roomSnapshot(const Room &, bool state) const;
+    std::vector<Delivery> entry(Connection, const Json &);
+    std::vector<Delivery> roomMessage(Room &, Connection, int, const Json &);
+    std::vector<Delivery> publish(Room &, bool state, Connection only = 0);
+    std::shared_ptr<Room> lookup(const std::string &) const;
     std::string newCode();
-    std::string newToken();
-    std::uint32_t newSeed();
-    std::chrono::steady_clock::time_point currentTime() const;
-    Room &roomFor(const Client &);
-    const Room &roomFor(const Client &) const;
     void begin(Room &);
+    void releaseCredential(Room &, int);
+    bool refresh(Room &);
+    bool updateRecordingBudget(Room &);
+    void capture(Room &);
+    Json summary(const Room &) const;
+    bool reconnecting(const Room &) const;
+    void freeze(Room &);
     Json roomJson(const Room &, int) const;
     Json snapshot(const Room &, int) const;
+    Json joined(const Room &, int, bool resumed = false) const;
     void abort(Room &, const std::string &);
 };
 } // namespace wizard::central

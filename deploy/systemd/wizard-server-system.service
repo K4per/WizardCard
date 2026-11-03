@@ -1,0 +1,30 @@
+[Unit]
+Description=WizardCard central game server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=wizardcard
+Group=wizardcard
+EnvironmentFile=/etc/wizardcard/server.env
+ExecStart=/opt/wizardcard-central-server/current/bin/wizard-server
+Restart=on-failure
+RestartSec=2s
+TimeoutStopSec=12s
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/etc/wizardcard /opt/wizardcard-central-server
+ReadWritePaths=/var/lib/wizardcard-central-server
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LockPersonality=true
+MemoryDenyWriteExecute=true
+MemoryMax=4G
+CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target

@@ -195,7 +195,23 @@ Json LocalSession::networkRequest(const Json &request) {
             if (found == decks.end()) throw std::invalid_argument("未找到合法卡组");
             return found->deck;
         };
-        if (operation == "host" || operation == "join") {
+        if (operation == "central_create" || operation == "central_join") {
+            const auto port = request.value("port", 24443);
+            if (port < 1 || port > 65535) return fail("端口必须在1到65535之间");
+            RoomConnectOptions options;
+            options.endpoint.hostname = request.value("hostname", std::string{});
+            options.endpoint.port = static_cast<unsigned short>(port);
+            options.endpoint.trustedCa = request.value("trustedCa", std::string{});
+            options.entry = operation == "central_create" ? RoomEntry::Create : RoomEntry::Join;
+            options.roomCode = request.value("roomCode", std::string{});
+            if (!centralRoomFactory_) return fail("当前原生模块未配置中央服务器客户端");
+            std::string error;
+            if (!match_.application->startNetwork(options, chooseDeck(), error, centralRoomFactory_))
+                return fail(error);
+            ++match_.generation;
+            match_.pending.reset();
+            match_.interaction.cancel();
+        } else if (operation == "host" || operation == "join") {
             const auto port = request.value("port", 4242);
             if (port < 1 || port > 65535) return fail("端口必须在1到65535之间");
             const auto address = request.value("address", std::string("127.0.0.1"));
@@ -245,11 +261,53 @@ Json LocalSession::pollNetwork() {
         const auto rawRoom = room->room();
         const Json safeRoom = rawRoom.is_object() ? rawRoom : Json::object();
         return ok({{"exists", true}, {"room", safeRoom}, {"host", room->isHost()},
+                   {"externalTransport", dynamic_cast<ExternalRoomTransport *>(room) != nullptr},
                    {"connected", room->connected()}, {"started", room->started()},
                    {"blocked", room->blocked()}, {"ended", room->ended()},
                    {"replayDelivered", room->replayDelivered()}, {"notice", room->notice()},
                    {"viewer", localPlayer}, {"generation", std::to_string(match_.generation)},
                    {"revision", std::to_string(match_.application->revision())}});
     } catch (const std::exception &e) { return fail(e.what()); }
+}
+
+Json LocalSession::networkTransportState() const {
+    if (!match_.application || !match_.application->network()) return ok({{"active", false}});
+    const auto *transport = dynamic_cast<const ExternalRoomTransport *>(match_.application->network());
+    if (!transport) return ok({{"active", true}, {"external", false}});
+    const auto &endpoint = transport->endpoint();
+    return ok({{"active", true}, {"external", true}, {"open", transport->transportIsOpen()},
+               {"ended", match_.application->network()->ended()},
+               {"hostname", endpoint.hostname}, {"port", endpoint.port}, {"trustedCa", endpoint.trustedCa}});
+}
+
+Json LocalSession::networkTransportOpened() {
+    auto *room = match_.application ? match_.application->network() : nullptr;
+    auto *transport = dynamic_cast<ExternalRoomTransport *>(room);
+    if (!transport) return fail("当前房间不使用外部 TLS 传输");
+    try { transport->transportOpened(); return networkTransportDrain(); }
+    catch (const std::exception &e) { return fail(e.what()); }
+}
+
+Json LocalSession::networkTransportLost(const std::string &reason) {
+    auto *room = match_.application ? match_.application->network() : nullptr;
+    auto *transport = dynamic_cast<ExternalRoomTransport *>(room);
+    if (!transport) return fail("当前房间不使用外部 TLS 传输");
+    transport->transportLost(reason);
+    return ok();
+}
+
+Json LocalSession::networkTransportMessage(const Json &message) {
+    auto *room = match_.application ? match_.application->network() : nullptr;
+    auto *transport = dynamic_cast<ExternalRoomTransport *>(room);
+    if (!transport) return fail("当前房间不使用外部 TLS 传输");
+    try { transport->receiveTransportMessage(message); return networkTransportDrain(); }
+    catch (const std::exception &e) { return fail(e.what()); }
+}
+
+Json LocalSession::networkTransportDrain() {
+    auto *room = match_.application ? match_.application->network() : nullptr;
+    auto *transport = dynamic_cast<ExternalRoomTransport *>(room);
+    if (!transport) return ok({{"messages", Json::array()}});
+    return ok({{"messages", transport->drainTransport()}});
 }
 } // namespace wizard::bridge

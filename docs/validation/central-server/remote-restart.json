@@ -1,0 +1,15 @@
+{
+  "endpoint": "aq.rainplay.cn:23513",
+  "roomCode": "9BMB5XL8",
+  "newInstanceId": true,
+  "oldResumeRejected": true,
+  "phase": "aborted",
+  "abortReason": "server_shutdown",
+  "ready": {
+    "connections": 0,
+    "ready": true,
+    "resumeCredentials": 0,
+    "rooms": 0,
+    "status": "ok"
+  }
+}

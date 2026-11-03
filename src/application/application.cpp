@@ -498,22 +498,28 @@ PlayerId Application::actingPlayer() const {
 }
 bool Application::startNetwork(bool host, const std::string &address, unsigned short port,
                                const PlayerDeck &d, std::string &error) {
+    RoomConnectOptions options;
+    options.endpoint.hostname = address;
+    options.endpoint.port = port;
+    options.entry = host ? RoomEntry::Create : RoomEntry::Join;
+    return startNetwork(options, d, error);
+}
+bool Application::startNetwork(const RoomConnectOptions &options, const PlayerDeck &d,
+                               std::string &error, RoomFactory factory) {
     if (hasMatch() || network_) {
         error = "请先离开当前房间或对局";
         return false;
     }
     try {
-        if (!roomFactory_)
+        if (!factory) factory = roomFactory_;
+        if (!factory)
             throw std::runtime_error("当前应用未配置联机会话适配器");
         auto serial = std::chrono::steady_clock::now().time_since_epoch().count();
         auto path = directory_ / "replays" / ("network-" + std::to_string(serial) + ".json");
-        auto peer = roomFactory_(content_, path);
+        auto peer = factory(content_, path);
         if (!peer)
             throw std::runtime_error("联机会话适配器创建失败");
-        if (host)
-            peer->host(port, d);
-        else
-            peer->join(address, port);
+        peer->connect(options, d);
         network_ = std::move(peer);
         replayPath_ = path;
         options_.mode = MatchMode::Network;

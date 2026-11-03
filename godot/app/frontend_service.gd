@@ -372,7 +372,7 @@ func network_available() -> bool:
 func network_request(request: Dictionary) -> Dictionary:
 	var response: Dictionary = _request(&"network_request", [request])
 	if bool(response.get("ok", false)):
-		if str(request.get("operation", "")) in ["host", "join", "reconnect"]:
+		if str(request.get("operation", "")) in ["host", "join", "central_create", "central_join", "reconnect"]:
 			network_active = true
 		elif str(request.get("operation", "")) == "leave":
 			network_active = false
@@ -402,6 +402,21 @@ func poll_network() -> Dictionary:
 		match_active = false
 		match_snapshot.clear()
 	return network_state
+
+func network_transport_state() -> Dictionary:
+	return _request(&"network_transport_state")
+
+func network_transport_opened() -> Dictionary:
+	return _request(&"network_transport_opened")
+
+func network_transport_lost(reason: String) -> Dictionary:
+	return _request(&"network_transport_lost", [reason])
+
+func network_transport_message(message: Dictionary) -> Dictionary:
+	return _request(&"network_transport_message", [message])
+
+func network_transport_drain() -> Dictionary:
+	return _request(&"network_transport_drain")
 
 func release() -> void:
 	if _bridge != null:

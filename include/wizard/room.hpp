@@ -21,6 +21,7 @@ enum class RoomPhase { Waiting, Playing, Completed, Aborted };
 // Room lifecycle is application business; the chosen adapter owns its transport.
 class RoomSession : public Session {
   public:
+    using Session::submit;
     virtual void host(unsigned short, const PlayerDeck &) = 0;
     virtual void join(const std::string &, unsigned short) = 0;
     virtual void deck(const PlayerDeck &) = 0;

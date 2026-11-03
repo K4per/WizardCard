@@ -6,6 +6,18 @@
 #include <memory>
 
 namespace wizard {
+struct ServerEndpoint {
+    std::string hostname{"127.0.0.1"};
+    unsigned short port{24443};
+    std::string trustedCa;
+};
+enum class RoomEntry { Create, Join };
+struct RoomConnectOptions {
+    ServerEndpoint endpoint;
+    RoomEntry entry{RoomEntry::Create};
+    std::string roomCode;
+};
+enum class RoomPhase { Waiting, Playing, Completed, Aborted };
 // Room lifecycle is application business; the chosen adapter owns its transport.
 class RoomSession : public Session {
   public:

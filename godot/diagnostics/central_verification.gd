@@ -57,7 +57,11 @@ func _verification_deck() -> String:
 	_app.service.editing_draft["sideCards"] = formations
 	if not _expect(_app.service.draft_problems().is_empty() and _app.service.save_draft(), "verification deck passes normal 40+10 validation"):
 		return ""
-	return str(_app.service.saved_draft.get("id", ""))
+	var deck_id: String = "user/" + str(_app.service.saved_draft.get("id", ""))
+	if not _expect(_app.service.playable.any(func(deck: Dictionary) -> bool: return str(deck.get("id", "")) == deck_id),
+		"saved verification deck is available for play"):
+		return ""
+	return deck_id
 
 func _stop(code: int) -> void:
 	if _app != null and _app.service.network_active:
@@ -102,6 +106,9 @@ func _run() -> void:
 		if str(room_page._decks.get_item_metadata(index)) == deck_id:
 			room_page._decks.select(index)
 			break
+	if not _expect(room_page._deck_id() == deck_id, "room uses the saved verification deck"):
+		await _stop(2)
+		return
 	room_page._address.text = host
 	room_page._port.value = port
 	room_page._trusted_ca.text = ca

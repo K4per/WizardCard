@@ -46,7 +46,7 @@ def verify_network(output, evidence, args):
                     time.sleep(.05)
                 room = read_json(report)["roomCode"]
                 print("Public room=" + room, flush=True)
-        deadline = time.monotonic() + 180
+        deadline = time.monotonic() + 360
         while any(p.poll() is None for p in processes):
             if any(p.poll() not in (None, 0) for p in processes) or time.monotonic() > deadline:
                 raise RuntimeError(f"Packaged match failed; inspect {evidence}")

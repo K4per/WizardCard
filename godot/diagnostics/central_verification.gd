@@ -2,6 +2,7 @@ extends Node
 
 var _app: WizardFrontend
 var _failures: int = 0
+var _released_spell: bool = false
 
 func _ready() -> void:
 	_run.call_deferred()
@@ -62,6 +63,11 @@ func _run() -> void:
 	if not _expect(_app.service.error.is_empty(), "Godot client initializes: " + _app.service.error):
 		await _stop(2)
 		return
+	_app.service.events_changed.connect(func(batch: Dictionary) -> void:
+		for event: Dictionary in batch.get("events", []):
+			if bool(event.get("spellReleased", false)):
+				_released_spell = true
+	)
 	if not _expect(role in ["host", "guest"], "role must be host or guest"):
 		await _stop(2)
 		return
@@ -177,12 +183,12 @@ func _run() -> void:
 		_expect(false, "both clients resume before gameplay commands")
 		await _stop(1)
 		return
-	var gameplay_deadline: int = Time.get_ticks_msec() + 90000
+	var gameplay_deadline: int = Time.get_ticks_msec() + 300000
 	var target_revision: int = 2 + int(_argument("--gameplay-actions", "40"))
 	var submitted_revision: String = ""
 	var query_context: String = ""
 	var gameplay_intent: Dictionary = {"selections": []}
-	while int(_app.service.match_snapshot.get("revision", "0")) < target_revision and int(_app.service.match_snapshot.get("result", -1)) < 0:
+	while (int(_app.service.match_snapshot.get("revision", "0")) < target_revision or not _released_spell) and int(_app.service.match_snapshot.get("result", -1)) < 0:
 		if not _expect(Time.get_ticks_msec() < gameplay_deadline,
 			"continuous authoritative gameplay finishes after opening: " + JSON.stringify(_app.service.match_snapshot.get("actionSummary", {}))):
 			await _stop(1)

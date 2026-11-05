@@ -1,0 +1,265 @@
+{
+  "format": 1,
+  "verifiedAtUtc": "2026-11-05T05:41:54.888613+00:00",
+  "programVersion": "2.6.2",
+  "rulesVersion": "2.6.2",
+  "cardSetVersion": "2.6.2",
+  "mechanicsRevision": 11,
+  "contentHash": "cc7c6005e8f96820",
+  "stateSchema": "wizardcard-state-v7",
+  "replayDigestSchema": 3,
+  "sourceCommit": "cd0b6606b1513e2e96c49cb0c13e912e1e30026a",
+  "implementationCommit": "1da8c13b4ce5ba39aa2b127322ff071e01f135a3",
+  "branch": "dev",
+  "acceptance": {
+    "feedbackItems": 46,
+    "distinctFeedbackCards": 35,
+    "allMappedRegressionsPassed": true
+  },
+  "artifacts": {
+    "WizardCard-2.6.2-windows-x64.zip": {
+      "path": "E:\\Project\\WizardCard\\dist\\WizardCard-2.6.2-windows-x64.zip",
+      "bytes": 364171512,
+      "sha256": "ea058d828154fb36ab50fdf8fc01e38257952ec4c7927ebb131084ac709094b9"
+    },
+    "WizardCard-CentralServer-2.6.2-linux-x86_64.tar.gz": {
+      "path": "E:\\Project\\WizardCard\\dist\\WizardCard-CentralServer-2.6.2-linux-x86_64.tar.gz",
+      "bytes": 1326975,
+      "sha256": "3ea2b3b1d22662c191d01af1508a793f43611b082bc3fbb6339909f449147c2e"
+    }
+  },
+  "tests": {
+    "windowsCtest": {
+      "passed": 346,
+      "log": "build/v262-windows-ctest-final2.log",
+      "logSha256": "5b2e33867e4438a525142fe8c73bda3cc7a4398013abd7eeb33060697b4ab920",
+      "resultExcerpt": "..........   Passed    0.53 sec\n        Start 333: godot_card_selection_smoke\n344/346 Test #333: godot_card_selection_smoke .................................................................................   Passed    1.09 sec\n        Start 335: godot_response_collection_smoke\n345/346 Test #335: godot_response_collection_smoke ............................................................................   Passed    1.11 sec\n        Start 321: godot_bridge_boundary\n346/346 Test #321: godot_bridge_boundary ......................................................................................   Passed    0.46 sec\n\n100% tests passed, 0 tests failed out of 346\n\nTotal Test time (real) = 229.77 sec"
+    },
+    "linuxCtest": {
+      "passed": 326,
+      "log": "build/v262/linux-ctest-final.log",
+      "logSha256": "cd09988521234d319702989b1c95c836163cda3c7e7e81220ff4be554ed7d48a",
+      "resultExcerpt": "y positive healing once and terminates cycles .......................   Passed    0.05 sec\n324/326 Test #320: Alpha v2.5.4 blood pool restores only temporary life that expires ..........................................   Passed    0.05 sec\n        Start 322: central_tls_smoke\n325/326 Test #322: central_tls_smoke ..........................................................................................   Passed   20.55 sec\n        Start 323: central_shutdown_smoke\n326/326 Test #323: central_shutdown_smoke .....................................................................................   Passed    8.52 sec\n\n100% tests passed, 0 tests failed out of 326\n\nTotal Test time (real) =  84.29 sec"
+    },
+    "feedbackRules": {
+      "passed": 50,
+      "log": "build/v262/feedback-final.log",
+      "logSha256": "99c09157c6eb65c5f7c5396a95c1743aff5094d4563c8ce58909fb6b1150ab6b",
+      "resultExcerpt": "Filters: [alpha-v262]\nRandomness seeded to: 2362665897\n===============================================================================\nAll tests passed (1110 assertions in 50 test cases)"
+    },
+    "contentImport": {
+      "passed": 6,
+      "log": "build/v262/import-final.log",
+      "logSha256": "ccd5658d9fe6d58b0b3465ba8d04958157bd0478ac6b095283b49ee92abcd06f",
+      "resultExcerpt": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.104s\n\nOK"
+    },
+    "catalogSource": {
+      "passed": true,
+      "log": "build/v262/catalog-source-final.log",
+      "logSha256": "85d1d2d012581fb2b59a6e87f1ed4be989850b50658415dd48eb2545caf20549",
+      "resultExcerpt": "Canonical catalog matches compatibility aggregate"
+    },
+    "latestFrontend": {
+      "passed": 5,
+      "log": "build/v262/frontend-deck-selection.log",
+      "logSha256": "fef8a6ff01d037ab4073bca81d75826e2bf59687211965d91b3d9c76f8e22682",
+      "resultExcerpt": "dot-release\nTest project E:/Project/WizardCard/build/godot-release\n    Start 325: godot_frontend_project\n1/5 Test #325: godot_frontend_project ...........   Passed    1.10 sec\n    Start 326: godot_frontend_import\n2/5 Test #326: godot_frontend_import ............   Passed   20.40 sec\n    Start 327: godot_frontend_smoke\n3/5 Test #327: godot_frontend_smoke .............   Passed    9.63 sec\n    Start 329: godot_central_transport_smoke\n4/5 Test #329: godot_central_transport_smoke ....   Passed    0.41 sec\n    Start 337: godot_alpha_v262_ui_smoke\n5/5 Test #337: godot_alpha_v262_ui_smoke ........   Passed    0.77 sec\n\n100% tests passed, 0 tests failed out of 5\n\nTotal Test time (real) =  32.35 sec"
+    },
+    "verificationDeck": {
+      "passed": true,
+      "log": "build/v262/deck-selection.log",
+      "logSha256": "91ee7e8dab0fa0b715c13dd893d11dcf5f10e7d4c6f90ebef21bcdf63348ace6",
+      "resultExcerpt": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVERIFICATION_DECK: {\"draftProblems\":[],\"id\":\"user/deck-17938563937277957-1\",\"playable\":true,\"roomSelected\":true}"
+    }
+  },
+  "contentGeneration": {
+    "idempotent": true,
+    "promotionMatches": true,
+    "cardCount": 92,
+    "contentHash": "cc7c6005e8f96820"
+  },
+  "crossPlatformReplay": {
+    "identical": true,
+    "digest": "c7e5273fcf413bf1",
+    "commands": 2577,
+    "windowsRecordingSha256": "778be0322b0db82c35c0f9de48b55fe3bd95a6395203a28ca4297b3e128557f9",
+    "linuxRecordingSha256": "778be0322b0db82c35c0f9de48b55fe3bd95a6395203a28ca4297b3e128557f9"
+  },
+  "finalExtractedWindowsArchive": {
+    "archive": "E:\\Project\\WizardCard\\dist\\WizardCard-2.6.2-windows-x64.zip",
+    "bytes": 364171512,
+    "sha256": "ea058d828154fb36ab50fdf8fc01e38257952ec4c7927ebb131084ac709094b9",
+    "verifiedFiles": 267,
+    "zipCrc": "passed",
+    "release": {
+      "programVersion": "2.6.2",
+      "rulesVersion": "2.6.2",
+      "cardSetVersion": "2.6.2",
+      "contentHash": "cc7c6005e8f96820",
+      "packageVersion": "2.6.2",
+      "status": "released",
+      "mechanicsRevision": 11,
+      "cardCount": 92,
+      "engine": "4.7.2.stable.official.ed1daf0bf",
+      "catalogSha256": "0f62d81d1cf48948441c968312331420129cb09c566cc5f5708035c1b008a2d1",
+      "bridgeSha256": "8c09f6ed2575c64ac3b557c6ad34255fd2283274279bdfe8769e2e4cc97211a7"
+    },
+    "startupFromUnrelatedDirectory": "passed",
+    "network": {
+      "endpoint": "aq.rainplay.cn:23513",
+      "room": "FXWFQ9ZG",
+      "clients": [
+        {
+          "connected": true,
+          "phase": "completed",
+          "releasedSpellObserved": true,
+          "replayDelivered": true,
+          "result": 0,
+          "role": "host",
+          "roomCode": "FXWFQ9ZG"
+        },
+        {
+          "left": true,
+          "phase": "completed",
+          "releasedSpellObserved": true,
+          "replayDelivered": true,
+          "role": "guest",
+          "roomCode": "FXWFQ9ZG"
+        }
+      ],
+      "commands": {
+        "18": 2,
+        "13": 79,
+        "14": 17,
+        "0": 3,
+        "5": 1,
+        "11": 1
+      },
+      "commandCount": 103,
+      "matchingReplayDigest": "fa6635b78b9725a4",
+      "identicalReplay": true,
+      "verifiedManualReconnects": 2,
+      "unexpectedDisconnects": 0
+    }
+  },
+  "server": {
+    "verifiedAtUtc": "2026-11-05T05:40:55.543553+00:00",
+    "currentRelease": "/opt/wizardcard-central-server/releases/WizardCard-CentralServer-2.6.2-linux-x86_64",
+    "health": {
+      "connections": 0,
+      "ready": true,
+      "resumeCredentials": 0,
+      "rooms": 0,
+      "status": "ok"
+    },
+    "service": "active",
+    "release": {
+      "buildEnvironment": "Linux-6.12.38+deb13-amd64-x86_64-with-glibc2.41",
+      "content": {
+        "cardSetVersion": "2.6.2",
+        "hash": "cc7c6005e8f96820",
+        "mechanicsRevision": 11,
+        "path": "assets/release-v260",
+        "rulesVersion": "2.6.2"
+      },
+      "format": 1,
+      "libc": [
+        "glibc",
+        "2.41"
+      ],
+      "privateKeyIncluded": false,
+      "target": "linux-x86_64",
+      "version": "2.6.2"
+    },
+    "deployment": {
+      "format": 2,
+      "programVersion": "2.6.2",
+      "rulesVersion": "2.6.2",
+      "mechanicsRevision": 11,
+      "contentHash": "cc7c6005e8f96820",
+      "archive": "WizardCard-CentralServer-2.6.2-linux-x86_64.tar.gz",
+      "archiveSha256": "3ea2b3b1d22662c191d01af1508a793f43611b082bc3fbb6339909f449147c2e",
+      "serverBinarySha256": "594c73b8a147c2b09499e51b2853ff2325e21c6a324fa009e157dcd627f8f44f",
+      "sourceRepository": "https://github.com/K4per/WizardCard",
+      "sourceBranch": "dev",
+      "sourceCommit": "cd0b6606b1513e2e96c49cb0c13e912e1e30026a",
+      "sourceIncludesUncommittedFix": false,
+      "sourceInputManifestSha256": "0e5023934480d8bbb9375c0bd91a3da29596034e976544b15517043f08ca65a8",
+      "publicEndpoint": "aq.rainplay.cn:23513",
+      "internalTcpPort": 24443,
+      "certificateSha256": "caa3fe63a7a3e0751971612e43c6b4649a02e20941ed4e26e94d868a92dddb94",
+      "previousRelease": "/opt/wizardcard-central-server/releases/WizardCard-CentralServer-2.6.1-linux-x86_64",
+      "configurationAndDataBackup": "/var/backups/wizardcard/pre-v262-20261105-052935.tar.gz",
+      "verifiedAtUtc": "2026-11-05T05:38:13.981203+00:00",
+      "serverDeploymentSourceCommit": "21ea5f9a1563581735d3fc6fcbba3d8bb463d228",
+      "windowsArchiveSha256": "ea058d828154fb36ab50fdf8fc01e38257952ec4c7927ebb131084ac709094b9",
+      "publicVerification": {
+        "endpoint": "aq.rainplay.cn:23513",
+        "room": "FXWFQ9ZG",
+        "clients": [
+          {
+            "connected": true,
+            "phase": "completed",
+            "releasedSpellObserved": true,
+            "replayDelivered": true,
+            "result": 0,
+            "role": "host",
+            "roomCode": "FXWFQ9ZG"
+          },
+          {
+            "left": true,
+            "phase": "completed",
+            "releasedSpellObserved": true,
+            "replayDelivered": true,
+            "role": "guest",
+            "roomCode": "FXWFQ9ZG"
+          }
+        ],
+        "commands": {
+          "18": 2,
+          "13": 79,
+          "14": 17,
+          "0": 3,
+          "5": 1,
+          "11": 1
+        },
+        "commandCount": 103,
+        "matchingReplayDigest": "fa6635b78b9725a4",
+        "identicalReplay": true,
+        "verifiedManualReconnects": 2,
+        "unexpectedDisconnects": 0
+      }
+    },
+    "verifiedPackageFiles": 145,
+    "installedServerSha256": "594c73b8a147c2b09499e51b2853ff2325e21c6a324fa009e157dcd627f8f44f",
+    "backup": {
+      "path": "/var/backups/wizardcard/pre-v262-20261105-052935.tar.gz",
+      "mode": "0o600",
+      "bytes": 14809
+    },
+    "activePersistedRooms": 0
+  },
+  "publicRoomPersistence": [
+    {
+      "code": "FXWFQ9ZG",
+      "phase": "completed",
+      "revision": "103",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    }
+  ],
+  "evidenceFilesSha256": {
+    "build/v262/public-archive-final-pass.log": "10ad8b64cc7a5e9dee2a62f86bac7183b77b6edf1195ebbe8bb4cf25d88c3022",
+    "build/v262/public-archive-final-pass/host.log": "047573c309d331f0db3cc9a63e65bd618adc29d36100860c9fbc0a0202643895",
+    "build/v262/public-archive-final-pass/guest.log": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c",
+    "build/v262/deployment-final.log": "57ef662fdbe9a0acb6fe85442c0eadb381f0853232da6c59a771bb5f644d0a89",
+    "build/v262/automatic-rollback.log": "95372a27e521340d9603a6fcdad83604c2c5fb2956daed937549f7d9774fccc8",
+    "build/v262/rollback-after-final-probe.log": "49a6696c082c293ceb700854ca32358a7ac0ca508a3d11447ae33b9eaec0ea6c",
+    "build/v262/rollback-after-probe.log": "c41ae19a1ecbefdcdfb0a2963dc7e4b7f6ef563b6e247a5f62a534e12f368c32",
+    "build/v262/red-true-damage.log": "356f8be299c0c80d509a0a4916187283105caf0df39479e1a9ef877448fd5c6a",
+    "build/v262/linux-build-session5.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "build/v262/server-final-journal.log": "6c26704e13980383aea9fad9251dd0a1a5e47f5f62c9cf955e7af4d305000e3a"
+  },
+  "verificationScope": "Automated headless Godot nodes and signals, packaged Windows clients over public TLS; no exhaustive card-combination or long-duration capacity claim."
+}

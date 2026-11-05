@@ -65,7 +65,7 @@ func _verification_deck() -> String:
 
 func _stop(code: int) -> void:
 	if _app != null and _app.service.network_active:
-		_app.service.network_request({"operation": "leave", "force": true})
+		_app.service.network_request({"operation": "leave", "force": code != 0})
 		var left: bool = await _wait_for(func() -> bool: return not _app.service.network_active, 5000)
 		if code == 0 and not _expect(left, "terminal leave is acknowledged before closing TLS"):
 			code = 1

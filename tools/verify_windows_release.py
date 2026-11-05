@@ -62,6 +62,7 @@ def verify_network(output, evidence, args):
         for role in ("host", "guest"):
             clients.append(read_json(evidence / (role + ".json")))
             assert clients[-1]["phase"] == "completed" and clients[-1]["replayDelivered"]
+            assert clients[-1]["releasedSpellObserved"], "Both clients must observe a real spell resolution"
             replays = list((evidence / (role + "-data/replays")).glob("network-*.json"))
             assert len(replays) == 1, (role, replays)
             recordings.append(read_json(replays[0]))

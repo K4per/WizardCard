@@ -41,9 +41,30 @@ func _write_report(path: String, value: Dictionary) -> bool:
 	file.close()
 	return _expect(result == OK, "client report is written")
 
+func _verification_deck() -> String:
+	# Use a normal, validated 40+10 draft in the isolated verification profile.
+	# A word deck avoids spending all income on new analysis before casting.
+	if not _expect(_app.service.create_draft(), "create verification draft"):
+		return ""
+	var cards: Dictionary = {}
+	var formations: Dictionary = {}
+	for index: int in range(1, 21):
+		cards["v260-word-%04d" % index] = 2
+	for index: int in range(1, 11):
+		formations["v260-formation-%04d" % index] = 1
+	_app.service.editing_draft["name"] = "Alpha 2.6.2 release verification"
+	_app.service.editing_draft["cards"] = cards
+	_app.service.editing_draft["sideCards"] = formations
+	if not _expect(_app.service.draft_problems().is_empty() and _app.service.save_draft(), "verification deck passes normal 40+10 validation"):
+		return ""
+	return str(_app.service.saved_draft.get("id", ""))
+
 func _stop(code: int) -> void:
 	if _app != null and _app.service.network_active:
 		_app.service.network_request({"operation": "leave", "force": true})
+		var left: bool = await _wait_for(func() -> bool: return not _app.service.network_active, 5000)
+		if code == 0 and not _expect(left, "terminal leave is acknowledged before closing TLS"):
+			code = 1
 	if _app != null:
 		_app.queue_free()
 	await get_tree().process_frame
@@ -71,8 +92,16 @@ func _run() -> void:
 	if not _expect(role in ["host", "guest"], "role must be host or guest"):
 		await _stop(2)
 		return
+	var deck_id: String = _verification_deck()
+	if not _expect(not deck_id.is_empty(), "verification deck is saved"):
+		await _stop(2)
+		return
 	_app.navigate(&"rooms")
 	var room_page: RoomsPage = _app.page as RoomsPage
+	for index: int in range(room_page._decks.item_count):
+		if str(room_page._decks.get_item_metadata(index)) == deck_id:
+			room_page._decks.select(index)
+			break
 	room_page._address.text = host
 	room_page._port.value = port
 	room_page._trusted_ca.text = ca
@@ -243,7 +272,7 @@ func _run() -> void:
 			_expect(false, "surrender saves the replay and finishes leaving automatically")
 			await _stop(1)
 			return
-		_write_report(report_path, {"role": role, "roomCode": room_code, "phase": "completed", "replayDelivered": true, "left": true, "gameplayRevision": str(_app.service.match_snapshot.get("revision", ""))})
+		_write_report(report_path, {"role": role, "roomCode": room_code, "phase": "completed", "replayDelivered": true, "left": true, "releasedSpellObserved": _released_spell})
 		await _stop(0 if _failures == 0 else 1)
 		return
 	if not await _wait_for(func() -> bool:
@@ -260,6 +289,7 @@ func _run() -> void:
 		"connected": bool(_app.service.network_state.get("connected", false)),
 		"replayDelivered": bool(_app.service.network_state.get("replayDelivered", false)),
 		"result": int(_app.service.match_snapshot.get("result", -1)),
+		"releasedSpellObserved": _released_spell,
 	}
 	_expect(result.phase == "completed" and result.replayDelivered, "normal terminal result and replay are visible")
 	_write_report(report_path, result)

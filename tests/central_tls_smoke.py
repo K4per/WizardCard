@@ -98,11 +98,11 @@ def main():
 
             catalog = json.loads((assets / "catalog.json").read_text())
             hello = {
-                "type": "Hello", "protocol": 5,
+                "type": "Hello", "protocol": 5, "program": "2.6.2",
                 "rules": catalog["metadata"]["rulesVersion"],
                 "mechanics": catalog["metadata"]["mechanicsRevision"],
                 "cards": catalog["metadata"]["cardSetVersion"],
-                "hash": "41eac6fc263abd5e",
+                "hash": "cc7c6005e8f96820",
             }
             context = ssl.create_default_context(cafile=str(cert))
             with socket.create_connection(("127.0.0.1", health_port), timeout=3) as oversized_health:

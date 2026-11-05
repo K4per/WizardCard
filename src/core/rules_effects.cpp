@@ -1,4 +1,5 @@
 #include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include "wizard/core/engine.hpp"
 #include "engine_internal.hpp"
 
@@ -508,6 +509,8 @@ bool hasActiveTrait(const GameState &s, const CardCatalog &cat, Capability capab
 std::string activationError(const GameState &s, const CardCatalog &cat, PlayerId owner, CardId source, CardId target) {
     const auto &sourceCard = s.cards.at(source);
     const auto &sourceDefinition = cat.at(sourceCard.definition);
+    if (target >= playerTarget(0) && target <= playerTarget(1) &&
+        !spell_rules::playerTargetAllowed(s, cat, owner, static_cast<int>(target - playerTarget(0)))) return "player_protected";
     const int activationLife = activationLifeCost(sourceDefinition);
     if (activationLife || hasCapability(sourceDefinition, Capability::BloodLastStand) || member(sourceDefinition, "七星")) {
         if (activationLife && !canPayLife(s, owner, activationLife)) return "life_cost";
@@ -530,7 +533,7 @@ std::string activationError(const GameState &s, const CardCatalog &cat, PlayerId
     const auto &d = cat.at(sourceCard.definition);
     if (trait(d, Capability::Unique) && std::any_of(s.cards.begin(), s.cards.end(), [&](const auto &entry) {
         const auto &card = entry.second;
-        return entry.first != source && card.owner == owner && card.definition == d.id &&
+        return entry.first != source && controllerOf(card) == owner && card.definition == d.id &&
             (card.zone == Zone::Analysis || card.zone == Zone::Casting);
     })) return "unique: 己方场上已存在同名唯一卡牌";
     if (d.type == CardType::Word && std::any_of(s.players.begin(), s.players.end(), [](const PlayerState &p) {
@@ -562,6 +565,15 @@ std::string activationError(const GameState &s, const CardCatalog &cat, PlayerId
     return {};
 }
 std::vector<CardId> costOptions(const GameState &s, const CardCatalog &cat, PlayerId owner, CardId source) {
+    const auto extra = cat.at(s.cards.at(source).definition).extraCost;
+    if (extra != CardDefinition::ExtraCost::None) {
+        std::vector<CardId> result;
+        for (const auto &[id, c] : s.cards)
+            if (id != source && controllerOf(c) == owner &&
+                (extra == CardDefinition::ExtraCost::SideFormation ? c.zone == Zone::SideDeck :
+                 c.zone == Zone::Analysis && c.host != 0)) result.push_back(id);
+        return result;
+    }
     {
         const auto &c = s.cards.at(source);
         const auto &definition = cat.at(c.definition);
@@ -648,9 +660,10 @@ void payExtraCost(MutationContext &s, const CardCatalog &cat, PlayerId owner, Ca
 
     const auto &d = cat.at(s.cards.at(source).definition);
     if (material) {
+        s.cards.at(source).paidDiscard = material;
         if (trait(d, Capability::ArcanaEmperorCost)) eraseCard(s, cat, material);
         else StateMaintenance::leave(s, material, &cat);
-        s.cards.at(source).targets = {material};
+        if (d.extraCost == CardDefinition::ExtraCost::None) s.cards.at(source).targets = {material};
     }
     if (trait(d, Capability::ArcanaHangedCost) && !s.players[owner].debugInfiniteLife) {
         const int amount = (s.players[owner].life + 1) / 2;
@@ -1027,6 +1040,7 @@ bool isFireSpell(const CardDefinition &d) {
         }));
 }
 bool activationAllowed(const GameState &s, const CardCatalog &cat, PlayerId p, const CardDefinition &d) {
+    if (d.type == CardType::Analytic && spell_rules::blocked(s, ModifierKind::BlockAnalytic, p)) return false;
     if (hasCapability(d, Capability::SiqueRequiresCampfire) &&
         !hasFormation(s, cat, p, Capability::SiqueCampfire)) return false;
     if (hasCapability(d, Capability::SiqueRequiresCauldron) &&

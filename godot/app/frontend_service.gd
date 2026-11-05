@@ -412,7 +412,7 @@ func network_transport_opened() -> Dictionary:
 func network_transport_lost(reason: String) -> Dictionary:
 	return _request(&"network_transport_lost", [reason])
 
-func network_transport_message(message: Dictionary) -> Dictionary:
+func network_transport_message(message: String) -> Dictionary:
 	return _request(&"network_transport_message", [message])
 
 func network_transport_drain() -> Dictionary:

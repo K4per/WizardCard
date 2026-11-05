@@ -1,5 +1,6 @@
 #include "engine_internal.hpp"
 #include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
@@ -57,7 +58,8 @@ void GameEngine::startTrigger(Trigger t) {
     root.kind = LinkKind::Trigger;
     root.item = std::move(t);
     const int priority = 1 - state_.active;
-    startChain(ResponseWindow::Trigger, std::move(root), priority);
+    const auto window = root.item.damageAmount > 0 ? ResponseWindow::Damage : ResponseWindow::Trigger;
+    startChain(window, std::move(root), priority);
 }
 void GameEngine::passResponse() {
     auto &c = *state_.chain;
@@ -121,6 +123,9 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
         (a->eventOwner == EventOwner::Self && actor != s.chain->initiator) ||
         (a->eventOwner == EventOwner::Opponent && actor == s.chain->initiator))
         return "response_window: 不符合响应时机";
+    if (std::any_of(a->effects.begin(), a->effects.end(), [](const Effect &e) { return e.kind == EffectKind::NegateSetupReturn; }) &&
+        std::none_of(s.chain->links.begin(), s.chain->links.end(), [&](const ChainLink &l) { return l.id == cmd.link && l.kind == LinkKind::Setup; }))
+        return "response_window: 必须响应设置法术";
     if (a->target == TargetKind::PendingLink || a->target == TargetKind::PreparationRoot ||
         a->target == TargetKind::EnemySpellLink) {
         if (cmd.target || !cmd.targets.empty() || !Rules::linkTargetValid(s, a->target, cmd.link))
@@ -160,7 +165,9 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
             return "extra_cost: 需要另一张手牌";
     } else if (cmd.discard)
         return "extra_cost: 无需弃牌";
-    const int paid = hasCapability(d, Capability::CounterSpell) ? detail::linkedSpellCost(s, cmd.link)
+    if (a->target == TargetKind::Player && !spell_rules::playerTargetAllowed(s, catalog(), actor,
+        static_cast<PlayerId>(cmd.target - playerTarget(0)))) return "player_protected";
+    const int paid = hasCapability(d, Capability::CounterSpell) ? detail::linkedSpellCost(s, catalog(), cmd.link)
         : (d.type == CardType::Analytic && ambush ? d.cost : 0) + Rules::castCost(s, catalog(), c.id);
     if (paid < 0 || a->burden < 0 || card_rules::paymentChoices(s, catalog(), actor, paid).empty())
         return "cost: 魔素或荷载空间不足";

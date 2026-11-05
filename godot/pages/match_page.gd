@@ -857,7 +857,7 @@ func _query_changed(options: ActionOptions) -> void:
 		var card_id: String = str(option.get("card", "0"))
 		choice.card = MatchProjection.card(service.match_snapshot, card_id)
 		if int(option.get("player", -1)) >= 0:
-			choice.label = "玩家 %d" % [int(option["player"]) + 1]
+			choice.label = "己方" if int(option["player"]) == service.match_viewer else "对方"
 		if card_id != "0":
 			card_ids.append(card_id)
 		if options.field == KernelContract.ActionField.Operation and int(choice.id) == KernelContract.CommandKind.Surrender:
@@ -898,7 +898,9 @@ func _query_completed(command: Dictionary, intent: Dictionary) -> void:
 	_restore_tray_hand()
 	_pending_generation = generation
 	_pending_revision = revision
-	if _query_is_decision or _query_confirmed:
+	var response_decision: bool = service.match_snapshot.get("decision") is Dictionary and int(service.match_snapshot["decision"].get("kind", -1)) == KernelContract.DecisionKind.Response
+	var response_activation: bool = response_decision and int(command.get("type", -1)) in [KernelContract.CommandKind.Respond, KernelContract.CommandKind.PreloadWord, KernelContract.CommandKind.FlipAmbush, KernelContract.CommandKind.ActivateSpell]
+	if (_query_is_decision and not response_activation) or (_query_confirmed and not response_activation):
 		_selection.cancel()
 		_apply_result(service.match_request(&"confirm_action", [generation, revision]))
 	else:
@@ -917,7 +919,7 @@ func _pick_action_target(id: String) -> void:
 	if _selection.current() and _selection.options != null:
 		for option: Dictionary in _selection.options.options:
 			if str(option.get("card", "0")) == id:
-				_query_confirmed = true
+				_query_confirmed = not _query_is_decision
 				_selection.choose(str(option["value"]))
 				return
 

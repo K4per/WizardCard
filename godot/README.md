@@ -1,7 +1,7 @@
-# Godot Alpha v2.6.0-hotfix.1 frontend
+# Godot Alpha v2.6.2 frontend
 
 This directory contains the native bridge and Godot 4.7.2 frontend for WizardCard
-2.6.0-hotfix.1. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
+2.6.2. C++ owns rules, legal actions, decisions, privacy, clocks and replay;
 GDScript displays viewer projections and submits intents.
 
 The frontend includes menu, library, settings, deck construction, setup,
@@ -226,3 +226,9 @@ multi-device LAN acceptance are recorded separately from automated results.
 
 Art hashes and licenses remain in `art/assets.json`, `assets/art/` and the root
 third-party notices. Typography uses unmodified OFL Noto Sans CJK SC fonts.
+
+## 便携版公网回归
+
+`diagnostics/central_verification.tscn` 使用正常页面、服务和 TLS，供发布验收通过用户参数 `--verify-central` 显式启动。它不会替换产品的默认场景。
+
+使用 `python tools/verify_windows_release.py --archive dist/WizardCard-2.6.2-windows-x64.zip --evidence build/v262/archive-checks --server-host aq.rainplay.cn --server-port 23513 --trusted-ca deploy/production/aq.rainplay.cn.crt` 验证最终归档。该工具从ZIP解压后直接运行两份便携版程序，核对清单与启动、开局、连续操作、主动重连、正常终局和两端复盘一致性。公网选项应仅指向已授权的测试或部署服务。

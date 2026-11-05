@@ -14,18 +14,17 @@
   "effects": [
     {
       "kind": "heal",
-      "amount": 2,
-      "recipient": "target"
+      "amount": 2
     },
     {
-      "kind": "clear_all_temporary",
+      "kind": "clear_any_load",
       "amount": 6,
       "recipient": "owner"
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",

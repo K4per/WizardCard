@@ -13,7 +13,15 @@ func _check(value: bool, description: String) -> bool:
 
 func _run() -> void:
 	var service: FrontendService = FrontendService.new()
-	if not _check(service.initialize(ProjectSettings.globalize_path("res://../assets"), ProjectSettings.globalize_path("res://../build/architecture-baseline/frontend-smoke")), "initialize current native bridge"):
+	var assets: String = ProjectSettings.globalize_path("res://../assets")
+	var user_directory: String = ProjectSettings.globalize_path("user://incremental-kernel-smoke")
+	var arguments: PackedStringArray = OS.get_cmdline_user_args()
+	for index: int in range(arguments.size() - 1):
+		if arguments[index] == "--assets":
+			assets = arguments[index + 1]
+		elif arguments[index] == "--user-data":
+			user_directory = arguments[index + 1]
+	if not _check(service.initialize(assets, user_directory), "initialize current native bridge: " + service.error):
 		quit(1)
 		return
 	_check(service.start_match({"mode": "hotseat", "seed": 42}), "start current rules match")

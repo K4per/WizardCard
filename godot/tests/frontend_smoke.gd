@@ -263,7 +263,7 @@ func _run() -> void:
 			if arguments[index] == "--user-data":
 				user_directory = arguments[index + 1]
 		_check(not user_directory.is_empty(), "Smoke tests must use an isolated user directory")
-		var assets: String = ProjectSettings.globalize_path("res://").path_join("../assets").simplify_path()
+		var assets: String = _app.service.assets_directory
 		_check(next_service.initialize(assets, user_directory), "Reopen native settings")
 		_check(int(next_service.settings.get("masterVolume", 0)) == 37 and bool(next_service.settings.get("reducedMotion", false)) and bool(next_service.settings.get("responseTimingSound", false)), "Settings persist across service instances")
 		next_service.release()

@@ -178,14 +178,13 @@ TEST_CASE("network exact identifiers retain values beyond double precision") {
     CHECK_THROWS(number(Json("-1")));
     CHECK_THROWS(number(Json(3)));
 }
-TEST_CASE("network handshake keeps program diagnostic and rejects content mismatch") {
+TEST_CASE("network handshake rejects program and content mismatches") {
     auto c = content();
     HostSession h(c);
     auto j = hello(c);
-    j["program"] = "future-godot-client";
     CHECK(h.receive(j).at("type") == "Joined");
     CHECK_THROWS(h.receive(j));
-    for (const char *k : {"protocol", "rules", "mechanics", "cards", "hash"}) {
+    for (const char *k : {"protocol", "program", "rules", "mechanics", "cards", "hash"}) {
         HostSession other(c);
         auto wrong = hello(c);
         wrong[k] = "different";

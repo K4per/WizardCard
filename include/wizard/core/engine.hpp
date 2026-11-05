@@ -85,6 +85,8 @@ class GameEngine {
     std::string apply(const CommandPlan &);
     StepResult step(ExecutionContext &);
     bool chooseContentEffectV2(PlayerId, DecisionKind, ChoiceValue);
+    bool resolveSpellChoice();
+    bool chooseSpellChoice(PlayerId, ChoiceValue);
     void actionTimingV2(ResponseWindow = ResponseWindow::Action);
     std::string responseSetupV2(PlayerId, const Command &);
     std::string activateSpellV252(PlayerId, CardId, CardId, const std::vector<CardId> &, CardId, bool,

@@ -53,14 +53,17 @@ func _run() -> void:
 		_expect(page._decision.request.response_mode and page._decision.request.decision_id == "9007199254740997", "collapsed response survives %s browsing" % zone)
 		_expect(page._decision.request.pass_id == str(KernelContract.CommandKind.PassResponse), "native pass remains reachable after %s" % zone)
 		_expect(service.selected_actions.is_empty(), "browsing and collapse do not submit an action")
-	# The exact legal response still confirms after both collection clicks.
+	# Source selection prepares the response; the final dialog is the only submission.
 	page._render_decision()
 	await _settle()
 	page._decision._options[str(KernelContract.CommandKind.Respond)].button_pressed = true
 	page._decision._confirm.pressed.emit()
 	page._decision._options["33"].button_pressed = true
 	page._decision._confirm.pressed.emit()
-	_expect(service.selected_actions == ["respond"], "response confirms its exact legal action")
+	_expect(service.selected_actions == ["respond"], "response selects its exact legal action")
+	_expect(service.confirmations == 0 and page._confirm.visible, "response source clicks wait for final confirmation")
+	page._confirm.confirmed.emit()
+	_expect(service.confirmations == 1, "final response confirmation submits once")
 	page.queue_free()
 	await process_frame
 	print("Response collection smoke: %s" % ("PASS" if _failures == 0 else "FAIL"))

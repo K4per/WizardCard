@@ -41,6 +41,7 @@ using PhaseContinuation = std::variant<PhaseEntryContinuation, PhaseCleanupConti
 struct ConcentrationContinuation { CardId source{}; };
 struct ReturnContinuation { CardId source{}; };
 using MaintenanceContinuation = std::variant<std::monostate, ConcentrationContinuation, ReturnContinuation>;
+
 enum class Flow {
     Draw,
     Income,
@@ -59,6 +60,8 @@ struct GameState {
     std::map<CardId, CardInstance> cards;
     std::vector<TemporaryLoad> temporary;
     std::vector<TemporaryLife> temporaryLives;
+    std::vector<SpellModifier> modifiers;
+    std::deque<PlayerId> extraTurns;
     PlayerId active{}, first{};
     std::uint64_t globalTurn{1};
     Phase phase{Phase::Draw};

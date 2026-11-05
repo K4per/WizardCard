@@ -88,6 +88,10 @@ func _run() -> void:
 	root.add_child(feedback)
 	feedback.service = FrontendService.new()
 	feedback.service.assets_directory = ProjectSettings.globalize_path("res://../assets")
+	var arguments: PackedStringArray = OS.get_cmdline_user_args()
+	for index: int in range(arguments.size() - 1):
+		if arguments[index] == "--assets":
+			feedback.service.assets_directory = arguments[index + 1]
 	feedback.service.settings = {"masterVolume": 80, "soundVolume": 80, "responseTimingSound": false}
 	feedback.present({"sounds": [{"file": "response.mp3", "gain": 1.0}]})
 	_check(not feedback._last_played.has("response.mp3"), "Response popup sound is disabled by the presentation setting")

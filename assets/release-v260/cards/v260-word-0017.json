@@ -13,18 +13,13 @@
   "text": "将1张法术卡从手卡送去灰烬区才能发动。将1张与那张卡同派系的法术卡从卡组加入手卡。",
   "effects": [
     {
-      "kind": "discard_hand",
-      "amount": 1,
-      "recipient": "owner"
-    },
-    {
       "kind": "search_same_school",
       "amount": 1
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",

@@ -1,5 +1,6 @@
 #include "engine_internal.hpp"
 #include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include <algorithm>
 #include <functional>
 #include <set>
@@ -93,6 +94,7 @@ void GameEngine::analysisCompletedV2(CardId spell) {
 }
 void GameEngine::settingCompletedV253(CardId spell, CardId host) {
     auto &s = state_;
+    if (catalog().mechanicsRevision >= 11) spell_rules::setup(s, catalog(), spell, false);
     if (s.result != -1 || !s.cards.count(host)) return;
 
     const auto &formation = s.cards.at(host);
@@ -115,8 +117,7 @@ void GameEngine::quickAnalysisV2(CardId spell, CardId host) {
         hasCapability(hostDefinition, Capability::QuickHostAnalysis1) ? 1 : 0;
     if (advance) {
         card_rules::advanceAnalysis(s, catalog(), spell, advance);
-        s.temporary.push_back({s.nextLoad++, card.owner, host, advance, s.players[card.owner].ownTurn + 1, true});
-        ResourceRules::increasedLoad(s, catalog(), card.owner, advance);
+        ResourceRules::grantLoad(s, catalog(), {s.nextLoad++, controllerOf(card), host, advance, s.players[controllerOf(card)].ownTurn + 1, true});
         return;
     }
     if (!catalog().at(formation.definition).quickRankOne || def.rank > 1 ||
@@ -129,6 +130,7 @@ void GameEngine::quickAnalysisV2(CardId spell, CardId host) {
 }
 void GameEngine::castingTraitsV2(CardId spell) {
     auto &s = state_;
+    spell_rules::wordCast(s, catalog(), spell);
     if (s.result != -1) return;
     const auto &card = s.cards.at(spell);
     {
@@ -176,8 +178,7 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
     card_rules::pay(s, actor, fee, &catalog());
     StateMaintenance::check(s, catalog());
     if (s.result != -1) return {};
-    card.castLoad += fee;
-    ResourceRules::increasedLoad(s, catalog(), actor, fee);
+    const int boundLoad = ResourceRules::addBoundLoad(s, catalog(), id, fee, true);
     if (s.result != -1) return {};
     if (detach) for (auto seal : targets) StateMaintenance::leave(s, seal, &catalog());
     if (stormCostFormation) s.cards.at(stormCostFormation).stormPoints -= 5;
@@ -187,10 +188,10 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
     card.targetCard = target;
     card.targets = detach ? std::vector<CardId>{} : targetCards(target, targets);
     if (hasTrait(Capability::DiscardSpellSearch)) {
-        if (discard) { StateMaintenance::leave(s, discard, &catalog()); card.targets = {discard}; }
+        if (discard) { StateMaintenance::leave(s, discard, &catalog()); card.paidDiscard = discard; card.targets = {discard}; }
     } else card_rules::payExtraCost(s, catalog(), actor, id, discard);
     card.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
-    card.payments.push_back({s.players[actor].ownTurn, fee, fee, false});
+    card.payments.push_back({s.players[actor].ownTurn, fee, boundLoad, false});
     castingTraitsV2(id);
     if (s.result != -1) return {};
     if (!responding) { beginEffect(id, AfterEffect::Spell); return {}; }
@@ -283,8 +284,7 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         const int fee = Rules::castCost(s, catalog(), id);
         if (!card_rules::canPay(s, actor, fee, &catalog())) return "cost: 魔素不足";
         card_rules::pay(s, actor, fee, &catalog());
-        card.analysisLoad += fee;
-        ResourceRules::increasedLoad(s, catalog(), actor, fee);
+        const int boundLoad = ResourceRules::addBoundLoad(s, catalog(), id, fee, false);
         if (s.result != -1) return {};
         if (detachCost)
             for (auto seal : word->targets) StateMaintenance::leave(s, seal, &catalog());
@@ -300,10 +300,10 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         card.targets = detachCost ? std::vector<CardId>{} : word->targets;
         if (searchCost) {
             StateMaintenance::leave(s, word->discard, &catalog());
-            card.targets = {word->discard};
+            card.paidDiscard = word->discard; card.targets = {word->discard};
         } else card_rules::payExtraCost(s, catalog(), actor, id, word->discard);
         card.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
-        card.payments.push_back({s.players[actor].ownTurn, fee, fee, false});
+        card.payments.push_back({s.players[actor].ownTurn, fee, boundLoad, false});
         settingCompletedV253(id, word->formation);
         castingTraitsV2(id);
         if (s.result != -1) return {};
@@ -344,8 +344,7 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         if (card_rules::hasFormation(s, catalog(), 1 - actor, Capability::Moon)) return "moon_setup_restriction";
         const int fee = Rules::analysisCost(s, catalog(), id, card.host);
         if (!card_rules::canPay(s, actor, fee, &catalog())) return "cost";
-        card_rules::pay(s, actor, fee, &catalog()); card.analysisLoad += fee;
-        ResourceRules::increasedLoad(s, catalog(), actor, fee);
+        card_rules::pay(s, actor, fee, &catalog()); ResourceRules::addBoundLoad(s, catalog(), id, fee, false);
         if (s.result != -1) return {};
         card.faceDown = false; card.settingPaid = fee; card.analysisProgress = 0;
         if (hasCapability(def, Capability::GreatStorm)) {
@@ -476,7 +475,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
          std::holds_alternative<FlipAmbush>(command) || std::holds_alternative<PreloadWord>(command)) &&
         hasCapability(def, Capability::Unique))
         for (const auto &[id, other] : s.cards)
-            if (id != cardId && other.owner == actor && other.definition == c.definition &&
+            if (id != cardId && controllerOf(other) == actor && other.definition == c.definition &&
                 (other.zone == Zone::Analysis || other.zone == Zone::Casting))
                 return "unique: 己方场上已存在同名唯一卡牌";
     const auto activationAllowed = [&] {
@@ -505,7 +504,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         card_rules::pay(s, actor, mana, &catalog());
         StateMaintenance::check(s, catalog());
         if (s.result != -1) return true;
-        if (load > 0) { c.analysisLoad += load; ResourceRules::increasedLoad(s, catalog(), actor, load); }
+        if (load > 0) ResourceRules::addBoundLoad(s, catalog(), cardId, load, false);
         s.events.push_back({"pay", "支付魔素", -1, cardId, mana});
         return true;
     };
@@ -556,7 +555,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
     };
     auto paySpellCost = [&](CardId material) {
         if (discardSpellSearch) {
-            if (material) { StateMaintenance::leave(s, material, &catalog()); c.targets = {material}; }
+            if (material) { StateMaintenance::leave(s, material, &catalog()); c.paidDiscard = material; c.targets = {material}; }
         } else card_rules::payExtraCost(s, catalog(), actor, cardId, material);
     };
     if (const auto *cmd = std::get_if<ActivateAbility>(&command)) {
@@ -741,9 +740,9 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         }
         c.spell = def.analysisTurns <= 0 ? SpellState::Ready : SpellState::Analyzing;
         c.analysisStarted = pl.ownTurn; c.targetCard = cmd->target; c.targets = cmd->targets;
+        settingCompletedV253(cardId, cmd->formation);
         if (c.spell == SpellState::Ready) analysisCompletedV2(cardId);
         quickAnalysisV2(cardId, cmd->formation);
-        settingCompletedV253(cardId, cmd->formation);
         {
             ChainLink setup;
             setup.kind = LinkKind::Setup;
@@ -763,6 +762,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         place(cmd->formation); c.faceDown = true; c.wasAmbushed = true;
         c.publiclyRevealed = false;
         c.ambushedTurn = s.globalTurn; c.spell = SpellState::None;
+        if (catalog().mechanicsRevision >= 11) spell_rules::setup(s, catalog(), cardId, true);
         s.events.push_back({"ambush", "盖伏法术", -1, cardId});
         actionTimingV2(); return {};
     }
@@ -808,7 +808,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = card_rules::detachCost(def) ? std::vector<CardId>{} : cmd->targets;
         paySpellCost(cmd->discard);
         c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
-        c.payments.push_back({pl.ownTurn, fee, fee, false});
+        c.payments.push_back({pl.ownTurn, fee, fee * spell_rules::loadMultiplier(s, actor), false});
         castingTraitsV2(cardId);
         beginEffect(cardId, AfterEffect::Spell); return {};
     }
@@ -834,7 +834,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = card_rules::detachCost(def) ? std::vector<CardId>{} : cmd->targets;
         paySpellCost(cmd->discard);
         c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
-        c.payments.push_back({pl.ownTurn, fee, fee, false});
+        c.payments.push_back({pl.ownTurn, fee, fee * spell_rules::loadMultiplier(s, actor), false});
         analysisCompletedV2(cardId); castingTraitsV2(cardId);
         beginEffect(cardId, AfterEffect::Spell); return {};
     }

@@ -21,14 +21,12 @@
     {
       "kind": "setup_damage",
       "amount": 1,
-      "damageType": "poison",
-      "recipient": "opponent",
-      "expires": "own_draw"
+      "damageType": "poison"
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",

@@ -109,11 +109,24 @@ void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const Le
                 case ChoiceMode::HeartRecover: label = "将风暴卡放回牌库"; break;
                 case ChoiceMode::ArcanaDeathNecrotic: label = "选择恶咒伤害"; break;
                 case ChoiceMode::ArcanaDeathRadiant: label = "选择光耀伤害"; break;
+                case ChoiceMode::SpellFirst:
+                case ChoiceMode::SpellSecond:
+                case ChoiceMode::SpellThird: {
+                    const auto kind = s.effect->item.effects.at(s.effect->cursor).kind;
+                    const auto index = id - static_cast<unsigned>(ChoiceMode::SpellFirst);
+                    if (kind == EffectKind::BlessingChoice)
+                        label = std::array<const char *, 3>{"恢复2点生命值", "清除至多2点荷载", "获得1点魔素"}[index];
+                    else if (kind == EffectKind::CalamityChoice)
+                        label = std::array<const char *, 3>{"对对方造成2点暗蚀伤害", "对方获得2点独立荷载", "对方魔素减少1点"}[index];
+                    else label = std::array<const char *, 3>{"将对方卡组顶1张卡送灰", "将对方解析区1张法术送灰", "由对方将1张手卡送灰"}[index];
+                    break;
+                }
                 default: label = "选择" + damageName(static_cast<DamageType>(id - static_cast<unsigned>(ChoiceMode::DamageTypeBase))) + "伤害"; break;
                 }
             } else if (option.kind == ChoiceKind::Trigger) {
                 for (const auto &trigger : s.queue.items) if (trigger.id == id)
-                    label = "结算被动触发 " + catalog().at(s.cards.at(trigger.source).definition).name;
+                    label = trigger.damageAmount > 0 ? "处理受伤响应" :
+                        "结算被动触发 " + catalog().at(s.cards.at(trigger.source).definition).name;
             } else if (d.kind == DecisionKind::ReturnSpell) {
                 for (int ring = 0; ring < Rules::rings(s, catalog(), id); ++ring) {
                     bool occupied = false;

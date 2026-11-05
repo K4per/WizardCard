@@ -9,7 +9,7 @@
   "cost": 20,
   "castCost": 2,
   "analysisTurns": 2,
-  "speed": 3,
+  "speed": 2,
   "text": "对对方造成15点火焰伤害。那之后，可以销毁对方1张阵法卡上的全部法术卡。己方灰烬区每存在1张塑能派系法术卡，此法术卡的设置费用-1。",
   "effects": [
     {
@@ -22,9 +22,9 @@
       "kind": "destroy_formation_spells"
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",

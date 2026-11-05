@@ -76,6 +76,10 @@ void StateMaintenance::leave(MutationContext &s, CardId id, const CardCatalog *c
         c.analysisLoad = 0;
         c.castLoad = 0;
         c.remaining = 0;
+        c.paidDiscard = 0; c.damageCounter = 0;
+        s.modifiers.erase(std::remove_if(s.modifiers.begin(), s.modifiers.end(), [&](const SpellModifier &m) {
+            return m.target == source && (m.kind == ModifierKind::HalfRings || m.kind == ModifierKind::BorrowControl);
+        }), s.modifiers.end());
         c.faceDown = false;
         c.publiclyRevealed = false;
         c.ringIndex = -1;

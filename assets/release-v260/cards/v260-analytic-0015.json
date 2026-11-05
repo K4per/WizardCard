@@ -13,13 +13,13 @@
   "text": "选择对方场上1张阵法卡才能发动。直到下个己方准备阶段开始时，此阵法卡的环位减半。",
   "effects": [
     {
-      "kind": "halve_rings",
-      "amount": 1
+      "kind": "half_rings",
+      "amount": 0
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -38,6 +38,6 @@
   "migration": {
     "previousId": null
   },
-  "target": "enemy_card",
+  "target": "enemy_formation",
   "level": 3
 }

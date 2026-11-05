@@ -176,9 +176,9 @@ Json HostSession::receive(const Json &j) {
         throw std::runtime_error("房间已结束");
     if (type == "Hello") {
         auto expected = hello(content_);
-        for (const auto *k : {"protocol", "rules", "mechanics", "cards", "hash"})
+        for (const auto *k : {"protocol", "program", "rules", "mechanics", "cards", "hash"})
             if (j.at(k) != expected.at(k))
-                throw std::runtime_error("协议、规则或卡池版本不一致");
+                throw std::runtime_error("程序、协议、规则或卡池版本不一致");
         if (joined_)
             throw std::runtime_error("房间已满，请使用重连凭据");
         joined_ = true;
@@ -279,7 +279,7 @@ void GuestSession::receive(const Json &j) {
         room_ = j.at("room");
         if (j.value("resumed", false)) {
             resumed_ = true;
-            query_.reset(); queryResult_.reset();
+            queries_.clear();
         }
     } else if (type == "Joined") {
         session_ = j.at("session");
@@ -288,12 +288,16 @@ void GuestSession::receive(const Json &j) {
     } else if (type == "Resumed") {
         room_ = j.at("room");
         resumed_ = true;
-        query_.reset(); queryResult_.reset();
+        queries_.clear();
         receive(j.at("snapshot"));
         receive(j.at("events"));
     } else if (type == "Room") {
         if (j.at("session") != session_)
             throw std::runtime_error("房间会话不一致");
+        if (room_.value("reconnecting", false) != j.value("reconnecting", false) ||
+            room_.value("storageBlocked", false) != j.value("storageBlocked", false) ||
+            room_.value("technicalPaused", false) != j.value("technicalPaused", false))
+            queries_.clear();
         room_ = j;
     } else if (type == "StateSnapshot") {
         if (j.at("session") != session_)
@@ -304,7 +308,7 @@ void GuestSession::receive(const Json &j) {
         auto view = decodeView(j.at("view"), content_.catalog);
         if (started_ && revision == revision_ && view.clock.sequence < view_.clock.sequence)
             view.clock = view_.clock;
-        if (revision != revision_) { query_.reset(); queryResult_.reset(); }
+        if (revision != revision_ || technicalPaused_ != j.at("technicalPaused").get<bool>()) queries_.clear();
         view_ = std::move(view);
         technicalPaused_ = j.at("technicalPaused").get<bool>();
         revision_ = revision;
@@ -332,12 +336,17 @@ void GuestSession::receive(const Json &j) {
         } else if (batch.next > events_.next) throw std::runtime_error("event cursor gap");
     } else if (type == "ActionOptions") {
         if (j.at("session") != session_) throw std::runtime_error("query session mismatch");
-        if (query_ && query_->at("request") == j.at("request") &&
-            query_->at("generation") == j.at("generation") &&
-            query_->at("revision") == j.at("revision") && number(j.at("revision")) == revision_ &&
-            j.at("viewer") == view_.viewer && query_->at("decision") == j.at("decision") &&
-            number(j.at("decision")) == (view_.decision ? view_.decision->id : 0))
-            queryResult_ = decodeOptions(j.at("options"));
+        for (auto &query : queries_) {
+            const auto &request = query.request;
+            if (request.at("request") == j.at("request") &&
+                request.at("generation") == j.at("generation") &&
+                request.at("revision") == j.at("revision") && number(j.at("revision")) == revision_ &&
+                j.at("viewer") == view_.viewer && request.at("decision") == j.at("decision") &&
+                number(j.at("decision")) == (view_.decision ? view_.decision->id : 0)) {
+                query.result = decodeOptions(j.at("options"));
+                break;
+            }
+        }
     } else if (type == "Accepted" || type == "Rejected") {
         if (pending_ && pending_->at("request") == j.at("request")) {
             pending_.reset();
@@ -358,18 +367,29 @@ EventBatch GuestSession::eventsSince(std::uint64_t epoch, std::uint64_t cursor) 
 }
 std::optional<ActionOptions> GuestSession::queryResult(std::uint64_t generation, std::uint64_t revision,
                                                           const ActionIntent &intent) const {
-    if (!query_ || query_->at("generation") != std::to_string(generation) ||
-        query_->at("revision") != std::to_string(revision) || query_->at("intent") != encodeIntent(intent)) return {};
-    if (queryResult_) return queryResult_;
-    ActionOptions pending; pending.pending = true; return pending;
+    const auto encoded = encodeIntent(intent);
+    for (const auto &query : queries_) {
+        const auto &request = query.request;
+        if (request.at("generation") != std::to_string(generation) ||
+            request.at("revision") != std::to_string(revision) || request.at("intent") != encoded) continue;
+        if (query.result) return query.result;
+        ActionOptions pending; pending.pending = true; return pending;
+    }
+    return {};
 }
 Json GuestSession::query(std::uint64_t generation, std::uint64_t revision, const ActionIntent &intent) {
-    queryResult_.reset();
-    query_ = {{"type", "ActionQuery"}, {"session", session_}, {"request", std::to_string(nextQuery_++)},
+    // Availability discovery and the player's selection can be in flight together.
+    // Keep their replies separate, bounded to the current projection context.
+    if (!queries_.empty() && (queries_.front().request.at("generation") != std::to_string(generation) ||
+                             queries_.front().request.at("revision") != std::to_string(revision)))
+        queries_.clear();
+    if (queries_.size() >= 128) queries_.pop_front();
+    Json request = {{"type", "ActionQuery"}, {"session", session_}, {"request", std::to_string(nextQuery_++)},
               {"generation", std::to_string(generation)}, {"revision", std::to_string(revision)},
               {"decision", std::to_string(view_.decision ? view_.decision->id : 0)},
               {"intent", encodeIntent(intent)}};
-    return *query_;
+    queries_.push_back({request, {}});
+    return request;
 }
 Json GuestSession::command(const Command &c) {
     if (!started_ || pending_ || technicalPaused_)

@@ -13,19 +13,14 @@
   "text": "将1张法术卡从己方解析区送去灰烬区，选择1个目标才能发动。对其造成10点钝击伤害。",
   "effects": [
     {
-      "kind": "discard_analysis",
-      "amount": 1
-    },
-    {
       "kind": "damage",
       "amount": 10,
-      "damageType": "bludgeoning",
-      "recipient": "target"
+      "damageType": "bludgeoning"
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -45,5 +40,7 @@
     "previousId": null
   },
   "extraDiscard": 0,
-  "level": 3
+  "level": 3,
+  "target": "player",
+  "extraCost": "analysis_spell"
 }

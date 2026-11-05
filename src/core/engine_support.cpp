@@ -78,7 +78,8 @@ bool hasOverflow(const GameState &s, const CardCatalog &cat) {
 }
 bool cardTarget(TargetKind t) {
     return t == TargetKind::EmptyEnemyFormation || t == TargetKind::EnemyCard || t == TargetKind::OwnCard ||
-           t == TargetKind::AnyCard || t == TargetKind::OwnAnalyzingSpell || t == TargetKind::EnemyAshCard;
+           t == TargetKind::AnyCard || t == TargetKind::OwnAnalyzingSpell || t == TargetKind::EnemyAshCard ||
+           t == TargetKind::EnemyFormation || t == TargetKind::EnemyAnalysisSpell || t == TargetKind::EnemyAmbush;
 }
 std::vector<CardId> targetCards(CardId target, const std::vector<CardId> &targets) {
     return targets.empty() ? (target ? std::vector<CardId>{target} : std::vector<CardId>{}) : targets;

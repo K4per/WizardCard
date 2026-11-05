@@ -12,8 +12,8 @@ import tempfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "2.6.0-hotfix.1"
-CONTENT_HASH = "41eac6fc263abd5e"
+VERSION = "2.6.2"
+CONTENT_HASH = "cc7c6005e8f96820"
 
 
 def sha256(path):
@@ -45,9 +45,9 @@ def stage_release(build, output):
     dependencies = verify_binary(binary)
     catalog = json.loads((ROOT / "assets/release-v260/catalog.json").read_text(encoding="utf-8"))
     metadata = catalog["metadata"]
-    if (metadata.get("rulesVersion") != "2.6.0"
-            or metadata.get("cardSetVersion") != "2.6.0"
-            or metadata.get("mechanicsRevision") != 10):
+    if (metadata.get("rulesVersion") != "2.6.2"
+            or metadata.get("cardSetVersion") != "2.6.2"
+            or metadata.get("mechanicsRevision") != 11):
         raise ValueError("assets/release-v260 is not the approved production catalogue")
     aggregate = dict(metadata)
     aggregate["cards"] = [json.loads((ROOT / "assets/release-v260" / row["file"]).read_text(encoding="utf-8"))

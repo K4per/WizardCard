@@ -277,8 +277,8 @@ def main():
         parser.error("rooms must be 1..20 and duration at least one second")
     assets = options.assets.resolve()
     metadata = json.loads((assets / "catalog.json").read_text())["metadata"]
-    hello = {"type": "Hello", "protocol": 5, "rules": metadata["rulesVersion"],
-             "mechanics": metadata["mechanicsRevision"], "cards": metadata["cardSetVersion"], "hash": "41eac6fc263abd5e"}
+    hello = {"type": "Hello", "protocol": 5, "program": "2.6.2", "rules": metadata["rulesVersion"],
+             "mechanics": metadata["mechanicsRevision"], "cards": metadata["cardSetVersion"], "hash": "cc7c6005e8f96820"}
     main_deck = json.loads((assets / "deck.json").read_text())
     side = json.loads((assets / "side-deck.json").read_text())
     deck = {"baseFormation": side["initialFormation"],

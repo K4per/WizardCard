@@ -173,6 +173,8 @@ std::vector<std::string> cardTags(const CardDefinition &d) {
         tags.insert("解析减费");
     if (d.concentration)
         tags.insert("专注");
+    if (d.duration > 0) tags.insert("计时");
+    if (hasCapability(d, Capability::SetupDamage)) { tags.insert("伤害"); tags.insert(damageName(DamageType::Piercing)); }
     if (d.baseEligible)
         tags.insert("基础阵法");
     if (d.income || d.incomeBonus)
@@ -185,9 +187,19 @@ std::vector<std::string> cardTags(const CardDefinition &d) {
         for (const auto &e : list)
             switch (e.kind) {
             case EffectKind::Damage:
-            case EffectKind::ChooseDamage:
+            case EffectKind::BothDamage:
+            case EffectKind::WordCastDamage:
+            case EffectKind::SetupDamage:
                 tags.insert("伤害");
                 tags.insert(damageName(e.damageType));
+                break;
+            case EffectKind::ReflectDamage:
+                tags.insert("伤害"); tags.insert(damageName(DamageType::Fire)); break;
+            case EffectKind::ChooseDamage:
+                tags.insert("伤害");
+                for (const auto type : {DamageType::Acid, DamageType::Cold, DamageType::Fire,
+                     DamageType::Lightning, DamageType::Poison, DamageType::Thunder}) tags.insert(damageName(type));
+                if (d.type == CardType::Word) tags.insert(damageName(DamageType::Radiant));
                 break;
             case EffectKind::Heal:
                 tags.insert("回复");

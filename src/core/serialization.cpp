@@ -16,7 +16,8 @@ std::vector<std::vector<Effect>> GameEngine::effectSequences() const {
 std::string GameEngine::stateKey(bool logical, bool compactEffects, bool currentFormat) const {
     const auto &s = state_;
     std::ostringstream o;
-    o << (currentFormat ? "wizardcard-state-v6:" : "alpha-v2-final:")
+    const bool v262 = catalog().mechanicsRevision >= 11;
+    o << (currentFormat ? (v262 ? "wizardcard-state-v7:" : "wizardcard-state-v6:") : "alpha-v2-final:")
           << s.players[0].exhaustion << ',' << s.players[1].exhaustion << ';';
     o << s.active << ',' << s.first << ',' << static_cast<int>(s.phase) << ','
       << static_cast<int>(s.phaseStep) << ',' << static_cast<int>(s.flow) << ',' << s.result << ',' << s.rng
@@ -110,6 +111,7 @@ std::string GameEngine::stateKey(bool logical, bool compactEffects, bool current
         o << "v2:" << c.analysisProgress << ',' << c.fieldOrder << ',' << c.ringIndex << ','
               << c.wasAmbushed << ',' << c.sourceRingIndex << ':';
         if (c.publiclyRevealed) o << "shown:";
+        if (v262) o << "v262:" << c.paidDiscard << ',' << c.damageCounter << ':';
         if (c.siquePartner) o << "pair:" << c.siquePartner << ','
             << (logical ? c.siquePairTurn == s.globalTurn : c.siquePairTurn) << ':';
         for (const auto &pay : c.payments)
@@ -121,9 +123,21 @@ std::string GameEngine::stateKey(bool logical, bool compactEffects, bool current
             o << "storm:" << c.stormPoints << ',' << c.stormReleaseProgress << ';';
         o << ';';
     }
-    for (const auto &t : s.temporary)
+    for (const auto &t : s.temporary) {
         o << 'L' << (logical ? 0 : t.id) << ',' << t.owner << ',' << t.source << ',' << t.amount << ','
           << t.expiryTurn << ',' << t.independent << ',' << t.sourceBound << ';';
+        if (v262) o << t.expiresAtEnd << ';';
+    }
+    if (v262) {
+        for (const auto &m : s.modifiers)
+            o << "M:" << static_cast<int>(m.kind) << ',' << m.source << ',' << m.target << ',' << m.owner << ','
+              << m.player << ',' << m.amount << ',' << static_cast<int>(m.damageType) << ',' << static_cast<int>(m.expiry)
+              << ',' << (logical ? static_cast<std::int64_t>(m.expiresTurn) - static_cast<std::int64_t>(s.globalTurn) : m.expiresTurn)
+              << ',' << m.expiresOwnTurn << ',' << m.returnHost << ',' << m.returnRing << ',' << m.returnController << ';';
+        o << "extra-turns:";
+        for (auto p : s.extraTurns) o << p << ',';
+        o << ';';
+    }
     for (const auto &t : s.temporaryLives)
         o << 'H' << (logical ? 0 : t.id) << ',' << t.owner << ',' << t.source << ',' << t.amount << ','
           << t.expiryOwnTurn << ',' << (logical ? 0 : t.acquiredTurn) << ',' << static_cast<int>(t.acquiredPhase) << ';';
@@ -141,6 +155,7 @@ std::string GameEngine::stateKey(bool logical, bool compactEffects, bool current
           << ',' << t.targetPlayer << ',' << static_cast<int>(t.target) << ',' << t.requiresSource << ','
           << linkId(t.targetLink) << ':';
         if (currentFormat) o << "targets:" << t.targetCards.size() << ':';
+        if (v262) o << "damage:" << t.damageAmount << ':';
         for (auto id : t.targetCards) o << id << ',';
         o << ':';
         if (compactEffects) o << "effects-hash:" << t.effectsKey() << ',' << t.effects.size();
@@ -210,7 +225,7 @@ std::string GameEngine::legacyDigest() const {
 std::string GameEngine::digest() const {
     std::ostringstream out;
     const auto state = canonicalState();
-    out << "wizardcard-digest-v2:" << state.size() << ':' << state;
+    out << (catalog().mechanicsRevision >= 11 ? "wizardcard-digest-v3:" : "wizardcard-digest-v2:") << state.size() << ':' << state;
     if (state_.payment && state_.payment->previousDecision) {
         const auto &d = *state_.payment->previousDecision;
         out << "previous_decision:" << d.id << ',' << d.player << ',' << static_cast<int>(d.kind) << ',' << d.mayPass << ':';

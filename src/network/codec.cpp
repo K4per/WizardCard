@@ -6,17 +6,19 @@
 #include <random>
 #include <sstream>
 namespace wizard {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Effect, kind, amount, damageType, recipient)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(Effect, kind, amount, damageType, recipient, semantic)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Payment, turn, paid, load, canceled)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(CardInstance, id, definition, owner, controller, zone, spell, host, sourceFormation,
                                    targetCard, targetPlayer, base, analysisStarted, remaining, analysisLoad,
                                    castLoad, canceledTurn, payments, targets, settingPaid, concentrationCost, stormPoints,
                                    stormReleaseProgress,
                                    faceDown, publiclyRevealed, ambushedTurn, quickAnalysisTurn, stormAbilityTurn, analysisProgress, fieldOrder,
-                                   ringIndex, wasAmbushed, sourceRingIndex)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLoad, id, owner, source, amount, expiryTurn, independent,
-                                   sourceBound)
+                                   ringIndex, wasAmbushed, sourceRingIndex, paidDiscard, damageCounter)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(TemporaryLoad, id, owner, source, amount, expiryTurn, independent,
+                                   sourceBound, expiresAtEnd)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLife, id, owner, source, amount, expiryOwnTurn, acquiredTurn, acquiredPhase)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(SpellModifier, kind, source, target, owner, player, amount,
+    damageType, expiry, expiresTurn, expiresOwnTurn, returnHost, returnRing, returnController)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PlayerView, life, mana, load, capacity, handCount, deckCount, ownTurn,
                                    actionsPlayed, temporaryLife, blockedActionTurn, resistances, immunities,
                                    sideDeckCount, exhaustion, lifeLimit, sevenMode)
@@ -24,8 +26,8 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MatchClockView, enabled, running, remainingMs
 void to_json(Json &j, const ChoiceValue &value) { j = encodeChoice(value); }
 void from_json(const Json &j, ChoiceValue &value) { value = decodeChoice(j); }
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PendingDecision, id, player, kind, options, mayPass)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Trigger, id, batch, owner, source, targetCard, targetPlayer, effects,
-                                   target, requiresSource, targetLink, targetCards)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(Trigger, id, batch, owner, source, targetCard, targetPlayer, effects,
+                                   target, requiresSource, targetLink, targetCards, damageAmount)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChainLink, id, kind, item, canceled, sourceLost, ability, paymentIndex,
                                    preparationLoad, paid, addedLoad, discarded, speed, castCost)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChainState, id, window, mode, initiator, priority, passes, links,
@@ -36,7 +38,7 @@ namespace {
 bool wide(const std::string &k) {
     return k == "id" || k == "decision" || k == "gate" || k == "link" || k == "targetLink" ||
            k == "phaseGate" || k == "ambushedTurn" || k == "eventBase" || k == "fieldOrder" ||
-           k == "globalTurn" || k == "sequence";
+           k == "globalTurn" || k == "sequence" || k == "expiresTurn";
 }
 void transform(Json &j, bool encode) {
     if (j.is_array())
@@ -92,6 +94,7 @@ Json encodeView(const GameView &v) {
     Json j = {{"viewer", v.viewer},       {"active", v.active},       {"phase", v.phase},
               {"result", v.result},       {"players", v.players},     {"temporary", v.temporary},
               {"temporaryLives", v.temporaryLives},
+              {"modifiers", v.modifiers}, {"extraTurns", v.extraTurns},
               {"phaseStep", v.phaseStep}, {"phaseGate", v.phaseGate}, {"triggers", v.triggers},
               {"opening", v.opening}, {"initialFormationConfirmed", v.initialFormationConfirmed},
               {"initialFormation", v.initialFormation}, {"globalTurn", v.globalTurn}, {"clock", v.clock},
@@ -109,7 +112,7 @@ Json encodeView(const GameView &v) {
                               {"occupiedRings", c.occupiedRings},
                               {"turnsToReady", c.turnsToReady},
                               {"effectiveCastCost", c.effectiveCastCost},
-                              {"effectiveSettingCost", c.effectiveSettingCost}});
+                              {"effectiveSettingCost", c.effectiveSettingCost}, {"statuses", c.statuses}});
     transform(j, true);
     return j;
 }
@@ -132,6 +135,8 @@ GameView decodeView(const Json &raw, const CardCatalog &catalog) {
     j.at("temporary").get_to(v.temporary);
     if (j.contains("temporaryLives"))
         j.at("temporaryLives").get_to(v.temporaryLives);
+    if (j.contains("modifiers")) j.at("modifiers").get_to(v.modifiers);
+    if (j.contains("extraTurns")) j.at("extraTurns").get_to(v.extraTurns);
     j.at("phaseStep").get_to(v.phaseStep);
     j.at("phaseGate").get_to(v.phaseGate);
     j.at("triggers").get_to(v.triggers);
@@ -158,6 +163,7 @@ GameView decodeView(const Json &raw, const CardCatalog &catalog) {
         c.turnsToReady = x.at("turnsToReady");
         c.effectiveCastCost = x.at("effectiveCastCost");
         c.effectiveSettingCost = x.at("effectiveSettingCost");
+        c.statuses = x.value("statuses", std::vector<std::string>{});
         v.cards.push_back(std::move(c));
     }
     return v;

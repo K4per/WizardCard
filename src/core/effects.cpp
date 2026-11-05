@@ -1,6 +1,5 @@
 #include "wizard/core/rules.hpp"
-#include "wizard/core/card_rules.hpp"
-#include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include "wizard/core/card_rules.hpp"
 #include <algorithm>
 #include <cstdlib>
@@ -31,18 +30,6 @@ bool protectedFromCardEffect(const GameState &s, const CardCatalog &cat, CardId 
     const auto host = s.cards.find(card->second.host ? card->second.host : card->second.sourceFormation);
     return host != s.cards.end() && host->second.zone == Zone::Analysis &&
            hasCapability(cat.at(host->second.definition), Capability::StormHeart);
-}
-int actualLinkedSpellCost(const GameState &s, const ChainLink &link) {
-    const auto source = s.cards.find(link.item.source);
-    if (source == s.cards.end()) return std::max(0, link.castCost);
-    const auto &card = source->second;
-    const int setting = std::max(0, card.settingPaid);
-    int activation = 0;
-    if (link.paymentIndex >= 0 && static_cast<std::size_t>(link.paymentIndex) < card.payments.size())
-        activation = card.payments[static_cast<std::size_t>(link.paymentIndex)].paid;
-    else if (!card.payments.empty())
-        activation = card.payments.back().paid;
-    return setting + std::max(0, activation);
 }
 
 }
@@ -90,6 +77,12 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         return;
     }
     switch (e.kind) {
+    case EffectKind::BothDamage:
+        for (int player = 0; player < 2 && s.result == -1; ++player) {
+            auto damage = t; damage.targetPlayer = player;
+            apply(s, cat, damage, {EffectKind::Damage, e.amount, e.damageType});
+        }
+        break;
     case EffectKind::Damage: {
         auto adjusted = e;
         {
@@ -99,17 +92,22 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
                 cat.at(source->second.definition).school == "evocation") ++adjusted.amount;
 
         }
+        for (const auto &m : s.modifiers)
+            if (m.kind == ModifierKind::DamageTakenBonus && m.player == p) adjusted.amount += m.amount;
         int amount = Rules::damage(s, cat, p, adjusted);
         if (card_rules::damageImmune(s, cat, p)) amount = 0;
         if (s.players[p].nextDamageImmune && adjusted.amount > 0) {
             s.players[p].nextDamageImmune = false;
             s.events.push_back({"damage_prevented", "教皇：免疫本次伤害", -1, t.source});
         }
+        if (spell_rules::preventLethal(s, cat, p, amount)) break;
         const int shield = std::min(amount, s.players[p].temporaryLife);
         ResourceRules::absorbTemporaryLife(s, p, shield);
         const int actualDamage = amount - shield;
-        s.players[p].life -= actualDamage;
+        s.players[p].life = cat.mechanicsRevision >= 11 ? std::max(0, s.players[p].life - actualDamage) : s.players[p].life - actualDamage;
         card_rules::damaged(s, cat, p, t.source, actualDamage);
+        if (cat.mechanicsRevision >= 11)
+            spell_rules::damaged(s, cat, p, t, std::min(amount, previousLife + shield), e.damageType);
         if (amount > 0 && e.damageType == DamageType::Fire) card_rules::onFireDamage(s, cat);
         break;
     }
@@ -123,21 +121,63 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         break;
     case EffectKind::GrantResistance:
         break; // Successful release installs the passive resistance on the active spell.
+    case EffectKind::SetupDelay:
+        spell_rules::addModifier(s, t, ModifierKind::SetupDelay, ModifierExpiry::TurnEnd, e.amount, 1 - t.owner); break;
+    case EffectKind::BlockConcentration:
+        spell_rules::addModifier(s, t, ModifierKind::BlockConcentration, ModifierExpiry::NextMain); break;
+    case EffectKind::WordCastDamage:
+        spell_rules::addModifier(s, t, ModifierKind::WordCastDamage, ModifierExpiry::NextDraw, e.amount, 1 - t.owner, 0, e.damageType); break;
+    case EffectKind::SetupDamage:
+        spell_rules::addModifier(s, t, ModifierKind::SetupDamage, ModifierExpiry::NextDraw, e.amount, 1 - t.owner, 0, e.damageType); break;
+    case EffectKind::ExtraTurn:
+        for (int n = 0; n < e.amount; ++n) s.extraTurns.push_front(t.owner);
+        break;
+    case EffectKind::DoubleLoad:
+        spell_rules::addModifier(s, t, ModifierKind::DoubleLoad, ModifierExpiry::NextTurnEnd, e.amount, t.owner); break;
+    case EffectKind::ProtectPlayer:
+        spell_rules::addModifier(s, t, ModifierKind::ProtectPlayer, ModifierExpiry::TurnEnd, 1, t.owner); break;
+    case EffectKind::BlockAnalytic:
+        spell_rules::addModifier(s, t, ModifierKind::BlockAnalytic, ModifierExpiry::NextDraw); break;
+    case EffectKind::DamageTakenBonus:
+        spell_rules::addModifier(s, t, ModifierKind::DamageTakenBonus, ModifierExpiry::TurnEnd, e.amount, 1 - t.owner); break;
+    case EffectKind::HalfRings:
+        if (s.cards.count(t.targetCard) && !protectedFromCardEffect(s, cat, t.targetCard))
+            spell_rules::addModifier(s, t, ModifierKind::HalfRings, ModifierExpiry::NextPrepare, 1, -1, t.targetCard);
+        break;
+    case EffectKind::InspectEnemyAmbushAll:
+        for (auto &[id, card] : s.cards)
+            if (controllerOf(card) != t.owner && card.zone == Zone::Analysis && card.faceDown) card.publiclyRevealed = true;
+        break;
+    case EffectKind::NegateSetupReturn:
+        if (s.chain) for (auto &link : s.chain->links)
+            if (link.id == t.targetLink && link.kind == LinkKind::Setup && s.cards.count(link.item.source)) {
+                link.canceled = true;
+                const auto id = link.item.source;
+                StateMaintenance::leave(s, id, &cat); s.cards.at(id).zone = Zone::Hand;
+            }
+        break;
+    case EffectKind::ReflectDamage:
+        if (s.chain && !s.chain->links.empty()) {
+            auto damage = t; damage.targetPlayer = 1 - t.owner;
+            apply(s, cat, damage, {EffectKind::Damage, s.chain->links.front().item.damageAmount, DamageType::Fire});
+        }
+        break;
+    case EffectKind::ChooseResistance: case EffectKind::BorrowAnalysis: case EffectKind::InspectEnemyDeck:
+    case EffectKind::CommandChoice: case EffectKind::BlessingChoice: case EffectKind::CalamityChoice:
+    case EffectKind::HandOrDamage: case EffectKind::InspectAndRoute:
+        throw std::logic_error("spell effect requires a decision");
     case EffectKind::ShieldForTurn:
         s.players[p].damageReduction = std::max(s.players[p].damageReduction, e.amount);
         s.players[p].forceDamageReduction = std::max(s.players[p].forceDamageReduction, 2 * e.amount);
         break;
     case EffectKind::AddSourceTemporary:
-        s.temporary.push_back({s.nextLoad++, p, t.source, e.amount, 0, false, true});
-        ResourceRules::increasedLoad(s, cat, p, e.amount);
+        ResourceRules::grantLoad(s, cat, {s.nextLoad++, p, t.source, e.amount, 0, false, true});
         break;
     case EffectKind::AccelerateAnalysis: {
         if (!Rules::targetValid(s, TargetKind::OwnAnalyzingSpell, t.owner, t.targetCard)) break;
         auto &c = s.cards.at(t.targetCard);
         card_rules::advanceAnalysis(s, cat, c.id, std::max(1, e.amount));
-        s.temporary.push_back(
-            {s.nextLoad++, t.owner, t.source, c.settingPaid, s.players[t.owner].ownTurn + 1});
-        ResourceRules::increasedLoad(s, cat, t.owner, c.settingPaid);
+        ResourceRules::grantLoad(s, cat, {s.nextLoad++, t.owner, t.source, c.settingPaid, s.players[t.owner].ownTurn + 1});
         break;
     }
     case EffectKind::Conceal: {
@@ -281,13 +321,10 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         }
         break;
     case EffectKind::AddTemporary:
-        s.temporary.push_back(
-            {s.nextLoad++, p, t.source, e.amount, s.players[p].ownTurn + (p == s.active ? 0 : 1)});
-        ResourceRules::increasedLoad(s, cat, p, e.amount);
+        ResourceRules::grantLoad(s, cat, {s.nextLoad++, p, t.source, e.amount, s.players[p].ownTurn + (p == s.active ? 0 : 1)});
         break;
     case EffectKind::AddIndependent:
-        s.temporary.push_back({s.nextLoad++, p, t.source, e.amount, 0, true});
-        ResourceRules::increasedLoad(s, cat, p, e.amount);
+        ResourceRules::grantLoad(s, cat, {s.nextLoad++, p, t.source, e.amount, 0, true});
         break;
     case EffectKind::ClearIndependent:
         s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(),

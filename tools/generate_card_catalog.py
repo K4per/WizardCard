@@ -69,8 +69,8 @@ def main():
         assert initial["level"] == 1 and any(row["id"] == initial["id"] for row in preset["sideCards"])
     version = catalog["cardSetVersion"]
     intro = f"规则 {catalog['rulesVersion']} · 卡池 {version} · {len(cards)} 种正式卡牌 · {len(presets)} 套 40+10 预设。"
-    rules_link = "releases/2.6.0.md" if version == "2.6.0" else "alpha-v2.5-rules.md"
-    rules_label = "Alpha v2.6.0" if version == "2.6.0" else "Alpha v2.5"
+    rules_link = f"releases/{version}.md" if version.startswith("2.6.") else "alpha-v2.5-rules.md"
+    rules_label = f"Alpha v{version}" if version.startswith("2.6.") else "Alpha v2.5"
     md = ["# 巫师牌卡池图鉴", "", intro, "", f"本页由正式定义生成。规则见 [{rules_label}]({rules_link})，卡面召唤条件由正式字段生成，效果以正式规则为准。", "", "编号前两位：01 阵法、02 解析、03 言灵、04 咒符、05 符文；后四位为该类序号。稳定内容 ID 用于存档和资源关联。", "", "| 编号 | 卡名 | 类型 |", "|---|---|---|"]
     sections = []
     for card in cards:

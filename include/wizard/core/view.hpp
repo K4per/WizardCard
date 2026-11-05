@@ -35,6 +35,7 @@ struct CardView {
     bool hidden{};
     int effectiveCastCost{};
     int effectiveSettingCost{};
+    std::vector<std::string> statuses;
 };
 // Session-owned projection. The rule kernel never derives elapsed wall time.
 struct MatchClockView {
@@ -52,6 +53,8 @@ struct GameView {
     std::vector<CardView> cards;
     std::vector<TemporaryLoad> temporary;
     std::vector<TemporaryLife> temporaryLives;
+    std::vector<SpellModifier> modifiers;
+    std::deque<PlayerId> extraTurns;
     std::optional<PendingDecision> decision;
     PhaseStep phaseStep{};
     DecisionId phaseGate{};

@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 import shutil
+from alpha_v262_patch import apply_release
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -100,7 +101,8 @@ def promote(source: Path, output: Path) -> dict[str, object]:
         "sourceAggregateSha256": digest(source / "cards.json"),
     }
     write(output / "RELEASE.json", release)
-    return release
+    apply_release(output)
+    return read(output / "RELEASE.json")
 
 
 def main() -> int:

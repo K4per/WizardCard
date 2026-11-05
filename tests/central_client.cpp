@@ -107,6 +107,59 @@ TEST_CASE("central reconnect retries while the old socket is still bound", "[cen
     REQUIRE_FALSE(f.owner.ended());
 }
 
+TEST_CASE("central availability and opening queries coexist without repeated network requests", "[central][client]") {
+    Clients f; f.start();
+    const auto revision = f.owner.revision();
+    ActionIntent availability, opening;
+    opening.selections.push_back({ActionField::Operation,
+        std::to_string(static_cast<unsigned>(CommandKind::SelectInitialFormation))});
+    REQUIRE(f.owner.queryActions(0, 1, revision, availability).pending);
+    REQUIRE(f.owner.queryActions(0, 1, revision, opening).pending);
+    const auto requests = f.owner.drainTransport();
+    REQUIRE(requests.size() == 2);
+    for (unsigned poll = 0; poll < 100; ++poll) {
+        CHECK(f.owner.queryActions(0, 1, revision, availability).pending);
+        CHECK(f.owner.queryActions(0, 1, revision, opening).pending);
+    }
+    REQUIRE(f.owner.drainTransport().empty());
+
+    // Replies may arrive after another caller has queried a different intent.
+    f.deliver(f.authority.receive(1, requests.back()));
+    f.deliver(f.authority.receive(1, requests.front()));
+    for (unsigned poll = 0; poll < 100; ++poll) {
+        const auto available = f.owner.queryActions(0, 1, revision, availability);
+        const auto selected = f.owner.queryActions(0, 1, revision, opening);
+        CHECK_FALSE(available.pending);
+        CHECK_FALSE(selected.pending);
+        REQUIRE(available.error.empty());
+        REQUIRE(selected.error.empty());
+        CHECK_FALSE(available.options.empty());
+        CHECK_FALSE(selected.options.empty());
+    }
+    CHECK(f.owner.drainTransport().empty());
+    REQUIRE(f.owner.submit(Surrender{}).accepted);
+    f.pump();
+    REQUIRE(f.owner.revision() != revision);
+    CHECK(f.owner.queryActions(0, 1, f.owner.revision(), availability).pending);
+}
+
+TEST_CASE("central queries recover when the other seat resumes without a revision change", "[central][client]") {
+    Clients f; f.start();
+    const auto revision = f.guest.revision();
+    REQUIRE(f.guest.queryActions(1, 1, revision, {}).pending);
+    const auto requests = f.guest.drainTransport();
+    REQUIRE(requests.size() == 1);
+    f.owner.transportLost("manual reconnect");
+    f.deliver(f.authority.disconnect(1));
+    f.deliver(f.authority.receive(2, requests.front()));
+    REQUIRE(f.guest.blocked());
+    f.owner.transportOpened(); f.pump(3);
+    REQUIRE_FALSE(f.guest.blocked());
+    REQUIRE(f.guest.revision() == revision);
+    REQUIRE(f.guest.queryActions(1, 1, revision, {}).pending);
+    REQUIRE(f.guest.drainTransport().size() == 1);
+}
+
 TEST_CASE("central client creates and joins through an injected transport and resumes the same seat", "[central][client]") {
     auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/release-v260");
     unsigned serial = 0, seed = 100;

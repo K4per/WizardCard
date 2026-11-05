@@ -1,9 +1,9 @@
 {
   "format": 1,
   "metadata": {
-    "rulesVersion": "2.6.0",
-    "cardSetVersion": "2.6.0",
-    "mechanicsRevision": 10,
+    "rulesVersion": "2.6.2",
+    "cardSetVersion": "2.6.2",
+    "mechanicsRevision": 11,
     "baseLoadCapacity": 2,
     "status": "released"
   },

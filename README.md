@@ -1,8 +1,10 @@
 # 巫师牌 / WizardCard
 
-**Alpha v2.6.0-hotfix.1**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序版本为 `2.6.0-hotfix.1`，规则与卡池版本为 `2.6.0`，机制修订为 `10`。
+**Alpha v2.6.2**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序、规则与卡池版本均为 `2.6.2`，机制修订为 `11`。
 
-正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.6.0发行说明](docs/releases/2.6.0.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本次 hotfix 说明见[2.6.0-hotfix.1发行说明](docs/releases/2.6.0-hotfix.1.md)与[交付报告](docs/reports/2.6.0-hotfix.1.md)；历史文档与报告集中在[归档说明](docs/archive/README.md)，卡池导入源快照位于[卡池源归档](assets/source-archive/card-pool-snapshots.zip)。
+Alpha v2.6.2 修复11月4日至5日反馈中的35张卡牌与规则、交互问题，并保留中央联机断线修复。计时在己方结束阶段先触发、再递减；真实伤害绕过临时生命与普通减伤。详见[发行说明](docs/releases/2.6.2.md)。
+
+正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.6.2发行说明](docs/releases/2.6.2.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本次便携包说明见[2.6.2发行说明](docs/releases/2.6.2.md)；历史文档与报告集中在[归档说明](docs/archive/README.md)，卡池导入源快照位于[卡池源归档](assets/source-archive/card-pool-snapshots.zip)。
 
 ## 运行便携包
 
@@ -44,12 +46,12 @@ OpenGL 3.3 驱动及桌面图形/音频库；中文字体随包发布。安装�
 
 设置包含总音量、音效音量、窗口/无边框/全屏、分辨率、精简动态效果、自动阶段推进及场地背景。提供1280×720、1600×900、1440×900、1600×1000、1920×1080和2560×1440，也支持自由缩放窗口；全局字号支持90%、100%（默认）、110%、120%。修改后显式保存。无强制选择的非主要阶段可自动推进，主要阶段仍需显式结束。
 
-Windows Godot 默认数据目录为 `user://alpha-v2-frontend`，对应 `%APPDATA%/Godot/app_userdata/WizardCard Alpha v2.6.0-hotfix.1/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
+Windows Godot 默认数据目录为 `user://alpha-v2-frontend`，对应 `%APPDATA%/Godot/app_userdata/WizardCard Alpha v2.6.1/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
 
 Linux 默认使用 `$XDG_DATA_HOME/WizardCard`，未设置或为空时回退到
 `$HOME/.local/share/WizardCard`，同样支持 `-- --user-data <目录>`。
 
-当前复盘格式5显式记录内容、命令与摘要 schema，并包含规则版本、卡池版本、内容哈希、种子、双方实际主卡组与副卡组、每条接受命令及状态摘要。只适配读取当前 `2.6.0-hotfix.1` 的格式5记录。离线对局在首条命令、之后每32条命令、终局或技术暂停时自动保存；离开和手动保存会完整落盘。自动保存失败会在后续操作中持续重试并显示错误。完整联机复盘在终局后开放。更早版本或内容不匹配的记录明确拒绝。旧牌组草稿可保留稳定ID修复；导入导出采用独立的 `wizardcard-deck` 格式1。复盘用于完整重放，不提供中断对局存档恢复。完整离线记录包含双方私有信息，玩家投影与日志按权限过滤；哈希用于复现校验。
+当前复盘格式5显式记录内容、命令与摘要 schema，并包含规则版本、卡池版本、内容哈希、种子、双方实际主卡组与副卡组、每条接受命令及状态摘要。只适配读取当前 `2.6.2` 的格式5记录（状态 `wizardcard-state-v7`、摘要 schema 3）。离线对局在首条命令、之后每32条命令、终局或技术暂停时自动保存；离开和手动保存会完整落盘。自动保存失败会在后续操作中持续重试并显示错误。完整联机复盘在终局后开放。更早版本或内容不匹配的记录明确拒绝。旧牌组草稿可保留稳定ID修复；导入导出采用独立的 `wizardcard-deck` 格式1。复盘用于完整重放，不提供中断对局存档恢复。完整离线记录包含双方私有信息，玩家投影与日志按权限过滤；哈希用于复现校验。
 
 ## 开发构建与验证
 

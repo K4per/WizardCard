@@ -13,17 +13,13 @@
   "text": "选择对方场上1张空白阵法卡才能发动。将1张阵法卡从副卡组送去灰烬区，销毁那张空白阵法卡。",
   "effects": [
     {
-      "kind": "discard_formation",
-      "amount": 1
-    },
-    {
       "kind": "destroy",
       "amount": 1
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -40,5 +36,7 @@
   "migration": {
     "previousId": "unravel"
   },
-  "level": 5
+  "level": 5,
+  "target": "empty_enemy_formation",
+  "extraCost": "side_formation"
 }

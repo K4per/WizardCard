@@ -3,6 +3,7 @@
 #include "wizard/room.hpp"
 #include <chrono>
 #include <atomic>
+#include <deque>
 #include <future>
 #include <memory>
 
@@ -102,8 +103,11 @@ class GuestSession {
     bool technicalPaused_{};
     EventBatch events_;
     std::uint64_t nextQuery_{1};
-    std::optional<Json> query_;
-    std::optional<ActionOptions> queryResult_;
+    struct Query {
+        Json request;
+        std::optional<ActionOptions> result;
+    };
+    std::deque<Query> queries_;
 
   public:
     explicit GuestSession(Content c) : content_(std::move(c)) {}

@@ -40,7 +40,7 @@ std::string zoneName(Zone p) {
         .at(static_cast<std::size_t>(p));
 }
 std::string windowName(ResponseWindow p) {
-    return std::array<const char *, 6>{"阶段开始", "阶段结束", "行动宣告", "准备施法", "释放法术", "被动触发"}
+    return std::array<const char *, 7>{"阶段开始", "阶段结束", "行动宣告", "准备施法", "释放法术", "被动触发", "受到伤害"}
         .at(static_cast<std::size_t>(p));
 }
 std::string linkName(LinkKind p) {

@@ -1,6 +1,6 @@
 # 中央游戏服务器部署
 
-服务器运行 Linux x86_64、C++17 权威服务，正式卡池固定为 `assets/release-v260`（规则和卡池 2.6.0、mechanics 10、hash `41eac6fc263abd5e`）。Debian 13 是交付基线；在 Arch 或其他系统构建的二进制必须先确认目标机的 glibc 与共享库版本兼容。
+服务器运行 Linux x86_64、C++17 权威服务，正式卡池固定为 `assets/release-v260`（程序、规则和卡池 2.6.2、mechanics 11、hash `cc7c6005e8f96820`）。Debian 13 是交付基线；在 Arch 或其他系统构建的二进制必须先确认目标机的 glibc 与共享库版本兼容。
 
 游戏 TLS 监听 TCP 24443。健康和就绪 HTTP 端口 24444 只绑定服务器 loopback，不应映射或放行到公网。NAT 的公网端口可以不同，客户端填写公网端口。当前部署已验证 `aq.rainplay.cn:23513` → 服务器 `24443`，主机名验证仍使用 `aq.rainplay.cn`。实际部署证据见 `docs/central-server-delivery.md`。
 
@@ -12,7 +12,7 @@
 cmake --preset server-release
 cmake --build --preset server-release --target wizard_server --parallel 2
 python tools/package_central_server.py --build build/server-release
-(cd dist && sha256sum -c WizardCard-CentralServer-2.6.0-hotfix.1-linux-x86_64.tar.gz.sha256)
+(cd dist && sha256sum -c WizardCard-CentralServer-2.6.2-linux-x86_64.tar.gz.sha256)
 ```
 
 要部署到 Debian 13，请在 Debian 13 x86_64 上直接构建，或使用 `deploy/Dockerfile` 的 Debian 13 构建阶段。Release 目录包含服务端、正式卡池、用户服务单元和校验清单，不包含 TLS 私钥。
@@ -22,9 +22,9 @@ python tools/package_central_server.py --build build/server-release
 在目标账户下解压归档，然后运行安装脚本：
 
 ```sh
-tar -xzf WizardCard-CentralServer-2.6.0-hotfix.1-linux-x86_64.tar.gz
-./WizardCard-CentralServer-2.6.0-hotfix.1-linux-x86_64/install-user-service.sh \
-  WizardCard-CentralServer-2.6.0-hotfix.1-linux-x86_64.tar.gz
+tar -xzf WizardCard-CentralServer-2.6.2-linux-x86_64.tar.gz
+./WizardCard-CentralServer-2.6.2-linux-x86_64/install-user-service.sh \
+  WizardCard-CentralServer-2.6.2-linux-x86_64.tar.gz
 ```
 
 编辑 `~/.config/wizardcard-central-server/server.env`，放置证书和私钥，并将私钥权限设为 `0600`。安装脚本保留旧 release 和历史房间数据；配置仍含示例路径时只安装 unit，不会启动服务。配置完成后：
@@ -44,6 +44,8 @@ SIGTERM 会停止新连接，将未完成房间记录为中止并尝试刷盘；
 ## 系统服务
 
 具备 sudo 时推荐独立的 `wizardcard` 无登录账户。验证下载的 `.sha256` 后，执行包中的 `sudo sh install-system-service.sh RELEASE.tar.gz`。安装器将版本存到 `/opt/wizardcard-central-server/releases/`，通过 `current` 切换版本，写入 `/etc/systemd/system/wizard-server.service`。证书与环境配置位于 `/etc/wizardcard/`，持久化数据位于 `/var/lib/wizardcard-central-server/`。
+
+升级前检查回环 `/ready` 的连接数和房间数；存在活局时等待自然结束。在短维护窗口停止服务，备份 `/etc/wizardcard/`、systemd unit 和 `/var/lib/wizardcard-central-server/`（备份限制为root可读），记录旧 `current`。安装后核对 `RELEASE.json`、二进制及内容清单、健康接口和日志，再使用相同版本客户端验证公网对局、重连和双方复盘。失败则停止新服务，恢复旧链接和配置并重启；需要恢复持久数据时先另存失败版本数据。逐次发布证据见 [2.6.2交付报告](reports/2.6.2.md)。
 
 首次安装后将证书和私钥设为 `root:wizardcard`、模式 `0640`，再执行 `sudo systemctl enable --now wizard-server`。用 `systemctl status wizard-server`、`journalctl -u wizard-server` 和回环 `/ready` 检查。服务以非 root 账户运行，仅允许写入数据目录，并限制 2 CPU/4 GiB。
 

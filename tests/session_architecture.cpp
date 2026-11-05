@@ -165,7 +165,7 @@ TEST_CASE("pre refactor current format four golden traces import without an old 
         CHECK(engine.legacyDigest() == record.at("finalDigest"));
     }
 }
-TEST_CASE("query responses are isolated from command sequences and discarded after newer intent or state", "[architecture][network]") {
+TEST_CASE("query responses are isolated by intent and command sequence and discarded after newer state", "[architecture][network]") {
     using namespace wizard::net;
     const auto content = currentContent(); HostSession host(content); GuestSession guest(content);
     guest.receive(host.receive(hello(content))); host.ready();
@@ -176,6 +176,8 @@ TEST_CASE("query responses are isolated from command sequences and discarded aft
     auto second = first; second.source = guest.view().cards.front().instance.id;
     const auto currentRequest = guest.query(7, guest.revision(), second);
     guest.receive(oldReply);
+    REQUIRE(guest.queryResult(7, guest.revision(), first));
+    CHECK_FALSE(guest.queryResult(7, guest.revision(), first)->pending);
     REQUIRE(guest.queryResult(7, guest.revision(), second)->pending);
     guest.receive(host.receive(currentRequest));
     CHECK_FALSE(guest.queryResult(7, guest.revision(), second)->pending);

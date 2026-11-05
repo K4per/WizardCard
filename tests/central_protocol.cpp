@@ -7,7 +7,7 @@ TEST_CASE("central handshake selects protocol five while diagnostic peers keep f
     REQUIRE(central::hello(content).at("protocol") == 5);
     REQUIRE(net::hello(content).at("protocol") == 4);
     REQUIRE(central::compatibilityError(content, central::hello(content)).empty());
-    for (const auto *key : {"protocol", "rules", "mechanics", "cards", "hash"}) {
+    for (const auto *key : {"protocol", "program", "rules", "mechanics", "cards", "hash"}) {
         auto incompatible = central::hello(content);
         incompatible[key] = "wrong";
         REQUIRE_FALSE(central::compatibilityError(content, incompatible).empty());
@@ -34,5 +34,5 @@ TEST_CASE("central handshake survives bytewise framing", "[central][protocol]") 
     }
     REQUIRE(received.size() == 1);
     REQUIRE(received.front().at("protocol") == 5);
-    REQUIRE(received.front().at("hash") == "41eac6fc263abd5e");
+    REQUIRE(received.front().at("hash") == content.catalog.contentHash);
 }

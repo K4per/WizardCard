@@ -17,9 +17,9 @@
       "amount": 2
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -38,5 +38,8 @@
   },
   "duration": 2,
   "targetCount": 2,
-  "level": 2
+  "level": 2,
+  "traits": [
+    "cloud_mist"
+  ]
 }

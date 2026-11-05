@@ -13,14 +13,13 @@
   "text": "此回合，对方受到的伤害+3。",
   "effects": [
     {
-      "kind": "increase_damage_taken",
-      "amount": 3,
-      "recipient": "opponent"
+      "kind": "damage_taken_bonus",
+      "amount": 3
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",

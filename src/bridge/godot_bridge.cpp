@@ -199,8 +199,10 @@ class WizardBridge : public godot::RefCounted {
     Dictionary network_transport_lost(const String &reason) {
         return bridgeCall([&] { return session_.networkTransportLost(utf8(reason)); });
     }
-    Dictionary network_transport_message(const Dictionary &message) {
-        return bridgeCall([&] { return session_.networkTransportMessage(json(message)); });
+    Dictionary network_transport_message(const String &message) {
+        // Godot's JSON parser converts protocol integers to doubles. Decode the
+        // original payload here so command validation retains exact JSON types.
+        return bridgeCall([&] { return session_.networkTransportMessage(Json::parse(utf8(message))); });
     }
     Dictionary network_transport_drain() { return bridgeCall([&] { return session_.networkTransportDrain(); }); }
 };

@@ -92,21 +92,34 @@ if(BUILD_TESTING AND GODOT_BIN)
   # The full 556-command bridge replay exercises every projected transition and
   # takes several minutes on the pinned Windows Godot runtime.
   set_tests_properties(godot_bridge_replay PROPERTIES FIXTURES_REQUIRED "godot_import;godot_reference" TIMEOUT 600)
+  # Editor binaries select debug extensions even when CTest runs Release.
+  # Isolate imports and point both feature tags at the target being tested.
+  set(frontend_dir "${CMAKE_CURRENT_BINARY_DIR}/godot-frontend-probe")
+  add_test(NAME godot_frontend_project COMMAND "${Python3_EXECUTABLE}"
+    ${CMAKE_CURRENT_SOURCE_DIR}/tools/godot_frontend_test_project.py
+    --source ${CMAKE_CURRENT_SOURCE_DIR}/godot --output ${frontend_dir}
+    --bridge $<TARGET_FILE:wizard_godot_bridge>)
+  set_tests_properties(godot_frontend_project PROPERTIES FIXTURES_SETUP frontend_project
+    RUN_SERIAL TRUE TIMEOUT 60)
   add_test(NAME godot_frontend_import COMMAND "${GODOT_BIN}" --headless
-    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --import --frame-delay 1000)
-  set_tests_properties(godot_frontend_import PROPERTIES FIXTURES_SETUP frontend_import
+    --path ${frontend_dir} --import --frame-delay 1000)
+  set_tests_properties(godot_frontend_import PROPERTIES FIXTURES_SETUP frontend_import FIXTURES_REQUIRED frontend_project
     RUN_SERIAL TRUE TIMEOUT 180 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_frontend_smoke COMMAND "${GODOT_BIN}" --headless
-    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/frontend_smoke.gd --
+    --path ${frontend_dir} --script res://tests/frontend_smoke.gd --
     --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260
     --user-data ${CMAKE_CURRENT_BINARY_DIR}/frontend-smoke-data
     --report ${CMAKE_CURRENT_BINARY_DIR}/frontend-report.json)
   set_tests_properties(godot_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_central_rooms_ui_smoke COMMAND "${GODOT_BIN}" --headless
-    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/central_rooms_ui_smoke.gd)
+    --path ${frontend_dir} --script res://tests/central_rooms_ui_smoke.gd)
   set_tests_properties(godot_central_rooms_ui_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     RUN_SERIAL TRUE TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_central_transport_smoke COMMAND "${GODOT_BIN}" --headless
+    --path ${frontend_dir} --script res://tests/central_transport_smoke.gd)
+  set_tests_properties(godot_central_transport_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
+    RUN_SERIAL TRUE TIMEOUT 30 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     foreach(mode xdg home override)
       set(data_root "${CMAKE_CURRENT_BINARY_DIR}/linux-user-data-${mode}")
@@ -125,7 +138,7 @@ if(BUILD_TESTING AND GODOT_BIN)
       endif()
       add_test(NAME godot_linux_user_data_${mode} COMMAND "${CMAKE_COMMAND}" -E env
         ${data_environment} "WIZARD_EXPECTED_USER_DATA=${expected_data}"
-        "${GODOT_BIN}" --headless --path ${CMAKE_CURRENT_SOURCE_DIR}/godot
+        "${GODOT_BIN}" --headless --path ${frontend_dir}
         --script res://tests/linux_user_data_smoke.gd --
         --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260 ${data_arguments})
       set_tests_properties(godot_linux_user_data_${mode} PROPERTIES FIXTURES_REQUIRED frontend_import
@@ -133,35 +146,35 @@ if(BUILD_TESTING AND GODOT_BIN)
     endforeach()
   endif()
   add_test(NAME godot_match_frontend_smoke COMMAND "${GODOT_BIN}" --headless
-    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/match_frontend_smoke.gd --
+    --path ${frontend_dir} --script res://tests/match_frontend_smoke.gd --
     --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
     --user-data ${CMAKE_CURRENT_BINARY_DIR}/match-frontend-smoke-data)
   set_tests_properties(godot_match_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 90 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_field_v25_smoke COMMAND "${GODOT_BIN}" --headless
-    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/field_v25_smoke.gd)
+    --path ${frontend_dir} --script res://tests/field_v25_smoke.gd)
   set_tests_properties(godot_field_v25_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_phase_selector_smoke COMMAND "${GODOT_BIN}" --headless
-    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/phase_selector_smoke.gd)
+    --path ${frontend_dir} --script res://tests/phase_selector_smoke.gd)
   set_tests_properties(godot_phase_selector_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 30 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_card_selection_smoke COMMAND "${GODOT_BIN}" --headless
-    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/card_selection_smoke.gd)
+    --path ${frontend_dir} --script res://tests/card_selection_smoke.gd)
   set_tests_properties(godot_card_selection_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_card_tray_smoke COMMAND "${GODOT_BIN}" --headless
-    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/card_tray_smoke.gd)
+    --path ${frontend_dir} --script res://tests/card_tray_smoke.gd)
   set_tests_properties(godot_card_tray_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
-  foreach(smoke response_collection response_timing)
+  foreach(smoke response_collection response_timing alpha_v262_ui)
     add_test(NAME godot_${smoke}_smoke COMMAND "${GODOT_BIN}" --headless
-      --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/${smoke}_smoke.gd)
+      --path ${frontend_dir} --script res://tests/${smoke}_smoke.gd)
     set_tests_properties(godot_${smoke}_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
       RUN_SERIAL TRUE TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   endforeach()
   add_test(NAME godot_deck_frontend_smoke COMMAND "${GODOT_BIN}" --headless
-    --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/deck_frontend_smoke.gd --
+    --path ${frontend_dir} --script res://tests/deck_frontend_smoke.gd --
     --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
     --user-data ${CMAKE_CURRENT_BINARY_DIR}/deck-frontend-smoke-data
     --output ${CMAKE_CURRENT_BINARY_DIR}/deck-frontend-smoke-output)
@@ -169,7 +182,7 @@ if(BUILD_TESTING AND GODOT_BIN)
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   foreach(smoke typography feedback deck_exchange art_residency incremental_kernel)
     add_test(NAME godot_${smoke}_smoke COMMAND "${GODOT_BIN}" --headless
-      --path ${CMAKE_CURRENT_SOURCE_DIR}/godot --script res://tests/${smoke}_smoke.gd --
+      --path ${frontend_dir} --script res://tests/${smoke}_smoke.gd --
       --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
       --user-data ${CMAKE_CURRENT_BINARY_DIR}/${smoke}-smoke-data)
     set_tests_properties(godot_${smoke}_smoke PROPERTIES FIXTURES_REQUIRED frontend_import

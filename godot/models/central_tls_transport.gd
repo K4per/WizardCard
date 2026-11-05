@@ -84,9 +84,14 @@ func pump(service: FrontendService) -> void:
 		if not _reported_open:
 			_reported_open = true
 			_queue_response(service.network_transport_opened())
+			if _phase != "open":
+				return
 		_queue_response(service.network_transport_drain())
+		if _phase != "open":
+			return
 		_read_tls()
-		_flush_tls()
+		if _phase == "open":
+			_flush_tls()
 
 func stop() -> void:
 	_close_transport()
@@ -188,11 +193,9 @@ func _decode_frames() -> bool:
 			return true
 		var payload: PackedByteArray = _receive.slice(4, size + 4)
 		_receive = _receive.slice(size + 4)
-		var message: Variant = JSON.parse_string(payload.get_string_from_utf8())
-		if not message is Dictionary:
-			_fail("服务器发送了无效 JSON 消息")
+		_queue_response(_service.network_transport_message(payload.get_string_from_utf8()))
+		if _phase != "open":
 			return false
-		_queue_response(_service.network_transport_message(message as Dictionary))
 	return true
 
 func _queue_response(response: Dictionary) -> void:

@@ -84,6 +84,7 @@ void returnFormationToSideDeck(MutationContext &s, const CardCatalog &catalog, C
 } // namespace
 
 bool GameEngine::contentEffectV2() {
+    if (resolveSpellChoice()) return true;
     if (cardEffect()) return true;
     auto &s = state_;
     if (!s.effect || s.effect->cursor >= s.effect->item.effects.size())
@@ -114,6 +115,8 @@ bool GameEngine::contentEffectV2() {
         sourceCard != s.cards.end() && hasCapability(catalog().at(sourceCard->second.definition), Capability::SwiftWind);
     const bool windStrikeDestroy = e.kind == EffectKind::DestroyEnemyAnalysis &&
         sourceCard != s.cards.end() && hasCapability(catalog().at(sourceCard->second.definition), Capability::WindStrike);
+    if (e.kind == EffectKind::SearchSameSchool && !f.resume<EntityChoiceContinuation>().entity && sourceCard != s.cards.end() && sourceCard->second.paidDiscard)
+        f.resume<EntityChoiceContinuation>().entity = sourceCard->second.paidDiscard;
     if (e.kind == EffectKind::SearchSameSchool && !f.resume<EntityChoiceContinuation>().entity && !f.item.targetCards.empty()) {
         const auto &source = catalog().at(s.cards.at(f.item.source).definition);
         if (hasTrait(source, Capability::DiscardSpellSearch)) f.resume<EntityChoiceContinuation>().entity = f.item.targetCards.front();
@@ -333,10 +336,12 @@ bool GameEngine::contentEffectV2() {
     bool optional = true;
     if (windStrikeDestroy) optional = false;
     if (e.kind == EffectKind::ChooseDamage) {
-        typedDecision(owner, DecisionKind::DamageChoice,
-                      {ChoiceValue::damage(DamageType::Acid), ChoiceValue::damage(DamageType::Cold),
-                       ChoiceValue::damage(DamageType::Fire), ChoiceValue::damage(DamageType::Lightning),
-                       ChoiceValue::damage(DamageType::Poison), ChoiceValue::damage(DamageType::Thunder)});
+        std::vector<ChoiceValue> types{ChoiceValue::damage(DamageType::Acid), ChoiceValue::damage(DamageType::Cold),
+            ChoiceValue::damage(DamageType::Fire), ChoiceValue::damage(DamageType::Lightning),
+            ChoiceValue::damage(DamageType::Poison), ChoiceValue::damage(DamageType::Thunder)};
+        if (catalog().mechanicsRevision >= 11 && sourceCard != s.cards.end() && catalog().at(sourceCard->second.definition).type == CardType::Word)
+            types.push_back(ChoiceValue::damage(DamageType::Radiant));
+        typedDecision(owner, DecisionKind::DamageChoice, std::move(types));
         return true;
     }
     switch (e.kind) {
@@ -438,6 +443,7 @@ bool GameEngine::contentEffectV2() {
 }
 
 bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, ChoiceValue choice) {
+    if (chooseSpellChoice(actor, choice)) return true;
     const auto selected = static_cast<CardId>(choice.value);
     if ((kind == DecisionKind::EffectChoice || kind == DecisionKind::DamageChoice) &&
         chooseCardEffect(actor, choice)) return true;

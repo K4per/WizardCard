@@ -10,9 +10,9 @@ std::string compatibilityError(const Content &content, const Json &message) {
     const auto expected = hello(content);
     if (!message.is_object() || message.value("type", std::string{}) != "Hello")
         return "请先完成中央服务器握手";
-    for (const auto *key : {"protocol", "rules", "mechanics", "cards", "hash"})
+    for (const auto *key : {"protocol", "program", "rules", "mechanics", "cards", "hash"})
         if (!message.contains(key) || message.at(key) != expected.at(key))
-            return "协议、规则或卡池版本不一致";
+            return "程序、协议、规则或卡池版本不一致";
     return {};
 }
 Json encodeDeck(const PlayerDeck &deck) {

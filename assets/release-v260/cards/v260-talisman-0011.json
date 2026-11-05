@@ -14,12 +14,12 @@
   "effects": [
     {
       "kind": "inspect_and_route",
-      "amount": 1
+      "amount": 0
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -38,9 +38,10 @@
   "migration": {
     "previousId": null
   },
-  "responseOnly": true,
+  "responseOnly": false,
   "traits": [
     "inspect_and_route"
   ],
-  "level": 4
+  "level": 4,
+  "target": "enemy_ambush"
 }

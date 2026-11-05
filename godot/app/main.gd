@@ -79,6 +79,10 @@ func _ready() -> void:
 	add_child(_network_timer)
 	_network_timer.start()
 	_central_transport = CentralTlsTransport.new()
+	if arguments.has("--verify-central"):
+		var verification: Node = load("res://diagnostics/central_verification.tscn").instantiate()
+		verification.set("_app", self)
+		get_tree().root.add_child.call_deferred(verification)
 
 func navigate(destination: StringName) -> void:
 	if not PAGES.has(destination):

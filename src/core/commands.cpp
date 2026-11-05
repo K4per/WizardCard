@@ -1,5 +1,6 @@
 #include "engine_internal.hpp"
 #include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
@@ -116,9 +117,9 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             const auto a = *ability(def, r->ability);
             const bool hand = c.zone == Zone::Hand;
             const bool ambush = c.faceDown;
-            const int paid = hasCapability(def, Capability::CounterSpell) ? detail::linkedSpellCost(s, r->link)
+            const int paid = hasCapability(def, Capability::CounterSpell) ? detail::linkedSpellCost(s, catalog(), r->link)
                 : Rules::castCost(s, catalog(), c.id) + (ambush && def.type == CardType::Analytic ? def.cost : 0);
-            const int bound = paid;
+            const int bound = paid * spell_rules::loadMultiplier(s, actor);
             card_rules::pay(s, actor, paid, &catalog());
             StateMaintenance::check(s, catalog());
             if (s.result != -1) return {};
@@ -126,11 +127,11 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                 StateMaintenance::leave(s, r->discard, &catalog());
             if (a.burden)
                 s.temporary.push_back(
-                    {s.nextLoad++, actor, c.id, a.burden, s.players[actor].ownTurn + (actor != s.active)});
+                    {s.nextLoad++, actor, c.id, a.burden * spell_rules::loadMultiplier(s, actor), s.players[actor].ownTurn + (actor != s.active)});
             if ((hand || ambush) && def.type == CardType::Word)
                 c.settingPaid = paid;
             c.castLoad += bound;
-            ResourceRules::increasedLoad(s, catalog(), actor, bound + a.burden);
+            ResourceRules::increasedLoad(s, catalog(), actor, bound + a.burden * spell_rules::loadMultiplier(s, actor));
             if (s.result != -1) return {};
             c.sourceRingIndex = c.ringIndex >= 0 ? c.ringIndex : c.sourceRingIndex;
             c.sourceFormation = c.host ? c.host : c.sourceFormation;
@@ -152,7 +153,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             link.ability = a.id;
             link.paymentIndex = static_cast<int>(c.payments.size()) - 1;
             link.paid = paid;
-            link.addedLoad = bound + a.burden;
+            link.addedLoad = bound + a.burden * spell_rules::loadMultiplier(s, actor);
             link.discarded = r->discard;
             link.item.owner = actor;
             link.item.source = c.id;
@@ -351,11 +352,12 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             if (opt) {
                 const int paid = Rules::concentrationUpkeep(s, catalog(), source);
                 card_rules::pay(s, actor, paid, &catalog());
-                c.castLoad += paid;
-                c.payments.push_back({s.players[actor].ownTurn, paid, paid, false});
-                ResourceRules::increasedLoad(s, catalog(), actor, paid);
+                const int addedLoad = catalog().mechanicsRevision < 11 ? paid : 0;
+                c.castLoad += addedLoad;
+                c.payments.push_back({s.players[actor].ownTurn, paid, addedLoad, false});
+                ResourceRules::increasedLoad(s, catalog(), actor, addedLoad);
                 if (s.result != -1) return {};
-                s.events.push_back({"concentration", "维持专注：支付 " + std::to_string(paid) + " 魔素及荷载",
+                s.events.push_back({"concentration", "维持专注：支付 " + std::to_string(paid) + " 魔素",
                                     -1, source, paid});
                 const auto &definition = catalog().at(c.definition);
                 if (!definition.onCast.empty()) {

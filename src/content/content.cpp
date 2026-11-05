@@ -143,7 +143,19 @@ std::vector<Effect> effects(const Json &j, const std::string &path, bool allowSt
         {"seven_stars_gaze", EffectKind::SevenGaze},
         {"seven_stars_return", EffectKind::SevenReturn},
         {"seven_kaiyang", EffectKind::SevenKaiyang},
-        {"clear_any_load", EffectKind::ClearAnyLoad}};
+        {"clear_any_load", EffectKind::ClearAnyLoad},
+        {"setup_delay", EffectKind::SetupDelay}, {"block_concentration", EffectKind::BlockConcentration},
+        {"word_cast_damage", EffectKind::WordCastDamage}, {"extra_turn", EffectKind::ExtraTurn},
+        {"double_load", EffectKind::DoubleLoad}, {"protect_player", EffectKind::ProtectPlayer},
+        {"block_analytic", EffectKind::BlockAnalytic}, {"damage_taken_bonus", EffectKind::DamageTakenBonus},
+        {"choose_resistance", EffectKind::ChooseResistance}, {"half_rings", EffectKind::HalfRings},
+        {"borrow_analysis", EffectKind::BorrowAnalysis}, {"inspect_enemy_deck", EffectKind::InspectEnemyDeck},
+        {"command_choice", EffectKind::CommandChoice}, {"blessing_choice", EffectKind::BlessingChoice},
+        {"calamity_choice", EffectKind::CalamityChoice}, {"hand_or_damage", EffectKind::HandOrDamage},
+        {"inspect_and_route", EffectKind::InspectAndRoute}, {"inspect_enemy_ambush_all", EffectKind::InspectEnemyAmbushAll},
+        {"negate_setup_return", EffectKind::NegateSetupReturn}, {"reflect_damage", EffectKind::ReflectDamage},
+        {"setup_damage", EffectKind::SetupDamage}, {"both_damage", EffectKind::BothDamage},
+        {"clear_all_ambush", EffectKind::ClearAllAmbush}};
     for (const auto &e : j) {
         const auto p = path + "/" + std::to_string(n++);
         const auto sourceKind = text(e, "kind", p);
@@ -203,9 +215,9 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
     cat.rulesVersion = text(j, "rulesVersion", source);
     cat.cardSetVersion = text(j, "cardSetVersion", source);
     const bool legacy = cat.rulesVersion == "2.5.5" && revision == 9;
-    const bool alpha260 = cat.rulesVersion == "2.6.0" && revision == 10;
+    const bool alpha260 = (cat.rulesVersion == "2.6.0" && revision == 10) || (cat.rulesVersion == "2.6.2" && revision == 11);
     if (!legacy && !alpha260)
-        fail(source, "supported versions are rulesVersion 2.5.5/revision 9 or 2.6.0/revision 10");
+        fail(source, "supported versions are rulesVersion 2.5.5/revision 9, 2.6.0/revision 10 or 2.6.2/revision 11");
     if (!j.contains("cards") || !j.at("cards").is_array())
         fail(source + "/cards", "expected array");
     const std::map<std::string, CardType> types = {{"action", CardType::Action},
@@ -225,7 +237,9 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
         {"pending_link", TargetKind::PendingLink},
         {"preparation_root", TargetKind::PreparationRoot},
         {"own_analyzing_spell", TargetKind::OwnAnalyzingSpell},
-        {"enemy_spell_link", TargetKind::EnemySpellLink}, {"player", TargetKind::Player}, {"enemy_ash_card", TargetKind::EnemyAshCard}};
+        {"enemy_spell_link", TargetKind::EnemySpellLink}, {"player", TargetKind::Player}, {"enemy_ash_card", TargetKind::EnemyAshCard},
+        {"enemy_formation", TargetKind::EnemyFormation}, {"enemy_analysis_spell", TargetKind::EnemyAnalysisSpell},
+        {"enemy_ambush", TargetKind::EnemyAmbush}};
     std::size_t n = 0;
     std::set<std::string> cardNumbers;
     for (const auto &card : j.at("cards")) {
@@ -442,7 +456,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 "increase_damage_taken", "inspect_and_route", "inspect_opponent_deck",
                 "inspect_own_deck", "mana_on_elemental_damage", "prevent_lethal",
                 "reflect_damage", "retaliate_damage", "setup_damage", "target_lock",
-                "word_cast_damage"};
+                "word_cast_damage", "both_prepare", "both_end", "fear", "cloud_mist", "counter_spell"};
             if (!card.at("traits").is_array())
                 fail(p + "/traits", "expected trait array");
             for (const auto &value : card.at("traits")) {
@@ -456,6 +470,10 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 fail(p + "/traits", "fire_damage_spell requires a spell card type");
         }
         d.onDraw = effects(card.value("onDraw", Json::array()), p + "/onDraw", !legacy);
+        d.extraCost = enumeration(card.value("extraCost", std::string("none")),
+            std::map<std::string, CardDefinition::ExtraCost>{{"none", CardDefinition::ExtraCost::None},
+                {"side_formation", CardDefinition::ExtraCost::SideFormation},
+                {"analysis_spell", CardDefinition::ExtraCost::AnalysisSpell}}, p + "/extraCost");
         d.onMain = effects(card.value("onMain", Json::array()), p + "/onMain", !legacy);
         d.onCast = effects(card.value("onCast", Json::array()), p + "/onCast", !legacy);
         d.onLeave = effects(card.value("onLeave", Json::array()), p + "/onLeave", !legacy);
@@ -475,7 +493,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 {"action", ResponseWindow::Action},
                 {"prepare", ResponseWindow::Prepare},
                 {"cast", ResponseWindow::Cast},
-                {"trigger", ResponseWindow::Trigger}};
+                {"trigger", ResponseWindow::Trigger}, {"damage", ResponseWindow::Damage}};
             const std::map<std::string, EventOwner> owners = {
                 {"any", EventOwner::Any}, {"self", EventOwner::Self}, {"opponent", EventOwner::Opponent}};
             for (const auto &entry : card.at("responses")) {

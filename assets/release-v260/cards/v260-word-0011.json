@@ -14,17 +14,16 @@
   "effects": [
     {
       "kind": "choose_damage",
-      "amount": 5,
-      "recipient": "target"
+      "amount": 5
     },
     {
-      "kind": "target_lock",
-      "amount": 1
+      "kind": "protect_player",
+      "amount": 0
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -46,5 +45,6 @@
   "traits": [
     "target_lock"
   ],
-  "level": 4
+  "level": 4,
+  "target": "player"
 }

@@ -64,7 +64,14 @@ Json viewDto(const GameView &v) {
                 {"players", Json::array()}, {"cards", Json::array()},
                 {"loads", Json::array()}, {"triggers", Json::array()},
                 {"temporaryLives", Json::array()},
+                {"modifiers", Json::array()}, {"extraTurns", v.extraTurns},
                 {"decision", nullptr}, {"chain", nullptr}};
+    for (const auto &m : v.modifiers)
+        out["modifiers"].push_back({{"kind", static_cast<int>(m.kind)}, {"source", std::to_string(m.source)},
+            {"target", std::to_string(m.target)}, {"owner", m.owner}, {"player", m.player}, {"amount", m.amount},
+            {"damageType", static_cast<int>(m.damageType)}, {"expiry", static_cast<int>(m.expiry)},
+            {"expiresTurn", std::to_string(m.expiresTurn)}, {"expiresOwnTurn", m.expiresOwnTurn},
+            {"returnHost", std::to_string(m.returnHost)}, {"returnRing", m.returnRing}, {"returnController", m.returnController}});
     for (const auto &p : v.players)
         out["players"].push_back({{"life", p.life}, {"mana", p.mana}, {"load", p.load},
             {"capacity", p.capacity}, {"handCount", p.handCount}, {"deckCount", p.deckCount},
@@ -80,7 +87,7 @@ Json viewDto(const GameView &v) {
             {"acquiredPhase", static_cast<int>(entry.acquiredPhase)}});
     for (const auto &c : v.cards) {
         const auto &i = c.instance;
-        Json card = {{"id", std::to_string(i.id)}, {"owner", i.owner}, {"zone", static_cast<int>(i.zone)},
+        Json card = {{"id", std::to_string(i.id)}, {"owner", controllerOf(i)}, {"originalOwner", i.owner}, {"controller", controllerOf(i)}, {"zone", static_cast<int>(i.zone)},
                      {"zoneName", zoneName(i.zone)}, {"host", std::to_string(i.host)},
                      {"hidden", c.hidden}, {"faceDown", i.faceDown}};
         // Location metadata is public even when the card definition is hidden.
@@ -94,6 +101,7 @@ Json viewDto(const GameView &v) {
             card["base"] = i.base;
             card["turnsToReady"] = c.turnsToReady;
             card["remaining"] = i.remaining;
+            card["statuses"] = c.statuses;
             card["analysisProgress"] = i.analysisProgress;
             card["sourceRingIndex"] = i.sourceRingIndex;
             card["effectiveRings"] = c.effectiveRings;

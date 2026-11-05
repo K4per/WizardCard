@@ -16,7 +16,7 @@ using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
 using ChainId = std::uint64_t;
 using LinkId = std::uint64_t;
-inline constexpr const char *programVersion = "2.6.0-hotfix.1";
+inline constexpr const char *programVersion = "2.6.2";
 inline constexpr int startingLife = 40, maximumLife = 40;
 inline constexpr int maximumMana = 20;
 // Player target tokens share the existing deterministic command target field.
@@ -38,7 +38,10 @@ enum class TargetKind {
     OwnAnalyzingSpell,
     EnemySpellLink,
     Player,
-    EnemyAshCard
+    EnemyAshCard,
+    EnemyFormation,
+    EnemyAnalysisSpell,
+    EnemyAmbush
 };
 enum class EffectKind {
     Damage,
@@ -99,9 +102,14 @@ enum class EffectKind {
     // v2.6 staging effects retain their source semantic on Effect so the
     // adapter can route timing/choice behaviour without inventing free text.
     V260Structured,
-    InspectOwnDeck
+    InspectOwnDeck,
+    SetupDelay, BlockConcentration, WordCastDamage, ExtraTurn, DoubleLoad,
+    ProtectPlayer, BlockAnalytic, DamageTakenBonus, ChooseResistance, HalfRings,
+    BorrowAnalysis, InspectEnemyDeck, CommandChoice, BlessingChoice, CalamityChoice,
+    HandOrDamage, InspectAndRoute, InspectEnemyAmbushAll, NegateSetupReturn, ReflectDamage,
+    SetupDamage, BothDamage
 };
-enum class ResponseWindow { PhaseStart, PhaseEnd, Action, Prepare, Cast, Trigger };
+enum class ResponseWindow { PhaseStart, PhaseEnd, Action, Prepare, Cast, Trigger, Damage };
 enum class EventOwner { Any, Self, Opponent };
 enum class PhaseStep {
     Enter,

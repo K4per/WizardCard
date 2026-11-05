@@ -96,7 +96,7 @@ inline bool hasStormFormation(const GameState &state, const CardCatalog &catalog
         return detail::stormTags(tags);
     });
 }
-inline int linkedSpellCost(const GameState &state, LinkId target) {
+inline int linkedSpellCost(const GameState &state, const CardCatalog &catalog, LinkId target) {
     if (!state.chain) return 0;
     const auto link = std::find_if(state.chain->links.begin(), state.chain->links.end(),
                                    [&](const ChainLink &candidate) { return candidate.id == target; });
@@ -109,7 +109,9 @@ inline int linkedSpellCost(const GameState &state, LinkId target) {
         activation = card.payments[static_cast<std::size_t>(link->paymentIndex)].paid;
     else if (!card.payments.empty())
         activation = card.payments.back().paid;
-    return std::max(0, card.settingPaid) + std::max(0, activation);
+    const int setting = catalog.mechanicsRevision >= 11 && catalog.at(card.definition).type != CardType::Analytic
+        ? 0 : card.settingPaid;
+    return std::max(0, setting) + std::max(0, activation);
 }
 inline bool greatStormLocksAnalysis(const GameState &state, const CardCatalog &catalog, PlayerId owner) {
     return std::any_of(state.cards.begin(), state.cards.end(), [&](const auto &entry) {

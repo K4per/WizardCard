@@ -38,11 +38,13 @@ struct ResourceRules {
     static void absorbTemporaryLife(MutationContext &, PlayerId, int amount);
     static void clearTemporaryLife(MutationContext &, PlayerId, CardId source = 0);
     static void expireTemporaryLife(MutationContext &, PlayerId);
-    // Rules damage bypasses spell resistance, consumes temporary life first.
+    // True rules damage bypasses temporary life and ordinary damage modifiers.
     // EffectResolver checks terminal state before executing the next effect.
     static void damage(MutationContext &, PlayerId, int amount, const std::string &reason, const CardCatalog *catalog = nullptr);
     // Call immediately after each individual positive mutation, with its gross increase.
     static void increasedLoad(MutationContext &, const CardCatalog &, PlayerId, int increment);
+    static int addBoundLoad(MutationContext &, const CardCatalog &, CardId, int amount, bool casting);
+    static int grantLoad(MutationContext &, const CardCatalog &, TemporaryLoad);
     static void drawOne(MutationContext &, const CardCatalog &, PlayerId);
 };
 struct EffectResolver {

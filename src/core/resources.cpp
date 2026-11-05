@@ -1,5 +1,5 @@
 #include "wizard/core/rules.hpp"
-#include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include "wizard/core/card_rules.hpp"
 #include "wizard/core/engine.hpp"
 #include <algorithm>
@@ -63,7 +63,9 @@ int Rules::rings(const GameState &s, const CardCatalog &cat, CardId id) {
     for (const auto &[cid, c] : s.cards)
         if (!effectImmune(cat.at(s.cards.at(id).definition)) && c.zone == Zone::Attached && c.host == id)
             n += cat.at(c.definition).ringBonus;
-    return n;
+    for (const auto &m : s.modifiers)
+        if (m.kind == ModifierKind::HalfRings && m.target == id && !effectImmune(definition)) n /= 2;
+    return std::max(0, n);
 }
 int Rules::maxRank(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &definition = cat.at(s.cards.at(id).definition);
@@ -126,6 +128,8 @@ int Rules::damage(const GameState &s, const CardCatalog &cat, PlayerId p, const 
     if (s.players[p].debugInfiniteLife) return 0;
     if (s.players[p].nextDamageImmune) return 0;
     bool resistance = false;
+    for (const auto &m : s.modifiers)
+        if (m.kind == ModifierKind::HalfDamage && m.player == p && m.damageType == e.damageType) resistance = true;
     for (const auto &[id, c] : s.cards)
         if (controllerOf(c) == p && (c.zone == Zone::Casting || c.zone == Zone::Analysis) && c.spell == SpellState::Active) {
             const auto &d = cat.at(c.definition);
@@ -191,7 +195,7 @@ bool Rules::targetValid(const GameState &s, const CardDefinition &d, PlayerId p,
     return targetValid(s, d.target, p, target);
 }
 bool Rules::targetValid(const GameState &s, TargetKind kind, PlayerId p, CardId target) {
-    if (kind == TargetKind::Player) return target == playerTarget(0) || target == playerTarget(1);
+    if (kind == TargetKind::Player) return (target == playerTarget(0) || target == playerTarget(1));
     if (kind == TargetKind::PendingLink || kind == TargetKind::PreparationRoot ||
         kind == TargetKind::EnemySpellLink)
         return false;
@@ -201,6 +205,12 @@ bool Rules::targetValid(const GameState &s, TargetKind kind, PlayerId p, CardId 
     if (i == s.cards.end())
         return false;
     const auto &c = i->second;
+    if (kind == TargetKind::EnemyFormation)
+        return controllerOf(c) != p && c.zone == Zone::Analysis && !c.faceDown && !c.host;
+    if (kind == TargetKind::EnemyAnalysisSpell)
+        return controllerOf(c) != p && c.zone == Zone::Analysis && c.host != 0;
+    if (kind == TargetKind::EnemyAmbush)
+        return controllerOf(c) != p && c.zone == Zone::Analysis && c.faceDown && c.host != 0;
     if (kind == TargetKind::EnemyAshCard) return c.owner != p && c.zone == Zone::Ash && !c.faceDown;
     if ((c.base && !c.fieldOrder) || c.zone == Zone::Deck || c.zone == Zone::Hand || c.zone == Zone::Ash ||
         c.zone == Zone::SideDeck || c.zone == Zone::Exile)

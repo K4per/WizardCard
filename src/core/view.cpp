@@ -21,6 +21,8 @@ GameView GameEngine::viewFor(PlayerId p) const {
     v.initialFormation = state_.initialFormations[p];
     v.globalTurn = state_.globalTurn;
     v.temporaryLives = state_.temporaryLives;
+    v.modifiers = state_.modifiers;
+    v.extraTurns = state_.extraTurns;
     const bool inspectEnemyAmbush = std::any_of(state_.cards.begin(), state_.cards.end(), [&](const auto &item) {
         const auto &card = item.second;
         return controllerOf(card) == p && card.zone == Zone::Analysis && !card.faceDown &&
@@ -72,6 +74,12 @@ GameView GameEngine::viewFor(PlayerId p) const {
             (c.zone != Zone::Hand || controllerOf(c) == p) && (c.zone != Zone::SideDeck || controllerOf(c) == p))) {
             const auto &def = catalog().at(c.definition);
             CardView card{c, def};
+            for (const auto &m : state_.modifiers)
+                if (m.target == id && m.kind == ModifierKind::HalfRings) card.statuses.push_back("【油腻术】效果生效中");
+            for (const auto &[source, cloud] : state_.cards)
+                if (cloud.spell == SpellState::Active && (cloud.zone == Zone::Analysis || cloud.zone == Zone::Casting) &&
+                    hasCapability(catalog().at(cloud.definition), Capability::CloudMist) &&
+                    std::find(cloud.targets.begin(), cloud.targets.end(), id) != cloud.targets.end()) card.statuses.push_back("【云雾术】效果生效中");
             card.effectiveCastCost = Rules::castCost(state_, catalog(), id);
             card.effectiveSettingCost = def.type == CardType::Talisman ? 0 : def.cost;
             if (def.type == CardType::Analytic) {

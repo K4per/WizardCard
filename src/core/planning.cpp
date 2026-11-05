@@ -1,5 +1,6 @@
 #include "engine_internal.hpp"
 #include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include <set>
 #include <type_traits>
 namespace wizard {
@@ -514,6 +515,7 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
         return "invalid_spell";
     }
     if (const auto *cmd = std::get_if<PreloadWord>(&command)) {
+        if (auto error = card_rules::activationError(s, catalog(), actor, cmd->card, cmd->target); !error.empty()) return error;
         if (card_rules::hasFormation(s, catalog(), 1 - actor, Capability::Moon)) return "moon_setup_restriction";
         if (!activationAllowed()) return "sique_activation_restriction";
         if (requiresStormFormation && !hasStormFormation(s, catalog(), actor))
@@ -625,6 +627,8 @@ std::string GameEngine::validate(PlayerId actor, const Command &input) const {
         const auto chosen = choice->option;
         const auto opt = static_cast<CardId>(chosen.value);
         if (!(!chosen && d.mayPass) && std::find(d.options.begin(), d.options.end(), chosen) == d.options.end()) return "invalid_option";
+        if (d.kind == DecisionKind::Concentration && chosen &&
+            spell_rules::blocked(s, ModifierKind::BlockConcentration, actor)) return "concentration_blocked";
         if (d.kind == DecisionKind::EffectPrepare && opt) return "decision_mismatch";
         if (d.kind == DecisionKind::ReturnSpell && opt) {
             const auto source = s.maintenanceCard();

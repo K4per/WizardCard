@@ -47,7 +47,8 @@ enum class ChoiceMode : std::uint32_t {
     Confirm=1, SevenDamage=2, SevenLoad=3, DelayAnalysis=4, CycloneDamage=5,
     Draw=6, StormSearch=7, StormPoints=8, SupportingSearch=9,
     DamageTypeBase=100, HeartDraw=200, HeartRecover=201,
-    ArcanaDeathNecrotic=300, ArcanaDeathRadiant=301
+    ArcanaDeathNecrotic=300, ArcanaDeathRadiant=301,
+    SpellFirst=400, SpellSecond=401, SpellThird=402
 };
 struct ChoiceValue {
     ChoiceKind kind{ChoiceKind::Pass};

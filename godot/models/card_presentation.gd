@@ -153,8 +153,12 @@ static func from_projection(data: Dictionary) -> CardPresentation:
 			card.status = "已解析"
 		elif int(data.get("spellState", 0)) == 4:
 			card.status = "持续生效"
+			if int(definition_data.get("duration", 0)) > 0:
+				card.status += " · 计时剩余 %d；己方结束阶段先触发，再减1，归零送灰" % int(data.get("remaining", 0))
 		elif int(data.get("spellState", 0)) == 5:
 			card.status = "已结算 · 结束阶段清理"
+	for effect_status: Variant in data.get("statuses", []):
+		card.status += ("\n" if not card.status.is_empty() else "") + str(effect_status)
 	if not card.status.is_empty():
 		card.metadata_text += "\n状态：" + card.status
 	return card

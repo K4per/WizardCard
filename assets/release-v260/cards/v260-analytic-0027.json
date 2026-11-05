@@ -11,15 +11,10 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "专注4。对方不可选择己方为法术卡的目标。",
-  "effects": [
-    {
-      "kind": "target_lock",
-      "amount": 1
-    }
-  ],
-  "effectStatus": "structured-candidate",
+  "effects": [],
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -41,7 +36,7 @@
   "concentration": true,
   "concentrationUpkeep": 4,
   "traits": [
-    "target_lock"
+    "fear"
   ],
   "level": 5
 }

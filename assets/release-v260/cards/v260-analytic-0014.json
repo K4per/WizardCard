@@ -11,16 +11,10 @@
   "analysisTurns": 1,
   "speed": 1,
   "text": "专注1。双方准备阶段开始时，双方各受到1点毒素伤害。",
-  "effects": [
-    {
-      "kind": "both_damage",
-      "amount": 1,
-      "damageType": "poison"
-    }
-  ],
-  "effectStatus": "structured-candidate",
+  "effects": [],
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
@@ -48,5 +42,8 @@
       "damageType": "poison"
     }
   ],
-  "level": 3
+  "level": 3,
+  "traits": [
+    "both_prepare"
+  ]
 }

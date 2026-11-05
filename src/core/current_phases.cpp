@@ -1,5 +1,6 @@
 #include "engine_internal.hpp"
 #include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include <algorithm>
 #include <limits>
 namespace wizard {
@@ -7,15 +8,21 @@ using namespace detail;
 namespace {
 struct OrderedCard { std::uint64_t key{}; CardId id{}; };
 OrderedCard nextFieldCard(const GameState &state, const CardCatalog &catalog, PlayerId owner,
-                          bool formation, std::uint64_t after, bool anyPersistent = false) {
+                          bool formation, std::uint64_t after, bool anyPersistent = false, bool oppositeTriggers = false) {
     OrderedCard result{std::numeric_limits<std::uint64_t>::max(), 0};
     for (const auto &[id, card] : state.cards) {
-        if (controllerOf(card) != owner || card.zone != Zone::Analysis) continue;
+        if (card.zone != Zone::Analysis) continue;
         const auto &def = catalog.at(card.definition);
+        const bool opposite = controllerOf(card) != owner;
+        if (opposite && (!oppositeTriggers || formation ||
+            !(state.phase == Phase::Prepare && hasCapability(def, Capability::BothPrepare)) &&
+            !(state.phase == Phase::End && hasCapability(def, Capability::BothEnd)))) continue;
+        if (!opposite && state.phase == Phase::End && hasCapability(def, Capability::HandOrPsychic)) continue;
         if (formation != (def.type == CardType::Formation)) continue;
         if (!formation && (card.faceDown || card.spell != SpellState::Active || (!anyPersistent && !def.perpetual) || !card.host)) continue;
         std::uint64_t key = formation ? card.fieldOrder :
             (state.cards.at(card.host).fieldOrder << 16) + static_cast<std::uint64_t>(card.ringIndex + 1);
+        if (opposite) key += (std::uint64_t{1} << 63);
         if (key > after && key < result.key) result = {key, id};
     }
     return result;
@@ -77,6 +84,7 @@ bool GameEngine::phaseV2() {
     };
     switch (s.phaseStep) {
     case PhaseStep::Enter: {
+        spell_rules::expire(s, catalog(), false);
         if (s.phase == Phase::End)
             for (auto &player : s.players) player.nextDamageImmune = false;
         if (s.phase == Phase::Prepare && pl.siqueDamageCap && pl.ownTurn >= pl.siqueCapUntilOwnTurn) {
@@ -136,7 +144,7 @@ bool GameEngine::phaseV2() {
         }
         if (s.phase != Phase::Prepare) {
             if (resume.stage == PhasePreparationStage::FormationTriggers || resume.stage == PhasePreparationStage::SpellTriggers) {
-                const auto next = nextFieldCard(s, catalog(), s.active, resume.stage == PhasePreparationStage::FormationTriggers, resume.after, true);
+                const auto next = nextFieldCard(s, catalog(), s.active, resume.stage == PhasePreparationStage::FormationTriggers, resume.after, true, true);
                 if (next.id) {
                     resume.after = next.key;
                     const auto &def = catalog().at(s.cards.at(next.id).definition);
@@ -157,6 +165,14 @@ bool GameEngine::phaseV2() {
                     ? PhasePreparationStage::SpellTriggers : PhasePreparationStage::Complete;
                 resume.after = 0; return true;
             }
+            if (s.phase == Phase::End && catalog().mechanicsRevision >= 11 && !s.durationApplied) {
+                s.durationApplied = true;
+                std::vector<CardId> expired;
+                for (auto &[id, c] : s.cards)
+                    if (spell_rules::active(c) && controllerOf(c) == s.active && catalog().at(c.definition).duration > 0 && --c.remaining <= 0)
+                        expired.push_back(id);
+                for (auto id : expired) StateMaintenance::leave(s, id, &catalog());
+            }
             s.phaseStep = PhaseStep::StartWindow; return true;
         }
         if (resume.stage == PhasePreparationStage::Income) {
@@ -167,7 +183,8 @@ bool GameEngine::phaseV2() {
             resume.stage = PhasePreparationStage::FormationTriggers; return true;
         }
         if (resume.stage == PhasePreparationStage::FormationTriggers || resume.stage == PhasePreparationStage::SpellTriggers) {
-            auto next = nextFieldCard(s, catalog(), s.active, resume.stage == PhasePreparationStage::FormationTriggers, resume.after);
+            auto next = nextFieldCard(s, catalog(), s.active, resume.stage == PhasePreparationStage::FormationTriggers, resume.after,
+                catalog().mechanicsRevision >= 11, true);
             if (next.id) {
                 resume.after = next.key;
                 const auto &effects = catalog().at(s.cards.at(next.id).definition).onPrepare;
@@ -192,7 +209,8 @@ bool GameEngine::phaseV2() {
                 s.maintenance = ConcentrationContinuation{next.id};
                 const int fee = Rules::concentrationUpkeep(s, catalog(), next.id);
                 std::vector<CardId> options;
-                if (card_rules::canPay(s, s.active, fee, &catalog())) options.push_back(next.id);
+                if (!spell_rules::blocked(s, ModifierKind::BlockConcentration, s.active) &&
+                    card_rules::canPay(s, s.active, fee, &catalog())) options.push_back(next.id);
                 decision(s.active, DecisionKind::Concentration, std::move(options), true);
                 return false;
             }
@@ -228,6 +246,7 @@ bool GameEngine::phaseV2() {
         return true;
     }
     case PhaseStep::EndTriggers:
+        spell_rules::expire(s, catalog(), true);
         if (s.phase == Phase::Cast) s.returnRequested = true;
         s.phaseStep = PhaseStep::Cleanup; s.phaseContinuation = PhaseCleanupContinuation{}; return true;
     case PhaseStep::Cleanup: {
@@ -252,7 +271,7 @@ bool GameEngine::phaseV2() {
                 std::vector<CardId> expired;
                 for (auto &[id, card] : s.cards) {
                     const auto &definition = catalog().at(card.definition);
-                    const bool ownerTurnTimer = hasCapability(definition, Capability::GreatStorm);
+                    const bool ownerTurnTimer = catalog().mechanicsRevision >= 11 || hasCapability(definition, Capability::GreatStorm);
                     if (card.zone == Zone::Analysis && card.spell == SpellState::Active &&
                         definition.duration > 0 && (!ownerTurnTimer || controllerOf(card) == s.active) &&
                         --card.remaining <= 0)
@@ -274,9 +293,9 @@ bool GameEngine::phaseV2() {
         }
         s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &load) {
                 const auto source = s.cards.find(load.source);
-                return load.owner == s.active && !load.independent && !load.sourceBound &&
+                return load.owner == s.active && ((load.expiresAtEnd && load.expiryTurn <= pl.ownTurn) || (!load.independent && !load.sourceBound &&
                     source != s.cards.end() &&
-                    hasCapability(catalog().at(source->second.definition), Capability::ThunderSummon);
+                    hasCapability(catalog().at(source->second.definition), Capability::ThunderSummon)));
             }), s.temporary.end());
         StateMaintenance::check(s, catalog(), true);
         if (s.result != -1) return false;
@@ -290,7 +309,10 @@ bool GameEngine::phaseV2() {
             pl.actionsPlayed = 0; pl.formations = 0; pl.sealRemovals = 0;
             for (auto &[id, card] : s.cards)
                 if (controllerOf(card) == s.active) card.canceledTurn = -1;
-            ++s.globalTurn; s.active = 1 - s.active; ++s.players[s.active].ownTurn;
+            ++s.globalTurn;
+            if (s.extraTurns.empty()) s.active = 1 - s.active;
+            else { s.active = s.extraTurns.front(); s.extraTurns.pop_front(); }
+            ++s.players[s.active].ownTurn;
             s.phase = Phase::Draw;
         } else s.phase = s.phase == Phase::Main && s.skipCastPhase ? Phase::End :
             static_cast<Phase>(static_cast<int>(s.phase) + 1);

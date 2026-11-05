@@ -15,16 +15,16 @@
     {
       "kind": "damage",
       "amount": 10,
-      "damageType": "psychic",
-      "recipient": "target"
+      "damageType": "psychic"
     },
     {
-      "kind": "reveal_all_ambush"
+      "kind": "inspect_enemy_ambush_all",
+      "amount": 0
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",

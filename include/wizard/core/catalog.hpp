@@ -30,7 +30,9 @@ enum class Capability : std::uint8_t {
     // v2.6 staging traits are parsed and retained as executable identities.
     // Their card-specific timing/choice adapter is keyed by the trait/effect
     // semantic rather than by inventing a new enum for every workbook clause.
-    V260Structured
+    V260Structured,
+    DamageThreshold, ManaOnElementalDamage, PreventLethal, RetaliateDamage,
+    SetupDamage, Fear, HandOrPsychic, BothPrepare, BothEnd
 };
 struct Effect {
     EffectKind kind{};
@@ -90,6 +92,8 @@ struct CardDefinition {
     std::string number, illustrationId;
     int level{1};
     bool perpetual{};
+    enum class ExtraCost { None, SideFormation, AnalysisSpell };
+    ExtraCost extraCost{};
     std::vector<RecipeCost> recipe;
 };
 struct CardCatalog {

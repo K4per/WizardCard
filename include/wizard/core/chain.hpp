@@ -12,6 +12,7 @@ struct Trigger {
     bool requiresSource{};
     LinkId targetLink{};
     std::vector<CardId> targetCards;
+    int damageAmount{};
     mutable std::uint64_t effectFingerprint{};
     mutable bool effectFingerprintReady{};
     std::uint64_t effectsKey() const {

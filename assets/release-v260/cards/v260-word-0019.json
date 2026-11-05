@@ -13,13 +13,13 @@
   "text": "将1张卡从手卡送去灰烬区才能发动。查看对方卡组最上方的3张卡，将其中1张送去灰烬区，其余卡返回卡组最下方。",
   "effects": [
     {
-      "kind": "inspect_opponent_deck",
+      "kind": "inspect_enemy_deck",
       "amount": 3
     }
   ],
-  "effectStatus": "structured-candidate",
+  "effectStatus": "implemented",
   "effectBlockers": [],
-  "implementationStatus": "structured-candidate",
+  "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
     "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",

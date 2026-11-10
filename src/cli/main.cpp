@@ -24,7 +24,15 @@ int main(int argc,char** argv) {
         } else if(mode=="smoke" || mode=="play") {
             for(int step=0;session.engine().state().result==-1;++step) {
                 if(step>4000) throw std::runtime_error("scenario did not terminate");
-                const auto& s=session.engine().state(); int p=s.decision?s.decision->player:s.active; auto view=session.viewFor(p);
+                const auto& s=session.engine().state(); int p=s.decision?s.decision->player:s.active;
+                if (s.opening) {
+                    for (int actor=0; actor<2; ++actor) {
+                        if (s.openingStage == OpeningStage::Gestures ? s.openingGestures[actor] < 0 : !s.initialFormations[actor]) {
+                            p=actor; break;
+                        }
+                    }
+                }
+                auto view=session.viewFor(p);
                 std::vector<LegalAction> actions;
                 session.engine().visitLegalActions(p,[&](const LegalAction &a){ actions.push_back(a); return actions.size()<512; });
                 std::size_t selected=0;
@@ -37,7 +45,8 @@ int main(int argc,char** argv) {
                     int best=-10000;
                     for(std::size_t i=0;i<actions.size();++i) {
                         const auto& a=actions[i]; int score=-1000;
-                        if(std::holds_alternative<SelectInitialFormation>(a.command)) score=120;
+                        if(const auto *gesture=std::get_if<SubmitOpeningGesture>(&a.command)) score=gesture->gesture==(p==0?0:2)?125:115;
+                        else if(std::holds_alternative<SelectInitialFormation>(a.command)) score=120;
                         else if(std::holds_alternative<Choose>(a.command) || std::holds_alternative<Respond>(a.command)) score=100;
                         else if(std::holds_alternative<PrepareCast>(a.command)) score=s.decision && s.decision->kind==DecisionKind::EffectPrepare?110:80;
                         else if(std::holds_alternative<SetFormation>(a.command) && !std::get<SetFormation>(a.command).replace) score=75;

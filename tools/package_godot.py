@@ -17,6 +17,7 @@ import subprocess
 import tarfile
 import tempfile
 import zipfile
+from release_source import provenance
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE_VERSION = "2.6.3"
@@ -174,6 +175,7 @@ def main():
                         help="include legacy public presets (disabled for the v2.6.0 release package)")
     parser.add_argument("--crt", type=Path, help="Directory containing the x64 VC runtime DLLs")
     args = parser.parse_args()
+    source = provenance()
     spec = PLATFORMS[args.platform]
     args.godot = Path(shutil.which(args.godot) or args.godot).resolve()
     args.build = args.build.resolve()
@@ -278,7 +280,7 @@ def main():
     verified = json.loads(recording.read_text(encoding="utf-8"))
     release = {key: verified[key] for key in
                ("programVersion", "rulesVersion", "cardSetVersion", "contentHash")}
-    release.update({"packageVersion": args.package_version,
+    release.update({**source, "packageVersion": args.package_version,
                     "status": "staging-blocked" if args.staging_report and args.staging_report.is_file() else "released"})
     release.update({"mechanicsRevision": manifest["metadata"]["mechanicsRevision"],
                     "cardCount": len(cards), "engine": version,

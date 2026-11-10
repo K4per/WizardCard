@@ -3,6 +3,9 @@ extends Node
 var _app: WizardFrontend
 var _failures: int = 0
 var _released_spell: bool = false
+var _opening_privacy: bool = false
+var _opening_tie: bool = false
+var _default_connection: bool = false
 
 func _ready() -> void:
 	_run.call_deferred()
@@ -52,7 +55,7 @@ func _verification_deck() -> String:
 		cards["v260-word-%04d" % index] = 2
 	for index: int in range(1, 11):
 		formations["v260-formation-%04d" % index] = 1
-	_app.service.editing_draft["name"] = "Alpha 2.6.2 release verification"
+	_app.service.editing_draft["name"] = "Alpha 2.6.3 release verification"
 	_app.service.editing_draft["cards"] = cards
 	_app.service.editing_draft["sideCards"] = formations
 	if not _expect(_app.service.draft_problems().is_empty() and _app.service.save_draft(), "verification deck passes normal 40+10 validation"):
@@ -76,8 +79,8 @@ func _stop(code: int) -> void:
 
 func _run() -> void:
 	var role: String = _argument("--role")
-	var host: String = _argument("--hostname", "localhost")
-	var port: int = int(_argument("--port", "24443"))
+	var host: String = _argument("--hostname")
+	var port: int = int(_argument("--port", "23513"))
 	var ca: String = _argument("--trusted-ca")
 	var report_path: String = _argument("--report")
 	var room_code: String = _argument("--room-code").strip_edges().to_upper()
@@ -109,9 +112,12 @@ func _run() -> void:
 	if not _expect(room_page._deck_id() == deck_id, "room uses the saved verification deck"):
 		await _stop(2)
 		return
-	room_page._address.text = host
-	room_page._port.value = port
-	room_page._trusted_ca.text = ca
+	_default_connection = host.is_empty() and ca.is_empty()
+	if not host.is_empty():
+		room_page._address.text = host
+		room_page._port.value = port
+	if not ca.is_empty():
+		room_page._trusted_ca.text = ca
 	if role == "host":
 		room_page._host.pressed.emit()
 		if not await _wait_for(func() -> bool:
@@ -177,28 +183,7 @@ func _run() -> void:
 			"match connection stays online: " + str(_app.service.network_state.get("notice", ""))):
 			await _stop(1)
 			return
-	if role == "guest" and not await _wait_for(func() -> bool:
-		return bool(_app.service.match_snapshot.get("initialFormationConfirmed", [false, false])[0])
-	):
-		_expect(false, "owner confirms an opening formation before the guest submits")
-		await _stop(1)
-		return
-	if not await _wait_for(func() -> bool:
-		var match_page: MatchPage = _app.page as MatchPage
-		return match_page._decision.visible and match_page._decision.request != null and not match_page._decision.request.choices.is_empty() \
-			and match_page._decision.request.generation == str(_app.service.match_snapshot.get("generation")) \
-			and match_page._decision.request.revision == str(_app.service.match_snapshot.get("revision"))
-	):
-		_expect(false, "opening query resolves while availability queries run")
-		await _stop(1)
-		return
-	var match_page: MatchPage = _app.page as MatchPage
-	var choice: DecisionChoice = match_page._decision.request.choices[0]
-	var option: Button = match_page._decision._options[choice.id]
-	option.button_pressed = true
-	match_page._decision._confirm.pressed.emit()
-	if not await _wait_for(func() -> bool: return not bool(_app.service.match_snapshot.get("opening", true))):
-		_expect(false, "both players select their initial formations and start playing")
+	if not await _play_opening(role):
 		await _stop(1)
 		return
 	if role == "host":
@@ -220,7 +205,7 @@ func _run() -> void:
 		await _stop(1)
 		return
 	var gameplay_deadline: int = Time.get_ticks_msec() + 300000
-	var target_revision: int = 2 + int(_argument("--gameplay-actions", "40"))
+	var target_revision: int = int(_app.service.match_snapshot.get("revision", "0")) + int(_argument("--gameplay-actions", "40"))
 	var submitted_revision: String = ""
 	var query_context: String = ""
 	var gameplay_intent: Dictionary = {"selections": []}
@@ -279,7 +264,7 @@ func _run() -> void:
 			_expect(false, "surrender saves the replay and finishes leaving automatically")
 			await _stop(1)
 			return
-		_write_report(report_path, {"role": role, "roomCode": room_code, "phase": "completed", "replayDelivered": true, "left": true, "releasedSpellObserved": _released_spell})
+		_write_report(report_path, {"role": role, "roomCode": room_code, "phase": "completed", "replayDelivered": true, "left": true, "releasedSpellObserved": _released_spell, "openingPrivacy": _opening_privacy, "openingTieObserved": _opening_tie, "defaultConnection": _default_connection})
 		await _stop(0 if _failures == 0 else 1)
 		return
 	if not await _wait_for(func() -> bool:
@@ -297,8 +282,57 @@ func _run() -> void:
 		"replayDelivered": bool(_app.service.network_state.get("replayDelivered", false)),
 		"result": int(_app.service.match_snapshot.get("result", -1)),
 		"releasedSpellObserved": _released_spell,
+		"openingPrivacy": _opening_privacy,
+		"openingTieObserved": _opening_tie,
+		"defaultConnection": _default_connection,
 	}
 	_expect(result.phase == "completed" and result.replayDelivered, "normal terminal result and replay are visible")
 	_write_report(report_path, result)
 	print("CENTRAL_FRONTEND_CLIENT: role=", role, " room=", room_code, " phase=", result.phase)
 	await _stop(0 if _failures == 0 else 1)
+
+func _play_opening(role: String) -> bool:
+	var submitted: String = ""
+	var deadline: int = Time.get_ticks_msec() + 60000
+	while bool(_app.service.match_snapshot.get("opening", true)):
+		if not _expect(Time.get_ticks_msec() < deadline, "opening UI finishes ties, gestures and formations"):
+			return false
+		var snapshot: Dictionary = _app.service.match_snapshot
+		var stage: String = str(snapshot.get("openingStage", ""))
+		var round_number: int = int(snapshot.get("openingRound", 1))
+		var key: String = "%s:%d" % [stage, round_number]
+		var viewer: int = _app.service.match_viewer
+		if stage == "gestures":
+			_opening_tie = _opening_tie or round_number > 1
+			var revealed: Array = snapshot.get("revealedGestures", [-1, -1])
+			var confirmed: Array = snapshot.get("gestureConfirmed", [false, false])
+			if round_number == 1 and bool(confirmed[1 - viewer]) and not bool(confirmed[viewer]):
+				if not _expect(int(snapshot.get("openingGesture", -1)) == -1 and revealed == [-1, -1], "opponent gesture stays private before both submit"):
+					return false
+				_opening_privacy = true
+			# Guest observes the private first submission; host observes its own
+			# private acknowledgement before the guest can complete the round.
+			if role == "guest" and not bool(confirmed[0]):
+				await get_tree().create_timer(0.01).timeout
+				continue
+			if int(snapshot.get("openingGesture", -1)) >= 0:
+				if round_number == 1:
+					_opening_privacy = _opening_privacy or revealed == [-1, -1]
+				await get_tree().create_timer(0.01).timeout
+				continue
+		var page: MatchPage = _app.page as MatchPage
+		var panel: DecisionPanel = page._decision
+		if key != submitted and panel.visible and panel.request != null and not panel.request.choices.is_empty() \
+			and panel.request.generation == str(snapshot.get("generation")) and panel.request.revision == str(snapshot.get("revision")):
+			var choice: DecisionChoice = panel.request.choices[0]
+			if stage == "gestures":
+				var desired: String = "2" if role == "guest" and round_number > 1 else "0"
+				for candidate: DecisionChoice in panel.request.choices:
+					if candidate.id == desired:
+						choice = candidate
+			var option: Button = panel._options[choice.id]
+			option.button_pressed = true
+			panel._confirm.pressed.emit()
+			submitted = key
+		await get_tree().create_timer(0.01).timeout
+	return _expect(_opening_tie and _opening_privacy, "opening tie and private confirmation observed")

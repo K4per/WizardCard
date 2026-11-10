@@ -31,6 +31,7 @@ func begin(source: String = "0", operation: int = -1) -> void:
 func cancel() -> void:
 	active = false
 	_awaiting = false
+	_revalidating = false
 	intent.clear()
 	options = null
 
@@ -47,7 +48,6 @@ func revalidate() -> void:
 	revision = str(service.match_snapshot.get("revision", ""))
 	_revalidating = true
 	refresh()
-	_revalidating = false
 
 func refresh() -> void:
 	if not current():
@@ -55,8 +55,9 @@ func refresh() -> void:
 		return
 	var response: Dictionary = service.match_request(&"query_actions", [viewer, intent, generation, revision])
 	if not bool(response.get("ok", false)):
+		var message: String = "所选对象或费用已失效，请重新选择。" if _revalidating else str(response.get("error", "动作查询失败"))
 		cancel()
-		failed.emit("所选对象或费用已失效，请重新选择。" if _revalidating else str(response.get("error", "动作查询失败")))
+		failed.emit(message)
 		return
 	var parsed: ActionOptions = ActionOptions.parse(response.get("data", {}))
 	if parsed == null or not parsed.matches(service.match_snapshot, viewer):
@@ -66,12 +67,14 @@ func refresh() -> void:
 	if _awaiting:
 		return
 	options = parsed
-	if _revalidating and options.options.is_empty() and options.complete.is_empty():
+	var revalidating: bool = _revalidating
+	_revalidating = false
+	if revalidating and options.options.is_empty() and options.complete.is_empty():
 		cancel()
 		failed.emit("所选对象或费用已失效，请重新选择。")
 		return
 	if not options.complete.is_empty():
-		if _revalidating:
+		if revalidating:
 			options.field = KernelContract.ActionField.Confirm
 			options.options = [{"value": "@confirm", "label": "确认当前合法选择"}]
 			changed.emit(options)

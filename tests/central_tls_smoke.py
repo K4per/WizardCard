@@ -102,7 +102,7 @@ def main():
                 "rules": catalog["metadata"]["rulesVersion"],
                 "mechanics": catalog["metadata"]["mechanicsRevision"],
                 "cards": catalog["metadata"]["cardSetVersion"],
-                "hash": "cc7c6005e8f96820",
+                "hash": "61f9b39a65c02fff",
             }
             context = ssl.create_default_context(cafile=str(cert))
             with socket.create_connection(("127.0.0.1", health_port), timeout=3) as oversized_health:

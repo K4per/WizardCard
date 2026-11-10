@@ -3,6 +3,11 @@ extends Control
 
 signal navigation_requested(page: StringName)
 
+const PRODUCTION_HOST: String = "aq.rainplay.cn"
+const PRODUCTION_PORT: int = 23513
+const PRODUCTION_CA: String = "res://data/aq.rainplay.cn.crt"
+
+var _advanced: VBoxContainer
 var service: FrontendService
 var _address: LineEdit
 var _port: SpinBox
@@ -37,6 +42,21 @@ func _ready() -> void:
 	_leave = %Leave
 	_reconnect = %Reconnect
 	_configure = %Configure
+	var body: VBoxContainer = _address.get_parent() as VBoxContainer
+	var insertion: int = _address.get_index()
+	var advanced_toggle: CheckButton = CheckButton.new()
+	advanced_toggle.text = "高级连接配置"
+	body.add_child(advanced_toggle)
+	body.move_child(advanced_toggle, insertion)
+	_advanced = VBoxContainer.new()
+	body.add_child(_advanced)
+	body.move_child(_advanced, insertion + 1)
+	for node: Node in [_address, body.get_node("PortCaption"), _port, body.get_node("TrustedCaCaption"), _trusted_ca]:
+		node.reparent(_advanced)
+	_advanced.add_child(UiFactory.button("恢复正式服配置", _restore_production))
+	advanced_toggle.toggled.connect(_advanced.set_visible)
+	_advanced.hide()
+	_restore_production()
 	(%Back as Button).pressed.connect(navigation_requested.emit.bind(&"menu"))
 	(%Hotseat as Button).pressed.connect(_hotseat)
 	_decks.item_selected.connect(_deck_changed)
@@ -165,3 +185,8 @@ func network_updated(state: Dictionary) -> void:
 	_notice.text = room_notice
 	if bool(state.get("started", false)):
 		navigation_requested.emit(&"match")
+
+func _restore_production() -> void:
+	_address.text = PRODUCTION_HOST
+	_port.value = PRODUCTION_PORT
+	_trusted_ca.text = PRODUCTION_CA

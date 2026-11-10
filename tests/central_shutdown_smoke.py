@@ -64,7 +64,7 @@ int fsync(int fd) {
                 metadata = json.loads((assets / "catalog.json").read_text())["metadata"]
                 send_message(stream, {"type": "Hello", "protocol": 5, "program": "2.6.3", "rules": metadata["rulesVersion"],
                                       "cards": metadata["cardSetVersion"], "mechanics": metadata["mechanicsRevision"],
-                                      "hash": "cc7c6005e8f96820"})
+                                      "hash": "61f9b39a65c02fff"})
                 assert read_message(stream)["type"] == "Welcome"
                 (root / "stall").touch()
                 send_message(stream, {"type": "CreateRoom", "deck": expanded_deck(assets)})

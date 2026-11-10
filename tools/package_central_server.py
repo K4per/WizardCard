@@ -9,11 +9,12 @@ import shutil
 import subprocess
 import tarfile
 import tempfile
+from release_source import provenance
 
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = "2.6.3"
-CONTENT_HASH = "cc7c6005e8f96820"
+CONTENT_HASH = "61f9b39a65c02fff"
 
 
 def sha256(path):
@@ -39,6 +40,7 @@ def write_json(path, value):
 
 
 def stage_release(build, output):
+    source = provenance()
     binary = build / "wizard_server"
     if not binary.is_file():
         raise ValueError(f"missing server binary: {binary}")
@@ -89,6 +91,7 @@ def stage_release(build, output):
         shutil.copytree(ROOT / "licenses", stage / "licenses")
 
         release = {
+            **source,
             "format": 1,
             "version": VERSION,
             "target": "linux-x86_64",

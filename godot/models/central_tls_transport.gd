@@ -65,7 +65,7 @@ func pump(service: FrontendService) -> void:
 		return
 	if _phase == "tcp":
 		if _handshake_expired():
-			_fail("连接游戏服务器超时")
+			_connect_next_address()
 			return
 		_poll_tcp()
 		return
@@ -130,8 +130,9 @@ func _connect_next_address() -> void:
 		_tcp = StreamPeerTCP.new()
 		if _tcp.connect_to_host(address, _port) == OK:
 			_phase = "tcp"
+			_phase_started_at = Time.get_ticks_msec()
 			return
-	_fail("游戏服务器拒绝了连接")
+	_fail("服务器不可达或拒绝连接，请检查网络后重试")
 
 func _poll_tcp() -> void:
 	_tcp.poll()
@@ -163,7 +164,7 @@ func _poll_tls() -> void:
 	if status == StreamPeerTLS.STATUS_HANDSHAKING:
 		return
 	if status != StreamPeerTLS.STATUS_CONNECTED:
-		_fail("TLS 证书验证失败，请检查服务器 CA 和主机名")
+		_fail("证书校验失败：请检查信任证书、有效期和域名；可重试或恢复正式服配置")
 		return
 	_phase = "open"
 

@@ -28,10 +28,11 @@ def verify_network(output, evidence, args):
             report = evidence / (role + ".json")
             command = [str(output / "WizardCard.exe"), "--headless", "--log-file",
                        str(evidence / (role + "-godot.log")), "--", "--verify-central", "--role", role,
-                       "--hostname", args.server_host, "--port", str(args.server_port),
-                       "--trusted-ca", str(args.trusted_ca.resolve()),
                        "--user-data", str(evidence / (role + "-data")),
                        "--report", str(report), "--stable-ms", "8000", "--gameplay-actions", "40"]
+            if args.server_host:
+                command += ["--hostname", args.server_host, "--port", str(args.server_port),
+                            "--trusted-ca", str(args.trusted_ca.resolve())]
             if role == "guest":
                 command += ["--room-code", room]
             log = (evidence / (role + ".log")).open("w", encoding="utf-8")
@@ -70,11 +71,13 @@ def verify_network(output, evidence, args):
         recording = recordings[0]
         for name in ("programVersion", "rulesVersion", "cardSetVersion"):
             assert recording[name] == "2.6.3", (name, recording[name])
-        assert recording["digestSchema"] == 3 and recording["mechanicsRevision"] == 11
+        assert recording["digestSchema"] == 4 and recording["mechanicsRevision"] == 12
         commands = Counter(item["command"]["type"] for item in recording["commands"])
-        assert sum(commands.values()) >= 43, commands  # opening + 40 actions + surrender
+        assert commands[21] >= 4 and commands[18] == 2, commands
+        assert all(client["openingPrivacy"] and client["openingTieObserved"] for client in clients)
+        assert sum(commands.values()) >= 47, commands  # opening + 40 actions + surrender
         assert commands[17] + commands[5] > 0, "The match must include a real spell activation"
-        return {"endpoint": f"{args.server_host}:{args.server_port}", "room": room,
+        return {"endpoint": f"{args.server_host or 'aq.rainplay.cn'}:{args.server_port}", "room": room,
                 "clients": clients, "commands": dict(commands), "commandCount": sum(commands.values()),
                 "matchingReplayDigest": recording["finalDigest"], "identicalReplay": True,
                 "verifiedManualReconnects": 2, "unexpectedDisconnects": 0}
@@ -92,17 +95,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--archive", type=Path, required=True)
     parser.add_argument("--evidence", type=Path, required=True)
+    parser.add_argument("--production", action="store_true", help="verify the product default without address or certificate overrides")
     parser.add_argument("--server-host")
     parser.add_argument("--server-port", type=int, default=23513)
     parser.add_argument("--trusted-ca", type=Path)
     args = parser.parse_args()
+    if args.production and (args.server_host or args.trusted_ca):
+        parser.error("--production uses only the bundled defaults")
     if args.server_host and not args.trusted_ca:
         parser.error("--server-host requires --trusted-ca")
     archive, evidence = args.archive.resolve(), args.evidence.resolve()
     evidence.mkdir(parents=True, exist_ok=False)
     expected = Path(str(archive) + ".sha256").read_text().split()[0]
     assert digest(archive) == expected, "Archive checksum mismatch"
-    with tempfile.TemporaryDirectory(prefix="wizardcard-v262-extracted-") as directory:
+    with tempfile.TemporaryDirectory(prefix="wizardcard-v263-extracted-") as directory:
         extraction = Path(directory)
         with zipfile.ZipFile(archive) as package:
             assert package.testzip() is None, "ZIP CRC failure"
@@ -118,13 +124,18 @@ def main():
         release = read_json(output / "RELEASE.json")
         for name in ("packageVersion", "programVersion", "rulesVersion", "cardSetVersion"):
             assert release[name] == "2.6.3", (name, release[name])
-        assert release["contentHash"] == "cc7c6005e8f96820" and release["mechanicsRevision"] == 11
+        assert release["contentHash"] == "61f9b39a65c02fff" and release["mechanicsRevision"] == 12
         assert release["bridgeSha256"] == digest(output / "bin/wizard_godot_bridge.release.dll")
         verify_startup(output, PLATFORMS["windows"], evidence, "extracted-startup")
+        guide_command = [str(output / "WizardCard.exe"), "--headless", "--", "--verify-guide",
+                         "--user-data", str(evidence / "offline-guide-data"), "--report", str(evidence / "offline-guide.json")]
+        guide = subprocess.run(guide_command, cwd=evidence, capture_output=True, text=True, timeout=45)
+        (evidence / "offline-guide.log").write_text(guide.stdout + guide.stderr, encoding="utf-8")
+        assert guide.returncode == 0 and read_json(evidence / "offline-guide.json")["passed"], guide.stdout + guide.stderr
         report = {"archive": str(archive), "bytes": archive.stat().st_size, "sha256": digest(archive),
                   "verifiedFiles": len(inventory), "zipCrc": "passed", "release": release,
-                  "startupFromUnrelatedDirectory": "passed"}
-        if args.server_host:
+                  "startupFromUnrelatedDirectory": "passed", "offlineGuide": read_json(evidence / "offline-guide.json")}
+        if args.server_host or args.production:
             report["network"] = verify_network(output, evidence, args)
         (evidence / "verification.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(report, ensure_ascii=False, indent=2))

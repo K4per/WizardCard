@@ -1,6 +1,15 @@
 extends SceneTree
 
+class DelayedService extends QueryFixtureService:
+	var delay: bool = false
+	func match_request(method: StringName, arguments: Array = []) -> Dictionary:
+		var result: Dictionary = super.match_request(method, arguments)
+		if delay and method == &"query_actions":
+			result["data"]["pending"] = true
+		return result
+
 var failures: int = 0
+var completed_queries: int = 0
 
 func _initialize() -> void:
 	_run.call_deferred()
@@ -11,6 +20,20 @@ func check(value: bool, message: String) -> void:
 		push_error("V263_UI: " + message)
 
 func _run() -> void:
+	var delayed: DelayedService = DelayedService.new()
+	delayed.match_snapshot = {"generation": "1", "revision": "1", "viewer": 0, "decision": {"id": "5", "kind": KernelContract.DecisionKind.Response}}
+	delayed.set_actions([{"source": "0", "command": {"type": KernelContract.CommandKind.PassResponse, "decision": "5"}}])
+	var delayed_selection: ActionSelectionController = ActionSelectionController.new()
+	delayed_selection.service = delayed
+	delayed_selection.completed.connect(func(_command: Dictionary, _intent: Dictionary) -> void: completed_queries += 1)
+	delayed_selection.begin("0", KernelContract.CommandKind.PassResponse)
+	completed_queries = 0
+	delayed.delay = true
+	delayed.match_snapshot["revision"] = "2"
+	delayed_selection.revalidate()
+	delayed.delay = false
+	delayed_selection.poll()
+	check(completed_queries == 0 and delayed_selection.options.options.size() == 1, "asynchronous revalidation waits for explicit confirmation")
 	var service: QueryFixtureService = QueryFixtureService.new()
 	service.match_mode = "ai"
 	service.match_active = true
@@ -69,6 +92,8 @@ func _run() -> void:
 		page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		await process_frame
 		page._layout_panels()
+		check(page._detail.size.x <= maxf(244, dimensions.x * 0.20), "compact details leave more width for the battlefield")
+		check(page.canvas.layout.own_analysis.y >= 0.34 and page.canvas.layout.opponent_analysis.y >= 0.30, "battlefield grows vertically while the hand remains collapsible")
 		check(page._detail.position.x < dimensions.x * 0.25, "detail stays in left column")
 		check(page.canvas.position.x > page._detail.position.x + page._detail.size.x, "detail never blocks the field")
 		check(page._status_opponent.position.x > dimensions.x * 0.65, "opponent status remains top right")

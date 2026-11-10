@@ -135,6 +135,9 @@ async def legal_command(peer):
         if options["field"] == 0:
             choices = [row for row in choices if row["value"] not in ("11", "19")]
             choices.sort(key=lambda row: row["value"] not in ("9", "13", "14", "18", "10"))
+        if view.get("openingStage") == "gestures" and options["field"] != 0:
+            desired = "0" if int(view["viewer"]) == 0 else "2"
+            choices.sort(key=lambda row: str(row["value"]) != desired)
         if not choices:
             raise RuntimeError("actionable view has no legal continuation")
         selections.append({"field": options["field"], "value": choices[0]["value"]})
@@ -278,7 +281,7 @@ def main():
     assets = options.assets.resolve()
     metadata = json.loads((assets / "catalog.json").read_text())["metadata"]
     hello = {"type": "Hello", "protocol": 5, "program": "2.6.3", "rules": metadata["rulesVersion"],
-             "mechanics": metadata["mechanicsRevision"], "cards": metadata["cardSetVersion"], "hash": "cc7c6005e8f96820"}
+             "mechanics": metadata["mechanicsRevision"], "cards": metadata["cardSetVersion"], "hash": "61f9b39a65c02fff"}
     main_deck = json.loads((assets / "deck.json").read_text())
     side = json.loads((assets / "side-deck.json").read_text())
     deck = {"baseFormation": side["initialFormation"],

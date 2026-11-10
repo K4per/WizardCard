@@ -102,15 +102,15 @@ var _chain_text: RichTextLabel
 func _ready() -> void:
 	canvas = %FieldCanvas
 	canvas.layout = canvas.layout.duplicate() as FieldLayout
-	canvas.layout.opponent_analysis = Vector2(0.15, 0.25)
-	canvas.layout.own_analysis = Vector2(0.56, 0.25)
-	canvas.layout.opponent_casting = Vector2(0.43, 0.055)
-	canvas.layout.own_casting = Vector2(0.49, 0.055)
+	canvas.layout.opponent_analysis = Vector2(0.10, 0.32)
+	canvas.layout.own_analysis = Vector2(0.54, 0.36)
+	canvas.layout.opponent_casting = Vector2(0.435, 0.045)
+	canvas.layout.own_casting = Vector2(0.485, 0.045)
 	canvas.layout.hand_height_ratio = 0.15
 	canvas.layout.hover_raise_ratio = 0.23
-	canvas.layout.main_deck_position = Vector2(0.895, 0.75)
-	canvas.layout.side_deck_position = Vector2(0.035, 0.68)
-	canvas.layout.ash_position = Vector2(0.895, 0.59)
+	canvas.layout.main_deck_position = Vector2(0.895, 0.78)
+	canvas.layout.side_deck_position = Vector2(0.035, 0.78)
+	canvas.layout.ash_position = Vector2(0.895, 0.62)
 	canvas.layout.pile_size = Vector2(0.068, 0.12)
 	_notice = %Notice
 	_phase = %Phase
@@ -214,20 +214,23 @@ func _layout_panels() -> void:
 		available = get_viewport_rect().size
 	available.x = maxf(available.x, 320.0)
 	available.y = maxf(available.y, 240.0)
-	var sidebar: float = clampf(available.x * 0.22, 316.0, 420.0)
+	var sidebar: float = clampf(available.x * 0.17, 244.0, 300.0)
 	if _tutorial_panel != null:
 		_tutorial_panel.position = Vector2(sidebar + 32, 8)
 		_tutorial_panel.size = Vector2(maxf(420, available.x - sidebar - 380), 100)
 	PlayerStatusBar.place_corners(_status_own, _status_opponent, available)
+	_status_own.custom_minimum_size = Vector2(sidebar, 82)
+	_status_own.size = Vector2(sidebar, 82)
+	_status_own.position.y = available.y - _status_own.size.y - 12
 	canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	canvas.offset_left = sidebar + 24.0
 	canvas.hand_side_clearance = 0.0
 	_detail.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	_detail.position = Vector2(12, 40)
-	_detail._art.custom_minimum_size = Vector2(220, minf(240, available.y * 0.23))
+	_detail._art.custom_minimum_size = Vector2(minf(180, sidebar - 24), minf(180, available.y * 0.18))
 	_detail._body.add_theme_font_size_override(&"normal_font_size", 14)
 	_detail._type.add_theme_font_size_override(&"font_size", 14)
-	_detail.size = Vector2(sidebar, available.y * 0.62)
+	_detail.size = Vector2(sidebar, available.y * 0.55)
 	_chain_text.position = Vector2(12, _detail.position.y + _detail.size.y + 10)
 	_chain_text.size = Vector2(sidebar, maxf(60, _status_own.position.y - _chain_text.position.y - 10))
 	var tray_height: float = minf(252.0, available.y - 96.0)

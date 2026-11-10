@@ -91,7 +91,7 @@ theme_override_font_sizes/font_size = 28
 [node name="LanDescription" type="Label" parent="Margin/Column/Scroll/Body"]
 layout_mode = 2
 unique_name_in_owner = true
-text = "通过经过验证的 TLS 连接服务器。双方使用合法卡组，房主可设置先手和自动阶段。"
+text = "默认连接正式服 aq.rainplay.cn:23513。选择卡组后创建房间，或输入房间码加入；双方准备后猜拳决定先手。"
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 size_flags_horizontal = 3
@@ -100,7 +100,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 unique_name_in_owner = true
 placeholder_text = "服务器主机名"
-text = "localhost"
+text = "aq.rainplay.cn"
 custom_minimum_size = Vector2(0, 48)
 
 [node name="PortCaption" type="Label" parent="Margin/Column/Scroll/Body"]
@@ -113,7 +113,7 @@ layout_mode = 2
 unique_name_in_owner = true
 min_value = 1024.0
 max_value = 65535.0
-value = 24443.0
+value = 23513.0
 custom_minimum_size = Vector2(0, 48)
 
 [node name="RoomCodeCaption" type="Label" parent="Margin/Column/Scroll/Body"]

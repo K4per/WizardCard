@@ -207,6 +207,9 @@ func _run() -> void:
 	if not await _exercise_card_input(match_page):
 		return
 	await _capture_page("match")
+	match_page.canvas.set_hand_collapsed(true)
+	await _capture_page("match-hand-hidden")
+	match_page.canvas.set_hand_collapsed(false)
 	var original_revision: String = str(app.service.match_snapshot.get("revision", ""))
 	var generation: String = str(app.service.match_snapshot.get("generation", ""))
 	var first: Dictionary = app.service.match_snapshot.get("actionSummary", {}).get("safeAdvance", {})
@@ -431,6 +434,12 @@ func _mouse_button(point: Vector2, pressed: bool, button: MouseButton = MOUSE_BU
 func _capture_page(label: String) -> void:
 	if not _capture or _output.is_empty():
 		return
+	# Keep a captured authoritative snapshot stable while rendering five sizes.
+	# Otherwise the live auto-response timer can advance during screenshot IO.
+	var captured_match: MatchPage = app.page as MatchPage
+	var was_waiting: bool = captured_match._network_waiting if captured_match != null else false
+	if captured_match != null:
+		captured_match._network_waiting = true
 	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(1440, 900)]:
 		root.size = dimensions
 		await process_frame
@@ -439,3 +448,5 @@ func _capture_page(label: String) -> void:
 		var capture: Image = root.get_texture().get_image()
 		if not _expect(capture.save_png(_output.path_join(label + "-%dx%d.png" % [dimensions.x, dimensions.y])) == OK, "save screenshot"):
 			return
+	if captured_match != null:
+		captured_match._network_waiting = was_waiting

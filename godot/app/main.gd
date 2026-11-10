@@ -84,6 +84,10 @@ func _ready() -> void:
 		var verification: Node = load("res://diagnostics/central_verification.tscn").instantiate()
 		verification.set("_app", self)
 		get_tree().root.add_child.call_deferred(verification)
+	if arguments.has("--verify-guide"):
+		var verification: Node = load("res://diagnostics/guide_verification.gd").new()
+		verification.set("_app", self)
+		get_tree().root.add_child.call_deferred(verification)
 
 func navigate(destination: StringName) -> void:
 	if not PAGES.has(destination):

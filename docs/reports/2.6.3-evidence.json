@@ -1,7 +1,7 @@
 {
   "format": 1,
   "version": "2.6.3",
-  "recordedAtUtc": "2026-11-10T11:58:29.141627+00:00",
+  "recordedAtUtc": "2026-11-10T12:01:39.429221+00:00",
   "sourceCommit": "36214b7066b79b1912f436ee8abdee926444bb2a",
   "sourceTree": "a880ad088509cf421a95f57cd84ebfb1cca6c8c3",
   "acceptance": {
@@ -187,8 +187,8 @@
       "sha256": "c90ca35498a566290f24deca08a9c8367b903ca792ea310c97f25008b1c0720c"
     },
     "execution-ledger.md": {
-      "bytes": 7631,
-      "sha256": "24d1ab87cbf7f9c59a1db4a5e47b5d93193f9435e73ef318085b3e12ca4a4cd6"
+      "bytes": 8002,
+      "sha256": "0f8bcbad2256154911e3e704b594170489e72ea626e4d578bee5df216c06fbe6"
     },
     "expanded-field-capture.log": {
       "bytes": 274,
@@ -693,7 +693,7 @@
   },
   "evidenceArchive": {
     "path": "E:\\Project\\WizardCard\\dist\\WizardCard-2.6.3-acceptance-evidence.zip",
-    "bytes": 8951493,
-    "sha256": "c0f39c433178b5aef3d4cde8cf11d6924775ebe9d6d8c0e1a45c8cd519b86e5a"
+    "bytes": 8951656,
+    "sha256": "ccc026622c58890b414a1fdc4be8a3aaf11e6f5b9c8e4e6612521a64413cd6f8"
   }
 }

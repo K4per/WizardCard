@@ -99,6 +99,7 @@ Json MatchSession::recordingHeader() const {
               {"commands", Json::array()},
               {"finalDigest", engine_.digest()}};
     j["containsDebugOperations"] = engine_.state().debugUsed;
+    if (config_.tutorialChapter) j["tutorialChapter"] = config_.tutorialChapter;
     j["technicalPaused"] = technicalPaused_;
     const auto &s = engine_.state();
     j["statistics"] = {{"turns", {s.players[0].ownTurn, s.players[1].ownTurn}},
@@ -170,6 +171,7 @@ GameEngine replay(const Content &c, const Json &j,
     MatchConfig config;
     config.seed =
         static_cast<std::uint32_t>(integer(j.at("seed"), std::numeric_limits<std::uint32_t>::max()));
+    config.tutorialChapter = j.value("tutorialChapter", 0);
     if (!j.at("players").is_array() || j.at("players").size() != 2)
         throw std::runtime_error("replay requires two player decks");
     for (int p = 0; p < 2; ++p) {

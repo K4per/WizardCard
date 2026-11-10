@@ -130,7 +130,7 @@ class Application {
     void closeSettings();
     bool applySettings(const Settings &, std::string &error);
     bool start(const MatchConfig &, std::string &error, SessionOptions = {});
-    bool startTutorial(std::string &error);
+    bool startTutorial(std::string &error, int chapter = 0);
     bool restart(std::uint32_t seed, std::string &error);
     CommandResult submit(PlayerId, const Command &, std::uint64_t generation);
     bool debugAvailable() const { return match_ && !network_ && options_.mode == MatchMode::Ai; }

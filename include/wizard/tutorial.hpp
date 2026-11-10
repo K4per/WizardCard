@@ -17,11 +17,13 @@ enum class Lesson {
     Review,
     Complete
 };
-MatchConfig tutorialConfiguration(const Content &);
+MatchConfig tutorialConfiguration(const Content &, int chapter = 0);
 struct Tutorial {
+    int chapter{}, step{};
     Lesson lesson{Lesson::Intro};
     CardId spell{};
     bool countered{};
+    int damageObserved{};
     std::string title() const;
     std::string hint(const GameView &) const;
     bool canContinue(const GameView &) const;

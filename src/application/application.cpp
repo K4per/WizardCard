@@ -213,6 +213,8 @@ bool Application::start(const MatchConfig &config, std::string &error, SessionOp
         if (options.mode != MatchMode::Hotseat && options.mode != MatchMode::Ai &&
             options.mode != MatchMode::Tutorial)
             throw std::invalid_argument("无效对局模式");
+        if (config.tutorialChapter && options.mode != MatchMode::Tutorial)
+            throw std::invalid_argument("教学局面仅可用于教程");
         auto next = std::make_unique<MatchSession>(content_, config);
         next->enableDebug(options.mode == MatchMode::Ai);
         auto path = directory_ / "replays" /
@@ -226,6 +228,7 @@ bool Application::start(const MatchConfig &config, std::string &error, SessionOp
         ++revision_;
         options_ = options;
         tutorial_ = {};
+        tutorial_.chapter = config.tutorialChapter;
         page_ = Page::Match;
         return true;
     } catch (const std::exception &e) {
@@ -233,9 +236,9 @@ bool Application::start(const MatchConfig &config, std::string &error, SessionOp
         return false;
     }
 }
-bool Application::startTutorial(std::string &error) {
+bool Application::startTutorial(std::string &error, int chapter) {
     try {
-        return start(tutorialConfiguration(content_), error, {MatchMode::Tutorial, ai::Difficulty::Easy});
+        return start(tutorialConfiguration(content_, chapter), error, {MatchMode::Tutorial, ai::Difficulty::Easy});
     } catch (const std::exception &e) {
         error = e.what();
         return false;

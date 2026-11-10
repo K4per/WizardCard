@@ -751,6 +751,8 @@ func _gui_input(event: InputEvent) -> void:
 				if selected != null:
 					card_selected.emit(selected)
 				else:
+					if _own_casting_region.has_point(mouse.position):
+						zone_clicked.emit("casting", field.viewer)
 					for hit: Dictionary in _zone_hits:
 						if hit["rect"].has_point(mouse.position):
 							zone_clicked.emit(str(hit["kind"]), int(hit["owner"]))

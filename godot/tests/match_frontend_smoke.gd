@@ -89,10 +89,12 @@ func _run() -> void:
 	if not _expect(side_rows.size() == match_page.canvas.field.own_side_count, "own side deck cards are projected for inspection"):
 		return
 	for draw_step: int in range(12):
-		await process_frame
+		await create_timer(0.02).timeout
+		if match_page._privacy_layer.visible and match_page._pending_viewer >= 0:
+			match_page._reveal()
 		if not match_page.canvas._zone_hits.is_empty():
 			break
-	if not _expect(not match_page.canvas._zone_hits.is_empty() and match_page.canvas.zone_at(match_page.canvas._zone_hits[0]["rect"].get_center()).has("kind"), "deck and ash regions expose click targets"):
+	if not _expect(not match_page.canvas._zone_hits.is_empty() and match_page.canvas.zone_at(match_page.canvas._zone_hits[0]["rect"].get_center()).has("kind"), "deck and ash regions expose click targets: size=%s visible=%s hits=%d" % [match_page.canvas.size, match_page.canvas.is_visible_in_tree(), match_page.canvas._zone_hits.size()]):
 		return
 	# Finish any phase-start response window before exercising card contexts.
 	for response_step: int in range(40):
@@ -261,14 +263,12 @@ func _run() -> void:
 	app.service.match_viewer = 0
 	if not _expect(app.service.save_replay() and app.service.leave_match(), "AI match leaves with saved replay"):
 		return
-	app.navigate(&"setup")
+	app.navigate(&"guide")
 	await process_frame
-	setup = app.page as SetupPage
-	setup._mode.select(2)
-	setup._mode_changed(2)
-	setup.start()
+	var guide: GuidePage = app.page as GuidePage
+	guide.start_chapter(1)
 	await process_frame
-	if not _expect(app.page is MatchPage and app.service.match_mode == "tutorial", "tutorial starts from setup: " + app.service.error):
+	if not _expect(app.page is MatchPage and app.service.match_mode == "tutorial", "tutorial starts from the guide: " + app.service.error):
 		return
 	match_page = app.page as MatchPage
 	if not _expect(match_page._tutorial.visible and not match_page._tutorial.text.is_empty(), "native tutorial guidance is visible"):

@@ -6,6 +6,7 @@ signal page_changed(page: StringName)
 const PAGES: Dictionary[StringName, PackedScene] = {
 	&"menu": preload("res://pages/menu_page.tscn"),
 	&"library": preload("res://pages/library_page.tscn"),
+	&"guide": preload("res://pages/guide_page.tscn"),
 	&"settings": preload("res://pages/settings_page.tscn"),
 	&"field": preload("res://pages/field_page.tscn"),
 	&"decks": preload("res://pages/decks_page.tscn"),

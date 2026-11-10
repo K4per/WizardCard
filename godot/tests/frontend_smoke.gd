@@ -132,7 +132,7 @@ func _run() -> void:
 		var menu: MenuPage = _app.page as MenuPage
 		var menu_bounds: Rect2 = Rect2(Vector2.ZERO, Vector2(dimensions))
 		_check(menu._buttons.size() == 7, "Menu exposes seven large product entries")
-		_check(menu._buttons.map(func(button: Button) -> String: return button.text) == ["单人游戏", "多人游戏", "卡组构筑", "卡牌图鉴", "对局复盘", "游戏设置", "退出游戏"], "Seven primary menu entries follow the approved order")
+		_check(menu._buttons.map(func(button: Button) -> String: return button.text) == ["单人游戏", "多人游戏", "卡组构筑", "巫师指南", "对局复盘", "游戏设置", "退出游戏"], "Seven primary menu entries follow the approved order")
 		_check(menu_bounds.encloses(menu._logo.get_global_rect()), "Current logo stays inside the viewport")
 		_check(menu._logo.get_global_rect().end.x < menu._column.get_global_rect().position.x, "Current logo stays left of the seven primary actions")
 		for button_index: int in range(menu._buttons.size()):
@@ -161,7 +161,7 @@ func _run() -> void:
 		var menu_style: StyleBox = menu._buttons[0].get_theme_stylebox(&"normal")
 		_check(menu_style is StyleBoxFlat and (menu_style as StyleBoxFlat).bg_color == DeckTheme.CONTROL, "Greybox menu buttons use primitive flat styles")
 		_check(menu._buttons.all(func(button: Button) -> bool: return button is MenuArtButton), "Replay and library use the same primary buttons")
-		for entry: Array in [[3, &"library"], [4, &"replay"]]:
+		for entry: Array in [[3, &"guide"], [4, &"replay"]]:
 			menu._buttons[entry[0]].pressed.emit()
 			await _settle()
 			_check(_app.current_page == entry[1], "Primary library and replay entries navigate to their pages")

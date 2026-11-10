@@ -10,5 +10,6 @@ struct PlayerDeck {
 struct MatchConfig {
     std::array<PlayerDeck, 2> players;
     std::uint32_t seed{42};
+    int tutorialChapter{}; // Deterministic local teaching scenario; zero is a normal match.
 };
 } // namespace wizard

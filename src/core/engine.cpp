@@ -6,11 +6,54 @@
 #include <type_traits>
 namespace wizard {
 using namespace detail;
+namespace {
+void initializeTutorial(MutationContext &s, const CardCatalog &cat, int chapter) {
+    for (auto &player : s.players) player.mana = 20;
+    if (chapter == 2) return; // The opening exercise uses the real private opening protocol.
+    s.opening = false;
+    s.openingStage = OpeningStage::Complete;
+    s.globalTurn = 1;
+    s.phase = Phase::Main; s.flow = Flow::Main; s.phaseStep = PhaseStep::Body;
+    s.phaseGate = s.nextDecision++;
+    for (int p = 0; p < 2; ++p) {
+        s.players[p].ownTurn = 1;
+        CardId host{};
+        for (auto &[id, card] : s.cards)
+            if (card.owner == p && card.definition == "v260-formation-0016") {
+                host = id; card.zone = Zone::Analysis; card.base = true;
+                card.fieldOrder = s.nextFieldOrder++;
+                break;
+            }
+        const std::string wanted = p == 1 ? "v260-analytic-0004" :
+            chapter == 4 ? "v260-word-0001" : chapter == 5 ? "v260-talisman-0003" : "v260-analytic-0001";
+        auto &deck = s.players[p].deck;
+        const auto first = std::find_if(deck.begin(), deck.end(), [&](CardId id) { return s.cards.at(id).definition == wanted; });
+        if (first == deck.end() || !host) throw std::invalid_argument("tutorial deck missing teaching card");
+        std::iter_swap(deck.begin(), first);
+        for (int n = 0; n < 5; ++n) s.cards.at(deck[n]).zone = Zone::Hand;
+        deck.erase(deck.begin(), deck.begin() + 5);
+        // The second concealed card keeps Magic Missile's optional follow-up available
+        // after the learner turns their shield face up.
+        if (chapter == 5 && p == 0) {
+            for (auto &[id, card] : s.cards)
+                if (card.owner == p && card.zone == Zone::Hand && cat.at(card.definition).type == CardType::Analytic) {
+                    card.zone = Zone::Analysis; card.host = card.sourceFormation = host;
+                    card.ringIndex = card.sourceRingIndex = 1; card.faceDown = true;
+                    card.ambushedTurn = 0; card.fieldOrder = s.nextFieldOrder++;
+                    break;
+                }
+        }
+    }
+}
+}
 GameEngine::GameEngine(CardCatalog cat, std::array<std::vector<std::string>, 2> decks, std::uint32_t seed)
     : GameEngine(std::move(cat), shared(std::move(decks), seed)) {}
 GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) {
     cat.compileAbilities();
     catalog_ = std::make_shared<const CardCatalog>(std::move(cat));
+    if (config.tutorialChapter < 0 || config.tutorialChapter > 5 ||
+        (config.tutorialChapter && catalog().mechanicsRevision != 12))
+        throw std::invalid_argument("invalid tutorial chapter");
     const bool supported = (catalog().rulesVersion == "2.5.5" && catalog().mechanicsRevision == 9) ||
         (catalog().rulesVersion == "2.6.0" && catalog().mechanicsRevision == 10) ||
         (catalog().rulesVersion == "2.6.2" && catalog().mechanicsRevision == 11) ||
@@ -45,6 +88,7 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) {
             state_.players[p].deck.push_back(c.id);
         }
     }
+    if (config.tutorialChapter) initializeTutorial(state_, catalog(), config.tutorialChapter);
     const auto errors = Rules::invariants(state_, catalog());
     if (!errors.empty()) throw std::logic_error("invalid opening: " + errors.front());
 }

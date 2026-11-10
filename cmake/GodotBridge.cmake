@@ -114,6 +114,11 @@ if(BUILD_TESTING AND GODOT_BIN)
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_alpha_v263_ui COMMAND "${GODOT_BIN}" --headless
     --path ${frontend_dir} --script res://tests/alpha_v263_ui.gd)
+  add_test(NAME godot_alpha_v263_guide COMMAND "${GODOT_BIN}" --headless
+    --path ${frontend_dir} --script res://tests/alpha_v263_guide.gd --
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260 --user-data ${CMAKE_CURRENT_BINARY_DIR}/guide-v263-user)
+  set_tests_properties(godot_alpha_v263_guide PROPERTIES FIXTURES_REQUIRED frontend_import
+    TIMEOUT 90 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   set_tests_properties(godot_alpha_v263_ui PROPERTIES FIXTURES_REQUIRED frontend_import
     RUN_SERIAL TRUE TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_central_rooms_ui_smoke COMMAND "${GODOT_BIN}" --headless

@@ -49,7 +49,7 @@ Json LocalSession::start(const Json &options) {
             return fail("invalid_options", "无效对局模式");
         std::string error;
         bool started{};
-        if (mode == "tutorial") started = match_.application->startTutorial(error);
+        if (mode == "tutorial") started = match_.application->startTutorial(error, options.value("chapter", 0));
         else {
             MatchConfig config;
             if (options.contains("seed")) {
@@ -126,7 +126,8 @@ Json LocalSession::snapshot(PlayerId viewer) const {
     if (automatic) data["automaticCommand"] = commandDto(Command(*automatic));
     data["technicalPaused"] = match_.application->technicalPaused();
     if (const auto *tutorial = match_.application->tutorial())
-        data["tutorial"] = {{"lesson", static_cast<int>(tutorial->lesson)}, {"title", tutorial->title()},
+        data["tutorial"] = {{"chapter", tutorial->chapter}, {"step", tutorial->step},
+                            {"lesson", static_cast<int>(tutorial->lesson)}, {"title", tutorial->title()},
                             {"hint", tutorial->hint(v)}, {"canContinue", tutorial->canContinue(v)},
                             {"complete", tutorial->lesson == app::Lesson::Complete}};
     else data["tutorial"] = nullptr;

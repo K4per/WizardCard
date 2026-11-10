@@ -18,7 +18,8 @@ func _ready() -> void:
 	_buttons[0].pressed.connect(_single_player)
 	_buttons[1].pressed.connect(navigation_requested.emit.bind(&"rooms"))
 	_buttons[2].pressed.connect(navigation_requested.emit.bind(&"decks"))
-	_buttons[3].pressed.connect(navigation_requested.emit.bind(&"library"))
+	_buttons[3].text = "巫师指南"
+	_buttons[3].pressed.connect(navigation_requested.emit.bind(&"guide"))
 	_buttons[4].pressed.connect(navigation_requested.emit.bind(&"replay"))
 	_buttons[5].pressed.connect(navigation_requested.emit.bind(&"settings"))
 	_buttons[6].pressed.connect(get_tree().quit)

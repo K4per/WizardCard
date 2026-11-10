@@ -15,6 +15,10 @@ var _detail_shade: ColorRect
 var _detail: CardDetail
 var _tutorial: Label
 var _tutorial_button: Button
+var _tutorial_panel: PanelContainer
+var _tutorial_retry: Button
+var _tutorial_return: Button
+var _tutorial_mode: bool = false
 var _privacy_layer: ColorRect
 var _privacy_title: Label
 var _feedback: MatchFeedback
@@ -143,6 +147,7 @@ func _ready() -> void:
 	_status_opponent = %OpponentStatus
 	_tutorial = %Tutorial
 	_tutorial_button = %TutorialContinue
+	_build_tutorial_panel()
 	_cue = %Cue
 	_detail = %CardDetail
 	_detail.battle_skin = true
@@ -210,6 +215,9 @@ func _layout_panels() -> void:
 	available.x = maxf(available.x, 320.0)
 	available.y = maxf(available.y, 240.0)
 	var sidebar: float = clampf(available.x * 0.22, 316.0, 420.0)
+	if _tutorial_panel != null:
+		_tutorial_panel.position = Vector2(sidebar + 32, 8)
+		_tutorial_panel.size = Vector2(maxf(420, available.x - sidebar - 380), 100)
 	PlayerStatusBar.place_corners(_status_own, _status_opponent, available)
 	canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	canvas.offset_left = sidebar + 24.0
@@ -641,11 +649,17 @@ func _refresh() -> void:
 		_phase.text = "对局结束 · " + ("平局" if int(snapshot["result"]) > 1 else "玩家 %d 获胜" % [int(snapshot["result"]) + 1])
 		_notice.text = "对局已结束，可保存并查看复盘。"
 	_tutorial.visible = snapshot.get("tutorial") is Dictionary
+	_tutorial_panel.visible = _tutorial.visible
+	_tutorial_mode = _tutorial.visible
 	_tutorial_button.visible = _tutorial.visible
 	if _tutorial.visible:
 		var lesson: Dictionary = snapshot["tutorial"]
 		_tutorial.text = str(lesson.get("title", "教学")) + "\n" + str(lesson.get("hint", ""))
 		_tutorial_button.disabled = not bool(lesson.get("canContinue", false))
+		_tutorial_button.visible = int(lesson.get("chapter", 0)) == 0
+		if bool(lesson.get("complete", false)) and int(lesson.get("chapter", 0)) > 0:
+			if not GuideProgress.mark(service.user_directory, int(lesson["chapter"])):
+				_notice.text = "本章完成，但完成标记保存失败。请检查用户目录。"
 	_update_chain(snapshot)
 	_render_actions(not resume_selection)
 	if resume_selection:
@@ -1040,6 +1054,8 @@ func _toggle_action_popup() -> void:
 func _zone_clicked(kind: String, owner: int) -> void:
 	if _privacy_layer.visible or _decision.visible:
 		return
+	if owner == service.match_viewer:
+		_inspect_tutorial_area(kind)
 	if kind == "side_deck":
 		if owner == service.match_viewer:
 			_open_collection("side_deck", owner)
@@ -1281,6 +1297,10 @@ func _select_card(card: CardPresentation) -> void:
 	_detail.move_to_front()
 	_layout_panels()
 	_render_actions()
+	for row: Dictionary in service.match_snapshot.get("cards", []):
+		if str(row.get("id", "")) == card.instance_id and int(row.get("owner", -1)) == service.match_viewer:
+			_inspect_tutorial_area("hand" if int(row.get("zone", -1)) == 1 else "formation" if card.type_key == "formation" else "")
+			break
 
 func _clear_card() -> void:
 	if not _target_decision_id.is_empty():
@@ -1522,6 +1542,58 @@ func _automatic_step(generation: String, revision: String) -> void:
 	if not request.is_empty():
 		_apply_result(service.match_request(request["method"], request["arguments"]))
 
+func _build_tutorial_panel() -> void:
+	_tutorial_panel = PanelContainer.new()
+	_tutorial_panel.add_theme_stylebox_override(&"panel", DeckTheme.box(DeckTheme.PANEL, DeckTheme.BORDER, 8))
+	add_child(_tutorial_panel)
+	var column: VBoxContainer = VBoxContainer.new()
+	_tutorial_panel.add_child(column)
+	_tutorial.reparent(column)
+	_tutorial.custom_minimum_size = Vector2(0, 54)
+	_tutorial.add_theme_font_size_override(&"font_size", 14)
+	var actions: HBoxContainer = HBoxContainer.new()
+	column.add_child(actions)
+	_tutorial_button.reparent(actions)
+	_tutorial_retry = UiFactory.button("重试本章", _restart_tutorial)
+	_tutorial_return = UiFactory.button("返回章节列表", _return_tutorial)
+	actions.add_child(_tutorial_retry)
+	actions.add_child(_tutorial_return)
+	DeckUi.compact_button(_tutorial_retry)
+	DeckUi.compact_button(_tutorial_return)
+	_status_own.gui_input.connect(_tutorial_area_input.bind("own_status"))
+	_status_opponent.gui_input.connect(_tutorial_area_input.bind("opponent_status"))
+	_phase.mouse_filter = Control.MOUSE_FILTER_STOP
+	_phase.gui_input.connect(_tutorial_area_input.bind("phase"))
+	_tutorial_panel.hide()
+
+func _tutorial_area_input(event: InputEvent, area: String) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_inspect_tutorial_area(area)
+
+func _inspect_tutorial_area(area: String) -> void:
+	if service == null or not service.match_snapshot.get("tutorial") is Dictionary:
+		return
+	var lesson: Dictionary = service.match_snapshot["tutorial"]
+	if int(lesson.get("chapter", 0)) != 1 or bool(lesson.get("complete", false)):
+		return
+	var expected: Array[String] = ["own_status", "opponent_status", "hand", "main_deck", "side_deck", "formation", "casting", "ash", "phase"]
+	var step: int = int(lesson.get("step", 0))
+	if step < expected.size() and expected[step] == area:
+		_continue_tutorial()
+
+func _restart_tutorial() -> void:
+	var chapter: int = int(service.match_snapshot.get("tutorial", {}).get("chapter", 1))
+	if not service.leave_match() or not service.start_match({"mode": "tutorial", "chapter": chapter}):
+		_notice.text = service.error
+		return
+	navigation_requested.emit(&"match")
+
+func _return_tutorial() -> void:
+	if not service.leave_match():
+		_notice.text = service.error
+		return
+	navigation_requested.emit(&"guide")
+
 func _continue_tutorial() -> void:
 	var snapshot: Dictionary = service.match_snapshot
 	var result: Dictionary = service.match_request(&"continue_tutorial", [str(snapshot.get("generation", "")), str(snapshot.get("revision", ""))])
@@ -1583,7 +1655,7 @@ func _finish_leave() -> void:
 	if _quitting:
 		get_tree().quit()
 	else:
-		navigation_requested.emit(&"menu")
+		navigation_requested.emit(&"guide" if _tutorial_mode else &"menu")
 
 func _request_force_leave() -> void:
 	_force_dialog.popup_centered()

@@ -96,6 +96,7 @@ var _response_sources: Array[String] = []
 var _response_query_pending: bool = false
 var _response_cancel: Button
 var _forced_ack_id: String = ""
+var _concentration_selected_id: String = ""
 var _chain_text: RichTextLabel
 
 
@@ -224,6 +225,9 @@ func _layout_panels() -> void:
 	_status_own.position.y = available.y - _status_own.size.y - 12
 	canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	canvas.offset_left = sidebar + 24.0
+	var control_width: float = maxf(_end_phase.get_combined_minimum_size().x, _response_mode.get_combined_minimum_size().x)
+	var field_width: float = available.x - sidebar - 24.0
+	canvas.layout.right_margin_ratio = maxf(0.13, (control_width + 20.0) / maxf(1, field_width))
 	canvas.hand_side_clearance = 0.0
 	_detail.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	_detail.position = Vector2(12, 40)
@@ -949,7 +953,17 @@ func _query_changed(options: ActionOptions) -> void:
 			continue
 		if options.field == KernelContract.ActionField.Operation and int(choice.id) == KernelContract.CommandKind.PassResponse:
 			request.pass_id = choice.id
+		if current_decision is Dictionary and int(current_decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration and card_id == "0":
+			choice.label = "放弃专注（法术送入灰烬区）"
 		request.choices.append(choice)
+	if current_decision is Dictionary and int(current_decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration:
+		if card_ids.is_empty():
+			var unavailable: DecisionChoice = DecisionChoice.new()
+			unavailable.id = "@unavailable"
+			unavailable.label = "维持专注（不可用：费用不足或效果禁止）"
+			unavailable.available = false
+			request.choices.push_front(unavailable)
+		card_ids.clear()
 	if int(_selection.intent.get("offset", 0)) > 0:
 		var previous: DecisionChoice = DecisionChoice.new()
 		previous.id = "@previous"
@@ -1253,6 +1267,14 @@ func _render_decision() -> void:
 	if kind == KernelContract.DecisionKind.Concentration and _forced_ack_id != id:
 		_question("必须处理专注", "请处理【%s】的专注。完成维持或放弃前，不能推进阶段。" % MatchProjection.card_name(snapshot, str(decision.get("source", "0"))), id, [{"id": "@concentration", "label": "是"}])
 		return
+	if kind == KernelContract.DecisionKind.Concentration and _concentration_selected_id != id:
+		_selection.cancel()
+		_decision.hide()
+		_restore_tray_hand()
+		_end_phase.disabled = true
+		canvas.set_action_targets([str(decision.get("source", "0"))])
+		_notice.text = "点击高亮的专注法术，再选择维持或放弃。"
+		return
 	_selection.begin("0", KernelContract.CommandKind.Choose)
 
 func _preview_candidate(card: CardPresentation) -> void:
@@ -1280,6 +1302,13 @@ func _update_chain(snapshot: Dictionary) -> void:
 
 func _select_card(card: CardPresentation) -> void:
 	if _privacy_layer.visible:
+		return
+	var decision: Variant = service.match_snapshot.get("decision")
+	if decision is Dictionary and int(decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration and _forced_ack_id == str(decision.get("id", "")):
+		_preview_candidate(card)
+		if card.instance_id == str(decision.get("source", "0")) and _concentration_selected_id != _forced_ack_id:
+			_concentration_selected_id = _forced_ack_id
+			_render_decision()
 		return
 	if _response_browsing and not _selection.active and not _response_sources.has(card.instance_id):
 		_preview_candidate(card)
@@ -1676,8 +1705,11 @@ func _reconnect_network() -> void:
 func network_updated(state: Dictionary) -> void:
 	if service == null or service.match_mode != "network":
 		return
+	var was_blocked: bool = _network_recovery.blocked
 	_network_recovery.update(state)
 	_network_waiting = _network_recovery.waiting
+	if was_blocked and not _network_recovery.blocked:
+		_refresh()
 	if not bool(state.get("exists", state.has("room"))):
 		if _leaving_network:
 			_finish_leave()

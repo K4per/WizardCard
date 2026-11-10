@@ -64,6 +64,8 @@ var _hover_id: String = ""
 var _keyboard_index: int = -1
 var _own_start: int = 0
 var _opponent_start: int = 0
+var _casting_start: Array[int] = [0, 0]
+var _casting_page_hits: Array[Dictionary] = []
 var _press_position: Vector2
 var _dragged: CardPresentation
 var _drag_active: bool = false
@@ -225,6 +227,7 @@ func _clear_hover() -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	_casting_page_hits.clear()
 	_card_hits.clear()
 	_opponent_hand_hits.clear()
 	_ring_hits.clear()
@@ -560,20 +563,51 @@ func _draw_casting(cards: Array[CardPresentation], slots: int, region: Rect2, ow
 	else:
 		draw_rect(region, Color("303540"), true)
 	_draw_label("%s施法区 %d/%d" % ["己方" if own else "对方", cards.size(), slots], Rect2(Vector2(region.position.x + 6 if own else region.end.x - 138, region.position.y), Vector2(132, region.size.y)), 14, Color("f1dfb3"), true)
-	# Casting is a compact horizontal track.  At 720p its height is only about
-	# 32px, so using a square card would collapse into an unreadable 16px tile.
-	# Keep a short card strip instead and fit several cards without leaving the
-	# track bounds.
 	var card_height: float = clampf(region.size.y - 8.0, 18.0, 26.0)
-	var card_width: float = minf(110.0, maxf(34.0, (region.size.x - 144.0) / maxi(cards.size(), 1) - 6.0))
-	var gap: float = 6.0
-	var total_width: float = cards.size() * card_width + maxi(0, cards.size() - 1) * gap
-	var start_x: float = region.position.x + 140.0 + maxf(0.0, (region.size.x - 144.0 - total_width) * 0.5)
-	for index: int in range(cards.size()):
-		var x: float = start_x + index * (card_width + gap)
+	var capacity: int = _casting_page_size(cards.size(), region)
+	var paged: bool = cards.size() > capacity
+	var side: int = 0 if own else 1
+	_casting_start[side] = clampi(_casting_start[side], 0, maxi(0, (cards.size() - 1) / capacity * capacity))
+	var first: int = _casting_start[side] if paged else 0
+	var count: int = mini(capacity, cards.size() - first)
+	var reserved: float = 48.0 if paged else 0.0
+	var available: float = region.size.x - 144.0 - reserved
+	var card_width: float = minf(110.0, available / maxi(count, 1) - 6.0)
+	var total_width: float = count * card_width + maxi(0, count - 1) * 6.0
+	var start_x: float = region.position.x + 140.0 + reserved * 0.5 + maxf(0.0, (available - total_width) * 0.5)
+	for index: int in range(count):
+		var x: float = start_x + index * (card_width + 6.0)
 		if not own:
-			x = region.end.x - (start_x - region.position.x) - card_width - index * (card_width + gap)
-		_draw_card(cards[index], Rect2(Vector2(x, region.position.y + (region.size.y - card_height) * 0.5), Vector2(card_width, card_height)), not own)
+			x = region.end.x - (start_x - region.position.x) - card_width - index * (card_width + 6.0)
+		_draw_card(cards[first + index], Rect2(Vector2(x, region.position.y + (region.size.y - card_height) * 0.5), Vector2(card_width, card_height)), not own)
+	if paged:
+		for direction: int in [-1, 1]:
+			var x: float = region.position.x + 140.0 if direction < 0 else region.end.x - 24.0
+			if not own:
+				x = region.end.x - (x - region.position.x) - 20.0
+			var rect: Rect2 = Rect2(Vector2(x, region.position.y + 2), Vector2(20, region.size.y - 4))
+			var enabled: bool = first > 0 if direction < 0 else first + count < cards.size()
+			draw_rect(rect, Color("283f4e") if enabled else Color("202a32"))
+			_draw_label("‹" if (direction < 0) == own else "›", rect, 20, Color("e4edf0") if enabled else Color("63717b"), true)
+			if enabled:
+				_casting_page_hits.append({"rect": rect, "point": region.get_center(), "direction": direction})
+
+func _casting_page_size(count: int, region: Rect2) -> int:
+	var capacity: int = maxi(1, int((region.size.x - 138.0) / 74.0))
+	return maxi(1, int((region.size.x - 186.0) / 74.0)) if count > capacity else capacity
+
+func _scroll_casting(point: Vector2, direction: int) -> bool:
+	var own: bool = _own_casting_region.has_point(point)
+	if not own and not _opponent_casting_region.has_point(point):
+		return false
+	var region: Rect2 = _own_casting_region if own else _opponent_casting_region
+	var count: int = field.own_casting.size() if own else field.opponent_casting.size()
+	var capacity: int = _casting_page_size(count, region)
+	var side: int = 0 if own else 1
+	_casting_start[side] = clampi(_casting_start[side] + direction * capacity, 0, maxi(0, (count - 1) / capacity * capacity))
+	_keyboard_index = -1
+	_clear_hover()
+	return true
 
 func _visible_groups(_region: Rect2) -> int:
 	return layout.formation_slot_count
@@ -710,7 +744,9 @@ func _gui_input(event: InputEvent) -> void:
 			accept_event()
 			return
 		if mouse.pressed and mouse.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
-			_scroll_formations(mouse.position, -1 if mouse.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
+			var direction: int = -1 if mouse.button_index == MOUSE_BUTTON_WHEEL_UP else 1
+			if not _scroll_casting(mouse.position, direction):
+				_scroll_formations(mouse.position, direction)
 		elif mouse.pressed and mouse.button_index == MOUSE_BUTTON_RIGHT:
 			_dragged = null
 			_drag_active = false
@@ -720,6 +756,12 @@ func _gui_input(event: InputEvent) -> void:
 				selection_cleared.emit()
 			accept_event()
 		elif mouse.button_index == MOUSE_BUTTON_LEFT:
+			for hit: Dictionary in _casting_page_hits:
+				if (hit["rect"] as Rect2).has_point(mouse.position):
+					if not mouse.pressed:
+						_scroll_casting(hit["point"], int(hit["direction"]))
+					accept_event()
+					return
 			if mouse.pressed:
 				grab_focus()
 				_press_position = mouse.position

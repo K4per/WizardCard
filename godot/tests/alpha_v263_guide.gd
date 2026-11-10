@@ -28,6 +28,7 @@ func _run() -> void:
 	for index: int in range(guide._rule_chapters.item_count):
 		guide._read_rule(index)
 		check(guide._rule_text.text.contains("2.6.3") and not guide._rule_text.text.contains("\n略。"), "rule chapters are complete and versioned")
+	check(not str(guide._rules["chapters"][0]["text"]).contains("②在自己的结束阶段"), "overload is a defeat condition, not victory for the overloaded player")
 	await capture("guide-rulebook")
 	guide.tabs.current_tab = 2
 	check(guide._library._grid.get_child_count() == 90, "guide catalogue uses all 90 release cards")

@@ -87,11 +87,81 @@ func _run() -> void:
 		check(service.confirmations == 0, "viewing the field does not pass or pay")
 		page._decision_cancelled("1", "4", "9")
 		check(page._decision.visible and service.confirmations == 0, "cancel returns to the same response question")
+	for situation: String in ["payable", "insufficient", "blocked"]:
+		service.confirmations = 0
+		service.match_snapshot["decision"] = {"id": situation, "player": 0, "kind": KernelContract.DecisionKind.Concentration, "source": "33"}
+		service.match_snapshot["actionSummary"] = {}
+		var choices: Array = [{"id": "abandon", "label": "销毁专注法术", "source": "0", "command": {"type": KernelContract.CommandKind.Choose, "decision": situation, "option": "0"}}]
+		if situation == "payable":
+			choices.push_front({"id": "maintain", "label": "维持专注（魔素 2）", "source": "33", "command": {"type": KernelContract.CommandKind.Choose, "decision": situation, "option": {"kind": KernelContract.ChoiceKind.Card, "value": "33"}}})
+		service.set_actions(choices)
+		page._render_decision()
+		page._decision_confirmed("1", "4", situation, ["@concentration"])
+		check(not page._decision.visible and page.canvas.target_ids.has("33") and page._end_phase.disabled, "concentration acknowledgement highlights the mandatory source: " + situation)
+		page._select_card(projection.hand[0])
+		check(service.confirmations == 0 and page._decision.visible, "clicking concentration source never pays: " + situation)
+		var labels: String = ""
+		for choice: DecisionChoice in page._decision.request.choices:
+			labels += choice.label
+		check(labels.contains("维持") and labels.contains("放弃"), "concentration explicitly offers maintain/abandon: " + situation)
+		if page._decision.visible and labels.contains("放弃"):
+			var selected_value: String = "1:33" if situation == "payable" else "0"
+			page._decision_confirmed("1", "4", situation, [selected_value])
+			check(service.confirmations == 1, "explicit concentration choice commits exactly once: " + situation)
+		page._selection.cancel()
+		page._network_waiting = false
+	service.match_mode = "network"
+	service.match_snapshot["decision"] = null
+	service.match_snapshot["opening"] = true
+	service.match_snapshot["openingStage"] = "formation"
+	service.match_snapshot["initialFormationConfirmed"] = [false, true]
+	service.set_actions([{ "id": "formation", "source": "33", "command": {"type": KernelContract.CommandKind.SelectInitialFormation, "card": "33"}}])
+	page._render_opening()
+	check(page._selection.active, "opening query is active before a network acknowledgement")
+	page.network_updated({"exists": true, "connected": true, "blocked": true, "room": {"phase": "playing"}})
+	page.network_updated({"exists": true, "connected": true, "blocked": false, "room": {"phase": "playing"}})
+	check(page._selection.active and page._decision.visible, "network unblock reopens outstanding opening choice even without another revision")
+	service.match_snapshot["opening"] = false
+	page._selection.cancel()
+	page._decision.hide()
+	var stress: FieldPresentation = FieldPresentation.new()
+	stress.own_casting_slots = 22
+	stress.opponent_casting_slots = 22
+	for index: int in range(22):
+		for own: bool in [true, false]:
+			var card: CardPresentation = projection.hand[0].duplicate() as CardPresentation
+			card.instance_id = ("own-" if own else "opponent-") + str(index)
+			if own:
+				stress.own_casting.append(card)
+			else:
+				stress.opponent_casting.append(card)
+	page.canvas.configure(stress)
 	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(1440, 900)]:
 		root.size = dimensions
 		page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		await process_frame
 		page._layout_panels()
+		await process_frame
+		for own: bool in [true, false]:
+			var seen: Dictionary = {}
+			var cards: Array[CardPresentation] = stress.own_casting if own else stress.opponent_casting
+			var region: Rect2 = page.canvas._own_casting_region if own else page.canvas._opponent_casting_region
+			for step: int in range(5):
+				for card: CardPresentation in cards:
+					var bounds: Rect2 = page.canvas.card_bounds(card)
+					if bounds.has_area():
+						check(region.encloses(bounds), "full casting track never clips a card")
+						check(page.canvas.card_at(bounds.get_center()) == card, "visible casting card remains selectable")
+						seen[card.instance_id] = true
+				if page.canvas.has_method("_scroll_casting"):
+					page.canvas.call("_scroll_casting", region.get_center(), 1)
+					await process_frame
+					await process_frame
+			check(seen.size() == 22, "all 22 casting cards can be reached at every size")
+			if page.canvas.has_method("_scroll_casting"):
+				page.canvas.call("_scroll_casting", region.get_center(), -100)
+		page._position_phase_button()
+		check(page._end_phase.position.x >= page.canvas.position.x + page.canvas._own_casting_region.end.x, "phase control cannot cover casting cards or page arrows")
 		check(page._detail.size.x <= maxf(244, dimensions.x * 0.20), "compact details leave more width for the battlefield")
 		check(page.canvas.layout.own_analysis.y >= 0.34 and page.canvas.layout.opponent_analysis.y >= 0.30, "battlefield grows vertically while the hand remains collapsible")
 		check(page._detail.position.x < dimensions.x * 0.25, "detail stays in left column")

@@ -47,7 +47,7 @@ func _path(action: Dictionary) -> Array[Dictionary]:
 
 func _query(intent: Dictionary) -> Dictionary:
 	var decision: Dictionary = match_snapshot.get("decision", {}) if match_snapshot.get("decision") is Dictionary else {}
-	var data: Dictionary = {"schema": KernelContract.SCHEMA, "generation": str(match_snapshot.get("generation", "0")), "revision": str(match_snapshot.get("revision", "0")), "viewer": match_viewer, "decisionId": str(decision.get("id", "opening" if bool(match_snapshot.get("opening", false)) else "0")), "field": KernelContract.ActionField.Operation, "options": [], "hasMore": false, "pending": false, "complete": null}
+	var data: Dictionary = {"schema": KernelContract.SCHEMA, "generation": str(match_snapshot.get("generation", "0")), "revision": str(match_snapshot.get("revision", "0")), "viewer": match_viewer, "decisionId": ActionOptions.context_id(match_snapshot), "field": KernelContract.ActionField.Operation, "options": [], "hasMore": false, "pending": false, "complete": null}
 	var selections: Array = intent.get("selections", [])
 	var seen: Dictionary = {}
 	for action: Dictionary in fixture_actions:

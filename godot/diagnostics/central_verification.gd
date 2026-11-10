@@ -295,7 +295,7 @@ func _play_opening(role: String) -> bool:
 	var submitted: String = ""
 	var deadline: int = Time.get_ticks_msec() + 60000
 	while bool(_app.service.match_snapshot.get("opening", true)):
-		if not _expect(Time.get_ticks_msec() < deadline, "opening UI finishes ties, gestures and formations"):
+		if not _expect(Time.get_ticks_msec() < deadline, "opening UI finishes ties, gestures and formations: " + JSON.stringify({"stage": _app.service.match_snapshot.get("openingStage"), "revision": _app.service.match_snapshot.get("revision"), "confirmed": _app.service.match_snapshot.get("initialFormationConfirmed"), "submitted": submitted})):
 			return false
 		var snapshot: Dictionary = _app.service.match_snapshot
 		var stage: String = str(snapshot.get("openingStage", ""))
@@ -322,7 +322,7 @@ func _play_opening(role: String) -> bool:
 				continue
 		var page: MatchPage = _app.page as MatchPage
 		var panel: DecisionPanel = page._decision
-		if key != submitted and panel.visible and panel.request != null and not panel.request.choices.is_empty() \
+		if panel.visible and panel.request != null and not panel.request.choices.is_empty() \
 			and panel.request.generation == str(snapshot.get("generation")) and panel.request.revision == str(snapshot.get("revision")):
 			var choice: DecisionChoice = panel.request.choices[0]
 			if stage == "gestures":
@@ -330,9 +330,11 @@ func _play_opening(role: String) -> bool:
 				for candidate: DecisionChoice in panel.request.choices:
 					if candidate.id == desired:
 						choice = candidate
-			var option: Button = panel._options[choice.id]
-			option.button_pressed = true
-			panel._confirm.pressed.emit()
-			submitted = key
+			var submission: String = key + ":" + str(snapshot.get("revision")) + ":" + choice.id
+			if submitted != submission:
+				var option: Button = panel._options[choice.id]
+				option.button_pressed = true
+				panel._confirm.pressed.emit()
+				submitted = submission
 		await get_tree().create_timer(0.01).timeout
 	return _expect(_opening_tie and _opening_privacy, "opening tie and private confirmation observed")

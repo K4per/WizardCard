@@ -148,7 +148,7 @@ void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const Le
             } else if (d.kind == DecisionKind::ClearAnyLoad) label = "清除 " + catalog().at(s.cards.at(id).definition).name + " 的1点绑定荷载";
             else if (d.kind == DecisionKind::Concentration) {
                 const auto fee = Rules::concentrationUpkeep(s, catalog(), id);
-                label = "维持专注（魔素 " + std::to_string(fee) + " / 荷载 +" + std::to_string(fee) + "）";
+                label = "维持专注（魔素 " + std::to_string(fee) + "）";
             } else label = "选择 " + catalog().at(s.cards.at(id).definition).name + " #" + std::to_string(id);
             add(label, option.kind == ChoiceKind::Card ? id : 0, 0, Choose{d.id, option});
         }

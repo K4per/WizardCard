@@ -32,7 +32,10 @@ def export(output):
              or (name.startswith("assets/") and name.endswith(".json") and "source-archive" not in name)]
     paths = sorted({name.split("/")[0] for name in names if not name.startswith("assets/")})
     paths += [name for name in names if name.startswith("assets/")]
-    archive = subprocess.check_output(["git", "archive", "HEAD", "--", *paths], cwd=ROOT)
+    # git archive applies checkout conversions; Windows defaults would make
+    # the exported Linux launchers and installers unusable by /bin/sh.
+    archive = subprocess.check_output(
+        ["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf", "archive", "HEAD", "--", *paths], cwd=ROOT)
     value["files"] = {}
     with tarfile.open(fileobj=io.BytesIO(archive)) as source, tarfile.open(output, "w:gz") as target:
         for member in source:

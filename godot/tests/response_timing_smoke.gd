@@ -65,7 +65,7 @@ func _run() -> void:
 	page._phase.text = "第 2 个己方回合\n玩家 1 · 主要"
 	_expect(page._response_mode.item_count == 3 and page._current_response_mode() == ResponseTiming.Mode.AUTO, "response selector defaults to automatic with three modes")
 	page._response_mode_changed(ResponseTiming.Mode.ALL)
-	_expect(page._decision.visible and page._decision.request.pass_id == str(KernelContract.CommandKind.PassResponse), "all timing exposes an empty response tray with pass")
+	_expect(page._decision.visible and page._decision.request.choices.size() == 2 and page._decision.request.choices[1].id == "@no", "all timing exposes an empty response tray with pass")
 	page._response_mode_changed(ResponseTiming.Mode.AUTO)
 	_expect(not page._decision.visible, "automatic mode hides the empty response tray")
 	await create_timer(0.2).timeout
@@ -108,7 +108,7 @@ func _run() -> void:
 			page._position_phase_button()
 			var rect: Rect2 = page._response_mode.get_global_rect()
 			_expect(Rect2(Vector2.ZERO, dimensions).encloses(rect), "selector remains in viewport at %s / %d" % [dimensions, scale])
-			_expect(not rect.intersects(page._end_phase.get_global_rect()) and not rect.intersects(page.canvas._own_region), "selector clears phase button and own formation area")
+			_expect(not rect.intersects(page._end_phase.get_global_rect()) and not rect.intersects(Rect2(page.canvas.global_position + page.canvas._own_region.position, page.canvas._own_region.size)), "selector clears phase button and own formation area")
 			if not _output.is_empty() and scale == 120:
 				await RenderingServer.frame_post_draw
 				_expect(root.get_texture().get_image().save_png(_output.path_join("response-mode-%dx%d.png" % [dimensions.x, dimensions.y])) == OK, "capture selector")

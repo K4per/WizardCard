@@ -43,25 +43,21 @@ func _run() -> void:
 	for zone: String in ["ash", "side_deck"]:
 		page._render_decision()
 		await _settle()
-		page._collapse_tray()
+		page._decision_confirmed("9007199254740993", "9007199254740995", "9007199254740997", ["@yes"])
 		page._zone_clicked(zone, 0)
 		await _settle()
 		if page._decision.request.browse_mode:
 			page.dismiss_cancel()
-		page._toggle_hand()
-		await _settle()
-		_expect(page._decision.request.response_mode and page._decision.request.decision_id == "9007199254740997", "collapsed response survives %s browsing" % zone)
-		_expect(page._decision.request.pass_id == str(KernelContract.CommandKind.PassResponse), "native pass remains reachable after %s" % zone)
-		_expect(service.selected_actions.is_empty(), "browsing and collapse do not submit an action")
-	# Source selection prepares the response; the final dialog is the only submission.
-	page._render_decision()
+		page._return_to_response()
+		_expect(page._decision.request.response_mode and page._decision.request.decision_id == "9007199254740997", "response survives %s browsing" % zone)
+		_expect(page._decision.request.choices[1].id == "@no", "decline remains reachable after %s" % zone)
+		_expect(service.selected_actions.is_empty(), "browsing does not submit")
+	page._decision_confirmed("9007199254740993", "9007199254740995", "9007199254740997", ["@yes"])
+	page._query_is_decision = false
+	page._selection.begin("33", KernelContract.CommandKind.Respond)
 	await _settle()
-	page._decision._options[str(KernelContract.CommandKind.Respond)].button_pressed = true
-	page._decision._confirm.pressed.emit()
-	page._decision._options["33"].button_pressed = true
-	page._decision._confirm.pressed.emit()
-	_expect(service.selected_actions == ["respond"], "response selects its exact legal action")
-	_expect(service.confirmations == 0 and page._confirm.visible, "response source clicks wait for final confirmation")
+	_expect(service.selected_actions == ["respond"], "response stages its exact legal action")
+	_expect(service.confirmations == 0 and page._confirm.visible, "response waits for final confirmation")
 	page._confirm.confirmed.emit()
 	_expect(service.confirmations == 1, "final response confirmation submits once")
 	page.queue_free()

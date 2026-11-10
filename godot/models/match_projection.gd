@@ -100,8 +100,8 @@ static func field(snapshot: Dictionary) -> FieldPresentation:
 				result.own_ash_count += 1
 			else:
 				result.opponent_ash_count += 1
-	result.own_casting_slots = maxi(4, result.own_casting.size())
-	result.opponent_casting_slots = maxi(4, result.opponent_casting.size())
+	result.own_casting_slots = int((snapshot.get("players", [{}, {}])[viewer] as Dictionary).get("castingCapacity", 0))
+	result.opponent_casting_slots = int((snapshot.get("players", [{}, {}])[1 - viewer] as Dictionary).get("castingCapacity", 0))
 	return result
 
 static func card(snapshot: Dictionary, id: String) -> CardPresentation:

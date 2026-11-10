@@ -304,7 +304,7 @@ func _run() -> void:
 		canvas._clear_hover()
 		await process_frame
 		await process_frame
-		_expect(canvas.card_bounds(hand_card).is_equal_approx(rest_bounds), "pointer exit restores the fan even when the card remains selected")
+		_expect(canvas.card_bounds(hand_card).is_equal_approx(lifted_bounds), "pointer exit keeps a selected card raised")
 		canvas.selected_id = ""
 		if not capture_output.is_empty():
 			DirAccess.make_dir_recursive_absolute(capture_output)

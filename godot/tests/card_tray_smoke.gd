@@ -97,20 +97,16 @@ func _run() -> void:
 	service.match_snapshot["actionSummary"] = {"hasNonPhaseAction": true}
 	page._render_decision()
 	await _settle()
-	_expect(page._decision._confirm.visible and page._decision._cancel.visible, "response exposes confirm and pass footer")
-	_expect(page._decision._confirm.disabled, "response needs selection before confirmation")
+	_expect(page._decision.request.choices.size() == 2, "response exposes yes and no")
 	await _capture("response")
-	_click(page._decision._collapse.get_global_rect().get_center())
+	_click(page._decision._options["@yes"].get_global_rect().get_center())
 	await _settle()
-	_expect(service.selected_actions.is_empty() and page._tray_suspended, "collapsing mandatory response keeps it pending")
-	page._toggle_hand()
+	_expect(service.selected_actions.is_empty() and page._response_browsing, "yes keeps response pending while browsing")
+	page._return_to_response()
 	await _settle()
-	_click(page._decision._options[str(KernelContract.CommandKind.Respond)].get_global_rect().get_center())
+	_click(page._decision._options["@no"].get_global_rect().get_center())
 	await _settle()
-	_expect(service.selected_actions.is_empty() and not page._decision._confirm.disabled, "response selection waits for explicit confirmation")
-	_click(page._decision._cancel.get_global_rect().get_center())
-	await _settle()
-	_expect(service.selected_actions == ["pass"], "pass button submits exactly the native pass action")
+	_expect(service.selected_actions == ["pass"], "no submits exactly the native pass action")
 	page._network_waiting = false
 	# Damage types, load entries and trigger IDs share numeric values with card
 	# instances, but their native decision options do not identify those cards.

@@ -48,19 +48,21 @@ func _run() -> void:
 		match_page._reveal()
 		await process_frame
 	while bool(app.service.match_snapshot.get("opening", false)):
-		if not _expect(match_page._decision.visible and match_page._decision.request.decision_id == "opening", "opening shows private formation selection"):
+		if not _expect(match_page._decision.visible and match_page._decision.request.decision_id.begins_with("opening:"), "opening shows private formation selection"):
 			return
 		var opening_request: DecisionPresentation = match_page._decision.request
 		if not _expect(not opening_request.choices.is_empty(), "opening exposes own level-one candidates"):
 			return
-		var opening_option: Button = match_page._decision._options[opening_request.choices[0].id]
+		var choice_index: int = 2 if str(app.service.match_snapshot.get("openingStage", "")) == "gestures" and app.service.match_viewer == 1 else 0
+		var opening_choice: DecisionChoice = opening_request.choices[choice_index]
+		var opening_option: Button = match_page._decision._options[opening_choice.id]
 		if not _expect(opening_option != null, "opening candidate is rendered as a real button"):
 			return
 		var opening_point: Vector2 = opening_option.get_global_rect().get_center()
 		_mouse_button(opening_point, true)
 		_mouse_button(opening_point, false)
 		await process_frame
-		if not _expect(match_page._decision._selected == [opening_request.choices[0].id], "real mouse click selects the opening formation"):
+		if not _expect(match_page._decision._selected == [opening_choice.id], "real mouse click selects the opening formation"):
 			return
 		if not _expect(not match_page._decision._confirm.disabled, "opening confirmation enables after selecting one formation"):
 			return
@@ -123,7 +125,7 @@ func _run() -> void:
 		return
 	if not _expect(visible_rect.encloses(match_page._detail.get_global_rect()), "selected card detail remains inside the viewport"):
 		return
-	if not _expect(match_page._action_popup.visible and match_page._action_popup.get_global_rect().position.x < match_page._detail.get_global_rect().position.x, "selected card operations stay beside the selected card and outside the detail pane"):
+	if not _expect(match_page._action_popup.visible and match_page._action_popup.get_global_rect().position.x > match_page._detail.get_global_rect().end.x, "selected card operations stay beside the selected card and outside the detail pane"):
 		return
 	var second_card: CardPresentation = match_page.canvas.field.hand[1]
 	var escape: InputEventKey = InputEventKey.new()
@@ -143,7 +145,7 @@ func _run() -> void:
 	await process_frame
 	if not _expect(match_page.canvas.selected_id == second_card.instance_id and match_page._detail.visible and match_page._detail.card.instance_id == second_card.instance_id, "clicking another card after Escape restores card context"):
 		return
-	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 1000), Vector2i(1920, 1080)]:
+	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(1440, 900)]:
 		root.size = dimensions
 		await process_frame
 		await process_frame
@@ -163,7 +165,7 @@ func _run() -> void:
 	await process_frame
 	if not _expect(not match_page._match_menu.visible and not match_page._menu_shade.visible, "Escape closes the match menu without leaving the match"):
 		return
-	if not _expect(match_page.canvas.get_global_rect().size.is_equal_approx(Vector2(root.size)), "battlefield fills the complete viewport"):
+	if not _expect(match_page.canvas.global_position.x >= match_page._detail.get_global_rect().end.x and Rect2(Vector2.ZERO, Vector2(root.size)).encloses(match_page.canvas.get_global_rect()), "battlefield reserves the sidebar and stays inside the viewport"):
 		return
 	match_page._zone_clicked("side_deck", app.service.match_viewer)
 	await process_frame
@@ -314,7 +316,7 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 	await process_frame
 	if not _expect(match_page._selected != null and match_page._selected.instance_id == playable.instance_id, "real mouse click selects the playable card"):
 		return false
-	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 1000), Vector2i(1920, 1080)]:
+	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(1440, 900)]:
 		root.size = dimensions
 		await process_frame
 		await process_frame
@@ -360,16 +362,20 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 	_mouse_button(point_on_action, true)
 	_mouse_button(point_on_action, false)
 	await process_frame
-	for target_step: int in range(10):
-		if not match_page.canvas.target_ids.is_empty() or str(app.service.match_snapshot["revision"]) != original_revision:
+	for target_step: int in range(12):
+		if match_page._confirm.visible or str(app.service.match_snapshot["revision"]) != original_revision:
 			break
+		if not match_page.canvas.target_rings.is_empty():
+			var host: String = str(match_page.canvas.target_rings.keys()[0])
+			match_page._ring_selected(host, match_page.canvas.target_rings[host][0])
+		elif not match_page.canvas.target_ids.is_empty():
+			match_page._pick_action_target(str(match_page.canvas.target_ids.keys()[0]))
+		elif match_page._decision.visible and not match_page._decision.request.choices.is_empty():
+			var request: DecisionPresentation = match_page._decision.request
+			match_page._decision_confirmed(request.generation, request.revision, request.decision_id, [request.choices[0].id])
 		await process_frame
-	if not _expect(not match_page.canvas.target_ids.is_empty() or match_page._confirm.visible, "operation query reaches a valid target or confirmation step"):
+	if not _expect(match_page._confirm.visible or str(app.service.match_snapshot["revision"]) != original_revision, "explicit host, ring and target selection confirms the operation"):
 		return false
-	if not match_page.canvas.target_ids.is_empty():
-		var target_id: String = str(match_page.canvas.target_ids.keys()[0])
-		match_page._pick_action_target(target_id)
-		await process_frame
 	if match_page._confirm.visible:
 		if not _expect(not match_page._pending.is_empty(), "single action retains a pending command for confirmation"):
 			return false
@@ -425,7 +431,7 @@ func _mouse_button(point: Vector2, pressed: bool, button: MouseButton = MOUSE_BU
 func _capture_page(label: String) -> void:
 	if not _capture or _output.is_empty():
 		return
-	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 1000), Vector2i(1920, 1080)]:
+	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(1440, 900)]:
 		root.size = dimensions
 		await process_frame
 		await process_frame

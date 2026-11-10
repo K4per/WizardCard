@@ -16,6 +16,7 @@ const RARITY_LABELS: Dictionary[String, String] = {
 @export var type_key: String = "analysis"
 @export var type_label: String = ""
 @export var text: String = ""
+@export var flavor: String = ""
 @export var rarity: String = "common"
 @export var primary_value: String = ""
 @export var secondary_value: String = ""
@@ -47,6 +48,7 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 	card.instance_id = card.definition_id
 	card.title = str(data.get("name", ""))
 	card.text = str(data.get("text", ""))
+	card.flavor = str(data.get("flavor", ""))
 	card.rarity = str(data.get("rarity", "common"))
 	card.speed = int(data.get("speed", 1))
 	var type_index: int = int(data.get("type", 1))
@@ -109,7 +111,10 @@ func art_id() -> String:
 	return illustration_id if not illustration_id.is_empty() else definition_id
 
 func detail_text() -> String:
-	return text if metadata_text.is_empty() else metadata_text + "\n\n效果：\n" + text
+	var result: String = (metadata_text + "\n\n" if not metadata_text.is_empty() else "") + "效果：\n" + text
+	if not flavor.is_empty():
+		result += "\n\n风味文本：\n" + flavor
+	return result
 
 func rarity_text() -> String:
 	return RARITY_LABELS.get(rarity, rarity)
@@ -144,6 +149,8 @@ static func from_projection(data: Dictionary) -> CardPresentation:
 	if not token_text.is_empty():
 		card.metadata_text += "\n" + token_text
 	card.status = str(data.get("statusLabel", ""))
+	if int(data.get("zone", -1)) in [6, 10]:
+		card.status = "已离场 · " + str(data.get("zoneName", "灰烬区"))
 	if card.status.is_empty():
 		if bool(data.get("faceDown", false)):
 			card.status = "盖伏"

@@ -13,6 +13,8 @@ var generation: String = ""
 var revision: String = ""
 var viewer: int = -1
 var _awaiting: bool = false
+var _revalidating: bool = false
+var decision_id: String = "0"
 
 func begin(source: String = "0", operation: int = -1) -> void:
 	cancel()
@@ -20,6 +22,7 @@ func begin(source: String = "0", operation: int = -1) -> void:
 	generation = str(service.match_snapshot.get("generation", ""))
 	revision = str(service.match_snapshot.get("revision", ""))
 	viewer = service.match_viewer
+	decision_id = ActionOptions.context_id(service.match_snapshot)
 	intent = {"source": source, "selections": [], "offset": 0, "limit": 64}
 	if operation >= 0:
 		intent["selections"].append({"field": KernelContract.ActionField.Operation, "value": str(operation)})
@@ -34,14 +37,26 @@ func cancel() -> void:
 func current() -> bool:
 	return active and viewer == service.match_viewer and generation == str(service.match_snapshot.get("generation", "")) and revision == str(service.match_snapshot.get("revision", ""))
 
+func revalidate() -> void:
+	if not active:
+		return
+	if viewer != service.match_viewer or generation != str(service.match_snapshot.get("generation", "")) or decision_id != ActionOptions.context_id(service.match_snapshot):
+		cancel()
+		failed.emit("当前时点已结束，请重新选择。")
+		return
+	revision = str(service.match_snapshot.get("revision", ""))
+	_revalidating = true
+	refresh()
+	_revalidating = false
+
 func refresh() -> void:
 	if not current():
 		cancel()
 		return
 	var response: Dictionary = service.match_request(&"query_actions", [viewer, intent, generation, revision])
 	if not bool(response.get("ok", false)):
-		failed.emit(str(response.get("error", "动作查询失败")))
 		cancel()
+		failed.emit("所选对象或费用已失效，请重新选择。" if _revalidating else str(response.get("error", "动作查询失败")))
 		return
 	var parsed: ActionOptions = ActionOptions.parse(response.get("data", {}))
 	if parsed == null or not parsed.matches(service.match_snapshot, viewer):
@@ -51,8 +66,17 @@ func refresh() -> void:
 	if _awaiting:
 		return
 	options = parsed
+	if _revalidating and options.options.is_empty() and options.complete.is_empty():
+		cancel()
+		failed.emit("所选对象或费用已失效，请重新选择。")
+		return
 	if not options.complete.is_empty():
-		completed.emit(options.complete, intent.duplicate(true))
+		if _revalidating:
+			options.field = KernelContract.ActionField.Confirm
+			options.options = [{"value": "@confirm", "label": "确认当前合法选择"}]
+			changed.emit(options)
+		else:
+			completed.emit(options.complete, intent.duplicate(true))
 		return
 	# A contextual card has already selected its source; the query still carries
 	# the explicit source step so the authority validates the same path.
@@ -67,6 +91,9 @@ func poll() -> void:
 
 func choose(value: String) -> void:
 	if not current() or options == null:
+		return
+	if value == "@confirm" and not options.complete.is_empty():
+		completed.emit(options.complete, intent.duplicate(true))
 		return
 	if value == "@next":
 		intent["offset"] = int(intent.get("offset", 0)) + options.options.size()

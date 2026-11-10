@@ -553,23 +553,22 @@ func _draw_glow(rect: Rect2, color: Color) -> void:
 	draw_rect(rect.grow(4), Color(color, 0.24), false, 7)
 	draw_rect(rect.grow(2), color, false, 2)
 
-func _draw_casting(cards: Array[CardPresentation], _slots: int, region: Rect2, own: bool) -> void:
+func _draw_casting(cards: Array[CardPresentation], slots: int, region: Rect2, own: bool) -> void:
 	if greybox:
 		draw_rect(region, Color("3a3938"))
 		draw_rect(region, Color("c9b894"), false, 1)
 	else:
 		draw_rect(region, Color("303540"), true)
-	if cards.is_empty():
-		_draw_label("施法区（%s）" % ("我方" if own else "对手"), region.grow(-8), 22, Color("f1dfb3"), true)
+	_draw_label("%s施法区 %d/%d" % ["己方" if own else "对方", cards.size(), slots], Rect2(Vector2(region.position.x + 6 if own else region.end.x - 138, region.position.y), Vector2(132, region.size.y)), 14, Color("f1dfb3"), true)
 	# Casting is a compact horizontal track.  At 720p its height is only about
 	# 32px, so using a square card would collapse into an unreadable 16px tile.
 	# Keep a short card strip instead and fit several cards without leaving the
 	# track bounds.
 	var card_height: float = clampf(region.size.y - 8.0, 18.0, 26.0)
-	var card_width: float = minf(110.0, maxf(34.0, (region.size.x - 64.0) / maxi(cards.size(), 1) - 6.0))
+	var card_width: float = minf(110.0, maxf(34.0, (region.size.x - 144.0) / maxi(cards.size(), 1) - 6.0))
 	var gap: float = 6.0
 	var total_width: float = cards.size() * card_width + maxi(0, cards.size() - 1) * gap
-	var start_x: float = region.position.x + maxf(8.0, (region.size.x - total_width) * 0.5)
+	var start_x: float = region.position.x + 140.0 + maxf(0.0, (region.size.x - 144.0 - total_width) * 0.5)
 	for index: int in range(cards.size()):
 		var x: float = start_x + index * (card_width + gap)
 		if not own:
@@ -591,14 +590,14 @@ func _draw_hand(height: float) -> void:
 	var stride: float = _hand_stride(width, count)
 	var total: float = width + (count - 1) * stride
 	var start_x: float = (size.x - total + width) * 0.5
-	var raised_index: int = -1
+	var raised_indices: Array[int] = []
 	for index: int in _fan_draw_order(count):
-		if field.hand[index].instance_id == _hover_id:
-			raised_index = index
+		if field.hand[index].instance_id in [_hover_id, selected_id]:
+			raised_indices.append(index)
 		else:
 			_draw_hand_card(index, start_x, stride, extent, false)
 	# A raised card is painted last so neighbours cannot cover its face or hit area.
-	if raised_index >= 0:
+	for raised_index: int in raised_indices:
 		_draw_hand_card(raised_index, start_x, stride, extent, true)
 
 func _fan_draw_order(count: int) -> Array[int]:

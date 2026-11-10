@@ -447,7 +447,7 @@ func _field_input_checks(page: FieldPage) -> void:
 	_check(page._detail.visible and page._detail.card.instance_id == hand_card.instance_id, "Actual viewport mouse input opens the correct card")
 	_check(page._actions.visible and page._actions.get_global_rect().end.y <= point.y, "Context actions float above the selected card")
 	_check(page._detail.battle_skin, "Field detail uses the new skin while retaining a full framed card")
-	_check(page.canvas.card_bounds(hand_card).is_equal_approx(hand_hit), "Selection preserves the resting fan until hover")
+	_check(page.canvas.card_bounds(hand_card).position.y < hand_hit.position.y, "Selection raises the hand card before hover")
 	var hover_motion: InputEventMouseMotion = InputEventMouseMotion.new()
 	hover_motion.position = point
 	hover_motion.global_position = point
@@ -461,7 +461,7 @@ func _field_input_checks(page: FieldPage) -> void:
 	hover_motion.global_position = hover_motion.position
 	root.push_input(hover_motion, true)
 	await _settle()
-	_check(page.canvas.card_bounds(hand_card).is_equal_approx(hand_hit) and page.canvas.selected_id == hand_card.instance_id, "Hover exit retracts a selected card while retaining its detail")
+	_check(page.canvas.card_bounds(hand_card).is_equal_approx(raised) and page.canvas.selected_id == hand_card.instance_id, "Hover exit retains the selected card height and detail")
 	_mouse_button(point, true, MOUSE_BUTTON_RIGHT)
 	_mouse_button(point, false, MOUSE_BUTTON_RIGHT)
 	await _settle()

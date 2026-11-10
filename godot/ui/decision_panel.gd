@@ -4,6 +4,7 @@ extends PanelContainer
 signal confirmed(generation: String, revision: String, decision_id: String, selected: Array[String])
 signal cancelled(generation: String, revision: String, decision_id: String)
 signal card_chosen(card: CardPresentation)
+signal card_hovered(card: CardPresentation)
 signal collapse_requested()
 
 var request: DecisionPresentation
@@ -150,6 +151,7 @@ func configure(value: DecisionPresentation) -> void:
 			option.toggled.connect(_on_choice.bind(choice.id, value.generation, value.revision, value.decision_id))
 		_choices.add_child(option)
 		_options[choice.id] = option
+		option.mouse_entered.connect(_preview_choice.bind(choice))
 		var caption: Label = UiFactory.label(choice.card.title if choice.card != null else choice.label, 14)
 		caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		caption.position = Vector2(6, 98) if value.docked else Vector2(8, 157)
@@ -186,6 +188,17 @@ func configure(value: DecisionPresentation) -> void:
 	if not value.browse_mode:
 		_refresh()
 
+func _preview_choice(choice: DecisionChoice) -> void:
+	_show_preview(choice)
+	card_hovered.emit(choice.card)
+
+func restore_selection(ids: Array[String]) -> void:
+	for id: String in ids:
+		if _options.has(id) and not _options[id].disabled:
+			_options[id].set_pressed_no_signal(true)
+			_selected.append(id)
+	_refresh()
+
 func _disconnect_actions() -> void:
 	for button: Button in [_confirm, _cancel]:
 		for connection: Dictionary in button.pressed.get_connections():
@@ -204,6 +217,7 @@ func _build_response_choices(value: DecisionPresentation) -> void:
 		if not simple_style:
 			BattleArt.button(option)
 		_choices.add_child(option)
+		_options[choice.id] = option
 		if choice.card != null:
 			var face: CardFace = CardFace.new()
 			face.simple_style = simple_style

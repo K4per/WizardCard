@@ -86,9 +86,28 @@ var _target_picks: Dictionary[String, Array] = {}
 var _target_generation: String = ""
 var _target_revision: String = ""
 var _target_decision_id: String = ""
+var _response_decision_id: String = ""
+var _response_browsing: bool = false
+var _response_sources: Array[String] = []
+var _response_query_pending: bool = false
+var _response_cancel: Button
+var _forced_ack_id: String = ""
+var _chain_text: RichTextLabel
+
 
 func _ready() -> void:
 	canvas = %FieldCanvas
+	canvas.layout = canvas.layout.duplicate() as FieldLayout
+	canvas.layout.opponent_analysis = Vector2(0.15, 0.25)
+	canvas.layout.own_analysis = Vector2(0.56, 0.25)
+	canvas.layout.opponent_casting = Vector2(0.43, 0.055)
+	canvas.layout.own_casting = Vector2(0.49, 0.055)
+	canvas.layout.hand_height_ratio = 0.15
+	canvas.layout.hover_raise_ratio = 0.23
+	canvas.layout.main_deck_position = Vector2(0.895, 0.75)
+	canvas.layout.side_deck_position = Vector2(0.035, 0.68)
+	canvas.layout.ash_position = Vector2(0.895, 0.59)
+	canvas.layout.pile_size = Vector2(0.068, 0.12)
 	_notice = %Notice
 	_phase = %Phase
 	_action_button = %MenuPhaseActions
@@ -104,11 +123,20 @@ func _ready() -> void:
 	_response_mode.name = "ResponseMode"
 	_response_mode.add_theme_font_size_override(&"font_size", 13)
 	_response_mode.add_item("全时点", ResponseTiming.Mode.ALL)
-	_response_mode.add_item("自动时点", ResponseTiming.Mode.AUTO)
+	_response_mode.add_item("可用时点", ResponseTiming.Mode.AUTO)
 	_response_mode.add_item("忽略时点", ResponseTiming.Mode.IGNORE)
 	_response_mode.select(ResponseTiming.Mode.AUTO)
-	_response_mode.tooltip_text = "全时点：每个可放弃响应的时点都询问。\n自动时点：有合法响应时询问，否则自动放弃。\n忽略时点：自动放弃可放弃的响应，直到切换模式。\n强制效果选择仍须完成。"
+	_response_mode.tooltip_text = "全时点：每个可放弃响应的时点都询问。\n可用时点：有合法响应时询问，否则自动放弃。\n忽略时点：自动放弃可放弃的响应，直到切换模式。\n强制效果选择仍须完成。"
 	_response_mode.item_selected.connect(_response_mode_changed)
+	_response_cancel = UiFactory.button("取消操作", _return_to_response)
+	_response_cancel.hide()
+	add_child(_response_cancel)
+	_chain_text = RichTextLabel.new()
+	_chain_text.name = "ChainInformation"
+	_chain_text.mouse_filter = Control.MOUSE_FILTER_STOP
+	_chain_text.add_theme_font_size_override(&"normal_font_size", 14)
+	_chain_text.add_theme_stylebox_override(&"normal", DeckTheme.box(Color("182631"), Color("54717b"), 10))
+	add_child(_chain_text)
 	add_child(_response_mode)
 	_hand_button = %HandToggle
 	_status_own = %OwnStatus
@@ -181,21 +209,25 @@ func _layout_panels() -> void:
 		available = get_viewport_rect().size
 	available.x = maxf(available.x, 320.0)
 	available.y = maxf(available.y, 240.0)
+	var sidebar: float = clampf(available.x * 0.22, 316.0, 420.0)
 	PlayerStatusBar.place_corners(_status_own, _status_opponent, available)
-	# A full twenty-card fan must leave both corner HUDs readable too.
-	canvas.hand_side_clearance = maxf(_status_own.size.x, _status_opponent.size.x) + 52.0
+	canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	canvas.offset_left = sidebar + 24.0
+	canvas.hand_side_clearance = 0.0
+	_detail.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	_detail.position = Vector2(12, 40)
+	_detail._art.custom_minimum_size = Vector2(220, minf(240, available.y * 0.23))
+	_detail._body.add_theme_font_size_override(&"normal_font_size", 14)
+	_detail._type.add_theme_font_size_override(&"font_size", 14)
+	_detail.size = Vector2(sidebar, available.y * 0.62)
+	_chain_text.position = Vector2(12, _detail.position.y + _detail.size.y + 10)
+	_chain_text.size = Vector2(sidebar, maxf(60, _status_own.position.y - _chain_text.position.y - 10))
 	var tray_height: float = minf(252.0, available.y - 96.0)
 	_decision.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_decision.offset_left = 12.0
+	_decision.offset_left = sidebar + 24.0
 	_decision.offset_right = -12.0
 	_decision.offset_top = -tray_height - 8.0
 	_decision.offset_bottom = -8.0
-	var detail_width: float = clampf(available.x * 0.31, 320.0, 520.0)
-	detail_width = minf(detail_width, available.x - 24.0)
-	_detail.offset_left = -detail_width - 12
-	_detail.offset_right = -12
-	_detail.offset_top = 12
-	_detail.offset_bottom = -12
 	_action_popup.custom_minimum_size.x = minf(220, available.x * 0.8)
 	if _logs_panel != null:
 		var log_width: float = minf(400.0, maxf(280.0, available.x - 24.0))
@@ -218,13 +250,16 @@ func _position_phase_button() -> void:
 	if not casting.has_area():
 		return
 	var left: float = canvas.position.x + casting.end.x + 8
-	var width: float = maxf(82, minf(156, size.x - left - 12))
+	var minimum_width: float = maxf(_end_phase.get_combined_minimum_size().x, _response_mode.get_combined_minimum_size().x)
+	var width: float = maxf(minimum_width, minf(156, size.x - left - 12))
 	_end_phase.position = Vector2(minf(left, size.x - width - 12), canvas.position.y + casting.position.y)
 	_end_phase.size = Vector2(width, maxf(34, casting.size.y))
 	_phase.size = Vector2(width, 88)
 	_phase.position = Vector2(_end_phase.position.x, maxf(8, _end_phase.position.y - _phase.size.y - 8))
 	_response_mode.size = Vector2(width, 32)
 	_response_mode.position = Vector2(_phase.position.x, maxf(8, _phase.position.y - _response_mode.size.y - 6))
+	_response_cancel.position = _response_mode.position - Vector2(0, 38)
+	_response_cancel.size = Vector2(width, 32)
 
 func _current_response_mode() -> int:
 	return service.response_modes[service.match_viewer] if service != null and service.match_viewer >= 0 and service.match_viewer < service.response_modes.size() else ResponseTiming.Mode.AUTO
@@ -247,7 +282,11 @@ func _response_mode_changed(index: int) -> void:
 func _build_dialogs() -> void:
 	_confirm = %ConfirmAction
 	_confirm.confirmed.connect(_commit_pending)
-	_confirm.canceled.connect(_cancel_pending)
+	_confirm.canceled.connect(func() -> void:
+		_cancel_pending()
+		if _response_browsing:
+			_return_to_response()
+	)
 	_leave_dialog = %ConfirmLeave
 	_leave_dialog.confirmed.connect(_leave)
 	_force_dialog = %ConfirmForceLeave
@@ -267,6 +306,7 @@ func _build_decision() -> void:
 	_decision = %DecisionPanel
 	_decision.confirmed.connect(_decision_confirmed)
 	_decision.cancelled.connect(_decision_cancelled)
+	_decision.card_hovered.connect(_preview_candidate)
 	_decision.hide()
 
 func _build_logs() -> void:
@@ -519,6 +559,7 @@ func configure(value: FrontendService) -> void:
 	service.clock_changed.connect(_clock_changed)
 	service.events_changed.connect(_events_changed)
 	service.session_polled.connect(_selection.poll)
+	service.session_polled.connect(_poll_response_sources)
 	_events_changed({"reset": true, "events": service.event_log.entries})
 	%MenuSettings.text = "设置（继续计时）" if service.match_mode == "network" else "暂停 / 设置"
 	%MenuDebug.visible = service.match_mode == "ai"
@@ -542,6 +583,8 @@ func _refresh() -> void:
 		return
 	var preserved_id: String = _selection_id if not _selection_id.is_empty() else (_selected.instance_id if _selected != null else (canvas.selected_id if canvas != null else ""))
 	var snapshot: Dictionary = service.snapshot()
+	var resume_selection: bool = _selection.active
+	var prior_picks: Array[String] = _decision._selected.duplicate()
 	if snapshot.is_empty():
 		_notice.text = service.error
 		return
@@ -552,7 +595,10 @@ func _refresh() -> void:
 	_restore_tray_hand()
 	_tray_action_groups.clear()
 	_phase_selector.hide()
-	_clear_action_targets()
+	if resume_selection:
+		canvas.clear_action_targets()
+	else:
+		_clear_action_targets()
 	if service.match_mode == "hotseat" and int(snapshot.get("actingPlayer", service.match_viewer)) != service.match_viewer and int(snapshot.get("result", -1)) == -1:
 		_cover(int(snapshot.get("actingPlayer", 0)))
 		return
@@ -568,6 +614,9 @@ func _refresh() -> void:
 	var keep_selection: CardPresentation = null
 	if not preserved_id.is_empty():
 		keep_selection = MatchProjection.card(snapshot, preserved_id)
+	if keep_selection == null and not preserved_id.is_empty() and _selected != null:
+		keep_selection = CardPresentation.anonymous(preserved_id)
+		keep_selection.title = "卡牌已离场"
 	_selected = keep_selection
 	canvas.selected_id = preserved_id if keep_selection != null else ""
 	if keep_selection == null:
@@ -597,12 +646,19 @@ func _refresh() -> void:
 		var lesson: Dictionary = snapshot["tutorial"]
 		_tutorial.text = str(lesson.get("title", "教学")) + "\n" + str(lesson.get("hint", ""))
 		_tutorial_button.disabled = not bool(lesson.get("canContinue", false))
-	_render_actions()
+	_update_chain(snapshot)
+	_render_actions(not resume_selection)
+	if resume_selection:
+		_selection.revalidate()
+		if _selection.active:
+			_decision.restore_selection(prior_picks)
+			_schedule_automatic()
+			return
 	_render_decision()
 	_render_opening()
 	_schedule_automatic()
 
-func _render_actions() -> void:
+func _render_actions(restart_selection: bool = true) -> void:
 	var snapshot: Dictionary = service.match_snapshot
 	var summary: Dictionary = snapshot.get("actionSummary", {})
 	var safe: Variant = summary.get("safeAdvance")
@@ -612,6 +668,8 @@ func _render_actions() -> void:
 		_notice.text = "规则执行故障：对局已技术暂停，时钟已冻结。请导出诊断或退出。"
 		%MenuSaveReplay.text = "导出复盘与诊断"
 		_action_popup.hide()
+		return
+	if not restart_selection:
 		return
 	if _selected != null:
 		_show_action_list(_selected.instance_id, _selected.title + " · 操作", true)
@@ -697,6 +755,17 @@ func _render_opening() -> void:
 	var snapshot: Dictionary = service.match_snapshot
 	if not bool(snapshot.get("opening", false)) or int(snapshot.get("result", -1)) != -1 or bool(snapshot.get("aiTurn", false)):
 		return
+	if str(snapshot.get("openingStage", "formation")) == "gestures":
+		_phase.text = "开局 · 猜拳第 %d 轮" % int(snapshot.get("openingRound", 1))
+		if int(snapshot.get("openingGesture", -1)) >= 0:
+			_notice.text = "手势已确认，等待对手；猜拳期间不扣对局时间。"
+			return
+		_close_match_menu()
+		_query_is_decision = true
+		_query_title = "猜拳决定先手"
+		_contextual_query = false
+		_selection.begin("0", KernelContract.CommandKind.SubmitOpeningGesture)
+		return
 	var confirmed: Array = snapshot.get("initialFormationConfirmed", [false, false])
 	if confirmed.size() > service.match_viewer and bool(confirmed[service.match_viewer]):
 		_notice.text = "初始阵法已确认，等待对手确认。"
@@ -737,8 +806,7 @@ func _position_action_popup(contextual: bool) -> void:
 	_action_popup.size = Vector2(maxf(160, minf(220, available.x - 24)), desired_height)
 	var point: Vector2
 	var max_right: float = available.x - _action_popup.size.x - 8
-	if contextual and _detail.visible:
-		max_right = minf(max_right, size.x - _detail.size.x - _action_popup.size.x - 20)
+	var min_left: float = canvas.position.x + 4.0
 	if contextual and _selected != null:
 		var bounds: Rect2 = canvas.card_bounds(_selected)
 		if not bounds.has_area():
@@ -756,7 +824,7 @@ func _position_action_popup(contextual: bool) -> void:
 			point.y = bounds.end.y + 8
 	else:
 		point = _action_button.global_position - global_position + Vector2(_action_button.size.x - _action_popup.size.x, _action_button.size.y + 4)
-	_action_popup.position = Vector2(clampf(point.x, 8, maxf(8, max_right)), clampf(point.y, 8, maxf(8, available.y - _action_popup.size.y - 8)))
+	_action_popup.position = Vector2(clampf(point.x, min_left, maxf(min_left, max_right)), clampf(point.y, 8, maxf(8, available.y - _action_popup.size.y - 8)))
 
 func _query_changed(options: ActionOptions) -> void:
 	if not options.matches(service.match_snapshot, service.match_viewer):
@@ -801,25 +869,19 @@ func _query_changed(options: ActionOptions) -> void:
 		if options.field == KernelContract.ActionField.Choice and options.options.size() == 1 and not options.has_more:
 			_selection.choose(str(options.options[0]["value"]))
 			return
-		if options.field == KernelContract.ActionField.Ring:
-			var host: String = ""
-			for entry: Dictionary in _selection.intent.get("selections", []):
-				if int(entry.get("field", -1)) == KernelContract.ActionField.Choice:
-					var value: PackedStringArray = str(entry.get("value", "")).split(":")
-					if value.size() == 2 and int(value[0]) == KernelContract.ChoiceKind.Card:
-						host = value[1]
-			if not host.is_empty():
-				var rings: PackedInt32Array = []
-				for option: Dictionary in options.options:
-					rings.append(int(option["value"]))
-				var ring_targets: Dictionary[String, PackedInt32Array] = {host: rings}
-				canvas.set_action_targets([], ring_targets)
-				_decision.hide()
-				_restore_tray_hand()
-				_action_popup.hide()
-				_detail.hide()
-				_notice.text = "选择高亮环位完成回位。"
-				return
+	if options.field == KernelContract.ActionField.Ring:
+		var host: String = _ring_selection_host()
+		if not host.is_empty():
+			var rings: PackedInt32Array = []
+			for option: Dictionary in options.options:
+				rings.append(int(option["value"]))
+			var ring_targets: Dictionary[String, PackedInt32Array] = {host: rings}
+			canvas.set_action_targets([], ring_targets)
+			_decision.hide()
+			_restore_tray_hand()
+			_action_popup.hide()
+			_notice.text = "点击高亮环位确认位置；取消不会支付费用。"
+			return
 	if options.field == KernelContract.ActionField.Replacement and _has_option(options, "0"):
 		var replacement_targets: Array[String] = []
 		for option: Dictionary in options.options:
@@ -846,9 +908,15 @@ func _query_changed(options: ActionOptions) -> void:
 	var titles: Array[String] = ["选择操作", "选择卡牌", "选择宿主", "选择替换阵法", "选择材料", "选择目标", "选择支付卡牌", "选择连锁目标", "选择能力", "选择环位", "完成规则选择", "确认"]
 	request.title = titles[options.field]
 	request.description = "选择选项后确认；费用仅在完整命令确认后支付。"
+	if current_decision is Dictionary and int(current_decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration:
+		request.title = "选择是否维持专注"
+		request.description = "维持会支付显示的费用；无合法维持选项时，请选择放弃，法术送入灰烬区。"
 	request.docked = true
 	request.response_mode = _query_is_decision and options.field == KernelContract.ActionField.Operation
-	request.may_cancel = not _query_is_decision
+	request.may_cancel = not _query_is_decision or _response_browsing
+	if str(service.match_snapshot.get("openingStage", "")) == "gestures":
+		request.title = "猜拳决定先手 · 第 %d 轮" % int(service.match_snapshot.get("openingRound", 1))
+		request.description = "双方确认后同时公开，平局重来。猜拳期间不扣对局时间。"
 	var card_ids: Array[String] = []
 	for option: Dictionary in options.options:
 		var choice: DecisionChoice = DecisionChoice.new()
@@ -879,7 +947,6 @@ func _query_changed(options: ActionOptions) -> void:
 	_decision.configure(request)
 	_decision.show()
 	_action_popup.hide()
-	_detail.hide()
 	_detail_shade.hide()
 	_show_tray()
 	_layout_panels()
@@ -911,6 +978,10 @@ func _query_completed(command: Dictionary, intent: Dictionary) -> void:
 func _query_failed(message: String) -> void:
 	_notice.text = message
 	_action_popup.hide()
+	_decision.hide()
+	_confirm.close_popup()
+	_pending.clear()
+	canvas.clear_action_targets()
 
 func _pick_action_target(id: String) -> void:
 	if _selection.active and not _selection.current():
@@ -923,8 +994,20 @@ func _pick_action_target(id: String) -> void:
 				_selection.choose(str(option["value"]))
 				return
 
-func _ring_selected(_host_id: String, ring_index: int) -> void:
+func _ring_selection_host() -> String:
+	for entry: Dictionary in _selection.intent.get("selections", []):
+		if int(entry.get("field", -1)) == KernelContract.ActionField.Host:
+			return str(entry.get("value", ""))
+		if int(entry.get("field", -1)) == KernelContract.ActionField.Choice:
+			var value: PackedStringArray = str(entry.get("value", "")).split(":")
+			if value.size() == 2 and int(value[0]) == KernelContract.ChoiceKind.Card:
+				return value[1]
+	return ""
+
+func _ring_selected(host_id: String, ring_index: int) -> void:
 	if _selection.current() and _selection.options != null and _selection.options.field == KernelContract.ActionField.Ring:
+		if host_id != _ring_selection_host() or not _has_option(_selection.options, str(ring_index)):
+			return
 		_query_confirmed = true
 		_selection.choose(str(ring_index))
 
@@ -1034,25 +1117,153 @@ func _collapse_tray() -> void:
 	canvas.queue_redraw()
 	_hand_button.text = "展开选择"
 
+func _response_text() -> String:
+	var snapshot: Dictionary = service.match_snapshot
+	var context: Dictionary = snapshot.get("responseContext", {})
+	return str(context.get("text", "当前响应时点"))
+
+func _question(title: String, description: String, id: String, choices: Array[Dictionary]) -> void:
+	var request: DecisionPresentation = DecisionPresentation.new()
+	request.generation = str(service.match_snapshot.get("generation", ""))
+	request.revision = str(service.match_snapshot.get("revision", ""))
+	request.decision_id = id
+	request.title = title
+	request.description = description
+	request.response_mode = true
+	request.may_cancel = false
+	for item: Dictionary in choices:
+		var choice: DecisionChoice = DecisionChoice.new()
+		choice.id = item.id
+		choice.label = item.label
+		request.choices.append(choice)
+	_decision.configure(request)
+	_show_tray()
+	_action_popup.hide()
+
+func _show_response_question() -> void:
+	_response_browsing = false
+	_response_cancel.hide()
+	canvas.clear_action_targets()
+	var available: bool = bool(service.match_snapshot.get("actionSummary", {}).get("hasNonPhaseAction", false))
+	_question("是否进行连锁？" if available else "查看场上情况", _response_text() + ("\n是否进行连锁？" if available else "\n此时没有可以发动的效果，是否查看场上情况？"), _response_decision_id, [{"id": "@yes", "label": "是"}, {"id": "@no", "label": "否"}])
+
+func _poll_response_sources() -> void:
+	if _response_query_pending and _response_browsing and not _selection.active and _response_decision_id == ActionOptions.context_id(service.match_snapshot):
+		_show_response_sources()
+
+func _show_response_sources() -> void:
+	_response_browsing = true
+	_decision.hide()
+	_restore_tray_hand()
+	canvas.hand_collapsed = false
+	_response_cancel.show()
+	_response_sources.clear()
+	_response_query_pending = false
+	var snapshot: Dictionary = service.match_snapshot
+	var response: Dictionary = service.match_request(&"query_actions", [service.match_viewer, {"source": "0", "selections": []}, str(snapshot.generation), str(snapshot.revision)])
+	var menu: Dictionary = response.get("data", {})
+	_response_query_pending = bool(menu.get("pending", false))
+	for operation: Dictionary in menu.get("options", []):
+		if int(operation.value) in [KernelContract.CommandKind.PassResponse, KernelContract.CommandKind.Surrender]:
+			continue
+		var offset: int = 0
+		for batch: int in range(16):
+			var intent: Dictionary = {"source": "0", "selections": [{"field": KernelContract.ActionField.Operation, "value": str(operation.value)}], "offset": offset, "limit": 64}
+			var candidates: Dictionary = service.match_request(&"query_actions", [service.match_viewer, intent, str(snapshot.generation), str(snapshot.revision)])
+			var data: Dictionary = candidates.get("data", {})
+			_response_query_pending = _response_query_pending or bool(data.get("pending", false))
+			for option: Dictionary in data.get("options", []):
+				var id: String = str(option.get("card", "0"))
+				if id != "0" and not _response_sources.has(id):
+					_response_sources.append(id)
+			if not bool(data.get("hasMore", false)):
+				break
+			offset += 64
+	canvas.set_action_targets(_response_sources)
+	if _response_query_pending:
+		_notice.text = "正在查询当前合法响应…"
+		return
+	_notice.text = _response_text() + (" · 点击高亮卡牌选择响应；取消操作可返回询问。" if not _response_sources.is_empty() else " · 可查看场地；取消操作可返回询问。")
+
+func _return_to_response() -> void:
+	_selection.cancel()
+	_pending.clear()
+	_confirm.close_popup()
+	service.match_request(&"cancel_action")
+	if _response_decision_id == ActionOptions.context_id(service.match_snapshot):
+		_show_response_question()
+	else:
+		_response_cancel.hide()
+		_response_browsing = false
+		_render_decision()
+
 func _render_decision() -> void:
 	var snapshot: Dictionary = service.match_snapshot
 	var decision: Variant = snapshot.get("decision")
 	if not decision is Dictionary or int(snapshot.get("result", -1)) != -1 or int(decision.get("player", -1)) != service.match_viewer or bool(snapshot.get("technicalPaused", false)) or bool(snapshot.get("aiTurn", false)):
 		_decision.hide()
 		_shade.hide()
+		_response_cancel.hide()
+		_response_browsing = false
+		_response_decision_id = ""
 		return
 	if not ResponseTiming.pass_action(snapshot, _current_response_mode()).is_empty():
 		_decision.hide()
+		_response_cancel.hide()
+		_response_browsing = false
 		_restore_tray_hand()
 		return
 	_query_is_decision = true
 	_query_title = "规则选择"
 	_contextual_query = false
 	var kind: int = int(decision.get("kind", -1))
-	_selection.begin("0", -1 if kind == KernelContract.DecisionKind.Response else KernelContract.CommandKind.Choose)
+	var id: String = str(decision.get("id", ""))
+	if kind == KernelContract.DecisionKind.Response:
+		if _response_decision_id != id:
+			_response_browsing = false
+			_selection.cancel()
+		_response_decision_id = id
+		if _response_browsing:
+			_show_response_sources()
+		else:
+			_show_response_question()
+		return
+	_response_cancel.hide()
+	_response_decision_id = ""
+	_response_browsing = false
+	if kind == KernelContract.DecisionKind.Concentration and _forced_ack_id != id:
+		_question("必须处理专注", "请处理【%s】的专注。完成维持或放弃前，不能推进阶段。" % MatchProjection.card_name(snapshot, str(decision.get("source", "0"))), id, [{"id": "@concentration", "label": "是"}])
+		return
+	_selection.begin("0", KernelContract.CommandKind.Choose)
+
+func _preview_candidate(card: CardPresentation) -> void:
+	if card == null or _privacy_layer.visible:
+		return
+	_detail.configure(card)
+	_detail.show()
+
+func _update_chain(snapshot: Dictionary) -> void:
+	var chain: Variant = snapshot.get("chain")
+	var lines: Array[String] = []
+	if chain is Dictionary:
+		lines.append("连锁 · 等待玩家 %d" % [int(chain.get("priority", 0)) + 1])
+		var links: Array = chain.get("links", [])
+		for index: int in range(links.size()):
+			var link: Dictionary = links[index]
+			var caption: String = str(link.get("kindName", "阶段")) if str(link.get("source", "0")) == "0" else MatchProjection.card_name(snapshot, str(link.source))
+			lines.append("C%d · %s%s" % [index + 1, caption, "（无效）" if bool(link.get("canceled", false)) else ""])
+		if int(chain.get("mode", 0)) == 1:
+			lines.append("逆序结算中")
+	else:
+		lines.append("连锁 · 当前无连锁")
+		lines.append("等待玩家 %d 操作" % [int(snapshot.get("actingPlayer", snapshot.get("activePlayer", 0))) + 1])
+	_chain_text.text = "\n".join(lines)
 
 func _select_card(card: CardPresentation) -> void:
 	if _privacy_layer.visible:
+		return
+	if _response_browsing and not _selection.active and not _response_sources.has(card.instance_id):
+		_preview_candidate(card)
 		return
 	if _selection.active and _selection.options != null and _selection.options.field != KernelContract.ActionField.Operation:
 		_pick_action_target(card.instance_id)
@@ -1087,6 +1298,9 @@ func _clear_card() -> void:
 		_render_actions()
 
 func dismiss_cancel() -> bool:
+	if _response_browsing:
+		_return_to_response()
+		return true
 	# Keep Esc local to transient match UI even if the root receives it first.
 	if _phase_selector.visible:
 		_phase_selector.hide()
@@ -1175,6 +1389,19 @@ func _commit_pending() -> void:
 	_apply_result(result)
 
 func _decision_confirmed(generation: String, revision: String, decision_id: String, selected: Array[String]) -> void:
+	if selected.size() == 1 and selected[0].begins_with("@") and selected[0] in ["@yes", "@no", "@concentration"]:
+		if generation != str(service.match_snapshot.get("generation", "")) or revision != str(service.match_snapshot.get("revision", "")) or decision_id != ActionOptions.context_id(service.match_snapshot):
+			return
+		if selected[0] == "@concentration":
+			_forced_ack_id = decision_id
+			_render_decision()
+		elif selected[0] == "@yes":
+			_selection.cancel()
+			_show_response_sources()
+		else:
+			_query_is_decision = true
+			_selection.begin("0", KernelContract.CommandKind.PassResponse)
+		return
 	if selected.size() != 1 or _network_waiting or _privacy_layer.visible or not _selection.current() or _selection.options == null:
 		return
 	if generation != _selection.generation or revision != _selection.revision or decision_id != _selection.options.decision_id:
@@ -1183,6 +1410,9 @@ func _decision_confirmed(generation: String, revision: String, decision_id: Stri
 	_selection.choose(selected[0])
 
 func _decision_cancelled(_generation: String, _revision: String, _decision_id: String) -> void:
+	if _response_browsing:
+		_return_to_response()
+		return
 	if _query_is_decision:
 		return
 	_selection.cancel()

@@ -27,6 +27,7 @@ func _ready() -> void:
 	_trusted_ca = %TrustedCa
 	_decks = %Decks
 	_host_first = %HostFirst
+	_host_first.hide()
 	_automatic = %Automatic
 	_notice = %Notice
 	_room = %Room

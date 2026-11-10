@@ -112,6 +112,10 @@ if(BUILD_TESTING AND GODOT_BIN)
     --report ${CMAKE_CURRENT_BINARY_DIR}/frontend-report.json)
   set_tests_properties(godot_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_alpha_v263_ui COMMAND "${GODOT_BIN}" --headless
+    --path ${frontend_dir} --script res://tests/alpha_v263_ui.gd)
+  set_tests_properties(godot_alpha_v263_ui PROPERTIES FIXTURES_REQUIRED frontend_import
+    RUN_SERIAL TRUE TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_central_rooms_ui_smoke COMMAND "${GODOT_BIN}" --headless
     --path ${frontend_dir} --script res://tests/central_rooms_ui_smoke.gd)
   set_tests_properties(godot_central_rooms_ui_smoke PROPERTIES FIXTURES_REQUIRED frontend_import

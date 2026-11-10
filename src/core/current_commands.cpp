@@ -12,7 +12,10 @@ bool spellType(CardType type) {
 }
 bool materialMatches(const CardDefinition &definition, const RecipeCost &need, const CardInstance &card,
                      const CardCatalog &catalog, PlayerId owner) {
-    if (card.owner != owner || card.faceDown ||
+    if (need.faceDownOnly) {
+        if (controllerOf(card) != owner || !card.faceDown || card.zone != Zone::Analysis ||
+            !spellType(definition.type)) return false;
+    } else if (card.owner != owner || card.faceDown ||
         (card.zone != Zone::Analysis && card.zone != Zone::Casting && card.zone != Zone::Hand)) return false;
     if (need.kind == RecipeCostKind::SacrificeFormation &&
         (definition.type != CardType::Formation || card.zone != Zone::Analysis)) return false;

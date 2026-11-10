@@ -338,6 +338,33 @@ DeckLibrary::DeckLibrary(CardCatalog cat, std::filesystem::path directory)
             next.push_back(std::move(d));
         }
         drafts_ = std::move(next);
+        if (catalog_.mechanicsRevision >= 12) {
+            auto migrated = drafts_;
+            bool changed = false;
+            for (auto &draft : migrated) {
+                for (const auto *id : {"v260-formation-0014", "v260-formation-0015"}) {
+                    changed |= draft.cards.erase(id) != 0;
+                    changed |= draft.sideCards.erase(id) != 0;
+                    if (draft.baseFormation == id) {
+                        draft.baseFormation.clear();
+                        changed = true;
+                    }
+                }
+            }
+            if (changed) {
+                // A failed backup or atomic replacement leaves the original drafts intact.
+                const auto backups = path_.parent_path() / "backups";
+                std::filesystem::create_directories(backups);
+                const auto backup = backups / ("decks-pre-2.6.3-" +
+                    std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) + ".json");
+                std::filesystem::copy_file(path_, backup);
+                persist(migrated);
+                drafts_ = std::move(migrated);
+                notice_ = "已备份旧卡组至 " + backup.u8string() +
+                    "；已移除退池的守护法阵与幻象法阵，请自行补足卡组后再开局。";
+                return;
+            }
+        }
         if (j.value("contentHash", std::string{}) != catalog_.contentHash)
             notice_ = "卡池已更新，已重新校验所有卡组；失效卡牌仍保留，可在编辑器修复。";
     } catch (const std::exception &e) {

@@ -17,7 +17,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 67
   },
@@ -58,5 +58,6 @@
   ],
   "traits": [
     "counter_spell"
-  ]
+  ],
+  "flavor": "这里不允许反制法术反制！"
 }

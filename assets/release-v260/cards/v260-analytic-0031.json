@@ -17,7 +17,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 32
   },
@@ -38,5 +38,6 @@
   "traits": [
     "retaliate_damage"
   ],
-  "level": 2
+  "level": 2,
+  "flavor": "欲用皇冠，必受其痛"
 }

@@ -1,12 +1,42 @@
 {
   "format": 1,
+  "rulesVersion": "2.6.3",
+  "cardSetVersion": "2.6.3",
+  "mechanicsRevision": 12,
+  "baseLoadCapacity": 2,
   "status": "released",
-  "rulesVersion": "2.6.2",
-  "cardSetVersion": "2.6.2",
-  "mechanicsRevision": 11,
-  "cardCount": 92,
-  "source": "assets/source-archive/alpha-v260-xlsx-import/staging",
-  "sourceCatalogSha256": "e1a664966d49e120b7056bdc89f65e9e70cf422886fa619583902418c6d87306",
-  "sourceAggregateSha256": "46a9fd95250ec90584a7be2e3eec360cab3dfeeb8f1579204c1842cb74d30f83",
-  "corrections": "Alpha v2.6.2 feedback 2026-11-04 through 2026-11-05"
+  "cardCount": 90,
+  "flavorCount": 72,
+  "sources": [
+    {
+      "file": "法术卡列表-72张卡.xlsx",
+      "sheet": "卡表",
+      "count": 72,
+      "sha256": "9e9a162d9acd264fec01867ca0e9d4b40cea904ed35a9970d894d98a8539eef8"
+    },
+    {
+      "file": "符文卡列表-共3张卡.xlsx",
+      "sheet": "符文卡",
+      "count": 3,
+      "sha256": "6cae020edd0c261c3738fae6ab47523af0e6d9046db410b48928b09241949b76"
+    },
+    {
+      "file": "阵法卡列表-共17张卡.xlsx",
+      "sheet": "阵法卡",
+      "count": 15,
+      "sha256": "6ac6cea4a3bc51f0dbb16072810da47e645584e016e4964e6ecc105123a80405"
+    }
+  ],
+  "retired": [
+    {
+      "id": "v260-formation-0014",
+      "name": "守护法阵"
+    },
+    {
+      "id": "v260-formation-0015",
+      "name": "幻象法阵"
+    }
+  ],
+  "missingFields": [],
+  "unmappedIdentities": []
 }

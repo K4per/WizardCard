@@ -22,7 +22,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 45
   },
@@ -42,5 +42,6 @@
     "borrow_analysis"
   ],
   "level": 5,
-  "target": "enemy_analysis_spell"
+  "target": "enemy_analysis_spell",
+  "flavor": "恶作剧达人的必备法术。"
 }

@@ -28,7 +28,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 49
   },
@@ -43,5 +43,6 @@
     "previousId": "clarity"
   },
   "target": "self",
-  "level": 2
+  "level": 2,
+  "flavor": "内心毫无波澜甚至还有点想笑。"
 }

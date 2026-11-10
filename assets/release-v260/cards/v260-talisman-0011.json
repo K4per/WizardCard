@@ -22,7 +22,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 74
   },
@@ -43,5 +43,6 @@
     "inspect_and_route"
   ],
   "level": 4,
-  "target": "enemy_ambush"
+  "target": "enemy_ambush",
+  "flavor": "“刚来，哪边是好的？”"
 }

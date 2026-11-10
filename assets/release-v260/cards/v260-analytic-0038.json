@@ -23,7 +23,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 39
   },
@@ -42,5 +42,6 @@
   "extraDiscard": 0,
   "level": 3,
   "target": "player",
-  "extraCost": "analysis_spell"
+  "extraCost": "analysis_spell",
+  "flavor": "弹弹弹，弹走鱼尾纹"
 }

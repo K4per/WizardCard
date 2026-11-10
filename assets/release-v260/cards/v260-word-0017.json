@@ -22,7 +22,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 58
   },
@@ -40,5 +40,6 @@
   "traits": [
     "discard_spell_search"
   ],
-  "level": 3
+  "level": 3,
+  "flavor": "“能。”“你能预知未来吗？”"
 }

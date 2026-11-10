@@ -27,7 +27,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 4
   },
@@ -42,5 +42,6 @@
     "previousId": "lightning-bolt"
   },
   "target": "player",
-  "level": 4
+  "level": 4,
+  "flavor": "避雷针！快把避雷针拿来！"
 }

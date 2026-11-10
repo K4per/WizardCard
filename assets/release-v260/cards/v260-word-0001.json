@@ -24,7 +24,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 42
   },
@@ -39,5 +39,6 @@
     "previousId": "spark"
   },
   "target": "player",
-  "level": 1
+  "level": 1,
+  "flavor": "只是一簇无害的火花。"
 }

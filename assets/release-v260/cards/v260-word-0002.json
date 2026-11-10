@@ -24,7 +24,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 43
   },
@@ -41,5 +41,6 @@
     "previousId": null
   },
   "target": "player",
-  "level": 1
+  "level": 1,
+  "flavor": "“老师没教我别的招。”新一届巫师决斗大赛冠军得主如是说。"
 }

@@ -22,7 +22,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 31
   },
@@ -39,5 +39,6 @@
   "traits": [
     "block_analytic"
   ],
-  "level": 4
+  "level": 4,
+  "flavor": "强效催眠药一般的体验。"
 }

@@ -17,7 +17,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
+    "file": "符文卡列表-共3张卡.xlsx",
     "worksheet": "符文卡",
     "row": 3
   },
@@ -35,5 +35,6 @@
   "attachToFormation": "环位+2。",
   "attachToSpell": "发动时，获得其实际设置费用的魔素。",
   "ringBonus": 2,
-  "refundSetting": 1
+  "refundSetting": 1,
+  "flavor": ""
 }

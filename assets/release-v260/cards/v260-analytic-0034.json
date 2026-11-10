@@ -27,7 +27,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 35
   },
@@ -44,5 +44,6 @@
     "previousId": null
   },
   "target": "player",
-  "level": 5
+  "level": 5,
+  "flavor": "心脏疼吗？疼就是在长肌肉。"
 }

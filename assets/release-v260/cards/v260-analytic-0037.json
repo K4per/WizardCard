@@ -28,7 +28,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 38
   },
@@ -47,5 +47,6 @@
   "traits": [
     "halve_casting_capacity"
   ],
-  "level": 5
+  "level": 5,
+  "flavor": "啊哈，看我“石”来运转！"
 }

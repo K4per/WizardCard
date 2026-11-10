@@ -17,7 +17,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "file": "阵法卡列表-共17张卡.xlsx",
     "worksheet": "阵法卡",
     "row": 9
   },
@@ -46,5 +46,6 @@
   "body": 1,
   "rings": 0,
   "capacity": 15,
-  "income": 0
+  "income": 0,
+  "flavor": ""
 }

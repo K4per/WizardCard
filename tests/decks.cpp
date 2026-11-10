@@ -276,3 +276,52 @@ TEST_CASE("deleting one user deck preserves every other deck and persists after 
     REQUIRE(loaded.find(b.id));
     REQUIRE_FALSE(loaded.erase(a.id, error));
 }
+
+TEST_CASE("Alpha v2.6.3 retired cards migrate only after an exact backup and remain incomplete") {
+    DeckFixture f;
+    DeckLibrary original(f.content.catalog, f.directory);
+    auto draft = f.legal(original);
+    draft.sideCards["v260-formation-0014"] = 1;
+    draft.cards["v260-formation-0015"] = 1;
+    draft.sideCards["other-missing-card"] = 1;
+    std::string error;
+    REQUIRE(original.save(draft, error));
+    const auto before = readJson(f.directory / "decks.json");
+    auto current = f.content.catalog;
+    current.mechanicsRevision = 12;
+    current.cardSetVersion = "2.6.3";
+    current.contentHash = "updated";
+    SECTION("successful migration is backed up and idempotent") {
+        DeckLibrary upgraded(current, f.directory);
+        REQUIRE(upgraded.writable());
+        const auto &result = *upgraded.find(draft.id);
+        REQUIRE(result.sideCards.count("v260-formation-0014") == 0);
+        REQUIRE(result.cards.count("v260-formation-0015") == 0);
+        REQUIRE(result.sideCards.count("other-missing-card") == 1);
+        REQUIRE(result.cards.size() + 1 == draft.cards.size());
+        REQUIRE_FALSE(upgraded.problems(result).empty());
+        REQUIRE(std::filesystem::is_directory(f.directory / "backups"));
+        std::size_t backups = 0;
+        for (const auto &entry : std::filesystem::directory_iterator(f.directory / "backups")) {
+            REQUIRE(readJson(entry.path()) == before);
+            ++backups;
+        }
+        REQUIRE(backups == 1);
+        DeckLibrary reopened(current, f.directory);
+        REQUIRE(encodeDraft(*reopened.find(draft.id)) == encodeDraft(result));
+        REQUIRE(std::distance(std::filesystem::directory_iterator(f.directory / "backups"),
+                              std::filesystem::directory_iterator{}) == 1);
+    }
+    SECTION("backup failure preserves original file and in-memory draft and can be retried") {
+        std::ofstream(f.directory / "backups") << "blocked";
+        DeckLibrary failed(current, f.directory);
+        REQUIRE_FALSE(failed.writable());
+        REQUIRE(readJson(f.directory / "decks.json") == before);
+        REQUIRE(encodeDraft(*failed.find(draft.id)) == encodeDraft(draft));
+        REQUIRE_FALSE(failed.save(draft, error));
+        std::filesystem::remove(f.directory / "backups");
+        DeckLibrary retried(current, f.directory);
+        REQUIRE(retried.writable());
+        REQUIRE(retried.find(draft.id)->sideCards.count("v260-formation-0014") == 0);
+    }
+}

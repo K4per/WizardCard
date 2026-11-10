@@ -1,9 +1,9 @@
 {
   "format": 1,
   "metadata": {
-    "rulesVersion": "2.6.2",
-    "cardSetVersion": "2.6.2",
-    "mechanicsRevision": 11,
+    "rulesVersion": "2.6.3",
+    "cardSetVersion": "2.6.3",
+    "mechanicsRevision": 12,
     "baseLoadCapacity": 2,
     "status": "released"
   },
@@ -359,14 +359,6 @@
     {
       "id": "v260-formation-0013",
       "file": "cards/v260-formation-0013.json"
-    },
-    {
-      "id": "v260-formation-0014",
-      "file": "cards/v260-formation-0014.json"
-    },
-    {
-      "id": "v260-formation-0015",
-      "file": "cards/v260-formation-0015.json"
     },
     {
       "id": "v260-formation-0016",

@@ -23,7 +23,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 46
   },
@@ -40,5 +40,6 @@
   "traits": [
     "accelerate_analysis"
   ],
-  "level": 2
+  "level": 2,
+  "flavor": "早用早享受……"
 }

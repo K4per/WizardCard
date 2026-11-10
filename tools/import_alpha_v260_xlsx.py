@@ -999,6 +999,10 @@ def parse_formation_recipe(condition: str) -> tuple[list[dict[str, Any]], list[s
         if hand:
             recipe.append({"kind": "discard_hand", "amount": int(hand.group(1))})
             continue
+        facedown = re.fullmatch(r"盖伏卡x(\d+)", clause)
+        if facedown:
+            recipe.append({"kind": "sacrifice_spell", "amount": int(facedown.group(1)), "faceDownOnly": True})
+            continue
         formation_names = re.findall(r"【([^】]+)】", clause)
         if formation_names:
             # A single clause may be a choice (e.g. 高阶法阵).

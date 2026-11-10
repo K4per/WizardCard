@@ -22,7 +22,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 37
   },
@@ -38,5 +38,6 @@
   },
   "level": 5,
   "target": "empty_enemy_formation",
-  "extraCost": "side_formation"
+  "extraCost": "side_formation",
+  "flavor": "碎碎平安"
 }

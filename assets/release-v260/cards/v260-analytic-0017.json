@@ -17,7 +17,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 18
   },
@@ -38,5 +38,6 @@
   "traits": [
     "mana_on_elemental_damage"
   ],
-  "level": 4
+  "level": 4,
+  "flavor": "吸纳元素，顷刻炼化。"
 }

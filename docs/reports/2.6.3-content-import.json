@@ -1,0 +1,1124 @@
+{
+  "format": 1,
+  "rulesVersion": "2.6.3",
+  "cardSetVersion": "2.6.3",
+  "mechanicsRevision": 12,
+  "baseLoadCapacity": 2,
+  "status": "released",
+  "cardCount": 90,
+  "flavorCount": 72,
+  "sources": [
+    {
+      "file": "法术卡列表-72张卡.xlsx",
+      "sheet": "卡表",
+      "count": 72,
+      "sha256": "9e9a162d9acd264fec01867ca0e9d4b40cea904ed35a9970d894d98a8539eef8"
+    },
+    {
+      "file": "符文卡列表-共3张卡.xlsx",
+      "sheet": "符文卡",
+      "count": 3,
+      "sha256": "6cae020edd0c261c3738fae6ab47523af0e6d9046db410b48928b09241949b76"
+    },
+    {
+      "file": "阵法卡列表-共17张卡.xlsx",
+      "sheet": "阵法卡",
+      "count": 15,
+      "sha256": "6ac6cea4a3bc51f0dbb16072810da47e645584e016e4964e6ecc105123a80405"
+    }
+  ],
+  "changes": [
+    {
+      "id": "v260-analytic-0001",
+      "name": "火球术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "JUST  FIREBALL！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0002",
+      "name": "寒霜射线",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "据小道消息，该法术源自一名很擅长讲冷笑话的巫师。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0003",
+      "name": "闪电束",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "避雷针！快把避雷针拿来！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0004",
+      "name": "魔法飞弹",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "他作弊！我还从来没见过哪个神枪手能次次命中靶心呢！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0005",
+      "name": "繁彩球",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "让我先翻一翻元素克制表……"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0006",
+      "name": "曳光弹",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "神说，要有光。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0007",
+      "name": "炽热射线",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "真是令人热血沸腾啊！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0008",
+      "name": "炽燃结界",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "你们就拿这魔法当马戏团表演的火圈？！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0009",
+      "name": "阳炎爆",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "温馨提示：请佩戴护目镜施法。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0010",
+      "name": "燃烧之手",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“热得我都出汗了。”法师往自己额头上抹了一把。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0011",
+      "name": "云雾术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "谁封的烟？！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0012",
+      "name": "召雷术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "不要在树下释放此法术"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0013",
+      "name": "匕首之云",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "小刀？！又见小刀！！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0014",
+      "name": "臭云术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "伤敌伤己的生化法术"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0015",
+      "name": "油腻术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "小心地滑！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0016",
+      "name": "次级复原",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "救急不救穷，升级得加钱。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0017",
+      "name": "吸收元素",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "吸纳元素，顷刻炼化。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0018",
+      "name": "枯萎术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "百草枯之术。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0019",
+      "name": "缝合生命",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "该死！它怎么开始自己找线了。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0020",
+      "name": "虚假生命",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "这些生命值到底是哪来的？！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0021",
+      "name": "治疗之环",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "不要对亡灵生物使用治愈魔法口牙！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0022",
+      "name": "致病射线",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "施术前后要勤洗手。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0023",
+      "name": "防死结界",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "死神来了也得在门外排队。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0024",
+      "name": "汲血之触",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "我的拳头想喝血了！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0025",
+      "name": "沉默术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "嘘……"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0026",
+      "name": "朦胧术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "如真似幻，若即若离。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0027",
+      "name": "恐惧术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "发掘你内心最深处的恐惧。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0028",
+      "name": "精神监狱",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“本庭宣判你——无期徒刑！”"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0029",
+      "name": "紊乱波动",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "乱人神智，破敌之势"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0030",
+      "name": "昏昏欲睡",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "强效催眠药一般的体验。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0031",
+      "name": "疯狂冠冕",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "欲用皇冠，必受其痛"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0032",
+      "name": "祝福术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "神加添给你的祝福。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0033",
+      "name": "灾祸术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "我敢打赌那家伙不出三秒就得倒霉。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0034",
+      "name": "心灵尖刺",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "心脏疼吗？疼就是在长肌肉。"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0035",
+      "name": "地震术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "地震预警能猜到我什么时候放这个法术吗？"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0036",
+      "name": "碎环术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "碎碎平安"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0037",
+      "name": "土石喷发",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "啊哈，看我“石”来运转！"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0038",
+      "name": "弹射术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "弹弹弹，弹走鱼尾纹"
+        }
+      }
+    },
+    {
+      "id": "v260-analytic-0039",
+      "name": "加速术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "冲刺！冲刺！！！"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0001",
+      "name": "火花术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "只是一簇无害的火花。"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0002",
+      "name": "魔能爆",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“老师没教我别的招。”新一届巫师决斗大赛冠军得主如是说。"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0003",
+      "name": "魔力扰动",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "后来巫师们发现单纯发出刺耳的尖锐怪叫也能起到相同的效果。"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0004",
+      "name": "法师之手",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "恶作剧达人的必备法术。"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0005",
+      "name": "瞬发回路过载",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "早用早享受……"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0006",
+      "name": "奥术复苏",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "属于奥术的时代来临了！"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0007",
+      "name": "支援术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“我来助你！” "
+        }
+      }
+    },
+    {
+      "id": "v260-word-0008",
+      "name": "心如止水",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "内心毫无波澜甚至还有点想笑。"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0009",
+      "name": "扰神曲",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "致敬第一个误把该法术当摇篮曲使用的巫师。"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0010",
+      "name": "降咒",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "一言成谶，百事皆衰"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0011",
+      "name": "七彩喷射",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "理论上能放八种颜色……"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0012",
+      "name": "幽影刃",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "确保你握住的是刀柄而非刀刃。"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0013",
+      "name": "不谐低语",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "最好不要细想这些声音是从哪发出来的。"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0014",
+      "name": "脆弱诅咒",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“你的盔甲是纸皮做的吗？” "
+        }
+      }
+    },
+    {
+      "id": "v260-word-0015",
+      "name": "命令术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "我真得控制你了！"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0016",
+      "name": "恶言相加",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "恶语伤人六月寒呐……"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0017",
+      "name": "克敌机先",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“能。”“你能预知未来吗？”"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0018",
+      "name": "奥术回想",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“求您了老师，让我再答一次吧，我肯定能想起来！”"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0019",
+      "name": "异界探知",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "好奇心害死猫……"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0020",
+      "name": "卜筮术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "天机可断，凶吉早判。"
+        }
+      }
+    },
+    {
+      "id": "v260-word-0021",
+      "name": "强化属性",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“你被强化了，快上！”"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0001",
+      "name": "炼狱叱喝",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "以血还血，以牙还牙。"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0002",
+      "name": "捕获打击",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“打中了！”“但是真的打中了吗？”"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0003",
+      "name": "护盾术",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "以吾意志，凝此坚壁。"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0004",
+      "name": "法术反制",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "这里不允许反制法术反制！"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0005",
+      "name": "避火咒",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "是火抗不是火免……——来自一位试图在岩浆里游泳的冒险者"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0006",
+      "name": "解除魔法",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "当魔法不适用的时候不妨尝试一些物理手段。"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0007",
+      "name": "死佑护甲",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "以死为甲，以骨为墙，触之者枯，犯之者亡。"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0008",
+      "name": "步履维艰",
+      "fields": {
+        "text": {
+          "before": "此卡发动后，此回合对方从手卡设置的解析法术卡的解析时间+1。",
+          "after": "此回合，对方设置的全部解析法术卡的解析时间+1。"
+        },
+        "flavor": {
+          "before": null,
+          "after": "”让我们放慢脚步！”"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0009",
+      "name": "银光锐语",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“谁把这法术放进来的？！”"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0010",
+      "name": "滑稽魔盒",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "这才叫魔术戏法！"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0011",
+      "name": "侦测善恶",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“刚来，哪边是好的？”"
+        }
+      }
+    },
+    {
+      "id": "v260-talisman-0012",
+      "name": "荆棘丛生",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": "“这可是我为你‘荆’心准备的法术！”"
+        }
+      }
+    },
+    {
+      "id": "v260-seal-0001",
+      "name": "逆三角星符",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-seal-0002",
+      "name": "奥术圆环",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-seal-0003",
+      "name": "昂扬",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0001",
+      "name": "正十字",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0002",
+      "name": "逆十字",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0003",
+      "name": "安卡十字",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0004",
+      "name": "恩格亚斯之星",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0005",
+      "name": "元素之环",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0006",
+      "name": "混沌之环",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0007",
+      "name": "阿克乌姆之弧",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0008",
+      "name": "硫磺",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0009",
+      "name": "基础法阵",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0010",
+      "name": "标准法阵",
+      "fields": {
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0011",
+      "name": "强化法阵",
+      "fields": {
+        "recipe": {
+          "before": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0010"
+            },
+            {
+              "kind": "sacrifice_spell",
+              "amount": 1
+            }
+          ],
+          "after": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0010"
+            },
+            {
+              "kind": "sacrifice_spell",
+              "amount": 1,
+              "faceDownOnly": true
+            }
+          ]
+        },
+        "summonCondition": {
+          "before": "【标准法阵】+解析区法术卡×1",
+          "after": "【标准法阵】+盖伏卡×1"
+        },
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0012",
+      "name": "复合法阵",
+      "fields": {
+        "recipe": {
+          "before": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0009"
+            },
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0010"
+            }
+          ],
+          "after": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0011"
+            },
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0009"
+            }
+          ]
+        },
+        "summonCondition": {
+          "before": "【基础法阵】+【标准法阵】",
+          "after": "【强化法阵】+【基础法阵】"
+        },
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0013",
+      "name": "增幅法阵",
+      "fields": {
+        "recipe": {
+          "before": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0012"
+            },
+            {
+              "kind": "sacrifice_spell",
+              "amount": 1,
+              "schools": [
+                "evocation",
+                "conjuration"
+              ]
+            }
+          ],
+          "after": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0012"
+            },
+            {
+              "kind": "sacrifice_spell",
+              "amount": 1,
+              "readyOnly": true
+            },
+            {
+              "kind": "mana",
+              "amount": 2
+            }
+          ]
+        },
+        "summonCondition": {
+          "before": "【复合法阵】+解析区塑能/咒法派系法术卡×1",
+          "after": "【复合法阵】+解析完成的法术卡×1+魔素×2"
+        },
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0016",
+      "name": "高阶法阵",
+      "fields": {
+        "recipe": {
+          "before": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definitions": [
+                "v260-formation-0013",
+                "v260-formation-0014",
+                "v260-formation-0015"
+              ]
+            },
+            {
+              "kind": "sacrifice_spell",
+              "amount": 1,
+              "readyOnly": true
+            },
+            {
+              "kind": "mana",
+              "amount": 3
+            }
+          ],
+          "after": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0013"
+            },
+            {
+              "kind": "sacrifice_spell",
+              "amount": 1,
+              "readyOnly": true
+            },
+            {
+              "kind": "mana",
+              "amount": 4
+            }
+          ]
+        },
+        "summonCondition": {
+          "before": "【增幅法阵】或【守护法阵】或【幻象法阵】+解析完成的法术卡×1+魔素×3",
+          "after": "【增幅法阵】+解析完成的法术卡×1+魔素×4"
+        },
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    },
+    {
+      "id": "v260-formation-0017",
+      "name": "完美法阵",
+      "fields": {
+        "recipe": {
+          "before": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0016"
+            },
+            {
+              "kind": "sacrifice_spell",
+              "amount": 2,
+              "readyOnly": true
+            },
+            {
+              "kind": "mana",
+              "amount": 5
+            }
+          ],
+          "after": [
+            {
+              "kind": "sacrifice_formation",
+              "amount": 1,
+              "definition": "v260-formation-0016"
+            },
+            {
+              "kind": "sacrifice_spell",
+              "amount": 2,
+              "readyOnly": true
+            },
+            {
+              "kind": "mana",
+              "amount": 6
+            }
+          ]
+        },
+        "summonCondition": {
+          "before": "【高阶法阵】+解析完成的法术卡×2+魔素×5",
+          "after": "【高阶法阵】+解析完成的法术卡×2+魔素×6"
+        },
+        "flavor": {
+          "before": null,
+          "after": ""
+        }
+      }
+    }
+  ],
+  "retired": [
+    {
+      "id": "v260-formation-0014",
+      "name": "守护法阵"
+    },
+    {
+      "id": "v260-formation-0015",
+      "name": "幻象法阵"
+    }
+  ],
+  "missingFields": [],
+  "unmappedIdentities": []
+}

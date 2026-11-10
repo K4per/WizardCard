@@ -200,7 +200,7 @@ void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const Le
                 std::vector<CardId> pool, selected;
                 for (const auto &[materialId, material] : s.cards)
                         if (controllerOf(material) == p && (material.zone == Zone::Analysis || material.zone == Zone::Casting ||
-                        material.zone == Zone::Hand) && !material.faceDown)
+                        material.zone == Zone::Hand))
                         pool.push_back(materialId);
                 auto choose = [&](auto &&self, std::size_t pos) -> void {
                     if (static_cast<int>(selected.size()) == count) {

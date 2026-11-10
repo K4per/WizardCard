@@ -22,7 +22,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 65
   },
@@ -42,5 +42,6 @@
   "traits": [
     "counter_physical"
   ],
-  "level": 4
+  "level": 4,
+  "flavor": "“打中了！”“但是真的打中了吗？”"
 }

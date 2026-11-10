@@ -109,12 +109,17 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, default=STAGING)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--legacy", action="store_true", help="Rebuild the historical v2.6.2 catalogue")
     args = parser.parse_args()
     source = args.source.resolve()
     output = args.output.resolve()
     if not output.is_relative_to(ROOT / "assets"):
         raise SystemExit("release output must stay under assets/")
-    release = promote(source, output)
+    if args.legacy:
+        release = promote(source, output)
+    else:
+        from import_alpha_v263 import generate
+        release = generate(output=output)
     print(json.dumps({"output": str(output), **release}, ensure_ascii=False, indent=2))
     return 0
 

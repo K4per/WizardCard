@@ -17,7 +17,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 75
   },
@@ -37,5 +37,6 @@
   "traits": [
     "setup_damage"
   ],
-  "level": 3
+  "level": 3,
+  "flavor": "“这可是我为你‘荆’心准备的法术！”"
 }

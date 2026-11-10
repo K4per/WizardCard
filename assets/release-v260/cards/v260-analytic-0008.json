@@ -24,7 +24,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 9
   },
@@ -49,5 +49,6 @@
     }
   ],
   "target": "opponent",
-  "level": 3
+  "level": 3,
+  "flavor": "你们就拿这魔法当马戏团表演的火圈？！"
 }

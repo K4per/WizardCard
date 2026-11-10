@@ -17,7 +17,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "file": "阵法卡列表-共17张卡.xlsx",
     "worksheet": "阵法卡",
     "row": 16
   },
@@ -43,16 +43,18 @@
     {
       "kind": "sacrifice_spell",
       "amount": 1,
-      "schools": [
-        "evocation",
-        "conjuration"
-      ]
+      "readyOnly": true
+    },
+    {
+      "kind": "mana",
+      "amount": 2
     }
   ],
-  "summonCondition": "【复合法阵】+解析区塑能/咒法派系法术卡×1",
+  "summonCondition": "【复合法阵】+解析完成的法术卡×1+魔素×2",
   "level": 5,
   "body": 3,
   "rings": 5,
   "capacity": 15,
-  "income": 5
+  "income": 5,
+  "flavor": ""
 }

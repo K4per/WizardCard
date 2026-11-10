@@ -17,9 +17,9 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "file": "阵法卡列表-共17张卡.xlsx",
     "worksheet": "阵法卡",
-    "row": 19
+    "row": 17
   },
   "illustrationId": "v260-art-formation-0016",
   "art": {
@@ -38,11 +38,7 @@
     {
       "kind": "sacrifice_formation",
       "amount": 1,
-      "definitions": [
-        "v260-formation-0013",
-        "v260-formation-0014",
-        "v260-formation-0015"
-      ]
+      "definition": "v260-formation-0013"
     },
     {
       "kind": "sacrifice_spell",
@@ -51,13 +47,14 @@
     },
     {
       "kind": "mana",
-      "amount": 3
+      "amount": 4
     }
   ],
-  "summonCondition": "【增幅法阵】或【守护法阵】或【幻象法阵】+解析完成的法术卡×1+魔素×3",
+  "summonCondition": "【增幅法阵】+解析完成的法术卡×1+魔素×4",
   "level": 6,
   "body": 3,
   "rings": 6,
   "capacity": 18,
-  "income": 6
+  "income": 6,
+  "flavor": ""
 }

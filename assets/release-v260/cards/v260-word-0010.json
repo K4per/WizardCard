@@ -23,7 +23,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 51
   },
@@ -42,5 +42,6 @@
   "traits": [
     "word_cast_damage"
   ],
-  "level": 3
+  "level": 3,
+  "flavor": "一言成谶，百事皆衰"
 }

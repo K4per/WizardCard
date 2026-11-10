@@ -88,8 +88,16 @@ MutationContext formationScenario(const CardCatalog &catalog, const std::string 
             } else if (need.kind == RecipeCostKind::DiscardHand) {
                 zone = Zone::Hand;
                 spell = SpellState::None;
+            } else if (need.faceDownOnly) {
+                zone = Zone::Analysis;
+                spell = SpellState::None;
             }
-            addCard(state, nextMaterial++, selected->id, zone, spell);
+            auto &material = addCard(state, nextMaterial++, selected->id, zone, spell);
+            if (need.faceDownOnly) {
+                material.faceDown = true;
+                material.host = 1;
+                material.ringIndex = Rules::freeRing(state, catalog, 1);
+            }
             if (need.distinctSchools) distinctSchools.push_back(selected->school);
         }
     }
@@ -109,7 +117,7 @@ TEST_CASE("Alpha v2.6.0 all formal formations can be set independently or replac
     std::vector<std::string> formations;
     for (const auto &[id, definition] : content.catalog.cards)
         if (definition.type == CardType::Formation) formations.push_back(id);
-    REQUIRE(formations.size() == 17);
+    REQUIRE(formations.size() == 15);
 
     for (const auto &id : formations) {
         INFO(id);

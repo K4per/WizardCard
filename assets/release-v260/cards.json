@@ -1,7 +1,7 @@
 {
-  "rulesVersion": "2.6.2",
-  "cardSetVersion": "2.6.2",
-  "mechanicsRevision": 11,
+  "rulesVersion": "2.6.3",
+  "cardSetVersion": "2.6.3",
+  "mechanicsRevision": 12,
   "baseLoadCapacity": 2,
   "status": "released",
   "cards": [
@@ -31,7 +31,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 2
       },
@@ -46,7 +46,8 @@
         "previousId": "fireball"
       },
       "target": "player",
-      "level": 3
+      "level": 3,
+      "flavor": "JUST  FIREBALL！"
     },
     {
       "id": "v260-analytic-0002",
@@ -78,7 +79,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 3
       },
@@ -93,7 +94,8 @@
         "previousId": "ray-of-frost"
       },
       "target": "player",
-      "level": 2
+      "level": 2,
+      "flavor": "据小道消息，该法术源自一名很擅长讲冷笑话的巫师。"
     },
     {
       "id": "v260-analytic-0003",
@@ -124,7 +126,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 4
       },
@@ -139,7 +141,8 @@
         "previousId": "lightning-bolt"
       },
       "target": "player",
-      "level": 4
+      "level": 4,
+      "flavor": "避雷针！快把避雷针拿来！"
     },
     {
       "id": "v260-analytic-0004",
@@ -170,7 +173,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 5
       },
@@ -185,7 +188,8 @@
         "previousId": "magic-missile"
       },
       "target": "player",
-      "level": 2
+      "level": 2,
+      "flavor": "他作弊！我还从来没见过哪个神枪手能次次命中靶心呢！"
     },
     {
       "id": "v260-analytic-0005",
@@ -212,7 +216,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 6
       },
@@ -227,7 +231,8 @@
         "previousId": "chromatic-orb"
       },
       "target": "player",
-      "level": 2
+      "level": 2,
+      "flavor": "让我先翻一翻元素克制表……"
     },
     {
       "id": "v260-analytic-0006",
@@ -258,7 +263,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 7
       },
@@ -273,7 +278,8 @@
         "previousId": "guiding-bolt"
       },
       "target": "player",
-      "level": 2
+      "level": 2,
+      "flavor": "神说，要有光。"
     },
     {
       "id": "v260-analytic-0007",
@@ -300,7 +306,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 8
       },
@@ -315,7 +321,8 @@
         "previousId": "scorching-ray"
       },
       "target": "player",
-      "level": 5
+      "level": 5,
+      "flavor": "真是令人热血沸腾啊！"
     },
     {
       "id": "v260-analytic-0008",
@@ -343,7 +350,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 9
       },
@@ -368,7 +375,8 @@
         }
       ],
       "target": "opponent",
-      "level": 3
+      "level": 3,
+      "flavor": "你们就拿这魔法当马戏团表演的火圈？！"
     },
     {
       "id": "v260-analytic-0009",
@@ -399,7 +407,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 10
       },
@@ -417,7 +425,8 @@
         "ash_evocation_discount"
       ],
       "target": "opponent",
-      "level": 6
+      "level": 6,
+      "flavor": "温馨提示：请佩戴护目镜施法。"
     },
     {
       "id": "v260-analytic-0010",
@@ -445,7 +454,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 11
       },
@@ -462,7 +471,8 @@
         "previousId": null
       },
       "target": "opponent",
-      "level": 4
+      "level": 4,
+      "flavor": "“热得我都出汗了。”法师往自己额头上抹了一把。"
     },
     {
       "id": "v260-analytic-0011",
@@ -488,7 +498,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 12
       },
@@ -507,7 +517,8 @@
       "level": 2,
       "traits": [
         "cloud_mist"
-      ]
+      ],
+      "flavor": "谁封的烟？！"
     },
     {
       "id": "v260-analytic-0012",
@@ -541,7 +552,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 13
       },
@@ -556,7 +567,8 @@
         "previousId": "thunder-summon"
       },
       "target": "player",
-      "level": 4
+      "level": 4,
+      "flavor": "不要在树下释放此法术"
     },
     {
       "id": "v260-analytic-0013",
@@ -584,7 +596,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 14
       },
@@ -611,7 +623,8 @@
         }
       ],
       "target": "opponent",
-      "level": 3
+      "level": 3,
+      "flavor": "小刀？！又见小刀！！"
     },
     {
       "id": "v260-analytic-0014",
@@ -632,7 +645,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 15
       },
@@ -660,7 +673,8 @@
       "level": 3,
       "traits": [
         "both_prepare"
-      ]
+      ],
+      "flavor": "伤敌伤己的生化法术"
     },
     {
       "id": "v260-analytic-0015",
@@ -686,7 +700,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 16
       },
@@ -703,7 +717,8 @@
         "previousId": null
       },
       "target": "enemy_formation",
-      "level": 3
+      "level": 3,
+      "flavor": "小心地滑！"
     },
     {
       "id": "v260-analytic-0016",
@@ -734,7 +749,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 17
       },
@@ -749,7 +764,8 @@
         "previousId": null
       },
       "target": "player",
-      "level": 2
+      "level": 2,
+      "flavor": "救急不救穷，升级得加钱。"
     },
     {
       "id": "v260-analytic-0017",
@@ -770,7 +786,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 18
       },
@@ -791,7 +807,8 @@
       "traits": [
         "mana_on_elemental_damage"
       ],
-      "level": 4
+      "level": 4,
+      "flavor": "吸纳元素，顷刻炼化。"
     },
     {
       "id": "v260-analytic-0018",
@@ -819,7 +836,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 19
       },
@@ -836,7 +853,8 @@
         "previousId": null
       },
       "target": "player",
-      "level": 4
+      "level": 4,
+      "flavor": "百草枯之术。"
     },
     {
       "id": "v260-analytic-0019",
@@ -863,7 +881,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 20
       },
@@ -878,7 +896,8 @@
         "previousId": "mend"
       },
       "target": "player",
-      "level": 3
+      "level": 3,
+      "flavor": "该死！它怎么开始自己找线了。"
     },
     {
       "id": "v260-analytic-0020",
@@ -905,7 +924,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 21
       },
@@ -919,7 +938,8 @@
       "migration": {
         "previousId": "false-life"
       },
-      "level": 3
+      "level": 3,
+      "flavor": "这些生命值到底是哪来的？！"
     },
     {
       "id": "v260-analytic-0021",
@@ -940,7 +960,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 22
       },
@@ -963,7 +983,8 @@
         }
       ],
       "target": "self",
-      "level": 2
+      "level": 2,
+      "flavor": "不要对亡灵生物使用治愈魔法口牙！"
     },
     {
       "id": "v260-analytic-0022",
@@ -996,7 +1017,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 23
       },
@@ -1013,7 +1034,8 @@
         "previousId": null
       },
       "target": "player",
-      "level": 2
+      "level": 2,
+      "flavor": "施术前后要勤洗手。"
     },
     {
       "id": "v260-analytic-0023",
@@ -1034,7 +1056,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 24
       },
@@ -1055,7 +1077,8 @@
         "unique",
         "prevent_lethal"
       ],
-      "level": 7
+      "level": 7,
+      "flavor": "死神来了也得在门外排队。"
     },
     {
       "id": "v260-analytic-0024",
@@ -1088,7 +1111,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 25
       },
@@ -1105,7 +1128,8 @@
         "previousId": null
       },
       "target": "player",
-      "level": 3
+      "level": 3,
+      "flavor": "我的拳头想喝血了！"
     },
     {
       "id": "v260-analytic-0025",
@@ -1131,7 +1155,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 26
       },
@@ -1148,7 +1172,8 @@
         "previousId": "instantly-sleep"
       },
       "target": "opponent",
-      "level": 4
+      "level": 4,
+      "flavor": "嘘……"
     },
     {
       "id": "v260-analytic-0026",
@@ -1174,7 +1199,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 27
       },
@@ -1191,7 +1216,8 @@
         "previousId": null
       },
       "target": "none",
-      "level": 5
+      "level": 5,
+      "flavor": "如真似幻，若即若离。"
     },
     {
       "id": "v260-analytic-0027",
@@ -1212,7 +1238,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 28
       },
@@ -1233,7 +1259,8 @@
       "traits": [
         "fear"
       ],
-      "level": 5
+      "level": 5,
+      "flavor": "发掘你内心最深处的恐惧。"
     },
     {
       "id": "v260-analytic-0028",
@@ -1254,7 +1281,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 29
       },
@@ -1284,7 +1311,8 @@
           "amount": 10,
           "damageType": "psychic"
         }
-      ]
+      ],
+      "flavor": "“本庭宣判你——无期徒刑！”"
     },
     {
       "id": "v260-analytic-0029",
@@ -1310,7 +1338,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 30
       },
@@ -1328,7 +1356,8 @@
       "traits": [
         "opponent_spell_load_4"
       ],
-      "level": 4
+      "level": 4,
+      "flavor": "乱人神智，破敌之势"
     },
     {
       "id": "v260-analytic-0030",
@@ -1354,7 +1383,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 31
       },
@@ -1371,7 +1400,8 @@
       "traits": [
         "block_analytic"
       ],
-      "level": 4
+      "level": 4,
+      "flavor": "强效催眠药一般的体验。"
     },
     {
       "id": "v260-analytic-0031",
@@ -1392,7 +1422,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 32
       },
@@ -1413,7 +1443,8 @@
       "traits": [
         "retaliate_damage"
       ],
-      "level": 2
+      "level": 2,
+      "flavor": "欲用皇冠，必受其痛"
     },
     {
       "id": "v260-analytic-0032",
@@ -1434,7 +1465,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 33
       },
@@ -1460,7 +1491,8 @@
           "kind": "blessing_choice",
           "amount": 0
         }
-      ]
+      ],
+      "flavor": "神加添给你的祝福。"
     },
     {
       "id": "v260-analytic-0033",
@@ -1481,7 +1513,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 34
       },
@@ -1507,7 +1539,8 @@
           "kind": "calamity_choice",
           "amount": 0
         }
-      ]
+      ],
+      "flavor": "我敢打赌那家伙不出三秒就得倒霉。"
     },
     {
       "id": "v260-analytic-0034",
@@ -1538,7 +1571,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 35
       },
@@ -1555,7 +1588,8 @@
         "previousId": null
       },
       "target": "player",
-      "level": 5
+      "level": 5,
+      "flavor": "心脏疼吗？疼就是在长肌肉。"
     },
     {
       "id": "v260-analytic-0035",
@@ -1576,7 +1610,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 36
       },
@@ -1597,7 +1631,8 @@
           "amount": 0
         }
       ],
-      "level": 4
+      "level": 4,
+      "flavor": "地震预警能猜到我什么时候放这个法术吗？"
     },
     {
       "id": "v260-analytic-0036",
@@ -1623,7 +1658,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 37
       },
@@ -1639,7 +1674,8 @@
       },
       "level": 5,
       "target": "empty_enemy_formation",
-      "extraCost": "side_formation"
+      "extraCost": "side_formation",
+      "flavor": "碎碎平安"
     },
     {
       "id": "v260-analytic-0037",
@@ -1671,7 +1707,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 38
       },
@@ -1690,7 +1726,8 @@
       "traits": [
         "halve_casting_capacity"
       ],
-      "level": 5
+      "level": 5,
+      "flavor": "啊哈，看我“石”来运转！"
     },
     {
       "id": "v260-analytic-0038",
@@ -1717,7 +1754,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 39
       },
@@ -1736,7 +1773,8 @@
       "extraDiscard": 0,
       "level": 3,
       "target": "player",
-      "extraCost": "analysis_spell"
+      "extraCost": "analysis_spell",
+      "flavor": "弹弹弹，弹走鱼尾纹"
     },
     {
       "id": "v260-analytic-0039",
@@ -1766,7 +1804,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 40
       },
@@ -1785,7 +1823,8 @@
       "traits": [
         "extra_turn_load_double"
       ],
-      "level": 6
+      "level": 6,
+      "flavor": "冲刺！冲刺！！！"
     },
     {
       "id": "v260-word-0001",
@@ -1813,7 +1852,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 42
       },
@@ -1828,7 +1867,8 @@
         "previousId": "spark"
       },
       "target": "player",
-      "level": 1
+      "level": 1,
+      "flavor": "只是一簇无害的火花。"
     },
     {
       "id": "v260-word-0002",
@@ -1856,7 +1896,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 43
       },
@@ -1873,7 +1913,8 @@
         "previousId": null
       },
       "target": "player",
-      "level": 1
+      "level": 1,
+      "flavor": "“老师没教我别的招。”新一届巫师决斗大赛冠军得主如是说。"
     },
     {
       "id": "v260-word-0003",
@@ -1905,7 +1946,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 44
       },
@@ -1919,7 +1960,8 @@
       "migration": {
         "previousId": "disrupt"
       },
-      "level": 2
+      "level": 2,
+      "flavor": "后来巫师们发现单纯发出刺耳的尖锐怪叫也能起到相同的效果。"
     },
     {
       "id": "v260-word-0004",
@@ -1945,7 +1987,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 45
       },
@@ -1965,7 +2007,8 @@
         "borrow_analysis"
       ],
       "level": 5,
-      "target": "enemy_analysis_spell"
+      "target": "enemy_analysis_spell",
+      "flavor": "恶作剧达人的必备法术。"
     },
     {
       "id": "v260-word-0005",
@@ -1992,7 +2035,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 46
       },
@@ -2009,7 +2052,8 @@
       "traits": [
         "accelerate_analysis"
       ],
-      "level": 2
+      "level": 2,
+      "flavor": "早用早享受……"
     },
     {
       "id": "v260-word-0006",
@@ -2041,7 +2085,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 47
       },
@@ -2055,7 +2099,8 @@
       "migration": {
         "previousId": "arcane-recovery"
       },
-      "level": 1
+      "level": 1,
+      "flavor": "属于奥术的时代来临了！"
     },
     {
       "id": "v260-word-0007",
@@ -2082,7 +2127,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 48
       },
@@ -2096,7 +2141,8 @@
       "migration": {
         "previousId": "aid"
       },
-      "level": 1
+      "level": 1,
+      "flavor": "“我来助你！” "
     },
     {
       "id": "v260-word-0008",
@@ -2128,7 +2174,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 49
       },
@@ -2143,7 +2189,8 @@
         "previousId": "clarity"
       },
       "target": "self",
-      "level": 2
+      "level": 2,
+      "flavor": "内心毫无波澜甚至还有点想笑。"
     },
     {
       "id": "v260-word-0009",
@@ -2169,7 +2216,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 50
       },
@@ -2188,7 +2235,8 @@
       "traits": [
         "block_concentration"
       ],
-      "level": 3
+      "level": 3,
+      "flavor": "致敬第一个误把该法术当摇篮曲使用的巫师。"
     },
     {
       "id": "v260-word-0010",
@@ -2215,7 +2263,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 51
       },
@@ -2234,7 +2282,8 @@
       "traits": [
         "word_cast_damage"
       ],
-      "level": 3
+      "level": 3,
+      "flavor": "一言成谶，百事皆衰"
     },
     {
       "id": "v260-word-0011",
@@ -2264,7 +2313,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 52
       },
@@ -2284,7 +2333,8 @@
         "target_lock"
       ],
       "level": 4,
-      "target": "player"
+      "target": "player",
+      "flavor": "理论上能放八种颜色……"
     },
     {
       "id": "v260-word-0012",
@@ -2312,7 +2362,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 53
       },
@@ -2329,7 +2379,8 @@
         "previousId": null
       },
       "target": "opponent",
-      "level": 3
+      "level": 3,
+      "flavor": "确保你握住的是刀柄而非刀刃。"
     },
     {
       "id": "v260-word-0013",
@@ -2360,7 +2411,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 54
       },
@@ -2377,7 +2428,8 @@
         "previousId": null
       },
       "target": "player",
-      "level": 2
+      "level": 2,
+      "flavor": "最好不要细想这些声音是从哪发出来的。"
     },
     {
       "id": "v260-word-0014",
@@ -2403,7 +2455,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 55
       },
@@ -2422,7 +2474,8 @@
       "traits": [
         "increase_damage_taken"
       ],
-      "level": 6
+      "level": 6,
+      "flavor": "“你的盔甲是纸皮做的吗？” "
     },
     {
       "id": "v260-word-0015",
@@ -2448,7 +2501,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 56
       },
@@ -2467,7 +2520,8 @@
       "traits": [
         "command_choice"
       ],
-      "level": 4
+      "level": 4,
+      "flavor": "我真得控制你了！"
     },
     {
       "id": "v260-word-0016",
@@ -2495,7 +2549,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 57
       },
@@ -2512,7 +2566,8 @@
         "previousId": null
       },
       "target": "player",
-      "level": 1
+      "level": 1,
+      "flavor": "恶语伤人六月寒呐……"
     },
     {
       "id": "v260-word-0017",
@@ -2538,7 +2593,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 58
       },
@@ -2556,7 +2611,8 @@
       "traits": [
         "discard_spell_search"
       ],
-      "level": 3
+      "level": 3,
+      "flavor": "“能。”“你能预知未来吗？”"
     },
     {
       "id": "v260-word-0018",
@@ -2588,7 +2644,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 59
       },
@@ -2602,7 +2658,8 @@
       "migration": {
         "previousId": "recall"
       },
-      "level": 1
+      "level": 1,
+      "flavor": "“求您了老师，让我再答一次吧，我肯定能想起来！”"
     },
     {
       "id": "v260-word-0019",
@@ -2628,7 +2685,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 60
       },
@@ -2648,7 +2705,8 @@
       "traits": [
         "inspect_opponent_deck"
       ],
-      "level": 3
+      "level": 3,
+      "flavor": "好奇心害死猫……"
     },
     {
       "id": "v260-word-0020",
@@ -2674,7 +2732,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 61
       },
@@ -2694,7 +2752,8 @@
       "traits": [
         "inspect_own_deck"
       ],
-      "level": 1
+      "level": 1,
+      "flavor": "天机可断，凶吉早判。"
     },
     {
       "id": "v260-word-0021",
@@ -2721,7 +2780,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 62
       },
@@ -2737,7 +2796,8 @@
       "migration": {
         "previousId": null
       },
-      "level": 5
+      "level": 5,
+      "flavor": "“你被强化了，快上！”"
     },
     {
       "id": "v260-talisman-0001",
@@ -2758,7 +2818,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 64
       },
@@ -2799,7 +2859,8 @@
             }
           ]
         }
-      ]
+      ],
+      "flavor": "以血还血，以牙还牙。"
     },
     {
       "id": "v260-talisman-0002",
@@ -2825,7 +2886,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 65
       },
@@ -2845,7 +2906,8 @@
       "traits": [
         "counter_physical"
       ],
-      "level": 4
+      "level": 4,
+      "flavor": "“打中了！”“但是真的打中了吗？”"
     },
     {
       "id": "v260-talisman-0003",
@@ -2871,7 +2933,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 66
       },
@@ -2886,7 +2948,8 @@
         "previousId": "shield"
       },
       "target": "self",
-      "level": 4
+      "level": 4,
+      "flavor": "以吾意志，凝此坚壁。"
     },
     {
       "id": "v260-talisman-0004",
@@ -2907,7 +2970,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 67
       },
@@ -2948,7 +3011,8 @@
       ],
       "traits": [
         "counter_spell"
-      ]
+      ],
+      "flavor": "这里不允许反制法术反制！"
     },
     {
       "id": "v260-talisman-0005",
@@ -2973,7 +3037,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 68
       },
@@ -2993,7 +3057,8 @@
         "fire"
       ],
       "target": "self",
-      "level": 4
+      "level": 4,
+      "flavor": "是火抗不是火免……——来自一位试图在岩浆里游泳的冒险者"
     },
     {
       "id": "v260-talisman-0006",
@@ -3014,7 +3079,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 69
       },
@@ -3055,7 +3120,8 @@
             }
           ]
         }
-      ]
+      ],
+      "flavor": "当魔法不适用的时候不妨尝试一些物理手段。"
     },
     {
       "id": "v260-talisman-0007",
@@ -3076,7 +3142,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 70
       },
@@ -3096,7 +3162,8 @@
       "traits": [
         "damage_threshold"
       ],
-      "level": 2
+      "level": 2,
+      "flavor": "以死为甲，以骨为墙，触之者枯，犯之者亡。"
     },
     {
       "id": "v260-talisman-0008",
@@ -3110,7 +3177,7 @@
       "castCost": 3,
       "analysisTurns": 0,
       "speed": 3,
-      "text": "此卡发动后，此回合对方从手卡设置的解析法术卡的解析时间+1。",
+      "text": "此回合，对方设置的全部解析法术卡的解析时间+1。",
       "effects": [
         {
           "kind": "setup_delay",
@@ -3122,7 +3189,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 71
       },
@@ -3141,7 +3208,8 @@
       "traits": [
         "delay_all_enemy_analysis"
       ],
-      "level": 2
+      "level": 2,
+      "flavor": "”让我们放慢脚步！”"
     },
     {
       "id": "v260-talisman-0009",
@@ -3169,7 +3237,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 72
       },
@@ -3214,7 +3282,8 @@
           "kind": "return_enemy_analysis"
         }
       ],
-      "level": 3
+      "level": 3,
+      "flavor": "“谁把这法术放进来的？！”"
     },
     {
       "id": "v260-talisman-0010",
@@ -3240,7 +3309,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 73
       },
@@ -3256,7 +3325,8 @@
       },
       "target": "enemy_ash_card",
       "targetCount": 1,
-      "level": 5
+      "level": 5,
+      "flavor": "这才叫魔术戏法！"
     },
     {
       "id": "v260-talisman-0011",
@@ -3282,7 +3352,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 74
       },
@@ -3303,7 +3373,8 @@
         "inspect_and_route"
       ],
       "level": 4,
-      "target": "enemy_ambush"
+      "target": "enemy_ambush",
+      "flavor": "“刚来，哪边是好的？”"
     },
     {
       "id": "v260-talisman-0012",
@@ -3324,7 +3395,7 @@
       "implementationStatus": "implemented",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+        "file": "法术卡列表-72张卡.xlsx",
         "worksheet": "卡表",
         "row": 75
       },
@@ -3344,7 +3415,8 @@
       "traits": [
         "setup_damage"
       ],
-      "level": 3
+      "level": 3,
+      "flavor": "“这可是我为你‘荆’心准备的法术！”"
     },
     {
       "id": "v260-seal-0001",
@@ -3365,7 +3437,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
+        "file": "符文卡列表-共3张卡.xlsx",
         "worksheet": "符文卡",
         "row": 2
       },
@@ -3382,7 +3454,8 @@
       "raritySource": "",
       "attachToFormation": "魔素收入+1。",
       "attachToSpell": "无效果。",
-      "incomeBonus": 1
+      "incomeBonus": 1,
+      "flavor": ""
     },
     {
       "id": "v260-seal-0002",
@@ -3403,7 +3476,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
+        "file": "符文卡列表-共3张卡.xlsx",
         "worksheet": "符文卡",
         "row": 3
       },
@@ -3421,7 +3494,8 @@
       "attachToFormation": "环位+2。",
       "attachToSpell": "发动时，获得其实际设置费用的魔素。",
       "ringBonus": 2,
-      "refundSetting": 1
+      "refundSetting": 1,
+      "flavor": ""
     },
     {
       "id": "v260-seal-0003",
@@ -3442,7 +3516,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\符文卡列表-共3张卡.xlsx",
+        "file": "符文卡列表-共3张卡.xlsx",
         "worksheet": "符文卡",
         "row": 4
       },
@@ -3463,7 +3537,8 @@
       "ringBonus": 1,
       "incomeBonus": -1,
       "castCostBonus": 1,
-      "damageBonus": 5
+      "damageBonus": 5,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0001",
@@ -3484,7 +3559,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 3
       },
@@ -3518,7 +3593,8 @@
       "body": 2,
       "rings": 2,
       "capacity": 5,
-      "income": 2
+      "income": 2,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0002",
@@ -3539,7 +3615,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 4
       },
@@ -3573,7 +3649,8 @@
       "body": 2,
       "rings": 2,
       "capacity": 5,
-      "income": 2
+      "income": 2,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0003",
@@ -3594,7 +3671,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 5
       },
@@ -3624,7 +3701,8 @@
       "body": 2,
       "rings": 1,
       "capacity": 5,
-      "income": 1
+      "income": 1,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0004",
@@ -3645,7 +3723,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 6
       },
@@ -3679,7 +3757,8 @@
       "body": 1,
       "rings": 1,
       "capacity": 2,
-      "income": 2
+      "income": 2,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0005",
@@ -3700,7 +3779,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 7
       },
@@ -3735,7 +3814,8 @@
       "body": 2,
       "rings": 2,
       "capacity": 8,
-      "income": 1
+      "income": 1,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0006",
@@ -3756,7 +3836,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 8
       },
@@ -3787,7 +3867,8 @@
       "body": 2,
       "rings": 5,
       "capacity": 12,
-      "income": 1
+      "income": 1,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0007",
@@ -3808,7 +3889,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 9
       },
@@ -3837,7 +3918,8 @@
       "body": 1,
       "rings": 0,
       "capacity": 15,
-      "income": 0
+      "income": 0,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0008",
@@ -3858,7 +3940,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 10
       },
@@ -3894,7 +3976,8 @@
       "body": 2,
       "rings": 6,
       "capacity": 6,
-      "income": 3
+      "income": 3,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0009",
@@ -3915,7 +3998,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 12
       },
@@ -3943,7 +4026,8 @@
       "body": 1,
       "rings": 1,
       "capacity": 5,
-      "income": 1
+      "income": 1,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0010",
@@ -3964,7 +4048,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 13
       },
@@ -3997,7 +4081,8 @@
       "body": 2,
       "rings": 2,
       "capacity": 8,
-      "income": 2
+      "income": 2,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0011",
@@ -4018,7 +4103,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 14
       },
@@ -4043,15 +4128,17 @@
         },
         {
           "kind": "sacrifice_spell",
-          "amount": 1
+          "amount": 1,
+          "faceDownOnly": true
         }
       ],
-      "summonCondition": "【标准法阵】+解析区法术卡×1",
+      "summonCondition": "【标准法阵】+盖伏卡×1",
       "level": 3,
       "body": 2,
       "rings": 3,
       "capacity": 10,
-      "income": 3
+      "income": 3,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0012",
@@ -4072,7 +4159,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 15
       },
@@ -4093,20 +4180,21 @@
         {
           "kind": "sacrifice_formation",
           "amount": 1,
-          "definition": "v260-formation-0009"
+          "definition": "v260-formation-0011"
         },
         {
           "kind": "sacrifice_formation",
           "amount": 1,
-          "definition": "v260-formation-0010"
+          "definition": "v260-formation-0009"
         }
       ],
-      "summonCondition": "【基础法阵】+【标准法阵】",
+      "summonCondition": "【强化法阵】+【基础法阵】",
       "level": 4,
       "body": 2,
       "rings": 3,
       "capacity": 10,
-      "income": 4
+      "income": 4,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0013",
@@ -4127,7 +4215,7 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
         "row": 16
       },
@@ -4153,144 +4241,20 @@
         {
           "kind": "sacrifice_spell",
           "amount": 1,
-          "schools": [
-            "evocation",
-            "conjuration"
-          ]
+          "readyOnly": true
+        },
+        {
+          "kind": "mana",
+          "amount": 2
         }
       ],
-      "summonCondition": "【复合法阵】+解析区塑能/咒法派系法术卡×1",
+      "summonCondition": "【复合法阵】+解析完成的法术卡×1+魔素×2",
       "level": 5,
       "body": 3,
       "rings": 5,
       "capacity": 15,
-      "income": 5
-    },
-    {
-      "id": "v260-formation-0014",
-      "number": "010014",
-      "name": "守护法阵",
-      "type": "formation",
-      "school": "",
-      "rarity": "common",
-      "rank": 0,
-      "cost": 0,
-      "castCost": 0,
-      "analysisTurns": 0,
-      "speed": 1,
-      "text": "无效果。",
-      "effects": [],
-      "effectStatus": "structured-candidate",
-      "effectBlockers": [],
-      "implementationStatus": "structured-candidate",
-      "implementationBlockers": [],
-      "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
-        "worksheet": "阵法卡",
-        "row": 17
-      },
-      "illustrationId": "v260-art-formation-0014",
-      "art": {
-        "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\守护.png",
-        "mapping": "用户指定 Alpha 现有卡池卡图",
-        "manifestId": "v260-art-formation-0014",
-        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0014.png",
-        "processing": "脚本移除边缘连通及大面积浅色棋盘背景"
-      },
-      "migration": {
-        "previousId": null
-      },
-      "raritySource": "",
-      "recipe": [
-        {
-          "kind": "sacrifice_formation",
-          "amount": 1,
-          "definition": "v260-formation-0009"
-        },
-        {
-          "kind": "sacrifice_formation",
-          "amount": 1,
-          "definition": "v260-formation-0011"
-        },
-        {
-          "kind": "sacrifice_spell",
-          "amount": 1,
-          "schools": [
-            "abjuration",
-            "necromancy"
-          ]
-        }
-      ],
-      "summonCondition": "【基础法阵】+【强化法阵】+解析区防护/死灵派系法术卡×1",
-      "level": 5,
-      "body": 3,
-      "rings": 5,
-      "capacity": 15,
-      "income": 5
-    },
-    {
-      "id": "v260-formation-0015",
-      "number": "010015",
-      "name": "幻象法阵",
-      "type": "formation",
-      "school": "",
-      "rarity": "common",
-      "rank": 0,
-      "cost": 0,
-      "castCost": 0,
-      "analysisTurns": 0,
-      "speed": 1,
-      "text": "无效果。",
-      "effects": [],
-      "effectStatus": "structured-candidate",
-      "effectBlockers": [],
-      "implementationStatus": "structured-candidate",
-      "implementationBlockers": [],
-      "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
-        "worksheet": "阵法卡",
-        "row": 18
-      },
-      "illustrationId": "v260-art-formation-0015",
-      "art": {
-        "status": "matched",
-        "source": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡卡图\\幻象.png",
-        "mapping": "用户指定 Alpha 现有卡池卡图",
-        "manifestId": "v260-art-formation-0015",
-        "processedFile": "assets/art/alpha-v260/current-pool/v260-art-formation-0015.png",
-        "processing": "源图已有有效 alpha；保留透明像素"
-      },
-      "migration": {
-        "previousId": null
-      },
-      "raritySource": "",
-      "recipe": [
-        {
-          "kind": "sacrifice_formation",
-          "amount": 1,
-          "definition": "v260-formation-0009"
-        },
-        {
-          "kind": "sacrifice_formation",
-          "amount": 1,
-          "definition": "v260-formation-0011"
-        },
-        {
-          "kind": "sacrifice_spell",
-          "amount": 1,
-          "schools": [
-            "illusion",
-            "enchantment"
-          ]
-        }
-      ],
-      "summonCondition": "【基础法阵】+【强化法阵】+解析区幻术/惑控派系法术卡×1",
-      "level": 5,
-      "body": 3,
-      "rings": 5,
-      "capacity": 15,
-      "income": 5
+      "income": 5,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0016",
@@ -4311,9 +4275,9 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
-        "row": 19
+        "row": 17
       },
       "illustrationId": "v260-art-formation-0016",
       "art": {
@@ -4332,11 +4296,7 @@
         {
           "kind": "sacrifice_formation",
           "amount": 1,
-          "definitions": [
-            "v260-formation-0013",
-            "v260-formation-0014",
-            "v260-formation-0015"
-          ]
+          "definition": "v260-formation-0013"
         },
         {
           "kind": "sacrifice_spell",
@@ -4345,15 +4305,16 @@
         },
         {
           "kind": "mana",
-          "amount": 3
+          "amount": 4
         }
       ],
-      "summonCondition": "【增幅法阵】或【守护法阵】或【幻象法阵】+解析完成的法术卡×1+魔素×3",
+      "summonCondition": "【增幅法阵】+解析完成的法术卡×1+魔素×4",
       "level": 6,
       "body": 3,
       "rings": 6,
       "capacity": 18,
-      "income": 6
+      "income": 6,
+      "flavor": ""
     },
     {
       "id": "v260-formation-0017",
@@ -4374,9 +4335,9 @@
       "implementationStatus": "structured-candidate",
       "implementationBlockers": [],
       "source": {
-        "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+        "file": "阵法卡列表-共17张卡.xlsx",
         "worksheet": "阵法卡",
-        "row": 20
+        "row": 18
       },
       "illustrationId": "v260-art-formation-0017",
       "art": {
@@ -4404,15 +4365,16 @@
         },
         {
           "kind": "mana",
-          "amount": 5
+          "amount": 6
         }
       ],
-      "summonCondition": "【高阶法阵】+解析完成的法术卡×2+魔素×5",
+      "summonCondition": "【高阶法阵】+解析完成的法术卡×2+魔素×6",
       "level": 7,
       "body": 4,
       "rings": 7,
       "capacity": 21,
-      "income": 7
+      "income": 7,
+      "flavor": ""
     }
   ]
 }

@@ -12,7 +12,7 @@ import tempfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "2.6.2"
+VERSION = "2.6.3"
 CONTENT_HASH = "cc7c6005e8f96820"
 
 
@@ -45,9 +45,9 @@ def stage_release(build, output):
     dependencies = verify_binary(binary)
     catalog = json.loads((ROOT / "assets/release-v260/catalog.json").read_text(encoding="utf-8"))
     metadata = catalog["metadata"]
-    if (metadata.get("rulesVersion") != "2.6.2"
-            or metadata.get("cardSetVersion") != "2.6.2"
-            or metadata.get("mechanicsRevision") != 11):
+    if (metadata.get("rulesVersion") != "2.6.3"
+            or metadata.get("cardSetVersion") != "2.6.3"
+            or metadata.get("mechanicsRevision") != 12):
         raise ValueError("assets/release-v260 is not the approved production catalogue")
     aggregate = dict(metadata)
     aggregate["cards"] = [json.loads((ROOT / "assets/release-v260" / row["file"]).read_text(encoding="utf-8"))

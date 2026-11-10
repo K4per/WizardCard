@@ -17,7 +17,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 36
   },
@@ -38,5 +38,6 @@
       "amount": 0
     }
   ],
-  "level": 4
+  "level": 4,
+  "flavor": "地震预警能猜到我什么时候放这个法术吗？"
 }

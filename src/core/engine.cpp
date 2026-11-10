@@ -13,9 +13,10 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) {
     catalog_ = std::make_shared<const CardCatalog>(std::move(cat));
     const bool supported = (catalog().rulesVersion == "2.5.5" && catalog().mechanicsRevision == 9) ||
         (catalog().rulesVersion == "2.6.0" && catalog().mechanicsRevision == 10) ||
-        (catalog().rulesVersion == "2.6.2" && catalog().mechanicsRevision == 11);
+        (catalog().rulesVersion == "2.6.2" && catalog().mechanicsRevision == 11) ||
+        (catalog().rulesVersion == "2.6.3" && catalog().mechanicsRevision == 12);
     if (!supported)
-        throw std::invalid_argument("unsupported ruleset: expected 2.5.5/revision 9, 2.6.0/revision 10 or 2.6.2/revision 11");
+        throw std::invalid_argument("unsupported ruleset: expected 2.5.5/revision 9, 2.6.0/revision 10, 2.6.2/revision 11 or 2.6.3/revision 12");
     for (const auto &deck : config.players) {
         auto errors = Rules::deckErrors(catalog(), deck);
         if (!errors.empty())

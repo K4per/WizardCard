@@ -69,7 +69,7 @@ def verify_network(output, evidence, args):
         assert recordings[0] == recordings[1], "Both clients must receive the same verified replay"
         recording = recordings[0]
         for name in ("programVersion", "rulesVersion", "cardSetVersion"):
-            assert recording[name] == "2.6.2", (name, recording[name])
+            assert recording[name] == "2.6.3", (name, recording[name])
         assert recording["digestSchema"] == 3 and recording["mechanicsRevision"] == 11
         commands = Counter(item["command"]["type"] for item in recording["commands"])
         assert sum(commands.values()) >= 43, commands  # opening + 40 actions + surrender
@@ -117,7 +117,7 @@ def main():
                                   if p.is_file() and p.name != "SHA256.json"}
         release = read_json(output / "RELEASE.json")
         for name in ("packageVersion", "programVersion", "rulesVersion", "cardSetVersion"):
-            assert release[name] == "2.6.2", (name, release[name])
+            assert release[name] == "2.6.3", (name, release[name])
         assert release["contentHash"] == "cc7c6005e8f96820" and release["mechanicsRevision"] == 11
         assert release["bridgeSha256"] == digest(output / "bin/wizard_godot_bridge.release.dll")
         verify_startup(output, PLATFORMS["windows"], evidence, "extracted-startup")

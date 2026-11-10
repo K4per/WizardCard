@@ -17,9 +17,9 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\阵法卡列表-共17张卡.xlsx",
+    "file": "阵法卡列表-共17张卡.xlsx",
     "worksheet": "阵法卡",
-    "row": 20
+    "row": 18
   },
   "illustrationId": "v260-art-formation-0017",
   "art": {
@@ -47,13 +47,14 @@
     },
     {
       "kind": "mana",
-      "amount": 5
+      "amount": 6
     }
   ],
-  "summonCondition": "【高阶法阵】+解析完成的法术卡×2+魔素×5",
+  "summonCondition": "【高阶法阵】+解析完成的法术卡×2+魔素×6",
   "level": 7,
   "body": 4,
   "rings": 7,
   "capacity": 21,
-  "income": 7
+  "income": 7,
+  "flavor": ""
 }

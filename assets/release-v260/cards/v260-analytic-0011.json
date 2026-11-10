@@ -22,7 +22,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 12
   },
@@ -41,5 +41,6 @@
   "level": 2,
   "traits": [
     "cloud_mist"
-  ]
+  ],
+  "flavor": "谁封的烟？！"
 }

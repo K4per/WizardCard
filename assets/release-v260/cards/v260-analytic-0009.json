@@ -27,7 +27,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 10
   },
@@ -45,5 +45,6 @@
     "ash_evocation_discount"
   ],
   "target": "opponent",
-  "level": 6
+  "level": 6,
+  "flavor": "温馨提示：请佩戴护目镜施法。"
 }

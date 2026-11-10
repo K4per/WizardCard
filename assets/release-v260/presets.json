@@ -1,8 +1,8 @@
 [
   {
     "id": "v260-starter",
-    "name": "Alpha v2.6.0 入门",
-    "description": "Alpha v2.6.0 正式卡池的 40+10 入门牌组。",
+    "name": "Alpha v2.6.3 入门",
+    "description": "Alpha v2.6.3 正式卡池的 40+10 入门牌组。",
     "baseFormation": "v260-formation-0009",
     "cards": [
       {

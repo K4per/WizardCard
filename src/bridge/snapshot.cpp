@@ -29,7 +29,7 @@ Json cardDefinitionDto(const CardDefinition &d) {
     Json recipe = Json::array();
     for (const auto &cost : d.recipe)
         recipe.push_back({{"kind", static_cast<int>(cost.kind)}, {"amount", cost.amount},
-            {"definition", cost.definition}, {"school", cost.school}, {"readyOnly", cost.readyOnly},
+            {"definition", cost.definition}, {"school", cost.school}, {"readyOnly", cost.readyOnly}, {"faceDownOnly", cost.faceDownOnly},
             {"distinctSchools", cost.distinctSchools}, {"fireDamage", cost.fireDamage}});
     return {{"id", d.id}, {"number", d.number}, {"name", d.name}, {"text", d.text}, {"flavor", d.flavor},
             {"type", static_cast<int>(d.type)}, {"rarity", d.rarity}, {"school", d.school},

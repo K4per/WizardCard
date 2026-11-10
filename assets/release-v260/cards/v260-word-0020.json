@@ -22,7 +22,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 61
   },
@@ -42,5 +42,6 @@
   "traits": [
     "inspect_own_deck"
   ],
-  "level": 1
+  "level": 1,
+  "flavor": "天机可断，凶吉早判。"
 }

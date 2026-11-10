@@ -65,7 +65,7 @@ struct RecipeCost {
     int amount{};
     std::string definition, school;
     std::vector<std::string> definitions, schools;
-    bool readyOnly{}, distinctSchools{}, fireDamage{};
+    bool readyOnly{}, distinctSchools{}, fireDamage{}, faceDownOnly{};
 };
 struct CardDefinition {
     std::string id, name, text, rarity = "common", flavor;

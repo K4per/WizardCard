@@ -215,9 +215,10 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
     cat.rulesVersion = text(j, "rulesVersion", source);
     cat.cardSetVersion = text(j, "cardSetVersion", source);
     const bool legacy = cat.rulesVersion == "2.5.5" && revision == 9;
-    const bool alpha260 = (cat.rulesVersion == "2.6.0" && revision == 10) || (cat.rulesVersion == "2.6.2" && revision == 11);
+    const bool alpha260 = (cat.rulesVersion == "2.6.0" && revision == 10) || (cat.rulesVersion == "2.6.2" && revision == 11) ||
+        (cat.rulesVersion == "2.6.3" && revision == 12);
     if (!legacy && !alpha260)
-        fail(source, "supported versions are rulesVersion 2.5.5/revision 9, 2.6.0/revision 10 or 2.6.2/revision 11");
+        fail(source, "supported versions are rulesVersion 2.5.5/revision 9, 2.6.0/revision 10, 2.6.2/revision 11 or 2.6.3/revision 12");
     if (!j.contains("cards") || !j.at("cards").is_array())
         fail(source + "/cards", "expected array");
     const std::map<std::string, CardType> types = {{"action", CardType::Action},
@@ -356,6 +357,9 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 if (cost.kind == RecipeCostKind::SacrificeFormation && cost.schools.size())
                     fail(rp + "/schools", "formation materials cannot use schools");
                 cost.readyOnly = boolean(row, "readyOnly", rp);
+                cost.faceDownOnly = boolean(row, "faceDownOnly", rp);
+                if (cost.faceDownOnly && (cost.kind != RecipeCostKind::SacrificeSpell || cost.readyOnly))
+                    fail(rp + "/faceDownOnly", "requires an unready sacrifice_spell material");
                 cost.distinctSchools = boolean(row, "distinctSchools", rp);
                 cost.fireDamage = boolean(row, "fireDamage", rp);
                 d.recipe.push_back(std::move(cost));
@@ -394,8 +398,10 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
             }
         }
         d.refundSetting = number(card, "refundSetting", p);
-        if (card.contains("flavor"))
-            d.flavor = text(card, "flavor", p);
+        if (card.contains("flavor")) {
+            if (!card.at("flavor").is_string()) fail(p + "/flavor", "expected string");
+            d.flavor = card.at("flavor").get<std::string>();
+        }
         if (d.immediate && (d.type != CardType::Word || d.rank != 1 || d.concentration || d.duration))
             fail(p + "/immediate", "requires instant rank-one word without duration or concentration");
         if (d.concentration && ((d.type != CardType::Analytic && d.type != CardType::Word &&
@@ -643,6 +649,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 material = schools + material;
             }
             if (cost.readyOnly) material = "已解析完成或持续生效的" + material;
+            if (cost.faceDownOnly) material = "己方控制的解析区盖伏" + material;
             if (cost.fireDamage) material = "具有火焰伤害效果的" + material;
             auto clause = (cost.kind == RecipeCostKind::DiscardHand ? "弃置" : "将己方场上的") +
                 std::to_string(cost.amount) + "张" + material;

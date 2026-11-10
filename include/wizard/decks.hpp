@@ -29,7 +29,7 @@ std::string cardTypeLabel(CardType);
 std::string primaryCostLabel(CardType);
 std::vector<std::string> queryCards(const CardCatalog &, const CardQuery &);
 
-// Keeps missing content IDs so a content upgrade never silently rewrites a player's deck.
+// Keeps unknown IDs for repair; explicitly retired cards migrate only after a backup.
 class DeckLibrary {
   public:
     DeckLibrary(CardCatalog, std::filesystem::path userDirectory);

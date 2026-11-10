@@ -17,7 +17,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 64
   },
@@ -58,5 +58,6 @@
         }
       ]
     }
-  ]
+  ],
+  "flavor": "以血还血，以牙还牙。"
 }

@@ -24,7 +24,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 19
   },
@@ -41,5 +41,6 @@
     "previousId": null
   },
   "target": "player",
-  "level": 4
+  "level": 4,
+  "flavor": "百草枯之术。"
 }

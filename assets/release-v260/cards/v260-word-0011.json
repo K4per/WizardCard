@@ -26,7 +26,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 52
   },
@@ -46,5 +46,6 @@
     "target_lock"
   ],
   "level": 4,
-  "target": "player"
+  "target": "player",
+  "flavor": "理论上能放八种颜色……"
 }

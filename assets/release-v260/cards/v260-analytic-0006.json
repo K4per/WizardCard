@@ -27,7 +27,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 7
   },
@@ -42,5 +42,6 @@
     "previousId": "guiding-bolt"
   },
   "target": "player",
-  "level": 2
+  "level": 2,
+  "flavor": "神说，要有光。"
 }

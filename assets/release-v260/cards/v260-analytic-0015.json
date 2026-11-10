@@ -22,7 +22,7 @@
   "implementationStatus": "implemented",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 16
   },
@@ -39,5 +39,6 @@
     "previousId": null
   },
   "target": "enemy_formation",
-  "level": 3
+  "level": 3,
+  "flavor": "小心地滑！"
 }

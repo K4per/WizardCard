@@ -23,7 +23,7 @@
   "implementationStatus": "structured-candidate",
   "implementationBlockers": [],
   "source": {
-    "file": "E:\\Project\\WizardCard-Design\\Alpha 现有卡池\\法术卡列表.xlsx",
+    "file": "法术卡列表-72张卡.xlsx",
     "worksheet": "卡表",
     "row": 8
   },
@@ -38,5 +38,6 @@
     "previousId": "scorching-ray"
   },
   "target": "player",
-  "level": 5
+  "level": 5,
+  "flavor": "真是令人热血沸腾啊！"
 }

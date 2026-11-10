@@ -1,0 +1,74 @@
+{
+  "archive": "E:\\Project\\WizardCard\\dist\\WizardCard-2.6.3-windows-x64.zip",
+  "bytes": 361742842,
+  "sha256": "6bb8c34be043cb298d86cbacdf86fdc4b338808fcc47af247707d642bd576122",
+  "verifiedFiles": 264,
+  "zipCrc": "passed",
+  "release": {
+    "programVersion": "2.6.3",
+    "rulesVersion": "2.6.3",
+    "cardSetVersion": "2.6.3",
+    "contentHash": "61f9b39a65c02fff",
+    "sourceCommit": "36214b7066b79b1912f436ee8abdee926444bb2a",
+    "sourceTree": "a880ad088509cf421a95f57cd84ebfb1cca6c8c3",
+    "packageVersion": "2.6.3",
+    "status": "released",
+    "mechanicsRevision": 12,
+    "cardCount": 90,
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "catalogSha256": "de7aa630db2740d68c1a9f231fe61995548485cbc92c7e3500bf59c77d2a5c85",
+    "bridgeSha256": "927d798d0647aec60a5e01dea45cb309249dd937b3f19be7d92710c48a7f0d0a"
+  },
+  "startupFromUnrelatedDirectory": "passed",
+  "offlineGuide": {
+    "bundledCertificate": true,
+    "cards": 90,
+    "chapters": 5,
+    "networkUsed": false,
+    "passed": true,
+    "ruleSections": 15
+  },
+  "network": {
+    "endpoint": "aq.rainplay.cn:23513",
+    "room": "V9DMJW5L",
+    "clients": [
+      {
+        "connected": true,
+        "defaultConnection": true,
+        "openingPrivacy": true,
+        "openingTieObserved": true,
+        "phase": "completed",
+        "releasedSpellObserved": true,
+        "replayDelivered": true,
+        "result": 0,
+        "role": "host",
+        "roomCode": "V9DMJW5L"
+      },
+      {
+        "defaultConnection": true,
+        "left": true,
+        "openingPrivacy": true,
+        "openingTieObserved": true,
+        "phase": "completed",
+        "releasedSpellObserved": true,
+        "replayDelivered": true,
+        "role": "guest",
+        "roomCode": "V9DMJW5L"
+      }
+    ],
+    "commands": {
+      "21": 4,
+      "18": 2,
+      "13": 35,
+      "14": 7,
+      "0": 1,
+      "5": 1,
+      "11": 1
+    },
+    "commandCount": 51,
+    "matchingReplayDigest": "7eb5ca32992a6585",
+    "identicalReplay": true,
+    "verifiedManualReconnects": 2,
+    "unexpectedDisconnects": 0
+  }
+}

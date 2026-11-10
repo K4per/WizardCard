@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "comparison": "DER certificate bytes",
+  "sameCertificate": true,
+  "certificateDerSha256": "ef0679bb81227c0088feb1b11e6fcfd2093ed3059113c34eb976036f5ef74d67",
+  "bothPackagedClientsUseProductDefaults": true
+}

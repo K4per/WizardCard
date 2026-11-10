@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "sourceCommit": "36214b7066b79b1912f436ee8abdee926444bb2a",
+  "sourceTree": "a880ad088509cf421a95f57cd84ebfb1cca6c8c3",
+  "seed": 42,
+  "commands": 2579,
+  "sameReplayJson": true,
+  "sameReplayBytes": true,
+  "matchingReplayDigest": "20ccdb7b1474a233",
+  "linuxReplaySha256": "257846f29f52f19d31b924ae686cd15b50652eb3fbc1411ab123db4b6ad8f97e",
+  "windowsReplaySha256": "257846f29f52f19d31b924ae686cd15b50652eb3fbc1411ab123db4b6ad8f97e",
+  "packages": [
+    {
+      "path": "E:\\Project\\WizardCard\\dist\\WizardCard-2.6.3-windows-x64.zip",
+      "bytes": 361742842,
+      "sha256": "6bb8c34be043cb298d86cbacdf86fdc4b338808fcc47af247707d642bd576122"
+    },
+    {
+      "path": "E:\\Project\\WizardCard\\dist\\WizardCard-CentralServer-2.6.3-linux-x86_64.tar.gz",
+      "bytes": 1146936,
+      "sha256": "d1cc75470f753698bdc0a1613fe6355c0389735f5dbd960eccd09447c3768d66"
+    }
+  ],
+  "verifiedLinuxFiles": 125,
+  "linuxShellLineEndings": "LF verified"
+}

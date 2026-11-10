@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "actualPackagedLauncher": true,
+  "health": {
+    "connections": 0,
+    "ready": true,
+    "resumeCredentials": 0,
+    "rooms": 0,
+    "status": "ok"
+  },
+  "sourceCommit": "36214b7066b79b1912f436ee8abdee926444bb2a"
+}

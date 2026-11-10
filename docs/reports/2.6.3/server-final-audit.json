@@ -1,0 +1,281 @@
+{
+  "verifiedAtUtc": "2026-11-10T11:52:51.206068+00:00",
+  "currentRelease": "/opt/wizardcard-central-server/releases/WizardCard-CentralServer-2.6.3-linux-x86_64",
+  "health": {
+    "connections": 0,
+    "ready": true,
+    "resumeCredentials": 0,
+    "rooms": 0,
+    "status": "ok"
+  },
+  "service": "active",
+  "release": {
+    "buildEnvironment": "Linux-6.12.38+deb13-amd64-x86_64-with-glibc2.41",
+    "content": {
+      "cardSetVersion": "2.6.3",
+      "hash": "61f9b39a65c02fff",
+      "mechanicsRevision": 12,
+      "path": "assets/release-v260",
+      "rulesVersion": "2.6.3"
+    },
+    "format": 1,
+    "libc": [
+      "glibc",
+      "2.41"
+    ],
+    "privateKeyIncluded": false,
+    "sourceCommit": "36214b7066b79b1912f436ee8abdee926444bb2a",
+    "sourceTree": "a880ad088509cf421a95f57cd84ebfb1cca6c8c3",
+    "target": "linux-x86_64",
+    "version": "2.6.3"
+  },
+  "deployment": {
+    "format": 2,
+    "programVersion": "2.6.3",
+    "rulesVersion": "2.6.3",
+    "mechanicsRevision": 12,
+    "contentHash": "61f9b39a65c02fff",
+    "archive": "WizardCard-CentralServer-2.6.3-linux-x86_64.tar.gz",
+    "archiveSha256": "d1cc75470f753698bdc0a1613fe6355c0389735f5dbd960eccd09447c3768d66",
+    "serverBinarySha256": "50ba4532c5f571422c7f78da3b679caf08dac6e47687536f076c6a5bf7fd7318",
+    "sourceRepository": "https://github.com/K4per/WizardCard",
+    "sourceBranch": "dev",
+    "sourceCommit": "36214b7066b79b1912f436ee8abdee926444bb2a",
+    "sourceIncludesUncommittedFix": false,
+    "sourceInputManifestSha256": "ba53d8e2e52b16a7b7a61b3befb8754b9a2cbbe7a1dd932196fb37f02ed2f6c2",
+    "publicEndpoint": "aq.rainplay.cn:23513",
+    "internalTcpPort": 24443,
+    "certificateSha256": "caa3fe63a7a3e0751971612e43c6b4649a02e20941ed4e26e94d868a92dddb94",
+    "previousRelease": "/opt/wizardcard-central-server/releases/WizardCard-CentralServer-2.6.2-linux-x86_64",
+    "configurationAndDataBackup": "/var/backups/wizardcard/pre-v263-20261110-115118.tar.gz",
+    "verifiedAtUtc": "2026-11-10T11:51:24.181440+00:00"
+  },
+  "verifiedPackageFiles": 125,
+  "verifiedSourceFiles": 699,
+  "installedServerSha256": "50ba4532c5f571422c7f78da3b679caf08dac6e47687536f076c6a5bf7fd7318",
+  "backup": {
+    "path": "/var/backups/wizardcard/pre-v263-20261110-115118.tar.gz",
+    "mode": "0o600",
+    "bytes": 111543
+  },
+  "previousReleaseRetained": true,
+  "persistedRooms": [
+    {
+      "code": "5EBJ68R8",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "6M4B7VP7",
+      "phase": "aborted",
+      "revision": "2",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "9AEVGK6J",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "9BMB5XL8",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "server_shutdown",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "BN3272SX",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "C77FJBRW",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "CGM62CHN",
+      "phase": "aborted",
+      "revision": "2",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "DF89RSGK",
+      "phase": "completed",
+      "revision": "1",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "E2BK3YYQ",
+      "phase": "aborted",
+      "revision": "2",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "ENTB7824",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "FXWFQ9ZG",
+      "phase": "completed",
+      "revision": "103",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "G25EUK6U",
+      "phase": "aborted",
+      "revision": "2",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "G4NS7UY5",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "JC4QZEGW",
+      "phase": "completed",
+      "revision": "15",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "KNWT37P4",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "M9TTW5FK",
+      "phase": "completed",
+      "revision": "3",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "N8B728RC",
+      "phase": "completed",
+      "revision": "1",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "PJRCLSVT",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "R9VPW6X2",
+      "phase": "completed",
+      "revision": "15",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "S2CE8AL6",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "TEYTLDEX",
+      "phase": "completed",
+      "revision": "1",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "TX2DSC9D",
+      "phase": "completed",
+      "revision": "75",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "V885WU2G",
+      "phase": "completed",
+      "revision": "1",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "V9DMJW5L",
+      "phase": "completed",
+      "revision": "51",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "YUYG94RE",
+      "phase": "completed",
+      "revision": "956",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "YYY5FH4E",
+      "phase": "completed",
+      "revision": "2",
+      "abortReason": "",
+      "technicalPaused": false,
+      "storageBlocked": false
+    },
+    {
+      "code": "ZWDHKYU5",
+      "phase": "aborted",
+      "revision": "0",
+      "abortReason": "reconnect_timeout",
+      "technicalPaused": false,
+      "storageBlocked": false
+    }
+  ],
+  "activePersistedRooms": 0
+}

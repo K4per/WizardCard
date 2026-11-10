@@ -1,0 +1,15 @@
+{"sourceCommit": "6e48f04ab0e9763b45bb528d25db4791d8b2745a", "files": 2, "output": "C:\\Users\\home_\\AppData\\Local\\Temp\\tmplvi9zc4k\\inputs.tar.gz"}
+F
+======================================================================
+FAIL: test_export_preserves_linux_script_and_binary_bytes_with_crlf_git_settings (__main__.ReleaseSourceTests.test_export_preserves_linux_script_and_binary_bytes_with_crlf_git_settings)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\home_\.codex\worktrees\alpha-v263\WizardCard\tools\test_release_source.py", line 38, in test_export_preserves_linux_script_and_binary_bytes_with_crlf_git_settings
+    self.assertEqual(actual, script, "Linux shell input must retain committed LF bytes")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b"#!/bin/sh\r\nset -eu\r\nprintf 'ready\\n'\r\n" != b"#!/bin/sh\nset -eu\nprintf 'ready\\n'\n" : Linux shell input must retain committed LF bytes
+
+----------------------------------------------------------------------
+Ran 1 test in 0.713s
+
+FAILED (failures=1)

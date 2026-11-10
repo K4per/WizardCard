@@ -88,7 +88,7 @@ Json MatchSession::recordingHeader() const {
         Json player = {{"cards", p.cards}, {"sideDeck", p.sideDeck}};
         players.push_back(std::move(player));
     }
-    Json j = {{"format", 5}, {"contentSchema", 1}, {"commandSchema", 1}, {"digestSchema", content_.catalog.mechanicsRevision >= 11 ? 3 : 2},
+    Json j = {{"format", content_.catalog.mechanicsRevision >= 12 ? 6 : 5}, {"contentSchema", 1}, {"commandSchema", 1}, {"digestSchema", content_.catalog.mechanicsRevision >= 12 ? 4 : content_.catalog.mechanicsRevision >= 11 ? 3 : 2},
               {"mechanicsRevision", content_.catalog.mechanicsRevision},
               {"programVersion", programVersion},
               {"rulesVersion", content_.catalog.rulesVersion},
@@ -157,12 +157,12 @@ GameEngine replay(const Content &c, const Json &j,
     const bool currentRules = (c.catalog.rulesVersion == "2.6.0" && c.catalog.mechanicsRevision == 10) ||
         (c.catalog.rulesVersion == "2.6.2" && c.catalog.mechanicsRevision == 11) ||
         (c.catalog.rulesVersion == "2.6.3" && c.catalog.mechanicsRevision == 12);
-    if ((!legacy && format != 5) ||
+    if ((!legacy && format != (c.catalog.mechanicsRevision >= 12 ? 6 : 5)) ||
         (legacy && (!legacyRules || j.at("programVersion") != "2.5.5-hotfix.1" ||
                     j.at("rulesVersion") != "2.5.5" ||
                     (j.contains("mechanicsRevision") && j.at("mechanicsRevision") != 9))) ||
         (!legacy && (!currentRules && !legacyRules || j.at("programVersion") != programVersion ||
-                     j.at("contentSchema") != 1 || j.at("commandSchema") != 1 || j.at("digestSchema") != (c.catalog.mechanicsRevision >= 11 ? 3 : 2) ||
+                     j.at("contentSchema") != 1 || j.at("commandSchema") != 1 || j.at("digestSchema") != (c.catalog.mechanicsRevision >= 12 ? 4 : c.catalog.mechanicsRevision >= 11 ? 3 : 2) ||
                      j.at("mechanicsRevision") != c.catalog.mechanicsRevision ||
                      j.at("rulesVersion") != c.catalog.rulesVersion)) ||
         j.at("cardSetVersion") != c.catalog.cardSetVersion || j.at("contentHash") != c.catalog.contentHash)

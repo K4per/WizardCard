@@ -272,6 +272,15 @@ StepResult GameEngine::step(ExecutionContext &context) {
             startTrigger(std::move(t));
             return StepResult::Progress;
         }
+        if (catalog().mechanicsRevision >= 12) {
+            for (PlayerId player : {s.active, 1 - s.active}) {
+                auto cards = inZone(s, player, Zone::Casting);
+                if (static_cast<int>(cards.size()) > Rules::castingCapacity(s, catalog(), player)) {
+                    decision(player, DecisionKind::Overflow, std::move(cards));
+                    return StepResult::AwaitChoice;
+                }
+            }
+        }
         if (s.timingPending) {
             s.timingPending = false;
             actionTimingV2(ResponseWindow::Action);

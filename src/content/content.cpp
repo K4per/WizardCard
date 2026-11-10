@@ -155,6 +155,8 @@ std::vector<Effect> effects(const Json &j, const std::string &path, bool allowSt
         {"inspect_and_route", EffectKind::InspectAndRoute}, {"inspect_enemy_ambush_all", EffectKind::InspectEnemyAmbushAll},
         {"negate_setup_return", EffectKind::NegateSetupReturn}, {"reflect_damage", EffectKind::ReflectDamage},
         {"setup_damage", EffectKind::SetupDamage}, {"both_damage", EffectKind::BothDamage},
+        {"lose_life", EffectKind::LoseLife}, {"ankh_recover", EffectKind::AnkhRecover},
+        {"negate_capture", EffectKind::NegateCapture},
         {"clear_all_ambush", EffectKind::ClearAllAmbush}};
     for (const auto &e : j) {
         const auto p = path + "/" + std::to_string(n++);
@@ -434,7 +436,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                 "unique", "effect_indestructible", "effect_immune", "host_heal_plus_one",
                 "host_cast_life_for_temporary", "host_evocation_damage_plus_one",
                 "distinct_host_schools", "host_fire_only", "clear_load_on_analysis",
-                "ping_on_spell_leave", "ash_evocation_discount", "return_formation_from_ash",
+                "ping_on_spell_leave", "ash_evocation_discount", "return_formation_from_ash", "replace_formation_destruction", "return_enemy_ambush", "return_enemy_analytic",
                 "self_ambush_on_leave", "inspect_enemy_ambush", "discard_spell_search", "end_phase_start",
                 "storm_search", "storm_search_talisman", "requires_storm_formation", "requires_storm_setup",
                 "surcharge_enemy_timed_cast", "double_enemy_concentration_upkeep", "storm_release_counter",

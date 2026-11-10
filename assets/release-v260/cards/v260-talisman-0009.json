@@ -70,5 +70,8 @@
     }
   ],
   "level": 3,
-  "flavor": "“谁把这法术放进来的？！”"
+  "flavor": "“谁把这法术放进来的？！”",
+  "traits": [
+    "return_enemy_analytic"
+  ]
 }

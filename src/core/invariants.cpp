@@ -17,10 +17,11 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
     if (s.active < 0 || s.active > 1 || s.first < 0 || s.first > 1)
         errors.push_back("invalid active player");
     if (s.opening) {
+        const bool handsDrawn = cat.mechanicsRevision >= 12 && s.openingStage == OpeningStage::Formation;
         if (s.globalTurn != 0 || s.chain || s.effect || s.decision || s.phaseGate || !s.queue.items.empty() || !s.deferredPreparations.empty())
             errors.push_back("invalid opening work");
         for (int p = 0; p < 2; ++p) {
-            if (s.players[p].ownTurn || s.players[p].deck.size() != 40)
+            if (s.players[p].ownTurn || s.players[p].deck.size() != (handsDrawn ? 35u : 40u))
                 errors.push_back("opening started too soon");
             const auto selected = s.initialFormations[p];
             if (selected) {
@@ -30,7 +31,8 @@ std::vector<std::string> Rules::invariants(const GameState &s, const CardCatalog
                     errors.push_back("invalid confirmed initial formation");
             }
             for (const auto &[id, card] : s.cards)
-                if (card.owner == p && card.zone != Zone::Deck && card.zone != Zone::SideDeck)
+                if (card.owner == p && card.zone != Zone::Deck && card.zone != Zone::SideDeck &&
+                    !(handsDrawn && card.zone == Zone::Hand))
                     errors.push_back("opening card already public");
         }
     }

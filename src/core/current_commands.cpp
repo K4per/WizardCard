@@ -119,6 +119,13 @@ void GameEngine::quickAnalysisV2(CardId spell, CardId host) {
     const int advance = hasCapability(hostDefinition, Capability::QuickHostAnalysis2) ? 2 :
         hasCapability(hostDefinition, Capability::QuickHostAnalysis1) ? 1 : 0;
     if (advance) {
+        if (catalog().mechanicsRevision >= 12) {
+            if (def.type != CardType::Analytic || card.faceDown || formation.quickAnalysisGlobalTurn == s.globalTurn) return;
+            formation.quickAnalysisGlobalTurn = s.globalTurn;
+            card_rules::advanceAnalysis(s, catalog(), spell, 1);
+            s.events.push_back({"analysis_discount", "恩格亚斯之星：本回合首次解析减时1（已使用）", -1, host, 1});
+            return;
+        }
         card_rules::advanceAnalysis(s, catalog(), spell, advance);
         ResourceRules::grantLoad(s, catalog(), {s.nextLoad++, controllerOf(card), host, advance, s.players[controllerOf(card)].ownTurn + 1, true});
         return;
@@ -261,7 +268,7 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
             return "setup_condition: 不满足阵法或设置条件";
         if (host == s.cards.end() || host->second.owner != actor ||
             !Rules::canHost(s, catalog(), id, word->formation) ||
-            Rules::freeRing(s, catalog(), word->formation) < 0 ||
+            Rules::placementRing(s, catalog(), word->formation, word->ringIndex) < 0 ||
             static_cast<int>(inZone(s, actor, Zone::Casting).size()) >=
                 Rules::castingCapacity(s, catalog(), actor))
             return "host_restriction: 没有可用的合法阵法环位";
@@ -292,7 +299,7 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         if (detachCost)
             for (auto seal : word->targets) StateMaintenance::leave(s, seal, &catalog());
         card.sourceFormation = word->formation;
-        card.sourceRingIndex = Rules::freeRing(s, catalog(), word->formation);
+        card.sourceRingIndex = Rules::placementRing(s, catalog(), word->formation, word->ringIndex);
         card.fieldOrder = s.nextFieldOrder++;
         card.settingPaid = fee;
         card.zone = Zone::Casting;
@@ -427,10 +434,15 @@ void GameEngine::visitResponseSetups(PlayerId actor, DecisionId token, const std
             for (const auto &[host, formation] : state_.cards) {
                 if (!detail::intentAllows(intent, ActionField::Host, host) || formation.owner != actor || formation.zone != Zone::Analysis ||
                     catalog().at(formation.definition).type != CardType::Formation) continue;
-                for (const auto &targets : targetSets) for (auto discard : discards) {
-                    const auto target = card_rules::detachCost(definition) || targets.empty() ? 0 : targets.front();
-                    add("手牌发动言灵 " + definition.name + " → " + catalog().at(formation.definition).name,
-                        id, PreloadWord{id, true, host, target, targets, discard, token});
+                const int ringCount = catalog().mechanicsRevision >= 12 ? Rules::rings(state_, catalog(), host) : 1;
+                for (int ordinal = 0; ordinal < ringCount; ++ordinal) {
+                    const int ring = catalog().mechanicsRevision >= 12 ? ordinal : -1;
+                    if (ring >= 0 && !detail::intentAllows(intent, ActionField::Ring, ring)) continue;
+                    for (const auto &targets : targetSets) for (auto discard : discards) {
+                        const auto target = card_rules::detachCost(definition) || targets.empty() ? 0 : targets.front();
+                        add("手牌发动言灵 " + definition.name + " → " + catalog().at(formation.definition).name,
+                            id, PreloadWord{id, true, host, target, targets, discard, token, ring});
+                    }
                 }
             }
         }
@@ -465,7 +477,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         using T = std::decay_t<decltype(item)>;
         if constexpr (std::is_same_v<T, Choose> || std::is_same_v<T, Advance> ||
                       std::is_same_v<T, AdvancePhase> || std::is_same_v<T, PassResponse> || std::is_same_v<T, Surrender> ||
-                      std::is_same_v<T, Timeout>) return 0;
+                      std::is_same_v<T, Timeout> || std::is_same_v<T, SubmitOpeningGesture>) return 0;
         else return item.card;
     }, command);
     auto it = s.cards.find(cardId);
@@ -511,15 +523,15 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         s.events.push_back({"pay", "支付魔素", -1, cardId, mana});
         return true;
     };
-    auto ring = [&](CardId host, bool faceDown = false) {
+    auto ring = [&](CardId host, bool faceDown, int requested) {
         return (!requiresStormHeartSetup ||
             (s.cards.count(host) && hasCapability(catalog().at(s.cards.at(host).definition), Capability::StormHeart))) &&
             Rules::canHost(s, catalog(), cardId, host, faceDown) &&
-            Rules::freeRing(s, catalog(), host) >= 0;
+            Rules::placementRing(s, catalog(), host, requested) >= 0;
     };
-    auto place = [&](CardId host) {
+    auto place = [&](CardId host, int requested) {
+        c.ringIndex = Rules::placementRing(s, catalog(), host, requested);
         c.zone = Zone::Analysis; c.host = host; c.sourceFormation = host;
-        c.ringIndex = Rules::freeRing(s, catalog(), host);
         c.sourceRingIndex = c.ringIndex;
         c.wasAmbushed = false;
         c.fieldOrder = s.nextFieldOrder++;
@@ -552,7 +564,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             const auto &host = item.second;
             return host.owner == actor && host.zone == Zone::Analysis && !host.faceDown &&
                 catalog().at(host.definition).type == CardType::Formation &&
-                catalog().at(selected->second.definition).rank <= Rules::maxRank(s, catalog(), item.first) &&
+                (catalog().mechanicsRevision >= 12 || catalog().at(selected->second.definition).rank <= Rules::maxRank(s, catalog(), item.first)) &&
                 Rules::freeRing(s, catalog(), item.first) >= 0;
         });
     };
@@ -731,12 +743,12 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             return "great_storm_lock: 大风暴术阻止设置其他解析法术";
         if (requiresStormForSetup && !hasStormFormation(s, catalog(), actor))
             return "storm_formation: 需要己方风暴阵法";
-        if (!setupSpeed() || c.zone != Zone::Hand || def.type != CardType::Analytic || !ring(cmd->formation))
+        if (!setupSpeed() || c.zone != Zone::Hand || def.type != CardType::Analytic || !ring(cmd->formation, false, cmd->ringIndex))
             return "ring_or_rank";
         int fee = Rules::analysisCost(s, catalog(), cardId, cmd->formation);
         if (!pay(fee, fee)) return "cost: 魔素不足";
         if (s.result != -1) return {};
-        place(cmd->formation); c.settingPaid = fee; c.analysisProgress = 0;
+        place(cmd->formation, cmd->ringIndex); c.settingPaid = fee; c.analysisProgress = 0;
         if (hasCapability(def, Capability::GreatStorm)) {
             c.remaining = s.cards.at(cmd->formation).stormPoints;
             s.cards.at(cmd->formation).stormPoints = 0;
@@ -760,14 +772,19 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             return "great_storm_lock: 大风暴术阻止设置其他解析法术";
         if (requiresStormForSetup && !hasStormFormation(s, catalog(), actor))
             return "storm_formation: 需要己方风暴阵法";
-        if (s.phase != Phase::Main || c.zone != Zone::Hand || !spellType(def.type) || !ring(cmd->formation, true))
+        if (s.phase != Phase::Main || c.zone != Zone::Hand || !spellType(def.type) || !ring(cmd->formation, true, cmd->ringIndex))
             return "invalid_ambush";
-        place(cmd->formation); c.faceDown = true; c.wasAmbushed = true;
+        place(cmd->formation, cmd->ringIndex); c.faceDown = true; c.wasAmbushed = true;
         c.publiclyRevealed = false;
         c.ambushedTurn = s.globalTurn; c.spell = SpellState::None;
         if (catalog().mechanicsRevision >= 11) spell_rules::setup(s, catalog(), cardId, true);
         s.events.push_back({"ambush", "盖伏法术", -1, cardId});
-        actionTimingV2(); return {};
+        actionTimingV2();
+        if (catalog().mechanicsRevision >= 12 && s.chain && s.chain->window == ResponseWindow::Action) {
+            s.chain->links.front().item.source = cardId;
+            s.chain->links.front().ability = "ambush";
+        }
+        return {};
     }
     if (const auto *cmd = std::get_if<FlipAmbush>(&command)) {
         if (def.type != CardType::Analytic)
@@ -822,7 +839,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             return "storm_formation: 需要己方风暴阵法";
         if (pl.blockedActionTurn == pl.ownTurn) return "blocked_incantation";
         if (!setupSpeed() || c.zone != Zone::Hand || def.type != CardType::Word || def.responseOnly ||
-            !ring(cmd->formation) ||
+            !ring(cmd->formation, false, cmd->ringIndex) ||
             static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog(), actor))
             return "word_setup";
         if (!activationTargets(cmd->target, cmd->targets) || !validSpellCost(cmd->discard)) return "target_or_cost";
@@ -830,7 +847,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         if (!pay(fee, fee)) return "cost: 魔素不足";
         if (s.result != -1) return {};
         detach(cmd->targets);
-        place(cmd->formation); c.settingPaid = fee;
+        place(cmd->formation, cmd->ringIndex); c.settingPaid = fee;
         settingCompletedV253(cardId, cmd->formation);
         c.spell = SpellState::Ready;
         c.zone = Zone::Casting; c.host = 0; c.ringIndex = -1;

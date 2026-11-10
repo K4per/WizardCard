@@ -235,6 +235,12 @@
         "flavor": {
           "before": null,
           "after": "不要对亡灵生物使用治愈魔法口牙！"
+        },
+        "traits": {
+          "before": null,
+          "after": [
+            "end_phase_start"
+          ]
         }
       }
     },
@@ -312,6 +318,15 @@
       "id": "v260-analytic-0029",
       "name": "紊乱波动",
       "fields": {
+        "effects": {
+          "before": [
+            {
+              "kind": "opponent_spell_load",
+              "amount": 4
+            }
+          ],
+          "after": []
+        },
         "flavor": {
           "before": null,
           "after": "乱人神智，破敌之势"
@@ -642,9 +657,41 @@
       "id": "v260-talisman-0002",
       "name": "捕获打击",
       "fields": {
+        "effects": {
+          "before": [
+            {
+              "kind": "counter_physical",
+              "amount": 0
+            }
+          ],
+          "after": []
+        },
         "flavor": {
           "before": null,
           "after": "“打中了！”“但是真的打中了吗？”"
+        },
+        "responses": {
+          "before": null,
+          "after": [
+            {
+              "id": "capture_physical",
+              "name": "捕获打击",
+              "sources": [
+                "ambush",
+                "casting"
+              ],
+              "windows": [
+                "cast"
+              ],
+              "eventOwner": "opponent",
+              "target": "enemy_spell_link",
+              "effects": [
+                {
+                  "kind": "negate_capture"
+                }
+              ]
+            }
+          ]
         }
       }
     },
@@ -786,9 +833,27 @@
       "id": "v260-formation-0001",
       "name": "正十字",
       "fields": {
+        "traits": {
+          "before": [
+            "host_heal_plus_one"
+          ],
+          "after": [
+            "end_phase_start"
+          ]
+        },
         "flavor": {
           "before": null,
           "after": ""
+        },
+        "onEnd": {
+          "before": null,
+          "after": [
+            {
+              "kind": "heal",
+              "amount": 1,
+              "recipient": "owner"
+            }
+          ]
         }
       }
     },
@@ -796,9 +861,32 @@
       "id": "v260-formation-0002",
       "name": "逆十字",
       "fields": {
+        "traits": {
+          "before": [
+            "host_cast_life_for_temporary"
+          ],
+          "after": [
+            "end_phase_start"
+          ]
+        },
         "flavor": {
           "before": null,
           "after": ""
+        },
+        "onEnd": {
+          "before": null,
+          "after": [
+            {
+              "kind": "lose_life",
+              "amount": 1,
+              "recipient": "owner"
+            },
+            {
+              "kind": "temporary_life",
+              "amount": 3,
+              "recipient": "owner"
+            }
+          ]
         }
       }
     },
@@ -806,9 +894,23 @@
       "id": "v260-formation-0003",
       "name": "安卡十字",
       "fields": {
+        "traits": {
+          "before": [
+            "return_formation_from_ash"
+          ],
+          "after": []
+        },
         "flavor": {
           "before": null,
           "after": ""
+        },
+        "onLeave": {
+          "before": null,
+          "after": [
+            {
+              "kind": "ankh_recover"
+            }
+          ]
         }
       }
     },
@@ -846,6 +948,14 @@
       "id": "v260-formation-0007",
       "name": "阿克乌姆之弧",
       "fields": {
+        "traits": {
+          "before": [
+            "effect_indestructible"
+          ],
+          "after": [
+            "replace_formation_destruction"
+          ]
+        },
         "flavor": {
           "before": null,
           "after": ""

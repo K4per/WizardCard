@@ -30,6 +30,7 @@ void HostSession::deck(const PlayerDeck &d) {
 void HostSession::configure(bool first, bool automatic) {
     if (started())
         throw std::runtime_error("对局已开始");
+    if (content_.catalog.mechanicsRevision >= 12) first = true; // Seat assignment does not decide the RPS winner.
     if (hostPlayer_ != (first ? 0 : 1))
         std::swap(decks_[0], decks_[1]);
     hostPlayer_ = first ? 0 : 1;
@@ -72,7 +73,7 @@ void HostSession::ready() {
         };
         for (unsigned attempt = 0; attempt < 128; ++attempt) {
             c.seed = std::random_device{}();
-            if (firstSeat(c.seed, c) == 0) {
+            if (content_.catalog.mechanicsRevision >= 12 || firstSeat(c.seed, c) == 0) {
                 auto next = std::make_unique<MatchSession>(content_, c);
                 next->enableClock(automatic_);
                 match_ = std::move(next);

@@ -25,6 +25,14 @@ enum class CardType { Action, Analytic, Word, Formation, Seal, Talisman };
 enum class Zone { Deck, Hand, Action, Analysis, Words, Casting, Ash, Attached, Resolving, SideDeck, Exile };
 enum class SpellState { None, Analyzing, Ready, Pending, Active, Resolved };
 enum class Phase { Draw, Prepare, Main, Cast, End };
+enum class OpeningStage { Gestures, Formation, Complete };
+inline const char *openingStageName(OpeningStage stage) {
+    switch (stage) {
+    case OpeningStage::Gestures: return "gestures";
+    case OpeningStage::Formation: return "formation";
+    default: return "complete";
+    }
+}
 enum class TargetKind {
     None,
     Self,
@@ -107,7 +115,7 @@ enum class EffectKind {
     ProtectPlayer, BlockAnalytic, DamageTakenBonus, ChooseResistance, HalfRings,
     BorrowAnalysis, InspectEnemyDeck, CommandChoice, BlessingChoice, CalamityChoice,
     HandOrDamage, InspectAndRoute, InspectEnemyAmbushAll, NegateSetupReturn, ReflectDamage,
-    SetupDamage, BothDamage
+    SetupDamage, BothDamage, LoseLife, AnkhRecover, NegateCapture
 };
 enum class ResponseWindow { PhaseStart, PhaseEnd, Action, Prepare, Cast, Trigger, Damage };
 enum class EventOwner { Any, Self, Opponent };

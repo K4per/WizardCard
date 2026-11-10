@@ -17,7 +17,8 @@ std::string GameEngine::stateKey(bool logical, bool compactEffects, bool current
     const auto &s = state_;
     std::ostringstream o;
     const bool v262 = catalog().mechanicsRevision >= 11;
-    o << (currentFormat ? (v262 ? "wizardcard-state-v7:" : "wizardcard-state-v6:") : "alpha-v2-final:")
+    o << (currentFormat ? (catalog().mechanicsRevision >= 12 ? "wizardcard-state-v8:" :
+                          v262 ? "wizardcard-state-v7:" : "wizardcard-state-v6:") : "alpha-v2-final:")
           << s.players[0].exhaustion << ',' << s.players[1].exhaustion << ';';
     o << s.active << ',' << s.first << ',' << static_cast<int>(s.phase) << ','
       << static_cast<int>(s.phaseStep) << ',' << static_cast<int>(s.flow) << ',' << s.result << ',' << s.rng
@@ -64,6 +65,10 @@ std::string GameEngine::stateKey(bool logical, bool compactEffects, bool current
         }
     }
     o << "opening:" << s.opening << ',' << s.initialFormations[0] << ',' << s.initialFormations[1] << ';';
+    if (catalog().mechanicsRevision >= 12)
+        o << "gestures:" << static_cast<int>(s.openingStage) << ',' << s.openingRound << ','
+          << s.openingGestures[0] << ',' << s.openingGestures[1] << ','
+          << s.revealedGestures[0] << ',' << s.revealedGestures[1] << ';';
     if (s.skipCastPhase) o << "skip_cast;";
     if (s.debugUsed) o << "debug_used;";
     if (!logical)
@@ -106,6 +111,8 @@ std::string GameEngine::stateKey(bool logical, bool compactEffects, bool current
           << c.settingPaid << ',' << c.concentrationCost << ',' << c.faceDown << ','
           << (logical ? (c.faceDown && c.ambushedTurn == s.globalTurn) : c.ambushedTurn) << ','
           << c.quickAnalysisTurn;
+        if (catalog().mechanicsRevision >= 12)
+            o << ',' << (logical ? c.quickAnalysisGlobalTurn == s.globalTurn : c.quickAnalysisGlobalTurn);
         o << ',' << c.stormAbilityTurn;
         o << ':';
         o << "v2:" << c.analysisProgress << ',' << c.fieldOrder << ',' << c.ringIndex << ','
@@ -127,6 +134,7 @@ std::string GameEngine::stateKey(bool logical, bool compactEffects, bool current
         o << 'L' << (logical ? 0 : t.id) << ',' << t.owner << ',' << t.source << ',' << t.amount << ','
           << t.expiryTurn << ',' << t.independent << ',' << t.sourceBound << ';';
         if (v262) o << t.expiresAtEnd << ';';
+        if (catalog().mechanicsRevision >= 12) o << t.expiresAtEndStart << ';';
     }
     if (v262) {
         for (const auto &m : s.modifiers)
@@ -225,7 +233,7 @@ std::string GameEngine::legacyDigest() const {
 std::string GameEngine::digest() const {
     std::ostringstream out;
     const auto state = canonicalState();
-    out << (catalog().mechanicsRevision >= 11 ? "wizardcard-digest-v3:" : "wizardcard-digest-v2:") << state.size() << ':' << state;
+    out << (catalog().mechanicsRevision >= 12 ? "wizardcard-digest-v4:" : catalog().mechanicsRevision >= 11 ? "wizardcard-digest-v3:" : "wizardcard-digest-v2:") << state.size() << ':' << state;
     if (state_.payment && state_.payment->previousDecision) {
         const auto &d = *state_.payment->previousDecision;
         out << "previous_decision:" << d.id << ',' << d.player << ',' << static_cast<int>(d.kind) << ',' << d.mayPass << ':';

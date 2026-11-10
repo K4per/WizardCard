@@ -12,16 +12,16 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(CardInstance, id, definition, ow
                                    targetCard, targetPlayer, base, analysisStarted, remaining, analysisLoad,
                                    castLoad, canceledTurn, payments, targets, settingPaid, concentrationCost, stormPoints,
                                    stormReleaseProgress,
-                                   faceDown, publiclyRevealed, ambushedTurn, quickAnalysisTurn, stormAbilityTurn, analysisProgress, fieldOrder,
+                                   faceDown, publiclyRevealed, ambushedTurn, quickAnalysisTurn, quickAnalysisGlobalTurn, stormAbilityTurn, analysisProgress, fieldOrder,
                                    ringIndex, wasAmbushed, sourceRingIndex, paidDiscard, damageCounter)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(TemporaryLoad, id, owner, source, amount, expiryTurn, independent,
-                                   sourceBound, expiresAtEnd)
+                                   sourceBound, expiresAtEnd, expiresAtEndStart)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(TemporaryLife, id, owner, source, amount, expiryOwnTurn, acquiredTurn, acquiredPhase)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(SpellModifier, kind, source, target, owner, player, amount,
     damageType, expiry, expiresTurn, expiresOwnTurn, returnHost, returnRing, returnController)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PlayerView, life, mana, load, capacity, handCount, deckCount, ownTurn,
                                    actionsPlayed, temporaryLife, blockedActionTurn, resistances, immunities,
-                                   sideDeckCount, exhaustion, lifeLimit, sevenMode)
+                                   sideDeckCount, exhaustion, lifeLimit, sevenMode, castingCapacity, castingCount)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MatchClockView, enabled, running, remainingMs, runningPlayers, runningPlayer, sequence)
 void to_json(Json &j, const ChoiceValue &value) { j = encodeChoice(value); }
 void from_json(const Json &j, ChoiceValue &value) { value = decodeChoice(j); }
@@ -96,13 +96,17 @@ Json encodeView(const GameView &v) {
               {"temporaryLives", v.temporaryLives},
               {"modifiers", v.modifiers}, {"extraTurns", v.extraTurns},
               {"phaseStep", v.phaseStep}, {"phaseGate", v.phaseGate}, {"triggers", v.triggers},
-              {"opening", v.opening}, {"initialFormationConfirmed", v.initialFormationConfirmed},
+              {"opening", v.opening}, {"openingStage", openingStageName(v.openingStage)},
+              {"openingRound", v.openingRound}, {"openingGesture", v.openingGesture},
+              {"gestureConfirmed", v.gestureConfirmed}, {"revealedGestures", v.revealedGestures},
+              {"initialFormationConfirmed", v.initialFormationConfirmed},
               {"initialFormation", v.initialFormation}, {"globalTurn", v.globalTurn}, {"clock", v.clock},
               {"technicalPaused", v.technicalPaused}};
     j["actionSummary"] = {{"actionable", v.actionSummary.actionable},
         {"hasNonPhaseAction", v.actionSummary.hasNonPhaseAction},
         {"safeAdvance", v.actionSummary.safeAdvance ? wireCommand(*v.actionSummary.safeAdvance) : Json()}};
     j["decision"] = v.decision ? Json(*v.decision) : Json();
+    j["decisionSource"] = v.decisionSource;
     j["chain"] = v.chain ? Json(*v.chain) : Json();
     j["cards"] = Json::array();
     for (const auto &c : v.cards)
@@ -141,6 +145,15 @@ GameView decodeView(const Json &raw, const CardCatalog &catalog) {
     j.at("phaseGate").get_to(v.phaseGate);
     j.at("triggers").get_to(v.triggers);
     j.at("opening").get_to(v.opening);
+    const auto stage = j.at("openingStage").get<std::string>();
+    if (stage == "gestures") v.openingStage = OpeningStage::Gestures;
+    else if (stage == "formation") v.openingStage = OpeningStage::Formation;
+    else if (stage == "complete") v.openingStage = OpeningStage::Complete;
+    else throw std::runtime_error("invalid opening stage");
+    j.at("openingRound").get_to(v.openingRound);
+    j.at("openingGesture").get_to(v.openingGesture);
+    j.at("gestureConfirmed").get_to(v.gestureConfirmed);
+    j.at("revealedGestures").get_to(v.revealedGestures);
     j.at("initialFormationConfirmed").get_to(v.initialFormationConfirmed);
     j.at("initialFormation").get_to(v.initialFormation);
     j.at("globalTurn").get_to(v.globalTurn);
@@ -148,6 +161,7 @@ GameView decodeView(const Json &raw, const CardCatalog &catalog) {
     j.at("technicalPaused").get_to(v.technicalPaused);
     if (!j.at("decision").is_null())
         v.decision = j.at("decision").get<PendingDecision>();
+    v.decisionSource = j.value("decisionSource", CardId{});
     if (!j.at("chain").is_null())
         v.chain = j.at("chain").get<ChainState>();
     for (const auto &x : j.at("cards")) {

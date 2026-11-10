@@ -32,7 +32,7 @@
     "previousId": null
   },
   "traits": [
-    "host_heal_plus_one"
+    "end_phase_start"
   ],
   "raritySource": "",
   "recipe": [
@@ -52,5 +52,12 @@
   "rings": 2,
   "capacity": 5,
   "income": 2,
-  "flavor": ""
+  "flavor": "",
+  "onEnd": [
+    {
+      "kind": "heal",
+      "amount": 1,
+      "recipient": "owner"
+    }
+  ]
 }

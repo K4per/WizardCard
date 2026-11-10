@@ -150,7 +150,7 @@ TEST_CASE("v262 setup delay changes only later hand settings", "[alpha-v262][set
     feedbackCard(s, 11, "v260-analytic-0001", 1, Zone::Hand);
     Trigger t; t.owner = 0; EffectResolver::apply(s, cat, t, {EffectKind::SetupDelay, 1});
     auto e = test::ObservedEngine::scenario(cat, s);
-    feedbackSend(e, 1, StartAnalysis{11, 2}); feedbackPass(e);
+    feedbackSend(e, 1, StartAnalysis{11, 2, 0, {}, Rules::freeRing(e.state(), e.catalog(), 2)}); feedbackPass(e);
     CHECK(e.state().cards.at(10).analysisProgress == 0); CHECK(e.state().cards.at(11).analysisProgress == -1);
 }
 
@@ -161,7 +161,7 @@ TEST_CASE("v262 thorns triggers on settings and ambush", "[alpha-v262][setup]") 
         feedbackCard(s, 10, "v260-talisman-0012", 0, Zone::Analysis, SpellState::Active).remaining = 2;
         feedbackCard(s, 11, "v260-analytic-0001", 1, Zone::Hand);
         auto e = test::ObservedEngine::scenario(cat, s);
-        feedbackSend(e, 1, ambush ? Command(SetAmbush{11, 2}) : Command(StartAnalysis{11, 2})); feedbackPass(e);
+        feedbackSend(e, 1, ambush ? Command(SetAmbush{11, 2, Rules::freeRing(e.state(), e.catalog(), 2)}) : Command(StartAnalysis{11, 2, 0, {}, Rules::freeRing(e.state(), e.catalog(), 2)})); feedbackPass(e);
         CHECK(e.state().players[1].life == 38);
     }
 }
@@ -171,7 +171,7 @@ TEST_CASE("v262 true strike pays exactly one discard and searches its school", "
     feedbackCard(s, 11, "v260-analytic-0001", 0, Zone::Hand);
     feedbackCard(s, 12, "v260-analytic-0001", 0, Zone::Deck);
     auto e = test::ObservedEngine::scenario(feedbackCatalog(), s);
-    feedbackSend(e, 0, PreloadWord{10, true, 1, 0, {}, 11}); feedbackPass(e);
+    feedbackSend(e, 0, PreloadWord{10, true, 1, 0, {}, 11, 0, Rules::freeRing(e.state(), e.catalog(), 1)}); feedbackPass(e);
     REQUIRE(e.state().decision); CHECK(e.state().decision->options == std::vector<ChoiceValue>{ChoiceValue::card(12)});
     feedbackSend(e, 0, Choose{e.state().decision->id, ChoiceValue::card(12)}); feedbackPass(e);
     CHECK(e.state().cards.at(11).zone == Zone::Ash); CHECK(e.state().cards.at(12).zone == Zone::Hand);
@@ -260,7 +260,7 @@ TEST_CASE("v262 dispel magic returns the opposing setting", "[alpha-v262][respon
     feedbackCard(s, 10, "v260-talisman-0006", 1, Zone::Casting, SpellState::Ready);
     feedbackCard(s, 20, "v260-analytic-0001", 0, Zone::Hand);
     auto e = test::ObservedEngine::scenario(feedbackCatalog(), s);
-    feedbackSend(e, 0, StartAnalysis{20, 1});
+    feedbackSend(e, 0, StartAnalysis{20, 1, 0, {}, Rules::freeRing(e.state(), e.catalog(), 1)});
     REQUIRE(e.state().chain); const auto root = e.state().chain->links.front().id;
     feedbackSend(e, 1, Respond{e.state().decision->id, 10, "respond", 0, root}); feedbackPass(e);
     CHECK(e.state().cards.at(20).zone == Zone::Hand); CHECK(e.state().cards.at(20).analysisLoad == 0);
@@ -335,7 +335,7 @@ TEST_CASE("v262 bestow curse and ray of sickness trigger and expire", "[alpha-v2
         feedbackCard(s, 20, word ? "v260-word-0001" : "v260-analytic-0001", 1, Zone::Hand);
         Trigger t; t.owner = 0; EffectResolver::apply(s, cat, t, {word ? EffectKind::WordCastDamage : EffectKind::SetupDamage, word ? 2 : 1, word ? DamageType::Necrotic : DamageType::Poison});
         auto e = test::ObservedEngine::scenario(cat, s);
-        feedbackSend(e, 1, word ? Command(PreloadWord{20, true, 2, playerTarget(0)}) : Command(StartAnalysis{20, 2})); feedbackPass(e);
+        feedbackSend(e, 1, word ? Command(PreloadWord{20, true, 2, playerTarget(0), {}, 0, 0, Rules::freeRing(e.state(), e.catalog(), 2)}) : Command(StartAnalysis{20, 2, 0, {}, Rules::freeRing(e.state(), e.catalog(), 2)})); feedbackPass(e);
         CHECK(e.state().players[1].life == (word ? 38 : 39));
         s.phase = Phase::Draw; s.active = 0; ++s.players[0].ownTurn; spell_rules::expire(s, cat, false); CHECK(s.modifiers.empty());
     }
@@ -346,8 +346,8 @@ TEST_CASE("v262 otherworldly perception pays one discard and routes the top thre
     feedbackCard(s, 11, "v260-word-0001", 0, Zone::Hand);
     for (CardId id : {20,21,22,23,24}) feedbackCard(s, id, "v260-analytic-0001", 1, Zone::Deck);
     auto e = test::ObservedEngine::scenario(feedbackCatalog(), s);
-    const auto digest = e.digest(); CHECK_FALSE(e.submit(0, PreloadWord{10,true,1}).accepted); CHECK(e.digest() == digest);
-    feedbackSend(e, 0, PreloadWord{10,true,1,0,{},11}); feedbackPass(e);
+    const auto digest = e.digest(); CHECK_FALSE(e.submit(0, PreloadWord{10, true, 1, 0, {}, 0, 0, Rules::freeRing(e.state(), e.catalog(), 1)}).accepted); CHECK(e.digest() == digest);
+    feedbackSend(e, 0, PreloadWord{10, true, 1, 0, {}, 11, 0, Rules::freeRing(e.state(), e.catalog(), 1)}); feedbackPass(e);
     REQUIRE(e.state().decision); CHECK(e.state().decision->options.size() == 3);
     CHECK(e.viewFor(0).cards.size() == 7); // formations, source, discarded card, and three inspected cards
     feedbackSend(e, 0, Choose{e.state().decision->id, ChoiceValue::card(23)}); feedbackPass(e);
@@ -361,7 +361,7 @@ TEST_CASE("v262 command offers three real routes with private hand selection", "
         feedbackCard(s, 20, "v260-analytic-0001", 1, Zone::Deck);
         feedbackCard(s, 21, "v260-analytic-0001", 1, Zone::Analysis, SpellState::Ready);
         feedbackCard(s, 22, "v260-analytic-0001", 1, Zone::Hand);
-        auto e = test::ObservedEngine::scenario(feedbackCatalog(), s); feedbackSend(e, 0, PreloadWord{10,true,1}); feedbackPass(e);
+        auto e = test::ObservedEngine::scenario(feedbackCatalog(), s); feedbackSend(e, 0, PreloadWord{10, true, 1, 0, {}, 0, 0, Rules::freeRing(e.state(), e.catalog(), 1)}); feedbackPass(e);
         REQUIRE(e.state().decision); CHECK(e.state().decision->options.size() == 3);
         feedbackSend(e, 0, Choose{e.state().decision->id, ChoiceValue::mode(mode)}); feedbackPass(e);
         CardId chosen = 20;
@@ -387,7 +387,7 @@ TEST_CASE("v262 blur selects all damage types and halves only the chosen type", 
 TEST_CASE("v262 color spray includes radiant and protects its owner until turn end", "[alpha-v262][choice]") {
     const auto cat = feedbackCatalog(); auto s = feedbackState();
     feedbackCard(s, 10, "v260-word-0011", 0, Zone::Hand);
-    auto e = test::ObservedEngine::scenario(cat,s); feedbackSend(e, 0, PreloadWord{10,true,1,playerTarget(1)}); feedbackPass(e);
+    auto e = test::ObservedEngine::scenario(cat,s); feedbackSend(e, 0, PreloadWord{10, true, 1, playerTarget(1), {}, 0, 0, Rules::freeRing(e.state(), e.catalog(), 1)}); feedbackPass(e);
     REQUIRE(e.state().decision); CHECK(e.state().decision->options.size() == 7);
     feedbackSend(e, 0, Choose{e.state().decision->id, ChoiceValue::damage(DamageType::Radiant)}); feedbackPass(e);
     CHECK(e.state().players[1].life == 35); CHECK_FALSE(spell_rules::playerTargetAllowed(e.state(),cat,1,0));
@@ -422,7 +422,7 @@ TEST_CASE("v262 mage hand transfers and returns the spell and its attachments", 
     feedbackCard(s,20,"v260-analytic-0001",1,Zone::Analysis,SpellState::Ready);
     auto &seal=feedbackCard(s,21,"v260-seal-0001",1,Zone::Attached); seal.host=20;
     auto cat=feedbackCatalog(); auto e=test::ObservedEngine::scenario(cat,s);
-    feedbackSend(e,0,PreloadWord{10,true,1,20}); feedbackPass(e); REQUIRE(e.state().decision);
+    feedbackSend(e,0,PreloadWord{10, true, 1, 20, {}, 0, 0, Rules::freeRing(e.state(), e.catalog(), 1)}); feedbackPass(e); REQUIRE(e.state().decision);
     feedbackSend(e,0,Choose{e.state().decision->id,ChoiceValue::card(1)}); feedbackPass(e);
     CHECK(controllerOf(e.state().cards.at(20)) == 0); CHECK(e.state().cards.at(20).host == 1); CHECK(controllerOf(e.state().cards.at(21)) == 0);
     auto next=test::mutation(e.state()); next.phase=Phase::Prepare; ++next.players[0].ownTurn; spell_rules::expire(next,cat,true);
@@ -459,7 +459,6 @@ TEST_CASE("v262 earthquake waits for the owner's main phase", "[alpha-v262][phas
     feedbackCard(s,10,"v260-analytic-0035",0,Zone::Casting,SpellState::Ready);
     feedbackCard(s,20,"v260-analytic-0001",1,Zone::Analysis).faceDown=true;
     auto e=test::ObservedEngine::scenario(cat,s); feedbackSend(e,0,ActivateSpell{10}); feedbackPass(e); CHECK(e.state().cards.at(20).zone==Zone::Analysis);
-    feedbackSend(e,0,AdvancePhase{e.state().phaseGate}); feedbackPass(e);
     REQUIRE(e.state().decision); REQUIRE(e.state().decision->kind==DecisionKind::ReturnSpell);
     feedbackSend(e,0,Choose{e.state().decision->id,ChoiceValue::card(1)}); feedbackPass(e);
     CHECK(e.state().cards.at(20).zone==Zone::Analysis);
@@ -570,7 +569,7 @@ TEST_CASE("v262 death ward uniqueness follows control and rejects setup without 
     borrowed.controller=0; borrowed.host=1;
     feedbackCard(s,11,"v260-analytic-0023",0,Zone::Hand);
     auto e=test::ObservedEngine::scenario(feedbackCatalog(),s); const auto before=e.digest();
-    CHECK_FALSE(e.submit(0,StartAnalysis{11,1}).accepted);
+    CHECK_FALSE(e.submit(0,StartAnalysis{11, 1, 0, {}, Rules::freeRing(e.state(), e.catalog(), 1)}).accepted);
     CHECK(e.digest()==before); CHECK(e.state().players[0].mana==20);
 }
 
@@ -637,8 +636,8 @@ TEST_CASE("v262 every feedback card supports a real legal cast with exactly one 
         if(d.target==TargetKind::EnemyAmbush) {s.cards.at(20).faceDown=true;s.cards.at(20).spell=SpellState::None;}
         const int fee=Rules::castCost(s,cat,10);
         const auto costs=card_rules::costOptions(s,cat,0,10); const CardId discard=costs.empty() ? 0 : costs.front();
-        const Command command=word ? Command(PreloadWord{10,true,1,target,{},discard}) : Command(ActivateSpell{10,target,{},discard});
         auto e=test::ObservedEngine::scenario(cat,s);
+        const Command command=word ? Command(PreloadWord{10, true, 1, target, {}, discard, 0, Rules::freeRing(e.state(), e.catalog(), 1)}) : Command(ActivateSpell{10,target,{},discard});
         bool listed=false; e.visitLegalActions(0,[&](const LegalAction &a){if(a.source==10 && commandKind(a.command)==commandKind(command))listed=true;return true;}); CHECK(listed);
         feedbackSend(e,0,command);
         for(int n=0;n<80 && e.state().decision;++n) {
@@ -655,7 +654,7 @@ TEST_CASE("v262 every feedback card supports a real legal cast with exactly one 
 TEST_CASE("v262 borrowed spell goes to ash when the return side has no legal ring", "[alpha-v262][control]") {
     auto s=feedbackState(); feedbackCard(s,10,"v260-word-0004",0,Zone::Hand);
     feedbackCard(s,20,"v260-analytic-0001",1,Zone::Analysis,SpellState::Ready);
-    auto cat=feedbackCatalog(); auto e=test::ObservedEngine::scenario(cat,s); feedbackSend(e,0,PreloadWord{10,true,1,20}); feedbackPass(e);
+    auto cat=feedbackCatalog(); auto e=test::ObservedEngine::scenario(cat,s); feedbackSend(e,0,PreloadWord{10, true, 1, 20, {}, 0, 0, Rules::freeRing(e.state(), e.catalog(), 1)}); feedbackPass(e);
     REQUIRE(e.state().decision); feedbackSend(e,0,Choose{e.state().decision->id,ChoiceValue::card(1)}); feedbackPass(e);
     auto next=test::mutation(e.state()); StateMaintenance::leave(next,2,&cat); next.phase=Phase::Prepare;++next.players[0].ownTurn;
     spell_rules::expire(next,cat,true); CHECK(next.cards.at(20).zone==Zone::Ash); CHECK(controllerOf(next.cards.at(20))==1);
@@ -692,7 +691,7 @@ TEST_CASE("v262 counterspell does not count a word's single payment twice", "[al
     feedbackCard(s,10,"v260-talisman-0004",1,Zone::Casting,SpellState::Ready);
     feedbackCard(s,20,"v260-word-0001",0,Zone::Hand);
     const int paid=Rules::castCost(s,cat,20); auto e=test::ObservedEngine::scenario(cat,s);
-    feedbackSend(e,0,PreloadWord{20,true,1,playerTarget(1)});
+    feedbackSend(e,0,PreloadWord{20, true, 1, playerTarget(1), {}, 0, 0, Rules::freeRing(e.state(), e.catalog(), 1)});
     REQUIRE(e.state().decision); feedbackSend(e,1,Respond{e.state().decision->id,10,"respond",0,e.state().chain->links.front().id}); feedbackPass(e);
     CHECK(e.state().players[1].mana==20-paid); CHECK(e.state().cards.at(20).zone==Zone::Ash); CHECK(e.state().players[1].life==40);
 }

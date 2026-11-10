@@ -64,6 +64,7 @@ class GameEngine {
     MutationContext state_;
     std::string execute(PlayerId, const Command &);
     void finishOpening();
+    void drawOpeningHands();
     CommandResult submitAuthority(PlayerId, const Command &);
     std::string executeV2(PlayerId, const Command &);
     bool phaseV2();

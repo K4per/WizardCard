@@ -32,7 +32,7 @@
     "previousId": "reservoir"
   },
   "traits": [
-    "effect_indestructible"
+    "replace_formation_destruction"
   ],
   "raritySource": "",
   "recipe": [

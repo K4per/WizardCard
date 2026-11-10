@@ -3,7 +3,7 @@
 
 namespace wizard {
 enum class ModifierKind { SetupDelay, BlockConcentration, WordCastDamage, DoubleLoad,
-    ProtectPlayer, BlockAnalytic, DamageTakenBonus, HalfDamage, HalfRings, BorrowControl, SetupDamage };
+    ProtectPlayer, BlockAnalytic, DamageTakenBonus, HalfDamage, HalfRings, BorrowControl, SetupDamage, HalfCasting };
 enum class ModifierExpiry { TurnEnd, NextDraw, NextPrepare, NextPrepareEnd, NextMain, NextTurnEnd };
 struct SpellModifier {
     ModifierKind kind{};
@@ -43,6 +43,7 @@ struct CardInstance {
     bool publiclyRevealed{}; // Showing a concealed card exposes its face without flipping it.
     std::uint64_t ambushedTurn{};
     int quickAnalysisTurn{-1};
+    std::uint64_t quickAnalysisGlobalTurn{};
     int stormAbilityTurn{-1};
     int analysisProgress{};
     std::uint64_t fieldOrder{};
@@ -65,6 +66,7 @@ struct TemporaryLoad {
     bool independent{}; // does not expire and is excluded from temporary-load removal
     bool sourceBound{}; // loads expire only when their source leaves
     bool expiresAtEnd{};
+    bool expiresAtEndStart{};
 };
 struct TemporaryLife {
     std::uint32_t id{};

@@ -305,7 +305,7 @@ TEST_CASE("bridge incremental queries are read only and bound to exact contexts"
     const auto &queryData = query.at("data");
     const std::string decisionId = v.at("decision").is_object()
         ? v.at("decision").at("id").get<std::string>()
-        : v.value("opening", false) ? "opening" : "0";
+        : v.value("opening", false) ? "opening:" + v.at("openingStage").get<std::string>() + ":" + std::to_string(v.at("openingRound").get<unsigned>()) : "0";
     REQUIRE(queryData.at("schema") == bridge::schemaVersion);
     REQUIRE(queryData.at("generation") == v.at("generation"));
     REQUIRE(queryData.at("revision") == v.at("revision"));

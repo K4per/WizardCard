@@ -175,7 +175,8 @@ Json LocalSession::queryActions(PlayerId viewer, const Json &intent, const std::
             {"card", std::to_string(option.card)}, {"player", option.player}});
         const auto v = view(viewer);
         return ok({{"schema", schemaVersion}, {"generation", generation}, {"revision", revision}, {"viewer", viewer},
-            {"decisionId", v.decision ? std::to_string(v.decision->id) : v.opening ? "opening" : "0"},
+            {"decisionId", v.decision ? std::to_string(v.decision->id) : v.opening ?
+                std::string("opening:") + openingStageName(v.openingStage) + ":" + std::to_string(v.openingRound) : "0"},
             {"field", static_cast<int>(options.field)}, {"options", rows}, {"hasMore", options.hasMore},
             {"pending", options.pending}, {"complete", options.complete ? commandDto(*options.complete) : Json()}});
     } catch (const std::exception &e) { return fail("invalid_query", e.what()); }

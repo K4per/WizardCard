@@ -22,7 +22,7 @@ static func parse(value: Dictionary) -> MatchState:
 	if result.viewer < 0 or result.viewer > 1:
 		return null
 	var decision: Variant = value.get("decision")
-	result.decision_id = str(decision.get("id", "0")) if decision is Dictionary else ("opening" if bool(value.get("opening", false)) else "0")
+	result.decision_id = str(decision.get("id", "0")) if decision is Dictionary else ("opening:%s:%s" % [str(value.get("openingStage", "")), str(value.get("openingRound", 1))] if bool(value.get("opening", false)) else "0")
 	result.technical_paused = bool(value.get("technicalPaused", false))
 	result.data = value
 	return result

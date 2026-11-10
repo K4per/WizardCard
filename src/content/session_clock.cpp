@@ -22,7 +22,8 @@ void MatchSession::syncClock() {
                 clock_.remainingMs[p] + 60000LL * (turn - replenishedTurn_[p]));
             replenishedTurn_[p] = turn;
         }
-        if (clockFrozen_ || technicalPaused_ || state.result != -1) continue;
+        if (clockFrozen_ || technicalPaused_ || state.result != -1 ||
+            (state.opening && state.openingStage == OpeningStage::Gestures)) continue;
         const auto summary = engine_.actionSummary(p);
         const bool actionable = summary.actionable;
         const bool automatic = automaticClockPhases_ && !summary.hasNonPhaseAction &&

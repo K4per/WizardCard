@@ -26,6 +26,7 @@ void StateMaintenance::leave(MutationContext &s, CardId id, const CardCatalog *c
                 children.push_back(cid);
         const bool publicSource = c.zone != Zone::Hand && c.zone != Zone::Deck && c.zone != Zone::SideDeck;
         const bool wasCasting = c.zone == Zone::Casting;
+        const auto leavingController = controllerOf(c);
         if (cat && hasCapability(cat->at(c.definition), Capability::SevenStarsLamp) &&
             (c.zone == Zone::Analysis || c.zone == Zone::Casting) && c.spell == SpellState::Active) {
             s.players[c.owner].surrendered = true;
@@ -93,18 +94,18 @@ void StateMaintenance::leave(MutationContext &s, CardId id, const CardCatalog *c
                                definition.type == CardType::Talisman))
                 for (const auto &[formationId, formation] : s.cards) {
                     const auto &passive = cat->at(formation.definition);
-                    if (formation.owner != c.owner || formation.zone != Zone::Analysis ||
+                    if (controllerOf(formation) != leavingController || formation.zone != Zone::Analysis ||
                         !hasCapability(passive, Capability::PingOnSpellLeave))
                         continue;
                     if (!batch) batch = s.nextBatch++;
                     Trigger trigger;
                     trigger.id = s.nextTrigger++;
                     trigger.batch = batch;
-                    trigger.owner = c.owner;
+                    trigger.owner = leavingController;
                     trigger.source = formationId;
                     trigger.target = TargetKind::Opponent;
-                    trigger.targetPlayer = 1 - c.owner;
-                    trigger.effects.push_back({EffectKind::Damage, 1, DamageType::Fire});
+                    trigger.targetPlayer = 1 - leavingController;
+                    trigger.effects.push_back({EffectKind::Damage, cat->mechanicsRevision >= 12 ? 2 : 1, DamageType::Fire});
                     captured.push_back(std::move(trigger));
                 }
         }

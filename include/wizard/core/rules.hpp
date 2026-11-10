@@ -16,6 +16,8 @@ struct Rules {
     static int occupied(const GameState &, CardId);
     static int castingCapacity(const GameState &, const CardCatalog &, PlayerId);
     static int freeRing(const GameState &, const CardCatalog &, CardId);
+    // Returns the requested free ring, or -1. Only old rule fixtures allow automatic selection.
+    static int placementRing(const GameState &, const CardCatalog &, CardId, int requested);
     static bool canHost(const GameState &, const CardCatalog &, CardId spell, CardId formation,
                         bool faceDown = false);
     static bool targetValid(const GameState &, const CardDefinition &, PlayerId, CardId);

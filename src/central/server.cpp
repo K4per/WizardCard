@@ -118,7 +118,7 @@ void Authority::begin(Room &room) {
     bool found = false;
     for (unsigned attempt = 0; attempt < 128; ++attempt) {
         room.seed = seedSource_();
-        if (firstSeat(room.seed) == (room.ownerFirst ? 0u : 1u)) { found = true; break; }
+        if (content_.catalog.mechanicsRevision >= 12 || firstSeat(room.seed) == (room.ownerFirst ? 0u : 1u)) { found = true; break; }
     }
     if (!found) throw std::runtime_error("无法生成指定先后手种子");
     config.seed = room.seed;
@@ -301,7 +301,8 @@ std::vector<Delivery> Authority::roomMessage(Room &room, Connection sender, int 
     if (type == "Configure") {
         if (seat != 0) return {{sender, error("owner_only", "只有房主可以配置房间")}};
         if (room.phase != RoomPhase::Waiting) return {{sender, error("already_started", "对局已开始")}};
-        room.ownerFirst = message.value("ownerFirst", true); room.automatic = message.value("automatic", true);
+        room.ownerFirst = content_.catalog.mechanicsRevision >= 12 || message.value("ownerFirst", true);
+        room.automatic = message.value("automatic", true);
         room.ready = {}; room.touched = now_(); return publish(room, false);
     }
     if (type == "Deck") {

@@ -44,7 +44,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
     if (s.result != -1)
         return "game_over: 对局已经结束";
     if (std::holds_alternative<Timeout>(command)) {
-        s.result = 1 - actor; s.opening = false;
+        s.result = 1 - actor; s.opening = false; s.openingStage = OpeningStage::Complete;
         s.queue.items.clear(); s.deferredPreparations.clear(); s.decision.reset();
         s.effect.reset(); s.chain.reset(); s.phaseGate = 0;
         s.events.push_back({"timeout", "玩家 " + std::to_string(actor + 1) + " 思考时间耗尽", -1});
@@ -52,11 +52,40 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
     }
     if (std::holds_alternative<Surrender>(command)) {
         s.opening = false;
+        s.openingStage = OpeningStage::Complete;
         s.players[actor].surrendered = true;
         StateMaintenance::check(s, catalog());
         return {};
     }
     if (s.opening) {
+        if (s.openingStage == OpeningStage::Gestures) {
+            const auto *choice = std::get_if<SubmitOpeningGesture>(&command);
+            if (!choice) return "gesture_required: 请先确认猜拳手势";
+            // Validation has checked round, range and that this seat has not submitted.
+            s.openingGestures[actor] = choice->gesture;
+            if (s.openingGestures[0] < 0 || s.openingGestures[1] < 0) {
+                s.active = 1 - actor;
+                s.events.push_back({"gesture_confirmed", "已确认猜拳，等待对方", actor});
+                return {};
+            }
+            s.revealedGestures = s.openingGestures;
+            const std::array<const char *, 3> names{{"石头", "布", "剪刀"}};
+            const auto outcome = (s.openingGestures[0] - s.openingGestures[1] + 3) % 3;
+            std::string message = "猜拳第 " + std::to_string(s.openingRound) + " 轮：玩家1 " +
+                names[s.openingGestures[0]] + " / 玩家2 " + names[s.openingGestures[1]];
+            if (outcome == 0) {
+                ++s.openingRound;
+                s.openingGestures = {{-1, -1}};
+                s.active = 0;
+                s.events.push_back({"opening_tie", message + "；平局，请重新选择", -1});
+            } else {
+                s.first = s.active = outcome == 1 ? 0 : 1;
+                s.openingStage = OpeningStage::Formation;
+                s.events.push_back({"opening_winner", message + "；玩家 " + std::to_string(s.first + 1) + " 先手", -1});
+                drawOpeningHands();
+            }
+            return {};
+        }
         const auto *choice = std::get_if<SelectInitialFormation>(&command);
         if (!choice) return "opening_required: 请先确认初始阵法";
         if (s.initialFormations[actor]) return "initial_confirmed: 初始阵法已确认";
@@ -71,7 +100,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
         else s.active = s.initialFormations[0] ? 1 : 0;
         return {};
     }
-    if (std::holds_alternative<SelectInitialFormation>(command)) return "opening_finished: 开局选择已经结束";
+    if (std::holds_alternative<SelectInitialFormation>(command) || std::holds_alternative<SubmitOpeningGesture>(command))
+        return "opening_finished: 开局选择已经结束";
     if (s.decision) {
         const auto d = *s.decision;
         if (actor != d.player)
@@ -398,6 +428,24 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                 s.events.push_back({"return", "持续法术回位", -1, source});
             } else StateMaintenance::leave(s, source, &catalog());
             s.maintenance = std::monostate{};
+            break;
+        }
+        case DecisionKind::CaptureSpell: {
+            auto &card = s.cards.at(s.maintenanceCard());
+            for (auto &link : s.chain->links)
+                if (link.id == s.effect->item.targetLink) { link.canceled = true; link.sourceLost = true; }
+            std::vector<CardId> attachments;
+            for (const auto &[id, child] : s.cards)
+                if (child.host == card.id && child.zone == Zone::Attached) attachments.push_back(id);
+            for (auto id : attachments) StateMaintenance::leave(s, id, &catalog());
+            card.controller = actor; card.zone = Zone::Analysis; card.spell = SpellState::None;
+            card.host = card.sourceFormation = opt; card.ringIndex = card.sourceRingIndex = choose->ringIndex;
+            card.faceDown = card.wasAmbushed = true; card.publiclyRevealed = false;
+            card.ambushedTurn = s.globalTurn; card.fieldOrder = s.nextFieldOrder++;
+            card.analysisLoad = card.castLoad = card.analysisProgress = card.remaining = card.settingPaid = 0;
+            spell_rules::setup(s, catalog(), card.id, true);
+            s.events.push_back({"capture_ambush", "捕获打击：无效并盖伏对方法术", -1, card.id});
+            ++s.effect->cursor; s.maintenance = std::monostate{};
             break;
         }
         case DecisionKind::Response:

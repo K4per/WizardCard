@@ -2,7 +2,7 @@
 #include "engine_internal.hpp"
 #include <set>
 #include "wizard/core/card_rules.hpp"
-#include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 
 namespace wizard {
 namespace {
@@ -92,6 +92,39 @@ bool GameEngine::contentEffectV2() {
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
     const auto owner = f.item.owner;
+    if (e.kind == EffectKind::NegateCapture) {
+        if (!s.chain) { ++f.cursor; return true; }
+        const auto link = std::find_if(s.chain->links.begin(), s.chain->links.end(), [&](const ChainLink &candidate) {
+            return candidate.id == f.item.targetLink && !candidate.canceled && !candidate.sourceLost;
+        });
+        if (link == s.chain->links.end()) { ++f.cursor; return true; }
+        auto prospective = static_cast<GameState>(s);
+        prospective.cards.at(link->item.source).controller = owner;
+        std::vector<CardId> hosts;
+        for (const auto &[id, host] : prospective.cards)
+            if (Rules::canHost(prospective, catalog(), link->item.source, id, true) && Rules::freeRing(prospective, catalog(), id) >= 0)
+                hosts.push_back(id);
+        if (hosts.empty()) { ++f.cursor; return true; }
+        s.maintenance = ReturnContinuation{link->item.source};
+        decision(owner, DecisionKind::CaptureSpell, std::move(hosts));
+        return true;
+    }
+    if (e.kind == EffectKind::AnkhRecover) {
+        const auto source = s.cards.find(f.item.source);
+        if (!f.resume<EntityChoiceContinuation>().completed) {
+            if (source != s.cards.end() && source->second.zone == Zone::Ash)
+                decision(owner, DecisionKind::EffectChoice, {source->first}, true);
+            else ++f.cursor;
+        } else {
+            std::vector<CardId> formations;
+            for (const auto &[id, card] : s.cards)
+                if (card.owner == owner && card.zone == Zone::Ash && !card.faceDown &&
+                    catalog().at(card.definition).type == CardType::Formation) formations.push_back(id);
+            if (formations.empty()) ++f.cursor;
+            else decision(owner, DecisionKind::EffectChoice, std::move(formations), true);
+        }
+        return true;
+    }
     if (e.kind == EffectKind::RayVolley) {
         if (!f.resume<RepeatedChoiceContinuation>().completed) {
             const auto trigger = f.item;
@@ -285,6 +318,17 @@ bool GameEngine::contentEffectV2() {
                 ++*f.resume<TargetWalkContinuation>().next;
                 continue;
             }
+            if (catalog().at(target->second.definition).type == CardType::Formation) {
+                std::vector<CardId> replacements;
+                for (const auto &[candidate, arc] : s.cards)
+                    if (candidate != id && controllerOf(arc) == controllerOf(target->second) && arc.zone == Zone::Analysis &&
+                        hasCapability(catalog().at(arc.definition), Capability::ReplaceFormationDestruction)) replacements.push_back(candidate);
+                if (!replacements.empty()) {
+                    f.item.targetCard = id;
+                    decision(controllerOf(target->second), DecisionKind::EffectChoice, std::move(replacements), true);
+                    return true;
+                }
+            }
             if (hasCapability(catalog().at(target->second.definition), Capability::StormHeart) && target->second.stormPoints > 0) {
                 f.item.targetCard = id;
                 decision(controllerOf(target->second), DecisionKind::EffectChoice, {id}, true);
@@ -387,6 +431,13 @@ bool GameEngine::contentEffectV2() {
                        (swiftWindReturn
                             ? definition.type == CardType::Formation && definition.level <= 2
                             : isSpell(definition));
+            if (eligible && sourceCard != s.cards.end()) {
+                const auto &sourceDefinition = catalog().at(sourceCard->second.definition);
+                if (hasCapability(sourceDefinition, Capability::ReturnEnemyAmbush))
+                    eligible = card.zone == Zone::Analysis && card.faceDown;
+                if (hasCapability(sourceDefinition, Capability::ReturnEnemyAnalytic))
+                    eligible = card.zone == Zone::Analysis && definition.type == CardType::Analytic;
+            }
             break;
         case EffectKind::DestroyFormationSpells:
             eligible = controllerOf(card) != owner && card.zone == Zone::Analysis &&
@@ -413,14 +464,14 @@ bool GameEngine::contentEffectV2() {
                         const auto &host = item.second;
                         return controllerOf(host) == owner && host.zone == Zone::Analysis && !host.faceDown &&
                                catalog().at(host.definition).type == CardType::Formation &&
-                               Rules::maxRank(s, catalog(), host.id) >= definition.rank &&
+                               (catalog().mechanicsRevision >= 12 || Rules::maxRank(s, catalog(), host.id) >= definition.rank) &&
                                Rules::freeRing(s, catalog(), host.id) >= 0;
                     });
             } else {
                 const auto &spell = catalog().at(s.cards.at(*f.resume<EntityChoiceContinuation>().entity).definition);
-                eligible = card.owner == owner && card.zone == Zone::Analysis && !card.faceDown &&
+                eligible = controllerOf(card) == owner && card.zone == Zone::Analysis && !card.faceDown &&
                            definition.type == CardType::Formation &&
-                           Rules::maxRank(s, catalog(), id) >= spell.rank && Rules::freeRing(s, catalog(), id) >= 0;
+                           (catalog().mechanicsRevision >= 12 || Rules::maxRank(s, catalog(), id) >= spell.rank) && Rules::freeRing(s, catalog(), id) >= 0;
             }
             break;
         case EffectKind::RecoverFormation:
@@ -453,6 +504,21 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, Choice
     auto &f = *s.effect;
     const auto e = f.item.effects[f.cursor];
     const auto source = s.cards.find(f.item.source);
+    if (e.kind == EffectKind::AnkhRecover) {
+        if (!selected) { ++f.cursor; return true; }
+        if (!f.resume<EntityChoiceContinuation>().completed) {
+            if (source == s.cards.end() || source->second.zone != Zone::Ash || selected != source->first) return false;
+            source->second.zone = Zone::Exile;
+            f.resume<EntityChoiceContinuation>().completed = 1;
+            s.events.push_back({"exile", "安卡十字：抹除自身", -1, selected});
+        } else {
+            auto &card = s.cards.at(selected);
+            card.zone = Zone::SideDeck; card.base = false;
+            s.events.push_back({"recover_formation", "安卡十字：阵法返回副卡组", -1, selected});
+            ++f.cursor;
+        }
+        return true;
+    }
     if (e.kind == EffectKind::RayVolley) {
         auto trigger = f.item;
         trigger.targetPlayer = static_cast<PlayerId>(choice.value);
@@ -494,7 +560,13 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, Choice
         f.resume<TargetWalkContinuation>().next.has_value() && f.item.targetCard) {
         const auto id = f.item.targetCard;
         auto heart = s.cards.find(id);
-        if (heart != s.cards.end() && hasCapability(catalog().at(heart->second.definition), Capability::StormHeart) &&
+        const auto replacement = s.cards.find(selected);
+        if (replacement != s.cards.end() && replacement->second.zone == Zone::Analysis &&
+            controllerOf(replacement->second) == actor &&
+            hasCapability(catalog().at(replacement->second.definition), Capability::ReplaceFormationDestruction)) {
+            StateMaintenance::leave(s, selected, &catalog());
+            s.events.push_back({"destruction_replaced", "阿克乌姆之弧替代阵法销毁", -1, id});
+        } else if (heart != s.cards.end() && hasCapability(catalog().at(heart->second.definition), Capability::StormHeart) &&
             heart->second.owner == actor && heart->second.stormPoints > 0 && selected == id) {
             --heart->second.stormPoints;
         } else if (heart != s.cards.end() && fieldZone(heart->second.zone)) {
@@ -709,6 +781,7 @@ bool GameEngine::chooseContentEffectV2(PlayerId actor, DecisionKind kind, Choice
             spell.wasAmbushed = true;
             spell.ambushedTurn = s.globalTurn;
             spell.fieldOrder = s.nextFieldOrder++;
+            spell_rules::setup(s, catalog(), spell.id, true);
             s.events.push_back({"recover_ambush", "从灰烬区取得法术并盖伏", -1, spell.id});
         }
         break;

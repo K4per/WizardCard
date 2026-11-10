@@ -984,7 +984,10 @@
       ],
       "target": "self",
       "level": 2,
-      "flavor": "不要对亡灵生物使用治愈魔法口牙！"
+      "flavor": "不要对亡灵生物使用治愈魔法口牙！",
+      "traits": [
+        "end_phase_start"
+      ]
     },
     {
       "id": "v260-analytic-0022",
@@ -1327,12 +1330,7 @@
       "analysisTurns": 2,
       "speed": 1,
       "text": "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。",
-      "effects": [
-        {
-          "kind": "opponent_spell_load",
-          "amount": 4
-        }
-      ],
+      "effects": [],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
       "implementationStatus": "structured-candidate",
@@ -2429,7 +2427,10 @@
       },
       "target": "player",
       "level": 2,
-      "flavor": "最好不要细想这些声音是从哪发出来的。"
+      "flavor": "最好不要细想这些声音是从哪发出来的。",
+      "traits": [
+        "return_enemy_ambush"
+      ]
     },
     {
       "id": "v260-word-0014",
@@ -2875,12 +2876,7 @@
       "analysisTurns": 0,
       "speed": 3,
       "text": "对方发动穿刺/挥砍/钝击伤害法术卡时才能发动。将其无效并盖伏在己方解析区。",
-      "effects": [
-        {
-          "kind": "counter_physical",
-          "amount": 0
-        }
-      ],
+      "effects": [],
       "effectStatus": "structured-candidate",
       "effectBlockers": [],
       "implementationStatus": "structured-candidate",
@@ -2907,7 +2903,27 @@
         "counter_physical"
       ],
       "level": 4,
-      "flavor": "“打中了！”“但是真的打中了吗？”"
+      "flavor": "“打中了！”“但是真的打中了吗？”",
+      "responses": [
+        {
+          "id": "capture_physical",
+          "name": "捕获打击",
+          "sources": [
+            "ambush",
+            "casting"
+          ],
+          "windows": [
+            "cast"
+          ],
+          "eventOwner": "opponent",
+          "target": "enemy_spell_link",
+          "effects": [
+            {
+              "kind": "negate_capture"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "v260-talisman-0003",
@@ -3283,7 +3299,10 @@
         }
       ],
       "level": 3,
-      "flavor": "“谁把这法术放进来的？！”"
+      "flavor": "“谁把这法术放进来的？！”",
+      "traits": [
+        "return_enemy_analytic"
+      ]
     },
     {
       "id": "v260-talisman-0010",
@@ -3574,7 +3593,7 @@
         "previousId": null
       },
       "traits": [
-        "host_heal_plus_one"
+        "end_phase_start"
       ],
       "raritySource": "",
       "recipe": [
@@ -3594,7 +3613,14 @@
       "rings": 2,
       "capacity": 5,
       "income": 2,
-      "flavor": ""
+      "flavor": "",
+      "onEnd": [
+        {
+          "kind": "heal",
+          "amount": 1,
+          "recipient": "owner"
+        }
+      ]
     },
     {
       "id": "v260-formation-0002",
@@ -3630,7 +3656,7 @@
         "previousId": null
       },
       "traits": [
-        "host_cast_life_for_temporary"
+        "end_phase_start"
       ],
       "raritySource": "",
       "recipe": [
@@ -3650,7 +3676,19 @@
       "rings": 2,
       "capacity": 5,
       "income": 2,
-      "flavor": ""
+      "flavor": "",
+      "onEnd": [
+        {
+          "kind": "lose_life",
+          "amount": 1,
+          "recipient": "owner"
+        },
+        {
+          "kind": "temporary_life",
+          "amount": 3,
+          "recipient": "owner"
+        }
+      ]
     },
     {
       "id": "v260-formation-0003",
@@ -3685,9 +3723,7 @@
       "migration": {
         "previousId": null
       },
-      "traits": [
-        "return_formation_from_ash"
-      ],
+      "traits": [],
       "raritySource": "",
       "recipe": [
         {
@@ -3702,7 +3738,12 @@
       "rings": 1,
       "capacity": 5,
       "income": 1,
-      "flavor": ""
+      "flavor": "",
+      "onLeave": [
+        {
+          "kind": "ankh_recover"
+        }
+      ]
     },
     {
       "id": "v260-formation-0004",
@@ -3904,7 +3945,7 @@
         "previousId": "reservoir"
       },
       "traits": [
-        "effect_indestructible"
+        "replace_formation_destruction"
       ],
       "raritySource": "",
       "recipe": [

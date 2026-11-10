@@ -11,12 +11,7 @@
   "analysisTurns": 2,
   "speed": 1,
   "text": "计时3。对方每发动1张法术卡，使对方获得4点临时荷载。",
-  "effects": [
-    {
-      "kind": "opponent_spell_load",
-      "amount": 4
-    }
-  ],
+  "effects": [],
   "effectStatus": "structured-candidate",
   "effectBlockers": [],
   "implementationStatus": "structured-candidate",

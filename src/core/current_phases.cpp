@@ -84,6 +84,10 @@ bool GameEngine::phaseV2() {
     };
     switch (s.phaseStep) {
     case PhaseStep::Enter: {
+        if (s.phase == Phase::End && catalog().mechanicsRevision >= 12)
+            s.temporary.erase(std::remove_if(s.temporary.begin(), s.temporary.end(), [&](const TemporaryLoad &load) {
+                return load.owner == s.active && load.expiresAtEndStart && load.expiryTurn <= pl.ownTurn;
+            }), s.temporary.end());
         spell_rules::expire(s, catalog(), false);
         if (s.phase == Phase::End)
             for (auto &player : s.players) player.nextDamageImmune = false;

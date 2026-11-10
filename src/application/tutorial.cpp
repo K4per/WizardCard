@@ -70,7 +70,8 @@ void Tutorial::continueLesson(const GameView &v) {
         lesson = Lesson::Complete;
 }
 bool Tutorial::allows(const GameView &v, const Command &cmd, const ai::CandidateSource &source) const {
-    if (v.opening) return std::holds_alternative<SelectInitialFormation>(cmd) || std::holds_alternative<Surrender>(cmd);
+    if (v.opening) return std::holds_alternative<SelectInitialFormation>(cmd) ||
+        std::holds_alternative<SubmitOpeningGesture>(cmd) || std::holds_alternative<Surrender>(cmd);
     if (std::holds_alternative<Surrender>(cmd) || lesson == Lesson::Complete)
         return true;
     if (lesson == Lesson::Intro || lesson == Lesson::Review || canContinue(v))

@@ -112,7 +112,7 @@ TEST_CASE("central availability and opening queries coexist without repeated net
     const auto revision = f.owner.revision();
     ActionIntent availability, opening;
     opening.selections.push_back({ActionField::Operation,
-        std::to_string(static_cast<unsigned>(CommandKind::SelectInitialFormation))});
+        std::to_string(static_cast<unsigned>(CommandKind::SubmitOpeningGesture))});
     REQUIRE(f.owner.queryActions(0, 1, revision, availability).pending);
     REQUIRE(f.owner.queryActions(0, 1, revision, opening).pending);
     const auto requests = f.owner.drainTransport();

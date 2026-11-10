@@ -31,9 +31,7 @@
   "migration": {
     "previousId": null
   },
-  "traits": [
-    "return_formation_from_ash"
-  ],
+  "traits": [],
   "raritySource": "",
   "recipe": [
     {
@@ -48,5 +46,10 @@
   "rings": 1,
   "capacity": 5,
   "income": 1,
-  "flavor": ""
+  "flavor": "",
+  "onLeave": [
+    {
+      "kind": "ankh_recover"
+    }
+  ]
 }

@@ -85,6 +85,9 @@ struct GameState {
     bool returnRequested{}, timingPending{};
     bool skipCastPhase{}; // Keep the end-turn intent while response and cleanup choices resolve.
     bool opening{};
+    OpeningStage openingStage{OpeningStage::Complete};
+    std::uint32_t openingRound{1};
+    std::array<int, 2> openingGestures{{-1, -1}}, revealedGestures{{-1, -1}};
     std::array<CardId, 2> initialFormations{};
     bool debugUsed{};
     std::optional<PendingPayment> payment;

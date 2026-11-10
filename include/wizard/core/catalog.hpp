@@ -32,7 +32,7 @@ enum class Capability : std::uint8_t {
     // semantic rather than by inventing a new enum for every workbook clause.
     V260Structured,
     DamageThreshold, ManaOnElementalDamage, PreventLethal, RetaliateDamage,
-    SetupDamage, Fear, HandOrPsychic, BothPrepare, BothEnd
+    SetupDamage, Fear, HandOrPsychic, BothPrepare, BothEnd, ReplaceFormationDestruction, ReturnEnemyAmbush, ReturnEnemyAnalytic
 };
 struct Effect {
     EffectKind kind{};

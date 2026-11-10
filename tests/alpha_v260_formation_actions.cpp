@@ -213,7 +213,7 @@ TEST_CASE("Alpha v2.6.0 fire analytic spells can be analyzed on Sulfur", "[alpha
             return command && command->card == 10 && command->formation == 1;
         }));
 
-        const auto result = engine.submit(0, StartAnalysis{10, 1});
+        const auto result = engine.submit(0, StartAnalysis{10, 1, 0, {}, Rules::freeRing(engine.state(), engine.catalog(), 1)});
         INFO(result.error);
         REQUIRE(result.accepted);
         CHECK(engine.state().cards.at(10).zone == Zone::Analysis);

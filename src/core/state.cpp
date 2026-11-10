@@ -41,6 +41,8 @@ std::optional<Capability> findCapability(const std::string &name) {
         {"quick_host_analysis_2", Capability::QuickHostAnalysis2}, {"requires_storm_formation", Capability::RequiresStormFormation},
         {"requires_storm_heart_setup", Capability::RequiresStormHeartSetup}, {"requires_storm_setup", Capability::RequiresStormSetup},
         {"return_formation_from_ash", Capability::ReturnFormationFromAsh}, {"search_great_storm_on_setup", Capability::SearchGreatStormOnSetup},
+        {"replace_formation_destruction", Capability::ReplaceFormationDestruction},
+        {"return_enemy_ambush", Capability::ReturnEnemyAmbush}, {"return_enemy_analytic", Capability::ReturnEnemyAnalytic},
         {"self_ambush_on_leave", Capability::SelfAmbushOnLeave}, {"seven_stars_banner", Capability::SevenStarsBanner},
         {"seven_stars_effect_only", Capability::SevenStarsEffectOnly}, {"seven_stars_kaiyang", Capability::SevenStarsKaiyang},
         {"seven_stars_lamp", Capability::SevenStarsLamp}, {"seven_stars_yaoguang", Capability::SevenStarsYaoguang},

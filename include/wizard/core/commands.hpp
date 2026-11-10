@@ -14,6 +14,7 @@ struct StartAnalysis {
     CardId card{}, formation{};
     CardId target{};
     std::vector<CardId> targets;
+    int ringIndex{-1};
 };
 struct PrepareCast {
     CardId card{}, target{}, discard{};
@@ -31,6 +32,7 @@ struct PreloadWord {
     std::vector<CardId> targets;
     CardId discard{}; // Optional executable spell cost, such as true-strike.
     DecisionId decision{}; // nonzero only when setting a word spell as a response.
+    int ringIndex{-1};
 };
 struct AttachSeal {
     CardId card{}, host{};
@@ -130,6 +132,7 @@ struct AdvancePhase {
 };
 struct SetAmbush {
     CardId card{}, formation{};
+    int ringIndex{-1};
 };
 struct FlipAmbush {
     CardId card{}, target{};
@@ -148,18 +151,21 @@ struct ActivateAbility {
 };
 // Confirms a private side-deck entity; both confirmations reveal the formations together.
 struct SelectInitialFormation { CardId card{}; };
+// 0 rock, 1 paper, 2 scissors. The round prevents late submissions crossing ties.
+struct SubmitOpeningGesture { std::uint32_t round{}; int gesture{-1}; };
 // Authority-generated terminal event; transports must reject user-submitted timeouts.
 struct Timeout {};
 using Command = std::variant<SetFormation, RemoveFormation, StartAnalysis, PrepareCast, PlayAction,
                              PreloadWord, AttachSeal, RemoveSeal, Abandon, Advance, Choose, Surrender,
                              Respond, PassResponse, AdvancePhase, SetAmbush, FlipAmbush, ActivateSpell,
-                             SelectInitialFormation, Timeout, ActivateAbility>;
+                             SelectInitialFormation, Timeout, ActivateAbility, SubmitOpeningGesture>;
 // Stable serialized identifiers; independent of variant storage order.
 enum class CommandKind : std::uint16_t {
     SetFormation=0, RemoveFormation=1, StartAnalysis=2, PrepareCast=3, PlayAction=4,
     PreloadWord=5, AttachSeal=6, RemoveSeal=7, Abandon=8, Advance=9, Choose=10,
     Surrender=11, Respond=12, PassResponse=13, AdvancePhase=14, SetAmbush=15,
-    FlipAmbush=16, ActivateSpell=17, SelectInitialFormation=18, Timeout=19, ActivateAbility=20
+    FlipAmbush=16, ActivateSpell=17, SelectInitialFormation=18, Timeout=19, ActivateAbility=20,
+    SubmitOpeningGesture=21
 };
 inline CommandKind commandKind(const Command &command) {
     return std::visit([](const auto &value) {
@@ -176,6 +182,7 @@ inline CommandKind commandKind(const Command &command) {
         WIZARD_COMMAND_KIND(FlipAmbush) WIZARD_COMMAND_KIND(ActivateSpell)
         WIZARD_COMMAND_KIND(SelectInitialFormation) WIZARD_COMMAND_KIND(Timeout)
         WIZARD_COMMAND_KIND(ActivateAbility)
+        WIZARD_COMMAND_KIND(SubmitOpeningGesture)
 #undef WIZARD_COMMAND_KIND
     }, command);
 }
@@ -199,7 +206,8 @@ enum class DecisionKind {
     StormSearch,
     StormHeartChoice,
     StormHeartRecover,
-    Payment
+    Payment,
+    CaptureSpell
 };
 struct PendingDecision {
     DecisionId id{};

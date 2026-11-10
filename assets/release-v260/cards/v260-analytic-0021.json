@@ -41,5 +41,8 @@
   ],
   "target": "self",
   "level": 2,
-  "flavor": "不要对亡灵生物使用治愈魔法口牙！"
+  "flavor": "不要对亡灵生物使用治愈魔法口牙！",
+  "traits": [
+    "end_phase_start"
+  ]
 }

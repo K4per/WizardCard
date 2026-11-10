@@ -13,6 +13,24 @@ SOURCE = ROOT / "assets/source-archive/alpha-v263"
 OUTPUT = ROOT / "assets/release-v260"
 METADATA = {"rulesVersion": "2.6.3", "cardSetVersion": "2.6.3",
             "mechanicsRevision": 12, "baseLoadCapacity": 2, "status": "released"}
+# Executable clauses whose historical adapters differ from the approved text.
+RULE_UPDATES = {
+    "v260-word-0013": {"traits": ["return_enemy_ambush"]},
+    "v260-talisman-0009": {"traits": ["return_enemy_analytic"]},
+    "v260-formation-0001": {"traits": ["end_phase_start"],
+        "onEnd": [{"kind": "heal", "amount": 1, "recipient": "owner"}]},
+    "v260-formation-0002": {"traits": ["end_phase_start"],
+        "onEnd": [{"kind": "lose_life", "amount": 1, "recipient": "owner"},
+                  {"kind": "temporary_life", "amount": 3, "recipient": "owner"}]},
+    "v260-formation-0003": {"traits": [], "onLeave": [{"kind": "ankh_recover"}]},
+    "v260-formation-0007": {"traits": ["replace_formation_destruction"]},
+    "v260-analytic-0021": {"traits": ["end_phase_start"]},
+    "v260-analytic-0029": {"effects": []},
+    "v260-talisman-0002": {"effects": [], "responses": [{
+        "id": "capture_physical", "name": "捕获打击", "sources": ["ambush", "casting"],
+        "windows": ["cast"], "eventOwner": "opponent", "target": "enemy_spell_link",
+        "effects": [{"kind": "negate_capture"}]}]},
+}
 BOOKS = [("法术卡列表-72张卡.xlsx", "卡表", 72),
          ("符文卡列表-共3张卡.xlsx", "符文卡", 3),
          ("阵法卡列表-共17张卡.xlsx", "阵法卡", 15)]
@@ -87,6 +105,7 @@ def generate(source=SOURCE, output=OUTPUT):
                 if errors:
                     raise ValueError(f"{name}: {errors}")
                 card.update(recipe=recipe, summonCondition=condition)
+            card.update(copy.deepcopy(RULE_UPDATES.get(card["id"], {})))
             card["source"] = {"file": filename, "worksheet": sheet, "row": row_index}
             diffs = {key: {"before": old[name].get(key), "after": value}
                      for key, value in card.items() if old[name].get(key) != value and key != "source"}

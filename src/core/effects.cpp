@@ -45,6 +45,10 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     const int previousLife = s.players[p].life;
     const auto previousDeck = s.players[t.owner].deck.size();
     if (e.kind == EffectKind::V260Structured) {
+        if (e.semantic == "halve_casting_capacity" && cat.mechanicsRevision >= 12) {
+            spell_rules::addModifier(s, t, ModifierKind::HalfCasting, ModifierExpiry::NextPrepare, 1, 1 - t.owner);
+            return;
+        }
         // Keep staging effects observable and deterministic even when their
         // full v2.6 choice/timing contract is not part of the 2.5.5 resolver.
         // A few unambiguous projections can use existing primitives directly;
@@ -61,7 +65,10 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
             return;
         }
         if (e.semantic == "independent_timed") {
-            apply(s, cat, t, Effect{EffectKind::AddIndependent, e.amount, DamageType::Force, e.recipient});
+            if (cat.mechanicsRevision >= 12)
+                ResourceRules::grantLoad(s, cat, {s.nextLoad++, p, t.source, e.amount,
+                    s.players[p].ownTurn + (p == s.active ? 0 : 1), true, false, false, true});
+            else apply(s, cat, t, Effect{EffectKind::AddIndependent, e.amount, DamageType::Force, e.recipient});
             return;
         }
         if (e.semantic == "opponent_spell_load") {
@@ -77,6 +84,13 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         return;
     }
     switch (e.kind) {
+    case EffectKind::LoseLife:
+        if (!s.players[p].debugInfiniteLife) s.players[p].life = std::max(0, s.players[p].life - e.amount);
+        s.events.push_back({"life_loss", "失去普通生命", -1, t.source, e.amount});
+        break;
+    case EffectKind::AnkhRecover:
+    case EffectKind::NegateCapture:
+        break; // Its optional exile and recovery are handled by contentEffectV2.
     case EffectKind::BothDamage:
         for (int player = 0; player < 2 && s.result == -1; ++player) {
             auto damage = t; damage.targetPlayer = player;

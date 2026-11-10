@@ -118,7 +118,7 @@ TEST_CASE("Alpha v2.6.0 circuit overload selects analysis and allows passing lat
     ActionIntent intent;
     intent.selections = {
         {ActionField::Operation, std::to_string(static_cast<unsigned>(CommandKind::PreloadWord))},
-        {ActionField::Source, "10"}, {ActionField::Host, "1"}
+        {ActionField::Source, "10"}, {ActionField::Host, "1"}, {ActionField::Ring, "1"}
     };
     const auto query = engine.queryActions(0, intent);
     REQUIRE(query.field == ActionField::Target);
@@ -151,7 +151,7 @@ TEST_CASE("Alpha v2.6.0 circuit overload rejects a missing target atomically", "
     put(state, 11, "v260-word-0001", Zone::Hand);
     auto engine = test::ObservedEngine::scenario(releaseCatalog(), state);
     const auto before = engine.digest();
-    const auto result = engine.submit(0, PreloadWord{10, true, 1});
+    const auto result = engine.submit(0, PreloadWord{10, true, 1, 0, {}, 0, 0, Rules::freeRing(engine.state(), engine.catalog(), 1)});
     CHECK_FALSE(result.accepted);
     if (result.accepted) passResponses(engine);
     CHECK(engine.digest() == before);
@@ -166,13 +166,13 @@ TEST_CASE("Alpha v2.6.0 divination requires a separate discard and handles short
         for (int n = 0; n < count; ++n) put(state, 20 + n, "v260-analytic-0001", Zone::Deck);
         auto engine = test::ObservedEngine::scenario(catalog, state);
         const auto before = engine.digest();
-        CHECK_FALSE(engine.submit(0, PreloadWord{10, true, 1}).accepted);
-        CHECK_FALSE(engine.submit(0, PreloadWord{10, true, 1, 0, {}, 10}).accepted);
+        CHECK_FALSE(engine.submit(0, PreloadWord{10, true, 1, 0, {}, 0, 0, Rules::freeRing(engine.state(), engine.catalog(), 1)}).accepted);
+        CHECK_FALSE(engine.submit(0, PreloadWord{10, true, 1, 0, {}, 10, 0, Rules::freeRing(engine.state(), engine.catalog(), 1)}).accepted);
         CHECK(engine.digest() == before);
 
         put(state, 11, "v260-seal-0001", Zone::Hand);
         engine = test::ObservedEngine::scenario(catalog, state);
-        send(engine, 0, PreloadWord{10, true, 1, 0, {}, 11});
+        send(engine, 0, PreloadWord{10, true, 1, 0, {}, 11, 0, Rules::freeRing(engine.state(), engine.catalog(), 1)});
         passResponses(engine);
         if (count) {
             REQUIRE(engine.state().decision);
@@ -196,7 +196,7 @@ TEST_CASE("Alpha v2.6.0 circuit overload loses its target without blocking respo
     auto &target = put(state, 20, "v260-analytic-0001", Zone::Analysis);
     target.host = 1; target.spell = SpellState::Analyzing; target.settingPaid = 3;
     auto engine = test::ObservedEngine::scenario(releaseCatalog(), state);
-    send(engine, 0, PreloadWord{10, true, 1, 20});
+    send(engine, 0, PreloadWord{10, true, 1, 20, {}, 0, 0, Rules::freeRing(engine.state(), engine.catalog(), 1)});
     state = test::mutation(engine.state());
     StateMaintenance::leave(state, 20, &engine.catalog());
     engine = test::ObservedEngine::scenario(releaseCatalog(), state);

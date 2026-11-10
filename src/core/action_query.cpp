@@ -12,7 +12,9 @@ SelectionPath actionPath(const Command &command) {
     auto value = [&](ActionField field, auto number) { path.push_back({field, std::to_string(number)}); };
     std::visit([&](const auto &cmd) {
         using T = std::decay_t<decltype(cmd)>;
-        if constexpr (std::is_same_v<T, Choose>) {
+        if constexpr (std::is_same_v<T, SubmitOpeningGesture>) {
+            value(ActionField::Choice, cmd.gesture);
+        } else if constexpr (std::is_same_v<T, Choose>) {
             path.push_back({ActionField::Choice, choiceKey(cmd.option)});
             if (cmd.ringIndex >= 0) value(ActionField::Ring, cmd.ringIndex);
         } else if constexpr (std::is_same_v<T, AdvancePhase>) {
@@ -24,7 +26,10 @@ SelectionPath actionPath(const Command &command) {
                 value(ActionField::Replacement, cmd.replace);
                 for (auto material : cmd.materials) value(ActionField::Material, material);
             } else if constexpr (std::is_same_v<T, AttachSeal>) value(ActionField::Host, cmd.host);
-            else if constexpr (std::is_same_v<T, StartAnalysis> || std::is_same_v<T, SetAmbush> || std::is_same_v<T, PreloadWord>) value(ActionField::Host, cmd.formation);
+            else if constexpr (std::is_same_v<T, StartAnalysis> || std::is_same_v<T, SetAmbush> || std::is_same_v<T, PreloadWord>) {
+                value(ActionField::Host, cmd.formation);
+                if (cmd.ringIndex >= 0) value(ActionField::Ring, cmd.ringIndex);
+            }
             if constexpr (std::is_same_v<T, Respond> || std::is_same_v<T, ActivateAbility>) {
                 path.push_back({ActionField::Ability, cmd.ability});
                 if constexpr (std::is_same_v<T, Respond>) if (cmd.link) value(ActionField::Link, cmd.link);
@@ -91,14 +96,14 @@ ActionOptions GameEngine::queryActions(PlayerId viewer, const ActionIntent &inte
             out.error = "invalid_query"; return out;
         }
         if ((entry.field != ActionField::Link && value > std::numeric_limits<CardId>::max()) ||
-            (entry.field == ActionField::Operation && value > static_cast<unsigned>(CommandKind::ActivateAbility))) {
+            (entry.field == ActionField::Operation && value > static_cast<unsigned>(CommandKind::SubmitOpeningGesture))) {
             out.error = "invalid_query"; return out;
         }
     }
     // Operation/source menus ask only whether a completion exists, and stop on the
     // first witness. They do not expand every material/target combination.
     if (intent.selections.empty()) {
-        for (unsigned kind = 0; kind <= static_cast<unsigned>(CommandKind::ActivateAbility); ++kind) {
+        for (unsigned kind = 0; kind <= static_cast<unsigned>(CommandKind::SubmitOpeningGesture); ++kind) {
             ActionIntent probe; probe.source = intent.source; probe.selections.push_back({ActionField::Operation, std::to_string(kind)});
             std::optional<LegalAction> witness;
             visitLegalActions(viewer, [&](const LegalAction &action) {
@@ -167,7 +172,10 @@ ActionOptions GameEngine::queryActions(PlayerId viewer, const ActionIntent &inte
             if (state_.decision) {
                 for (auto option : state_.decision->options) candidates.push_back(detail::choiceKey(option));
                 candidates.push_back(detail::choiceKey({}));
-            } else { add(0); add(1); }
+            } else {
+                add(0); add(1);
+                if (state_.opening && state_.openingStage == OpeningStage::Gestures) add(2);
+            }
         } else {
             add(0);
             for (const auto &[id, card] : state_.cards) add(id);

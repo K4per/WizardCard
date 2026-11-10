@@ -45,5 +45,8 @@
   },
   "target": "player",
   "level": 2,
-  "flavor": "最好不要细想这些声音是从哪发出来的。"
+  "flavor": "最好不要细想这些声音是从哪发出来的。",
+  "traits": [
+    "return_enemy_ambush"
+  ]
 }

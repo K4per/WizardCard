@@ -209,6 +209,8 @@ double evaluate(const GameView &v, const LegalAction &a, Difficulty difficulty) 
             using T = std::decay_t<decltype(cmd)>;
             if constexpr (std::is_same_v<T, Surrender> || std::is_same_v<T, Timeout>)
                 return -1e9;
+            else if constexpr (std::is_same_v<T, SubmitOpeningGesture>)
+                return cmd.gesture == static_cast<int>((v.openingRound + p) % 3) ? 120 : 100;
             else if constexpr (std::is_same_v<T, Advance> || std::is_same_v<T, AdvancePhase> ||
                                std::is_same_v<T, PassResponse>)
                 return 0;

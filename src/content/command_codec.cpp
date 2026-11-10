@@ -35,14 +35,21 @@ Json encodeCommand(const Command &c) {
             using T = std::decay_t<decltype(x)>;
             if constexpr (!std::is_same_v<T, Advance> && !std::is_same_v<T, AdvancePhase> &&
                           !std::is_same_v<T, PassResponse> && !std::is_same_v<T, Surrender> &&
-                          !std::is_same_v<T, Choose> && !std::is_same_v<T, Timeout>)
+                          !std::is_same_v<T, Choose> && !std::is_same_v<T, Timeout> &&
+                          !std::is_same_v<T, SubmitOpeningGesture>)
                 j["card"] = x.card;
+            if constexpr (std::is_same_v<T, SubmitOpeningGesture>) {
+                j["round"] = x.round;
+                j["gesture"] = x.gesture;
+            }
             if constexpr (std::is_same_v<T, SetFormation>) {
                 j["replace"] = x.replace;
                 if (!x.materials.empty()) j["materials"] = x.materials;
             }
             if constexpr (std::is_same_v<T, StartAnalysis> || std::is_same_v<T, SetAmbush>)
                 j["formation"] = x.formation;
+            if constexpr (std::is_same_v<T, StartAnalysis> || std::is_same_v<T, SetAmbush> || std::is_same_v<T, PreloadWord>)
+                if (x.ringIndex >= 0) j["ringIndex"] = x.ringIndex;
             if constexpr (std::is_same_v<T, StartAnalysis>) {
                 if (x.target) j["target"] = x.target;
                 if (!x.targets.empty()) j["targets"] = x.targets;
@@ -126,7 +133,8 @@ Command decodeCommand(const Json &j) {
         return RemoveFormation{id("card")};
     case 2:
         return StartAnalysis{id("card"), id("formation"),
-            j.contains("target") ? id("target") : 0, targets};
+            j.contains("target") ? id("target") : 0, targets,
+            j.contains("ringIndex") ? static_cast<int>(integer(j.at("ringIndex"), 1000)) : -1};
     case 3:
         return PrepareCast{id("card"), id("target"), id("discard"), targets,
                            j.contains("decision") ? serial("decision") : 0};
@@ -136,7 +144,8 @@ Command decodeCommand(const Json &j) {
         return PreloadWord{id("card"), j.value("release", false),
             j.contains("formation") ? id("formation") : 0,
             j.contains("target") ? id("target") : 0, targets, j.contains("discard") ? id("discard") : 0,
-            j.contains("decision") ? serial("decision") : 0};
+            j.contains("decision") ? serial("decision") : 0,
+            j.contains("ringIndex") ? static_cast<int>(integer(j.at("ringIndex"), 1000)) : -1};
     case 6:
         return AttachSeal{id("card"), id("host")};
     case 7:
@@ -167,7 +176,8 @@ Command decodeCommand(const Json &j) {
     case 14:
         return AdvancePhase{serial("gate"), j.value("skipCast", false)};
     case 15:
-        return SetAmbush{id("card"), id("formation")};
+        return SetAmbush{id("card"), id("formation"),
+            j.contains("ringIndex") ? static_cast<int>(integer(j.at("ringIndex"), 1000)) : -1};
     case 16:
         return FlipAmbush{id("card"), id("target"), targets,
             j.contains("decision") ? serial("decision") : 0, j.contains("discard") ? id("discard") : 0};
@@ -179,6 +189,8 @@ Command decodeCommand(const Json &j) {
         return Timeout{};
     case 20:
         return ActivateAbility{id("card"), id("target"), j.at("ability").get<std::string>()};
+    case 21:
+        return SubmitOpeningGesture{id("round"), static_cast<int>(integer(j.at("gesture"), 2))};
     default:
         throw std::runtime_error("unknown command type");
     }

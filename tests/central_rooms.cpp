@@ -141,7 +141,7 @@ TEST_CASE("central authority separates room ownership from private player projec
         REQUIRE_FALSE(f.status(id).contains("deck"));
     }
 }
-TEST_CASE("central authority changes invalidate readiness and obey configured first seat", "[central][rooms]") {
+TEST_CASE("central authority changes invalidate readiness and RPS overrides the obsolete first seat setting", "[central][rooms]") {
     Fixture f;
     f.room();
     f.send(1, {{"type", "Ready"}}, "Room");
@@ -151,15 +151,17 @@ TEST_CASE("central authority changes invalidate readiness and obey configured fi
     f.send(1, {{"type", "Ready"}}, "Room");
     f.send(2, {{"type", "Ready"}}, "StateSnapshot");
     REQUIRE(f.status(1).at("phase") == "playing");
+    f.send(1, f.command(1, SubmitOpeningGesture{1, 0}), "Accepted");
+    f.send(2, f.command(2, SubmitOpeningGesture{1, 2}), "Accepted");
     for (Connection id : {1, 2}) {
         const auto view = net::decodeView(f.snapshot(id).at("view"), f.content.catalog);
         const auto formation = std::find_if(view.cards.begin(), view.cards.end(), [&](const auto &card) {
             return card.instance.owner == view.viewer && card.instance.zone == Zone::SideDeck && card.definition.level == 1;
         });
         REQUIRE(formation != view.cards.end());
-        f.send(id, f.command(id, SelectInitialFormation{formation->instance.id}), "Accepted");
+        f.send(id, f.command(id, SelectInitialFormation{formation->instance.id}, 2), "Accepted");
     }
-    REQUIRE(net::decodeView(f.snapshot(1).at("view"), f.content.catalog).active == 1);
+    REQUIRE(net::decodeView(f.snapshot(1).at("view"), f.content.catalog).active == 0);
 }
 TEST_CASE("central rooms accept commands only for the bound seat and deliver terminal projections", "[central][rooms]") {
     Fixture f;
@@ -222,12 +224,7 @@ TEST_CASE("central resume recovers a lost room joined reply using the welcome to
 TEST_CASE("central commands deduplicate exact retries and reject changed payloads", "[central][reconnect]") {
     Fixture f;
     f.start();
-    const auto view = net::decodeView(f.snapshot(1).at("view"), f.content.catalog);
-    const auto initial = std::find_if(view.cards.begin(), view.cards.end(), [](const auto &c) {
-        return c.instance.owner == 0 && c.instance.zone == Zone::SideDeck && c.definition.level == 1;
-    });
-    REQUIRE(initial != view.cards.end());
-    auto request = f.command(1, SelectInitialFormation{initial->instance.id});
+    auto request = f.command(1, SubmitOpeningGesture{1, 0});
     auto accepted = f.send(1, request, "Accepted");
     REQUIRE(f.send(1, request, "Accepted").at("revision") == accepted.at("revision"));
     auto changed = request;

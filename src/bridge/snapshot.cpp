@@ -56,6 +56,9 @@ Json viewDto(const GameView &v) {
                 {"phaseName", phaseName(v.phase)}, {"phaseStep", static_cast<int>(v.phaseStep)},
                 {"phaseGate", std::to_string(v.phaseGate)}, {"result", v.result},
                 {"globalTurn", std::to_string(v.globalTurn)}, {"opening", v.opening},
+                {"openingStage", openingStageName(v.openingStage)}, {"openingRound", v.openingRound},
+                {"openingGesture", v.openingGesture}, {"gestureConfirmed", v.gestureConfirmed},
+                {"revealedGestures", v.revealedGestures},
                 {"initialFormationConfirmed", v.initialFormationConfirmed},
                 {"initialFormation", std::to_string(v.initialFormation)},
                 {"clock", {{"enabled", v.clock.enabled}, {"running", v.clock.running},
@@ -74,7 +77,8 @@ Json viewDto(const GameView &v) {
             {"returnHost", std::to_string(m.returnHost)}, {"returnRing", m.returnRing}, {"returnController", m.returnController}});
     for (const auto &p : v.players)
         out["players"].push_back({{"life", p.life}, {"mana", p.mana}, {"load", p.load},
-            {"capacity", p.capacity}, {"handCount", p.handCount}, {"deckCount", p.deckCount},
+            {"capacity", p.capacity}, {"castingCapacity", p.castingCapacity}, {"castingCount", p.castingCount},
+            {"handCount", p.handCount}, {"deckCount", p.deckCount},
             {"sideDeckCount", p.sideDeckCount}, {"exhaustion", p.exhaustion},
             {"ownTurn", p.ownTurn}, {"temporaryLife", p.temporaryLife},
             {"lifeLimit", p.lifeLimit}, {"sevenMode", p.sevenMode},
@@ -117,7 +121,7 @@ Json viewDto(const GameView &v) {
     if (v.decision)
         out["decision"] = {{"id", std::to_string(v.decision->id)}, {"player", v.decision->player},
             {"kind", static_cast<int>(v.decision->kind)}, {"options", choicesDto(v.decision->options)},
-            {"mayPass", v.decision->mayPass}};
+            {"mayPass", v.decision->mayPass}, {"source", std::to_string(v.decisionSource)}};
     if (v.chain) {
         const auto &chain = *v.chain;
         Json links = Json::array();
@@ -131,6 +135,24 @@ Json viewDto(const GameView &v) {
         out["chain"] = {{"id", std::to_string(chain.id)}, {"window", static_cast<int>(chain.window)},
             {"windowName", windowName(chain.window)}, {"mode", static_cast<int>(chain.mode)},
             {"priority", chain.priority}, {"passes", chain.passes}, {"links", links}};
+        if (!chain.links.empty()) {
+            const auto &last = chain.links.back();
+            std::string name = "盖伏卡";
+            for (const auto &card : v.cards)
+                if (card.instance.id == last.item.source && !card.hidden) name = card.definition.name;
+            const std::string actor = last.item.owner == v.viewer ? "己方" : "对方";
+            std::string description;
+            if (last.ability == "ambush") description = actor + "设置了1张盖伏卡";
+            else if (last.kind == LinkKind::Phase)
+                description = actor + (chain.window == ResponseWindow::PhaseEnd ? "即将结束" :
+                    chain.window == ResponseWindow::PhaseStart ? "进入" : "完成操作：") + phaseName(v.phase) + "阶段";
+            else if (last.kind == LinkKind::Setup) description = actor + "设置【" + name + "】";
+            else if (last.kind == LinkKind::Preparation) description = actor + "准备施法【" + name + "】";
+            else description = actor + "发动【" + name + "】";
+            out["responseContext"] = {{"text", description}, {"actor", last.item.owner},
+                {"waitingPlayer", chain.priority}, {"source", std::to_string(last.item.source)},
+                {"chainCount", chain.links.size()}, {"window", static_cast<int>(chain.window)}};
+        }
     }
     for (const auto &load : v.temporary)
         out["loads"].push_back({{"id", std::to_string(load.id)}, {"owner", load.owner},

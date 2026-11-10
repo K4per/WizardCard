@@ -32,7 +32,7 @@
     "previousId": null
   },
   "traits": [
-    "host_cast_life_for_temporary"
+    "end_phase_start"
   ],
   "raritySource": "",
   "recipe": [
@@ -52,5 +52,17 @@
   "rings": 2,
   "capacity": 5,
   "income": 2,
-  "flavor": ""
+  "flavor": "",
+  "onEnd": [
+    {
+      "kind": "lose_life",
+      "amount": 1,
+      "recipient": "owner"
+    },
+    {
+      "kind": "temporary_life",
+      "amount": 3,
+      "recipient": "owner"
+    }
+  ]
 }

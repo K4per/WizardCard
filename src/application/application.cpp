@@ -493,7 +493,7 @@ PlayerId Application::actingPlayer() const {
     const auto &s = match().engine().state();
     if (s.opening)
         for (int player = 0; player < 2; ++player)
-            if (!s.initialFormations[player]) return player;
+            if (s.openingStage == OpeningStage::Gestures ? s.openingGestures[player] < 0 : !s.initialFormations[player]) return player;
     return s.decision ? s.decision->player : s.active;
 }
 bool Application::startNetwork(bool host, const std::string &address, unsigned short port,

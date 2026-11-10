@@ -35,8 +35,10 @@ TEST_CASE("incremental recording captures authority timeouts and rejected comman
     auto now = std::chrono::steady_clock::time_point{};
     MatchSession match(content, 42);
     match.enableClock(false, [&] { return now; });
+    REQUIRE(match.submit(0, SubmitOpeningGesture{1, 0}).accepted);
+    REQUIRE(match.submit(1, SubmitOpeningGesture{1, 2}).accepted);
     auto initial = match.recordingSince({});
-    REQUIRE(initial.commands.empty());
+    REQUIRE(initial.commands.size() == 2);
     REQUIRE_FALSE(match.submit(0, AdvancePhase{}).accepted);
     REQUIRE(match.recordingSince(initial.next).commands.empty());
     now += std::chrono::minutes(6);
@@ -48,7 +50,8 @@ TEST_CASE("incremental recording captures authority timeouts and rejected comman
     REQUIRE(match.recordingSince(delta.next).commands.empty());
     REQUIRE(match.recordingSince(delta.next).events.empty());
     auto record = match.recordingHeader();
-    record["commands"] = delta.commands;
+    record["commands"] = initial.commands;
+    for (auto &command : delta.commands) record["commands"].push_back(command);
     record["events"] = initial.events;
     for (auto &event : delta.events) record["events"].push_back(event);
     REQUIRE(replay(content, record).digest() == match.engine().digest());

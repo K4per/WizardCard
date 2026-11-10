@@ -176,7 +176,7 @@ std::string paymentKey(const Command &command) {
                       std::is_same_v<T, ActivateSpell> || std::is_same_v<T, Respond> || std::is_same_v<T, FlipAmbush>) {
             out << c.card << ',' << c.target << ':';
             for (auto id : c.targets) out << id << ',';
-            if constexpr (std::is_same_v<T, StartAnalysis> || std::is_same_v<T, PreloadWord>) out << "h" << c.formation;
+            if constexpr (std::is_same_v<T, StartAnalysis> || std::is_same_v<T, PreloadWord>) out << "h" << c.formation << "r" << c.ringIndex;
             if constexpr (!std::is_same_v<T, StartAnalysis>) out << "d" << c.discard;
             if constexpr (std::is_same_v<T, PreloadWord>) out << "r" << c.release;
             if constexpr (std::is_same_v<T, Respond>) out << c.ability << ',' << c.link << ',' << c.decision;

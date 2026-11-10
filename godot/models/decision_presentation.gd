@@ -21,7 +21,7 @@ func has_exact_context() -> bool:
 	# instead of a native decision ID; generation and revision remain strict.
 	return _is_exact_numeric_id(generation) \
 		and _is_exact_numeric_id(revision) \
-		and (decision_id == "opening" or _is_exact_numeric_id(decision_id))
+		and (decision_id.begins_with("opening:") or _is_exact_numeric_id(decision_id))
 
 func _is_exact_numeric_id(value: String) -> bool:
 	if value.is_empty() or value.length() > 20:

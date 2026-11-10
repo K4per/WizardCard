@@ -101,7 +101,10 @@ int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, C
 int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
     const auto &d = cat.at(c.definition);
-    int n = ((d.type == CardType::Word || d.type == CardType::Talisman) ? d.cost : d.castCost)
+    // Words pay their setting fee when set and immediately cast. Talismans
+    // are set for free and pay the separate activation column in revision 12.
+    int n = (d.type == CardType::Word ? d.cost + (cat.mechanicsRevision >= 12 ? d.castCost : 0) :
+        d.type == CardType::Talisman && cat.mechanicsRevision < 12 ? d.cost : d.castCost)
         - card_rules::attachedCount(s, cat, controllerOf(c), Capability::SiqueSugar);
     for (const auto &[sid, seal] : s.cards)
         if (seal.zone == Zone::Attached && seal.host == id) {
@@ -156,6 +159,8 @@ int Rules::castingCapacity(const GameState &s, const CardCatalog &cat, PlayerId 
     for (const auto &[id, c] : s.cards)
         if (controllerOf(c) == player && c.zone == Zone::Analysis && cat.at(c.definition).type == CardType::Formation)
             count += rings(s, cat, id);
+    for (const auto &modifier : s.modifiers)
+        if (modifier.kind == ModifierKind::HalfCasting && modifier.player == player) count /= 2;
     return count;
 }
 int Rules::freeRing(const GameState &s, const CardCatalog &cat, CardId host) {
@@ -167,6 +172,15 @@ int Rules::freeRing(const GameState &s, const CardCatalog &cat, CardId host) {
             return ring;
     }
     return -1;
+}
+int Rules::placementRing(const GameState &s, const CardCatalog &cat, CardId host, int requested) {
+    if (!s.cards.count(host) || s.cards.at(host).zone != Zone::Analysis ||
+        cat.at(s.cards.at(host).definition).type != CardType::Formation) return -1;
+    if (requested < 0 && cat.mechanicsRevision < 12) return freeRing(s, cat, host);
+    if (requested < 0 || requested >= rings(s, cat, host)) return -1;
+    for (const auto &[id, card] : s.cards)
+        if (card.zone == Zone::Analysis && card.host == host && card.ringIndex == requested) return -1;
+    return requested;
 }
 bool Rules::canHost(const GameState &s, const CardCatalog &cat, CardId spell, CardId formation, bool faceDown) {
     const auto source = s.cards.find(spell), host = s.cards.find(formation);

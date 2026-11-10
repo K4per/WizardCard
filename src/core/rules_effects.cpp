@@ -1027,7 +1027,7 @@ bool isFireSpell(const CardDefinition &d) {
         return isSpell(d);
     const auto fire = [](const Effect &e) {
         if (e.damageType != DamageType::Fire) return false;
-        if (e.kind == EffectKind::Damage || e.kind == EffectKind::ChooseDamage ||
+        if (e.kind == EffectKind::Damage ||
             e.kind == EffectKind::RayVolley) return true;
         // These v2.6 structured damage effects are adapted to regular Damage
         // effects by EffectResolver before they resolve.

@@ -142,6 +142,20 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
                 return "target: 风击术只能响应对方设置解析法术";
             if (hasCapability(d, Capability::SiqueBoilingSurge) && !card_rules::threatensFormation(s, catalog(), *l, actor))
                 return "target: 沸汤滚袭只能响应销毁己方味契阵法的法术";
+            if (std::any_of(a->effects.begin(), a->effects.end(), [](const Effect &e) { return e.kind == EffectKind::NegateCapture; })) {
+                const bool physical = std::any_of(l->item.effects.begin(), l->item.effects.end(), [](const Effect &e) {
+                    return (e.kind == EffectKind::Damage || (e.kind == EffectKind::V260Structured && e.semantic == "area_damage")) &&
+                        (e.damageType == DamageType::Piercing || e.damageType == DamageType::Slashing || e.damageType == DamageType::Bludgeoning);
+                });
+                if (!physical || l->kind == LinkKind::Preparation || l->kind == LinkKind::Setup) return "capture_requires_physical_spell";
+                auto prospective = static_cast<GameState>(s);
+                prospective.cards.at(cmd.card).zone = Zone::Casting;
+                prospective.cards.at(l->item.source).controller = actor;
+                if (std::none_of(prospective.cards.begin(), prospective.cards.end(), [&](const auto &entry) {
+                    return Rules::canHost(prospective, catalog(), l->item.source, entry.first, true) &&
+                        Rules::freeRing(prospective, catalog(), entry.first) >= 0;
+                })) return "capture_requires_ring";
+            }
             if (std::any_of(a->effects.begin(), a->effects.end(), [](const Effect &effect) {
                     return effect.kind == EffectKind::ReduceSpellDamage;
                 }) && std::none_of(l->item.effects.begin(), l->item.effects.end(), [](const Effect &effect) {
@@ -357,7 +371,7 @@ void GameEngine::finishLink(bool success) {
         const bool actual = s.chain->hadActualLinks;
         s.events.push_back({"chain_closed", "连锁结束"});
         s.chain.reset();
-        if (s.phase != Phase::Cast)
+        if (s.phase != Phase::Cast || catalog().mechanicsRevision >= 12)
             s.returnRequested = true;
         if (actual) s.timingPending = true;
     }

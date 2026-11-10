@@ -26,6 +26,7 @@ GameEngine::GameEngine(CardCatalog cat, const MatchConfig &config) {
     // Frozen rule fixtures retain their original starting resource.
 
     state_.opening = true;
+    state_.openingStage = catalog().mechanicsRevision >= 12 ? OpeningStage::Gestures : OpeningStage::Formation;
     if (state_.opening) state_.globalTurn = 0;
     CardId id = 1;
     for (int p = 0; p < 2; ++p) {
@@ -56,6 +57,7 @@ void GameEngine::finishOpening() {
             card.fieldOrder = state_.nextFieldOrder++;
         }
         state_.opening = false;
+        state_.openingStage = OpeningStage::Complete;
         state_.globalTurn = 1;
         for (int p = 0; p < 2; ++p) {
             const auto id = state_.initialFormations[p];
@@ -63,6 +65,14 @@ void GameEngine::finishOpening() {
                 catalog().at(state_.cards.at(id).definition).name, -1, id});
         }
     }
+    if (catalog().mechanicsRevision < 12) {
+        drawOpeningHands();
+        state_.first = static_cast<int>(bounded(state_, 2));
+    }
+    state_.active = state_.first;
+    state_.players[state_.active].ownTurn = 1;
+}
+void GameEngine::drawOpeningHands() {
     for (int p = 0; p < 2; ++p) {
         auto &deck = state_.players[p].deck;
         for (std::size_t i = deck.size(); i > 1; --i)
@@ -71,8 +81,6 @@ void GameEngine::finishOpening() {
         t.owner = p;
         EffectResolver::apply(state_, catalog(), t, {EffectKind::Draw, 5});
     }
-    state_.first = state_.active = static_cast<int>(bounded(state_, 2));
-    state_.players[state_.active].ownTurn = 1;
 }
 GameEngine GameEngine::scenario(CardCatalog cat, GameState state) {
     GameEngine e;

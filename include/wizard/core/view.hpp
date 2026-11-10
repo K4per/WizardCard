@@ -27,6 +27,7 @@ struct PlayerView {
     int sideDeckCount{}, exhaustion{};
     bool infiniteLife{}, infiniteMana{}, infiniteLoad{};
     int lifeLimit{maximumLife}, sevenMode{};
+    int castingCapacity{}, castingCount{};
 };
 struct CardView {
     CardInstance instance;
@@ -56,11 +57,17 @@ struct GameView {
     std::vector<SpellModifier> modifiers;
     std::deque<PlayerId> extraTurns;
     std::optional<PendingDecision> decision;
+    CardId decisionSource{};
     PhaseStep phaseStep{};
     DecisionId phaseGate{};
     std::optional<ChainState> chain;
     std::vector<Trigger> triggers; // only visible choices of this viewer's trigger-order decision
     bool opening{};
+    OpeningStage openingStage{OpeningStage::Complete};
+    std::uint32_t openingRound{1};
+    int openingGesture{-1}; // Only this viewer's private current submission.
+    std::array<bool, 2> gestureConfirmed{};
+    std::array<int, 2> revealedGestures{{-1, -1}}; // Most recent completed round only.
     std::array<bool, 2> initialFormationConfirmed{};
     CardId initialFormation{}; // Only this viewer's confirmed entity while opening.
     std::uint64_t globalTurn{1};

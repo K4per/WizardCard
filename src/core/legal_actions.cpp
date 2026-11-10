@@ -27,6 +27,15 @@ void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const Le
     if (s.result != -1)
         return;
     if (s.opening) {
+        if (s.openingStage == OpeningStage::Gestures) {
+            if (s.openingGestures[p] < 0) {
+                const std::array<const char *, 3> names{{"石头", "布", "剪刀"}};
+                for (int gesture = 0; gesture < 3; ++gesture)
+                    add(std::string("猜拳：") + names[gesture], 0, 0, SubmitOpeningGesture{s.openingRound, gesture});
+            }
+            add("投降", 0, 0, Surrender{});
+            return;
+        }
         if (!s.initialFormations[p])
             for (const auto &[id, card] : s.cards)
                 if (controllerOf(card) == p && card.zone == Zone::SideDeck &&
@@ -127,12 +136,12 @@ void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const Le
                 for (const auto &trigger : s.queue.items) if (trigger.id == id)
                     label = trigger.damageAmount > 0 ? "处理受伤响应" :
                         "结算被动触发 " + catalog().at(s.cards.at(trigger.source).definition).name;
-            } else if (d.kind == DecisionKind::ReturnSpell) {
+            } else if (d.kind == DecisionKind::ReturnSpell || d.kind == DecisionKind::CaptureSpell) {
                 for (int ring = 0; ring < Rules::rings(s, catalog(), id); ++ring) {
                     bool occupied = false;
                     for (const auto &[other, card] : s.cards)
                         occupied |= other != s.maintenanceCard() && card.zone == Zone::Analysis && card.host == id && card.ringIndex == ring;
-                    if (!occupied) add("回位至 " + catalog().at(s.cards.at(id).definition).name + " 环位 " + std::to_string(ring + 1),
+                    if (!occupied) add(std::string(d.kind == DecisionKind::CaptureSpell ? "捕获并盖伏至 " : "回位至 ") + catalog().at(s.cards.at(id).definition).name + " 环位 " + std::to_string(ring + 1),
                         s.maintenanceCard(), id, Choose{d.id, option, ring});
                 }
                 continue;
@@ -232,12 +241,17 @@ void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const Le
                 for (const auto &[host, formation] : s.cards) {
                     if (!detail::intentAllows(intent, ActionField::Host, host) || controllerOf(formation) != p) continue;
                     if (formation.zone == Zone::Analysis && catalog().at(formation.definition).type == CardType::Formation) {
-                        add("盖伏 " + name, id, host, SetAmbush{id, host});
-                        add("设置解析法术 " + name, id, host, StartAnalysis{id, host});
-                        for (const auto &ids : activationSets) {
-                            const auto target = card_rules::detachCost(def) || ids.empty() ? 0 : ids.front();
-                            for (auto cost : spellCosts)
-                                add("设置并发动 " + name + (cost ? "；弃置 #" + std::to_string(cost) : "") + activationLabel(ids), id, target, PreloadWord{id, true, host, target, ids, cost});
+                        const int ringCount = catalog().mechanicsRevision >= 12 ? Rules::rings(s, catalog(), host) : 1;
+                        for (int ordinal = 0; ordinal < ringCount; ++ordinal) {
+                            const int ring = catalog().mechanicsRevision >= 12 ? ordinal : -1;
+                            if (ring >= 0 && !detail::intentAllows(intent, ActionField::Ring, ring)) continue;
+                            add("盖伏 " + name, id, host, SetAmbush{id, host, ring});
+                            add("设置解析法术 " + name, id, host, StartAnalysis{id, host, 0, {}, ring});
+                            for (const auto &ids : activationSets) {
+                                const auto target = card_rules::detachCost(def) || ids.empty() ? 0 : ids.front();
+                                for (auto cost : spellCosts)
+                                    add("设置并发动 " + name + (cost ? "；弃置 #" + std::to_string(cost) : "") + activationLabel(ids), id, target, PreloadWord{id, true, host, target, ids, cost, 0, ring});
+                            }
                         }
                     }
                     if (formation.zone == Zone::Analysis || formation.zone == Zone::Casting)

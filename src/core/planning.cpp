@@ -73,7 +73,7 @@ std::string GameEngine::validateActivation(PlayerId actor, CardId id, CardId tar
                 const auto &host = entry.second;
                 return host.owner == actor && host.zone == Zone::Analysis && !host.faceDown &&
                     catalog().at(host.definition).type == CardType::Formation &&
-                    catalog().at(recovered->second.definition).rank <= Rules::maxRank(s, catalog(), entry.first) &&
+                    (catalog().mechanicsRevision >= 12 || catalog().at(recovered->second.definition).rank <= Rules::maxRank(s, catalog(), entry.first)) &&
                     Rules::freeRing(s, catalog(), entry.first) >= 0;
             })) return "target";
     }
@@ -152,7 +152,7 @@ std::string GameEngine::validateResponseSetup(PlayerId actor, const Command &com
             return "setup_condition: 不满足阵法或设置条件";
         if (host == s.cards.end() || host->second.owner != actor ||
             !Rules::canHost(s, catalog(), id, word->formation) ||
-            Rules::freeRing(s, catalog(), word->formation) < 0 ||
+            Rules::placementRing(s, catalog(), word->formation, word->ringIndex) < 0 ||
             static_cast<int>(inZone(s, actor, Zone::Casting).size()) >=
                 Rules::castingCapacity(s, catalog(), actor))
             return "host_restriction: 没有可用的合法阵法环位";
@@ -284,7 +284,7 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
         using T = std::decay_t<decltype(item)>;
         if constexpr (std::is_same_v<T, Choose> || std::is_same_v<T, Advance> ||
                       std::is_same_v<T, AdvancePhase> || std::is_same_v<T, PassResponse> || std::is_same_v<T, Surrender> ||
-                      std::is_same_v<T, Timeout>) return 0;
+                      std::is_same_v<T, Timeout> || std::is_same_v<T, SubmitOpeningGesture>) return 0;
         else return item.card;
     }, command);
     auto it = s.cards.find(cardId);
@@ -319,11 +319,11 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
             catalog().at(host->second.definition).type == CardType::Formation;
     };
     auto pay = [&](int mana, int) { return affordable(s, catalog(), actor, mana); };
-    auto ring = [&](CardId host, bool faceDown = false) {
+    auto ring = [&](CardId host, bool faceDown, int requested) {
         return (!requiresStormHeartSetup ||
                 (s.cards.count(host) && hasCapability(catalog().at(s.cards.at(host).definition), Capability::StormHeart))) &&
             Rules::canHost(s, catalog(), cardId, host, faceDown) &&
-            Rules::freeRing(s, catalog(), host) >= 0;
+            Rules::placementRing(s, catalog(), host, requested) >= 0;
     };
     auto phaseSpeed = [&] {
         return spellSpeedAllowed(s, def);
@@ -353,7 +353,7 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
             const auto &host = item.second;
             return host.owner == actor && host.zone == Zone::Analysis && !host.faceDown &&
                 catalog().at(host.definition).type == CardType::Formation &&
-                catalog().at(selected->second.definition).rank <= Rules::maxRank(s, catalog(), item.first) &&
+                (catalog().mechanicsRevision >= 12 || catalog().at(selected->second.definition).rank <= Rules::maxRank(s, catalog(), item.first)) &&
                 Rules::freeRing(s, catalog(), item.first) >= 0;
         });
     };
@@ -480,7 +480,7 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
             return "great_storm_lock: 大风暴术阻止设置其他解析法术";
         if (requiresStormForSetup && !hasStormFormation(s, catalog(), actor))
             return "storm_formation: 需要己方风暴阵法";
-        if (!setupSpeed() || c.zone != Zone::Hand || def.type != CardType::Analytic || !ring(cmd->formation))
+        if (!setupSpeed() || c.zone != Zone::Hand || def.type != CardType::Analytic || !ring(cmd->formation, false, cmd->ringIndex))
             return "ring_or_rank";
         int fee = Rules::analysisCost(s, catalog(), cardId, cmd->formation);
         if (!pay(fee, fee)) return "cost: 魔素不足";
@@ -491,7 +491,7 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
             return "great_storm_lock: 大风暴术阻止设置其他解析法术";
         if (requiresStormForSetup && !hasStormFormation(s, catalog(), actor))
             return "storm_formation: 需要己方风暴阵法";
-        if (s.phase != Phase::Main || c.zone != Zone::Hand || !spellType(def.type) || !ring(cmd->formation, true))
+        if (s.phase != Phase::Main || c.zone != Zone::Hand || !spellType(def.type) || !ring(cmd->formation, true, cmd->ringIndex))
             return "invalid_ambush";
         return {};
     }
@@ -525,7 +525,7 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
             return "storm_formation: 需要己方风暴阵法";
         if (pl.blockedActionTurn == pl.ownTurn) return "blocked_incantation";
         if (!setupSpeed() || c.zone != Zone::Hand || def.type != CardType::Word || def.responseOnly ||
-            !ring(cmd->formation) ||
+            !ring(cmd->formation, false, cmd->ringIndex) ||
             static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog(), actor))
             return "word_setup";
         if (!activationTargets(cmd->target, cmd->targets) || !validSpellCost(cmd->discard)) return "target_or_cost";
@@ -586,6 +586,13 @@ std::string GameEngine::validate(PlayerId actor, const Command &input) const {
     if (s.result != -1) return "game_over";
     if (std::holds_alternative<Timeout>(command) || std::holds_alternative<Surrender>(command)) return {};
     if (s.opening) {
+        if (s.openingStage == OpeningStage::Gestures) {
+            const auto *choice = std::get_if<SubmitOpeningGesture>(&command);
+            if (!choice) return "gesture_required";
+            if (choice->round != s.openingRound) return "stale_opening_round";
+            if (s.openingGestures[actor] >= 0) return "gesture_confirmed";
+            return choice->gesture >= 0 && choice->gesture <= 2 ? "" : "invalid_gesture";
+        }
         const auto *choice = std::get_if<SelectInitialFormation>(&command);
         if (!choice) return "opening_required";
         if (s.initialFormations[actor]) return "initial_confirmed";
@@ -594,7 +601,7 @@ std::string GameEngine::validate(PlayerId actor, const Command &input) const {
         const auto &def = catalog().at(found->second.definition);
         return def.type == CardType::Formation && def.level == 1 ? "" : "invalid_initial";
     }
-    if (std::holds_alternative<SelectInitialFormation>(command)) return "opening_finished";
+    if (std::holds_alternative<SelectInitialFormation>(command) || std::holds_alternative<SubmitOpeningGesture>(command)) return "opening_finished";
     if (s.payment) {
         const auto *choice = std::get_if<Choose>(&command);
         if (!choice || !s.decision || choice->decision != s.decision->id || actor != s.payment->player) return "payment_pending";
@@ -633,6 +640,13 @@ std::string GameEngine::validate(PlayerId actor, const Command &input) const {
         if (d.kind == DecisionKind::Concentration && chosen &&
             spell_rules::blocked(s, ModifierKind::BlockConcentration, actor)) return "concentration_blocked";
         if (d.kind == DecisionKind::EffectPrepare && opt) return "decision_mismatch";
+        if (d.kind == DecisionKind::CaptureSpell) {
+            const auto source = s.maintenanceCard();
+            if (!s.effect || !s.chain || !s.cards.count(source) || !s.cards.count(opt)) return "invalid_capture";
+            auto prospective = static_cast<GameState>(s); prospective.cards.at(source).controller = actor;
+            if (!Rules::canHost(prospective, catalog(), source, opt, true) ||
+                Rules::placementRing(prospective, catalog(), opt, choice->ringIndex) < 0) return "invalid_capture_ring";
+        }
         if (d.kind == DecisionKind::ReturnSpell && opt) {
             const auto source = s.maintenanceCard();
             if (!s.cards.count(source) || !s.cards.count(opt)) return "invalid_return";

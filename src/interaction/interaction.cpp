@@ -96,6 +96,8 @@ std::string Interaction::intent(const LegalAction &a, const std::optional<Pendin
                 return "投降";
             else if constexpr (std::is_same_v<T, SelectInitialFormation>)
                 return "确认初始阵法";
+            else if constexpr (std::is_same_v<T, SubmitOpeningGesture>)
+                return "确认猜拳手势";
             else if constexpr (std::is_same_v<T, Timeout>)
                 return "思考时间耗尽";
             else {

@@ -32,7 +32,11 @@ static func parse(value: Dictionary) -> ActionOptions:
 	result.pending = bool(value.get("pending", false))
 	return result
 
-func matches(snapshot: Dictionary, expected_viewer: int) -> bool:
+static func context_id(snapshot: Dictionary) -> String:
 	var decision: Variant = snapshot.get("decision")
-	var current_id: String = str(decision.get("id", "0")) if decision is Dictionary else ("opening" if bool(snapshot.get("opening", false)) else "0")
-	return viewer == expected_viewer and generation == str(snapshot.get("generation", "")) and revision == str(snapshot.get("revision", "")) and decision_id == current_id
+	if decision is Dictionary:
+		return str(decision.get("id", "0"))
+	return "opening:%s:%s" % [snapshot.get("openingStage", "formation"), snapshot.get("openingRound", 1)] if bool(snapshot.get("opening", false)) else "0"
+
+func matches(snapshot: Dictionary, expected_viewer: int) -> bool:
+	return viewer == expected_viewer and generation == str(snapshot.get("generation", "")) and revision == str(snapshot.get("revision", "")) and decision_id == context_id(snapshot)

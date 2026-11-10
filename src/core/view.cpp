@@ -17,6 +17,11 @@ GameView GameEngine::viewFor(PlayerId p) const {
     v.phaseGate = state_.phaseGate;
     v.chain = state_.chain;
     v.opening = state_.opening;
+    v.openingStage = state_.openingStage;
+    v.openingRound = state_.openingRound;
+    v.openingGesture = state_.openingGestures[p];
+    v.gestureConfirmed = {state_.openingGestures[0] >= 0, state_.openingGestures[1] >= 0};
+    v.revealedGestures = state_.revealedGestures;
     v.initialFormationConfirmed = {state_.initialFormations[0] != 0, state_.initialFormations[1] != 0};
     v.initialFormation = state_.initialFormations[p];
     v.globalTurn = state_.globalTurn;
@@ -58,6 +63,9 @@ GameView GameEngine::viewFor(PlayerId p) const {
         v.players[player].exhaustion = state_.players[player].exhaustion;
         v.players[player].lifeLimit = card_rules::lifeLimit(state_, catalog(), player);
         v.players[player].sevenMode = card_rules::aspectMode(state_, catalog(), player);
+        v.players[player].castingCapacity = Rules::castingCapacity(state_, catalog(), player);
+        for (const auto &[id, card] : state_.cards)
+            if (controllerOf(card) == player && card.zone == Zone::Casting) ++v.players[player].castingCount;
         v.players[player].infiniteLife = state_.players[player].debugInfiniteLife;
         v.players[player].infiniteMana = state_.players[player].debugInfiniteMana;
         v.players[player].infiniteLoad = state_.players[player].debugInfiniteLoad;
@@ -74,6 +82,8 @@ GameView GameEngine::viewFor(PlayerId p) const {
             (c.zone != Zone::Hand || controllerOf(c) == p) && (c.zone != Zone::SideDeck || controllerOf(c) == p))) {
             const auto &def = catalog().at(c.definition);
             CardView card{c, def};
+            if (catalog().mechanicsRevision >= 12 && hasCapability(def, Capability::QuickHostAnalysis1) &&
+                c.quickAnalysisGlobalTurn == state_.globalTurn) card.statuses.push_back("本回合解析减时已使用");
             for (const auto &m : state_.modifiers)
                 if (m.target == id && m.kind == ModifierKind::HalfRings) card.statuses.push_back("【油腻术】效果生效中");
             for (const auto &[source, cloud] : state_.cards)
@@ -123,8 +133,22 @@ GameView GameEngine::viewFor(PlayerId p) const {
                         std::max(0, def.analysisTurns - c.analysisProgress);
             v.cards.push_back(std::move(card));
         }
-    if (state_.decision && state_.decision->player == p)
+    if (state_.decision && state_.decision->player == p) {
         v.decision = state_.decision;
+        v.decisionSource = state_.maintenanceCard();
+    }
+    if (v.chain)
+        for (auto &link : v.chain->links) {
+            const auto visible = std::find_if(v.cards.begin(), v.cards.end(), [&](const CardView &card) {
+                return card.instance.id == link.item.source;
+            });
+            if (link.item.source && (visible == v.cards.end() || visible->hidden)) {
+                link.speed = link.castCost = 0;
+                link.item.effects.clear();
+                link.item.invalidateEffectsKey();
+                if (link.ability != "ambush") link.ability.clear();
+            }
+        }
 
     v.temporary = state_.temporary;
     // Actions are queried separately; stable projections never enumerate commands.

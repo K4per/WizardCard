@@ -24,6 +24,8 @@ var _preceding_action: String = ""
 var _log_phase: String = ""
 
 func _ready() -> void:
+	# The exported instance can start with zero anchors even when its page fills the window.
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	detail.clear_card()
 	own.custom_minimum_size.x = 0
 	opponent.custom_minimum_size.x = 0

@@ -1,0 +1,46 @@
+{
+  "cancelRevision": "70",
+  "card": "35",
+  "failures": [],
+  "host": "10",
+  "manaAfter": 0,
+  "manaBefore": 0,
+  "name": "阳炎爆",
+  "opponentSeesIdentity": false,
+  "overflow": {
+    "after": 0,
+    "before": 1,
+    "capacity": 0,
+    "playedCard": "30"
+  },
+  "placementStep": 70,
+  "protectedLife": 40,
+  "resolution": [
+    2,
+    1
+  ],
+  "resolvedCards": [
+    "47",
+    "70"
+  ],
+  "responseChain": "C1 · 魔法飞弹\nC2 · 护盾术\n",
+  "seed": 42,
+  "selectedRingIndex": 1,
+  "shieldCost": 3,
+  "startRevision": "70",
+  "upgradeManaBefore": 2,
+  "replays": {
+    "replay": {
+      "commands": 71,
+      "finalDigest": "a494205771302e06"
+    },
+    "tutorialReplay": {
+      "commands": 95,
+      "finalDigest": "a13bbccfd8e36998"
+    },
+    "overflowReplay": {
+      "commands": 226,
+      "finalDigest": "a3167892e3444d48"
+    }
+  }
+}

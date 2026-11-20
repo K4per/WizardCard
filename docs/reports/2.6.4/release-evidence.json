@@ -1,0 +1,134 @@
+{
+  "sourceCommit": "78b20e12e4a4f6c449bad4599e71b96c1f244094",
+  "artifacts": [
+    {
+      "file": "WizardCard-2.6.4-windows-x64.zip",
+      "bytes": 361761386,
+      "sha256": "511b9a8b985576e86d9c637f15566986ae3ca19b3afd8ed6ac3d5089d26c545e"
+    },
+    {
+      "file": "WizardCard-CentralServer-2.6.4-linux-x86_64.tar.gz",
+      "bytes": 1148784,
+      "sha256": "6e72bee31c3ceeff398f8ad94b481a3fb8c322af838143af1f1954a29a155c0d"
+    }
+  ],
+  "windowsGodotTests": 374,
+  "linuxServerTests": 350,
+  "display": {
+    "samples": 192,
+    "clicks": 5786,
+    "misses": 0,
+    "collapsedMaximumBlockedRingCenters": 0,
+    "expandedMaximumBlockedRingCenters": 7,
+    "minimumHostArtHeight": 32.0171852111816,
+    "minimumArtDimension": 21.4208183288574
+  },
+  "seed42": {
+    "commands": 2579,
+    "digest": "20ccdb7b1474a233",
+    "replaySha256": "2a8df75ea0ec409cdfd4a6bbde00dc9308f1468ae901a4752fa125aa8f745f58"
+  },
+  "independentNetwork": {
+    "endpoint": "localhost:4884",
+    "room": "KQSMY7YZ",
+    "clients": [
+      {
+        "connected": true,
+        "defaultConnection": false,
+        "openingPrivacy": true,
+        "openingTieObserved": true,
+        "phase": "completed",
+        "releasedSpellObserved": true,
+        "replayDelivered": true,
+        "result": 0,
+        "role": "host",
+        "roomCode": "KQSMY7YZ"
+      },
+      {
+        "defaultConnection": false,
+        "left": true,
+        "openingPrivacy": true,
+        "openingTieObserved": true,
+        "phase": "completed",
+        "releasedSpellObserved": true,
+        "replayDelivered": true,
+        "role": "guest",
+        "roomCode": "KQSMY7YZ"
+      }
+    ],
+    "commands": {
+      "21": 4,
+      "18": 2,
+      "13": 35,
+      "14": 7,
+      "0": 1,
+      "5": 1,
+      "11": 1
+    },
+    "commandCount": 51,
+    "matchingReplayDigest": "448591920091abd3",
+    "identicalReplay": true,
+    "verifiedManualReconnects": 2,
+    "unexpectedDisconnects": 0
+  },
+  "publicNetwork": {
+    "endpoint": "aq.rainplay.cn:23513",
+    "room": "CWRSYAFP",
+    "clients": [
+      {
+        "connected": true,
+        "defaultConnection": true,
+        "openingPrivacy": true,
+        "openingTieObserved": true,
+        "phase": "completed",
+        "releasedSpellObserved": true,
+        "replayDelivered": true,
+        "result": 0,
+        "role": "host",
+        "roomCode": "CWRSYAFP"
+      },
+      {
+        "defaultConnection": true,
+        "left": true,
+        "openingPrivacy": true,
+        "openingTieObserved": true,
+        "phase": "completed",
+        "releasedSpellObserved": true,
+        "replayDelivered": true,
+        "role": "guest",
+        "roomCode": "CWRSYAFP"
+      }
+    ],
+    "commands": {
+      "21": 4,
+      "18": 2,
+      "13": 57,
+      "14": 12,
+      "0": 2,
+      "5": 1,
+      "10": 1,
+      "11": 1
+    },
+    "commandCount": 80,
+    "matchingReplayDigest": "2d65962acd11ae0c",
+    "identicalReplay": true,
+    "verifiedManualReconnects": 2,
+    "unexpectedDisconnects": 0
+  },
+  "finalHealth": {
+    "health": {
+      "connections": 0,
+      "ready": true,
+      "resumeCredentials": 0,
+      "rooms": 0,
+      "status": "ok"
+    },
+    "version": "2.6.4",
+    "service": "active",
+    "verifiedFiles": 125,
+    "sourceCommit": "78b20e12e4a4f6c449bad4599e71b96c1f244094"
+  },
+  "verifiedWindowsFiles": 265,
+  "productionBackup": "/var/backups/wizardcard/pre-v264-20261120-110725.tar.gz",
+  "deployedAtUtc": "2026-11-20T11:07:32.837128+00:00"
+}

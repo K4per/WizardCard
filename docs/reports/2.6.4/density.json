@@ -1,0 +1,2882 @@
+[
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 36.2518615722656,
+		"minHostArtHeight": 36.2518615722656,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 36.2518615722656,
+		"minHostArtHeight": 36.2518615722656,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 36.2518615722656,
+		"minHostArtHeight": 36.2518615722656,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 36.2518615722656,
+		"minHostArtHeight": 36.2518615722656,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 36.2518615722656,
+		"minHostArtHeight": 36.2518615722656,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 36.2518615722656,
+		"minHostArtHeight": 36.2518615722656,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 36.2518615722656,
+		"minHostArtHeight": 36.2518615722656,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 36.2518615722656,
+		"minHostArtHeight": 36.2518615722656,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 31,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 36,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 31,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 36,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 29.9820003509521,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 29.9820003509521,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 29.9820003509521,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 29.9820003509521,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 29.9820003509521,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 29.9820003509521,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 29.9820003509521,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 29.9820003509521,
+		"minHostArtHeight": 36.2518653869629,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 32.0171852111816,
+		"minHostArtHeight": 32.0171852111816,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 32.0171852111816,
+		"minHostArtHeight": 32.0171852111816,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 32.0171852111816,
+		"minHostArtHeight": 32.0171852111816,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 32.0171852111816,
+		"minHostArtHeight": 32.0171852111816,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 32.0171852111816,
+		"minHostArtHeight": 32.0171852111816,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 32.0171852111816,
+		"minHostArtHeight": 32.0171852111816,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 32.0171852111816,
+		"minHostArtHeight": 32.0171852111816,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 32.0171852111816,
+		"minHostArtHeight": 32.0171852111816,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 7,
+		"clicks": 29,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 7,
+		"clicks": 29,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 36,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 36,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 21.4208183288574,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 26.315616607666,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 26.315616607666,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 26.315616607666,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 26.315616607666,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 26.315616607666,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 26.315616607666,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 26.315616607666,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 26.315616607666,
+		"minHostArtHeight": 32.0171890258789,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1280,
+			720
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 47.1410217285156,
+		"minHostArtHeight": 47.1410217285156,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 47.1410217285156,
+		"minHostArtHeight": 47.1410217285156,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 47.1410217285156,
+		"minHostArtHeight": 47.1410217285156,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 47.1410217285156,
+		"minHostArtHeight": 47.1410217285156,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 47.1410217285156,
+		"minHostArtHeight": 47.1410217285156,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 47.1410217285156,
+		"minHostArtHeight": 47.1410217285156,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 47.1410217285156,
+		"minHostArtHeight": 47.1410217285156,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 47.1410217285156,
+		"minHostArtHeight": 47.1410217285156,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 33,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 38,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 33,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 38,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 39.4098510742188,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 39.4098510742188,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 39.4098510742188,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 39.4098510742188,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 39.4098510742188,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 39.4098510742188,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 39.4098510742188,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 39.4098510742188,
+		"minHostArtHeight": 47.1410293579102,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 46.611686706543,
+		"minHostArtHeight": 46.611686706543,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 46.611686706543,
+		"minHostArtHeight": 46.611686706543,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 46.611686706543,
+		"minHostArtHeight": 46.611686706543,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 46.611686706543,
+		"minHostArtHeight": 46.611686706543,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 46.611686706543,
+		"minHostArtHeight": 46.611686706543,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 46.611686706543,
+		"minHostArtHeight": 46.611686706543,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 46.611686706543,
+		"minHostArtHeight": 46.611686706543,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 46.611686706543,
+		"minHostArtHeight": 46.611686706543,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 36,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 30,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 36,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 27.9773731231689,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 38.9515495300293,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 38.9515495300293,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 38.9515495300293,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 38.9515495300293,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 38.9515495300293,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 38.9515495300293,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 25,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 38.9515495300293,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 26,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 38.9515495300293,
+		"minHostArtHeight": 46.6116981506348,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1600,
+			900
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 33,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 38,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 33,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 38,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 57.5197639465332,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 33,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 38,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 5,
+		"clicks": 33,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 6,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 38,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 34.5339202880859,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "default",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 27,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 28,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 48.3957672119141,
+		"minHostArtHeight": 57.5197639465332,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			1920,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 42,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 2,
+		"clicks": 40,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 2,
+		"clicks": 40,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 42,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 42,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 41,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 41,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 42,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 100,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "five-body1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 42,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 2,
+		"clicks": 40,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 2,
+		"clicks": 40,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 42,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 42,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 41,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 41,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 42,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "mixed-2-2-1",
+		"minBoardArtDimension": 42.1142807006836,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 14,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "default",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "hover",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 1,
+		"clicks": 31,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "selected",
+		"window": [
+			2560,
+			1080
+		]
+	},
+	{
+		"blockedRingCenters": 0,
+		"clicks": 32,
+		"fontPercent": 120,
+		"hand": 20,
+		"layout": "large-4-1",
+		"minBoardArtDimension": 58.957447052002,
+		"minHostArtHeight": 58.957447052002,
+		"misses": [],
+		"state": "collapsed",
+		"window": [
+			2560,
+			1080
+		]
+	}
+]

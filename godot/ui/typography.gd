@@ -15,6 +15,16 @@ static func _bundled_or_fallback(path: String) -> Font:
 	var bundled: Font = load(path) as Font
 	return bundled if bundled != null else ThemeDB.fallback_font
 
+static var _card_italics: FontVariation
+
+static func style_card_text(label: RichTextLabel) -> void:
+	if _card_italics == null:
+		_card_italics = FontVariation.new()
+		_card_italics.base_font = BODY
+		_card_italics.variation_transform = Transform2D(Vector2.RIGHT, Vector2(-0.2, 1), Vector2.ZERO)
+	label.add_theme_font_override(&"italics_font", _card_italics)
+	label.bbcode_enabled = true
+
 static func override_size(control: Control, item: StringName, base_size: int) -> void:
 	var base: Dictionary = control.get_meta(&"typography_base_sizes", {})
 	var applied: Dictionary = control.get_meta(&"typography_applied_sizes", {})

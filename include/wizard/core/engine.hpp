@@ -88,7 +88,8 @@ class GameEngine {
     bool chooseContentEffectV2(PlayerId, DecisionKind, ChoiceValue);
     bool resolveSpellChoice();
     bool chooseSpellChoice(PlayerId, ChoiceValue);
-    void actionTimingV2(ResponseWindow = ResponseWindow::Action);
+    void actionTimingV2(const std::string &action, CardId publicSource = 0);
+    std::string publicAction(PlayerId, const std::string &, CardId) const;
     std::string responseSetupV2(PlayerId, const Command &);
     std::string activateSpellV252(PlayerId, CardId, CardId, const std::vector<CardId> &, CardId, bool,
                                  DecisionId = 0);

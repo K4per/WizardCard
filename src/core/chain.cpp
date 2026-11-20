@@ -7,6 +7,16 @@
 #include <type_traits>
 namespace wizard {
 using namespace detail;
+std::string GameEngine::publicAction(PlayerId actor, const std::string &action, CardId source) const {
+    auto text = "玩家 " + std::to_string(actor + 1) + " " + action;
+    if (source) {
+        const auto &card = state_.cards.at(source);
+        if (card.publiclyRevealed || (!card.faceDown && card.zone != Zone::Deck &&
+            card.zone != Zone::SideDeck && card.zone != Zone::Hand))
+            text += "《" + catalog().at(card.definition).name + "》";
+    }
+    return text;
+}
 void GameEngine::startChain(ResponseWindow window, ChainLink root, PlayerId priority) {
     auto &s = state_;
     if (s.chain)
@@ -15,6 +25,12 @@ void GameEngine::startChain(ResponseWindow window, ChainLink root, PlayerId prio
         const auto &d = catalog().at(s.cards.at(root.item.source).definition);
         root.speed = d.speed;
         root.castCost = Rules::castCost(s, catalog(), root.item.source);
+    }
+    if (root.publicAction.empty()) {
+        auto action = linkName(root.kind);
+        if (root.kind == LinkKind::Phase)
+            action = phaseName(s.phase) + windowName(window);
+        root.publicAction = publicAction(root.item.owner, action, root.item.source);
     }
     root.id = s.nextLink++;
     ChainState chain;
@@ -26,9 +42,9 @@ void GameEngine::startChain(ResponseWindow window, ChainLink root, PlayerId prio
     chain.links.push_back(std::move(root));
     s.chain = std::move(chain);
     s.phaseGate = 0;
-    s.events.push_back({"chain_open", "建立连锁：" + windowName(window)});
-    s.events.push_back({"link_declared", "宣告链节 #" + std::to_string(s.chain->links.back().id), -1,
-                        s.chain->links.back().item.source});
+    const auto &first = s.chain->links.front();
+    s.events.push_back({"chain_open", "建立连锁：" + first.publicAction});
+    s.events.push_back({"link_declared", "宣告：" + first.publicAction, -1, first.item.source});
     s.events.back().chainIndex = 1;
 }
 void GameEngine::beginEffect(CardId id, AfterEffect after) {
@@ -360,7 +376,7 @@ void GameEngine::finishLink(bool success) {
         }
     }
     s.events.push_back({success ? "link_resolved" : "link_skipped",
-                        (success ? "结算" : "取消或失效：") + std::string("链节 #") + std::to_string(link.id),
+                        (success ? "结算：" : "取消或失效：") + link.publicAction,
                         -1, link.item.source});
     s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
     s.events.back().spellReleased =

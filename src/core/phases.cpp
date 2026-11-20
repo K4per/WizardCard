@@ -283,7 +283,7 @@ StepResult GameEngine::step(ExecutionContext &context) {
         }
         if (s.timingPending) {
             s.timingPending = false;
-            actionTimingV2(ResponseWindow::Action);
+            actionTimingV2("进入连锁处理后的响应时点");
             return StepResult::Progress;
         }
         StateMaintenance::check(s, catalog());

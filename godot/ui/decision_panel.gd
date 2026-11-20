@@ -52,6 +52,7 @@ func _ready() -> void:
 	_preview_column = %PreviewColumn
 	_preview = %Preview
 	_preview_text = %PreviewText
+	Typography.style_card_text(_preview_text)
 	_actions = %Actions
 	_confirm = %Confirm
 	_cancel = %Cancel
@@ -255,12 +256,13 @@ func _refresh() -> void:
 	_counter.text = "" if request.maximum == 1 else "已选 %d / %d" % [_selected.size(), request.maximum]
 
 func _show_preview(choice: DecisionChoice) -> void:
+	var caption: String = CardPresentation.escape_bbcode(choice.label)
 	_preview.visible = choice.card != null
 	if choice.card != null:
 		_preview.configure(choice.card)
-		_preview_text.text = choice.label + "\n\n" + ("身份未公开" if choice.card.hidden else choice.card.detail_text())
+		_preview_text.text = caption + "\n\n" + ("身份未公开" if choice.card.hidden else choice.card.detail_text(true))
 	else:
-		_preview_text.text = choice.label
+		_preview_text.text = caption
 
 func _gui_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or _candidate_scroll == null:

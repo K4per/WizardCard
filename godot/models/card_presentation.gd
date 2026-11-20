@@ -110,10 +110,15 @@ static func from_preview_definition(data: Dictionary) -> CardPresentation:
 func art_id() -> String:
 	return illustration_id if not illustration_id.is_empty() else definition_id
 
-func detail_text() -> String:
+static func escape_bbcode(value: String) -> String:
+	return value.replace("[", "[lb]")
+
+func detail_text(rich: bool = false) -> String:
 	var result: String = (metadata_text + "\n\n" if not metadata_text.is_empty() else "") + "效果：\n" + text
+	if rich:
+		result = escape_bbcode(result)
 	if not flavor.is_empty():
-		result += "\n\n风味文本：\n" + flavor
+		result += "\n\n" + ("[i]" + escape_bbcode(flavor) + "[/i]" if rich else flavor)
 	return result
 
 func rarity_text() -> String:

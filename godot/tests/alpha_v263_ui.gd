@@ -235,7 +235,7 @@ func _run() -> void:
 	page._hover_card(inspected)
 	check(page._detail.card == inspected and page._detail._title.text == "盖伏卡" and page.canvas.selected_id == "33", "inspecting a different card preserves the pinned source")
 	page._hover_card(null)
-	check(page._detail.card == page._selected, "leaving a preview restores the selected card")
+	check(page._detail.card == inspected and page.canvas.selected_id == "33", "leaving a preview keeps the last inspected card and the selected source")
 	var events: Array = [{"kind":"link_resolved", "text":"结算链节 #17", "chainIndex":2}, {"kind":"link_skipped", "text":"取消链节 #16", "chainIndex":1}, {"kind":"chain_closed", "text":"连锁结束"}]
 	page._events_changed({"reset":true, "events":events})
 	page._update_chain({})
@@ -244,7 +244,7 @@ func _run() -> void:
 	page._events_changed({"events":automatic_events})
 	events.append_array(automatic_events)
 	check(page._chain_text.get_parsed_text().contains("C2 → C1"), "an automatic one-link window cannot erase the just-finished multi-link sequence")
-	check(page._logs_text.get_parsed_text().find("C2") >= 0 and page._logs_text.get_parsed_text().find("C2") < page._logs_text.get_parsed_text().find("C1"), "public log retains the reverse resolution order")
+	check(not page._logs_text.get_parsed_text().contains("C2") and not page._logs_text.get_parsed_text().contains("链节 #") and page._logs_text.get_parsed_text().begins_with("结算：行动\n取消或失效：行动"), "public log describes resolution order without link numbering")
 	check(page._logs_panel.is_visible_in_tree() and page._logs_panel.global_position.x >= board.end.x and page._chain_text.global_position.y < page._logs_panel.global_position.y, "both history panels stay on the right")
 	check(page.canvas.get_global_rect() == board and page.canvas.selected_id == "33", "log updates preserve field geometry and selected action source")
 	var replay: ReplayPage = load("res://pages/replay_page.tscn").instantiate()

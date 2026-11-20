@@ -74,7 +74,8 @@ var _debug_rewind: Button
 var _clock_received: int = 0
 var _clock_poll_elapsed: float = 0.0
 var _reconnect_started_at_msec: int = -1
-var _hovering: bool = false
+var _detail_generation: String = ""
+var _detail_viewer: int = -1
 var _selection_id: String = ""
 var _match_menu: PanelContainer
 var _menu_shade: ColorRect
@@ -231,7 +232,6 @@ func _response_mode_changed(index: int) -> void:
 	if raw is Dictionary and int((raw as Dictionary).get("kind", -1)) == 0:
 		_clear_action_targets()
 		_action_popup.hide()
-		_detail.clear_card()
 		if not _pending.is_empty():
 			_confirm.close_popup()
 			_cancel_pending()
@@ -537,11 +537,18 @@ func _refresh() -> void:
 		keep_selection.title = "卡牌已离场"
 	_selected = keep_selection
 	canvas.selected_id = preserved_id if keep_selection != null else ""
-	if keep_selection == null:
-		_detail.clear_card()
-	else:
-		_detail.configure(keep_selection)
-		_detail.show()
+	var generation: String = str(snapshot.get("generation", ""))
+	var viewer: int = int(snapshot.get("viewer", service.match_viewer))
+	if _detail.card != null:
+		var inspected: CardPresentation
+		if generation == _detail_generation and viewer == _detail_viewer:
+			inspected = MatchProjection.card(snapshot, _detail.card.instance_id)
+		if inspected != null:
+			_detail.configure(inspected)
+		else:
+			_detail.clear_card()
+	_detail_generation = generation
+	_detail_viewer = viewer
 	_detail_shade.hide()
 	_collection.hide()
 	_action_popup.hide()
@@ -642,17 +649,12 @@ func _update_clock() -> void:
 func _hover_card(card: CardPresentation) -> void:
 	if _privacy_layer.visible or _match_menu.visible or _confirm.visible:
 		return
-	_hovering = card != null
 	if card != null:
 		_detail.configure(card)
-	elif _selected != null:
-		_detail.configure(_selected)
-	else:
-		_detail.clear_card()
 
 func _close_detail() -> void:
 	if _selection.active and _selection.options != null and _selection.options.field != KernelContract.ActionField.Operation:
-		_hover_card(null)
+		_detail.clear_card()
 	else:
 		_clear_card()
 
@@ -797,7 +799,6 @@ func _query_changed(options: ActionOptions) -> void:
 			_restore_tray_hand()
 			_decision.hide()
 			_action_popup.hide()
-			_detail.clear_card()
 			_detail_shade.hide()
 			canvas.grab_focus()
 			_notice.text = "点击高亮空槽独立设置，或点选高亮阵法进行替换。"

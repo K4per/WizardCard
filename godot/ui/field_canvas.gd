@@ -497,7 +497,7 @@ func _draw_formation_cluster(formation: FormationPresentation, cluster: Rect2, o
 		draw_rect(rect, Color("213743"))
 		draw_rect(rect, Color("47626e"), false, 1)
 		if formation.occupants.has(ring):
-			_draw_card(formation.occupants[ring], rect, not own)
+			_draw_card(formation.occupants[ring], rect)
 		else:
 			_draw_label(str(ring + 1), rect, 13, Color("91a8b1"), true)
 		if _legal_ring(formation.card.instance_id, ring):
@@ -511,7 +511,7 @@ func _draw_formation_cluster(formation: FormationPresentation, cluster: Rect2, o
 		var height: float = minf(28, band.size.y - 4)
 		var badge: Rect2 = Rect2(band.end.x - width - 2, band.position.y + 2, width, height)
 		_draw_expand_button(formation.card, badge, formation)
-	_draw_single_rune(formation.card, face, not own)
+	_draw_single_rune(formation.card, face)
 
 func _draw_editor_analysis(region: Rect2, own: bool) -> void:
 	draw_rect(region, Color("20303e"))
@@ -532,7 +532,7 @@ static func board_artwork_rect(face: Rect2, card: CardPresentation) -> Rect2:
 func _paint_board_card(card: CardPresentation, face: Rect2) -> void:
 	CardPainter.paint_miniature(self, card, face, card.instance_id in [_hover_id, selected_id])
 
-func _draw_card(card: CardPresentation, cell: Rect2, mirrored: bool = false, casting: bool = false) -> void:
+func _draw_card(card: CardPresentation, cell: Rect2, casting: bool = false) -> void:
 	var rect: Rect2 = cell if casting else CardPainter.fitted_rect(cell.grow(-1))
 	var art: Rect2 = rect.grow(-rect.size.x * 0.085) if casting else board_artwork_rect(rect, card)
 	_card_hits.append({"rect": cell, "face_rect": rect, "art_rect": art, "card": card})
@@ -546,17 +546,15 @@ func _draw_card(card: CardPresentation, cell: Rect2, mirrored: bool = false, cas
 		var extent: Vector2 = Vector2(minf(44, rect.size.x * 0.42), minf(25, rect.size.y * 0.45))
 		_draw_expand_button(card, Rect2(rect.end - extent, extent))
 	else:
-		_draw_single_rune(card, rect, mirrored)
+		_draw_single_rune(card, rect)
 
-func _draw_single_rune(host: CardPresentation, rect: Rect2, mirrored: bool) -> void:
+func _draw_single_rune(host: CardPresentation, rect: Rect2) -> void:
 	var cards: Array = field.attachments.get(host.instance_id, [])
 	if cards.size() != 1:
 		return
 	var height: float = minf(32, minf(rect.size.x, rect.size.y) * 0.47)
 	var extent: Vector2 = Vector2(height * 0.75, height)
-	var box: Rect2 = Rect2(rect.position + Vector2(1, rect.size.y - height - 1), extent)
-	if mirrored:
-		box.position = rect.end - (box.end - rect.position)
+	var box: Rect2 = Rect2(rect.end - extent - Vector2.ONE, extent)
 	var card: CardPresentation = cards[0] as CardPresentation
 	_card_hits.append({"rect": box, "face_rect": box, "art_rect": board_artwork_rect(box, card), "card": card})
 	_paint_board_card(card, box)
@@ -652,10 +650,7 @@ func _draw_legal_highlight(card: CardPresentation, rect: Rect2) -> void:
 		if availability & FieldPresentation.LEGAL_GOLD:
 			_draw_glow(rect, Color("f2cb62"))
 		if availability & FieldPresentation.LEGAL_AMBUSH:
-			var outline: Rect2 = rect.grow(5 if availability & FieldPresentation.LEGAL_GOLD else 2)
-			var corners: PackedVector2Array = [outline.position, Vector2(outline.end.x, outline.position.y), outline.end, Vector2(outline.position.x, outline.end.y)]
-			for index: int in range(corners.size()):
-				draw_dashed_line(corners[index], corners[(index + 1) % corners.size()], Color("40c7ff"), 2, 5)
+			_draw_glow(rect.grow(3 if availability & FieldPresentation.LEGAL_GOLD else 0), Color("40c7ff"))
 
 func _draw_glow(rect: Rect2, color: Color) -> void:
 	draw_rect(rect.grow(4), Color(color, 0.24), false, 7)
@@ -686,7 +681,7 @@ func _draw_casting(cards: Array[CardPresentation], slots: int, region: Rect2, ow
 	var card_width: float = minf(track.size.y, available / maxi(count, 1))
 	var x: float = track.get_center().x - (count * card_width + gap * maxi(0, count - 1)) * 0.5
 	for index: int in range(count):
-		_draw_card(cards[first + index], Rect2(x, track.get_center().y - card_width * 0.5, card_width, card_width), not own, true)
+		_draw_card(cards[first + index], Rect2(x, track.get_center().y - card_width * 0.5, card_width, card_width), true)
 		x += card_width + gap
 	if paged:
 		for direction: int in [-1, 1]:

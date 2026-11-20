@@ -94,12 +94,7 @@ func _body_checks(canvas: FieldCanvas, body: int, include_small: bool, output: S
 			_expect(is_equal_approx(attached_rect.size.x / attached_rect.size.y, 0.75), "attached rune is a portrait card")
 			var attached_host: CardPresentation = owner_group.card if host_id == owner_group.card.instance_id else owner_group.occupants[0]
 			_expect(canvas.card_bounds(attached_host).encloses(attached_rect) and canvas.card_at(attached_rect.get_center()) == attached, "body-span attachment stays on its own host and retains selection priority")
-	for suffix: String in ["-rune", "-spell-rune"]:
-		var own_rune: CardPresentation = fixture.attachments[own.card.instance_id if suffix == "-rune" else own.occupants[0].instance_id][0] as CardPresentation
-		var opponent_rune: CardPresentation = fixture.attachments[opponent.card.instance_id if suffix == "-rune" else opponent.occupants[0].instance_id][0] as CardPresentation
-		var own_rune_rect: Rect2 = canvas.card_bounds(own_rune)
-		var opponent_rune_rect: Rect2 = canvas.card_bounds(opponent_rune)
-		_expect((canvas.size - own_rune_rect.end).is_equal_approx(opponent_rune_rect.position), "host and spell attachment boxes remain center symmetric")
+			_expect((canvas.card_bounds(attached_host).end - attached_rect.end).is_equal_approx(Vector2.ONE), "both players' runes appear in the lower-right corner of the host")
 	var targets: Dictionary[String, PackedInt32Array] = {}
 	targets[own.card.instance_id] = PackedInt32Array([own.ring_count - 1])
 	canvas.set_action_targets([], targets)

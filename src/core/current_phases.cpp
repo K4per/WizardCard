@@ -100,7 +100,7 @@ bool GameEngine::phaseV2() {
             s.phase == Phase::Draw || s.phase == Phase::Prepare ? PhasePreparationStage::Income
                 : PhasePreparationStage::FormationTriggers, 0};
         s.durationApplied = false;
-        s.events.push_back({"phase_enter", "进入" + phaseName(s.phase) + "阶段"});
+        s.events.push_back({"phase_enter", publicAction(s.active, "进入" + phaseName(s.phase) + "阶段", 0)});
         s.phaseStep = PhaseStep::PrepareIncome;
         return true;
     }
@@ -133,7 +133,7 @@ bool GameEngine::phaseV2() {
                 }
             Trigger trigger; trigger.owner = s.active;
             EffectResolver::apply(s, catalog(), trigger, {EffectKind::GainMana, std::max(0, income)});
-            s.events.push_back({"income", "阵法收入 " + std::to_string(income)});
+            s.events.push_back({"income", publicAction(s.active, "获得阵法收入 " + std::to_string(income), 0)});
             resume.stage = PhasePreparationStage::Draw;
             return true; // Income-triggered choices finish before attempting to draw.
         }
@@ -306,7 +306,7 @@ bool GameEngine::phaseV2() {
         s.phaseStep = PhaseStep::Finish; return true;
     }
     case PhaseStep::Finish:
-        s.events.push_back({"phase_end", phaseName(s.phase) + "阶段结束"});
+        s.events.push_back({"phase_end", publicAction(s.active, phaseName(s.phase) + "阶段结束", 0)});
         if (s.phase == Phase::End) {
             for (auto &player : s.players) player.damageReduction = player.forceDamageReduction = 0;
             s.skipCastPhase = false;

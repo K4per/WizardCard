@@ -4,6 +4,12 @@ extends PanelContainer
 const PANEL_SIZE: Vector2 = Vector2(316, 72)
 const EDGE_MARGIN: float = 12.0
 
+# Silhouettes share the label colors and keep their meaning at HUD scale.
+const HEART := [Vector2(7, 13), Vector2(1, 7), Vector2(0, 4), Vector2(2, 1), Vector2(5, 1), Vector2(7, 3), Vector2(9, 1), Vector2(12, 1), Vector2(14, 4), Vector2(13, 7)]
+const SHIELD := [Vector2(7, 0), Vector2(13, 2), Vector2(12, 8), Vector2(10, 11), Vector2(7, 14), Vector2(4, 11), Vector2(2, 8), Vector2(1, 2)]
+const CRYSTAL := [Vector2(7, 0), Vector2(13, 6), Vector2(7, 14), Vector2(1, 6)]
+const WEIGHT := [Vector2(5, 1), Vector2(9, 1), Vector2(10, 4), Vector2(12, 4), Vector2(14, 13), Vector2(0, 13), Vector2(2, 4), Vector2(4, 4)]
+
 var _name: Label
 var _life: Label
 var _temporary_life: Label
@@ -29,18 +35,29 @@ func _ready() -> void:
 	stats.add_theme_constant_override(&"v_separation", 1)
 	stats.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(stats)
-	_life = _add_stat(stats, "生命", Color("f28a83"))
-	_temporary_life = _add_stat(stats, "临时生命", Color("85d8ec"))
-	_mana = _add_stat(stats, "魔素", Color("78cfb0"))
-	_load = _add_stat(stats, "荷载", Color("e9c978"))
+	_life = _add_stat(stats, "生命", Color("f28a83"), HEART)
+	_temporary_life = _add_stat(stats, "临时生命", Color("85d8ec"), SHIELD)
+	_mana = _add_stat(stats, "魔素", Color("78cfb0"), CRYSTAL)
+	_load = _add_stat(stats, "荷载", Color("e9c978"), WEIGHT)
 	custom_minimum_size = PANEL_SIZE
 
-func _add_stat(parent: GridContainer, caption: String, tint: Color) -> Label:
+func _add_stat(parent: GridContainer, caption: String, tint: Color, shape: PackedVector2Array) -> Label:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override(&"separation", 4)
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(row)
+	var icon := Control.new()
+	icon.custom_minimum_size = Vector2(14, 14)
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(icon)
+	icon.draw.connect(icon.draw_colored_polygon.bind(shape, tint))
 	var value: Label = UiFactory.label(caption + " —", 14)
 	value.add_theme_color_override(&"font_color", tint)
 	value.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	value.mouse_filter = Control.MOUSE_FILTER_PASS
-	parent.add_child(value)
+	row.add_child(value)
 	return value
 
 static func place_corners(own: PlayerStatusBar, opponent: PlayerStatusBar, viewport_size: Vector2) -> void:

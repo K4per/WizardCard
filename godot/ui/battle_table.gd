@@ -15,6 +15,13 @@ extends Control
 var _resolved: PackedStringArray = []
 var _last_multi_chain: String = ""
 var _chain: Dictionary = {}
+# Older servers send a link id in the event text. Keep only public captions from
+# observed links so fast resolution and history redraws retain their declarations.
+var _seen_links: Dictionary = {}
+var _window_actions: Dictionary = {}
+var _opening_action: String = ""
+var _preceding_action: String = ""
+var _log_phase: String = ""
 
 func _ready() -> void:
 	detail.clear_card()
@@ -46,7 +53,14 @@ func arrange() -> void:
 	detail._art.custom_minimum_size = Vector2(0, minf(left * 1.04, detail.size.y * 0.43))
 
 func show_frame(snapshot: Dictionary) -> void:
+	if snapshot.get("viewer") != _chain.get("viewer") or snapshot.get("generation") != _chain.get("generation"):
+		_seen_links.clear()
+		_window_actions.clear()
+		_opening_action = ""
+		_preceding_action = ""
+		_log_phase = ""
 	_chain = snapshot
+	_remember_public_links(snapshot)
 	var player: int = int(snapshot.get("activePlayer", 0))
 	var players: Array = snapshot.get("players", [])
 	var turn: int = int(players[player].get("ownTurn", 0)) if player >= 0 and player < players.size() else 0
@@ -74,12 +88,15 @@ func update_events(events: Array, reset: bool) -> void:
 		log_text.clear()
 		_resolved.clear()
 		_last_multi_chain = ""
-	for event: Dictionary in events:
-		var message: String = str(event.get("text", "对局状态已更新"))
+		_window_actions.clear()
+		_opening_action = ""
+		_preceding_action = ""
+		_log_phase = ""
+	for position: int in events.size():
+		var event: Dictionary = events[position]
 		var index: int = int(event.get("chainIndex", 0))
-		if index > 0:
-			message = "C%d · %s" % [index, message]
-		log_text.add_text(message + "\n")
+		var following: Dictionary = events[position + 1] if position + 1 < events.size() else {}
+		log_text.add_text(_event_caption(event, following) + "\n")
 		match str(event.get("kind", "")):
 			"chain_open":
 				_resolved.clear()
@@ -91,6 +108,112 @@ func update_events(events: Array, reset: bool) -> void:
 					_last_multi_chain = " → ".join(_resolved)
 				_resolved.clear()
 	_render_chain()
+
+func _public_card(source: String) -> Dictionary:
+	for card: Dictionary in _chain.get("cards", []):
+		if str(card.get("id", "")) == source:
+			return card
+	return {}
+
+func _legacy_action(action: String, source: String, actor: int = -1, show_name: bool = true) -> String:
+	var card: Dictionary = _public_card(source)
+	if actor < 0:
+		actor = int(card.get("controller", card.get("owner", -1)))
+	var name_text: String = str(card.get("definition", {}).get("name", ""))
+	var public_zone: bool = int(card.get("zone", -1)) in [2, 3, 4, 5, 6, 7, 8, 10]
+	if show_name and not name_text.is_empty() and not bool(card.get("hidden", false)) and not bool(card.get("faceDown", false)) and public_zone and action != "盖伏法术":
+		action += "《%s》" % name_text
+	return ("玩家 %d " % (actor + 1) if actor in [0, 1] else "") + action
+
+func _remember_public_links(snapshot: Dictionary) -> void:
+	var chain: Variant = snapshot.get("chain")
+	if not chain is Dictionary:
+		return
+	for link: Dictionary in chain.get("links", []):
+		var id: String = str(link.get("id", ""))
+		if id.is_empty() or _seen_links.has(id):
+			continue
+		var source: String = str(link.get("source", "0"))
+		var action: String = str(link.get("kindName", "行动"))
+		if action == "阶段":
+			if source != "0":
+				action = "盖伏法术"
+			elif int(chain.get("window", -1)) in [0, 1]:
+				action = str(snapshot.get("phaseName", "")) + str(chain.get("windowName", "阶段时点"))
+			else:
+				action = "行动后的响应时点"
+		var actor: int = int(link.get("owner", -1))
+		_seen_links[id] = {"actor":actor, "action":_legacy_action(action, source, actor)}
+		if _seen_links.size() > MatchEventLog.CAPACITY:
+			_seen_links.erase(_seen_links.keys()[0])
+
+func _old_link_id(message: String) -> String:
+	return message.get_slice("链节 #", 1) if message.contains("链节 #") else ""
+
+func _event_caption(event: Dictionary, following: Dictionary) -> String:
+	var kind: String = str(event.get("kind", ""))
+	var message: String = str(event.get("text", "对局状态已更新"))
+	var source: String = str(event.get("card", "0"))
+	var index: int = int(event.get("chainIndex", 0))
+	var previous: String = _preceding_action
+	_preceding_action = ""
+	if kind == "phase_enter" and message.begins_with("进入"):
+		_log_phase = message.trim_prefix("进入").trim_suffix("阶段")
+	if kind in ["ambush", "formation_set"]:
+		_preceding_action = message if message.begins_with("玩家") else _legacy_action(message, source)
+		return _preceding_action
+	if kind == "chain_open":
+		_window_actions.clear()
+		_opening_action = message.trim_prefix("建立连锁：")
+		if _opening_action.begins_with("玩家"):
+			return message
+		if not previous.is_empty() and _opening_action == "行动宣告":
+			_opening_action = previous
+		elif following.get("kind") == "link_declared":
+			var id: String = _old_link_id(str(following.get("text", "")))
+			var first: String = str(following.get("card", "0"))
+			if _seen_links.has(id):
+				_opening_action = _seen_links[id].action
+			elif _opening_action in ["阶段开始", "阶段结束"]:
+				_opening_action = _log_phase + _opening_action
+			else:
+				# Only actions which openly declare their source can recover its
+				# identity from a later frame. A trigger may have a private source.
+				var known_public: bool = _opening_action in ["准备施法", "释放法术"]
+				_opening_action = _legacy_action(_opening_action, first, -1, known_public)
+		return "建立连锁：" + _opening_action
+	var id: String = _old_link_id(message)
+	if kind == "link_declared" and not id.is_empty():
+		var action: String = _opening_action if index == 1 else ""
+		if action.is_empty():
+			action = str(_seen_links[id].action) if _seen_links.has(id) else (_legacy_action("发动响应", source) if index > 1 else "")
+		if action.is_empty():
+			action = _legacy_action("行动", source, -1, false)
+		_window_actions[index] = action
+		return "宣告：" + action
+	if kind in ["cast", "word_response", "prepare_declared", "flip"] and not message.contains("玩家"):
+		var action: String = _legacy_action(message.trim_prefix("宣告"), source)
+		if index > 0:
+			_window_actions[index] = action
+		return "宣告：" + action
+	if kind in ["link_resolved", "link_skipped"] and not id.is_empty():
+		var action: String = str(_window_actions.get(index, _seen_links[id].action if _seen_links.has(id) else "行动"))
+		return ("结算：" if kind == "link_resolved" else "取消或失效：") + action
+	if kind == "pay" and not message.contains("玩家"):
+		var payment := "支付 %d 魔素" % int(event.get("amount", 0)) if message == "支付魔素" else message
+		var next_link := _old_link_id(str(following.get("text", "")))
+		var payer: int = int(_seen_links.get(next_link, {}).get("actor", -1))
+		if payer in [0, 1] and str(following.get("card", "0")) == source:
+			return "玩家 %d %s" % [payer + 1, payment]
+		return payment
+	# Draw events are delivered only to the player who drew the card.
+	if kind == "draw" and not message.contains("玩家") and int(_chain.get("viewer", -1)) in [0, 1]:
+		return "玩家 %d %s" % [int(_chain.viewer) + 1, message]
+	if kind == "chain_closed":
+		_preceding_action = "进入连锁处理后的响应时点"
+		_window_actions.clear()
+		_opening_action = ""
+	return message
 
 func _render_chain() -> void:
 	chain_text.clear()

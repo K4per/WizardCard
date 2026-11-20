@@ -180,6 +180,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             link.speed = def.speed;
             link.castCost = hasCapability(def, Capability::CounterSpell)
                 ? paid : Rules::castCost(s, catalog(), c.id);
+            link.publicAction = publicAction(actor, "发动响应", c.id);
             link.ability = a.id;
             link.paymentIndex = static_cast<int>(c.payments.size()) - 1;
             link.paid = paid;
@@ -232,9 +233,9 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             s.chain->passes = 0;
             s.chain->priority = 1 - actor;
             s.decision.reset();
-            s.events.push_back({"pay", "响应支付 " + std::to_string(paid) + " 魔素", -1, c.id, paid});
+            s.events.push_back({"pay", publicAction(actor, "响应支付 " + std::to_string(paid) + " 魔素", 0), -1, c.id, paid});
             s.events.push_back(
-                {"link_declared", "响应链节 #" + std::to_string(s.chain->links.back().id), -1, c.id});
+                {"link_declared", "响应：" + s.chain->links.back().publicAction, -1, c.id});
             s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
             StateMaintenance::check(s, catalog());
             return {};
@@ -275,7 +276,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             else {
                 s.phaseStep = PhaseStep::EndWindow;
                 s.phaseGate = 0;
-                s.events.push_back({"cast_pass", "本阶段不再释放；待释放法术及已支付荷载保留"});
+                s.events.push_back({"cast_pass", publicAction(actor, "本阶段不再释放；待释放法术及已支付荷载保留", 0)});
             }
             break;
         case DecisionKind::TriggerOrder: {

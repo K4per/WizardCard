@@ -438,6 +438,31 @@ TEST_CASE("v263 call lightning independent load clears at the affected end start
     CHECK(Rules::load(ending.state(), 1) == 0);
 }
 
+TEST_CASE("match log captures the declaring player and public action at declaration and resolution", "[match-log]") {
+    const auto catalog = currentCatalog();
+    for (PlayerId actor : {0, 1}) for (bool hidden : {false, true}) {
+        auto s = mainState263();
+        s.active = actor;
+        put263(s, 1, "v260-formation-0017", Zone::Analysis, actor);
+        put263(s, 10, "v260-analytic-0001", Zone::Hand, actor);
+        auto engine = test::ObservedEngine::scenario(catalog, s);
+        Command setup = hidden ? Command(SetAmbush{10, 1, 0}) : Command(StartAnalysis{10, 1});
+        if (!hidden) std::get<StartAnalysis>(setup).ringIndex = 0;
+        REQUIRE(engine.submit(actor, setup).accepted);
+        pass263(engine);
+        const auto name = catalog.at("v260-analytic-0001").name;
+        const auto action = "玩家 " + std::to_string(actor + 1) +
+            (hidden ? " 盖伏法术" : " 设置解析法术《" + name + "》");
+        for (const auto &prefix : {"建立连锁：", "宣告：", "结算："}) {
+            CHECK(std::any_of(engine.events().begin(), engine.events().end(), [&](const GameEvent &event) {
+                return event.text == prefix + action;
+            }));
+        }
+        if (hidden) for (const auto &event : engine.events())
+            CHECK(event.text.find(name) == std::string::npos);
+    }
+}
+
 TEST_CASE("v263 response context reports ambush setting without revealing hidden spell metadata", "[alpha-v263][privacy]") {
     auto s = mainState263();
     put263(s, 1, "v260-formation-0017", Zone::Analysis);

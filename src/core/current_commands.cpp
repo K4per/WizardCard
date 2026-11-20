@@ -73,12 +73,13 @@ bool recipeMatches(const GameState &state, const CardCatalog &catalog, PlayerId 
     return search(0);
 }
 }
-void GameEngine::actionTimingV2(ResponseWindow window) {
+void GameEngine::actionTimingV2(const std::string &action, CardId publicSource) {
     if (state_.chain || state_.effect || state_.decision || state_.result != -1) return;
     ChainLink root;
     root.kind = LinkKind::Phase;
     root.item.owner = state_.active;
-    startChain(window, std::move(root), 1 - state_.active);
+    root.publicAction = publicAction(state_.active, action, publicSource);
+    startChain(ResponseWindow::Action, std::move(root), 1 - state_.active);
 }
 void GameEngine::analysisCompletedV2(CardId spell) {
     auto &s = state_;
@@ -221,10 +222,11 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
                 hasCapability(sealDefinition, Capability::ThunderDamageBonus) ? DamageType::Thunder : DamageType::Force,
                 EffectRecipient::Opponent});
         }
+    link.publicAction = publicAction(actor, flip ? "反转并发动法术" : "发动法术", id);
     s.chain->links.push_back(std::move(link));
     s.chain->hadActualLinks = true;
     s.chain->window = ResponseWindow::Cast;
-    s.events.push_back({flip ? "flip" : "cast", flip ? "反转并发动法术" : "发动法术", -1, id});
+    s.events.push_back({flip ? "flip" : "cast", "宣告：" + s.chain->links.back().publicAction, -1, id});
     s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
     s.chain->priority = 1 - actor;
     s.chain->passes = 0;
@@ -335,12 +337,13 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
                     hasCapability(sealDefinition, Capability::ThunderDamageBonus) ? DamageType::Thunder : DamageType::Force,
                     EffectRecipient::Opponent});
             }
+        link.publicAction = publicAction(actor, "从手牌发动言灵法术", id);
         s.chain->links.push_back(std::move(link));
         s.chain->hadActualLinks = true;
         s.chain->window = ResponseWindow::Cast;
         s.chain->priority = 1 - actor;
         s.chain->passes = 0;
-        s.events.push_back({"word_response", "手牌言灵法术设置、准备并发动", -1, id, fee});
+        s.events.push_back({"word_response", "宣告：" + s.chain->links.back().publicAction, -1, id, fee});
         s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
         s.decision.reset();
         return {};
@@ -381,11 +384,12 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         card.targetCard = prepare->target; card.targets = prepare->targets;
         ChainLink link; link.id = s.nextLink++; link.kind = LinkKind::Preparation; link.speed = def.speed;
         link.item = snapshot(card, def); link.item.effects.clear(); link.item.requiresSource = true;
+        link.publicAction = publicAction(actor, "准备施法", id);
         link.item.target = TargetKind::None;
         s.chain->links.push_back(std::move(link)); s.chain->hadActualLinks = true;
         s.chain->window = ResponseWindow::Prepare;
     }
-    s.events.push_back({flip ? "flip" : "prepare_declared", flip ? "反转解析法术" : "宣告准备施法", -1, id});
+    s.events.push_back({flip ? "flip" : "prepare_declared", flip ? publicAction(actor, "反转解析法术", id) : "宣告：" + s.chain->links.back().publicAction, -1, id});
     if (!flip) s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
     s.chain->priority = 1 - actor; s.chain->passes = 0;
     s.decision.reset();
@@ -523,7 +527,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         StateMaintenance::check(s, catalog());
         if (s.result != -1) return true;
         if (load > 0) ResourceRules::addBoundLoad(s, catalog(), cardId, load, false);
-        s.events.push_back({"pay", "支付魔素", -1, cardId, mana});
+        s.events.push_back({"pay", publicAction(actor, "支付 " + std::to_string(mana) + " 魔素", 0), -1, cardId, mana});
         return true;
     };
     auto ring = [&](CardId host, bool faceDown, int requested) {
@@ -712,7 +716,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
                 card_rules::changeLifeLimit(s, catalog(), actor, -5);
             card_rules::queueFormationSetup(s, catalog(), cardId);
         }
-        s.events.push_back({"formation_set", "设置阵法", -1, cardId});
+        s.events.push_back({"formation_set", publicAction(actor, "设置阵法", cardId), -1, cardId});
         if (hasCapability(def, Capability::ReturnFormationFromAsh)) {
             auto trigger = snapshot(c, def); trigger.id = s.nextTrigger++; trigger.batch = s.nextBatch++;
             trigger.effects = {{EffectKind::RecoverFormation, 1}}; s.queue.append(std::move(trigger));
@@ -731,13 +735,14 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
                 s.events.push_back({"search", "检索大风暴术加入手牌", actor, searched});
             }
         }
-        actionTimingV2(); return {};
+        actionTimingV2(cmd->replace ? "替换阵法" : "设置阵法", cardId); return {};
     }
     if (const auto *cmd = std::get_if<RemoveFormation>(&command)) {
 
         if (s.phase != Phase::Main || c.zone != Zone::Analysis || def.type != CardType::Formation || pl.formations)
             return "invalid_removal";
-        StateMaintenance::leave(s, cardId, &catalog()); ++pl.formations; actionTimingV2(); return {};
+        const auto action = "移除阵法《" + def.name + "》";
+        StateMaintenance::leave(s, cardId, &catalog()); ++pl.formations; actionTimingV2(action); return {};
     }
     if (const auto *cmd = std::get_if<StartAnalysis>(&command)) {
         if ((cmd->target || !cmd->targets.empty()))
@@ -781,8 +786,8 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         c.publiclyRevealed = false;
         c.ambushedTurn = s.globalTurn; c.spell = SpellState::None;
         if (catalog().mechanicsRevision >= 11) spell_rules::setup(s, catalog(), cardId, true);
-        s.events.push_back({"ambush", "盖伏法术", -1, cardId});
-        actionTimingV2();
+        s.events.push_back({"ambush", publicAction(actor, "盖伏法术", 0), -1, cardId});
+        actionTimingV2("盖伏法术");
         if (catalog().mechanicsRevision >= 12 && s.chain && s.chain->window == ResponseWindow::Action) {
             s.chain->links.front().item.source = cardId;
             s.chain->links.front().ability = "ambush";
@@ -817,7 +822,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             c.spell = def.analysisTurns <= 0 ? SpellState::Ready : SpellState::Analyzing;
             if (c.spell == SpellState::Ready) analysisCompletedV2(cardId);
             quickAnalysisV2(cardId, c.host);
-            actionTimingV2(); return {};
+            actionTimingV2("反转解析法术", cardId); return {};
         }
         if (static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog(), actor))
             return "casting_capacity";
@@ -906,14 +911,15 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         c.zone = Zone::Attached; c.host = cmd->host;
         card_rules::normalizeLife(s, catalog(), actor);
         card_rules::attached(s, catalog(), cardId);
-        actionTimingV2(); return {};
+        actionTimingV2("附着符文", cardId); return {};
     }
     if (std::holds_alternative<RemoveSeal>(command)) return "seal_limit";
     if (const auto *cmd = std::get_if<Abandon>(&command)) {
         if (!spellType(def.type) || (c.zone != Zone::Analysis && c.zone != Zone::Casting) ||
             (c.zone == Zone::Casting ? s.phase != Phase::Cast : s.phase != Phase::Main)) return "invalid_abandon";
+        const bool casting = c.zone == Zone::Casting;
         StateMaintenance::leave(s, cmd->card, &catalog());
-        actionTimingV2(); return {};
+        actionTimingV2(casting ? "放弃施法" : "放弃解析区法术", cardId); return {};
     }
     return "unsupported_v2_command";
 }

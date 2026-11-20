@@ -86,6 +86,7 @@ struct ChainLink {
     Trigger item;
     bool canceled{}, sourceLost{};
     std::string ability;
+    std::string publicAction; // Declaration-time log caption, independent of rules and digest.
     int paymentIndex{-1}, preparationLoad{};
     int paid{}, addedLoad{};
     CardId discarded{};

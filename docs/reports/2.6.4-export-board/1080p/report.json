@@ -1,0 +1,19 @@
+{
+  "archive": "WizardCard-2.6.4-windows-x64.zip",
+  "archiveSha256": "da6a3dd667378a666d1bd395a8a18db897fb6973f1c8e56f0cde1698138f2dba",
+  "replaySha256": "3fdd4215d8248c0a80d3b9bfb2a3db672c2df3e45f4bfbc8c78d340d95aafa5e",
+  "entries": {
+    "ai": {
+      "image": "ai.png",
+      "sha256": "3a9f9dbd25517e7489d63a1bbc3c01f40d6ba881f34579124c72dd8b8e4a1171"
+    },
+    "tutorial": {
+      "image": "tutorial.png",
+      "sha256": "cc7c69d2a728013eb78aa47da1acb34d5b7606f4fb7ac832a77240dc60ca05b1"
+    },
+    "replay": {
+      "image": "replay.png",
+      "sha256": "02df5c8e2323fd80b4f9ee76e89076c399c2f496fe796b038861f887c2de1d75"
+    }
+  }
+}

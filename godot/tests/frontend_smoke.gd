@@ -53,7 +53,7 @@ func _run() -> void:
 	await _screenshot("menu")
 	_check(DeckTheme.BACKGROUND == Color("14202b") and DeckTheme.PANEL == Color("182631") and DeckTheme.CONTROL == Color("1c2d39") and DeckTheme.BORDER == Color("4a6370") and DeckTheme.ACCENT == Color("8bc8db"), "flat controls retain the released blue palette")
 	for id: String in ArtBank._textures:
-		_check(id.begins_with("illustration."), "menu loads no decorative textures: " + id)
+		_check(id == "c2d.v2.menu.logo" or id.begins_with("illustration."), "Only the title banner and card illustrations may be loaded: " + id)
 	var hidden: CardPresentation = CardPresentation.from_projection({"id": "private-1", "hidden": true, "definition": {"name": "secret", "id": "fireball", "type": 4, "text": "secret"}})
 	_check(hidden.hidden and hidden.title == "盖伏卡" and hidden.definition_id.is_empty() and hidden.text.is_empty() and hidden.type_key.is_empty(), "Hidden cards must discard identity before art/details")
 	await _projection_reset_checks()
@@ -132,8 +132,14 @@ func _run() -> void:
 		var menu_bounds: Rect2 = Rect2(Vector2.ZERO, Vector2(dimensions))
 		_check(menu._buttons.size() == 7, "Menu exposes seven large product entries")
 		_check(menu._buttons.map(func(button: Button) -> String: return button.text) == ["单人游戏", "多人游戏", "卡组构筑", "巫师指南", "对局复盘", "游戏设置", "退出游戏"], "Seven primary menu entries follow the approved order")
-		_check(menu_bounds.encloses(menu._title.get_global_rect()), "Game title stays inside the viewport")
-		_check(menu._title.get_global_rect().end.x < menu._column.get_global_rect().position.x, "Game title stays left of the seven primary actions")
+		var banner := menu.get_node_or_null("%Logo") as TextureRect
+		_check(banner != null and banner.is_visible_in_tree(), "Main menu displays the released banner")
+		if banner != null:
+			_check(menu_bounds.encloses(banner.get_global_rect()) and banner.get_global_rect().end.x < menu._column.get_global_rect().position.x, "Banner stays left of the seven primary actions")
+			_check(banner.position.is_equal_approx(Vector2(dimensions) * Vector2(0.055, 0.20)) and banner.size.is_equal_approx(Vector2(dimensions) * Vector2(0.49, 0.60)), "Banner follows the released layout at " + str(dimensions))
+			_check(banner.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED and banner.mouse_filter == Control.MOUSE_FILTER_IGNORE, "Banner keeps its aspect ratio without intercepting menu input")
+			var atlas := banner.texture as AtlasTexture
+			_check(atlas != null and atlas.region == Rect2(440, 268, 1040, 543) and atlas.filter_clip and atlas.atlas.resource_path == "res://art/menu-v2/logo-1080p.png", "Menu renders the original title banner crop")
 		for button_index: int in range(menu._buttons.size()):
 			var button: Button = menu._buttons[button_index]
 			var previous: Button = menu._buttons[posmod(button_index - 1, menu._buttons.size())]
@@ -156,12 +162,20 @@ func _run() -> void:
 				_check(text_size.x + outline <= art_button.size.x - skin.get_minimum_size().x and menu_font.get_height(menu_size) + outline <= art_button.size.y - skin.get_minimum_size().y, "Heavy menu text and outline fit without clipping at " + str(dimensions))
 				for character: String in art_button.text:
 					_check(menu_font.has_char(character.unicode_at(0)), "Menu Chinese glyph comes from the bundled font: " + character)
-		_check(menu.has_node("%GameTitle") and menu.get_node("%GameTitle") is Label and menu.get_node("%GameTitle").text == "巫师牌", "Main menu uses a plain game title")
 		var menu_style: StyleBox = menu._buttons[0].get_theme_stylebox(&"normal")
 		_check(menu_style is StyleBoxFlat and (menu_style as StyleBoxFlat).bg_color == DeckTheme.CONTROL, "Greybox menu buttons use primitive flat styles")
 		_check(menu._buttons.all(func(button: Button) -> bool: return button is MenuArtButton), "Replay and library use the same primary buttons")
 		for entry: Array in [[3, &"guide"], [4, &"replay"]]:
-			menu._buttons[entry[0]].pressed.emit()
+			var entry_button: Button = menu._buttons[entry[0]]
+			if entry[1] == &"guide":
+				menu._buttons[entry[0] - 1].grab_focus()
+				_menu_key(KEY_DOWN)
+				_check(entry_button.has_focus(), "Down arrow moves focus to the guide")
+				_menu_key(KEY_ENTER)
+			else:
+				var entry_center := entry_button.get_global_rect().get_center()
+				_mouse_button(entry_center, true)
+				_mouse_button(entry_center, false)
 			await _settle()
 			_check(_app.current_page == entry[1], "Primary library and replay entries navigate to their pages")
 			_app.navigate(&"menu")
@@ -559,6 +573,14 @@ func _hand_layout_checks(page: FieldPage) -> void:
 	page.canvas.field.hand = original
 	page.canvas.queue_redraw()
 	await _settle()
+
+func _menu_key(key: Key) -> void:
+	var event := InputEventKey.new()
+	event.keycode = key
+	event.pressed = true
+	root.push_input(event, true)
+	event.pressed = false
+	root.push_input(event, true)
 
 func _mouse_button(point: Vector2, pressed: bool, button: MouseButton = MOUSE_BUTTON_LEFT) -> void:
 	var event: InputEventMouseButton = InputEventMouseButton.new()

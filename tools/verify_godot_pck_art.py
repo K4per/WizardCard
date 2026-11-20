@@ -6,6 +6,11 @@ from pathlib import Path
 import re
 import struct
 
+if __package__:
+    from .prepare_godot_frontend_assets import BRAND_FILES, FONT_IDS
+else:
+    from prepare_godot_frontend_assets import BRAND_FILES, FONT_IDS
+
 
 def read_directory(stream):
     # Standard unencrypted external PCK v4 as produced by both pinned export presets.
@@ -33,6 +38,8 @@ def read_directory(stream):
 def audit_pck(pck, manifest):
     expected_manifest = manifest.read_bytes()
     entries = json.loads(expected_manifest)["assets"]
+    if set(BRAND_FILES) - {entry["id"] for entry in entries}:
+        raise ValueError("The approved manifest must include the application icon and menu banner")
     with pck.open("rb") as stream:
         directory = read_directory(stream)
 
@@ -48,11 +55,14 @@ def audit_pck(pck, manifest):
             raise ValueError("PCK art manifest differs from the approved source manifest")
         allowed_art = {"art/assets.json"}
         textures = set()
+        illustrations = set()
         for entry in entries:
             name = entry["file"].removeprefix("res://")
-            is_illustration = entry["id"].startswith("illustration.")
-            if not is_illustration and not entry["id"].startswith("font.cjk"):
-                raise ValueError(f"Unexpected art ID: {entry['id']}")
+            asset_id = entry["id"]
+            is_illustration = asset_id.startswith("illustration.")
+            is_brand = BRAND_FILES.get(asset_id) == entry["file"]
+            if not is_illustration and not is_brand and asset_id not in FONT_IDS:
+                raise ValueError(f"Unexpected art ID or path: {asset_id}")
             if name.endswith(".txt"):
                 if hashlib.sha256(read(name)).hexdigest() != entry["sha256"]:
                     raise ValueError(f"Font license hash mismatch: {name}")
@@ -67,11 +77,15 @@ def audit_pck(pck, manifest):
             # Godot identifies an imported resource by its original basename and the MD5 of its res:// path.
             identity = hashlib.md5(entry["file"].encode("utf-8")).hexdigest()
             prefix = f".godot/imported/{Path(name).name}-{identity}."
-            suffix = ".ctex" if is_illustration else ".fontdata"
+            suffix = ".ctex" if is_illustration or is_brand else ".fontdata"
             if any(not path.startswith(prefix) or not path.endswith(suffix) for path in resources):
                 raise ValueError(f"Unexpected compiled resource for {name}")
-            if is_illustration:
+            if is_illustration or is_brand:
                 textures.update(resources)
+            if is_illustration:
+                illustrations.update(resources)
+            if asset_id == "branding.app.icon" and name not in directory:
+                raise ValueError(f"Missing raw application icon for the desktop window: {name}")
             # Godot may also preserve the source bytes when an include filter requests them.
             if name in directory:
                 if hashlib.sha256(read(name)).hexdigest() != entry["sha256"]:
@@ -87,7 +101,7 @@ def audit_pck(pck, manifest):
                       {".png", ".jpg", ".jpeg", ".webp", ".svg", ".ico", ".bmp", ".tga", ".dds", ".ktx", ".avif"}}
         if raw_images - allowed_art:
             raise ValueError(f"Unlisted packed images: {sorted(raw_images - allowed_art)}")
-    return len(textures)
+    return len(illustrations)
 
 
 if __name__ == "__main__":
@@ -96,6 +110,6 @@ if __name__ == "__main__":
     parser.add_argument("--manifest", type=Path, default=Path(__file__).resolve().parents[1] / "godot/art/assets.json")
     args = parser.parse_args()
     try:
-        print(f"Verified {audit_pck(args.pck, args.manifest)} packed illustration textures.")
+        print(f"Verified {audit_pck(args.pck, args.manifest)} packed illustration textures, the application icon and menu banner.")
     except (KeyError, ValueError, OSError, struct.error) as error:
         raise SystemExit(str(error)) from error

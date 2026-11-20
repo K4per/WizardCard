@@ -76,7 +76,7 @@ func _run() -> void:
 			var image: Image = root.get_texture().get_image()
 			_check(image.save_png(output.path_join("official-art-" + ("deck" if compact else "library") + ".png")) == OK, "All-card screenshot saves")
 	for id: String in ArtBank._textures:
-		_check(id.begins_with("illustration."), "Only card illustrations are resident: " + id)
+		_check(id == "c2d.v2.menu.logo" or id.begins_with("illustration."), "Only card illustrations and the title banner are resident: " + id)
 	canvas.queue_free()
 	app.queue_free()
 	await process_frame

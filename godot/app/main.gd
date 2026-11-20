@@ -27,12 +27,6 @@ var _network_timer: Timer
 var _central_transport: CentralTlsTransport
 
 func _ready() -> void:
-	# Godot assigns its own window icon when the project has no branding.
-	if DisplayServer.has_feature(DisplayServer.FEATURE_ICON):
-		var blank_icon: Image = Image.create_empty(32, 32, false, Image.FORMAT_RGBA8)
-		# Win32 draws a solid square for icon bitmaps with all alpha values zero.
-		blank_icon.fill(Color8(0, 0, 0, 1))
-		DisplayServer.set_icon(blank_icon)
 	get_tree().auto_accept_quit = false
 	get_window().close_requested.connect(_on_close_requested)
 	theme = ArtBank.make_theme()

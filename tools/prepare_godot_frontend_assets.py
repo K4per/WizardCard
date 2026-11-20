@@ -9,6 +9,10 @@ ROOT = Path(__file__).resolve().parents[1]
 GODOT = ROOT / "godot"
 ART = GODOT / "art"
 FONT_IDS = {"font.cjk", "font.cjk.bold", "font.cjk.black", "font.cjk.license", "font.cjk.weights.license"}
+BRAND_FILES = {
+    "branding.app.icon": "res://art/branding/wizardcard-app-v1.png",
+    "c2d.v2.menu.logo": "res://art/menu-v2/logo-1080p.png",
+}
 FONT_SUFFIXES = {".otf", ".txt"}
 IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".svg", ".ico", ".bmp", ".tga", ".dds", ".ktx", ".avif"}
 
@@ -19,14 +23,14 @@ def read_json(path):
 
 def approved_entries():
     manifest = read_json(ART / "assets.json")
-    expected = set(FONT_IDS)
+    expected = FONT_IDS | BRAND_FILES.keys()
     for path in (ROOT / "assets/release-v260/cards.json", ROOT / "assets/cards.json",
                  GODOT / "data/card-previews-v2.json"):
         for card in read_json(path)["cards"]:
             expected.add("illustration." + card.get("illustrationId", card["id"]))
     entries = manifest["assets"]
     ids = {entry["id"] for entry in entries}
-    invalid = {name for name in ids if name not in FONT_IDS and not name.startswith("illustration.")}
+    invalid = {name for name in ids if name not in FONT_IDS and name not in BRAND_FILES and not name.startswith("illustration.")}
     if manifest["format"] != 1 or len(entries) != len(ids) or expected - ids or invalid:
         raise ValueError(f"Invalid runtime art manifest: missing={sorted(expected - ids)}, invalid={sorted(invalid)}")
     paths = {}
@@ -35,11 +39,15 @@ def approved_entries():
         if not resource.startswith("res://art/"):
             raise ValueError(f"Unexpected runtime art path: {resource}")
         path = (GODOT / resource.removeprefix("res://")).resolve()
-        is_font = entry["id"] in FONT_IDS
-        allowed_dirs = {"fonts"} if is_font else {"card", "cards"}
-        suffixes = FONT_SUFFIXES if is_font else IMAGE_SUFFIXES
-        if (path.parent.parent != ART or path.parent.name not in allowed_dirs or path.suffix not in suffixes or
-                path.name.startswith("c2d_") or path in paths or resource != "res://" + path.relative_to(GODOT).as_posix()):
+        asset_id = entry["id"]
+        if asset_id in BRAND_FILES:
+            valid = resource == BRAND_FILES[asset_id]
+        elif asset_id in FONT_IDS:
+            valid = path.parent.name == "fonts" and path.suffix in FONT_SUFFIXES
+        else:
+            valid = path.parent.name in {"card", "cards"} and path.suffix in IMAGE_SUFFIXES and not path.name.startswith("c2d_")
+        if (not valid or path.parent.parent != ART or path in paths or
+                resource != "res://" + path.relative_to(GODOT).as_posix()):
             raise ValueError(f"Invalid or duplicate art resource: {resource}")
         paths[path] = entry
     return paths
@@ -74,6 +82,6 @@ if __name__ == "__main__":
     parser.add_argument("--check", action="store_true", help="Check the committed runtime files without writing")
     args = parser.parse_args()
     try:
-        print(f"Verified {check_art(restore=not args.check)} Godot illustration, font and license entries.")
+        print(f"Verified {check_art(restore=not args.check)} Godot illustration, branding, font and license entries.")
     except (ValueError, KeyError, OSError) as error:
         raise SystemExit(str(error)) from error

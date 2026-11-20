@@ -313,9 +313,9 @@ func _check_target_palette(canvas: FieldCanvas, group: FormationPresentation) ->
 	await RenderingServer.frame_post_draw
 	var snapshot: Image = root.get_texture().get_image()
 	var host: Rect2 = canvas.get_global_transform_with_canvas() * canvas.card_bounds(group.card)
-	var paper_pixel: Color = snapshot.get_pixelv(Vector2i(host.position + Vector2(3, 5)))
-	var expected: Color = Color("f6eed8")
-	_expect(absf(paper_pixel.r - expected.r) < 0.02 and absf(paper_pixel.g - expected.g) < 0.02 and absf(paper_pixel.b - expected.b) < 0.02, "battlefront cards retain warm paper title and state panels")
+	var panel_pixel: Color = snapshot.get_pixelv(Vector2i(host.position + Vector2(3, 5)))
+	var expected: Color = Color("1c2d39")
+	_expect(absf(panel_pixel.r - expected.r) < 0.02 and absf(panel_pixel.g - expected.g) < 0.02 and absf(panel_pixel.b - expected.b) < 0.02, "battlefield cards use the reference blue-grey title and state panels")
 	for hit: Dictionary in canvas._ring_hits:
 		if hit["host"] == group.card.instance_id and hit["ring"] == 5:
 			var rect: Rect2 = canvas.get_global_transform_with_canvas() * (hit["rect"] as Rect2)
@@ -356,11 +356,11 @@ func _check_tray_aspect() -> void:
 		await RenderingServer.frame_post_draw
 		var pixels: Image = root.get_texture().get_image()
 		var blank: Color = pixels.get_pixel(14, 54)
-		var expected: Color = DeckTheme.CONTROL if simple else CardPainter.PAPER
+		var expected: Color = Color("1c2d39")
 		_expect(blank.is_equal_approx(Color.MAGENTA), "96x90 selection tray centers the portrait in both styles")
 		for sample_point: Vector2i in [Vector2i(29, 15), Vector2i(130, 22)]:
 			var painted: Color = pixels.get_pixelv(sample_point)
-			_expect(painted.to_html(false) == expected.to_html(false), "tray and library tile keep their chosen blue-grey or warm-paper card face")
+			_expect(painted.to_html(false) == expected.to_html(false), "tray and library tile use the reference blue-grey face in both views")
 	tile.queue_free()
 	backing.queue_free()
 	await process_frame

@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "collection": "WizardCard card illustrations and licensed CJK fonts",
+  "collection": "WizardCard card illustrations, application icon, main menu banner and licensed CJK fonts",
   "additionalSourceManifests": [
     {
       "file": "assets/art/fonts/noto-sans-cjk-sc/manifest.json",
@@ -24,6 +24,34 @@
     }
   ],
   "assets": [
+    {
+      "id": "branding.app.icon",
+      "file": "res://art/branding/wizardcard-app-v1.png",
+      "source": "godot/art/branding/wizardcard-app-v1.png",
+      "origin": "Original WizardCard application icon",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "a7f523a893477b28c1503980e4a24f932233717bfa06a8bc8b1468b09a3a7e4f"
+    },
+    {
+      "size": [
+        1920,
+        1080
+      ],
+      "region": [
+        440,
+        268,
+        1040,
+        543
+      ],
+      "authoringSource": "assets/art/godot-2d-v2/main-menu-1080p-v1/source/logo-original.png",
+      "id": "c2d.v2.menu.logo",
+      "file": "res://art/menu-v2/logo-1080p.png",
+      "source": "assets/art/godot-2d-v2/main-menu-1080p-v1/export/logo-1080p.png",
+      "sha256": "470c860be6bc68cd696472445a94a76c46f6f66477b9c821b5af51a225193b40"
+    },
     {
       "license": "SIL Open Font License 1.1",
       "licenseAsset": "font.cjk.license",

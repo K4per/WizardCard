@@ -86,7 +86,7 @@ input hitboxes or submit commands in the editor.
 
 ## Menu, settings and deck exchange
 
-The main menu displays the game title as text. Seven primary buttons in the
+The main menu displays the original title banner. Seven primary buttons in the
 right-hand column open single player, multiplayer, deck construction, the
 wizard guide, replay and settings, or quit. Keyboard and controller focus follow
 the same order and wrap at either end.

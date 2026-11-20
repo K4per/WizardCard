@@ -10,8 +10,9 @@ import time
 import zipfile
 
 from package_godot import PLATFORMS, ROOT, verify_startup
+from prepare_godot_frontend_assets import BRAND_FILES
 from verify_godot_pck_art import audit_pck
-from windows_icons import find_icons
+from windows_icons import verify_application_icon
 
 
 def digest(path):
@@ -129,9 +130,7 @@ def main():
         assert release["contentHash"] == "dcb43fe56f6d250d" and release["mechanicsRevision"] == 12
         assert release["bridgeSha256"] == digest(output / "bin/wizard_godot_bridge.release.dll")
         illustration_count = audit_pck(output / "WizardCard.pck", ROOT / "godot/art/assets.json")
-        for executable in output.glob("WizardCard*.exe"):
-            if find_icons(executable):
-                raise ValueError(f"Embedded icon resources in {executable.name}")
+        icon_sizes = verify_application_icon(output / PLATFORMS["windows"].executable)
         verify_startup(output, PLATFORMS["windows"], evidence, "extracted-startup")
         guide_command = [str(output / "WizardCard.exe"), "--headless", "--", "--verify-guide",
                          "--user-data", str(evidence / "offline-guide-data"), "--report", str(evidence / "offline-guide.json")]
@@ -140,7 +139,7 @@ def main():
         assert guide.returncode == 0 and read_json(evidence / "offline-guide.json")["passed"], guide.stdout + guide.stderr
         report = {"archive": str(archive), "bytes": archive.stat().st_size, "sha256": digest(archive),
                   "verifiedFiles": len(inventory), "packedIllustrationTextures": illustration_count,
-                  "embeddedWindowsIcons": 0, "zipCrc": "passed", "release": release,
+                  "originalWindowsIconSizes": icon_sizes, "packedBrandingFiles": list(BRAND_FILES.values()), "zipCrc": "passed", "release": release,
                   "startupFromUnrelatedDirectory": "passed", "offlineGuide": read_json(evidence / "offline-guide.json")}
         if args.server_host or args.production:
             report["network"] = verify_network(output, evidence, args)

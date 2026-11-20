@@ -6,13 +6,12 @@ signal navigation_requested(page: StringName)
 var _service: FrontendService
 var _status: Label
 var _column: VBoxContainer
-var _title: Label
+var _logo: TextureRect
 var _buttons: Array[Button] = []
 
 func _ready() -> void:
-	_title = %GameTitle
-	_title.add_theme_font_override(&"font", Typography.HEADING)
-	_title.add_theme_color_override(&"font_color", Color("fff0d0"))
+	_logo = %Logo
+	_logo.texture = ArtBank.texture("c2d.v2.menu.logo")
 	_column = %Buttons
 	_status = %Status
 	_buttons.assign([%SinglePlayer, %Multiplayer, %Decks, %Library, %Replay, %Settings, %Quit])
@@ -38,9 +37,9 @@ func _ready() -> void:
 func _reflow() -> void:
 	if _column == null:
 		return
+	# Retain the v1.0 title-left / actions-right composition at any window ratio.
 	var scale_factor: float = minf(size.x / 1920.0, size.y / 1080.0)
 	var button_size: Vector2 = Vector2(560, 82) * scale_factor
-	Typography.override_size(_title, &"font_size", roundi(76 * scale_factor))
 	var gap: int = maxi(8, roundi(18 * scale_factor))
 	_column.add_theme_constant_override(&"separation", gap)
 	for button: Button in _buttons:
@@ -55,8 +54,8 @@ func _reflow() -> void:
 	var column_height: float = button_size.y * _buttons.size() + gap * (_buttons.size() - 1)
 	_column.position = Vector2(size.x * 0.64 - button_size.x * 0.15, (size.y - column_height) * 0.5)
 	_column.size = Vector2(button_size.x, column_height)
-	_title.position = Vector2(size.x * 0.055, size.y * 0.20)
-	_title.size = Vector2(size.x * 0.49, size.y * 0.60)
+	_logo.position = Vector2(size.x * 0.055, size.y * 0.20)
+	_logo.size = Vector2(size.x * 0.49, size.y * 0.60)
 
 func configure(service: FrontendService) -> void:
 	_service = service

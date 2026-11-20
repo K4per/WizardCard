@@ -83,7 +83,7 @@ func _run() -> void:
 					_check(bounds.encloses(settings._font_scale.get_global_rect()), "Font selector remains reachable")
 				elif destination == &"menu":
 					var menu: MenuPage = app.page as MenuPage
-					_check(bounds.encloses(menu._title.get_global_rect()) and menu._title.get_global_rect().end.x < menu._column.get_global_rect().position.x, "Game title remains visible to the left of all seven primary actions")
+					_check(bounds.encloses(menu._logo.get_global_rect()) and menu._logo.get_global_rect().end.x < menu._column.get_global_rect().position.x, "Logo remains visible to the left of all seven primary actions")
 					for button: Button in menu._buttons:
 						var font: Font = button.get_theme_font(&"font")
 						var font_size: int = button.get_theme_font_size(&"font_size")

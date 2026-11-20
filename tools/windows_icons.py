@@ -1,79 +1,61 @@
-"""Remove default Godot icons embedded in Windows export templates."""
+"""Check the Windows player's embedded icon against the original pre-graybox export."""
 import ctypes
 from ctypes import wintypes
+import hashlib
+import struct
+
+# Godot 4.7.2 exports six PNG renditions of wizardcard-app-v1.png, sorted by width.
+# SHA-256 of the concatenated RT_ICON images in the original 2.6.4 player.
+ORIGINAL_ICON_DIGEST = "3c435a05a8a3368c125cd028d0e2271a5c70ae0c6786e032d83399d50cf0a028"
+ICON_SIZES = [16, 32, 48, 64, 128, 256]
 
 
-RT_ICON = 3
-RT_GROUP_ICON = 14
-# RESOURCE_DATA_NOT_FOUND, RESOURCE_TYPE_NOT_FOUND
-NO_RESOURCES = {1812, 1813}
-
-
-def api(name, result, *arguments):
-    function = getattr(ctypes.WinDLL("kernel32", use_last_error=True), name)
-    function.restype = result
-    function.argtypes = arguments
-    return function
-
-
-def require(result):
-    if not result:
-        raise ctypes.WinError(ctypes.get_last_error())
-    return result
-
-
-def find_icons(path):
+def verify_application_icon(path):
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
     ptr = ctypes.c_void_p
-    name_callback = ctypes.WINFUNCTYPE(wintypes.BOOL, ptr, ptr, ptr, ctypes.c_ssize_t)
-    lang_callback = ctypes.WINFUNCTYPE(wintypes.BOOL, ptr, ptr, ptr, wintypes.WORD, ctypes.c_ssize_t)
-    names = api("EnumResourceNamesW", wintypes.BOOL, ptr, ptr, name_callback, ctypes.c_ssize_t)
-    languages = api("EnumResourceLanguagesW", wintypes.BOOL, ptr, ptr, ptr, lang_callback, ctypes.c_ssize_t)
-    load = api("LoadLibraryExW", ptr, wintypes.LPCWSTR, ptr, wintypes.DWORD)
-    close = api("FreeLibrary", wintypes.BOOL, ptr)
 
-    handle = require(load(str(path), None, 2))  # LOAD_LIBRARY_AS_DATAFILE
-    entries = []
+    def api(name, result, *args):
+        function = getattr(kernel, name)
+        function.argtypes = args
+        function.restype = result
+        return function
+
+    def require(result):
+        if not result:
+            raise ctypes.WinError(ctypes.get_last_error())
+        return result
+
+    handle = require(api("LoadLibraryExW", ptr, wintypes.LPCWSTR, ptr, wintypes.DWORD)(str(path), None, 2))
     try:
-        for kind in (RT_ICON, RT_GROUP_ICON):
-            resource_names = []
+        def read_resource(kind, name):
+            resource = require(api("FindResourceW", ptr, ptr, ptr, ptr)(handle, name, kind))
+            size = require(api("SizeofResource", wintypes.DWORD, ptr, ptr)(handle, resource))
+            loaded = require(api("LoadResource", ptr, ptr, ptr)(handle, resource))
+            return ctypes.string_at(require(api("LockResource", ptr, ptr)(loaded)), size)
 
-            @name_callback
-            def add_name(_module, _kind, name, _data):
-                # A resource name can be an ordinal or a string (including "").
-                resource_names.append(ctypes.wstring_at(name) if name and name > 65535 else name)
-                return True
+        groups = []
+        callback = ctypes.WINFUNCTYPE(wintypes.BOOL, ptr, ptr, ptr, ctypes.c_ssize_t)
 
-            if not names(handle, kind, add_name, 0) and ctypes.get_last_error() not in NO_RESOURCES:
-                raise ctypes.WinError(ctypes.get_last_error())
-            for name in resource_names:
-                @lang_callback
-                def add_language(_module, _kind, _name, language, _data):
-                    entries.append((kind, name, language))
-                    return True
+        @callback
+        def collect(_handle, _kind, name, _unused):
+            groups.append(ctypes.wstring_at(name) if name and name > 65535 else name)
+            return True
 
-                key = ctypes.c_wchar_p(name) if isinstance(name, str) else name
-                require(languages(handle, kind, key, add_language, 0))
+        enumerate_groups = api("EnumResourceNamesW", wintypes.BOOL, ptr, ptr, callback, ctypes.c_ssize_t)
+        if not enumerate_groups(handle, 14, collect, 0) or len(groups) != 1:
+            raise ValueError(f"Expected the original WizardCard icon group in {path.name}")
+        name = ctypes.c_wchar_p(groups[0]) if isinstance(groups[0], str) else groups[0]
+        group = read_resource(14, name)
+        if len(group) != 6 + 14 * len(ICON_SIZES) or struct.unpack_from("<HHH", group) != (0, 1, len(ICON_SIZES)):
+            raise ValueError(f"Unexpected WizardCard icon group in {path.name}")
+        images = {}
+        for width, height, _, _, _, _, size, ordinal in struct.iter_unpack("<BBBBHHIH", group[6:]):
+            image = read_resource(3, ordinal)
+            if height != width or len(image) != size:
+                raise ValueError(f"Malformed WizardCard icon in {path.name}")
+            images[width or 256] = image
+        if sorted(images) != ICON_SIZES or hashlib.sha256(b"".join(images[s] for s in ICON_SIZES)).hexdigest() != ORIGINAL_ICON_DIGEST:
+            raise ValueError(f"Expected the original WizardCard application icon in {path.name}")
+        return ICON_SIZES.copy()
     finally:
-        require(close(handle))
-    return entries
-
-
-def strip_icons(path):
-    entries = find_icons(path)
-    if not entries:
-        return
-    ptr = ctypes.c_void_p
-    begin = api("BeginUpdateResourceW", ptr, wintypes.LPCWSTR, wintypes.BOOL)
-    update = api("UpdateResourceW", wintypes.BOOL, ptr, ptr, ptr, wintypes.WORD, ptr, wintypes.DWORD)
-    end = api("EndUpdateResourceW", wintypes.BOOL, ptr, wintypes.BOOL)
-    handle = require(begin(str(path), False))
-    try:
-        for kind, name, language in entries:
-            key = ctypes.c_wchar_p(name) if isinstance(name, str) else name
-            require(update(handle, kind, key, language, None, 0))
-    except BaseException:
-        end(handle, True)  # Discard pending changes.
-        raise
-    require(end(handle, False))
-    if find_icons(path):
-        raise ValueError(f"Default template icon resources remain in {path.name}")
+        require(api("FreeLibrary", wintypes.BOOL, ptr)(handle))

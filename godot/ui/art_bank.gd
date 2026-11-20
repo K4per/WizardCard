@@ -37,6 +37,13 @@ static func texture(id: String) -> Texture2D:
 	var resource: Texture2D = load(str(entry["file"])) as Texture2D
 	if resource == null:
 		return _fallback_texture(id + " -> " + str(entry.get("file", "")))
+	if entry.has("region"):
+		var bounds: Array = entry["region"]
+		var atlas: AtlasTexture = AtlasTexture.new()
+		atlas.atlas = resource
+		atlas.region = Rect2(float(bounds[0]), float(bounds[1]), float(bounds[2]), float(bounds[3]))
+		atlas.filter_clip = true
+		resource = atlas
 	_textures[id] = resource
 	if id.begins_with("illustration."):
 		_illustration_order.append(id)

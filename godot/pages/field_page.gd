@@ -19,7 +19,7 @@ func _ready() -> void:
 	column.add_theme_constant_override(&"separation", 8)
 	margin.add_child(column)
 	var header: HBoxContainer = UiFactory.heading(column, "场地预览", navigation_requested.emit.bind(&"menu"))
-	var status: Label = UiFactory.label("地下城场地 · 展示数据", 16)
+	var status: Label = UiFactory.label("场地展示", 16)
 	status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	header.add_child(status)
@@ -35,16 +35,12 @@ func _ready() -> void:
 	_notice = UiFactory.label("展示数据 · 右键收回选中牌，再按收起手牌", 16, true)
 	footer.add_child(_notice)
 	_hand_button = UiFactory.button("收起手牌", _toggle_hand)
-	BattleArt.button(_hand_button)
 	footer.add_child(_hand_button)
 	_privacy_button = UiFactory.button("交接遮挡", _toggle_privacy)
-	BattleArt.button(_privacy_button)
 	footer.add_child(_privacy_button)
 	var effect_button: Button = UiFactory.button("效果选择示例", _show_decision)
-	BattleArt.button(effect_button)
 	footer.add_child(effect_button)
-	_detail = CardDetail.new()
-	_detail.battle_skin = true
+	_detail = preload("res://ui/card_detail.tscn").instantiate() as CardDetail
 	add_child(_detail)
 	_detail.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE)
 	_detail.offset_left = -376
@@ -88,7 +84,8 @@ func _layout_panels() -> void:
 	_decision.offset_top = -extent.y * 0.5
 	_decision.offset_bottom = extent.y * 0.5
 	var detail_width: float = clampf(size.x * 0.26, 350, 500)
-	var detail_height: float = detail_width * 0.51 / 0.75
+	var detail_height: float = size.y * 0.72
+	_detail._art.custom_minimum_size = Vector2(0, minf(240, detail_height * 0.42))
 	_detail.offset_left = -detail_width - 24
 	_detail.offset_top = size.y * 0.16
 	_detail.offset_bottom = _detail.offset_top + detail_height - size.y

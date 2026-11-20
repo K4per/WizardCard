@@ -91,6 +91,10 @@ func _check_corner_bars(own: PlayerStatusBar, opponent: PlayerStatusBar, dimensi
 	_expect(own.position.x < 20.0 and own.get_rect().end.y > dimensions.y - 20.0, "own resource panel sits in bottom-left corner")
 	_expect(opponent.position.y < 20.0 and opponent.get_rect().end.x > dimensions.x - 20.0, "opponent resource panel sits in top-right corner")
 	for bar: PlayerStatusBar in [own, opponent]:
+		_expect(bar._life.get_theme_color(&"font_color") == Color("f28a83"), "life uses coral")
+		_expect(bar._temporary_life.get_theme_color(&"font_color") == Color("85d8ec"), "temporary life uses cyan")
+		_expect(bar._mana.get_theme_color(&"font_color") == Color("78cfb0"), "mana uses green")
+		_expect(bar._load.get_theme_color(&"font_color") == Color("e9c978"), "load uses gold")
 		for label: Label in [bar._life, bar._temporary_life, bar._mana, bar._load]:
 			var text_width: float = label.get_theme_font(&"font").get_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size(&"font_size")).x
 			_expect(label.size.x >= text_width - 1.0, "resource label has visible text width: " + label.text)

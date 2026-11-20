@@ -75,7 +75,7 @@ Unique and save a separate resource for a scene-specific layout.
 
 All business pages use the shared greybox theme from `DeckTheme` through
 `ArtBank.make_theme()`. It supplies panel styles, buttons, input fields, focus
-and disabled states; existing slider and toggle icons remain. The
+and disabled states. Sliders and toggles use simple controls in the existing palette. The
 `ui/simple_battle_theme.tres` scene resource remains an editor fallback, while
 the application supplies the shared theme at runtime.
 `pages/field_greybox.tscn` is the simple layout prototype.
@@ -86,11 +86,10 @@ input hitboxes or submit commands in the editor.
 
 ## Menu, settings and deck exchange
 
-The main menu keeps the banner and seven equal primary
-buttons in a single right-hand column: single player, multiplayer, deck
-construction, card library, replay, settings and quit. Keyboard and controller
-focus follow the same order and wrap at either end. The menu keeps its banner
-and layout while background and button art are removed for the v2.6 greybox.
+The main menu displays the game title as text. Seven primary buttons in the
+right-hand column open single player, multiplayer, deck construction, the
+wizard guide, replay and settings, or quit. Keyboard and controller focus follow
+the same order and wrap at either end.
 
 Settings offer 1280x720, 1600x900, 1440x900, 1600x1000, 1920x1080 and 2560x1440, preserve
 saved custom sizes and support free resizing down to 1280x720. Font sizes are
@@ -115,11 +114,10 @@ available height to keep cards useful in smaller windows.
 
 ## Match interaction
 
-Each player has five permanent vertical body slots. A formation occupies
-consecutive slots equal to its projected body: body 2 spans two and body 4 spans
-four. Its ring cells use the entire span; remaining slots stay empty. Opponent
-slots, piles and casting cards are centrally
-symmetric. The two casting tracks are compact and placed at the center.
+Each player has a row of five body slots. A formation occupies consecutive
+slots equal to its projected body. Each host has one portrait card and its
+rings face the outside of the board. The central casting strip shows each
+player's illustrations, capacity and page controls.
 
 The field fills the viewport. Own player status sits in the lower-left corner;
 opponent status stays at the top. Turn, acting player and phase appear directly
@@ -132,12 +130,12 @@ button per operation. Placement highlights projected legal formations; clicking
 a formation submits that exact action. Return decisions highlight formations
 and empty rings directly. Targets and materials are selected on the field.
 Submission preserves exact string generation/revision IDs.
-Available-card highlights come from `snapshot.actions[].source`: setting,
-attachment and activation use gold; covering uses bright blue. A legal formation
-setting action also lights the side deck. Both highlights can coexist. Attached
-runes occupy inspectable small squares beside their host. Card costs at the
-upper right use native effective values; analytic spells show setting/casting
-costs, while talismans show only the casting cost and cover for free.
+Available-card highlights come from `snapshot.actions[].source`. Gold outlines
+identify setting, attachment and activation. Bright blue marks cards that can
+be covered. Both can appear together. A legal formation setting action also
+highlights the side deck. Attached runes can be inspected from their host. Hand
+cards show native effective costs. Analytic spells show setting and casting
+costs, while talismans show the casting cost and cover for free.
 GDScript does not derive legality or pay costs. Unknown cards discard identity
 before rendering, details and drag previews.
 
@@ -153,7 +151,7 @@ matching bounds, hover lifts and straightens the card, and opponent backs use
 the same size and style. Facedown cards show no name on the field; projected
 identity controls whether their full details can be inspected.
 
-Matches use simple color panels, borders and text around the shared compact card
+Matches use the original blue-gray panels, borders and text around the shared compact card
 face. Battlefield cards use the same illustrated card treatment as deck
 construction; hidden or facedown projections render the anonymous cover.
 Runtime card illustrations, including the Storm series and the small hexagram,

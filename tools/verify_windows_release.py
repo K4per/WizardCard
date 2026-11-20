@@ -9,7 +9,9 @@ import tempfile
 import time
 import zipfile
 
-from package_godot import PLATFORMS, verify_startup
+from package_godot import PLATFORMS, ROOT, verify_startup
+from verify_godot_pck_art import audit_pck
+from windows_icons import find_icons
 
 
 def digest(path):
@@ -126,6 +128,10 @@ def main():
             assert release[name] == "2.6.4", (name, release[name])
         assert release["contentHash"] == "dcb43fe56f6d250d" and release["mechanicsRevision"] == 12
         assert release["bridgeSha256"] == digest(output / "bin/wizard_godot_bridge.release.dll")
+        illustration_count = audit_pck(output / "WizardCard.pck", ROOT / "godot/art/assets.json")
+        for executable in output.glob("WizardCard*.exe"):
+            if find_icons(executable):
+                raise ValueError(f"Embedded icon resources in {executable.name}")
         verify_startup(output, PLATFORMS["windows"], evidence, "extracted-startup")
         guide_command = [str(output / "WizardCard.exe"), "--headless", "--", "--verify-guide",
                          "--user-data", str(evidence / "offline-guide-data"), "--report", str(evidence / "offline-guide.json")]
@@ -133,7 +139,8 @@ def main():
         (evidence / "offline-guide.log").write_text(guide.stdout + guide.stderr, encoding="utf-8")
         assert guide.returncode == 0 and read_json(evidence / "offline-guide.json")["passed"], guide.stdout + guide.stderr
         report = {"archive": str(archive), "bytes": archive.stat().st_size, "sha256": digest(archive),
-                  "verifiedFiles": len(inventory), "zipCrc": "passed", "release": release,
+                  "verifiedFiles": len(inventory), "packedIllustrationTextures": illustration_count,
+                  "embeddedWindowsIcons": 0, "zipCrc": "passed", "release": release,
                   "startupFromUnrelatedDirectory": "passed", "offlineGuide": read_json(evidence / "offline-guide.json")}
         if args.server_host or args.production:
             report["network"] = verify_network(output, evidence, args)

@@ -6,7 +6,7 @@ var card: CardPresentation
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	resized.connect(queue_redraw)
 
 func configure(value: CardPresentation) -> void:
@@ -14,9 +14,8 @@ func configure(value: CardPresentation) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	var bounds: Rect2 = Rect2(Vector2.ZERO, size)
 	if simple_style:
-		# Popup trays and detail panels use the same illustrated compact face as
-		# the deck editor, so selecting a pile card never loses its artwork.
-		DeckCardPainter.paint(self, card, Rect2(Vector2.ZERO, size))
+		DeckCardPainter.paint(self, card, bounds)
 	else:
-		CardPainter.paint(self, card, Rect2(Vector2.ZERO, size), "detail")
+		CardPainter.paint(self, card, bounds, "detail")

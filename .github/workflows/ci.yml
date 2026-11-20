@@ -189,7 +189,7 @@ jobs:
           python tools/catalog_source.py --check
           python tools/check_module_dependencies.py
           python tools/prepare_godot_frontend_assets.py --check
-          python -m unittest tools/test_package_godot.py -v
+          python -m unittest tools/test_package_godot.py tools/test_graybox_assets.py -v
           bash -n tools/run_godot_frontend.sh
       - name: Build Linux Debug bridge and native tools
         run: |

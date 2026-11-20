@@ -8,7 +8,7 @@ var card: CardPresentation
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(176, 242)
-	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	for state: StringName in [&"normal", &"hover", &"pressed", &"disabled", &"focus"]:
 		add_theme_stylebox_override(state, StyleBoxEmpty.new())
 	pressed.connect(_on_pressed)
@@ -23,10 +23,12 @@ func configure(value: CardPresentation) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	var bounds: Rect2 = Rect2(Vector2(4, 4), size - Vector2(8, 8))
+	var highlighted: bool = is_hovered() or has_focus()
 	if simple_style:
-		SimpleCardPainter.paint(self, card, Rect2(Vector2(4, 4), size - Vector2(8, 8)), is_hovered() or has_focus())
+		DeckCardPainter.paint(self, card, bounds, highlighted)
 	else:
-		CardPainter.paint(self, card, Rect2(Vector2(4, 4), size - Vector2(8, 8)), "builder", is_hovered() or has_focus())
+		CardPainter.paint(self, card, bounds, "builder", highlighted)
 
 func _on_pressed() -> void:
 	card_selected.emit(card)

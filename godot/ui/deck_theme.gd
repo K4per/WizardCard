@@ -15,7 +15,7 @@ static func box(fill: Color = PANEL, border: Color = BORDER, padding: int = 10) 
 	style.bg_color = fill
 	style.border_color = border
 	style.set_border_width_all(1)
-	style.set_corner_radius_all(3)
+	style.set_corner_radius_all(0)
 	style.set_content_margin_all(padding)
 	return style
 

@@ -17,7 +17,7 @@ var _preview: CardFace
 var _preview_text: RichTextLabel
 var _counter: Label
 var _cancel: Button
-var _padding: StyleBoxEmpty
+var _padding: StyleBoxFlat
 var _candidate_scroll: ScrollContainer
 var _title: Label
 var _description: Label
@@ -31,7 +31,7 @@ var _collapse: Button
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_padding = StyleBoxEmpty.new()
+	_padding = DeckTheme.box(DeckTheme.PANEL, Color("78919f"))
 	add_theme_stylebox_override(&"panel", _padding)
 	# Direct construction remains supported by the showcase and older callers.
 	# Its structure still comes from the same editor-owned PackedScene.
@@ -74,28 +74,7 @@ func _own_structure(node: Node) -> void:
 		_own_structure(child)
 
 func _layout_skin() -> void:
-	if simple_style:
-		for side: int in range(4):
-			_padding.set_content_margin(side, 8 if request != null and request.docked else content_padding)
-		queue_redraw()
-		return
-	_padding.set_content_margin(SIDE_LEFT, size.x * 0.07)
-	_padding.set_content_margin(SIDE_RIGHT, size.x * 0.07)
-	_padding.set_content_margin(SIDE_TOP, size.y * 0.18)
-	_padding.set_content_margin(SIDE_BOTTOM, size.y * 0.11)
-	queue_redraw()
-
-func _draw() -> void:
-	if simple_style:
-		draw_rect(Rect2(Vector2.ZERO, size), Color("182631"), true)
-		draw_rect(Rect2(Vector2.ZERO, size), Color("78919f"), false, 1)
-		return
-	draw_texture_rect(BattleArt.texture("effect_popup_complete"), Rect2(Vector2.ZERO, size), false)
-	# Replace the baked footer controls with an empty footer segment, so mandatory
-	# decisions can actually hide cancellation and live buttons own their states.
-	var footer: Rect2 = Rect2(size * Vector2(0.045, 0.79), size * Vector2(0.91, 0.18))
-	draw_rect(footer, Color("08131f"))
-	draw_line(footer.position, footer.position + Vector2(footer.size.x, 0), Color("715033"), 1)
+	_padding.set_content_margin_all(8 if request != null and request.docked else content_padding)
 
 func configure(value: DecisionPresentation) -> void:
 	request = value
@@ -178,11 +157,7 @@ func configure(value: DecisionPresentation) -> void:
 	if not value.choices.is_empty():
 		_show_preview(value.choices[0])
 	_confirm.pressed.connect(_on_confirm.bind(value.generation, value.revision, value.decision_id))
-	if not simple_style:
-		BattleArt.button(_confirm)
 	_cancel.pressed.connect(_on_cancel.bind(value.generation, value.revision, value.decision_id))
-	if not simple_style:
-		BattleArt.button(_cancel)
 	_cancel.visible = value.may_cancel or not value.pass_id.is_empty()
 	_cancel.text = "放弃" if not value.pass_id.is_empty() else "返回"
 	if not value.browse_mode:
@@ -214,8 +189,6 @@ func _build_response_choices(value: DecisionPresentation) -> void:
 		option.disabled = not choice.available
 		option.tooltip_text = choice.label
 		option.pressed.connect(_on_response_choice.bind(choice.id, value.generation, value.revision, value.decision_id))
-		if not simple_style:
-			BattleArt.button(option)
 		_choices.add_child(option)
 		_options[choice.id] = option
 		if choice.card != null:

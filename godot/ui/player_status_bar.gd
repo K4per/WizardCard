@@ -12,16 +12,7 @@ var _load: Label
 var _player_caption: String = ""
 
 func _ready() -> void:
-	var panel: StyleBoxFlat = StyleBoxFlat.new()
-	panel.bg_color = Color(0.035, 0.065, 0.085, 0.92)
-	panel.border_color = Color("54717b")
-	panel.set_border_width_all(1)
-	panel.set_corner_radius_all(4)
-	panel.content_margin_left = 8
-	panel.content_margin_right = 8
-	panel.content_margin_top = 4
-	panel.content_margin_bottom = 4
-	add_theme_stylebox_override(&"panel", panel)
+	add_theme_stylebox_override(&"panel", DeckTheme.box(Color(0.035, 0.065, 0.085, 0.92), Color("54717b"), 6))
 
 	var column: VBoxContainer = VBoxContainer.new()
 	column.add_theme_constant_override(&"separation", 1)
@@ -38,35 +29,18 @@ func _ready() -> void:
 	stats.add_theme_constant_override(&"v_separation", 1)
 	stats.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(stats)
-	_life = _add_stat(stats, "res://art/icons/c2d_icon_hud_life.png", "生命", Color("f28a83"))
-	_temporary_life = _add_stat(stats, "res://art/icons/c2d_icon_hud_temp-life.png", "临时生命", Color("85d8ec"))
-	_mana = _add_stat(stats, "res://art/icons/c2d_icon_hud_mana.png", "魔素", Color("78cfb0"))
-	_load = _add_stat(stats, "res://art/icons/c2d_icon_hud_load.png", "荷载", Color("e9c978"))
+	_life = _add_stat(stats, "生命", Color("f28a83"))
+	_temporary_life = _add_stat(stats, "临时生命", Color("85d8ec"))
+	_mana = _add_stat(stats, "魔素", Color("78cfb0"))
+	_load = _add_stat(stats, "荷载", Color("e9c978"))
 	custom_minimum_size = PANEL_SIZE
 
-func _add_stat(parent: GridContainer, icon_path: String, caption: String, tint: Color) -> Label:
-	var row: HBoxContainer = HBoxContainer.new()
-	row.add_theme_constant_override(&"separation", 4)
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	parent.add_child(row)
-	var icon: TextureRect = TextureRect.new()
-	icon.texture = load(icon_path) as Texture2D
-	icon.custom_minimum_size = Vector2(19, 19)
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.modulate = tint
-	icon.tooltip_text = caption
-	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_child(icon)
+func _add_stat(parent: GridContainer, caption: String, tint: Color) -> Label:
 	var value: Label = UiFactory.label(caption + " —", 14)
 	value.add_theme_color_override(&"font_color", tint)
-	# An unwrapped minimum width keeps the GridContainer from allocating only
-	# the icon width. Resource numbers must remain visible at every resolution.
-	value.clip_text = false
 	value.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	value.mouse_filter = Control.MOUSE_FILTER_PASS
-	row.add_child(value)
+	parent.add_child(value)
 	return value
 
 static func place_corners(own: PlayerStatusBar, opponent: PlayerStatusBar, viewport_size: Vector2) -> void:

@@ -346,7 +346,6 @@ func _draw_opponent_hand() -> void:
 	# Derive the opponent silhouette from the same fan, then rotate the whole
 	# fan around the field center. No private card ID or definition is needed.
 	var mirror: Transform2D = Transform2D(PI, size)
-	var back: Texture2D = ArtBank.texture("c2d.card.back.ai")
 	var rect: Rect2 = Rect2(-extent * 0.5, extent)
 	var band: Rect2 = _mirror(_hand_band(extent))
 	_scene_region("OpponentHand", band)
@@ -354,14 +353,16 @@ func _draw_opponent_hand() -> void:
 		var pose: Transform2D = mirror * _hand_pose(index, count, start_x, stride, extent, false)
 		_opponent_hand_hits.append({"pose": pose, "rect": pose * rect, "local_rect": rect})
 		draw_set_transform_matrix(pose)
-		if back != null:
-			draw_texture_rect(back, rect, false)
-		else:
-			_draw_editor_card(rect)
+		_draw_editor_card(rect)
 	draw_set_transform_matrix(Transform2D.IDENTITY)
 	if count > 0:
-		var label: Rect2 = Rect2(4, 2, size.x * layout.left_margin_ratio - 8, 24)
-		_draw_label("对方手牌 %d" % count, label, 13, Color("b7c6ce"), true)
+		_draw_label("对方手牌 %d" % count, _opponent_count_bounds(), 13, Color("b7c6ce"))
+
+func _opponent_count_bounds() -> Rect2:
+	var right: float = size.x
+	for silhouette: Dictionary in _opponent_hand_hits:
+		right = minf(right, (silhouette["rect"] as Rect2).position.x)
+	return Rect2(4, 2, maxf(0.0, right - 8), 24)
 
 func _draw_editor_preview() -> void:
 	# Editor-only silhouettes use no native service, player data or input hitboxes.
@@ -584,7 +585,7 @@ func _draw_expand_button(host: CardPresentation, rect: Rect2, formation: Formati
 	draw_rect(rect, Color("3c4859"))
 	draw_rect(rect, Color("82db9d") if marked else Color("95abc0"), false, 2 if marked else 1)
 	var caption: String = "展开" if formation != null else "符%d" % (field.attachments[host.instance_id] as Array).size()
-	_draw_label(caption if rect.size.x >= 30 else "＋", rect, 12, Color("eaf0f4"), true)
+	_draw_label(caption if rect.size.x >= 30 else "+", rect, 12, Color("eaf0f4"), true)
 
 func _close_host_menu() -> void:
 	if _host_menu != null:
@@ -651,7 +652,10 @@ func _draw_legal_highlight(card: CardPresentation, rect: Rect2) -> void:
 		if availability & FieldPresentation.LEGAL_GOLD:
 			_draw_glow(rect, Color("f2cb62"))
 		if availability & FieldPresentation.LEGAL_AMBUSH:
-			_draw_glow(rect.grow(3 if availability & FieldPresentation.LEGAL_GOLD else 0), Color("40c7ff"))
+			var outline: Rect2 = rect.grow(5 if availability & FieldPresentation.LEGAL_GOLD else 2)
+			var corners: PackedVector2Array = [outline.position, Vector2(outline.end.x, outline.position.y), outline.end, Vector2(outline.position.x, outline.end.y)]
+			for index: int in range(corners.size()):
+				draw_dashed_line(corners[index], corners[(index + 1) % corners.size()], Color("40c7ff"), 2, 5)
 
 func _draw_glow(rect: Rect2, color: Color) -> void:
 	draw_rect(rect.grow(4), Color(color, 0.24), false, 7)
@@ -795,7 +799,6 @@ func _draw_hand_card(index: int, start_x: float, stride: float, extent: Vector2,
 	# prevents raising it away from a stationary pointer and toggling hover.
 	_card_hits.append({"rect": pose * rect, "rest_rect": rest_pose * rect, "art_rect": pose * board_artwork_rect(rect, card), "card": card, "pose": pose, "rest_pose": rest_pose, "local_rect": rect})
 	draw_set_transform_matrix(pose)
-	draw_rect(Rect2(rect.position + Vector2(3, 5), rect.size), Color(0, 0, 0, 0.3))
 	_draw_simple_card(card, rect, raised or card.instance_id == selected_id)
 	_draw_legal_highlight(card, rect)
 	draw_set_transform_matrix(Transform2D.IDENTITY)

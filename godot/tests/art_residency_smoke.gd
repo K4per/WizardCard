@@ -75,6 +75,8 @@ func _run() -> void:
 			await RenderingServer.frame_post_draw
 			var image: Image = root.get_texture().get_image()
 			_check(image.save_png(output.path_join("official-art-" + ("deck" if compact else "library") + ".png")) == OK, "All-card screenshot saves")
+	for id: String in ArtBank._textures:
+		_check(id.begins_with("illustration."), "Only card illustrations are resident: " + id)
 	canvas.queue_free()
 	app.queue_free()
 	await process_frame

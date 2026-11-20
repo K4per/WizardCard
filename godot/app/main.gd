@@ -23,12 +23,16 @@ var page: Control
 var _audio: MatchFeedback
 @onready var _host: Control = %PageHost
 @onready var _background: ColorRect = %Background
-@onready var _dim: ColorRect = $Dim
 var _network_timer: Timer
 var _central_transport: CentralTlsTransport
-var _navigation_tween: Tween
 
 func _ready() -> void:
+	# Godot assigns its own window icon when the project has no branding.
+	if DisplayServer.has_feature(DisplayServer.FEATURE_ICON):
+		var blank_icon: Image = Image.create_empty(32, 32, false, Image.FORMAT_RGBA8)
+		# Win32 draws a solid square for icon bitmaps with all alpha values zero.
+		blank_icon.fill(Color8(0, 0, 0, 1))
+		DisplayServer.set_icon(blank_icon)
 	get_tree().auto_accept_quit = false
 	get_window().close_requested.connect(_on_close_requested)
 	theme = ArtBank.make_theme()
@@ -62,8 +66,6 @@ func _ready() -> void:
 	var release_assets: String = assets.path_join("release-v260")
 	if not assets_overridden and FileAccess.file_exists(release_assets.path_join("catalog.json")):
 		assets = release_assets
-	# The main page is intentionally greyboxed for Alpha v2.6. Keep the banner
-	# artwork on the page, while the page background stays a flat project color.
 	_background.color = DeckTheme.BACKGROUND
 	get_window().min_size = Vector2i(1280, 720)
 	if service.initialize(assets, user_directory):
@@ -92,19 +94,11 @@ func _ready() -> void:
 func navigate(destination: StringName) -> void:
 	if not PAGES.has(destination):
 		return
-	if _navigation_tween != null and _navigation_tween.is_valid():
-		_navigation_tween.kill()
-	_navigation_tween = null
 	if is_instance_valid(page):
 		_host.remove_child(page)
 		page.queue_free()
 	current_page = destination
 	ArtBank.trim_illustrations()
-	# Main-menu background art is retired from the product surface. Other pages
-	# use the same flat base and their own content-specific panels.
-	_background.color = DeckTheme.BACKGROUND
-	_dim.color = DeckTheme.BACKGROUND
-	_dim.visible = destination != &"menu"
 	page = PAGES[destination].instantiate() as Control
 	page.theme = ArtBank.make_theme()
 	_host.add_child(page)
@@ -112,11 +106,6 @@ func navigate(destination: StringName) -> void:
 	page.connect(&"navigation_requested", navigate)
 	page.call(&"configure", service)
 	Typography.refresh()
-	_host.modulate.a = 0.0 if not UiFactory.reduced_motion else 1.0
-	if not UiFactory.reduced_motion:
-		_navigation_tween = create_tween()
-		_navigation_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		_navigation_tween.tween_property(_host, "modulate:a", 1.0, 0.16)
 	page_changed.emit(destination)
 
 func _input(event: InputEvent) -> void:

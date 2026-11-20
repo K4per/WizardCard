@@ -197,6 +197,11 @@ func _check_small_field(canvas: FieldCanvas, field: FieldPresentation, group: Fo
 		var bounds: Rect2 = pile["rect"]
 		_expect(bounds.size.x - 8 >= longest_pile and Rect2(Vector2.ZERO, canvas.size).encloses(bounds), "full pile names fit at 120% without crossing the field edge")
 	Typography.set_scale(prior_scale)
+	var opponent_label: String = "对方手牌 %d" % field.opponent_hand_count
+	Typography.set_scale(120)
+	var count_width: float = Typography.HEADING.get_string_size(opponent_label, HORIZONTAL_ALIGNMENT_LEFT, -1, Typography.fitted_size(13, 24)).x
+	_expect(canvas.has_method("_opponent_count_bounds") and (canvas.call("_opponent_count_bounds") as Rect2).size.x >= count_width, "opponent hand count is readable at 720p and 120% font")
+	Typography.set_scale(prior_scale)
 	var cards: Array[CardPresentation] = field.hand.duplicate()
 	for count: int in [14, 20]:
 		field.hand.assign(cards.slice(0, count))
@@ -293,7 +298,75 @@ func _check_casting_pages(canvas: FieldCanvas, field: FieldPresentation) -> void
 	_expect(canvas.card_bounds(last).has_area() and canvas._casting_start[1] == 0 and canvas.card_bounds(opponent).has_area(), "own overflow candidate reachable independently of opponent page")
 	canvas.clear_action_targets()
 
+func _check_greybox_cards(canvas: FieldCanvas, hidden: CardPresentation) -> void:
+	var test_face: Rect2 = Rect2(0, 0, 90, 120)
+	_expect(not CardPainter.artwork_rect(hidden, test_face).has_area(), "an anonymous card has no illustration window")
+	for id: String in ArtBank._textures:
+		_expect(not id.begins_with("c2d.card.") and not id.begins_with("c2d.rarity."), "field renders card faces and backs without ornamental art: " + id)
+	_expect(canvas.card_bounds(canvas.field.own_formations[0].card).has_area(), "greybox field retains the host card hit region")
+
+func _check_target_palette(canvas: FieldCanvas, group: FormationPresentation) -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	canvas.set_action_targets([], {group.card.instance_id: PackedInt32Array([5])})
+	await process_frame
+	await RenderingServer.frame_post_draw
+	var snapshot: Image = root.get_texture().get_image()
+	var host: Rect2 = canvas.get_global_transform_with_canvas() * canvas.card_bounds(group.card)
+	var paper_pixel: Color = snapshot.get_pixelv(Vector2i(host.position + Vector2(3, 5)))
+	var expected: Color = Color("f6eed8")
+	_expect(absf(paper_pixel.r - expected.r) < 0.02 and absf(paper_pixel.g - expected.g) < 0.02 and absf(paper_pixel.b - expected.b) < 0.02, "battlefront cards retain warm paper title and state panels")
+	for hit: Dictionary in canvas._ring_hits:
+		if hit["host"] == group.card.instance_id and hit["ring"] == 5:
+			var rect: Rect2 = canvas.get_global_transform_with_canvas() * (hit["rect"] as Rect2)
+			var y: int = roundi(rect.get_center().y)
+			var found_green: bool = false
+			for x: int in range(floori(rect.position.x), ceili(rect.position.x) + 3):
+				var sample: Color = snapshot.get_pixel(x, y)
+				if sample.g > sample.r + 0.15 and sample.g > sample.b + 0.10:
+					found_green = true
+			_expect(found_green, "legal empty ring retains its green target outline")
+			break
+	canvas.clear_action_targets()
+
+func _check_tray_aspect() -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	var backing: ColorRect = ColorRect.new()
+	backing.color = Color.MAGENTA
+	backing.position = Vector2(10, 10)
+	backing.size = Vector2(96, 90)
+	root.add_child(backing)
+	var face: CardFace = CardFace.new()
+	face.simple_style = true
+	backing.add_child(face)
+	face.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var card: CardPresentation = CardPresentation.from_definition({"id": "fireball", "name": "火球术", "type": 1, "illustrationId": "fireball"})
+	var tile: CardTile = CardTile.new()
+	tile.position = Vector2(120, 10)
+	root.add_child(tile)
+	tile.configure(card)
+	face.configure(card)
+	for simple: bool in [true, false]:
+		face.simple_style = simple
+		tile.simple_style = simple
+		face.queue_redraw()
+		tile.queue_redraw()
+		await process_frame
+		await RenderingServer.frame_post_draw
+		var pixels: Image = root.get_texture().get_image()
+		var blank: Color = pixels.get_pixel(14, 54)
+		var expected: Color = DeckTheme.CONTROL if simple else CardPainter.PAPER
+		_expect(blank.is_equal_approx(Color.MAGENTA), "96x90 selection tray centers the portrait in both styles")
+		for sample_point: Vector2i in [Vector2i(29, 15), Vector2i(130, 22)]:
+			var painted: Color = pixels.get_pixelv(sample_point)
+			_expect(painted.to_html(false) == expected.to_html(false), "tray and library tile keep their chosen blue-grey or warm-paper card face")
+	tile.queue_free()
+	backing.queue_free()
+	await process_frame
+
 func _run() -> void:
+	await _check_tray_aspect()
 	var dynamic: CardPresentation = CardPresentation.from_projection({"id": "99", "definition": {"id": "sunburst", "illustrationId": "v2-sunburst", "name": "阳炎爆", "type": 1, "cost": 20, "castCost": 2}, "effectiveSettingCost": 17, "effectiveCastCost": 2})
 	_expect(dynamic.primary_value == "17/2", "analytic face uses live setting and casting costs")
 	_expect(dynamic.metadata_text.contains("设置费用：17　施法费用：2"), "details use live costs")
@@ -322,8 +395,8 @@ func _run() -> void:
 		"cast": FieldPresentation.LEGAL_GOLD, "covered": FieldPresentation.LEGAL_AMBUSH,
 		"both": FieldPresentation.LEGAL_GOLD | FieldPresentation.LEGAL_AMBUSH
 	}})
-	_expect(highlight_projection.legal_cards.get("set", 0) == FieldPresentation.LEGAL_GOLD and highlight_projection.legal_cards.get("attach", 0) == FieldPresentation.LEGAL_GOLD and highlight_projection.legal_cards.get("cast", 0) == FieldPresentation.LEGAL_GOLD, "native setting, attachment and activation operations receive gold")
-	_expect(highlight_projection.legal_cards.get("covered", 0) == FieldPresentation.LEGAL_AMBUSH, "only native cover operation receives bright blue")
+	_expect(highlight_projection.legal_cards.get("set", 0) == FieldPresentation.LEGAL_GOLD and highlight_projection.legal_cards.get("attach", 0) == FieldPresentation.LEGAL_GOLD and highlight_projection.legal_cards.get("cast", 0) == FieldPresentation.LEGAL_GOLD, "native setting, attachment and activation operations share the normal action flag")
+	_expect(highlight_projection.legal_cards.get("covered", 0) == FieldPresentation.LEGAL_AMBUSH, "only native cover operation receives the distinct cover flag")
 	_expect(highlight_projection.legal_cards.get("both", 0) == (FieldPresentation.LEGAL_GOLD | FieldPresentation.LEGAL_AMBUSH), "a card preserves simultaneous setting and cover availability")
 	_expect(not highlight_projection.legal_cards.has("remove") and highlight_projection.can_set_formation, "removal does not imply setting and legal formation setting highlights the side deck")
 	var attachment_projection: FieldPresentation = MatchProjection.field({"viewer": 0, "players": [{}, {}], "cards": [
@@ -418,6 +491,8 @@ func _run() -> void:
 		root.size = dimensions
 		await process_frame
 		await process_frame
+		_check_greybox_cards(canvas, CardPresentation.anonymous("unknown"))
+		await _check_target_palette(canvas, group)
 		_expect((canvas.size - canvas._own_region.end).is_equal_approx(canvas._opponent_region.position), "analysis symmetry " + str(dimensions))
 		_expect((canvas.size - canvas._own_casting_region.end).is_equal_approx(canvas._opponent_casting_region.position), "casting symmetry " + str(dimensions))
 		_expect(is_equal_approx(canvas._own_casting_region.position.y, canvas._opponent_casting_region.position.y) and canvas._own_casting_region.end.x <= canvas._opponent_casting_region.position.x, "casting regions share the center band with own on the left")

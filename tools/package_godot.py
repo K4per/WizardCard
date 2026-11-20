@@ -19,8 +19,12 @@ import tempfile
 import zipfile
 if __package__:
     from .release_source import provenance
+    from .verify_godot_pck_art import audit_pck
+    from .windows_icons import strip_icons
 else:
     from release_source import provenance
+    from verify_godot_pck_art import audit_pck
+    from windows_icons import strip_icons
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE_VERSION = "2.6.4"
@@ -208,6 +212,10 @@ def main():
     run(args.godot, "--headless", "--path", ROOT / "godot", "--export-release", spec.preset, output / spec.executable)
     if not (output / spec.executable).is_file() or not (output / "WizardCard.pck").is_file():
         raise ValueError("Export must create the executable and external WizardCard.pck")
+    if args.platform == "windows":
+        for executable in output.glob("WizardCard*.exe"):
+            strip_icons(executable)
+    audit_pck(output / "WizardCard.pck", ROOT / "godot/art/assets.json")
     manifest = json.loads((content / "catalog.json").read_text(encoding="utf-8"))
     data_files = ["catalog.json", "cards.json", "deck.json", "side-deck.json"]
     if args.include_presets or (content / "presets.json").is_file():

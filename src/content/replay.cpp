@@ -130,7 +130,7 @@ RecordingDelta MatchSession::recordingSince(RecordingCursor cursor) const {
                                {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
                                {"actualAmount", e.actualAmount},
                                {"affectedPlayer", e.affectedPlayer},
-                               {"spellReleased", e.spellReleased}});
+                               {"spellReleased", e.spellReleased}, {"chainIndex", e.chainIndex}});
     }
     return delta;
 }
@@ -157,7 +157,7 @@ GameEngine replay(const Content &c, const Json &j,
     const bool legacyRules = c.catalog.rulesVersion == "2.5.5" && c.catalog.mechanicsRevision == 9;
     const bool currentRules = (c.catalog.rulesVersion == "2.6.0" && c.catalog.mechanicsRevision == 10) ||
         (c.catalog.rulesVersion == "2.6.2" && c.catalog.mechanicsRevision == 11) ||
-        (c.catalog.rulesVersion == "2.6.3" && c.catalog.mechanicsRevision == 12);
+        (c.catalog.rulesVersion == "2.6.4" && c.catalog.mechanicsRevision == 12);
     if ((!legacy && format != (c.catalog.mechanicsRevision >= 12 ? 6 : 5)) ||
         (legacy && (!legacyRules || j.at("programVersion") != "2.5.5-hotfix.1" ||
                     j.at("rulesVersion") != "2.5.5" ||

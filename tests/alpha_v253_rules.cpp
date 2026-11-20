@@ -114,6 +114,9 @@ TEST_CASE("Alpha v2.5.3 hand word responses share legal generation priority spee
             REQUIRE(e.state().chain->links.size() == 2);
             REQUIRE(e.state().chain->links.back().item.source == 10);
             REQUIRE(e.state().chain->links.back().paid == 2);
+            REQUIRE(std::any_of(e.events().begin(), e.events().end(), [](const GameEvent &event) {
+                return event.kind == "word_response" && event.chainIndex == 2;
+            }));
             settle253(e);
             REQUIRE(e.state().players[0].mana == 18);
             REQUIRE(e.state().cards.at(10).payments.size() == 1);

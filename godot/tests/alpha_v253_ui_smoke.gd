@@ -22,7 +22,7 @@ func _run() -> void:
 	await process_frame
 	_expect(match_page._status_own is PlayerStatusBar, "match own resource bar is present")
 	_expect(match_page._status_opponent is PlayerStatusBar, "match opponent resource bar is present")
-	_expect(not match_page._logs_panel.visible, "match log panel defaults hidden")
+	_expect(match_page._logs_panel.visible, "match log is visible on entry")
 	_expect(match_page._confirm is ActionConfirmation, "confirmation uses centered action popup")
 	_expect(match_page.get_node("ConfirmShade").mouse_filter == Control.MOUSE_FILTER_STOP, "confirmation shade blocks board input")
 	match_page._status_own.set_status("我方", 0, {"life": 35, "temporaryLife": 4, "mana": 7, "load": 3, "capacity": 6}, [{"owner": 0, "source": "9", "amount": 2, "sourceBound": true}], [{"id": "9", "definition": {"name": "测试阵法"}}])
@@ -34,7 +34,7 @@ func _run() -> void:
 	root.add_child(replay)
 	await process_frame
 	_expect(replay._status_own is PlayerStatusBar and replay._status_opponent is PlayerStatusBar, "replay exposes both resource bars")
-	_expect(not replay._logs_panel.visible, "replay log panel defaults hidden")
+	_expect(replay._logs_panel.visible, "replay log is visible on entry")
 	await _native_debug_checks(match_page, replay)
 	replay.hide()
 	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080), Vector2i(2560, 1440)]:
@@ -45,13 +45,12 @@ func _run() -> void:
 		await process_frame
 		_check_corner_bars(match_page._status_own, match_page._status_opponent, dimensions)
 		for hit: Dictionary in match_page.canvas._zone_hits:
-			var zone: Rect2 = hit["rect"]
+			var zone: Rect2 = Rect2(match_page.canvas.global_position + (hit["rect"] as Rect2).position, (hit["rect"] as Rect2).size)
 			_expect(not zone.intersects(match_page._status_own.get_rect()) and not zone.intersects(match_page._status_opponent.get_rect()), "match pile remains clear of resource panels " + str(dimensions))
 		for hit: Dictionary in match_page.canvas._card_hits:
-			var card_rect: Rect2 = hit["rect"]
+			var card_rect: Rect2 = Rect2(match_page.canvas.global_position + (hit["rect"] as Rect2).position, (hit["rect"] as Rect2).size)
 			_expect(not card_rect.intersects(match_page._status_own.get_rect()) and not card_rect.intersects(match_page._status_opponent.get_rect()), "match card remains clear of resource panels " + str(dimensions))
 		await _capture("match-corners", dimensions)
-		match_page._toggle_logs()
 		_expect(not match_page._logs_panel.get_rect().intersects(match_page._status_own.get_rect()), "log drawer leaves own resource panel visible")
 		await _capture("match-logs", dimensions)
 		match_page._confirm.dialog_text = "确认长文案操作：".repeat(36)
@@ -64,7 +63,6 @@ func _run() -> void:
 		_expect(match_page._confirm.z_index > match_page._logs_panel.z_index, "confirmation remains above the log panel")
 		await _capture("match-confirmation", dimensions)
 		match_page._confirm.close_popup()
-		match_page._toggle_logs()
 		match_page.hide()
 		replay.show()
 		replay._layout_panels()
@@ -75,11 +73,9 @@ func _run() -> void:
 		_expect(not replay._canvas.get_global_rect().intersects(replay._status_opponent.get_global_rect()), "replay board leaves top resource panel clear")
 		_expect(not replay._command.get_global_rect().intersects(replay._status_own.get_global_rect()), "replay command text leaves own resource panel clear")
 		await _capture("replay-corners", dimensions)
-		replay._toggle_logs()
 		replay._layout_panels()
 		_expect(not replay._logs_panel.get_global_rect().intersects(replay._status_own.get_global_rect()), "replay logs leave own resource panel clear")
 		await _capture("replay-logs", dimensions)
-		replay._toggle_logs()
 		replay.hide()
 	if _failures.is_empty():
 		print("ALPHA_V253_UI: PASS")

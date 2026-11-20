@@ -218,9 +218,9 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
     cat.cardSetVersion = text(j, "cardSetVersion", source);
     const bool legacy = cat.rulesVersion == "2.5.5" && revision == 9;
     const bool alpha260 = (cat.rulesVersion == "2.6.0" && revision == 10) || (cat.rulesVersion == "2.6.2" && revision == 11) ||
-        (cat.rulesVersion == "2.6.3" && revision == 12);
+        (cat.rulesVersion == "2.6.4" && revision == 12);
     if (!legacy && !alpha260)
-        fail(source, "supported versions are rulesVersion 2.5.5/revision 9, 2.6.0/revision 10, 2.6.2/revision 11 or 2.6.3/revision 12");
+        fail(source, "supported versions are rulesVersion 2.5.5/revision 9, 2.6.0/revision 10, 2.6.2/revision 11 or 2.6.4/revision 12");
     if (!j.contains("cards") || !j.at("cards").is_array())
         fail(source + "/cards", "expected array");
     const std::map<std::string, CardType> types = {{"action", CardType::Action},

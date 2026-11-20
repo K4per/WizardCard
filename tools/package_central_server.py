@@ -13,8 +13,8 @@ from release_source import provenance
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "2.6.3"
-CONTENT_HASH = "61f9b39a65c02fff"
+VERSION = "2.6.4"
+CONTENT_HASH = "dcb43fe56f6d250d"
 
 
 def sha256(path):
@@ -47,8 +47,8 @@ def stage_release(build, output):
     dependencies = verify_binary(binary)
     catalog = json.loads((ROOT / "assets/release-v260/catalog.json").read_text(encoding="utf-8"))
     metadata = catalog["metadata"]
-    if (metadata.get("rulesVersion") != "2.6.3"
-            or metadata.get("cardSetVersion") != "2.6.3"
+    if (metadata.get("rulesVersion") != VERSION
+            or metadata.get("cardSetVersion") != VERSION
             or metadata.get("mechanicsRevision") != 12):
         raise ValueError("assets/release-v260 is not the approved production catalogue")
     aggregate = dict(metadata)

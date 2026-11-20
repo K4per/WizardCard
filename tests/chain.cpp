@@ -235,9 +235,16 @@ TEST_CASE("LC-01 S3 counter-counter resolves in reverse order") {
     REQUIRE(e.state().cards.at(12).zone == Zone::Ash);
     REQUIRE_FALSE(e.state().cards.at(10).payments.back().canceled);
     std::vector<CardId> order;
-    for (const auto &event : e.events())
-        if (event.kind == "link_resolved" || event.kind == "link_skipped")
+    std::vector<int> declared, resolved;
+    for (const auto &event : e.events()) {
+        if (event.kind == "link_declared") declared.push_back(event.chainIndex);
+        if (event.kind == "link_resolved" || event.kind == "link_skipped") {
             order.push_back(event.card);
+            resolved.push_back(event.chainIndex);
+        }
+    }
+    REQUIRE((declared == std::vector<int>{1, 2, 3}));
+    REQUIRE((resolved == std::vector<int>{3, 2, 1}));
     REQUIRE((order == std::vector<CardId>{12, 11, 10}));
     advance(e);
     choose(e);

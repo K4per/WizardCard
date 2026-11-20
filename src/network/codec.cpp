@@ -245,7 +245,7 @@ Json encodeEvents(const EventBatch &batch) {
         out["events"].push_back({{"id", std::to_string(++cursor)}, {"kind", e.kind}, {"text", e.text},
             {"audience", e.audience}, {"card", e.card}, {"amount", e.amount},
             {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
-            {"actualAmount", e.actualAmount}, {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}});
+            {"actualAmount", e.actualAmount}, {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}, {"chainIndex", e.chainIndex}});
     return out;
 }
 EventBatch decodeEvents(const Json &j) {
@@ -260,7 +260,9 @@ EventBatch decodeEvents(const Json &j) {
         event.card = row.at("card"); event.amount = row.at("amount");
         if (!row.at("effectType").is_null()) event.effectType = row.at("effectType").get<EffectKind>();
         event.actualAmount = row.at("actualAmount"); event.affectedPlayer = row.at("affectedPlayer");
-        event.spellReleased = row.at("spellReleased"); out.events.push_back(std::move(event));
+        event.spellReleased = row.at("spellReleased");
+        event.chainIndex = row.value("chainIndex", 0);
+        out.events.push_back(std::move(event));
     }
     return out;
 }

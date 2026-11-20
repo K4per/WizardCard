@@ -19,7 +19,7 @@ static func mark(directory: String, chapter: int) -> bool:
 	var file: FileAccess = FileAccess.open(path + ".tmp", FileAccess.WRITE)
 	if file == null:
 		return false
-	file.store_string(JSON.stringify({"version": "2.6.3", "completed": chapters}))
+	file.store_string(JSON.stringify({"version": ProjectSettings.get_setting("application/config/version"), "completed": chapters}))
 	file.flush()
 	var written: bool = file.get_error() == OK
 	file.close()

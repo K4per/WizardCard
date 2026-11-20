@@ -84,7 +84,7 @@ def main():
         pairs = attributes(card)
         md += ["", f'<a id="{card["id"]}"></a>', "", f"## {card['number']} · {card['name']}", "", f"![{card['name']}]({image})", "", "| 属性 | 数值 |", "|---|---|"]
         md += [f"| {key} | {value} |" for key, value in pairs]
-        md += ["", card["text"], "", card.get("flavor", ""), "", f"内容 ID：`{card['id']}`。"]
+        md += ["", card["text"], "", card.get("flavor", "").rstrip(), "", f"内容 ID：`{card['id']}`。"]
         escape = html.escape
         attrs = "".join(f"<dt>{escape(str(key))}</dt><dd>{escape(str(value))}</dd>" for key, value in pairs)
         sections.append(f'<article data-search="{escape(card["number"] + " " + card["name"] + " " + card["text"] + " " + TYPES[card["type"]])}"><img loading="lazy" src="{escape(image)}" alt=""><h2>{card["number"]} · {escape(card["name"])}</h2><p>{escape(card["text"])}</p><details><summary>属性与风味</summary><dl>{attrs}</dl><p>{escape(card.get("flavor", ""))}</p></details></article>')

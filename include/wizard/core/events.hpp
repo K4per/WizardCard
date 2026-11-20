@@ -12,5 +12,6 @@ struct GameEvent {
     int actualAmount{};
     PlayerId affectedPlayer{-1};
     bool spellReleased{};
+    int chainIndex{}; // Public, one-based position in the current chain.
 };
 } // namespace wizard

@@ -55,7 +55,7 @@ func _verification_deck() -> String:
 		cards["v260-word-%04d" % index] = 2
 	for index: int in range(1, 11):
 		formations["v260-formation-%04d" % index] = 1
-	_app.service.editing_draft["name"] = "Alpha 2.6.3 release verification"
+	_app.service.editing_draft["name"] = "Alpha 2.6.4 release verification"
 	_app.service.editing_draft["cards"] = cards
 	_app.service.editing_draft["sideCards"] = formations
 	if not _expect(_app.service.draft_problems().is_empty() and _app.service.save_draft(), "verification deck passes normal 40+10 validation"):

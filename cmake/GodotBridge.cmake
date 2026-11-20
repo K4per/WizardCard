@@ -112,6 +112,13 @@ if(BUILD_TESTING AND GODOT_BIN)
     --report ${CMAKE_CURRENT_BINARY_DIR}/frontend-report.json)
   set_tests_properties(godot_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  add_test(NAME godot_v264_match_acceptance COMMAND "${GODOT_BIN}" --headless
+    --path ${frontend_dir} --script res://tests/v264_match_acceptance.gd --
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260
+    --user-data ${CMAKE_CURRENT_BINARY_DIR}/v264-match-user
+    --evidence ${CMAKE_CURRENT_BINARY_DIR}/v264-match-acceptance.json)
+  set_tests_properties(godot_v264_match_acceptance PROPERTIES FIXTURES_REQUIRED frontend_import
+    RUN_SERIAL TRUE TIMEOUT 90 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   add_test(NAME godot_alpha_v263_connection COMMAND "${GODOT_BIN}" --headless
     --path ${frontend_dir} --script res://tests/alpha_v263_connection.gd)
   set_tests_properties(godot_alpha_v263_connection PROPERTIES FIXTURES_REQUIRED frontend_import

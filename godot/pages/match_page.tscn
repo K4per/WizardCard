@@ -1,10 +1,8 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=7 format=3]
 [ext_resource type="Script" path="res://pages/match_page.gd" id="1"]
-[ext_resource type="PackedScene" path="res://ui/field_canvas.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://ui/card_detail.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://ui/battle_table.tscn" id="2"]
 [ext_resource type="Theme" path="res://ui/simple_battle_theme.tres" id="theme"]
 [ext_resource type="PackedScene" path="res://ui/decision_panel.tscn" id="decision"]
-[ext_resource type="PackedScene" path="res://ui/player_status_bar.tscn" id="status"]
 [ext_resource type="PackedScene" path="res://ui/action_confirmation.tscn" id="confirm"]
 [sub_resource type="StyleBoxEmpty" id="action_unframed"]
 [node name="MatchPage" type="Control"]
@@ -25,112 +23,28 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0.078, 0.125, 0.169, 1)
-[node name="FieldCanvas" parent="." instance=ExtResource("2")]
+[node name="Table" parent="." instance=ExtResource("2")]
 unique_name_in_owner = true
-layout_mode = 1
-[node name="Margin" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-anchor_bottom = 0.0
-offset_bottom = 90.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 8
-mouse_filter = 2
-[node name="Column" type="VBoxContainer" parent="Margin"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 6
-[node name="Header" type="HBoxContainer" parent="Margin/Column"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 6
-[node name="Settings" type="Button" parent="Margin/Column/Header"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "暂停 / 设置"
-[node name="SaveReplay" type="Button" parent="Margin/Column/Header"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "保存复盘"
-[node name="ViewReplay" type="Button" parent="Margin/Column/Header"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "查看复盘"
-[node name="Leave" type="Button" parent="Margin/Column/Header"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "结束对局"
-[node name="PhaseActions" type="Button" parent="Margin/Column/Header"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "阶段操作"
-[node name="Reconnect" type="Button" parent="Margin/Column/Header"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "重新连接"
-[node name="ForceLeave" type="Button" parent="Margin/Column/Header"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "强制离开"
-[node name="Phase" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 1640.0
-offset_top = 449.0
-offset_right = 1796.0
-offset_bottom = 537.0
-theme_override_font_sizes/font_size = 14
-mouse_filter = 2
-text = "第 0 回合 · 开局"
-horizontal_alignment = 1
-vertical_alignment = 2
-autowrap_mode = 3
 [node name="EndPhase" type="Button" parent="."]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 1640.0
-offset_top = 545.0
-offset_right = 1796.0
-offset_bottom = 594.0
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 14
 text = "切换阶段"
-[node name="OwnStatus" parent="." instance=ExtResource("status")]
+[node name="Controls" type="HFlowContainer" parent="."]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 12.0
-offset_top = 996.0
-offset_right = 328.0
-offset_bottom = 1068.0
-[node name="OpponentStatus" parent="." instance=ExtResource("status")]
+theme_override_constants/h_separation = 3
+theme_override_constants/v_separation = 3
+[node name="Menu" type="Button" parent="Controls"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 1592.0
-offset_top = 12.0
-offset_right = 1908.0
-offset_bottom = 84.0
-[node name="Notice" type="Label" parent="Margin/Column"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 22)
-layout_mode = 2
+text = "菜单"
+tooltip_text = "对局菜单（Esc）"
 theme_override_font_sizes/font_size = 13
-mouse_filter = 2
-autowrap_mode = 3
-[node name="Cue" type="Label" parent="FieldCanvas"]
+[node name="HandToggle" type="Button" parent="Controls"]
+unique_name_in_owner = true
+theme_override_font_sizes/font_size = 13
+text = "▾ 手牌"
+[node name="Cue" type="Label" parent="."]
 unique_name_in_owner = true
 visible = false
-layout_mode = 0
 anchor_left = 0.12
 anchor_top = 0.42
 anchor_right = 0.88
@@ -140,69 +54,16 @@ theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
-[node name="Tutorial" type="Label" parent="Margin/Column"]
+[node name="Tutorial" type="Label" parent="."]
 unique_name_in_owner = true
 visible = false
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
-[node name="TutorialContinue" type="Button" parent="Margin/Column"]
+[node name="TutorialContinue" type="Button" parent="."]
 unique_name_in_owner = true
 visible = false
-layout_mode = 2
 text = "继续教学"
-[node name="Footer" type="HBoxContainer" parent="."]
-layout_mode = 0
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -430.0
-offset_top = -42.0
-offset_right = -12.0
-offset_bottom = -8.0
-grow_horizontal = 0
-mouse_filter = 2
-[node name="LogsToggle" type="Button" parent="Footer"]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "查看对局事件"
-text = "对局日志"
-[node name="DebugToggle" type="Button" parent="Footer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-tooltip_text = "单人调试控制台"
-text = "调试"
-[node name="HandToggle" type="Button" parent="Footer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "▾ 手牌"
-[node name="ClearSelection" type="Button" parent="Footer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "取消选择"
-[node name="Hint" type="Label" parent="Footer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "悬停详情 · Esc 菜单"
-mouse_filter = 2
-[node name="CardDetail" parent="." instance=ExtResource("3")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 0
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -390.0
-offset_top = 12.0
-offset_right = -12.0
-offset_bottom = -12.0
-grow_horizontal = 0
-grow_vertical = 2
-z_index = 4
 [node name="MenuShade" type="ColorRect" parent="."]
+z_index = 31
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -213,6 +74,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.02, 0.04, 0.06, 0.76)
 [node name="MatchMenu" type="PanelContainer" parent="."]
+z_index = 32
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -333,6 +195,7 @@ title = "强制离开房间"
 dialog_text = "强制离开会中止连接，尚未接收完成的终局复盘可能无法保存。确认离开？"
 
 [node name="PrivacyLayer" type="ColorRect" parent="."]
+z_index = 50
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

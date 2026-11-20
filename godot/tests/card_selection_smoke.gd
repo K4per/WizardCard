@@ -54,6 +54,15 @@ func _run() -> void:
 	_expect(page.canvas.target_ids.is_empty(), "successful placement clears target highlights")
 	_expect(service.match_snapshot.get("cards", []).size() == 3 and not service.match_snapshot.has("actions"), "query and confirmation do not edit the fixture projection")
 
+	service.set_actions([{"id":"ring-place","source":"33","command":{"type":KernelContract.CommandKind.SetAmbush,"card":"33","formation":"34","ringIndex":2}}])
+	page._network_waiting = false
+	page._query_is_decision = false
+	page._selection.begin("33", KernelContract.CommandKind.SetAmbush)
+	page._ring_selected("34", 2)
+	_expect(page._confirm.visible and service.confirmations == 1 and page._pending.get("command", {}).get("ringIndex") == 2, "normal non-first ring placement waits for explicit final confirmation")
+	page._confirm.get_node("Column/Actions/Buttons/Cancel").pressed.emit()
+	_expect(page._pending.is_empty() and (not page._selection.active or page._selection.options.field == KernelContract.ActionField.Operation), "cancel restores editable card actions and clears the completed placement")
+	service.selected_actions.assign(["cover-b"])
 	service.match_snapshot["decision"] = {"id": "9007199254740997", "player": 0, "kind": KernelContract.DecisionKind.ReturnSpell}
 	service.fixture_actions.assign([{"id": "return-b", "source": "0", "command": {"type": KernelContract.CommandKind.Choose, "decision": "9007199254740997", "option": {"kind": KernelContract.ChoiceKind.Card, "value": "34"}, "ringIndex": 2}}])
 	page._render_decision()

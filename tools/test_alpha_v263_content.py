@@ -18,6 +18,14 @@ class Content263Tests(unittest.TestCase):
             json.loads((RELEASE / d["file"]).read_text(encoding="utf-8"))
             for d in self.manifest["definitions"])}
 
+    def test_current_release_versions_are_synchronized(self):
+        release = json.loads((RELEASE / "RELEASE.json").read_text(encoding="utf-8"))
+        for data in (release, self.manifest["metadata"]):
+            self.assertEqual(data["rulesVersion"], "2.6.4")
+            self.assertEqual(data["cardSetVersion"], "2.6.4")
+            self.assertEqual(data["mechanicsRevision"], 12)
+        self.assertEqual(release["cardCount"], len(self.cards))
+
     def test_retired_formations_are_absent_without_renumbering_other_cards(self):
         baseline = json.loads((SOURCE / "baseline.json").read_text(encoding="utf-8"))["cards"]
         expected = {c["name"]: c["id"] for c in baseline if c["name"] not in {"守护法阵", "幻象法阵"}}

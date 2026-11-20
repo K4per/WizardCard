@@ -58,6 +58,34 @@ static func _effect(surface: CanvasItem, text: String, bounds: Rect2, font_size:
 	for index: int in range(lines.size()):
 		surface.draw_string(FONT, bounds.position + Vector2(0, FONT.get_ascent(font_size) + index * line_height), lines[index], HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, INK)
 
+static func artwork_rect(card: CardPresentation, face: Rect2) -> Rect2:
+	var meta: Dictionary = ArtBank.metadata(frame_id(card))
+	var source: Array = meta["size"]
+	return _region(meta["runtimeLayout"], "art", face, face.size / Vector2(source[0], source[1]))
+
+# At battlefield scale the original frame's lower parchment holds the name
+# and public state. Full rules remain available in the fixed detail panel.
+static func paint_miniature(surface: CanvasItem, card: CardPresentation, face: Rect2, highlighted: bool = false) -> void:
+	if card == null or not face.has_area():
+		return
+	if not card.hidden and not card.face_down:
+		DeckCardPainter.paint_artwork(surface, card, artwork_rect(card, face))
+	surface.draw_texture_rect(ArtBank.texture(frame_id(card)), face, false)
+	if not card.hidden and not card.face_down:
+		var paper: Rect2 = Rect2(face.position + face.size * Vector2(0.10, 0.60), face.size * Vector2(0.80, 0.26))
+		var status: String = card.status.get_slice("\n", 0).get_slice(" · ", 0).replace("解析剩余 ", "余")
+		var value: String = status if not status.is_empty() else card.token_label()
+		if value.is_empty() and card.type_key != "formation":
+			value = card.primary_value
+		if not value.is_empty() and paper.size.y >= 22:
+			var line: Rect2 = Rect2(paper.position, Vector2(paper.size.x, paper.size.y * 0.52))
+			_label(surface, card.title, line, 14, true, Typography.HEADING)
+			_label(surface, value, Rect2(line.position + Vector2(0, line.size.y), line.size), 12, true)
+		else:
+			_label(surface, status if not status.is_empty() else card.title, paper, 14, true, Typography.HEADING)
+	if highlighted:
+		surface.draw_rect(face.grow(1), Color("efc97e"), false, 2)
+
 static func paint(surface: CanvasItem, card: CardPresentation, bounds: Rect2, view: String = "field", highlighted: bool = false) -> void:
 	if card == null:
 		return

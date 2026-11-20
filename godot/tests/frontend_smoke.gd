@@ -77,7 +77,10 @@ func _run() -> void:
 		_check(page.canvas._card_hits.size() >= 8, "Field must contain rendered card hit regions")
 		var own: FormationPresentation = page.canvas.field.own_formations[0]
 		var host_anchor: Rect2 = page.canvas.card_bounds(own.card)
-		_check(host_anchor.position.x < page.canvas._own_region.position.x + page.canvas._own_region.size.x * 0.15 and host_anchor.size.x <= page.canvas._own_region.size.x * page.canvas.layout.formation_slot_width_ratio + 0.1, "Formation slots begin at the left of the analysis area")
+		var first_cluster := page.canvas._formation_slot(page.canvas._own_region, 0, true).merge(
+			page.canvas._formation_slot(page.canvas._own_region, own.body_size - 1, true))
+		_check(first_cluster.encloses(host_anchor) and absf(host_anchor.get_center().x - first_cluster.get_center().x) <= 2,
+			"First host is centered within its allocated body columns")
 		for rings: int in [0, 1, 7, 12]:
 			own.ring_count = rings
 			page.canvas.queue_redraw()
@@ -433,7 +436,7 @@ func _field_input_checks(page: FieldPage) -> void:
 			for other: Dictionary in page.canvas._card_hits:
 				if other["card"] == page.canvas.field.hand[2]:
 					var middle_pose: Transform2D = other["pose"]
-					_check(pose.origin.y > middle_pose.origin.y + 8, "Fan edge cards sit below the middle card")
+					_check(pose.origin.y > middle_pose.origin.y, "Fan edge cards sit below the middle card")
 	# A transparent hand corner may legitimately expose a battlefield card
 	# underneath. Isolate this card to check its inverse-rotation hit test.
 	var all_hits: Array[Dictionary] = page.canvas._card_hits

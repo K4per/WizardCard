@@ -18,22 +18,22 @@ extends Resource
 		right_margin_ratio = value
 		emit_changed()
 ## X is the top edge as a fraction of field height; Y is the height fraction.
-@export var opponent_analysis: Vector2 = Vector2(0.12, 0.32):
+@export var opponent_analysis: Vector2 = Vector2(0.075, 0.368):
 	set(value):
 		opponent_analysis = value
 		emit_changed()
 ## X is the top edge as a fraction of field height; Y is the height fraction.
-@export var own_analysis: Vector2 = Vector2(0.56, 0.32):
+@export var own_analysis: Vector2 = Vector2(0.557, 0.368):
 	set(value):
 		own_analysis = value
 		emit_changed()
 ## X is the top edge as a fraction of field height; Y is the height fraction.
-@export var opponent_casting: Vector2 = Vector2(0.445, 0.055):
+@export var opponent_casting: Vector2 = Vector2(0.445, 0.11):
 	set(value):
 		opponent_casting = value
 		emit_changed()
 ## X is the top edge as a fraction of field height; Y is the height fraction.
-@export var own_casting: Vector2 = Vector2(0.50, 0.055):
+@export var own_casting: Vector2 = Vector2(0.445, 0.11):
 	set(value):
 		own_casting = value
 		emit_changed()
@@ -59,11 +59,11 @@ extends Resource
 		pile_size = value
 		emit_changed()
 ## Horizontal and vertical insets as fractions of each analysis region.
-@export var analysis_safe_margin: Vector2 = Vector2(0.025, 0.025):
+@export var analysis_safe_margin: Vector2 = Vector2(0.008, 0.012):
 	set(value):
 		analysis_safe_margin = value
 		emit_changed()
-@export_range(0.0, 80.0, 1.0) var analysis_header_height: float = 28.0:
+@export_range(0.0, 80.0, 1.0) var analysis_header_height: float = 18.0:
 	set(value):
 		analysis_header_height = value
 		emit_changed()
@@ -100,7 +100,7 @@ extends Resource
 		emit_changed()
 
 @export_group("Hand Fan")
-@export_range(0.05, 0.4, 0.005) var hand_height_ratio: float = 0.13:
+@export_range(0.05, 0.4, 0.005) var hand_height_ratio: float = 0.15:
 	set(value):
 		hand_height_ratio = value
 		emit_changed()
@@ -108,7 +108,7 @@ extends Resource
 	set(value):
 		hand_max_height = value
 		emit_changed()
-@export_range(0.2, 0.9, 0.01) var hand_width_ratio: float = 0.70:
+@export_range(0.2, 0.9, 0.01) var hand_width_ratio: float = 0.87:
 	set(value):
 		hand_width_ratio = value
 		emit_changed()
@@ -124,7 +124,7 @@ extends Resource
 	set(value):
 		fan_angle_per_card = value
 		emit_changed()
-@export_range(0.0, 0.5, 0.01) var fan_arch_ratio: float = 0.10:
+@export_range(0.0, 0.5, 0.01) var fan_arch_ratio: float = 0.12:
 	set(value):
 		fan_arch_ratio = value
 		emit_changed()
@@ -132,11 +132,11 @@ extends Resource
 	set(value):
 		fan_edge_drop_ratio = value
 		emit_changed()
-@export_range(0.0, 1.0, 0.01) var hover_raise_ratio: float = 0.62:
+@export_range(0.0, 1.0, 0.01) var hover_raise_ratio: float = 0.56:
 	set(value):
 		hover_raise_ratio = value
 		emit_changed()
-@export_range(0.0, 64.0, 1.0) var hand_bottom_margin: float = 12.0:
+@export_range(0.0, 64.0, 1.0) var hand_bottom_margin: float = 4.0:
 	set(value):
 		hand_bottom_margin = value
 		emit_changed()
@@ -148,8 +148,8 @@ func field_region(dimensions: Vector2, vertical: Vector2) -> Rect2:
 	var height: float = clampf(vertical.y, 0.0, 1.0 - top)
 	return Rect2(left, dimensions.y * top, width, dimensions.y * height)
 
-func analysis_content(region: Rect2) -> Rect2:
+func analysis_content(region: Rect2, own: bool = false) -> Rect2:
 	var margin: Vector2 = analysis_safe_margin.clamp(Vector2.ZERO, Vector2.ONE * 0.45)
 	var inset: Vector2 = region.size * margin
 	var header: float = minf(analysis_header_height, maxf(0.0, region.size.y - inset.y * 2.0))
-	return Rect2(region.position + inset + Vector2(0, header), (region.size - inset * 2.0 - Vector2(0, header)).max(Vector2.ZERO))
+	return Rect2(region.position + inset + Vector2(0, 0 if own else header), (region.size - inset * 2.0 - Vector2(0, header)).max(Vector2.ZERO))

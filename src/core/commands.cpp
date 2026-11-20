@@ -235,6 +235,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             s.events.push_back({"pay", "响应支付 " + std::to_string(paid) + " 魔素", -1, c.id, paid});
             s.events.push_back(
                 {"link_declared", "响应链节 #" + std::to_string(s.chain->links.back().id), -1, c.id});
+            s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
             StateMaintenance::check(s, catalog());
             return {};
         }

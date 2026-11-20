@@ -146,13 +146,15 @@ func _run() -> void:
 			var seen: Dictionary = {}
 			var cards: Array[CardPresentation] = stress.own_casting if own else stress.opponent_casting
 			var region: Rect2 = page.canvas._own_casting_region if own else page.canvas._opponent_casting_region
-			for step: int in range(5):
+			for step: int in range(cards.size()):
 				for card: CardPresentation in cards:
 					var bounds: Rect2 = page.canvas.card_bounds(card)
 					if bounds.has_area():
 						check(region.encloses(bounds), "full casting track never clips a card")
 						check(page.canvas.card_at(bounds.get_center()) == card, "visible casting card remains selectable")
 						seen[card.instance_id] = true
+				if seen.size() == cards.size():
+					break
 				if page.canvas.has_method("_scroll_casting"):
 					page.canvas.call("_scroll_casting", region.get_center(), 1)
 					await process_frame
@@ -163,10 +165,108 @@ func _run() -> void:
 		page._position_phase_button()
 		check(page._end_phase.position.x >= page.canvas.position.x + page.canvas._own_casting_region.end.x, "phase control cannot cover casting cards or page arrows")
 		check(page._detail.size.x <= maxf(244, dimensions.x * 0.20), "compact details leave more width for the battlefield")
-		check(page.canvas.layout.own_analysis.y >= 0.34 and page.canvas.layout.opponent_analysis.y >= 0.30, "battlefield grows vertically while the hand remains collapsible")
+		check(is_equal_approx(page.canvas._own_casting_region.position.y, page.canvas._opponent_casting_region.position.y), "both players cast on the same horizontal band")
 		check(page._detail.position.x < dimensions.x * 0.25, "detail stays in left column")
 		check(page.canvas.position.x > page._detail.position.x + page._detail.size.x, "detail never blocks the field")
 		check(page._status_opponent.position.x > dimensions.x * 0.65, "opponent status remains top right")
+	page._update_chain({"opening":true,"openingStage":"formation","viewer":0,"initialFormationConfirmed":[true,false]})
+	check(page._phase.text.contains("等待玩家 2"), "opening heading names the player still choosing")
+	page._update_chain({"activePlayer":0,"chain":{"mode":0,"priority":1,"links":[]}})
+	check(page._phase.text.contains("等待玩家 2"), "replay heading uses public chain priority when no actingPlayer is projected")
+	root.size = Vector2i(1280, 720)
+	var typography: Node = root.get_node("GlobalTypography")
+	typography.call(&"set_scale", 120)
+	await process_frame
+	await process_frame
+	var fixed_frame: Rect2 = page._detail.get_global_rect()
+	var fixed_board: Rect2 = page.canvas.get_global_rect()
+	var long_card: CardPresentation = projection.hand[0].duplicate() as CardPresentation
+	long_card.text = "持续效果与费用。".repeat(350)
+	page._detail.configure(long_card)
+	await process_frame
+	await process_frame
+	var body_scroll: VScrollBar = page._detail._body.get_v_scroll_bar()
+	check(body_scroll.max_value > body_scroll.page and page._detail.get_global_rect() == fixed_frame, "long effect text scrolls inside the fixed frame at 720p and 120% type")
+	check(page.canvas.get_global_rect() == fixed_board and (Rect2(Vector2.ZERO, root.size)).encloses(page._response_mode.get_global_rect()), "detail and zoom leave action controls in bounds")
+	page._detail.clear_card()
+	typography.call(&"set_scale", 100)
+	await process_frame
+	await process_frame
+	var before_overflow: Array = service.match_snapshot.cards.duplicate(true)
+	service.match_snapshot.players[0]["castingCapacity"] = 3
+	for count: int in [5, 4]:
+		var choices: Array = []
+		service.match_snapshot.cards = []
+		for slot: int in range(count):
+			var id: String = str(100 + slot)
+			service.match_snapshot.cards.append({"id":id,"owner":0,"zone":5,"definition":{"name":"公开法术 %s" % id,"type":1}})
+			choices.append({"source":"0","command":{"type":KernelContract.CommandKind.Choose,"option":{"kind":KernelContract.ChoiceKind.Card,"value":id}}})
+		service.match_snapshot.decision = {"id":str(count),"kind":KernelContract.DecisionKind.Overflow,"player":0}
+		service.set_actions(choices)
+		page._render_decision()
+		check(page._notice.is_visible_in_tree() and page._notice.text.contains("还需选择 %d 张送灰" % [count - 3]), "overflow prompt follows current authoritative count and capacity")
+		check(page._decision.request.choices.size() == count, "every overflow candidate remains available in the tray")
+		page._decision_confirmed("1", "4", str(count), ["1:100"])
+		page._network_waiting = false
+	service.match_snapshot.cards = before_overflow
+	page._update_chain({"chain":{"mode":1,"links":[{"source":"0","kindName":"设置"},{"source":"0","kindName":"响应"}]}})
+	var active_chain: String = page._chain_text.get_parsed_text()
+	check(active_chain.find("C1") < active_chain.find("C2") and active_chain.contains("正在结算 C2"), "active links follow declaration order and mark the reverse resolving link")
+	service.match_snapshot["decision"] = null
+	service.match_snapshot["actionSummary"] = {"safeAdvance":{"type":KernelContract.CommandKind.AdvancePhase}}
+	service.set_actions([{"source":"33", "command":{"type": KernelContract.CommandKind.StartAnalysis, "card":"33", "formation":"55", "ringIndex":2, "targets":["44"]}}])
+	page._selected = projection.hand[0]
+	page._selection.begin("33", KernelContract.CommandKind.StartAnalysis)
+	page._render_actions(false)
+	check(page._end_phase.disabled, "phase cannot replace an unfinished source/target choice")
+	page._open_match_menu()
+	page.dismiss_cancel()
+	check(not page._match_menu.visible and page._selection.active, "closing the menu restores an unfinished choice")
+	page._selection.cancel()
+	page._decision.hide()
+	page._restore_tray_hand()
+	var board: Rect2 = page.canvas.get_global_rect()
+	var inspected: CardPresentation = CardPresentation.anonymous("hidden")
+	page._selection.cancel()
+	page._clear_card()
+	check(page._detail.visible and page._detail.card == null, "clearing keeps the empty detail frame")
+	page._selected = projection.hand[0]
+	page.canvas.selected_id = page._selected.instance_id
+	page._hover_card(inspected)
+	check(page._detail.card == inspected and page._detail._title.text == "盖伏卡" and page.canvas.selected_id == "33", "inspecting a different card preserves the pinned source")
+	page._hover_card(null)
+	check(page._detail.card == page._selected, "leaving a preview restores the selected card")
+	var events: Array = [{"kind":"link_resolved", "text":"结算链节 #17", "chainIndex":2}, {"kind":"link_skipped", "text":"取消链节 #16", "chainIndex":1}, {"kind":"chain_closed", "text":"连锁结束"}]
+	page._events_changed({"reset":true, "events":events})
+	page._update_chain({})
+	check(page._chain_text.get_parsed_text().contains("C2") and page._chain_text.get_parsed_text().contains("C1"), "both finished links stay readable after fast resolution")
+	var automatic_events: Array = [{"kind":"chain_open","text":"后续时点"}, {"kind":"link_resolved","text":"结算链节 #18","chainIndex":1}, {"kind":"chain_closed","text":"连锁结束"}]
+	page._events_changed({"events":automatic_events})
+	events.append_array(automatic_events)
+	check(page._chain_text.get_parsed_text().contains("C2 → C1"), "an automatic one-link window cannot erase the just-finished multi-link sequence")
+	check(page._logs_text.get_parsed_text().find("C2") >= 0 and page._logs_text.get_parsed_text().find("C2") < page._logs_text.get_parsed_text().find("C1"), "public log retains the reverse resolution order")
+	check(page._logs_panel.is_visible_in_tree() and page._logs_panel.global_position.x >= board.end.x and page._chain_text.global_position.y < page._logs_panel.global_position.y, "both history panels stay on the right")
+	check(page.canvas.get_global_rect() == board and page.canvas.selected_id == "33", "log updates preserve field geometry and selected action source")
+	var replay: ReplayPage = load("res://pages/replay_page.tscn").instantiate()
+	root.add_child(replay)
+	await process_frame
+	replay._layout_panels()
+	await process_frame
+	check(replay._canvas.get_global_rect() == board and replay._detail.get_global_rect() == page._detail.get_global_rect(), "replay and match use identical table geometry %s %s %s %s" % [replay._canvas.get_global_rect(), board, replay._detail.get_global_rect(), page._detail.get_global_rect()])
+	replay._update_logs({"eventLog":events})
+	check(replay._logs_text.get_parsed_text() == page._logs_text.get_parsed_text(), "the same public events have identical captions in replay")
+	page._events_changed({"reset":true,"events":[]})
+	for event_index: int in range(80):
+		page._events_changed({"events":[{"text":"历史事件 %d" % event_index}]})
+	await process_frame
+	await process_frame
+	var scroll: VScrollBar = page._logs_text.get_v_scroll_bar()
+	scroll.value = scroll.min_value
+	var previous_scroll: float = scroll.value
+	page._events_changed({"events":[{"text":"新的公开事件"}]})
+	await process_frame
+	check(is_equal_approx(scroll.value, previous_scroll), "a new public event preserves reading position")
+	replay.queue_free()
 	page.queue_free()
 	await process_frame
 	print("Alpha v2.6.3 UI failures: ", failures)

@@ -135,7 +135,7 @@ func _run() -> void:
 	escape.pressed = true
 	root.push_input(escape, true)
 	await process_frame
-	if not _expect(match_page.canvas.selected_id.is_empty() and not match_page._detail.visible and not match_page._action_popup.visible, "Escape clears the selected card context"):
+	if not _expect(match_page.canvas.selected_id.is_empty() and match_page._detail.visible and match_page._detail.card == null and not match_page._action_popup.visible, "Escape clears the selected card context"):
 		return
 	var second_point: Vector2 = match_page.canvas.global_position + match_page.canvas.card_bounds(second_card).get_center()
 	var second_motion: InputEventMouseMotion = InputEventMouseMotion.new()

@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3]
+[ext_resource type="Script" path="res://ui/battle_table.gd" id="script"]
+[ext_resource type="PackedScene" path="res://ui/field_canvas.tscn" id="field"]
+[ext_resource type="PackedScene" path="res://ui/card_detail.tscn" id="detail"]
+[ext_resource type="PackedScene" path="res://ui/player_status_bar.tscn" id="status"]
+[sub_resource type="StyleBoxFlat" id="rail_panel"]
+bg_color = Color(0.055, 0.104, 0.143, 1)
+border_color = Color(0.31, 0.43, 0.47, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+[node name="BattleTable" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("script")
+[node name="FieldCanvas" parent="." instance=ExtResource("field")]
+unique_name_in_owner = true
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+[node name="OwnStatus" parent="." instance=ExtResource("status")]
+unique_name_in_owner = true
+[node name="OpponentStatus" parent="." instance=ExtResource("status")]
+unique_name_in_owner = true
+[node name="Detail" parent="." instance=ExtResource("detail")]
+unique_name_in_owner = true
+[node name="Clock" type="Label" parent="."]
+unique_name_in_owner = true
+horizontal_alignment = 1
+vertical_alignment = 1
+mouse_filter = 2
+text = "未计时"
+theme_override_styles/normal = SubResource("rail_panel")
+theme_override_font_sizes/font_size = 13
+[node name="RightRail" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+theme_override_constants/separation = 5
+[node name="Phase" type="Label" parent="RightRail"]
+unique_name_in_owner = true
+text = "开局"
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 15
+[node name="Controls" type="VBoxContainer" parent="RightRail"]
+unique_name_in_owner = true
+theme_override_constants/separation = 3
+[node name="Notice" type="Label" parent="RightRail"]
+unique_name_in_owner = true
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 13
+[node name="ChainPanel" type="PanelContainer" parent="RightRail"]
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.65
+theme_override_styles/panel = SubResource("rail_panel")
+[node name="Column" type="VBoxContainer" parent="RightRail/ChainPanel"]
+[node name="Caption" type="Label" parent="RightRail/ChainPanel/Column"]
+text = "连锁"
+theme_override_colors/font_color = Color(0.64, 0.84, 0.89, 1)
+[node name="ChainText" type="RichTextLabel" parent="RightRail/ChainPanel/Column"]
+unique_name_in_owner = true
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 14
+text = "当前无连锁"
+[node name="LogPanel" type="PanelContainer" parent="RightRail"]
+unique_name_in_owner = true
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("rail_panel")
+[node name="Column" type="VBoxContainer" parent="RightRail/LogPanel"]
+[node name="Caption" type="Label" parent="RightRail/LogPanel/Column"]
+text = "对局日志"
+theme_override_colors/font_color = Color(0.64, 0.84, 0.89, 1)
+[node name="LogText" type="RichTextLabel" parent="RightRail/LogPanel/Column"]
+unique_name_in_owner = true
+size_flags_vertical = 3
+scroll_following = true
+selection_enabled = true
+theme_override_font_sizes/normal_font_size = 14

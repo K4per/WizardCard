@@ -29,6 +29,7 @@ void GameEngine::startChain(ResponseWindow window, ChainLink root, PlayerId prio
     s.events.push_back({"chain_open", "建立连锁：" + windowName(window)});
     s.events.push_back({"link_declared", "宣告链节 #" + std::to_string(s.chain->links.back().id), -1,
                         s.chain->links.back().item.source});
+    s.events.back().chainIndex = 1;
 }
 void GameEngine::beginEffect(CardId id, AfterEffect after) {
     if (state_.result != -1) return;
@@ -361,6 +362,7 @@ void GameEngine::finishLink(bool success) {
     s.events.push_back({success ? "link_resolved" : "link_skipped",
                         (success ? "结算" : "取消或失效：") + std::string("链节 #") + std::to_string(link.id),
                         -1, link.item.source});
+    s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
     s.events.back().spellReleased =
         success && (link.kind == LinkKind::Spell ||
                     (link.kind == LinkKind::Response &&

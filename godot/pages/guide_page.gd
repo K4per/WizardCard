@@ -24,7 +24,7 @@ func _ready() -> void:
 	var heading: HBoxContainer = HBoxContainer.new()
 	column.add_child(heading)
 	heading.add_child(UiFactory.button("‹ 返回主菜单", navigation_requested.emit.bind(&"menu")))
-	heading.add_child(UiFactory.label("巫师指南 · Alpha 2.6.3", 28, true))
+	heading.add_child(UiFactory.label("巫师指南 · Alpha 2.6.4", 28, true))
 	tabs = TabContainer.new()
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(tabs)
@@ -50,7 +50,7 @@ func _ready() -> void:
 	_rule_text.add_theme_font_size_override(&"normal_font_size", 20)
 	_rule_text.selection_enabled = true
 	rules_page.add_child(_rule_text)
-	_rules = JSON.parse_string(FileAccess.get_file_as_string("res://data/rulebook_2_6_3.json")) as Dictionary
+	_rules = JSON.parse_string(FileAccess.get_file_as_string("res://data/rulebook_2_6_4.json")) as Dictionary
 	for chapter: Dictionary in _rules.get("chapters", []):
 		_rule_chapters.add_item(str(chapter["title"]))
 	_rule_chapters.item_selected.connect(_read_rule)
@@ -70,7 +70,7 @@ func configure(value: FrontendService) -> void:
 func _read_rule(index: int) -> void:
 	var chapters: Array = _rules.get("chapters", [])
 	if index >= 0 and index < chapters.size():
-		_rule_text.text = "规则版本 2.6.3\n\n" + str(chapters[index]["title"]) + "\n\n" + str(chapters[index]["text"])
+		_rule_text.text = "规则版本 %s\n\n" % _rules["version"] + str(chapters[index]["title"]) + "\n\n" + str(chapters[index]["text"])
 		_rule_text.scroll_to_line(0)
 
 func start_chapter(chapter: int) -> void:

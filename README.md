@@ -1,24 +1,24 @@
 # 巫师牌 / WizardCard
 
-**Alpha v2.6.2**：C++17 权威规则内核、Godot 4.7.2 前端、40+10 构筑、三档 AI、教学、复盘和局域网会话。程序、规则与卡池版本均为 `2.6.2`，机制修订为 `11`。
+**Alpha v2.6.4** 使用 Godot 4.7.2 展示战场，由 C++17 内核处理规则。程序、规则和卡池版本均为 `2.6.4`，机制修订为 `12`。
 
-Alpha v2.6.2 修复11月4日至5日反馈中的35张卡牌与规则、交互问题，并保留中央联机断线修复。计时在己方结束阶段先触发、再递减；真实伤害绕过临时生命与普通减伤。详见[发行说明](docs/releases/2.6.2.md)。
+每方五格阵体横向排列，中央施法带左侧为己方、右侧为对方。左栏用于查看卡牌详情，右栏查看连锁和日志。[2.6.4 发行说明](docs/releases/2.6.4.md)
 
-正式卡牌见[卡池图鉴](docs/card-catalog.md)和[图文浏览版](docs/card-catalog.html)，规则见[Alpha v2.6.2发行说明](docs/releases/2.6.2.md)，术语见[GLOSSARY.md](GLOSSARY.md)。本次便携包说明见[2.6.2发行说明](docs/releases/2.6.2.md)；历史文档与报告集中在[归档说明](docs/archive/README.md)，卡池导入源快照位于[卡池源归档](assets/source-archive/card-pool-snapshots.zip)。
+正式卡池共有 90 张卡。主菜单的巫师指南可离线查阅规则、浏览卡牌并完成五章教学。[卡池图鉴](docs/card-catalog.md) · [图文浏览版](docs/card-catalog.html) · [术语表](GLOSSARY.md)
 
 ## 运行便携包
 
 Windows x64 便携包解压后运行 `WizardCard.exe`。保留同级 `WizardCard.pck`、`bin/`、`assets/` 和运行库 DLL；`SHA256.json` 提供逐文件校验。无需安装 Godot。
 
 Linux 支持 Ubuntu 24.04+、Arch x86_64 的 X11 和原生 Wayland。解压
-`WizardCard-2.6.0-hotfix.1-linux-x86_64.tar.gz` 后运行 `./run.sh`；可传
+`WizardCard-2.6.4-linux-x86_64.tar.gz` 后运行 `./run.sh`；可传
 `--display-driver x11` 或 `--display-driver wayland`。需要系统 glibc、libstdc++、
 OpenGL 3.3 驱动及桌面图形/音频库；中文字体随包发布。安装、依赖及故障排查见
 [Linux 发行说明](docs/releases/2.6.0-hotfix.1-linux.md)。
 
-主菜单保留 banner 和布局，左侧标识、右侧七个纵向主按钮依次为单人游戏、多人游戏、卡组构筑、卡牌图鉴、对局复盘、游戏设置、退出游戏。单人游戏可选择挑战 AI、本地双人换手或新手教学。AI 有入门、标准、进阶三档；当前提供1套合法40+10预设，也可使用保存的合法自建卡组。普通对局使用随机种子；开发 CLI 可指定种子复现。
+从单人游戏可进入挑战 AI 或本地双人换手，巫师指南提供五章教学。AI 有入门、标准、进阶三档。可使用 40+10 入门预设或合法自建卡组。
 
-每方开局私下从自己的副卡组选择一张合法等级1阵法，双方确认后同时公开。初始阵法不保存在卡组草稿中。本地换手时先显示交接遮挡，确认接手后才显示该玩家的手牌；AI 模式始终采用本方视角。
+开局双方私下提交猜拳，胜方先手，平局重来。双方各抽五张后，从自己的副卡组选定合法的初始阵法，同时公开。本地换手时先显示交接遮挡，确认接手后展示该玩家的手牌。
 
 场地每方有5个阵体槽位。阵体2的阵法连续占2槽，阵体4占4槽，环位铺在对应区域，剩余槽位保持空白。双方初始生命及普通生命上限均为40，开局魔素0、储存上限20；具体费用、荷载与时机由规则内核决定。
 
@@ -30,28 +30,28 @@ OpenGL 3.3 驱动及桌面图形/音频库；中文字体随包发布。安装�
 
 副卡组、灰烬区及规则选择使用底部卡牌托盘。选择候选后显式确认；收起托盘可暂时查看手牌，强制选择仍然保留。响应可选择确认或放弃。手牌按钮及右键可收起、展开手牌；Esc 先取消当前临时选择，空闲时打开对局菜单。
 
-双方状态栏区分生命、临时生命、魔素和荷载，荷载悬停可查看来源；对局与复盘的日志默认收起，点击日志按钮展开。回合、行动方和阶段提示位于切换阶段按钮上方。主要阶段可进入施法阶段或直接结束；结束时仍会处理必要响应及强制选择。准备施法、释放顺序、回位、弃牌及额外成本都来自当前合法动作，界面不会自行推算或支付费用。
+双方状态栏区分生命、临时生命、魔素和荷载，荷载悬停可查看来源；对局与复盘的连锁和日志位于右栏。回合、行动方和阶段提示位于切换阶段按钮上方。主要阶段可进入施法阶段或直接结束；结束时仍会处理必要响应及强制选择。准备施法、释放顺序、回位、弃牌及额外成本都来自当前合法动作，界面不会自行推算或支付费用。
 
 对局菜单提供设置、阶段操作、保存复盘和离开。挑战 AI 时还可打开单人调试控制台，加入卡牌、调整资源、独立切换无限资源或回到上一回合；调试操作由会话校验并记录，联机、换手、教学与回放不可调用。本地与 AI 对局进入设置后暂停；局域网计时不因菜单或设置暂停。离开进行中的对局需要确认，终局记录保存失败时可取消或重试。教学通过正常规则引导阶段、解析、准备、反制和伤害，不强制结束对局。
 
 ## 卡组构筑
 
-主卡组固定40张，包含解析、言灵、咒符和符文；副卡组固定10张阵法。主、副卡组分别限制同名最多3张，副卡组必须包含可用于开局选择的等级1阵法。正式 v2.6 卡池92种：17张阵法、39张解析法术、21张言灵法术、12张咒符法术和3张符文；完整迁移裁定及输入快照见[卡池源归档](assets/source-archive/card-pool-snapshots.zip)。
+主卡组固定40张，包含解析、言灵、咒符和符文；副卡组固定10张阵法。主、副卡组分别限制同名最多3张，副卡组必须包含可用于开局选择的等级1阵法。正式 v2.6 卡池90种，包括15张阵法、39张解析法术、21张言灵法术、12张咒符法术和3张符文；完整迁移裁定及输入快照见[卡池源归档](assets/source-archive/card-pool-snapshots.zip)。
 
 从卡组列表新建草稿、复制预设或修改自建卡组。构筑页采用与对局同色的深蓝灰三栏布局：左侧插画与完整详情，中间同时显示40张主卡组和10张副卡组，右侧卡池与搜索筛选。保留卡牌插画，取消装饰背景、卡框和按钮素材。右键卡池加入一张，右键已构筑卡牌移除一张，也可拖动到另一栏增减；悬停或点击查看完整详情，Esc 或右键取消拖动。
 
-可按卡名、类型、稀有度、费用、施法费用、位阶和标签筛选。草稿采用格式3，仅保存主卡组与副卡组，不保存固定初始阵法。卡组列表提供可读JSON文件导入和导出；非法导入会指出卡牌及原因并保留当前草稿。未完成草稿可保存；只有名称、40+10数量、同名上限及卡牌合法性全部通过才进入开局选项。内容升级后保留失效 ID 并显示问题，旧草稿可修复；损坏或不兼容文件保留原件并暂时禁止写入。
+可按卡名、类型、稀有度、费用、施法费用、位阶和标签筛选。草稿采用格式3，仅保存主卡组与副卡组，不保存固定初始阵法。卡组列表提供可读JSON文件导入和导出；非法导入会指出卡牌及原因并保留当前草稿。未完成草稿可保存；只有名称、40+10数量、同名上限及卡牌合法性全部通过才进入开局选项。升级后继续使用原卡组。遇到 2.6.3 退池的两张阵法会先备份牌组，再移除这两张卡并提示补全，旧草稿可修复；损坏或不兼容文件保留原件并暂时禁止写入。
 
 ## 设置、数据与复盘
 
 设置包含总音量、音效音量、窗口/无边框/全屏、分辨率、精简动态效果、自动阶段推进及场地背景。提供1280×720、1600×900、1440×900、1600×1000、1920×1080和2560×1440，也支持自由缩放窗口；全局字号支持90%、100%（默认）、110%、120%。修改后显式保存。无强制选择的非主要阶段可自动推进，主要阶段仍需显式结束。
 
-Windows Godot 默认数据目录为 `user://alpha-v2-frontend`，对应 `%APPDATA%/Godot/app_userdata/WizardCard Alpha v2.6.1/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
+Windows Godot 沿用 2.6.3 的默认数据目录 `user://alpha-v2-frontend`，对应 `%APPDATA%/Godot/app_userdata/WizardCard Alpha v2.6.3/alpha-v2-frontend`。设置为 `settings.json`，卡组为 `decks.json`，复盘在 `replays/`。运行时可使用 `-- --user-data <目录>` 隔离数据；用户数据与安装资源分开保存。
 
 Linux 默认使用 `$XDG_DATA_HOME/WizardCard`，未设置或为空时回退到
 `$HOME/.local/share/WizardCard`，同样支持 `-- --user-data <目录>`。
 
-当前复盘格式5显式记录内容、命令与摘要 schema，并包含规则版本、卡池版本、内容哈希、种子、双方实际主卡组与副卡组、每条接受命令及状态摘要。只适配读取当前 `2.6.2` 的格式5记录（状态 `wizardcard-state-v7`、摘要 schema 3）。离线对局在首条命令、之后每32条命令、终局或技术暂停时自动保存；离开和手动保存会完整落盘。自动保存失败会在后续操作中持续重试并显示错误。完整联机复盘在终局后开放。更早版本或内容不匹配的记录明确拒绝。旧牌组草稿可保留稳定ID修复；导入导出采用独立的 `wizardcard-deck` 格式1。复盘用于完整重放，不提供中断对局存档恢复。完整离线记录包含双方私有信息，玩家投影与日志按权限过滤；哈希用于复现校验。
+当前复盘格式6显式记录内容、命令与摘要 schema，并包含规则版本、卡池版本、内容哈希、种子、双方实际主卡组与副卡组、每条接受命令及状态摘要。只适配读取正式卡池 `2.6.4` 的格式6记录（状态 `wizardcard-state-v8`、摘要 schema 4）。离线对局在首条命令、之后每32条命令、终局或技术暂停时自动保存；离开和手动保存会完整落盘。自动保存失败会在后续操作中持续重试并显示错误。完整联机复盘在终局后开放。更早版本或内容不匹配的记录明确拒绝。旧牌组草稿可保留稳定ID修复；导入导出采用独立的 `wizardcard-deck` 格式1。复盘用于完整重放，不提供中断对局存档恢复。完整离线记录包含双方私有信息，玩家投影与日志按权限过滤；哈希用于复现校验。
 
 ## 开发构建与验证
 
@@ -69,7 +69,7 @@ Linux 无窗口核心使用 GCC/Clang、Git、CMake 和 Ninja：
 cmake --preset headless
 cmake --build --preset headless --parallel 4
 ctest --preset headless
-./build/headless/wizard_cli validate assets
+./build/headless/wizard_cli validate assets/release-v260
 ```
 
 Godot 开发配置见源码中的 `godot/README.md`。使用固定引擎 `4.7.2.stable.official.ed1daf0bf`、对应 Windows 导出模板和 `godot/bin/wizard_godot_bridge.release.dll`；Debug 与 Release 桥接分别构建。项目不再下载或链接 SFML。`tools/package_godot.py` 根据 `godot/export_presets.cfg` 导出前端，复制正式内容、运行库和文档，并在发布 EXE 启动、CLI 对局与复盘验证后生成 SHA256 清单及 ZIP。
@@ -91,10 +91,10 @@ Arch 构建用于本地开发和实机验收。Linux 桥接强制动态链接系
 CLI 和网络探针属于开发工具，不随玩家便携包分发。构建后从仓库运行：
 
 ```powershell
-./build/windows/Release/wizard_cli.exe validate assets
-./build/windows/Release/wizard_cli.exe smoke assets verification.json 42
-./build/windows/Release/wizard_cli.exe replay assets verification.json
-./build/windows/Release/wizard_cli.exe ai-match assets ai.json 42 2
+./build/windows/Release/wizard_cli.exe validate assets/release-v260
+./build/windows/Release/wizard_cli.exe smoke assets/release-v260 verification.json 42
+./build/windows/Release/wizard_cli.exe replay assets/release-v260 verification.json
+./build/windows/Release/wizard_cli.exe ai-match assets/release-v260 ai.json 42 2
 ./build/windows/Release/wizard_cli.exe tutorial-smoke assets tutorial.json
 ```
 
@@ -102,7 +102,7 @@ CLI 和网络探针属于开发工具，不随玩家便携包分发。构建后�
 
 ## 内容与版本控制
 
-`assets/release-v260/catalog.json` 与分卡 JSON 为正式 v2.6 内容入口，`assets/release-v260/cards.json` 为一致性聚合；仓库中的 `assets/` 保留历史兼容内容。新效果需同步扩展规则实现、内容校验和有效回归；对局创建后冻结内容，重启加载新版本。卡池图鉴由 `tools/generate_card_catalog.py` 生成，默认读取 `assets/release-v260/`，包含92种卡牌、完整插图映射和1套合法预设。最新设计快照、来源哈希和可重复导入流程见[卡池源归档](assets/source-archive/card-pool-snapshots.zip)及 `tools/import_alpha_v260_xlsx.py`。
+`assets/release-v260/catalog.json` 与分卡 JSON 为正式 v2.6 内容入口，`assets/release-v260/cards.json` 为一致性聚合；仓库中的 `assets/` 保留历史兼容内容。新效果需同步扩展规则实现、内容校验和有效回归；对局创建后冻结内容，重启加载新版本。卡池图鉴由 `tools/generate_card_catalog.py` 生成，默认读取 `assets/release-v260/`，包含90种卡牌、完整插图映射和1套合法预设。最新设计快照、来源哈希和可重复导入流程见[卡池源归档](assets/source-archive/card-pool-snapshots.zip)及 `tools/import_alpha_v263.py`。
 
 远程保留 `master` 与 `dev`：`dev` 用于开发验证，确认交付后合入 `master`，见[分支约定](docs/branching.md)。规则变更同步文档、JSON 与回归。自动验收与仍需实机确认的范围以本轮交付报告为准。
 

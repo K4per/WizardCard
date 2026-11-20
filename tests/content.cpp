@@ -77,3 +77,22 @@ TEST_CASE("replay detects incompatible content versions and tampering") {
     auto j=session.recording();REQUIRE(replay(c,j).digest()==session.engine().digest());
     j["contentHash"]="changed";REQUIRE_THROWS(replay(c,j));j=session.recording();j["commands"][0]["digest"]="wrong";REQUIRE_THROWS(replay(c,j));
 }
+
+TEST_CASE("Alpha 2.6.4 replay keeps format six and rejects previous release metadata", "[alpha-v264]") {
+    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/release-v260");
+    MatchSession match(content, 42);
+    const auto recording = match.recording();
+    for (const char *field : {"programVersion", "rulesVersion", "cardSetVersion"})
+        CHECK(recording.at(field) == "2.6.4");
+    CHECK(recording.at("mechanicsRevision") == 12);
+    CHECK(recording.at("format") == 6);
+    CHECK(recording.at("digestSchema") == 4);
+    CHECK(recording.at("contentHash") == "dcb43fe56f6d250d");
+    CHECK(match.engine().canonicalState().rfind("wizardcard-state-v8:", 0) == 0);
+    REQUIRE(replay(content, recording).digest() == match.engine().digest());
+    for (const char *field : {"programVersion", "rulesVersion", "cardSetVersion", "contentHash"}) {
+        auto previous = recording;
+        previous[field] = std::string(field) == "contentHash" ? "61f9b39a65c02fff" : "2.6.3";
+        CHECK_THROWS_WITH(replay(content, previous), "incompatible replay version or content hash");
+    }
+}

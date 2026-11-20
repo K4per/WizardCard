@@ -11,7 +11,8 @@ import import_alpha_v260_xlsx as reader
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "assets/source-archive/alpha-v263"
 OUTPUT = ROOT / "assets/release-v260"
-METADATA = {"rulesVersion": "2.6.3", "cardSetVersion": "2.6.3",
+RELEASE_VERSION = "2.6.4"
+METADATA = {"rulesVersion": RELEASE_VERSION, "cardSetVersion": RELEASE_VERSION,
             "mechanicsRevision": 12, "baseLoadCapacity": 2, "status": "released"}
 # Executable clauses whose historical adapters differ from the approved text.
 RULE_UPDATES = {
@@ -133,8 +134,8 @@ def generate(source=SOURCE, output=OUTPUT):
         write(output / name, json.loads((source / name).read_text(encoding="utf-8")))
     presets = json.loads((source / "presets.json").read_text(encoding="utf-8"))
     for preset in presets:
-        preset["name"] = "Alpha v2.6.3 入门"
-        preset["description"] = "Alpha v2.6.3 正式卡池的 40+10 入门牌组。"
+        preset["name"] = f"Alpha v{RELEASE_VERSION} 入门"
+        preset["description"] = f"Alpha v{RELEASE_VERSION} 正式卡池的 40+10 入门牌组。"
     write(output / "presets.json", presets)
     shutil.copytree(ROOT / "assets/audio", output / "audio", dirs_exist_ok=True)
     for card in retired:
@@ -152,7 +153,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, default=SOURCE)
     parser.add_argument("--output", type=Path, default=OUTPUT)
-    parser.add_argument("--report", type=Path, default=ROOT / "build/v263/content-import.json")
+    parser.add_argument("--report", type=Path, default=ROOT / "build/v264/content-import.json")
     args = parser.parse_args()
     report = generate(args.source, args.output)
     write(args.report, report)

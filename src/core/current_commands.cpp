@@ -225,6 +225,7 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
     s.chain->hadActualLinks = true;
     s.chain->window = ResponseWindow::Cast;
     s.events.push_back({flip ? "flip" : "cast", flip ? "反转并发动法术" : "发动法术", -1, id});
+    s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
     s.chain->priority = 1 - actor;
     s.chain->passes = 0;
     s.decision.reset();
@@ -340,6 +341,7 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         s.chain->priority = 1 - actor;
         s.chain->passes = 0;
         s.events.push_back({"word_response", "手牌言灵法术设置、准备并发动", -1, id, fee});
+        s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
         s.decision.reset();
         return {};
     }
@@ -384,6 +386,7 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         s.chain->window = ResponseWindow::Prepare;
     }
     s.events.push_back({flip ? "flip" : "prepare_declared", flip ? "反转解析法术" : "宣告准备施法", -1, id});
+    if (!flip) s.events.back().chainIndex = static_cast<int>(s.chain->links.size());
     s.chain->priority = 1 - actor; s.chain->passes = 0;
     s.decision.reset();
     return {};

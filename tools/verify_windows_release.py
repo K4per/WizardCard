@@ -70,7 +70,7 @@ def verify_network(output, evidence, args):
         assert recordings[0] == recordings[1], "Both clients must receive the same verified replay"
         recording = recordings[0]
         for name in ("programVersion", "rulesVersion", "cardSetVersion"):
-            assert recording[name] == "2.6.3", (name, recording[name])
+            assert recording[name] == "2.6.4", (name, recording[name])
         assert recording["digestSchema"] == 4 and recording["mechanicsRevision"] == 12
         commands = Counter(item["command"]["type"] for item in recording["commands"])
         assert commands[21] >= 4 and commands[18] == 2, commands
@@ -108,7 +108,7 @@ def main():
     evidence.mkdir(parents=True, exist_ok=False)
     expected = Path(str(archive) + ".sha256").read_text().split()[0]
     assert digest(archive) == expected, "Archive checksum mismatch"
-    with tempfile.TemporaryDirectory(prefix="wizardcard-v263-extracted-") as directory:
+    with tempfile.TemporaryDirectory(prefix="wizardcard-v264-extracted-") as directory:
         extraction = Path(directory)
         with zipfile.ZipFile(archive) as package:
             assert package.testzip() is None, "ZIP CRC failure"
@@ -123,8 +123,8 @@ def main():
                                   if p.is_file() and p.name != "SHA256.json"}
         release = read_json(output / "RELEASE.json")
         for name in ("packageVersion", "programVersion", "rulesVersion", "cardSetVersion"):
-            assert release[name] == "2.6.3", (name, release[name])
-        assert release["contentHash"] == "61f9b39a65c02fff" and release["mechanicsRevision"] == 12
+            assert release[name] == "2.6.4", (name, release[name])
+        assert release["contentHash"] == "dcb43fe56f6d250d" and release["mechanicsRevision"] == 12
         assert release["bridgeSha256"] == digest(output / "bin/wizard_godot_bridge.release.dll")
         verify_startup(output, PLATFORMS["windows"], evidence, "extracted-startup")
         guide_command = [str(output / "WizardCard.exe"), "--headless", "--", "--verify-guide",

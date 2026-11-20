@@ -194,6 +194,41 @@ TEST_CASE("v263 casting overflow waits for the complete chain and persistent ret
     }
 }
 
+TEST_CASE("Earth Eruption leaves five spells visible at capacity three until the controller chooses two", "[alpha-v264][capacity]") {
+    const auto cat = currentCatalog();
+    auto s = mainState263();
+    s.phase = Phase::Cast;
+    put263(s, 1, "v260-formation-0017", Zone::Analysis);
+    put263(s, 2, "v260-formation-0017", Zone::Analysis, 1);
+    put263(s, 10, "v260-analytic-0037", Zone::Casting).spell = SpellState::Ready;
+    const char *defs[] = {"v260-analytic-0004", "v260-analytic-0006", "v260-analytic-0008",
+                          "v260-analytic-0010", "v260-analytic-0011"};
+    for (int i = 0; i < 5; ++i)
+        put263(s, 20 + i, defs[i], Zone::Casting, 1).spell = SpellState::Resolved;
+    auto engine = test::ObservedEngine::scenario(cat, s);
+    REQUIRE(engine.submit(0, ActivateSpell{10}).accepted);
+    pass263(engine);
+    auto countCasting = [&] {
+        const auto &cards = engine.state().cards;
+        return std::count_if(cards.begin(), cards.end(), [](const auto &entry) {
+            return entry.second.owner == 1 && entry.second.zone == Zone::Casting;
+        });
+    };
+    for (const CardId chosen : {24, 20}) {
+        REQUIRE_FALSE(engine.state().chain);
+        REQUIRE(engine.state().decision);
+        const auto decision = *engine.state().decision;
+        REQUIRE(decision.kind == DecisionKind::Overflow);
+        REQUIRE(decision.player == 1);
+        REQUIRE(Rules::castingCapacity(engine.state(), cat, 1) == 3);
+        REQUIRE(countCasting() == (chosen == 24 ? 5 : 4));
+        REQUIRE(engine.submit(1, Choose{decision.id, ChoiceValue::card(chosen)}).accepted);
+        CHECK(engine.state().cards.at(chosen).zone == Zone::Ash);
+    }
+    CHECK(countCasting() == 3);
+    CHECK_FALSE((engine.state().decision && engine.state().decision->kind == DecisionKind::Overflow));
+}
+
 TEST_CASE("v263 crosses trigger only at their controllers end start", "[alpha-v263][formation]") {
     const auto cat = currentCatalog();
     for (const auto *definition : {"v260-formation-0001", "v260-formation-0002"}) {

@@ -30,6 +30,8 @@ func _path(action: Dictionary) -> Array[Dictionary]:
 		for entry: Array in [["formation", KernelContract.ActionField.Host], ["host", KernelContract.ActionField.Host], ["replace", KernelContract.ActionField.Replacement]]:
 			if command.has(entry[0]):
 				path.append({"field": entry[1], "value": str(command[entry[0]])})
+		if int(command.get("ringIndex", -1)) >= 0:
+			path.append({"field": KernelContract.ActionField.Ring, "value": str(command["ringIndex"])})
 		for material: Variant in command.get("materials", []):
 			path.append({"field": KernelContract.ActionField.Material, "value": str(material)})
 		if command.has("ability"):

@@ -13,30 +13,30 @@ layout = ExtResource("2")
 [node name="OwnAnalysis" type="Control" parent="."]
 layout_mode = 0
 anchor_left = 0.13
-anchor_top = 0.56
+anchor_top = 0.557
 anchor_right = 0.87
-anchor_bottom = 0.88
+anchor_bottom = 0.925
 mouse_filter = 2
 [node name="OpponentAnalysis" type="Control" parent="."]
 layout_mode = 0
 anchor_left = 0.13
-anchor_top = 0.12
+anchor_top = 0.075
 anchor_right = 0.87
-anchor_bottom = 0.44
+anchor_bottom = 0.443
 mouse_filter = 2
 [node name="OwnCasting" type="Control" parent="."]
 layout_mode = 0
 anchor_left = 0.13
-anchor_top = 0.50
-anchor_right = 0.87
+anchor_top = 0.445
+anchor_right = 0.498
 anchor_bottom = 0.555
 mouse_filter = 2
 [node name="OpponentCasting" type="Control" parent="."]
 layout_mode = 0
-anchor_left = 0.13
+anchor_left = 0.502
 anchor_top = 0.445
 anchor_right = 0.87
-anchor_bottom = 0.50
+anchor_bottom = 0.555
 mouse_filter = 2
 [node name="OwnMainDeck" type="Control" parent="."]
 layout_mode = 0

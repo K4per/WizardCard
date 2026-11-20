@@ -138,11 +138,18 @@ func _layout_vertical_battle_detail() -> void:
 	_battle_close.position = Vector2(size.x - 54, 4)
 	_battle_close.size = Vector2(42, 42)
 
+func clear_card() -> void:
+	card = null
+	$Column.hide()
+
 func configure(value: CardPresentation) -> void:
 	card = value
+	if has_node("Column"):
+		$Column.show()
 	if not is_node_ready():
 		return
 	_art.configure(card)
+	_body.scroll_to_line(0)
 	if card.hidden:
 		_title.text = "盖伏卡"
 		_type.text = "身份未公开"

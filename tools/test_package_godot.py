@@ -57,6 +57,7 @@ class PlatformTests(unittest.TestCase):
 
 
 class ArchiveTests(unittest.TestCase):
+    @unittest.skipUnless(os.name == "posix", "requires Unix executable mode")
     def test_tar_extract_preserves_executable_modes_and_sibling_paths(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

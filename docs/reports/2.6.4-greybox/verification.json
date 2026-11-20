@@ -1,18 +1,29 @@
 {
   "archive": "WizardCard-2.6.4-windows-x64.zip",
-  "bytes": 327162315,
-  "sha256": "77765955d4fb33ab24d77531cf41f8e0cb3301db78a51f2b420847ace3794e32",
+  "bytes": 329209500,
+  "sha256": "80ff61a90df490387d2588781fcff59db4ab501aeb9f2450d97f08e0b03fbe31",
   "verifiedFiles": 265,
   "packedIllustrationTextures": 212,
-  "embeddedWindowsIcons": 0,
+  "originalWindowsIconSizes": [
+    16,
+    32,
+    48,
+    64,
+    128,
+    256
+  ],
+  "packedBrandingFiles": [
+    "res://art/branding/wizardcard-app-v1.png",
+    "res://art/menu-v2/logo-1080p.png"
+  ],
   "zipCrc": "passed",
   "release": {
     "programVersion": "2.6.4",
     "rulesVersion": "2.6.4",
     "cardSetVersion": "2.6.4",
     "contentHash": "dcb43fe56f6d250d",
-    "sourceCommit": "49e68439ce4ab7b581039f84f205e18c2efbc11e",
-    "sourceTree": "cb13c614aa0a86f589b4a05ce7a3a331518c5f63",
+    "sourceCommit": "a1c61a8e1986b904ffd95420d9d2d552d80a9c6f",
+    "sourceTree": "b8fe5b59ca2fb63c933311115f501fe5b2612f34",
     "packageVersion": "2.6.4",
     "status": "released",
     "mechanicsRevision": 12,
@@ -32,7 +43,7 @@
   },
   "network": {
     "endpoint": "aq.rainplay.cn:23513",
-    "room": "4ULEE6UN",
+    "room": "SARLT4T4",
     "clients": [
       {
         "connected": true,
@@ -44,7 +55,7 @@
         "replayDelivered": true,
         "result": 0,
         "role": "host",
-        "roomCode": "4ULEE6UN"
+        "roomCode": "SARLT4T4"
       },
       {
         "defaultConnection": true,
@@ -55,7 +66,7 @@
         "releasedSpellObserved": true,
         "replayDelivered": true,
         "role": "guest",
-        "roomCode": "4ULEE6UN"
+        "roomCode": "SARLT4T4"
       }
     ],
     "commands": {
@@ -63,27 +74,18 @@
       "18": 2,
       "13": 35,
       "14": 7,
-      "0": 1,
       "5": 1,
+      "0": 1,
       "11": 1
     },
     "commandCount": 51,
-    "matchingReplayDigest": "f9de42c2b113ee4a",
+    "matchingReplayDigest": "b5ba50f103d3e03e",
     "identicalReplay": true,
     "verifiedManualReconnects": 2,
     "unexpectedDisconnects": 0
   },
-  "visual": {
-    "displayFixtures": 192,
-    "visibleCenterClicks": 5786,
-    "misses": 0,
-    "collapsedMaximumBlockedRingCenters": 0,
-    "expandedMaximumBlockedRingCenters": 7,
-    "minimumHostArtHeight": 44.8198585510254,
-    "minimumArtDimension": 29.9863376617432
-  },
   "renderedFrontend": {
-    "checks": 2830,
+    "checks": 2849,
     "failures": [],
     "fieldMode": "layout-fixture",
     "libraryMode": "authoritative",
@@ -102,5 +104,20 @@
   "windowsGodotRegression": {
     "passed": 374,
     "total": 374
+  },
+  "visual": {
+    "displayFixtures": 192,
+    "visibleCenterClicks": 5786,
+    "misses": 0,
+    "collapsedMaximumBlockedRingCenters": 0,
+    "expandedMaximumBlockedRingCenters": 7,
+    "minimumHostArtHeight": 44.8198585510254,
+    "minimumArtDimension": 29.9863376617432
+  },
+  "guidingBoltPalette": {
+    "face": "#1c2d39",
+    "artWindow": "#14202b",
+    "title": "#e4edf0",
+    "highlight": "#40c7ff"
   }
 }

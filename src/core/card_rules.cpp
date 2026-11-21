@@ -42,6 +42,14 @@ int activationLifeCost(const CardDefinition &definition) {
     if (hasCapability(definition, Capability::BloodOfferingCost)) return 1;
     return 0;
 }
+SetupCost formationCost(const CardDefinition &definition) {
+    SetupCost cost{definition.cost, 0};
+    for (const auto &part : definition.recipe) {
+        if (part.kind == RecipeCostKind::Mana) cost.mana += part.amount;
+        if (part.kind == RecipeCostKind::Life) cost.life += part.amount;
+    }
+    return cost;
+}
 int attachmentLifeCost(const CardDefinition &definition) {
     return hasCapability(definition, Capability::BloodCurse) ? 2 : 0;
 }

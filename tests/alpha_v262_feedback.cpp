@@ -831,6 +831,36 @@ TEST_CASE("selected host quote and zero setting payment survive a lost discount"
     CHECK(feedbackView(e, 0, 10).effectiveSettingCost == 0);
 }
 
+TEST_CASE("confirmation quotes match formation recipes and rune attachment payments", "[hotfix-rules][action-quote]") {
+    auto cat = feedbackCatalog();
+    auto s = feedbackState();
+    ActionIntent intent;
+    std::string expected;
+    int mana = 0, life = 0;
+    SECTION("formation includes both recipe currencies alongside selected material") {
+        s.cards.at(1).definition = "v260-formation-0009";
+        auto &def = cat.cards.at("v260-formation-0010");
+        def.recipe.push_back({RecipeCostKind::Life, 3});
+        feedbackCard(s, 10, "v260-formation-0010", 0, Zone::SideDeck);
+        intent.selections = {{ActionField::Operation, std::to_string(static_cast<int>(CommandKind::SetFormation))},
+                             {ActionField::Source, "10"}, {ActionField::Replacement, "0"}, {ActionField::Material, "1"}};
+        mana = 2; life = 3; expected = "设置费用：2 魔素，3 生命";
+    }
+    SECTION("attaching Arcane Ring quotes its printed mana cost") {
+        feedbackCard(s, 10, "v260-seal-0002", 0, Zone::Hand);
+        intent.selections = {{ActionField::Operation, std::to_string(static_cast<int>(CommandKind::AttachSeal))},
+                             {ActionField::Source, "10"}, {ActionField::Host, "1"}};
+        mana = 2; expected = "附着费用：2 魔素";
+    }
+    auto e = test::ObservedEngine::scenario(cat, s);
+    const auto options = e.queryActions(0, intent);
+    REQUIRE(options.complete);
+    CHECK(options.costQuote == expected);
+    feedbackSend(e, 0, *options.complete);
+    CHECK(e.state().players[0].mana == s.players[0].mana - mana);
+    CHECK(e.state().players[0].life == s.players[0].life - life);
+}
+
 TEST_CASE("all released concentration sources can be maintained or declined before income", "[hotfix-rules]") {
     const auto cat = feedbackCatalog();
     for (const auto &[id, fee] : std::vector<std::pair<const char *, int>>{

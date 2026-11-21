@@ -23,6 +23,11 @@ void normalizeLife(MutationContext &, const CardCatalog &, PlayerId);
 void changeLifeLimit(MutationContext &, const CardCatalog &, PlayerId, int);
 bool canPayLife(const GameState &, PlayerId, int);
 int activationLifeCost(const CardDefinition &);
+struct SetupCost {
+    int mana{};
+    int life{};
+};
+SetupCost formationCost(const CardDefinition &);
 int attachmentLifeCost(const CardDefinition &);
 void payLife(MutationContext &, const CardCatalog &, PlayerId, int, CardId = 0);
 int heal(MutationContext &, const CardCatalog &, PlayerId, int, CardId = 0);

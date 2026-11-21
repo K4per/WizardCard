@@ -323,6 +323,7 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 		root.size = dimensions
 		await process_frame
 		await process_frame
+		await create_timer(0.24).timeout
 		var original_position: Vector2 = match_page._action_popup.position
 		for repetition: int in range(3):
 			var escape: InputEventKey = InputEventKey.new()
@@ -336,7 +337,8 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 			point = match_page.canvas.global_position + match_page.canvas.card_bounds(playable).get_center()
 			_mouse_button(point, true)
 			_mouse_button(point, false)
-			await process_frame
+			# Compare the endpoint of the hand raise, not two intermediate poses.
+			await create_timer(0.24).timeout
 			await process_frame
 			if not _expect(match_page._selected == playable and match_page._action_popup.position.is_equal_approx(original_position), "Escape and reselection preserve action placement at %s" % dimensions):
 				return false

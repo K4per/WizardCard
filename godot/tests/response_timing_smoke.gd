@@ -65,9 +65,9 @@ func _run() -> void:
 	page._phase.text = "第 2 个己方回合\n玩家 1 · 主要"
 	_expect(page._response_mode.item_count == 3 and page._current_response_mode() == ResponseTiming.Mode.AUTO, "response selector defaults to automatic with three modes")
 	page._response_mode_changed(ResponseTiming.Mode.ALL)
-	_expect(page._decision.visible and page._decision.request.choices.size() == 2 and page._decision.request.choices[1].id == "@no", "all timing exposes an empty response tray with pass")
+	_expect(page._confirm.visible and page._confirm.get_node("%Cancel").text == "放弃时点", "all timing exposes an empty response tray with pass")
 	page._response_mode_changed(ResponseTiming.Mode.AUTO)
-	_expect(not page._decision.visible, "automatic mode hides the empty response tray")
+	_expect(not page._confirm.visible, "automatic mode hides the empty response prompt")
 	await create_timer(0.2).timeout
 	_expect(service.selected_actions == ["pass"] and service.confirmations == 1, "automatic empty response submits exactly one native pass")
 	service.selected_actions.clear()
@@ -76,7 +76,7 @@ func _run() -> void:
 	service.match_snapshot = response
 	service.set_actions([{"id": "pass", "source": "0", "command": {"type": KernelContract.CommandKind.PassResponse, "decision": "9007199254740997"}}, {"id": "respond", "source": "33", "command": {"type": KernelContract.CommandKind.Respond, "card": "33", "decision": "9007199254740997"}}])
 	page._render_decision()
-	_expect(page._decision.visible and page._decision.request.choices.size() == 2, "automatic mode displays actual response options")
+	_expect(page._confirm.visible and page._confirm.get_node("%Confirm").text == "响应", "automatic mode displays actual response options")
 	page._response_mode_changed(ResponseTiming.Mode.IGNORE)
 	await create_timer(0.2).timeout
 	_expect(service.selected_actions == ["pass"] and service.confirmations == 1, "ignore submits pass instead of activating an available card")
@@ -91,7 +91,7 @@ func _run() -> void:
 	page._response_mode_changed(ResponseTiming.Mode.IGNORE)
 	page._response_mode_changed(ResponseTiming.Mode.ALL)
 	await create_timer(0.2).timeout
-	_expect(service.selected_actions.is_empty() and page._decision.visible, "switching back to all cancels a queued automatic pass")
+	_expect(service.selected_actions.is_empty() and page._confirm.visible, "switching back to all cancels a queued automatic pass")
 	service.match_viewer = 1
 	_expect(page._current_response_mode() == ResponseTiming.Mode.AUTO, "hotseat viewer has an independent mode")
 	service.match_viewer = 0

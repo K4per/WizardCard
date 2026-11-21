@@ -79,14 +79,14 @@ func _run() -> void:
 	page._selection.failed.connect(page._query_failed)
 	page.canvas.configure(projection)
 	page._render_decision()
-	check(page._decision.request.description.contains("魔法飞弹"), "response explains the current event")
-	check(page._decision.request.choices.size() == 2 and page._decision.request.choices[0].label == "是", "response starts with a yes/no question")
-	if page._decision.request.choices.size() == 2 and page._decision.request.choices[0].id == "@yes":
-		page._decision_confirmed("1", "4", "9", ["@yes"])
+	check(page._confirm.dialog_text.contains("魔法飞弹"), "response explains the current event")
+	check(page._confirm.visible and page._confirm.get_node("%Confirm").text == "响应", "response starts with a yes/no question")
+	if page._confirm.visible:
+		page._confirm.get_node("%Confirm").pressed.emit()
 		check(not page._decision.visible and page.canvas.target_ids.has("33"), "yes highlights real response sources without a card collection")
 		check(service.confirmations == 0, "viewing the field does not pass or pay")
 		page._decision_cancelled("1", "4", "9")
-		check(page._decision.visible and service.confirmations == 0, "cancel returns to the same response question")
+		check(page._confirm.visible and service.confirmations == 0, "cancel returns to the same response question")
 	for situation: String in ["payable", "insufficient", "blocked"]:
 		service.confirmations = 0
 		service.match_snapshot["decision"] = {"id": situation, "player": 0, "kind": KernelContract.DecisionKind.Concentration, "source": "33"}

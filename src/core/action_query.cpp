@@ -1,5 +1,6 @@
 #include "engine_internal.hpp"
 #include "wizard/core/action_query.hpp"
+#include "wizard/core/card_rules.hpp"
 #include <set>
 #include <type_traits>
 #include <charconv>
@@ -162,6 +163,15 @@ ActionOptions GameEngine::queryActions(PlayerId viewer, const ActionIntent &inte
                         if (!out.costQuote.empty()) out.costQuote += "　";
                         out.costQuote += "发动费用：" + std::to_string(fees->activation) + " 魔素";
                     }
+                } else if (const auto *setup = std::get_if<SetFormation>(&first->command)) {
+                    const auto fees = card_rules::formationCost(catalog().at(state_.cards.at(setup->card).definition));
+                    out.costQuote = "设置费用：" + std::to_string(fees.mana) + " 魔素";
+                    if (fees.life) out.costQuote += "，" + std::to_string(fees.life) + " 生命";
+                } else if (const auto *attach = std::get_if<AttachSeal>(&first->command)) {
+                    const auto &def = catalog().at(state_.cards.at(attach->card).definition);
+                    out.costQuote = "附着费用：" + std::to_string(def.cost) + " 魔素";
+                    if (const int life = card_rules::attachmentLifeCost(def))
+                        out.costQuote += "，" + std::to_string(life) + " 生命";
                 }
             }
             return out;

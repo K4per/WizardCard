@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 [ext_resource type="Script" path="res://pages/match_page.gd" id="1"]
 [ext_resource type="PackedScene" path="res://ui/battle_table.tscn" id="2"]
 [ext_resource type="Theme" path="res://ui/simple_battle_theme.tres" id="theme"]
 [ext_resource type="PackedScene" path="res://ui/decision_panel.tscn" id="decision"]
 [ext_resource type="PackedScene" path="res://ui/action_confirmation.tscn" id="confirm"]
+[ext_resource type="Script" path="res://ui/confirmation_shade.gd" id="confirm_shade"]
 [sub_resource type="StyleBoxEmpty" id="action_unframed"]
 [node name="MatchPage" type="Control"]
 layout_mode = 3
@@ -171,6 +172,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ConfirmShade" type="ColorRect" parent="."]
+script = ExtResource("confirm_shade")
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -180,7 +182,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
-color = Color(0.015, 0.025, 0.04, 0.82)
+color = Color(0.015, 0.025, 0.04, 0.22)
 z_index = 39
 [node name="ConfirmAction" parent="." instance=ExtResource("confirm")]
 unique_name_in_owner = true

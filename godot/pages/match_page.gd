@@ -95,6 +95,7 @@ var _target_generation: String = ""
 var _target_revision: String = ""
 var _target_decision_id: String = ""
 var _response_decision_id: String = ""
+var _response_question_context: Array = []
 var _response_browsing: bool = false
 var _response_sources: Array[String] = []
 var _response_query_pending: bool = false
@@ -228,20 +229,25 @@ func _response_mode_changed(index: int) -> void:
 	if service == null or service.match_viewer < 0 or service.match_viewer >= service.response_modes.size():
 		return
 	service.response_modes[service.match_viewer] = index
+	if bool(service.match_snapshot.get("opening", false)):
+		if not _selection.current() and not _network_waiting:
+			_render_opening()
+		return
 	var raw: Variant = service.match_snapshot.get("decision")
-	if raw is Dictionary and int((raw as Dictionary).get("kind", -1)) == 0:
+	if raw is Dictionary and int(raw.get("kind", -1)) == KernelContract.DecisionKind.Response:
 		_clear_action_targets()
 		_action_popup.hide()
 		if not _pending.is_empty():
 			_confirm.close_popup()
 			_cancel_pending()
-	_render_decision()
+		_response_browsing = false
+		_render_decision()
 	_schedule_automatic()
 
 func _build_dialogs() -> void:
 	_confirm = %ConfirmAction
-	_confirm.confirmed.connect(_commit_pending)
-	_confirm.canceled.connect(_dismiss_confirmation)
+	_confirm.confirmed.connect(_dialog_finished.bind(true))
+	_confirm.canceled.connect(_dialog_finished.bind(false))
 	_leave_dialog = %ConfirmLeave
 	_leave_dialog.confirmed.connect(_leave)
 	_force_dialog = %ConfirmForceLeave
@@ -572,6 +578,9 @@ func _refresh() -> void:
 			if not GuideProgress.mark(service.user_directory, int(lesson["chapter"])):
 				_notice.text = "本章完成，但完成标记保存失败。请检查用户目录。"
 	_update_chain(snapshot)
+	if not _pending.is_empty() and _confirm.visible:
+		_update_phase_gate()
+		return
 	_render_actions(not resume_selection)
 	if resume_selection:
 		_selection.revalidate()
@@ -593,6 +602,9 @@ func _render_actions(restart_selection: bool = true) -> void:
 		_action_popup.hide()
 		return
 	if not restart_selection:
+		return
+	if bool(snapshot.get("opening", false)) or (snapshot.get("decision") is Dictionary and not _response_browsing):
+		_action_popup.hide()
 		return
 	if _selected != null:
 		_show_action_list(_selected.instance_id, _selected.title + " · 操作", true)
@@ -653,20 +665,22 @@ func _hover_card(card: CardPresentation) -> void:
 		_detail.configure(card)
 
 func _close_detail() -> void:
-	if _selection.active and _selection.options != null and _selection.options.field != KernelContract.ActionField.Operation:
+	if service.match_snapshot.get("decision") is Dictionary or (_selection.active and _selection.options != null and _selection.options.field != KernelContract.ActionField.Operation):
 		_detail.clear_card()
 	else:
 		_clear_card()
 
 func _render_opening() -> void:
 	var snapshot: Dictionary = service.match_snapshot
-	if not bool(snapshot.get("opening", false)) or int(snapshot.get("result", -1)) != -1 or bool(snapshot.get("aiTurn", false)):
+	if not bool(snapshot.get("opening", false)) or int(snapshot.get("result", -1)) != -1 or bool(snapshot.get("aiTurn", false)) or _network_waiting or _privacy_layer.visible:
 		return
 	if str(snapshot.get("openingStage", "formation")) == "gestures":
 		if int(snapshot.get("openingGesture", -1)) >= 0:
+			_response_cancel.hide()
 			_notice.text = "手势已确认，等待对手；猜拳期间不扣对局时间。"
 			return
 		_close_match_menu()
+		_response_cancel.show()
 		_query_is_decision = true
 		_query_title = "猜拳决定先手"
 		_contextual_query = false
@@ -837,8 +851,12 @@ func _query_changed(options: ActionOptions) -> void:
 			continue
 		if options.field == KernelContract.ActionField.Operation and int(choice.id) == KernelContract.CommandKind.PassResponse:
 			request.pass_id = choice.id
-		if current_decision is Dictionary and int(current_decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration and card_id == "0":
-			choice.label = "放弃专注（法术送入灰烬区）"
+		if current_decision is Dictionary and int(current_decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration:
+			# The player has picked the field card. Show the action and quoted
+			# fee on its button instead of replacing that text with its name.
+			choice.card = null
+			if card_id == "0":
+				choice.label = "放弃专注（法术送入灰烬区）"
 		request.choices.append(choice)
 	if current_decision is Dictionary and int(current_decision.get("kind", -1)) == KernelContract.DecisionKind.Overflow and not card_ids.is_empty():
 		_describe_overflow(request, card_ids[0])
@@ -847,7 +865,7 @@ func _query_changed(options: ActionOptions) -> void:
 		if card_ids.is_empty():
 			var unavailable: DecisionChoice = DecisionChoice.new()
 			unavailable.id = "@unavailable"
-			unavailable.label = "维持专注（不可用：费用不足或效果禁止）"
+			unavailable.label = "无法维持专注：" + str(current_decision.get("upkeepUnavailable", "费用不足或效果禁止"))
 			unavailable.available = false
 			request.choices.push_front(unavailable)
 		card_ids.clear()
@@ -908,11 +926,14 @@ func _query_completed(command: Dictionary, intent: Dictionary) -> void:
 		_apply_result(service.match_request(&"confirm_action", [generation, revision]))
 	else:
 		_pending = {"command": command}
+		_action_popup.hide()
 		_confirm.dialog_text = MatchProjection.action_detail(service.match_snapshot, {"command": command, "label": _query_title, "source": str(command.get("card", "0"))})
+		if not _selection.options.cost_quote.is_empty():
+			_confirm.dialog_text += "\n" + _selection.options.cost_quote
 		if confirm_placement:
 			_confirm.dialog_text += "\n环位：第 %d 环" % [int(command.ringIndex) + 1]
 		_confirm.dialog_text += "\n\n确认执行？"
-		_confirm.popup_centered()
+		_confirm.popup_centered("action:%s:%s" % [generation, revision])
 
 func _query_failed(message: String) -> void:
 	_notice.text = message
@@ -1061,7 +1082,11 @@ func _collapse_tray() -> void:
 func _response_text() -> String:
 	var snapshot: Dictionary = service.match_snapshot
 	var context: Dictionary = snapshot.get("responseContext", {})
-	return str(context.get("text", "当前响应时点"))
+	var summary: String = str(context.get("text", "当前响应时点"))
+	var chain: Variant = snapshot.get("chain")
+	if chain is Dictionary and not str(chain.get("windowName", "")).is_empty():
+		return str(chain.windowName) + " · " + summary
+	return summary
 
 func _question(title: String, description: String, id: String, choices: Array[Dictionary]) -> void:
 	var request: DecisionPresentation = DecisionPresentation.new()
@@ -1086,7 +1111,40 @@ func _show_response_question() -> void:
 	_response_cancel.hide()
 	canvas.clear_action_targets()
 	var available: bool = bool(service.match_snapshot.get("actionSummary", {}).get("hasNonPhaseAction", false))
-	_question("是否进行连锁？" if available else "查看场上情况", _response_text() + ("\n是否进行连锁？" if available else "\n此时没有可以发动的效果，是否查看场上情况？"), _response_decision_id, [{"id": "@yes", "label": "是"}, {"id": "@no", "label": "否"}])
+	_decision.hide()
+	_restore_tray_hand()
+	_action_popup.hide()
+	_response_question_context = _current_dialog_context()
+	_confirm.dialog_text = _response_text() + ("\n响应可选择来源，放弃将交出本时点的优先权。" if available else "\n当前没有可以发动的效果。可以查看场面或放弃本时点。")
+	_confirm.popup_centered("response:%s:%s:%s" % [_response_question_context[0], service.match_viewer, _response_decision_id], "是否进行连锁？" if available else "查看场上情况", "响应" if available else "查看场面", "放弃时点", _response_mode)
+
+func _current_dialog_context() -> Array:
+	var snapshot: Dictionary = service.match_snapshot
+	return [str(snapshot.get("generation", "")), str(snapshot.get("revision", "")), service.match_viewer, ActionOptions.context_id(snapshot)]
+
+func _dialog_finished(accept: bool) -> void:
+	_confirm.close_popup()
+	if _response_question_context.is_empty():
+		if accept:
+			_commit_pending()
+		else:
+			_dismiss_confirmation()
+		return
+	var current: bool = _response_question_context == _current_dialog_context()
+	_response_question_context.clear()
+	if not current or _network_waiting or _privacy_layer.visible:
+		return
+	if accept:
+		_selection.cancel()
+		_show_response_sources()
+	else:
+		_query_is_decision = true
+		_selection.begin("0", KernelContract.CommandKind.PassResponse)
+
+func _close_response_question() -> void:
+	if not _response_question_context.is_empty():
+		_response_question_context.clear()
+		_confirm.close_popup()
 
 func _poll_response_sources() -> void:
 	if _response_query_pending and _response_browsing and not _selection.active and _response_decision_id == ActionOptions.context_id(service.match_snapshot):
@@ -1127,21 +1185,23 @@ func _show_response_sources() -> void:
 	_notice.text = _response_text() + (" · 点击高亮卡牌选择响应；取消操作可返回询问。" if not _response_sources.is_empty() else " · 可查看场地；取消操作可返回询问。")
 
 func _return_to_response() -> void:
+	if _network_waiting or _privacy_layer.visible:
+		return
 	_selection.cancel()
 	_pending.clear()
 	_confirm.close_popup()
 	service.match_request(&"cancel_action")
-	if _response_decision_id == ActionOptions.context_id(service.match_snapshot):
-		_show_response_question()
-	else:
-		_response_cancel.hide()
-		_response_browsing = false
-		_render_decision()
+	_response_browsing = false
+	_response_cancel.hide()
+	_render_decision()
+	_render_opening()
+	_schedule_automatic()
 
 func _render_decision() -> void:
 	var snapshot: Dictionary = service.match_snapshot
 	var decision: Variant = snapshot.get("decision")
-	if not decision is Dictionary or int(snapshot.get("result", -1)) != -1 or int(decision.get("player", -1)) != service.match_viewer or bool(snapshot.get("technicalPaused", false)) or bool(snapshot.get("aiTurn", false)):
+	if not decision is Dictionary or int(snapshot.get("result", -1)) != -1 or int(decision.get("player", -1)) != service.match_viewer or bool(snapshot.get("paused", false)) or bool(snapshot.get("technicalPaused", false)) or bool(snapshot.get("aiTurn", false)) or _network_waiting or _privacy_layer.visible:
+		_close_response_question()
 		_decision.hide()
 		_shade.hide()
 		_response_cancel.hide()
@@ -1149,6 +1209,7 @@ func _render_decision() -> void:
 		_response_decision_id = ""
 		return
 	if not ResponseTiming.pass_action(snapshot, _current_response_mode()).is_empty():
+		_close_response_question()
 		_decision.hide()
 		_response_cancel.hide()
 		_response_browsing = false
@@ -1170,6 +1231,7 @@ func _render_decision() -> void:
 			_show_response_question()
 		return
 	_response_cancel.hide()
+	_close_response_question()
 	_response_decision_id = ""
 	_response_browsing = false
 	if kind == KernelContract.DecisionKind.Concentration and _forced_ack_id != id:
@@ -1178,7 +1240,9 @@ func _render_decision() -> void:
 	if kind == KernelContract.DecisionKind.Concentration and _concentration_selected_id != id:
 		_selection.cancel()
 		_decision.hide()
-		_restore_tray_hand()
+		# Keep the hand out of the required source hit area until the player
+		# has chosen maintain or abandon. The tray restores it on completion.
+		canvas.set_hand_collapsed(true)
 		_end_phase.disabled = true
 		canvas.set_action_targets([str(decision.get("source", "0"))])
 		_notice.text = "点击高亮的专注法术，再选择维持或放弃。"
@@ -1195,7 +1259,7 @@ func _update_chain(snapshot: Dictionary) -> void:
 	_table.show_frame(snapshot)
 
 func _select_card(card: CardPresentation) -> void:
-	if _privacy_layer.visible:
+	if _privacy_layer.visible or _network_waiting:
 		return
 	var decision: Variant = service.match_snapshot.get("decision")
 	if decision is Dictionary and int(decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration and _forced_ack_id == str(decision.get("id", "")):
@@ -1229,6 +1293,11 @@ func _select_card(card: CardPresentation) -> void:
 			break
 
 func _clear_card() -> void:
+	if service != null and not _privacy_layer.visible:
+		var decision: Variant = service.match_snapshot.get("decision")
+		if decision is Dictionary and int(decision.kind) == KernelContract.DecisionKind.Concentration and not _forced_ack_id.is_empty() and _forced_ack_id == str(decision.id):
+			_detail.clear_card()
+			return
 	if not _target_decision_id.is_empty():
 		return
 	_clear_action_targets()
@@ -1248,8 +1317,10 @@ func dismiss_cancel() -> bool:
 		_close_match_menu()
 		return true
 	if _confirm.visible:
-		_confirm.close_popup()
-		_dismiss_confirmation()
+		_dialog_finished(false)
+		return true
+	if service != null and bool(service.match_snapshot.get("opening", false)) and not _privacy_layer.visible:
+		_return_to_response()
 		return true
 	if _response_browsing:
 		_return_to_response()
@@ -1343,18 +1414,11 @@ func _commit_pending() -> void:
 	_apply_result(result)
 
 func _decision_confirmed(generation: String, revision: String, decision_id: String, selected: Array[String]) -> void:
-	if selected.size() == 1 and selected[0].begins_with("@") and selected[0] in ["@yes", "@no", "@concentration"]:
+	if selected == ["@concentration"]:
 		if generation != str(service.match_snapshot.get("generation", "")) or revision != str(service.match_snapshot.get("revision", "")) or decision_id != ActionOptions.context_id(service.match_snapshot):
 			return
-		if selected[0] == "@concentration":
-			_forced_ack_id = decision_id
-			_render_decision()
-		elif selected[0] == "@yes":
-			_selection.cancel()
-			_show_response_sources()
-		else:
-			_query_is_decision = true
-			_selection.begin("0", KernelContract.CommandKind.PassResponse)
+		_forced_ack_id = decision_id
+		_render_decision()
 		return
 	if selected.size() != 1 or _network_waiting or _privacy_layer.visible or not _selection.current() or _selection.options == null:
 		return
@@ -1376,6 +1440,8 @@ func _decision_cancelled(_generation: String, _revision: String, _decision_id: S
 	_render_actions()
 
 func _apply_result(result: Dictionary) -> void:
+	_close_response_question()
+	_response_cancel.hide()
 	_clear_action_targets()
 	_decision.hide()
 	_shade.hide()
@@ -1439,6 +1505,7 @@ func _exit_tree() -> void:
 		_cancel_pending()
 
 func _cover(next_viewer: int) -> void:
+	_close_response_question()
 	_table.update_events([], true)
 	_table.show_frame({})
 	_pending_viewer = next_viewer
@@ -1472,7 +1539,10 @@ func _automatic_step(generation: String, revision: String) -> void:
 		return
 	await get_tree().create_timer(0.1).timeout
 	_auto_busy = false
-	if not is_inside_tree() or _privacy_layer.visible or _network_waiting or not _pending.is_empty() or str(service.match_snapshot.get("generation", "")) != generation or str(service.match_snapshot.get("revision", "")) != revision:
+	if not is_inside_tree() or _privacy_layer.visible or _network_waiting or not _pending.is_empty():
+		return
+	if str(service.match_snapshot.get("generation", "")) != generation or str(service.match_snapshot.get("revision", "")) != revision:
+		_schedule_automatic()
 		return
 	var request: Dictionary = AutomaticActionController.request(service.match_snapshot, _current_response_mode())
 	if not request.is_empty():
@@ -1656,6 +1726,7 @@ func network_updated(state: Dictionary) -> void:
 		if phase == "completed":
 			lifecycle_notices.append("对局已结束，复盘已验证并保存。" if bool(state.get("replayDelivered", false)) else "对局已结束，正在接收并验证复盘…")
 	if _network_recovery.blocked:
+		_close_response_question()
 		_clear_action_targets()
 		_clear_cue()
 		canvas.stop_feedback()

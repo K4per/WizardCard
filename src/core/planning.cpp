@@ -424,8 +424,7 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
     if (const auto *cmd = std::get_if<SetFormation>(&command)) {
         if (hasCapability(def, Capability::SevenStarsEffectOnly))
             return "effect_only_formation";
-        int lifeFee = 0;
-        for (const auto &part : def.recipe) if (part.kind == RecipeCostKind::Life) lifeFee += part.amount;
+        const auto [fee, lifeFee] = card_rules::formationCost(def);
         if (!card_rules::canPayLife(s, actor, lifeFee)) return "life_cost";
         if (hasCapability(def, Capability::SiqueCauldron) &&
             !card_rules::hasFormation(s, catalog(), actor, Capability::SiqueCampfire))
@@ -448,9 +447,6 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
                     return "unique_formation";
         if (std::find(cmd->materials.begin(), cmd->materials.end(), cmd->replace) != cmd->materials.end())
             return "recipe_materials";
-        int fee = def.cost;
-        for (const auto &part : def.recipe)
-            if (part.kind == RecipeCostKind::Mana) fee += part.amount;
         if (!affordable(s, catalog(), actor, fee)) return "cost: 魔素不足";
         int body = usedBody(s, catalog(), actor);
         if (cmd->replace) body -= catalog().at(s.cards.at(cmd->replace).definition).body;

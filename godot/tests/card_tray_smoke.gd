@@ -97,14 +97,14 @@ func _run() -> void:
 	service.match_snapshot["actionSummary"] = {"hasNonPhaseAction": true}
 	page._render_decision()
 	await _settle()
-	_expect(page._decision.request.choices.size() == 2, "response exposes yes and no")
+	_expect(page._confirm.visible, "response shows the shared confirmation dialog")
 	await _capture("response")
-	_click(page._decision._options["@yes"].get_global_rect().get_center())
+	_click(page._confirm.get_node("%Confirm").get_global_rect().get_center())
 	await _settle()
 	_expect(service.selected_actions.is_empty() and page._response_browsing, "yes keeps response pending while browsing")
 	page._return_to_response()
 	await _settle()
-	_click(page._decision._options["@no"].get_global_rect().get_center())
+	_click(page._confirm.get_node("%Cancel").get_global_rect().get_center())
 	await _settle()
 	_expect(service.selected_actions == ["pass"], "no submits exactly the native pass action")
 	page._network_waiting = false

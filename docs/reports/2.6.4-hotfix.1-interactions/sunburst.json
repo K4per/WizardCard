@@ -1,0 +1,41 @@
+{
+	"errors": [],
+	"evidence": [
+		{
+			"ash": 3,
+			"first": "35",
+			"manaAfter": 3,
+			"manaBefore": 20,
+			"paid": 17,
+			"revision": "66",
+			"step": "setting"
+		},
+		{
+			"ash": 4,
+			"boardFee": 17,
+			"boardId": "35",
+			"handFee": 16,
+			"handId": "110",
+			"revision": "86",
+			"step": "same view"
+		},
+		{
+			"coveredInstance": {
+				"controller": 0,
+				"faceDown": true,
+				"fieldOrder": "12",
+				"hidden": true,
+				"host": "9",
+				"id": "110",
+				"originalOwner": 0,
+				"owner": 0,
+				"ringIndex": 5,
+				"zone": 3,
+				"zoneName": "解析"
+			},
+			"faceUpFee": 17,
+			"privateHandProjected": false,
+			"step": "opponent replay"
+		}
+	]
+}

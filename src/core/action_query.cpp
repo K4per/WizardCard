@@ -149,7 +149,22 @@ ActionOptions GameEngine::queryActions(PlayerId viewer, const ActionIntent &inte
     if (first) {
         const auto path = detail::actionPath(first->command);
         if (path.size() == intent.selections.size()) {
-            out.complete = first->command; out.field = ActionField::Confirm; return out;
+            out.complete = first->command;
+            out.field = ActionField::Confirm;
+            if (catalog().mechanicsRevision >= 13) {
+                if (const auto fees = detail::spellPayment(state_, catalog(), first->command)) {
+                    const auto type = catalog().at(state_.cards.at(first->source).definition).type;
+                    const bool setup = std::holds_alternative<StartAnalysis>(first->command) ||
+                        std::holds_alternative<PreloadWord>(first->command) || state_.cards.at(first->source).faceDown;
+                    if (setup && type != CardType::Talisman)
+                        out.costQuote = "设置费用：" + std::to_string(fees->setting) + " 魔素";
+                    if (!setup || type != CardType::Analytic) {
+                        if (!out.costQuote.empty()) out.costQuote += "　";
+                        out.costQuote += "发动费用：" + std::to_string(fees->activation) + " 魔素";
+                    }
+                }
+            }
+            return out;
         }
         out.field = path[intent.selections.size()].field;
         std::vector<std::string> candidates;

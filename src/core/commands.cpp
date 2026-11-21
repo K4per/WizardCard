@@ -147,8 +147,8 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             const auto a = *ability(def, r->ability);
             const bool hand = c.zone == Zone::Hand;
             const bool ambush = c.faceDown;
-            const int paid = hasCapability(def, Capability::CounterSpell) ? detail::linkedSpellCost(s, catalog(), r->link)
-                : Rules::castCost(s, catalog(), c.id) + (ambush && def.type == CardType::Analytic ? def.cost : 0);
+            const auto fees = detail::responseFees(s, catalog(), *r);
+            const int paid = fees.total();
             const int bound = paid * spell_rules::loadMultiplier(s, actor);
             card_rules::pay(s, actor, paid, &catalog());
             StateMaintenance::check(s, catalog());
@@ -159,7 +159,7 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
                 s.temporary.push_back(
                     {s.nextLoad++, actor, c.id, a.burden * spell_rules::loadMultiplier(s, actor), s.players[actor].ownTurn + (actor != s.active)});
             if ((hand || ambush) && def.type == CardType::Word)
-                c.settingPaid = paid;
+                c.settingPaid = catalog().mechanicsRevision >= 13 ? fees.setting : paid;
             c.castLoad += bound;
             ResourceRules::increasedLoad(s, catalog(), actor, bound + a.burden * spell_rules::loadMultiplier(s, actor));
             if (s.result != -1) return {};
@@ -173,13 +173,12 @@ std::string GameEngine::execute(PlayerId actor, const Command &command) {
             c.targetCard = r->target;
             c.targets = targetCards(r->target, r->targets);
             c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
-            c.payments.push_back({s.players[actor].ownTurn, paid, bound, false});
+            c.payments.push_back({s.players[actor].ownTurn, fees.activation, bound, false});
             ChainLink link;
             link.id = s.nextLink++;
             link.kind = LinkKind::Spell;
             link.speed = def.speed;
-            link.castCost = hasCapability(def, Capability::CounterSpell)
-                ? paid : Rules::castCost(s, catalog(), c.id);
+            link.castCost = fees.activation;
             link.publicAction = publicAction(actor, "发动响应", c.id);
             link.ability = a.id;
             link.paymentIndex = static_cast<int>(c.payments.size()) - 1;

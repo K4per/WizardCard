@@ -2,6 +2,10 @@
 #include "wizard/core/state.hpp"
 
 namespace wizard {
+struct SpellFees {
+    int setting{}, activation{};
+    int total() const { return setting + activation; }
+};
 struct Rules {
     static int load(const GameState &, PlayerId);
     static int capacity(const GameState &, const CardCatalog &, PlayerId);
@@ -11,6 +15,7 @@ struct Rules {
     static int maxRank(const GameState &, const CardCatalog &, CardId);
     static int analysisCost(const GameState &, const CardCatalog &, CardId, CardId);
     static int castCost(const GameState &, const CardCatalog &, CardId);
+    static SpellFees activationFees(const GameState &, const CardCatalog &, CardId, CardId settingHost = 0);
     static int concentrationUpkeep(const GameState &, const CardCatalog &, CardId);
     static int damage(const GameState &, const CardCatalog &, PlayerId, const Effect &);
     static int occupied(const GameState &, CardId);

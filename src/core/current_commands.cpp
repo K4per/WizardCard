@@ -185,7 +185,8 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
                 catalog().at(formation.definition).type == CardType::Formation && detail::stormTags(catalog().at(formation.definition).tags)) {
                 stormCostFormation = formationId; break;
             }
-    const int fee = Rules::castCost(s, catalog(), id);
+    const auto fees = Rules::activationFees(s, catalog(), id, flip ? card.host : 0);
+    const int fee = fees.total();
     card_rules::pay(s, actor, fee, &catalog());
     StateMaintenance::check(s, catalog());
     if (s.result != -1) return {};
@@ -193,7 +194,7 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
     if (s.result != -1) return {};
     if (detach) for (auto seal : targets) StateMaintenance::leave(s, seal, &catalog());
     if (stormCostFormation) s.cards.at(stormCostFormation).stormPoints -= 5;
-    if (flip) { card.settingPaid = fee; card.faceDown = false; card.zone = Zone::Casting;
+    if (flip) { card.settingPaid = catalog().mechanicsRevision >= 13 ? fees.setting : fee; card.faceDown = false; card.zone = Zone::Casting;
                 card.host = 0; card.ringIndex = -1; }
     card.spell = SpellState::Pending;
     card.targetCard = target;
@@ -202,7 +203,7 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
         if (discard) { StateMaintenance::leave(s, discard, &catalog()); card.paidDiscard = discard; card.targets = {discard}; }
     } else card_rules::payExtraCost(s, catalog(), actor, id, discard);
     card.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
-    card.payments.push_back({s.players[actor].ownTurn, fee, boundLoad, false});
+    card.payments.push_back({s.players[actor].ownTurn, fees.activation, boundLoad, false});
     castingTraitsV2(id);
     if (s.result != -1) return {};
     if (!responding) { beginEffect(id, AfterEffect::Spell); return {}; }
@@ -210,7 +211,7 @@ std::string GameEngine::activateSpellV252(PlayerId actor, CardId id, CardId targ
     link.id = s.nextLink++;
     link.kind = LinkKind::Spell;
     link.speed = def.speed;
-    link.castCost = fee;
+    link.castCost = fees.activation;
     link.paymentIndex = static_cast<int>(card.payments.size()) - 1;
     link.paid = fee;
     link.item = snapshot(card, def);
@@ -251,8 +252,8 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
     const bool handWord = word && word->release &&
                           card.zone == Zone::Hand && def.type == CardType::Word;
     if (!spell || (!handWord && card.zone != Zone::Analysis)) return "response_source";
-    if (handWord && def.speed == 2 && actor != s.active)
-        return "spell_speed: 手牌二速言灵只能在自己的回合响应";
+    if (handWord && actor != s.active && (catalog().mechanicsRevision >= 13 || def.speed == 2))
+        return "spell_speed: 手牌言灵只能在自己的回合响应";
     if (!spellSpeedAllowed(s, def)) return "spell_speed: 咒文速度不允许当前时点";
     if (handWord) {
         const auto hasTrait = [&](Capability capability) {
@@ -294,7 +295,8 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
                 })) return "extra_cost: 没有可检索的同派系法术";
         } else if (!card_rules::validCost(s, catalog(), actor, id, word->discard))
             return "extra_cost: 发动费用或材料不合法";
-        const int fee = Rules::castCost(s, catalog(), id);
+        const auto fees = Rules::activationFees(s, catalog(), id, word->formation);
+        const int fee = fees.total();
         if (!card_rules::canPay(s, actor, fee, &catalog())) return "cost: 魔素不足";
         card_rules::pay(s, actor, fee, &catalog());
         const int boundLoad = ResourceRules::addBoundLoad(s, catalog(), id, fee, false);
@@ -304,7 +306,7 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         card.sourceFormation = word->formation;
         card.sourceRingIndex = Rules::placementRing(s, catalog(), word->formation, word->ringIndex);
         card.fieldOrder = s.nextFieldOrder++;
-        card.settingPaid = fee;
+        card.settingPaid = catalog().mechanicsRevision >= 13 ? fees.setting : fee;
         card.zone = Zone::Casting;
         card.host = 0;
         card.ringIndex = -1;
@@ -316,7 +318,7 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
             card.paidDiscard = word->discard; card.targets = {word->discard};
         } else card_rules::payExtraCost(s, catalog(), actor, id, word->discard);
         card.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
-        card.payments.push_back({s.players[actor].ownTurn, fee, boundLoad, false});
+        card.payments.push_back({s.players[actor].ownTurn, fees.activation, boundLoad, false});
         settingCompletedV253(id, word->formation);
         castingTraitsV2(id);
         if (s.result != -1) return {};
@@ -324,10 +326,10 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         link.id = s.nextLink++;
         link.kind = LinkKind::Spell;
         link.speed = def.speed;
-        link.castCost = fee;
+        link.castCost = fees.activation;
         link.paymentIndex = static_cast<int>(card.payments.size()) - 1;
         link.paid = fee;
-        link.addedLoad = fee;
+        link.addedLoad = boundLoad;
         link.item = snapshot(card, def);
         link.item.requiresSource = true;
         for (const auto &[sealId, seal] : s.cards)
@@ -851,18 +853,19 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
             static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog(), actor))
             return "word_setup";
         if (!activationTargets(cmd->target, cmd->targets) || !validSpellCost(cmd->discard)) return "target_or_cost";
-        const int fee = Rules::castCost(s, catalog(), cardId);
+        const auto fees = Rules::activationFees(s, catalog(), cardId, cmd->formation);
+        const int fee = fees.total();
         if (!pay(fee, fee)) return "cost: 魔素不足";
         if (s.result != -1) return {};
         detach(cmd->targets);
-        place(cmd->formation, cmd->ringIndex); c.settingPaid = fee;
+        place(cmd->formation, cmd->ringIndex); c.settingPaid = catalog().mechanicsRevision >= 13 ? fees.setting : fee;
         settingCompletedV253(cardId, cmd->formation);
         c.spell = SpellState::Ready;
         c.zone = Zone::Casting; c.host = 0; c.ringIndex = -1;
         c.spell = SpellState::Pending; c.targetCard = cmd->target; c.targets = card_rules::detachCost(def) ? std::vector<CardId>{} : cmd->targets;
         paySpellCost(cmd->discard);
         c.targetPlayer = def.target == TargetKind::Opponent ? 1 - actor : actor;
-        c.payments.push_back({pl.ownTurn, fee, fee * spell_rules::loadMultiplier(s, actor), false});
+        c.payments.push_back({pl.ownTurn, fees.activation, fee * spell_rules::loadMultiplier(s, actor), false});
         analysisCompletedV2(cardId); castingTraitsV2(cardId);
         beginEffect(cardId, AfterEffect::Spell); return {};
     }

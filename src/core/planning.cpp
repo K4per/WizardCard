@@ -89,7 +89,7 @@ std::string GameEngine::validateActivation(PlayerId actor, CardId id, CardId tar
         }
         if (!stormCostFormation) return "storm_points: 风暴点数不足";
     }
-    const int fee = Rules::castCost(s, catalog(), id);
+    const int fee = Rules::activationFees(s, catalog(), id, flip ? card.host : 0).total();
     if (!affordable(s, catalog(), actor, fee)) return "cost: 魔素不足";
     return {};
 }
@@ -132,8 +132,8 @@ std::string GameEngine::validateResponseSetup(PlayerId actor, const Command &com
     const bool handWord = word && word->release &&
                           card.zone == Zone::Hand && def.type == CardType::Word;
     if (!spell || (!handWord && card.zone != Zone::Analysis)) return "response_source";
-    if (handWord && def.speed == 2 && actor != s.active)
-        return "spell_speed: 手牌二速言灵只能在自己的回合响应";
+    if (handWord && actor != s.active && (catalog().mechanicsRevision >= 13 || def.speed == 2))
+        return "spell_speed: 手牌言灵只能在自己的回合响应";
     if (!spellSpeedAllowed(s, def)) return "spell_speed: 咒文速度不允许当前时点";
     if (handWord) {
         const auto hasTrait = [&](Capability capability) {
@@ -175,7 +175,7 @@ std::string GameEngine::validateResponseSetup(PlayerId actor, const Command &com
                 })) return "extra_cost: 没有可检索的同派系法术";
         } else if (!card_rules::validCost(s, catalog(), actor, id, word->discard))
             return "extra_cost: 发动费用或材料不合法";
-        const int fee = Rules::castCost(s, catalog(), id);
+        const int fee = Rules::activationFees(s, catalog(), id, word->formation).total();
         if (!affordable(s, catalog(), actor, fee)) return "cost: 魔素不足";
         return {};
     }
@@ -529,7 +529,7 @@ std::string GameEngine::validateAction(PlayerId actor, const Command &command) c
             static_cast<int>(inZone(s, actor, Zone::Casting).size()) >= Rules::castingCapacity(s, catalog(), actor))
             return "word_setup";
         if (!activationTargets(cmd->target, cmd->targets) || !validSpellCost(cmd->discard)) return "target_or_cost";
-        const int fee = Rules::castCost(s, catalog(), cardId);
+        const int fee = Rules::activationFees(s, catalog(), cardId, cmd->formation).total();
         if (!pay(fee, fee)) return "cost: 魔素不足";
         return {};
     }

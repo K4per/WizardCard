@@ -5,6 +5,7 @@
 #include "wizard/core/action_query.hpp"
 #include "wizard/decks.hpp"
 #include "wizard/network.hpp"
+#include "wizard/bridge.hpp"
 #include <catch2/catch_test_macros.hpp>
 
 using namespace wizard;
@@ -312,6 +313,7 @@ TEST_CASE("v262 concentration prohibition removes legal upkeep and expires", "[a
     Trigger t; t.owner = 1; EffectResolver::apply(s, cat, t, {EffectKind::BlockConcentration});
     auto e = test::ObservedEngine::scenario(cat, s); feedbackSend(e, 0, AdvancePhase{e.state().phaseGate}); feedbackPass(e);
     REQUIRE(e.state().decision); CHECK(e.state().decision->kind == DecisionKind::Concentration); CHECK(e.state().decision->options.empty());
+    CHECK(bridge::viewDto(e.viewFor(0)).at("decision").value("upkeepUnavailable", std::string{}) == "当前效果禁止维持专注");
     const int mana = e.state().players[0].mana;
     CHECK_FALSE(e.submit(0, Choose{e.state().decision->id, ChoiceValue::card(10)}).accepted);
     CHECK(e.state().players[0].mana == mana);
@@ -634,7 +636,8 @@ TEST_CASE("v262 every feedback card supports a real legal cast with exactly one 
         }
         if(d.target==TargetKind::EnemyAnalysisSpell || d.target==TargetKind::EnemyAmbush)target=20;
         if(d.target==TargetKind::EnemyAmbush) {s.cards.at(20).faceDown=true;s.cards.at(20).spell=SpellState::None;}
-        const int fee=Rules::castCost(s,cat,10);
+        const int activation=Rules::castCost(s,cat,10);
+        const int fee=activation+(word ? d.cost : 0);
         const auto costs=card_rules::costOptions(s,cat,0,10); const CardId discard=costs.empty() ? 0 : costs.front();
         auto e=test::ObservedEngine::scenario(cat,s);
         const Command command=word ? Command(PreloadWord{10, true, 1, target, {}, discard, 0, Rules::freeRing(e.state(), e.catalog(), 1)}) : Command(ActivateSpell{10,target,{},discard});
@@ -646,7 +649,7 @@ TEST_CASE("v262 every feedback card supports a real legal cast with exactly one 
             else feedbackSend(e,choice.player,Choose{choice.id,choice.options.empty() ? ChoiceValue{} : choice.options.front()});
         }
         CHECK_FALSE(e.state().decision); CHECK(e.state().players[0].mana==20-fee);
-        REQUIRE(e.state().cards.at(10).payments.size()==1); CHECK(e.state().cards.at(10).payments.front().paid==fee);
+        REQUIRE(e.state().cards.at(10).payments.size()==1); CHECK(e.state().cards.at(10).payments.front().paid==activation);
         CHECK((e.state().cards.at(10).spell==SpellState::Active || e.state().cards.at(10).spell==SpellState::Resolved));
     }
 }
@@ -690,8 +693,176 @@ TEST_CASE("v262 counterspell does not count a word's single payment twice", "[al
     const auto cat=feedbackCatalog(); auto s=feedbackState();
     feedbackCard(s,10,"v260-talisman-0004",1,Zone::Casting,SpellState::Ready);
     feedbackCard(s,20,"v260-word-0001",0,Zone::Hand);
-    const int paid=Rules::castCost(s,cat,20); auto e=test::ObservedEngine::scenario(cat,s);
+    const int paid=cat.at("v260-word-0001").cost+cat.at("v260-word-0001").castCost; auto e=test::ObservedEngine::scenario(cat,s);
     feedbackSend(e,0,PreloadWord{20, true, 1, playerTarget(1), {}, 0, 0, Rules::freeRing(e.state(), e.catalog(), 1)});
     REQUIRE(e.state().decision); feedbackSend(e,1,Respond{e.state().decision->id,10,"respond",0,e.state().chain->links.front().id}); feedbackPass(e);
     CHECK(e.state().players[1].mana==20-paid); CHECK(e.state().cards.at(20).zone==Zone::Ash); CHECK(e.state().players[1].life==40);
+}
+
+namespace {
+void feedbackWindow(MutationContext &s, PlayerId priority) {
+    ChainLink root; root.id = 1; root.kind = LinkKind::Phase; root.item.owner = s.active;
+    ChainState chain; chain.id = 1; chain.priority = priority; chain.window = ResponseWindow::Action;
+    chain.links.push_back(root); s.chain = chain; s.nextLink = 2;
+    s.decision = PendingDecision{1, priority, DecisionKind::Response, {}, true};
+}
+CardView feedbackView(const GameEngine &e, PlayerId viewer, CardId id) {
+    const auto view = e.viewFor(viewer);
+    const auto card = std::find_if(view.cards.begin(), view.cards.end(),
+        [id](const CardView &entry) { return entry.instance.id == id; });
+    REQUIRE(card != view.cards.end());
+    return *card;
+}
+}
+
+TEST_CASE("hand word responses require the owner's turn at every speed", "[hotfix-rules]") {
+    for (const int speed : {2, 3}) for (const bool ownTurn : {false, true})
+    for (const bool ambush : {false, true}) {
+        CAPTURE(speed, ownTurn, ambush);
+        auto cat = feedbackCatalog();
+        cat.cards.at("v260-word-0009").speed = speed;
+        auto s = feedbackState(); s.active = ownTurn ? 0 : 1; feedbackWindow(s, 0);
+        auto &word = feedbackCard(s, 10, "v260-word-0009", 0, ambush ? Zone::Analysis : Zone::Hand);
+        word.faceDown = word.wasAmbushed = ambush; word.ambushedTurn = 1;
+        auto e = test::ObservedEngine::scenario(cat, s);
+        const Command cmd = ambush ? Command{FlipAmbush{10, 0, {}, 1}}
+            : Command{PreloadWord{10, true, 1, 0, {}, 0, 1, 0}};
+        const auto actions = e.viewFor(0).actions;
+        CHECK(std::any_of(actions.begin(), actions.end(), [&](const LegalAction &action) {
+            return encodeCommand(action.command) == encodeCommand(cmd);
+        }) == (ownTurn || ambush));
+        const auto before = e.digest();
+        CHECK(e.submit(0, cmd).accepted == (ownTurn || ambush));
+        if (!ownTurn && !ambush) CHECK(e.digest() == before);
+    }
+}
+
+TEST_CASE("Sunburst keeps its actual setting payment until it is set again", "[hotfix-rules]") {
+    auto cat = feedbackCatalog();
+    auto s = feedbackState();
+    feedbackCard(s, 10, "v260-analytic-0009", 0, Zone::Hand);
+    feedbackCard(s, 11, "v260-analytic-0009", 0, Zone::Hand);
+    for (CardId id : {20, 21, 22}) feedbackCard(s, id, "v260-analytic-0001", 0, Zone::Ash);
+    auto e = test::ObservedEngine::scenario(cat, s);
+    feedbackSend(e, 0, StartAnalysis{10, 1, 0, {}, 0}); feedbackPass(e);
+    REQUIRE(e.state().cards.at(10).settingPaid == 17);
+    s = test::mutation(e.state());
+    feedbackCard(s, 23, "v260-analytic-0001", 0, Zone::Ash);
+    e = test::ObservedEngine::scenario(cat, s);
+    for (PlayerId viewer : {0, 1}) CHECK(feedbackView(e, viewer, 10).effectiveSettingCost == 17);
+    CHECK(feedbackView(e, 0, 11).effectiveSettingCost == 16);
+    s.cards.at(23).zone = Zone::Hand; s.cards.at(22).zone = Zone::Hand;
+    s.cards.at(10).spell = SpellState::Ready;
+    e = test::ObservedEngine::scenario(cat, s);
+    feedbackSend(e, 0, PrepareCast{10}); feedbackPass(e);
+    CHECK(feedbackView(e, 0, 10).effectiveSettingCost == 17);
+    s = test::mutation(e.state());
+    card_rules::returnCard(s, cat, 10, true);
+    s.players[0].mana = 20;
+    e = test::ObservedEngine::scenario(cat, s);
+    CHECK(feedbackView(e, 0, 10).effectiveSettingCost == 18);
+    feedbackSend(e, 0, SetAmbush{10, 1, 0}); feedbackPass(e);
+    CHECK(feedbackView(e, 1, 10).hidden);
+    CHECK(feedbackView(e, 1, 10).effectiveSettingCost == 0);
+    s = test::mutation(e.state()); ++s.globalTurn;
+    e = test::ObservedEngine::scenario(cat, s);
+    feedbackSend(e, 0, FlipAmbush{10}); feedbackPass(e);
+    CHECK(e.state().cards.at(10).settingPaid == 18);
+    CHECK(e.state().players[0].mana == 2);
+}
+
+TEST_CASE("word setting and activation payments honor each modifier and cost reference", "[hotfix-rules]") {
+    for (const bool ambush : {false, true}) for (const bool counter : {false, true})
+    for (const bool discount : {false, true}) {
+        CAPTURE(ambush, counter, discount);
+        auto cat = feedbackCatalog(); auto s = feedbackState();
+        auto &def = cat.cards.at("v260-word-0009"); def.castCost = 1;
+        if (discount) { cat.cards.at("v260-formation-0017").baseAnalysisDiscount = true;
+            s.cards.at(1).base = true; def.school = "evocation"; }
+        auto &word = feedbackCard(s, 10, "v260-word-0009", 0, ambush ? Zone::Analysis : Zone::Hand);
+        word.faceDown = word.wasAmbushed = ambush; word.ambushedTurn = 1;
+        if (ambush) {
+            s.active = 1; feedbackWindow(s, 0);
+        }
+        if (counter) feedbackCard(s, 20, "v260-talisman-0004", 1, Zone::Casting, SpellState::Ready);
+        auto e = test::ObservedEngine::scenario(cat, s);
+        if (ambush) feedbackSend(e, 0, FlipAmbush{10, 0, {}, 1});
+        else feedbackSend(e, 0, PreloadWord{10, true, 1, 0, {}, 0, 0, 0});
+        const int setting = discount ? 1 : 2;
+        CHECK(e.state().players[0].mana == 20 - setting - 1);
+        CHECK(e.state().cards.at(10).settingPaid == setting);
+        REQUIRE(e.state().cards.at(10).payments.size() == 1);
+        CHECK(e.state().cards.at(10).payments.front().paid == 1);
+        const auto view = feedbackView(e, 0, 10);
+        CHECK(view.effectiveSettingCost == setting);
+        CHECK(view.effectiveCastCost == 1);
+        if (counter) {
+            feedbackSend(e, 1, Respond{e.state().decision->id, 20, "respond", 0, e.state().chain->links.back().id});
+            feedbackPass(e);
+            CHECK(e.state().players[1].mana == 20 - setting - 1);
+            CHECK(e.state().cards.at(10).zone == Zone::Ash);
+        } else {
+            s = test::mutation(e.state());
+            feedbackCard(s, 30, "v260-seal-0002", 0, Zone::Attached).host = 10;
+            e = test::ObservedEngine::scenario(cat, s);
+            feedbackPass(e);
+            CHECK(e.state().players[0].mana == 19);
+        }
+    }
+}
+
+TEST_CASE("selected host quote and zero setting payment survive a lost discount", "[hotfix-rules]") {
+    auto cat = feedbackCatalog(); auto s = feedbackState();
+    cat.cards.at("v260-formation-0017").baseAnalysisDiscount = true; s.cards.at(1).base = true;
+    cat.cards.at("v260-analytic-0001").cost = 1;
+    feedbackCard(s, 10, "v260-analytic-0001", 0, Zone::Hand);
+    auto e = test::ObservedEngine::scenario(cat, s);
+    REQUIRE(feedbackView(e, 0, 10).effectiveSettingCost == 1);
+    ActionIntent intent;
+    intent.selections = {{ActionField::Operation, std::to_string(static_cast<int>(CommandKind::StartAnalysis))},
+                         {ActionField::Source, "10"}, {ActionField::Host, "1"}, {ActionField::Ring, "0"}};
+    const auto options = e.queryActions(0, intent);
+    REQUIRE(options.complete);
+    CHECK(net::encodeOptions(options).value("costQuote", std::string{}).find("设置费用：0") != std::string::npos);
+    feedbackSend(e, 0, *options.complete); feedbackPass(e);
+    REQUIRE(e.state().players[0].mana == 20);
+    s = test::mutation(e.state()); s.cards.at(1).base = false;
+    e = test::ObservedEngine::scenario(cat, s);
+    CHECK(feedbackView(e, 0, 10).effectiveSettingCost == 0);
+}
+
+TEST_CASE("all released concentration sources can be maintained or declined before income", "[hotfix-rules]") {
+    const auto cat = feedbackCatalog();
+    for (const auto &[id, fee] : std::vector<std::pair<const char *, int>>{
+        {"v260-talisman-0005", 2}, {"v260-analytic-0013", 1}, {"v260-analytic-0008", 2},
+        {"v260-analytic-0014", 1}, {"v260-analytic-0017", 1}, {"v260-analytic-0027", 4},
+        {"v260-analytic-0028", 6}, {"v260-analytic-0031", 2}}) {
+        for (const int mana : {fee - 1, fee}) for (const bool maintain : {false, true}) {
+            if (maintain && mana < fee) continue;
+            CAPTURE(id, fee, mana, maintain);
+            auto s = feedbackState(); s.phase = Phase::Draw; s.players[0].mana = mana;
+            auto &card = feedbackCard(s, 10, id, 0, Zone::Analysis, SpellState::Active);
+            card.concentrationCost = fee; card.castLoad = 2;
+            auto e = test::ObservedEngine::scenario(cat, s);
+            feedbackSend(e, 0, AdvancePhase{e.state().phaseGate}); feedbackPass(e);
+            REQUIRE(e.state().decision); REQUIRE(e.state().decision->kind == DecisionKind::Concentration);
+            CHECK(e.state().decision->options.empty() == (mana < fee));
+            if (mana < fee)
+                CHECK(bridge::viewDto(e.viewFor(0)).at("decision").value("upkeepUnavailable", std::string{}) ==
+                      "准备收入前的可用资源不足");
+            CHECK(e.state().players[0].mana == mana);
+            const int enemyLife = e.state().players[1].life;
+            auto token = e.state().decision->id;
+            feedbackSend(e, 0, Choose{token, maintain ? ChoiceValue::card(10) : ChoiceValue{}});
+            CHECK_FALSE(e.submit(0, Choose{token, ChoiceValue::card(10)}).accepted);
+            feedbackPass(e);
+            CHECK(e.state().cards.at(10).zone == (maintain ? Zone::Analysis : Zone::Ash));
+            CHECK(Rules::load(e.state(), 0) == (maintain ? 2 : 0));
+            if (maintain) CHECK(e.state().cards.at(10).payments.back().paid == fee);
+            if (std::string(id) == "v260-analytic-0013") CHECK(e.state().players[1].life == enemyLife - (maintain ? 2 : 0));
+            if (std::string(id) == "v260-talisman-0005")
+                CHECK(Rules::damage(e.state(), cat, 0, {EffectKind::Damage, 6, DamageType::Fire}) == (maintain ? 3 : 6));
+            CHECK_FALSE(e.state().decision);
+        }
+    }
 }

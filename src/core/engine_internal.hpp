@@ -109,10 +109,19 @@ inline int linkedSpellCost(const GameState &state, const CardCatalog &catalog, L
         activation = card.payments[static_cast<std::size_t>(link->paymentIndex)].paid;
     else if (!card.payments.empty())
         activation = card.payments.back().paid;
-    const int setting = catalog.mechanicsRevision >= 11 && catalog.at(card.definition).type != CardType::Analytic
-        ? 0 : card.settingPaid;
+    const auto type = catalog.at(card.definition).type;
+    const bool separateSetting = type == CardType::Analytic || (catalog.mechanicsRevision >= 13 && type == CardType::Word);
+    const int setting = catalog.mechanicsRevision < 11 || separateSetting ? card.settingPaid : 0;
     return std::max(0, setting) + std::max(0, activation);
 }
+inline SpellFees responseFees(const GameState &state, const CardCatalog &catalog, const Respond &response) {
+    const auto &card = state.cards.at(response.card);
+    const auto &definition = catalog.at(card.definition);
+    if (hasCapability(definition, Capability::CounterSpell))
+        return {0, linkedSpellCost(state, catalog, response.link)};
+    return Rules::activationFees(state, catalog, card.id, card.faceDown ? card.host : 0);
+}
+std::optional<SpellFees> spellPayment(const GameState &, const CardCatalog &, const Command &);
 inline bool greatStormLocksAnalysis(const GameState &state, const CardCatalog &catalog, PlayerId owner) {
     return std::any_of(state.cards.begin(), state.cards.end(), [&](const auto &entry) {
         const auto &card = entry.second;

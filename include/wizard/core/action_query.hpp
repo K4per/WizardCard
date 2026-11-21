@@ -25,6 +25,7 @@ struct ActionOptions {
     std::optional<Command> complete;
     bool hasMore{}, pending{};
     std::string error;
+    std::string costQuote;
 };
 struct ActionSummary {
     bool actionable{}, hasNonPhaseAction{};

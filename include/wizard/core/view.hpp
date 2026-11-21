@@ -58,6 +58,7 @@ struct GameView {
     std::deque<PlayerId> extraTurns;
     std::optional<PendingDecision> decision;
     CardId decisionSource{};
+    std::string upkeepUnavailable;
     PhaseStep phaseStep{};
     DecisionId phaseGate{};
     std::optional<ChainState> chain;

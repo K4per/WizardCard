@@ -185,23 +185,28 @@ std::string paymentKey(const Command &command) {
     return out.str();
 }
 }
+std::optional<SpellFees> detail::spellPayment(const GameState &s, const CardCatalog &cat, const Command &command) {
+    if (const auto *setup = std::get_if<StartAnalysis>(&command))
+        return SpellFees{Rules::analysisCost(s, cat, setup->card, setup->formation), 0};
+    if (const auto *word = std::get_if<PreloadWord>(&command))
+        return Rules::activationFees(s, cat, word->card, word->formation);
+    if (const auto *flip = std::get_if<FlipAmbush>(&command)) {
+        const auto &card = s.cards.at(flip->card);
+        if (cat.at(card.definition).type == CardType::Analytic)
+            return SpellFees{Rules::analysisCost(s, cat, card.id, card.host), 0};
+        return Rules::activationFees(s, cat, card.id, card.host);
+    }
+    if (const auto *cast = std::get_if<ActivateSpell>(&command))
+        return Rules::activationFees(s, cat, cast->card);
+    if (const auto *response = std::get_if<Respond>(&command))
+        return responseFees(s, cat, *response);
+    return std::nullopt;
+}
 std::optional<PaymentRequest> GameEngine::paymentRequest(PlayerId actor, const Command &command) const {
     const auto &s = state_;
-
-    CardId source = 0, host = 0;
-    bool setting = false;
-    if (const auto *c = std::get_if<StartAnalysis>(&command)) { source = c->card; host = c->formation; setting = true; }
-    if (const auto *c = std::get_if<PreloadWord>(&command)) { source = c->card; host = c->formation; }
-    if (const auto *c = std::get_if<ActivateSpell>(&command)) source = c->card;
-    if (const auto *c = std::get_if<Respond>(&command)) source = c->card;
-    if (const auto *c = std::get_if<FlipAmbush>(&command)) {
-        source = c->card;
-        if (s.cards.count(source) && catalog().at(s.cards.at(source).definition).type == CardType::Analytic) {
-            setting = true; host = s.cards.at(source).host;
-        }
-    }
-    if (!source || !s.cards.count(source) || s.cards.at(source).owner != actor) return std::nullopt;
-    const int fee = setting ? Rules::analysisCost(s, catalog(), source, host) : Rules::castCost(s, catalog(), source);
+    const auto payment = detail::spellPayment(s, catalog(), command);
+    if (!payment) return std::nullopt;
+    const int fee = payment->total();
     if (fee <= 0 || (!card_rules::paymentRatio(s, catalog(), actor) &&
         s.players[actor].siqueLifePaymentTurn != s.globalTurn)) return std::nullopt;
     auto choices = card_rules::paymentChoices(s, catalog(), actor, fee);

@@ -68,7 +68,7 @@ void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const Le
                 auto label = "响应 " + definition.name;
                 for (const auto &ability : definition.responses)
                     if (ability.id == r.ability) {
-                        const int paid = Rules::castCost(s, catalog(), source.id);
+                        const int paid = detail::responseFees(s, catalog(), r).total();
                         const int added = ability.burden + paid;
                         label += " · " + (ability.name.empty() ? ability.id : ability.name) + "（魔素" +
                                  std::to_string(paid) + " / 新增荷载" + std::to_string(added) + "）";

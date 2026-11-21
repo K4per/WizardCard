@@ -122,6 +122,8 @@ Json viewDto(const GameView &v) {
         out["decision"] = {{"id", std::to_string(v.decision->id)}, {"player", v.decision->player},
             {"kind", static_cast<int>(v.decision->kind)}, {"options", choicesDto(v.decision->options)},
             {"mayPass", v.decision->mayPass}, {"source", std::to_string(v.decisionSource)}};
+    if (v.decision && !v.upkeepUnavailable.empty())
+        out["decision"]["upkeepUnavailable"] = v.upkeepUnavailable;
     if (v.chain) {
         const auto &chain = *v.chain;
         Json links = Json::array();

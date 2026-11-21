@@ -8,6 +8,7 @@ var decision_id: String = "0"
 var field: int = KernelContract.ActionField.Operation
 var options: Array[Dictionary] = []
 var complete: Dictionary = {}
+var cost_quote: String = ""
 var has_more: bool = false
 var pending: bool = false
 
@@ -28,6 +29,7 @@ static func parse(value: Dictionary) -> ActionOptions:
 		result.options.append(row)
 	if value.get("complete") is Dictionary:
 		result.complete = value["complete"]
+	result.cost_quote = str(value.get("costQuote", ""))
 	result.has_more = bool(value.get("hasMore", false))
 	result.pending = bool(value.get("pending", false))
 	return result

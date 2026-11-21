@@ -101,9 +101,8 @@ int Rules::analysisCost(const GameState &s, const CardCatalog &cat, CardId id, C
 int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &c = s.cards.at(id);
     const auto &d = cat.at(c.definition);
-    // Words pay their setting fee when set and immediately cast. Talismans
-    // are set for free and pay the separate activation column in revision 12.
-    int n = (d.type == CardType::Word ? d.cost + (cat.mechanicsRevision >= 12 ? d.castCost : 0) :
+    // Older word records treated the whole immediate payment as one fee.
+    int n = (d.type == CardType::Word && cat.mechanicsRevision < 13 ? d.cost + (cat.mechanicsRevision >= 12 ? d.castCost : 0) :
         d.type == CardType::Talisman && cat.mechanicsRevision < 12 ? d.cost : d.castCost)
         - card_rules::attachedCount(s, cat, controllerOf(c), Capability::SiqueSugar);
     for (const auto &[sid, seal] : s.cards)
@@ -115,6 +114,12 @@ int Rules::castCost(const GameState &s, const CardCatalog &cat, CardId id) {
         }
 
     return std::max(0, n);
+}
+SpellFees Rules::activationFees(const GameState &s, const CardCatalog &cat, CardId id, CardId settingHost) {
+    const auto &card = s.cards.at(id);
+    const int setting = settingHost && cat.mechanicsRevision >= 13 && cat.at(card.definition).type == CardType::Word
+        ? analysisCost(s, cat, id, settingHost) : 0;
+    return {setting, castCost(s, cat, id)};
 }
 int Rules::concentrationUpkeep(const GameState &s, const CardCatalog &cat, CardId id) {
     const auto &card = s.cards.at(id);

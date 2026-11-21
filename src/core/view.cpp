@@ -1,5 +1,6 @@
 #include "wizard/core/engine.hpp"
 #include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
@@ -92,11 +93,10 @@ GameView GameEngine::viewFor(PlayerId p) const {
                     std::find(cloud.targets.begin(), cloud.targets.end(), id) != cloud.targets.end()) card.statuses.push_back("【云雾术】效果生效中");
             card.effectiveCastCost = Rules::castCost(state_, catalog(), id);
             card.effectiveSettingCost = def.type == CardType::Talisman ? 0 : def.cost;
-            if (def.type == CardType::Analytic) {
-                // No host yet in hand: show the source's current setting cost.
-                // Once placed, also include the actual host's modifiers.
-                card.effectiveSettingCost = Rules::analysisCost(state_, catalog(), id,
-                    c.zone == Zone::Analysis ? c.host : 0);
+            if (def.type == CardType::Analytic || (catalog().mechanicsRevision >= 13 && def.type == CardType::Word)) {
+                const bool set = !c.faceDown && (c.zone == Zone::Analysis || c.zone == Zone::Casting);
+                card.effectiveSettingCost = catalog().mechanicsRevision >= 13 && set ? c.settingPaid
+                    : Rules::analysisCost(state_, catalog(), id, c.zone == Zone::Analysis ? c.host : 0);
             }
             if (c.faceDown && controllerOf(c) != p && !c.publiclyRevealed && !(inspectEnemyAmbush && c.zone == Zone::Analysis)) {
                 card.hidden = true;
@@ -136,6 +136,9 @@ GameView GameEngine::viewFor(PlayerId p) const {
     if (state_.decision && state_.decision->player == p) {
         v.decision = state_.decision;
         v.decisionSource = state_.maintenanceCard();
+        if (v.decision->kind == DecisionKind::Concentration && v.decision->options.empty())
+            v.upkeepUnavailable = spell_rules::blocked(state_, ModifierKind::BlockConcentration, p)
+                ? "当前效果禁止维持专注" : "准备收入前的可用资源不足";
     }
     if (v.chain)
         for (auto &link : v.chain->links) {

@@ -198,8 +198,7 @@ std::string GameEngine::validateResponse(PlayerId actor, const Respond &cmd) con
         return "extra_cost: 无需弃牌";
     if (a->target == TargetKind::Player && !spell_rules::playerTargetAllowed(s, catalog(), actor,
         static_cast<PlayerId>(cmd.target - playerTarget(0)))) return "player_protected";
-    const int paid = hasCapability(d, Capability::CounterSpell) ? detail::linkedSpellCost(s, catalog(), cmd.link)
-        : (d.type == CardType::Analytic && ambush ? d.cost : 0) + Rules::castCost(s, catalog(), c.id);
+    const int paid = detail::responseFees(s, catalog(), cmd).total();
     if (paid < 0 || a->burden < 0 || card_rules::paymentChoices(s, catalog(), actor, paid).empty())
         return "cost: 魔素或荷载空间不足";
     return {};

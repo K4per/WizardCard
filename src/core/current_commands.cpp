@@ -160,7 +160,7 @@ void GameEngine::castingTraitsV2(CardId spell) {
     const auto host = s.cards.find(card.sourceFormation);
     if (host == s.cards.end() || host->second.zone != Zone::Analysis) return;
     if (hasCapability(catalog().at(host->second.definition), Capability::HostCastLifeForTemporary)) {
-        if (!s.players[card.owner].debugInfiniteLife) --s.players[card.owner].life;
+        if (!s.players[card.owner].debugInfiniteLife) ResourceRules::setLife(s, card.owner, s.players[card.owner].life - 1);
         s.events.push_back({"life_loss", "逆十字：失去1点生命", -1, spell, 1});
         StateMaintenance::check(s, catalog());
         if (s.result == -1) {
@@ -306,6 +306,8 @@ std::string GameEngine::responseSetupV2(PlayerId actor, const Command &command) 
         card.sourceFormation = word->formation;
         card.sourceRingIndex = Rules::placementRing(s, catalog(), word->formation, word->ringIndex);
         card.fieldOrder = s.nextFieldOrder++;
+        if (handWord)
+            detail::recordTravel(s, id, {Zone::Hand, Zone::Analysis, actor, actor, 0, card.sourceFormation, false, -1, card.sourceRingIndex});
         card.settingPaid = catalog().mechanicsRevision >= 13 ? fees.setting : fee;
         card.zone = Zone::Casting;
         card.host = 0;
@@ -855,6 +857,7 @@ std::string GameEngine::executeV2(PlayerId actor, const Command &command) {
         if (s.result != -1) return {};
         detach(cmd->targets);
         place(cmd->formation, cmd->ringIndex); c.settingPaid = catalog().mechanicsRevision >= 13 ? fees.setting : fee;
+        detail::recordTravel(s, cardId, {Zone::Hand, Zone::Analysis, actor, actor, 0, c.host, false, -1, c.ringIndex});
         settingCompletedV253(cardId, cmd->formation);
         c.spell = SpellState::Ready;
         c.zone = Zone::Casting; c.host = 0; c.ringIndex = -1;

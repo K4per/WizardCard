@@ -109,6 +109,19 @@ Json MatchSession::recordingHeader() const {
     j["events"] = Json::array();
     return j;
 }
+Json encodeEvent(const GameEvent &e) {
+    Json row = {{"kind", e.kind}, {"text", e.text}, {"audience", e.audience},
+        {"card", e.card}, {"amount", e.amount}, {"actualAmount", e.actualAmount},
+        {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
+        {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}, {"chainIndex", e.chainIndex}};
+    if (e.travel) {
+        const auto &m = *e.travel;
+        row["travel"] = {{"from", m.from}, {"to", m.to}, {"fromPlayer", m.fromPlayer},
+            {"toPlayer", m.toPlayer}, {"fromHost", m.fromHost}, {"toHost", m.toHost}, {"back", m.back}, {"fromRing", m.fromRing}, {"toRing", m.toRing}};
+    }
+    if (!e.publicTargets.empty()) row["targets"] = e.publicTargets;
+    return row;
+}
 RecordingDelta MatchSession::recordingSince(RecordingCursor cursor) const {
     if (cursor.commands > commands_.size() || cursor.events > events_.size())
         throw std::invalid_argument("recording cursor invalidated");
@@ -120,18 +133,8 @@ RecordingDelta MatchSession::recordingSince(RecordingCursor cursor) const {
         else row["command"] = encodeCommand(c.command);
         delta.commands.push_back(std::move(row));
     }
-    for (auto i = cursor.events; i < events_.size(); ++i) {
-        const auto &e = events_[i];
-        delta.events.push_back({{"kind", e.kind},
-                               {"text", e.text},
-                               {"audience", e.audience},
-                               {"card", e.card},
-                               {"amount", e.amount},
-                               {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
-                               {"actualAmount", e.actualAmount},
-                               {"affectedPlayer", e.affectedPlayer},
-                               {"spellReleased", e.spellReleased}, {"chainIndex", e.chainIndex}});
-    }
+    for (auto i = cursor.events; i < events_.size(); ++i)
+        delta.events.push_back(encodeEvent(events_[i]));
     return delta;
 }
 Json MatchSession::recording() const {

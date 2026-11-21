@@ -459,6 +459,10 @@ func _events_changed(update: Dictionary) -> void:
 	var truncated: bool = bool(update.get("truncated", false))
 	var events: Array = service.event_log.entries if truncated else update.get("events", [])
 	_table.update_events(events, truncated or bool(update.get("reset", false)))
+	if bool(update.get("reset", false)) or _network_recovery.blocked:
+		_table.clear_feedback()
+	else:
+		_table.present_events(update.get("events", []))
 
 func _match_changed(_snapshot: Dictionary) -> void:
 	_network_waiting = false
@@ -563,7 +567,6 @@ func _refresh() -> void:
 	_update_status()
 	_hand_button.text = "▴ 手牌" if canvas.hand_collapsed else "▾ 手牌"
 	if int(snapshot.get("result", -1)) != -1:
-		canvas.stop_feedback()
 		_notice.text = "对局已结束，可保存并查看复盘。"
 	_tutorial.visible = snapshot.get("tutorial") is Dictionary
 	_tutorial_panel.visible = _tutorial.visible
@@ -1509,6 +1512,7 @@ func _exit_tree() -> void:
 
 func _cover(next_viewer: int) -> void:
 	_close_response_question()
+	_table.clear_feedback()
 	_table.update_events([], true)
 	_table.show_frame({})
 	_pending_viewer = next_viewer
@@ -1732,7 +1736,7 @@ func network_updated(state: Dictionary) -> void:
 		_close_response_question()
 		_clear_action_targets()
 		_clear_cue()
-		canvas.stop_feedback()
+		_table.clear_feedback()
 		canvas._cancel_pointer_state()
 		_confirm.close_popup()
 		_cancel_pending()

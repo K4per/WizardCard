@@ -131,7 +131,7 @@ bool preventLethal(MutationContext &s, const CardCatalog &cat, PlayerId p, int a
     for (auto &[id, c] : s.cards)
         if (controllerOf(c) == p && active(c) && hasCapability(cat.at(c.definition), Capability::PreventLethal)) {
             StateMaintenance::leave(s, id, &cat); c.zone = Zone::Exile;
-            s.players[p].life = 1;
+            ResourceRules::setLife(s, p, 1);
             s.events.push_back({"death_ward", "防死结界：免疫致命伤害，抹除自身，生命变为1", -1, id});
             return true;
         }

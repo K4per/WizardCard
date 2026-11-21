@@ -60,7 +60,16 @@ var _opponent_hand_hits: Array[Dictionary] = []
 var _ring_hits: Array[Dictionary] = []
 var _formation_slot_hits: Array[Dictionary] = []
 var _zone_hits: Array[Dictionary] = []
-var _hover_id: String = ""
+var _hover_id: String = "":
+	set(value):
+		if _hover_id != value:
+			_hover_id = value
+			set_process(true)
+			queue_redraw()
+var _hand_lift: Dictionary[String, float] = {}
+var _flight_bounds: Dictionary[String, Rect2] = {}
+var _flights: Array[Dictionary] = []
+const FLIGHT_SECONDS: float = 0.38
 var _keyboard_id: String = ""
 var _keyboard_ring: int = -1
 var _expand_hits: Array[Dictionary] = []
@@ -75,7 +84,12 @@ var _own_region: Rect2
 var _opponent_region: Rect2
 var _own_casting_region: Rect2
 var _opponent_casting_region: Rect2
-var selected_id: String = ""
+var selected_id: String = "":
+	set(value):
+		if selected_id != value:
+			selected_id = value
+			set_process(true)
+			queue_redraw()
 var formation_slot_target: int = -1
 var target_ids: Dictionary[String, bool] = {}
 var target_rings: Dictionary[String, PackedInt32Array] = {}
@@ -129,6 +143,7 @@ func _ready() -> void:
 	clip_contents = true
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	resized.connect(queue_redraw)
+	set_process(false)
 	mouse_exited.connect(_clear_hover)
 	if get_window() != null and not get_window().focus_exited.is_connected(_cancel_pointer_state):
 		get_window().focus_exited.connect(_cancel_pointer_state)
@@ -152,7 +167,21 @@ func _layout_resource_changed() -> void:
 	queue_redraw()
 
 func configure(value: FieldPresentation) -> void:
-	_begin_transition(value)
+	var same_viewer: bool = _has_projection and field.viewer == value.viewer and field.generation == value.generation
+	if not same_viewer:
+		stop_feedback()
+		_hand_lift.clear()
+		_clear_hover()
+	var hand_ids: Dictionary[String, bool] = {}
+	for card: CardPresentation in value.hand:
+		hand_ids[card.instance_id] = true
+	for id: String in _hand_lift.keys():
+		if not hand_ids.has(id):
+			_hand_lift.erase(id)
+	if not hand_ids.has(_hover_id) and (not value.cards_by_id.has(_hover_id) or value.card_zones.get(_hover_id) != field.card_zones.get(_hover_id)):
+		_clear_hover()
+	if same_viewer:
+		_begin_transition(value)
 	field = value
 	_has_projection = true
 	hand_collapsed = false
@@ -170,10 +199,11 @@ func configure(value: FieldPresentation) -> void:
 	target_ids.clear()
 	target_rings.clear()
 	formation_slot_target = -1
-	_clear_hover()
+	set_process(true)
+	queue_redraw()
 
 func _begin_transition(next: FieldPresentation) -> void:
-	stop_feedback()
+	_clear_outlines()
 	if not _has_projection or Engine.is_editor_hint() or UiFactory.reduced_motion or privacy:
 		_transition.clear()
 		return
@@ -183,6 +213,11 @@ func _begin_transition(next: FieldPresentation) -> void:
 		_transition_tween.tween_method(_set_transition_strength, 1.0, 0.0, 0.24)
 
 func stop_feedback() -> void:
+	_flights.clear()
+	_flight_bounds.clear()
+	_clear_outlines()
+
+func _clear_outlines() -> void:
 	if _transition_tween != null and _transition_tween.is_valid():
 		_transition_tween.kill()
 	_transition_tween = null
@@ -204,13 +239,14 @@ func set_hand_collapsed(enabled: bool) -> void:
 	_clear_hover()
 
 func set_privacy(enabled: bool) -> void:
+	if not enabled and not privacy:
+		return
 	privacy = enabled
 	if enabled:
 		_close_host_menu()
-		if _transition_tween != null and _transition_tween.is_valid():
-			_transition_tween.kill()
-		_transition.clear()
-		_transition_strength = 0.0
+		stop_feedback()
+		_hand_lift.clear()
+		_clear_hover()
 		clear_action_targets()
 	selected_id = ""
 	_dragged = null
@@ -270,9 +306,104 @@ func _draw() -> void:
 	_draw_opponent_hand()
 	_draw_hand(size.y * layout.hand_height_ratio)
 	_transition.paint(self, _card_hits, _own_region, _opponent_region, _transition_strength)
+	_cache_flight_bounds()
+	_draw_flights()
 	if _drag_active and _dragged != null:
 		_draw_simple_card(_dragged, Rect2(_pointer - Vector2(40, 55), Vector2(80, 110)), true)
 	layout_changed.emit()
+
+func _process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		set_process(false)
+		return
+	var moving: bool = false
+	for card: CardPresentation in field.hand:
+		var id: String = card.instance_id
+		var target: float = float(not hand_collapsed and not privacy and id in [_hover_id, selected_id])
+		var current: float = _hand_lift.get(id, 0.0)
+		if not is_equal_approx(current, target):
+			var next: float = target if UiFactory.reduced_motion else move_toward(current, target, delta / 0.15)
+			_hand_lift[id] = next
+			moving = moving or not is_equal_approx(next, target)
+	for index: int in range(_flights.size() - 1, -1, -1):
+		var flight: Dictionary = _flights[index]
+		flight.age += delta
+		if flight.age >= FLIGHT_SECONDS or UiFactory.reduced_motion:
+			_flights.remove_at(index)
+	set_process(moving or not _flights.is_empty())
+	queue_redraw()
+
+func present_events(events: Array) -> void:
+	if privacy or UiFactory.reduced_motion:
+		return
+	var delay: float = 0.0
+	for event: Dictionary in events:
+		if not event.get("travel") is Dictionary:
+			continue
+		var move: Dictionary = event.travel
+		var id: String = str(event.get("card", "0"))
+		var card: CardPresentation = field.cards_by_id.get(id)
+		if bool(move.get("back", true)) or card == null or card.hidden:
+			card = CardPresentation.anonymous("")
+		var start_delay: float = delay
+		for queued: Dictionary in _flights:
+			var follows: bool = queued.id == id if id != "0" else queued.id == "0" and queued.move.toPlayer == move.fromPlayer
+			if follows and int(queued.move.to) == int(move.from):
+				start_delay = maxf(start_delay, FLIGHT_SECONDS - float(queued.age))
+		_flights.append({"move": move, "id": id, "card": card, "age": -start_delay})
+		delay += 0.065
+	if not _flights.is_empty():
+		set_process(true)
+		queue_redraw()
+
+func _bounds_key(id: String, zone: int, host: String) -> String:
+	return "%s/%d/%s" % [id, zone, host]
+
+func _cache_flight_bounds() -> void:
+	for hit: Dictionary in _ring_hits:
+		_flight_bounds["ring/%s/%s" % [hit.host, hit.ring]] = hit.rect
+	for hit: Dictionary in _card_hits:
+		var card: CardPresentation = hit.card
+		var id: String = card.instance_id
+		var key: String = _bounds_key(id, field.card_zones.get(id, -1), field.card_hosts.get(id, "0"))
+		_flight_bounds[key] = hit.get("face_rect", hit.rect)
+
+func _flight_anchor(id: String, zone: int, player: int, host: String, ring: int) -> Rect2:
+	var own: bool = player == field.viewer
+	if zone in [0, 6, 9]:
+		var kind: String = "main_deck" if zone == 0 else ("ash" if zone == 6 else "side_deck")
+		for hit: Dictionary in _zone_hits:
+			if hit.kind == kind and hit.owner == player:
+				return hit.rect
+	var ring_key: String = "ring/%s/%d" % [host, ring]
+	if zone == 3 and ring >= 0 and _flight_bounds.has(ring_key):
+		return _flight_bounds[ring_key]
+	var key: String = _bounds_key(id, zone, host)
+	if _flight_bounds.has(key) and (zone != 1 or own and not hand_collapsed):
+		return _flight_bounds[key]
+	if zone == 1:
+		if not own and not _opponent_hand_hits.is_empty():
+			return _opponent_hand_hits.back().rect
+		var height: float = _hand_card_size(size.y * layout.hand_height_ratio).y
+		return Rect2(size.x * 0.5 - height * 0.375, size.y - height if own else 0.0, height * 0.75, height)
+	if host != "0" and not host.is_empty():
+		var host_key: String = _bounds_key(host, field.card_zones.get(host, 3), field.card_hosts.get(host, "0"))
+		if _flight_bounds.has(host_key):
+			return _flight_bounds[host_key]
+	return _casting_half(own) if zone in [2, 5, 8] else (_own_region if own else _opponent_region)
+
+func _draw_flights() -> void:
+	for flight: Dictionary in _flights:
+		if flight.age < 0.0:
+			continue
+		var move: Dictionary = flight.move
+		var start: Rect2 = _flight_anchor(flight.id, int(move.from), int(move.fromPlayer), str(move.fromHost), int(move.get("fromRing", -1)))
+		var end: Rect2 = _flight_anchor(flight.id, int(move.to), int(move.toPlayer), str(move.toHost), int(move.get("toRing", -1)))
+		var progress: float = smoothstep(0.0, 1.0, flight.age / FLIGHT_SECONDS)
+		var center: Vector2 = start.get_center().lerp(end.get_center(), progress)
+		var height: float = clampf(lerpf(start.size.y, end.size.y, progress), 28.0, 90.0)
+		var extent: Vector2 = Vector2(height * 0.75, height)
+		CardPainter.paint_miniature(self, flight.card, Rect2(center - extent * 0.5, extent), true)
 
 func _update_regions() -> void:
 	_own_region = _scene_region("OwnAnalysis", layout.field_region(size, layout.own_analysis))
@@ -787,9 +918,12 @@ func _clamp_hand_center(center: Vector2, angle: float, extent: Vector2) -> Vecto
 
 func _draw_hand_card(index: int, start_x: float, stride: float, extent: Vector2, raised: bool) -> void:
 	var card: CardPresentation = field.hand[index]
-	var pose: Transform2D = _hand_pose(index, field.hand.size(), start_x, stride, extent, raised)
-	var rect: Rect2 = Rect2(-extent * 0.5, extent)
 	var rest_pose: Transform2D = _hand_pose(index, field.hand.size(), start_x, stride, extent, false)
+	var lift: float = float(raised) if UiFactory.reduced_motion else _hand_lift.get(card.instance_id, 0.0)
+	var pose: Transform2D = rest_pose
+	if lift > 0.0:
+		pose = rest_pose.interpolate_with(_hand_pose(index, field.hand.size(), start_x, stride, extent, true), smoothstep(0.0, 1.0, lift))
+	var rect: Rect2 = Rect2(-extent * 0.5, extent)
 	# Keep the resting footprint responsive while the hovered card lifts. This
 	# prevents raising it away from a stationary pointer and toggling hover.
 	_card_hits.append({"rect": pose * rect, "rest_rect": rest_pose * rect, "art_rect": pose * board_artwork_rect(rect, card), "card": card, "pose": pose, "rest_pose": rest_pose, "local_rect": rect})

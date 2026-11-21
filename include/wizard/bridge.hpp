@@ -82,6 +82,7 @@ class LocalSession {
         std::map<std::size_t, GameEngine> checkpoints;
         std::map<std::size_t, std::array<std::vector<GameEvent>, 2>> eventCheckpoints;
         std::array<std::vector<GameEvent>, 2> visibleEvents;
+        std::vector<std::array<std::size_t, 2>> stepEventCounts;
     };
     mutable ReplayBrowser replay_;
     // Full replay writes are deliberately batched. A failed write keeps the

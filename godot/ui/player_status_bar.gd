@@ -103,6 +103,42 @@ func set_status(player_name: String, player_index: int, values: Dictionary, load
 	_temporary_life.tooltip_text = "临时生命；己方抽卡阶段清除。"
 	_mana.tooltip_text = "当前魔素 / 上限 20。"
 
+var _delta_badges: Dictionary[String, Label] = {}
+var _delta_tweens: Dictionary[String, Tween] = {}
+
+func show_delta(kind: String, amount: int) -> void:
+	var stat: Label = _life if kind == "life_delta" else (_temporary_life if kind == "temporary_life_delta" else _mana)
+	var badge: Label = _delta_badges.get(kind)
+	if badge == null:
+		badge = UiFactory.label("", 15)
+		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		badge.add_theme_stylebox_override(&"normal", DeckTheme.box(Color("13252d"), Color("54717b"), 3))
+		badge.z_index = 2
+		stat.add_child(badge)
+		_delta_badges[kind] = badge
+	var old: Tween = _delta_tweens.get(kind)
+	if old != null and old.is_valid():
+		old.kill()
+	badge.text = "%+d" % amount
+	badge.add_theme_color_override(&"font_color", Color("98e3b0") if amount > 0 else Color("ffb3a8"))
+	badge.reset_size()
+	badge.position = Vector2(stat.size.x - badge.size.x, -badge.size.y * 0.6)
+	badge.modulate.a = 1.0
+	badge.show()
+	var tween: Tween = create_tween()
+	_delta_tweens[kind] = tween
+	tween.tween_interval(1.0)
+	if not UiFactory.reduced_motion:
+		tween.tween_property(badge, "modulate:a", 0.0, 0.25)
+	tween.tween_callback(badge.hide)
+
+func clear_deltas() -> void:
+	for tween: Tween in _delta_tweens.values():
+		tween.kill()
+	_delta_tweens.clear()
+	for badge: Label in _delta_badges.values():
+		badge.hide()
+
 func set_clock(clock_text: String, warning: bool) -> void:
 	if _name == null:
 		return

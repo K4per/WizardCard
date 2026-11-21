@@ -395,14 +395,16 @@ void LocalSession::prepareReplay(const std::filesystem::path &path) const {
     std::map<std::size_t, GameEngine> checkpoints;
     std::map<std::size_t, std::array<std::vector<GameEvent>, 2>> eventCheckpoints;
     std::array<std::vector<GameEvent>, 2> visibleEvents;
+    std::vector<std::array<std::size_t, 2>> stepCounts(count + 1);
     auto finalEngine = replay(*decks_.content, record, [&](std::size_t step, const GameEngine &engine) {
         if (step % stride == 0) {
             checkpoints.emplace(step, engine);
             eventCheckpoints.emplace(step, visibleEvents);
         }
-    }, [&](std::size_t, const std::vector<GameEvent> &batch) {
+    }, [&](std::size_t step, const std::vector<GameEvent> &batch) {
         for (const auto &event : batch) for (PlayerId viewer = 0; viewer < 2; ++viewer)
             if (event.audience == -1 || event.audience == viewer) {
+                ++stepCounts[step][viewer];
                 auto &history = visibleEvents[viewer];
                 history.push_back(event);
                 if (history.size() > 512) history.erase(history.begin());
@@ -413,6 +415,7 @@ void LocalSession::prepareReplay(const std::filesystem::path &path) const {
     replay_.checkpoints = std::move(checkpoints);
     replay_.eventCheckpoints = std::move(eventCheckpoints);
     replay_.visibleEvents = std::move(visibleEvents);
+    replay_.stepEventCounts = std::move(stepCounts);
     replay_.engine = std::make_unique<GameEngine>(std::move(finalEngine));
     replay_.step = count;
     replay_.path = path;
@@ -461,7 +464,14 @@ Json LocalSession::replayFrame(const std::filesystem::path &path, std::size_t st
         data["digest"] = replay_.engine->digest();
         // Event history belongs to the replay browser, never its engine checkpoints.
         data["eventLog"] = Json::array();
-        for (const auto &event : replay_.visibleEvents[viewer]) data["eventLog"].push_back(eventDto(event));
+        data["stepEvents"] = Json::array();
+        const auto &history = replay_.visibleEvents[viewer];
+        const auto start = history.size() - std::min(history.size(), replay_.stepEventCounts[step][viewer]);
+        for (std::size_t i = 0; i < history.size(); ++i) {
+            auto row = eventDto(history[i]);
+            if (i >= start) data["stepEvents"].push_back(row);
+            data["eventLog"].push_back(std::move(row));
+        }
         return ok(std::move(data));
     } catch (const std::exception &e) { return fail("invalid_replay", e.what()); }
 }

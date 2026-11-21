@@ -536,7 +536,7 @@ func _run() -> void:
 		var rest_bounds: Rect2 = canvas.card_bounds(hand_card)
 		var rest_pointer: Vector2 = rest_bounds.get_center()
 		canvas._hover_id = hand_card.instance_id
-		canvas.queue_redraw()
+		await create_timer(0.20).timeout
 		await process_frame
 		await process_frame
 		var lifted_bounds: Rect2 = canvas.card_bounds(hand_card)

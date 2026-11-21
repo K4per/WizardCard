@@ -5,6 +5,51 @@
 #include <stdexcept>
 #include <type_traits>
 namespace wizard::detail {
+CardPositions cardPositions(const GameState &state) {
+    CardPositions positions;
+    positions.reserve(state.cards.size());
+    for (const auto &[id, card] : state.cards)
+        positions.push_back({id, card.zone, card.host, card.ringIndex, controllerOf(card)});
+    return positions;
+}
+void recordTravel(MutationContext &state, CardId id, CardTravel move) {
+    const auto privateZone = [](Zone zone) {
+        return zone == Zone::Hand || zone == Zone::Deck || zone == Zone::SideDeck;
+    };
+    for (PlayerId viewer = 0; viewer < 2; ++viewer) {
+        auto projected = move;
+        const bool anonymous = viewer != move.fromPlayer && viewer != move.toPlayer &&
+            privateZone(move.from) && privateZone(move.to);
+        projected.back |= anonymous || (viewer != move.toPlayer && privateZone(move.to));
+        GameEvent event{"card_move", "", viewer, anonymous ? 0 : id};
+        event.travel = projected;
+        state.events.push_back(std::move(event));
+    }
+}
+void emitCardTravel(MutationContext &state, CardPositions &positions, std::size_t firstEvent) {
+    // Explicit intermediate moves (draws, reshuffles and hand-word setup) are
+    // already ordered. Start the remaining comparison at their last endpoint.
+    for (auto i = firstEvent; i < state.events.size(); ++i) {
+        const auto &e = state.events[i];
+        if (!e.travel || e.audience != e.travel->toPlayer || !e.card) continue;
+        const auto pos = std::lower_bound(positions.begin(), positions.end(), e.card,
+            [](const CardPosition &entry, CardId id) { return entry.id < id; });
+        if (pos != positions.end() && pos->id == e.card)
+            *pos = {e.card, e.travel->to, e.travel->toHost, e.travel->toRing, e.travel->toPlayer};
+    }
+    // Instances are allocated at match creation and remain in the ordered map, including exiled cards.
+    auto position = positions.begin();
+    for (const auto &[id, card] : state.cards) {
+        if (position == positions.end() || position->id != id) continue;
+        const auto old = *position++;
+        const auto from = old.player, to = controllerOf(card);
+        if (old.zone == card.zone && old.host == card.host && old.ring == card.ringIndex && from == to) continue;
+        *(position - 1) = {id, card.zone, card.host, card.ringIndex, to};
+        if (card.zone == Zone::Exile || old.zone == Zone::Exile) continue;
+        recordTravel(state, id, {old.zone, card.zone, from, to, old.host, card.host, card.faceDown, old.ring, card.ringIndex});
+    }
+}
+
 std::uint32_t legacyChoice(ChoiceValue option, DecisionKind kind) {
     if (option.kind == ChoiceKind::Pass) return 0;
     if (option.kind == ChoiceKind::Player) return playerTarget(static_cast<PlayerId>(option.value));

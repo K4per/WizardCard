@@ -667,7 +667,7 @@ void payExtraCost(MutationContext &s, const CardCatalog &cat, PlayerId owner, Ca
     }
     if (trait(d, Capability::ArcanaHangedCost) && !s.players[owner].debugInfiniteLife) {
         const int amount = (s.players[owner].life + 1) / 2;
-        s.players[owner].life -= amount;
+        ResourceRules::setLife(s, owner, s.players[owner].life - amount);
         s.events.push_back({"life_cost", "倒吊人：支付一半生命（向上取整）", -1, source, amount});
         StateMaintenance::check(s, cat);
     }
@@ -717,7 +717,7 @@ void onFireDamage(MutationContext &s, const CardCatalog &cat) {
 }
 void onManaSpent(MutationContext &s, const CardCatalog &cat, PlayerId owner, int amount) {
     if (amount > 0 && hasActiveTrait(s, cat, Capability::ArcanaTemperance, owner)) {
-        s.players[owner].mana = std::min(maximumMana, s.players[owner].mana + 1);
+        ResourceRules::gainMana(s, owner, 1);
         s.events.push_back({"mana_refund", "节制：消耗魔素后获得1点魔素", -1, 0, 1});
     }
 }
@@ -781,6 +781,7 @@ bool GameEngine::resolveSpellEffect() {
         auto &deck = s.players[owner].deck;
         for (auto &[id, card] : s.cards) if (card.owner == owner && card.zone == Zone::Hand) {
             card.zone = Zone::Deck; deck.push_back(id);
+            detail::recordTravel(s, id, {Zone::Hand, Zone::Deck, owner, owner});
         }
         shuffleArcanaDeck(s, owner);
         for (int i = 0; i < effect.amount && s.result == -1; ++i) ResourceRules::drawOne(s, catalog(), owner);
@@ -1115,7 +1116,7 @@ void pay(MutationContext &s, PlayerId p, int amount, const CardCatalog *cat) {
     if (s.players[p].siqueLifePaymentTurn && s.players[p].siqueLifePaymentTurn == s.globalTurn) {
         if (s.players[1 - p].debugInfiniteLife) return;
         if (cat && !canPay(s, p, amount, cat)) return;
-        s.players[1 - p].life -= amount;
+        ResourceRules::setLife(s, 1 - p, s.players[1 - p].life - amount);
         s.events.push_back({"life_payment", "神恩炖肉：宣告时以对方普通生命按1:1支付魔素费用", -1, 0, amount});
     } else {
         ResourceRules::payMana(s, p, amount);
@@ -1124,7 +1125,7 @@ void pay(MutationContext &s, PlayerId p, int amount, const CardCatalog *cat) {
             return cat && card.owner == p && hasCapability(cat->at(card.definition), Capability::ArcanaTemperance) && !card.faceDown &&
                 (card.zone == Zone::Analysis || card.zone == Zone::Casting) && card.spell == SpellState::Active;
         })) {
-            s.players[p].mana = std::min(maximumMana, s.players[p].mana + 1);
+            ResourceRules::gainMana(s, p, 1);
             s.events.push_back({"mana_refund", "节制：消耗魔素后获得1点魔素", -1, 0, 1});
         }
     }

@@ -6,6 +6,11 @@ inline bool stormTags(const std::vector<std::string> &tags) {
     return std::find(tags.begin(), tags.end(), "风契") != tags.end() ||
            std::find(tags.begin(), tags.end(), "风暴") != tags.end();
 }
+void recordTravel(MutationContext &, CardId id, CardTravel);
+struct CardPosition { CardId id; Zone zone; CardId host; int ring; PlayerId player; };
+using CardPositions = std::vector<CardPosition>;
+CardPositions cardPositions(const GameState &);
+void emitCardTravel(MutationContext &, CardPositions &, std::size_t firstEvent);
 std::uint32_t random32(MutationContext &);
 std::uint32_t bounded(MutationContext &, std::uint32_t);
 std::vector<CardId> inZone(const GameState &, PlayerId, Zone);

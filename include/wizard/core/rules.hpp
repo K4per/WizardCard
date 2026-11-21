@@ -36,6 +36,8 @@ struct StateMaintenance {
     static void check(MutationContext &, const CardCatalog &, bool endCleanup = false);
 };
 struct ResourceRules {
+    static void setLife(MutationContext &, PlayerId, int value);
+    static void gainMana(MutationContext &, PlayerId, int amount);
     static bool canPayMana(const GameState &, PlayerId, int amount);
     static void payMana(MutationContext &, PlayerId, int amount);
     // Each grant expires at the start of the recipient's indicated draw phase.

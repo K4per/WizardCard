@@ -1,4 +1,4 @@
-#include "wizard/core/rules.hpp"
+#include "engine_internal.hpp"
 #include "wizard/core/spell_rules.hpp"
 #include "wizard/core/card_rules.hpp"
 #include <algorithm>
@@ -43,6 +43,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         p = 1 - t.owner;
     const int previousTemporaryLife = s.players[p].temporaryLife;
     const int previousLife = s.players[p].life;
+    const int previousMana = s.players[t.owner].mana;
     const auto previousDeck = s.players[t.owner].deck.size();
     if (e.kind == EffectKind::V260Structured) {
         if (e.semantic == "halve_casting_capacity" && cat.mechanicsRevision >= 12) {
@@ -85,7 +86,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     }
     switch (e.kind) {
     case EffectKind::LoseLife:
-        if (!s.players[p].debugInfiniteLife) s.players[p].life = std::max(0, s.players[p].life - e.amount);
+        if (!s.players[p].debugInfiniteLife) ResourceRules::setLife(s, p, std::max(0, s.players[p].life - e.amount));
         s.events.push_back({"life_loss", "失去普通生命", -1, t.source, e.amount});
         break;
     case EffectKind::AnkhRecover:
@@ -118,7 +119,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         const int shield = std::min(amount, s.players[p].temporaryLife);
         ResourceRules::absorbTemporaryLife(s, p, shield);
         const int actualDamage = amount - shield;
-        s.players[p].life = cat.mechanicsRevision >= 11 ? std::max(0, s.players[p].life - actualDamage) : s.players[p].life - actualDamage;
+        ResourceRules::setLife(s, p, cat.mechanicsRevision >= 11 ? std::max(0, s.players[p].life - actualDamage) : s.players[p].life - actualDamage);
         card_rules::damaged(s, cat, p, t.source, actualDamage);
         if (cat.mechanicsRevision >= 11)
             spell_rules::damaged(s, cat, p, t, std::min(amount, previousLife + shield), e.damageType);
@@ -306,7 +307,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         break;
     }
     case EffectKind::GainMana: {
-        s.players[t.owner].mana = std::min(maximumMana, s.players[t.owner].mana + e.amount);
+        ResourceRules::gainMana(s, t.owner, e.amount);
         const auto batch = s.nextBatch++;
         for (const auto &[id, c] : s.cards)
             if (c.owner == t.owner &&
@@ -531,10 +532,23 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     }
     GameEvent event{"effect", message, -1, t.source, e.amount};
     event.effectType = e.kind;
+    if (s.effect && s.effect->link && s.chain && !s.chain->links.empty() &&
+        s.chain->links.back().id == s.effect->link)
+        event.chainIndex = static_cast<int>(s.chain->links.size());
+    for (auto target : detail::targetCards(t.targetCard, t.targetCards)) {
+        const auto it = s.cards.find(target);
+        if (it != s.cards.end() && it->second.zone != Zone::Hand && it->second.zone != Zone::Deck &&
+            it->second.zone != Zone::SideDeck)
+            event.publicTargets.push_back(target);
+    }
     event.affectedPlayer = p;
     event.actualAmount = std::abs(s.players[p].life - previousLife);
     if (e.kind == EffectKind::Damage)
         event.actualAmount += previousTemporaryLife - s.players[p].temporaryLife;
+    if (e.kind == EffectKind::GainMana) {
+        event.actualAmount = s.players[t.owner].mana - previousMana;
+        event.affectedPlayer = t.owner;
+    }
     if (e.kind == EffectKind::AddTemporaryLife)
         event.actualAmount = s.players[p].temporaryLife - previousTemporaryLife;
     if (e.kind == EffectKind::Draw) {

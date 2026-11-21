@@ -25,7 +25,7 @@ int lifeLimit(const GameState &s, const CardCatalog &cat, PlayerId p) {
     return std::clamp(s.players[p].lifeLimit + modifier, 1, maximumLife);
 }
 void normalizeLife(MutationContext &s, const CardCatalog &cat, PlayerId p) {
-    s.players[p].life = std::min(s.players[p].life, lifeLimit(s, cat, p));
+    ResourceRules::setLife(s, p, std::min(s.players[p].life, lifeLimit(s, cat, p)));
 }
 void changeLifeLimit(MutationContext &s, const CardCatalog &cat, PlayerId p, int delta) {
     const int before = lifeLimit(s, cat, p);
@@ -55,7 +55,7 @@ int attachmentLifeCost(const CardDefinition &definition) {
 }
 void payLife(MutationContext &s, const CardCatalog &cat, PlayerId p, int amount, CardId source) {
     if (amount <= 0 || !canPayLife(s, p, amount)) return;
-    if (!s.players[p].debugInfiniteLife) s.players[p].life -= amount;
+    if (!s.players[p].debugInfiniteLife) ResourceRules::setLife(s, p, s.players[p].life - amount);
     s.events.push_back({"life_payment", "支付普通生命", -1, source, amount});
     if (p != s.active || s.players[p].firstLifePaymentTurn == s.globalTurn) return;
     s.players[p].firstLifePaymentTurn = s.globalTurn;
@@ -66,7 +66,7 @@ void payLife(MutationContext &s, const CardCatalog &cat, PlayerId p, int amount,
 int heal(MutationContext &s, const CardCatalog &cat, PlayerId p, int amount, CardId source) {
     if (amount <= 0 || s.result != -1) return 0;
     const int actual = std::min(amount, std::max(0, lifeLimit(s, cat, p) - s.players[p].life));
-    s.players[p].life += actual;
+    ResourceRules::setLife(s, p, s.players[p].life + actual);
     if (!actual) return 0;
     s.events.push_back({"heal", "恢复普通生命", -1, source, actual});
     std::deque<std::pair<PlayerId, int>> queue{{p, actual}};
@@ -79,7 +79,7 @@ int heal(MutationContext &s, const CardCatalog &cat, PlayerId p, int amount, Car
             visited.insert(id);
             const int gain = std::min(value, std::max(0, lifeLimit(s, cat, c.owner) - s.players[c.owner].life));
             if (!gain) continue;
-            s.players[c.owner].life += gain;
+            ResourceRules::setLife(s, c.owner, s.players[c.owner].life + gain);
             s.events.push_back({"heal", "血契·同源：恢复生命", -1, id, gain});
             queue.emplace_back(c.owner, gain);
         }

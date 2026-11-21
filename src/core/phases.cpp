@@ -295,8 +295,11 @@ StepResult GameEngine::step(ExecutionContext &context) {
 }
 void GameEngine::pump() {
     ExecutionContext context;
+    auto positions = cardPositions(state_);
     while (true) {
+        const auto firstEvent = state_.events.size();
         const auto result = step(context);
+        emitCardTravel(state_, positions, firstEvent);
         if (result == StepResult::Progress) continue;
         if (result == StepResult::Fault) throw ExecutionFault(context.fault);
         return;

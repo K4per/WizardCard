@@ -95,6 +95,7 @@ func _load() -> void:
 	if _files.selected < 0 or _files.selected >= _paths.size():
 		return
 	_path = ""
+	_table.clear_feedback()
 	_rows.clear()
 	_frame_cache.clear()
 	_frame = {}
@@ -125,13 +126,15 @@ func _load() -> void:
 	_show_frame()
 
 func _move(delta: int) -> void:
-	_step = clampi(_step + delta, 0, _rows.size())
-	_show_frame()
+	var next: int = clampi(_step + delta, 0, _rows.size())
+	var sequential: bool = next == _step + 1
+	_step = next
+	_show_frame(sequential)
 
 func _viewer_changed(_index: int) -> void:
 	_show_frame()
 
-func _show_frame() -> void:
+func _show_frame(sequential: bool = false) -> void:
 	if _path.is_empty():
 		return
 	var cache_key: String = "%d:%d" % [_step, _viewer.selected]
@@ -150,6 +153,8 @@ func _show_frame() -> void:
 		if _frame_cache.size() >= 16:
 			_frame_cache.erase(_frame_cache.keys()[0])
 		_frame_cache[cache_key] = frame
+	if not sequential:
+		_table.clear_feedback()
 	_frame = frame
 	var hand_collapsed: bool = _canvas.hand_collapsed
 	_canvas.configure(MatchProjection.field(frame))
@@ -159,6 +164,10 @@ func _show_frame() -> void:
 	_table.show_clock(frame.get("clock", {}), _viewer.selected, 0)
 	_update_status(frame)
 	_update_logs(frame)
+	if sequential:
+		_table.present_events(frame.get("stepEvents", []))
+	else:
+		_canvas.stop_feedback()
 	_hide_detail()
 	_command.text = "对局开始" if _step == 0 else "步骤 %d · 玩家 %d\n%s" % [_step, int(_rows[_step - 1].get("actor", 0)) + 1, _command_label(_rows[_step - 1].get("command", {}))]
 	_update_controls()

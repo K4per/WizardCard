@@ -1,9 +1,27 @@
-#include "wizard/core/rules.hpp"
+#include "engine_internal.hpp"
 #include "wizard/core/spell_rules.hpp"
 #include "wizard/core/card_rules.hpp"
 #include <algorithm>
 
 namespace wizard {
+namespace {
+void resourceDelta(MutationContext &s, PlayerId p, const char *kind, int delta) {
+    if (!delta) return;
+    GameEvent event{kind, ""};
+    event.affectedPlayer = p;
+    event.actualAmount = delta;
+    s.events.push_back(std::move(event));
+}
+}
+void ResourceRules::setLife(MutationContext &s, PlayerId p, int value) {
+    resourceDelta(s, p, "life_delta", value - s.players[p].life);
+    s.players[p].life = value;
+}
+void ResourceRules::gainMana(MutationContext &s, PlayerId p, int amount) {
+    const int before = s.players[p].mana;
+    s.players[p].mana = std::min(maximumMana, before + amount);
+    if (s.players[p].mana > before) resourceDelta(s, p, "mana_gain", s.players[p].mana - before);
+}
 bool ResourceRules::canPayMana(const GameState &s, PlayerId p, int amount) {
     return amount >= 0 && (s.players[p].debugInfiniteMana || s.players[p].mana >= amount);
 }
@@ -12,9 +30,11 @@ void ResourceRules::payMana(MutationContext &s, PlayerId p, int amount) {
 }
 namespace {
 void syncTemporaryLife(MutationContext &s, PlayerId player) {
-    s.players[player].temporaryLife = 0;
+    int total = 0;
     for (const auto &entry : s.temporaryLives)
-        if (entry.owner == player) s.players[player].temporaryLife += entry.amount;
+        if (entry.owner == player) total += entry.amount;
+    resourceDelta(s, player, "temporary_life_delta", total - s.players[player].temporaryLife);
+    s.players[player].temporaryLife = total;
 }
 }
 void ResourceRules::normalizeTemporaryLife(MutationContext &s, PlayerId player) {
@@ -42,7 +62,9 @@ void ResourceRules::absorbTemporaryLife(MutationContext &s, PlayerId player, int
         [&](const TemporaryLife &entry) { return entry.owner == player; });
     if (!tracked) {
         auto &aggregate = s.players[player].temporaryLife;
-        aggregate -= std::min(aggregate, amount);
+        const auto absorbed = std::min(aggregate, amount);
+        aggregate -= absorbed;
+        resourceDelta(s, player, "temporary_life_delta", -absorbed);
         return;
     }
     normalizeTemporaryLife(s, player);
@@ -88,8 +110,8 @@ void ResourceRules::damage(MutationContext &state, PlayerId player, int amount, 
         if (owner.siqueDamageCap) amount = std::min(amount, owner.siqueDamageCap);
         const auto shield = std::min(owner.temporaryLife, amount);
         ResourceRules::absorbTemporaryLife(state, player, shield);
-        owner.life -= amount - shield;
-    } else owner.life = std::max(0, owner.life - amount);
+        setLife(state, player, owner.life - (amount - shield));
+    } else setLife(state, player, std::max(0, owner.life - amount));
     GameEvent event{reason, reason == "overload" ? "过载规则伤害" : "枯竭规则伤害", -1, 0, amount};
     event.actualAmount = amount;
     event.affectedPlayer = player;
@@ -136,6 +158,7 @@ void ResourceRules::drawOne(MutationContext &state, const CardCatalog &catalog, 
     owner.deck.pop_back();
     state.cards.at(card).zone = Zone::Hand;
     state.events.push_back({"draw", "抽取一张牌", player, card});
+    detail::recordTravel(state, card, {Zone::Deck, Zone::Hand, player, player});
     std::uint32_t batch = 0;
     for (const auto &[id, rune] : state.cards)
         if (rune.owner != player && rune.zone == Zone::Attached &&

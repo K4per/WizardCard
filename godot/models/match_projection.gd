@@ -5,6 +5,7 @@ static func field(snapshot: Dictionary) -> FieldPresentation:
 	var result: FieldPresentation = FieldPresentation.new()
 	var viewer: int = int(snapshot.get("viewer", 0))
 	result.viewer = viewer
+	result.generation = str(snapshot.get("generation", ""))
 	var players: Array = snapshot.get("players", [])
 	if players.size() != 2:
 		return result
@@ -67,6 +68,9 @@ static func field(snapshot: Dictionary) -> FieldPresentation:
 		var card: CardPresentation = CardPresentation.from_projection(row)
 		var is_own: bool = int(row.get("owner", -1)) == viewer
 		var zone: int = int(row.get("zone", -1))
+		result.cards_by_id[card.instance_id] = card
+		result.card_zones[card.instance_id] = zone
+		result.card_hosts[card.instance_id] = str(row.get("host", "0"))
 		if zone == 1 and is_own:
 			result.hand.append(card)
 		elif zone == 7:

@@ -22,11 +22,20 @@ var _window_actions: Dictionary = {}
 var _opening_action: String = ""
 var _preceding_action: String = ""
 var _log_phase: String = ""
+var _event_queue: Array[Dictionary] = []
+var _event_tween: Tween
+var _event_caption_label: Label
 
 func _ready() -> void:
 	# The exported instance can start with zero anchors even when its page fills the window.
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	detail.clear_card()
+	_event_caption_label = UiFactory.label("", 15, true)
+	_event_caption_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_event_caption_label.hide()
+	var chain_column: VBoxContainer = chain_text.get_parent() as VBoxContainer
+	chain_column.add_child(_event_caption_label)
+	chain_column.move_child(_event_caption_label, 1)
 	own.custom_minimum_size.x = 0
 	opponent.custom_minimum_size.x = 0
 	resized.connect(arrange)
@@ -85,6 +94,73 @@ func show_frame(snapshot: Dictionary) -> void:
 		phase.text = "对局结束 · " + ("平局" if int(snapshot.result) > 1 else "玩家 %d 获胜" % [int(snapshot.result) + 1])
 	_render_chain()
 
+func present_events(events: Array) -> void:
+	canvas.present_events(events)
+	for event: Dictionary in events:
+		var kind: String = str(event.get("kind", ""))
+		if kind in ["life_delta", "temporary_life_delta", "mana_gain"]:
+			_event_queue.append(event)
+		elif kind in ["effect", "link_resolved", "link_skipped"] and str(event.get("card", "0")) != "0":
+			_event_queue.append(event)
+	if _event_tween == null and not _event_queue.is_empty():
+		_present_next()
+
+func _present_next() -> void:
+	_event_tween = null
+	if _event_queue.is_empty():
+		_event_caption_label.hide()
+		return
+	var event: Dictionary = _event_queue.pop_front()
+	var kind: String = str(event.kind)
+	var player: int = int(event.get("affectedPlayer", -1))
+	var delay: float = 0.42
+	if kind in ["life_delta", "temporary_life_delta", "mana_gain"]:
+		if player in [0, 1]:
+			var bar: PlayerStatusBar = own if player == canvas.field.viewer else opponent
+			bar.show_delta(kind, int(event.actualAmount))
+		delay = 0.13
+	else:
+		var source: Dictionary = _public_card(str(event.get("card", "0")))
+		var name_text: String = _feedback_name(source)
+		var chain: int = int(event.get("chainIndex", 0))
+		var prefix: String = "C%d · " % chain if chain > 0 else ""
+		var result: String = str(event.get("text", "")) if kind == "effect" else ("失效" if kind == "link_skipped" else "结算完成")
+		if kind == "effect" and event.get("effectType") in [0, 1, 2, 7, 17]:
+			var actual: int = int(event.get("actualAmount", 0))
+			match int(event.effectType):
+				0: result = "造成 %d 点伤害" % actual if actual > 0 else "未造成伤害"
+				1: result = "恢复 %d 点生命" % actual
+				2: result = "抽取 %d 张牌" % actual
+				7: result = "获得 %d 点魔素" % actual
+				17: result = "获得 %d 点临时生命" % actual
+		var targets: PackedStringArray = []
+		for id: Variant in event.get("targets", []):
+			var target: Dictionary = _public_card(str(id))
+			if not target.is_empty():
+				targets.append(_feedback_name(target))
+		if targets.is_empty() and kind == "effect" and player in [0, 1] and event.get("effectType") in [0, 1, 2, 7, 17]:
+			targets.append("玩家 %d" % (player + 1))
+		_event_caption_label.text = prefix + name_text + (" → " + "、".join(targets) if not targets.is_empty() else "") + "\n" + result
+		_event_caption_label.show()
+	_event_tween = create_tween()
+	_event_tween.tween_interval(delay)
+	_event_tween.tween_callback(_present_next)
+
+func _feedback_name(row: Dictionary) -> String:
+	if row.is_empty() or bool(row.get("hidden", false)) or bool(row.get("faceDown", false)):
+		return "卡牌"
+	return str(row.get("definition", {}).get("name", "卡牌"))
+
+func clear_feedback() -> void:
+	canvas.stop_feedback()
+	_event_queue.clear()
+	if _event_tween != null:
+		_event_tween.kill()
+	_event_tween = null
+	_event_caption_label.hide()
+	own.clear_deltas()
+	opponent.clear_deltas()
+
 func update_events(events: Array, reset: bool) -> void:
 	if reset:
 		log_text.clear()
@@ -96,6 +172,8 @@ func update_events(events: Array, reset: bool) -> void:
 		_log_phase = ""
 	for position: int in events.size():
 		var event: Dictionary = events[position]
+		if event.get("kind") in ["card_move", "life_delta", "temporary_life_delta", "mana_gain"]:
+			continue
 		var index: int = int(event.get("chainIndex", 0))
 		var following: Dictionary = events[position + 1] if position + 1 < events.size() else {}
 		log_text.add_text(_event_caption(event, following) + "\n")

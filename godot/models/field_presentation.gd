@@ -5,6 +5,10 @@ const LEGAL_GOLD: int = 1
 const LEGAL_AMBUSH: int = 2
 
 var viewer: int = 0
+var generation: String = ""
+var cards_by_id: Dictionary[String, CardPresentation] = {}
+var card_zones: Dictionary[String, int] = {}
+var card_hosts: Dictionary[String, String] = {}
 var own_formations: Array[FormationPresentation] = []
 var opponent_formations: Array[FormationPresentation] = []
 var hand: Array[CardPresentation] = []

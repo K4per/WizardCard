@@ -244,11 +244,11 @@ Json encodeEvents(const EventBatch &batch) {
     Json out = {{"epoch", std::to_string(batch.epoch)}, {"base", std::to_string(batch.base)},
                 {"next", std::to_string(batch.next)}, {"reset", batch.reset}, {"events", Json::array()}};
     auto cursor = batch.base;
-    for (const auto &e : batch.events)
-        out["events"].push_back({{"id", std::to_string(++cursor)}, {"kind", e.kind}, {"text", e.text},
-            {"audience", e.audience}, {"card", e.card}, {"amount", e.amount},
-            {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
-            {"actualAmount", e.actualAmount}, {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}, {"chainIndex", e.chainIndex}});
+    for (const auto &e : batch.events) {
+        auto row = encodeEvent(e);
+        row["id"] = std::to_string(++cursor);
+        out["events"].push_back(std::move(row));
+    }
     return out;
 }
 EventBatch decodeEvents(const Json &j) {
@@ -265,6 +265,12 @@ EventBatch decodeEvents(const Json &j) {
         event.actualAmount = row.at("actualAmount"); event.affectedPlayer = row.at("affectedPlayer");
         event.spellReleased = row.at("spellReleased");
         event.chainIndex = row.value("chainIndex", 0);
+        if (row.contains("travel")) {
+            const auto &m = row.at("travel");
+            event.travel = CardTravel{m.at("from").get<Zone>(), m.at("to").get<Zone>(),
+                m.at("fromPlayer"), m.at("toPlayer"), m.at("fromHost"), m.at("toHost"), m.at("back"), m.value("fromRing", -1), m.value("toRing", -1)};
+        }
+        event.publicTargets = row.value("targets", std::vector<CardId>{});
         out.events.push_back(std::move(event));
     }
     return out;

@@ -32,6 +32,15 @@ func _run() -> void:
 	first.hand.assign([_card("one")])
 	canvas.configure(first)
 	await _settle()
+	var motion := InputEventMouseMotion.new()
+	motion.position = canvas.card_bounds(first.hand[0]).get_center()
+	canvas._gui_input(motion)
+	await create_timer(0.18).timeout
+	var held: Rect2 = canvas.card_bounds(first.hand[0])
+	canvas.configure(first)
+	await _settle()
+	_check(canvas._hover_id == "one" and canvas.card_bounds(first.hand[0]).is_equal_approx(held), "A stationary hover survives an authoritative refresh")
+	_check(canvas.has_method("present_events"), "The field consumes confirmed viewer movement events")
 	var second: FieldPresentation = FieldPresentation.new()
 	second.hand.assign([_card("one"), _card("two")])
 	second.own_life = 35

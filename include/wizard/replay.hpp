@@ -6,6 +6,7 @@
 #include <chrono>
 #include <functional>
 namespace wizard {
+Json encodeEvent(const GameEvent &);
 Json encodeDebugOperation(const DebugOperation &);
 DebugOperation decodeDebugOperation(const Json &);
 CommandResult applyRecordedCommand(GameEngine &, const Json &, bool legacy = false);

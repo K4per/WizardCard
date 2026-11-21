@@ -1,0 +1,189 @@
+{
+	"evidence": {
+		"ambush": [
+			{
+				"actualAmount": 0,
+				"affectedPlayer": -1,
+				"amount": 0,
+				"card": "29",
+				"chainIndex": 0,
+				"effectType": null,
+				"kind": "card_move",
+				"spellReleased": false,
+				"text": "",
+				"travel": {
+					"back": true,
+					"from": 1,
+					"fromHost": "0",
+					"fromPlayer": 0,
+					"fromRing": -1,
+					"to": 3,
+					"toHost": "9",
+					"toPlayer": 0,
+					"toRing": 0
+				}
+			}
+		],
+		"ash": [
+			{
+				"actualAmount": 0,
+				"affectedPlayer": -1,
+				"amount": 0,
+				"card": "29",
+				"chainIndex": 0,
+				"effectType": null,
+				"kind": "card_move",
+				"spellReleased": false,
+				"text": "",
+				"travel": {
+					"back": false,
+					"from": 3,
+					"fromHost": "9",
+					"fromPlayer": 0,
+					"fromRing": 0,
+					"to": 6,
+					"toHost": "0",
+					"toPlayer": 0,
+					"toRing": -1
+				}
+			}
+		],
+		"formations": [
+			{
+				"actualAmount": 0,
+				"affectedPlayer": -1,
+				"amount": 0,
+				"card": "9",
+				"chainIndex": 0,
+				"effectType": null,
+				"kind": "card_move",
+				"spellReleased": false,
+				"text": "",
+				"travel": {
+					"back": false,
+					"from": 9,
+					"fromHost": "0",
+					"fromPlayer": 0,
+					"fromRing": -1,
+					"to": 3,
+					"toHost": "0",
+					"toPlayer": 0,
+					"toRing": -1
+				}
+			},
+			{
+				"actualAmount": 0,
+				"affectedPlayer": -1,
+				"amount": 0,
+				"card": "59",
+				"chainIndex": 0,
+				"effectType": null,
+				"kind": "card_move",
+				"spellReleased": false,
+				"text": "",
+				"travel": {
+					"back": false,
+					"from": 9,
+					"fromHost": "0",
+					"fromPlayer": 1,
+					"fromRing": -1,
+					"to": 3,
+					"toHost": "0",
+					"toPlayer": 1,
+					"toRing": -1
+				}
+			}
+		],
+		"hover": {
+			"beforeY": 640.547119140625,
+			"instance": "11",
+			"samples": [
+				{
+					"hover": "11",
+					"mode": 0,
+					"y": 592.288024902344
+				},
+				{
+					"hover": "11",
+					"mode": 2,
+					"y": 592.288024902344
+				},
+				{
+					"hover": "11",
+					"mode": 1,
+					"y": 592.288024902344
+				}
+			]
+		},
+		"income": [
+			{
+				"actualAmount": 1,
+				"affectedPlayer": 0,
+				"amount": 0,
+				"card": "0",
+				"chainIndex": 0,
+				"effectType": null,
+				"kind": "mana_gain",
+				"spellReleased": false,
+				"text": ""
+			}
+		],
+		"openingDraws": [
+			{
+				"opponentDraws": 5,
+				"ownDraws": 5,
+				"sample": {
+					"actualAmount": 0,
+					"affectedPlayer": -1,
+					"amount": 0,
+					"card": "40",
+					"chainIndex": 0,
+					"effectType": null,
+					"kind": "card_move",
+					"spellReleased": false,
+					"text": "",
+					"travel": {
+						"back": false,
+						"from": 0,
+						"fromHost": "0",
+						"fromPlayer": 0,
+						"fromRing": -1,
+						"to": 1,
+						"toHost": "0",
+						"toPlayer": 0,
+						"toRing": -1
+					}
+				},
+				"viewer": 0
+			},
+			{
+				"opponentDraws": 5,
+				"ownDraws": 5,
+				"sample": {
+					"actualAmount": 0,
+					"affectedPlayer": -1,
+					"amount": 0,
+					"card": "0",
+					"chainIndex": 0,
+					"effectType": null,
+					"kind": "card_move",
+					"spellReleased": false,
+					"text": "",
+					"travel": {
+						"back": true,
+						"from": 0,
+						"fromHost": "0",
+						"fromPlayer": 0,
+						"fromRing": -1,
+						"to": 1,
+						"toHost": "0",
+						"toPlayer": 0,
+						"toRing": -1
+					}
+				},
+				"viewer": 1
+			}
+		]
+	},
+	"failures": []
+}

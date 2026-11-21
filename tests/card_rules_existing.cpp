@@ -144,6 +144,27 @@ TEST_CASE("Alpha v2.5.4 refire cannot draw without a successful recycle", "[alph
     REQUIRE(e.state().players[0].deck.size() == 2);
 }
 
+TEST_CASE("Yaoguang healing precedes each empty-deck penalty in one resolution", "[hotfix-visuals]") {
+    const auto assets = std::filesystem::path(WIZARD_SOURCE_DIR) / "assets";
+    auto json = readCatalogJson(assets);
+    json["cards"].push_back(readJson(assets / "cards/formation/qixing-yaoguang.json"));
+    const auto cat = parseCatalog(json);
+    auto s = state254();
+    s.players[0].life = 5;
+    put254(s, 1, "qixing-yaoguang", 0, Zone::Analysis);
+    card_rules::queueFormationSetup(s, cat, 1);
+    REQUIRE(s.queue.items.size() == 1);
+    const ChoiceValue trigger{ChoiceKind::Trigger, s.queue.items.front().id};
+    s.phaseGate = 0;
+    s.decision = PendingDecision{s.nextDecision++, 0, DecisionKind::TriggerOrder, {trigger}, false};
+    auto e = test::ObservedEngine::scenario(cat, s);
+    send254(e, 0, Choose{e.state().decision->id, trigger}); settle254(e);
+    std::vector<int> deltas;
+    for (const auto &event : e.events())
+        if (event.kind == "life_delta" && event.affectedPlayer == 0) deltas.push_back(event.actualAmount);
+    CHECK(deltas == std::vector<int>{35, -1, -2, -3, -4, -5});
+}
+
 TEST_CASE("Alpha v2.5.4 Fool and following words use actual casting zones", "[alpha-v254][existing][fool]") {
     auto cat = catalog254(); auto s = state254();
     put254(s, 1, "sun", 0, Zone::Analysis);
@@ -153,6 +174,12 @@ TEST_CASE("Alpha v2.5.4 Fool and following words use actual casting zones", "[al
     send254(e, 0, PreloadWord{10, true, 1}); settle254(e);
     REQUIRE(e.state().cards.at(10).zone == Zone::Casting);
     REQUIRE(e.state().cards.at(10).spell == SpellState::Resolved);
+    std::map<CardId, std::vector<Zone>> routes;
+    for (const auto &event : e.events())
+        if (event.audience == 0 && event.travel && event.card >= 20 && event.card < 25)
+            routes[event.card].push_back(event.travel->to);
+    for (CardId id = 20; id < 25; ++id)
+        CHECK(routes[id] == std::vector<Zone>{Zone::Deck, Zone::Hand});
     const auto next = std::find_if(e.state().cards.begin(), e.state().cards.end(), [](const auto &entry) {
         return entry.second.zone == Zone::Hand && entry.second.definition == "arcana-fool";
     });

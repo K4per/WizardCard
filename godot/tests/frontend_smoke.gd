@@ -471,6 +471,8 @@ func _field_input_checks(page: FieldPage) -> void:
 	_check(page._detail.visible and page._detail.card.instance_id == hand_card.instance_id, "Actual viewport mouse input opens the correct card")
 	_check(page._actions.visible and page._actions.get_global_rect().end.y <= point.y, "Context actions float above the selected card")
 	_check(page._detail.find_children("*", "TextureRect", true, false).is_empty(), "Card detail uses flat controls without baked panel textures")
+	await create_timer(0.20).timeout
+	await _settle()
 	_check(page.canvas.card_bounds(hand_card).position.y < hand_hit.position.y, "Selection raises the hand card before hover")
 	var hover_motion: InputEventMouseMotion = InputEventMouseMotion.new()
 	hover_motion.position = point
@@ -490,6 +492,8 @@ func _field_input_checks(page: FieldPage) -> void:
 	_mouse_button(point, false, MOUSE_BUTTON_RIGHT)
 	await _settle()
 	_check(page.canvas.selected_id.is_empty() and not page._detail.visible and not page._actions.visible, "Right click retracts the hand card and dismisses its UI")
+	await create_timer(0.20).timeout
+	await _settle()
 	_check(page.canvas.card_bounds(hand_card).is_equal_approx(hand_hit), "Right click restores the resting fan position")
 	_mouse_button(point, true)
 	_mouse_button(point, false)

@@ -42,10 +42,15 @@ Json cardDefinitionDto(const CardDefinition &d) {
             {"recipe", recipe}, {"settingConditions", d.settingConditions}};
 }
 Json eventDto(const GameEvent &e) {
-    return {{"kind", e.kind}, {"text", e.text}, {"card", std::to_string(e.card)},
-        {"amount", e.amount}, {"actualAmount", e.actualAmount},
-        {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
-        {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}, {"chainIndex", e.chainIndex}};
+    auto row = encodeEvent(e);
+    row.erase("audience");
+    row["card"] = std::to_string(e.card);
+    if (e.travel) {
+        row["travel"]["fromHost"] = std::to_string(e.travel->fromHost);
+        row["travel"]["toHost"] = std::to_string(e.travel->toHost);
+    }
+    if (!e.publicTargets.empty()) row["targets"] = ids(e.publicTargets);
+    return row;
 }
 Json clockDto(const MatchClockView &clock) {
     return {{"enabled", clock.enabled}, {"running", clock.running}, {"runningPlayer", clock.runningPlayer},

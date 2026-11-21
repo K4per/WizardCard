@@ -110,6 +110,62 @@ TEST_CASE("v263 setting commands query and honor the chosen ring and reject omit
     }
 }
 
+TEST_CASE("Mixed damage consumes shield before regular life and retains actual damage metadata", "[hotfix-visuals]") {
+    auto s = mainState263();
+    const auto cat = currentCatalog();
+    ResourceRules::grantTemporaryLife(s, 1, 0, 2, 3);
+    s.events.clear();
+    Trigger cause; cause.owner = 0; cause.targetPlayer = 1;
+    EffectResolver::apply(s, cat, cause, {EffectKind::Damage, 6});
+    std::vector<std::pair<std::string,int>> deltas;
+    for (const auto &event : s.events)
+        if (event.kind == "temporary_life_delta" || event.kind == "life_delta")
+            deltas.emplace_back(event.kind, event.actualAmount);
+    CHECK(deltas == std::vector<std::pair<std::string,int>>{{"temporary_life_delta",-2},{"life_delta",-4}});
+    REQUIRE(s.events.back().effectType == EffectKind::Damage);
+    CHECK(s.events.back().actualAmount == 6);
+}
+
+TEST_CASE("Arcane Recall preserves hand ring casting route and each real draw or exhaustion", "[hotfix-visuals]") {
+    const auto cat = currentCatalog();
+    for (const bool stocked : {false, true}) {
+        CAPTURE(stocked);
+        auto s = mainState263();
+        s.players[0].debugInfiniteLoad = true;
+        put263(s, 1, "v260-formation-0016", Zone::Analysis);
+        put263(s, 10, "v260-word-0018", Zone::Hand);
+        if (stocked) {
+            put263(s, 20, "v260-word-0018", Zone::Deck);
+            put263(s, 30, "v260-word-0018", Zone::Deck);
+        }
+        auto e = test::ObservedEngine::scenario(cat, s);
+        const auto result = e.submit(0, PreloadWord{10, true, 1, 0, {}, 0, 0, 0});
+        INFO(result.error);
+        REQUIRE(result.accepted);
+        pass263(e);
+        std::vector<int> losses;
+        std::vector<CardId> draws, flights;
+        std::vector<CardTravel> route;
+        for (const auto &event : e.events()) {
+            if (event.kind == "life_delta" && event.affectedPlayer == 0) losses.push_back(event.actualAmount);
+            if (event.kind == "draw" && event.audience == 0) draws.push_back(event.card);
+            if (event.audience != 0 || !event.travel) continue;
+            if (event.card == 10) route.push_back(*event.travel);
+            if (event.travel->from == Zone::Deck && event.travel->to == Zone::Hand) flights.push_back(event.card);
+        }
+        REQUIRE(route.size() >= 2);
+        CHECK(route[0].from == Zone::Hand); CHECK(route[0].to == Zone::Analysis);
+        CHECK(route[0].toHost == 1); CHECK(route[0].toRing == 0);
+        CHECK(route[1].fromHost == 1); CHECK(route[1].fromRing == 0);
+        CHECK(route[1].to == Zone::Casting);
+        if (stocked) {
+            CHECK(draws == std::vector<CardId>{30, 20}); CHECK(flights == draws); CHECK(losses.empty());
+        } else {
+            CHECK(losses == std::vector<int>{-1, -2}); CHECK(flights.empty());
+        }
+    }
+}
+
 TEST_CASE("v263 Engeas accelerates once per global turn without adding load", "[alpha-v263][formation]") {
     const auto cat = currentCatalog();
     auto s = mainState263();

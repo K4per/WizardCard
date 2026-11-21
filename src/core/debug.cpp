@@ -1,4 +1,4 @@
-#include "wizard/core/engine.hpp"
+#include "engine_internal.hpp"
 #include <algorithm>
 #include <limits>
 namespace wizard {
@@ -42,12 +42,12 @@ CommandResult GameEngine::debug(const DebugOperation &op) {
         text = "从虚空加入手牌：" + definition->name + " #" + std::to_string(card.id) + "（不计抽牌）";
     } else if (op.operation == "gain_mana" || op.operation == "lose_mana") {
         const int before = p.mana;
-        p.mana = op.operation == "gain_mana" ? std::min(maximumMana, p.mana + op.amount) :
-            std::max(0, p.mana - op.amount);
+        if (op.operation == "gain_mana") ResourceRules::gainMana(s, op.player, op.amount);
+        else p.mana = std::max(0, p.mana - op.amount);
         text = "魔素 " + std::to_string(before) + " → " + std::to_string(p.mana);
     } else if (op.operation == "gain_life" || op.operation == "lose_life") {
         const int before = p.life;
-        p.life = op.operation == "gain_life" ? std::min(maximumLife, p.life + op.amount) : std::max(0, p.life - op.amount);
+        ResourceRules::setLife(s, op.player, op.operation == "gain_life" ? std::min(maximumLife, p.life + op.amount) : std::max(0, p.life - op.amount));
         text = "普通生命 " + std::to_string(before) + " → " + std::to_string(p.life);
     } else if (op.operation == "gain_temporary_life" || op.operation == "lose_temporary_life") {
         if (op.operation == "gain_temporary_life") {
@@ -100,7 +100,6 @@ CommandResult GameEngine::debug(const DebugOperation &op) {
         // The authority session restores its validated checkpoint and truncates the recording first.
         text = "回到上一回合开始，随机数状态与回放位置已恢复";
     } else return rejected("未知调试操作：" + op.operation);
-    const auto start = s.events.size();
     s.debugUsed = true;
     s.events.push_back({"debug", "[调试] 玩家 " + std::to_string(op.player + 1) + "：" + text +
         "；命令=" + op.operation + "；数量=" + std::to_string(op.amount), -1, changedCard, op.amount});
@@ -114,7 +113,9 @@ CommandResult GameEngine::debug(const DebugOperation &op) {
     } else StateMaintenance::check(s, catalog());
     const auto errors = Rules::invariants(s, catalog());
     if (!errors.empty()) return rejected("调试操作破坏规则状态：" + errors.front());
-    std::vector<GameEvent> events(s.events.begin() + static_cast<std::ptrdiff_t>(start), s.events.end());
+    auto positions = detail::cardPositions(state_);
+    detail::emitCardTravel(s, positions, 0);
+    auto events = std::move(s.events);
     next.state_.events.clear();
     *this = std::move(next);
     return {true, {}, std::move(events), state_.decision, {}};

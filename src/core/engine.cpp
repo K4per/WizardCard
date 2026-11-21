@@ -230,6 +230,8 @@ CommandResult GameEngine::submitAuthority(PlayerId actor, const Command &input) 
         } else error = next.apply(commandPlan);
     }
     if (!error.empty()) return {false, error, {}, state_.decision, error.substr(0, error.find(':'))};
+    auto positions = cardPositions(state_);
+    emitCardTravel(next.state_, positions, 0);
     try { next.pump(); }
     catch (const ExecutionFault &fault) { return {false, fault.what(), {}, state_.decision, "execution_budget"}; }
     auto failures = Rules::invariants(next.state_, next.catalog());

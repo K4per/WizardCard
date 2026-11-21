@@ -68,6 +68,7 @@ func _run() -> void:
 	_check(service.save_replay(), "save format 5 replay")
 	var frame: Dictionary = service.match_request(&"replay_frame", [service.last_replay_path, 0, 0])
 	_check(bool(frame.get("ok", false)), "seek current replay")
+	_check(frame.get("data", {}).has("stepEvents"), "Replay frames expose exactly the chosen command's viewer-filtered events")
 	var page: MatchPage = load("res://pages/match_page.tscn").instantiate() as MatchPage
 	root.add_child(page)
 	page.configure(service)

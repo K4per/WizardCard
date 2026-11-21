@@ -277,6 +277,13 @@ TEST_CASE("v262 counterspell pays actual setting plus activation costs", "[alpha
     feedbackSend(e, 1, Respond{e.state().decision->id, 10, "respond", 0, e.state().chain->links.front().id}); feedbackPass(e);
     CHECK(e.state().players[1].mana == mana - expected); CHECK(e.state().cards.at(20).zone == Zone::Ash);
     CHECK(e.state().players[1].life == 40);
+    const auto counter = std::find_if(e.events().begin(), e.events().end(), [](const GameEvent &event) {
+        return event.kind == "effect" && event.card == 10 && event.effectType == EffectKind::CounterSpell;
+    });
+    REQUIRE(counter != e.events().end());
+    CHECK(counter->chainIndex == 2);
+    CHECK(counter->text.find("C1") != std::string::npos);
+    CHECK(counter->text.find("火球术") != std::string::npos);
 }
 
 TEST_CASE("v262 detect evil and good normally casts and routes all spell types", "[alpha-v262][inspection]") {
@@ -429,6 +436,37 @@ TEST_CASE("v262 mage hand transfers and returns the spell and its attachments", 
     CHECK(controllerOf(e.state().cards.at(20)) == 0); CHECK(e.state().cards.at(20).host == 1); CHECK(controllerOf(e.state().cards.at(21)) == 0);
     auto next=test::mutation(e.state()); next.phase=Phase::Prepare; ++next.players[0].ownTurn; spell_rules::expire(next,cat,true);
     CHECK(controllerOf(next.cards.at(20)) == 1); CHECK(next.cards.at(20).host == 2); CHECK(controllerOf(next.cards.at(21)) == 1);
+}
+
+TEST_CASE("Mage Hand feedback identifies the moved spell and host for each viewer", "[hotfix-v08]") {
+    for (const bool hidden : {false, true}) {
+        auto state = feedbackState();
+        state.phase = Phase::Cast;
+        state.cards.at(1).definition = "v260-formation-0003"; // 安卡十字 has one ring.
+        feedbackCard(state, 10, "v260-word-0004", 0, Zone::Casting, SpellState::Ready);
+        auto &target = feedbackCard(state, 20, "v260-analytic-0001", 1, Zone::Analysis,
+                                    hidden ? SpellState::None : SpellState::Ready);
+        target.faceDown = target.wasAmbushed = hidden;
+        auto engine = test::ObservedEngine::scenario(feedbackCatalog(), state);
+        feedbackSend(engine, 0, ActivateSpell{10, 20});
+        feedbackPass(engine);
+        REQUIRE(engine.state().decision);
+        feedbackSend(engine, 0, Choose{engine.state().decision->id, ChoiceValue::card(1)});
+        for (PlayerId viewer : {0, 1}) {
+            CAPTURE(hidden, viewer);
+            const auto &events = engine.events();
+            const auto effect = std::find_if(events.begin(), events.end(), [&](const GameEvent &event) {
+                return event.kind == "effect" && event.card == 10 && event.effectType == EffectKind::BorrowAnalysis &&
+                    (event.audience == -1 || event.audience == viewer);
+            });
+            REQUIRE(effect != events.end());
+            CHECK(effect->chainIndex == 1);
+            CHECK(effect->text.find("安卡十字") != std::string::npos);
+            CHECK(effect->text.find("第1环") != std::string::npos);
+            CHECK((effect->text.find("火球术") != std::string::npos) == (!hidden || viewer == 0));
+            if (hidden && viewer == 1) CHECK(effect->text.find("盖伏法术") != std::string::npos);
+        }
+    }
 }
 
 TEST_CASE("v262 cloud mist locks one or two selected spells until it leaves", "[alpha-v262][targets]") {

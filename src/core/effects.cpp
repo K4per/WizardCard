@@ -437,11 +437,21 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     case EffectKind::BlockActions:
         message = "对手下个自己的回合不能使用行动卡";
         break;
-    case EffectKind::CounterSpell:
-        message = true
-            ? "无效并销毁目标法术，支付其实际设置与发动费用"
-            : "无效并销毁目标法术，承担下个自己的结束阶段清除的荷载";
+    case EffectKind::CounterSpell: {
+        message = "无效并销毁目标法术";
+        if (s.chain) {
+            const auto &links = s.chain->links;
+            const auto target = std::find_if(links.begin(), links.end(), [&](const ChainLink &link) {
+                return link.id == t.targetLink;
+            });
+            if (target != links.end()) {
+                message += " C" + std::to_string(target - links.begin() + 1);
+                if (!target->publicAction.empty()) message += "（" + target->publicAction + "）";
+            }
+        }
+        message += "，支付其实际设置与发动费用";
         break;
+    }
     case EffectKind::SearchAction:
         message = "检索行动卡";
         break;

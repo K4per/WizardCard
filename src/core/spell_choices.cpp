@@ -105,10 +105,25 @@ bool GameEngine::chooseSpellChoice(PlayerId, ChoiceValue choice) {
         auto &c = s.cards.at(t.targetCard); const auto host = c.host; const auto ring = c.ringIndex; const auto controller = controllerOf(c);
         spell_rules::addModifier(s, t, ModifierKind::BorrowControl, ModifierExpiry::NextPrepareEnd, 1, p, c.id);
         auto &m = s.modifiers.back(); m.returnHost = host; m.returnRing = ring; m.returnController = controller;
+        const int destinationRing = Rules::freeRing(s, catalog(), selected);
         c.controller = p; c.host = c.sourceFormation = selected;
-        c.ringIndex = c.sourceRingIndex = Rules::freeRing(s, catalog(), selected);
+        c.ringIndex = c.sourceRingIndex = destinationRing;
         for (auto &[id, child] : s.cards) if (child.host == c.id && child.zone == Zone::Attached) child.controller = p;
-        s.events.push_back({"control_borrow", "法师之手：暂时控制法术", -1, c.id}); done();
+        const auto destination = "《" + catalog().at(s.cards.at(selected).definition).name + "》 #" +
+            std::to_string(selected) + " 第" + std::to_string(c.ringIndex + 1) + "环";
+        for (PlayerId viewer : {0, 1}) {
+            const auto view = viewFor(viewer);
+            const auto target = std::find_if(view.cards.begin(), view.cards.end(), [&](const CardView &row) {
+                return row.instance.id == c.id;
+            });
+            const auto name = target != view.cards.end() && !target->hidden ? "《" + target->definition.name + "》" : "盖伏法术";
+            GameEvent event{"effect", "法师之手：将" + name + " #" + std::to_string(c.id) + "移至" + destination, viewer, t.source};
+            event.effectType = EffectKind::BorrowAnalysis;
+            if (s.chain && !s.chain->links.empty() && s.chain->links.back().id == f.link)
+                event.chainIndex = static_cast<int>(s.chain->links.size());
+            s.events.push_back(std::move(event));
+        }
+        done();
     } else if (e.kind == EffectKind::InspectEnemyDeck) {
         auto &deck = s.players[1 - p].deck; const auto count = std::min(deck.size(), static_cast<std::size_t>(e.amount));
         std::vector<CardId> bottom(deck.end() - count, deck.end()); bottom.erase(std::remove(bottom.begin(), bottom.end(), selected), bottom.end());

@@ -1,0 +1,5059 @@
+{
+  "cardSetVersion": "2.6.4-hotfix.1",
+  "commandSchema": 1,
+  "commands": [
+    {
+      "actor": 0,
+      "command": {
+        "gesture": 0,
+        "round": 1,
+        "type": 21
+      },
+      "digest": "bb9b2d2b59a26acd"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gesture": 0,
+        "round": 1,
+        "type": 21
+      },
+      "digest": "c5da6ec122af6a16"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gesture": 0,
+        "round": 2,
+        "type": 21
+      },
+      "digest": "3d3e9e1205d63076"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gesture": 2,
+        "round": 2,
+        "type": 21
+      },
+      "digest": "37148f7acbfc39f5"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 9,
+        "type": 18
+      },
+      "digest": "34f1cc47a955062f"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 59,
+        "type": 18
+      },
+      "digest": "2c1e0177040521bc"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 1,
+        "type": 13
+      },
+      "digest": "6c106dfbacd58519"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 2,
+        "type": 13
+      },
+      "digest": "8fc3e8a9bc797c52"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 3,
+        "type": 14
+      },
+      "digest": "d9fa64d0499bc21c"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 4,
+        "type": 13
+      },
+      "digest": "9d9017d2446d2e71"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 5,
+        "type": 13
+      },
+      "digest": "8a8df63f0e099c37"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 6,
+        "type": 13
+      },
+      "digest": "48dfa3c5a1e92a6e"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 7,
+        "type": 13
+      },
+      "digest": "3a81b7cb19b15545"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 8,
+        "type": 14
+      },
+      "digest": "2f76afab24a846cf"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 9,
+        "type": 13
+      },
+      "digest": "717751d6fba98a46"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 10,
+        "type": 13
+      },
+      "digest": "cfe3e9237878b460"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 11,
+        "type": 13
+      },
+      "digest": "6f4a19b530b433c3"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 12,
+        "type": 13
+      },
+      "digest": "56ea850b4db6cf7e"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 7,
+        "materials": [
+          23,
+          39
+        ],
+        "replace": 0,
+        "type": 0
+      },
+      "digest": "c74c14a2145182fb"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 14,
+        "type": 13
+      },
+      "digest": "97fa6a6562a0bee8"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 15,
+        "type": 13
+      },
+      "digest": "30df1736026b6987"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 16,
+        "type": 14
+      },
+      "digest": "7c1552bc66bf357d"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 17,
+        "type": 13
+      },
+      "digest": "d07165875d2fdafe"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 18,
+        "type": 13
+      },
+      "digest": "23b1289db8862db9"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 19,
+        "type": 13
+      },
+      "digest": "0e0efe699da0b629"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 20,
+        "type": 13
+      },
+      "digest": "fb18da421c29e17a"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 21,
+        "type": 14
+      },
+      "digest": "ae28741c0b316ace"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 22,
+        "type": 13
+      },
+      "digest": "f76317843b249e81"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 23,
+        "type": 13
+      },
+      "digest": "f431c5de679457da"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 24,
+        "type": 13
+      },
+      "digest": "0a40af33d76cb405"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 25,
+        "type": 13
+      },
+      "digest": "9647e2e04cdff06e"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 26,
+        "type": 14
+      },
+      "digest": "bff9f88df3b4b178"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 27,
+        "type": 13
+      },
+      "digest": "c92e3684bb673437"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 28,
+        "type": 13
+      },
+      "digest": "59e899e95189ea61"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 29,
+        "type": 13
+      },
+      "digest": "d4671f2d4e828235"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 30,
+        "type": 13
+      },
+      "digest": "279f38d1062c5024"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 31,
+        "type": 14
+      },
+      "digest": "fc26962da495181a"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 32,
+        "type": 13
+      },
+      "digest": "9cbbc57a806ccfeb"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 33,
+        "type": 13
+      },
+      "digest": "bf7ead74b5e84255"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 34,
+        "type": 13
+      },
+      "digest": "3474a90efdd0ba34"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 35,
+        "type": 13
+      },
+      "digest": "d8c3dd573811c9db"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 36,
+        "type": 14
+      },
+      "digest": "df2e0d0c510535e7"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 37,
+        "type": 13
+      },
+      "digest": "8915e6284316419a"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 38,
+        "type": 13
+      },
+      "digest": "915abcdc5582d22d"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 39,
+        "type": 13
+      },
+      "digest": "62bdd7b441439e17"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 40,
+        "type": 13
+      },
+      "digest": "a7fd1fb362bac4ae"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "card": 57,
+        "materials": [
+          61,
+          70
+        ],
+        "replace": 0,
+        "type": 0
+      },
+      "digest": "3f8ac2a78c5626b8"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 42,
+        "type": 13
+      },
+      "digest": "cb287c5a6d709eb9"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 43,
+        "type": 13
+      },
+      "digest": "61d2764f839f337a"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 44,
+        "type": 14
+      },
+      "digest": "639e4298d3b75f4c"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 45,
+        "type": 13
+      },
+      "digest": "5ffdf9ed51d846dd"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 46,
+        "type": 13
+      },
+      "digest": "36adc465e2d0259f"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 47,
+        "type": 13
+      },
+      "digest": "28b76f6b66abc8ea"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 48,
+        "type": 13
+      },
+      "digest": "3262c5c2427f29ec"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 49,
+        "type": 14
+      },
+      "digest": "ac54045f51bc9ab1"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 50,
+        "type": 13
+      },
+      "digest": "96d1e1aee572ad90"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 51,
+        "type": 13
+      },
+      "digest": "10bdf963e07d3945"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 52,
+        "type": 13
+      },
+      "digest": "4e90538a5420a600"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 53,
+        "type": 13
+      },
+      "digest": "d17570043dafb1fd"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "gate": 54,
+        "type": 14
+      },
+      "digest": "89824f09b8aeae6b"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 55,
+        "type": 13
+      },
+      "digest": "613e109d65dc6002"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 56,
+        "type": 13
+      },
+      "digest": "f0293a679c4bb1a5"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 57,
+        "type": 13
+      },
+      "digest": "620a225cf8c65ffe"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 58,
+        "type": 13
+      },
+      "digest": "1fa90139173fac24"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 59,
+        "type": 14
+      },
+      "digest": "cf5f90d4ff4805eb"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 60,
+        "type": 13
+      },
+      "digest": "ae3de8081d5de880"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 61,
+        "type": 13
+      },
+      "digest": "ff27b38b9ba7b2fc"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 62,
+        "type": 13
+      },
+      "digest": "4a45c25a93e3624f"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 63,
+        "type": 13
+      },
+      "digest": "835607f129d78f36"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "gate": 64,
+        "type": 14
+      },
+      "digest": "5a9881d9bb1c46f2"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 65,
+        "type": 13
+      },
+      "digest": "55b693e1091193e9"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 66,
+        "type": 13
+      },
+      "digest": "5cf07fd70d252f29"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 67,
+        "type": 13
+      },
+      "digest": "71692ff4dab85ab5"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "card": 41,
+        "decision": 68,
+        "formation": 9,
+        "release": true,
+        "ringIndex": 0,
+        "target": 1073741825,
+        "targets": [
+          1073741825
+        ],
+        "type": 5
+      },
+      "digest": "2fe1c1017983a6e0"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 69,
+        "type": 13
+      },
+      "digest": "706b95b1b8e6c11c"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 70,
+        "type": 13
+      },
+      "digest": "330da5ae90141aeb"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "decision": 71,
+        "type": 13
+      },
+      "digest": "35ab67c83b421b48"
+    },
+    {
+      "actor": 0,
+      "command": {
+        "decision": 72,
+        "type": 13
+      },
+      "digest": "90aca5322fa4da8b"
+    },
+    {
+      "actor": 1,
+      "command": {
+        "type": 11
+      },
+      "digest": "8e34753e7e6b6e28"
+    }
+  ],
+  "containsDebugOperations": false,
+  "contentHash": "54d3d845557007f7",
+  "contentSchema": 1,
+  "digestSchema": 4,
+  "events": [
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "gesture_confirmed",
+      "spellReleased": false,
+      "text": "已确认猜拳，等待对方"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "opening_tie",
+      "spellReleased": false,
+      "text": "猜拳第 1 轮：玩家1 石头 / 玩家2 石头；平局，请重新选择"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "gesture_confirmed",
+      "spellReleased": false,
+      "text": "已确认猜拳，等待对方"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "opening_winner",
+      "spellReleased": false,
+      "text": "猜拳第 2 轮：玩家1 石头 / 玩家2 剪刀；玩家 1 先手"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 41,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 41,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 23,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 23,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 40,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 40,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 39,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 39,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 45,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 45,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 5,
+      "affectedPlayer": 0,
+      "amount": 5,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": 2,
+      "kind": "effect",
+      "spellReleased": false,
+      "text": "抽取 5 张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 70,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 70,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 75,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 75,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 95,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 95,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 61,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 61,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 74,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 74,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 5,
+      "affectedPlayer": 1,
+      "amount": 5,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": 2,
+      "kind": "effect",
+      "spellReleased": false,
+      "text": "抽取 5 张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 9,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "initial_formation",
+      "spellReleased": false,
+      "text": "玩家 1 设置初始阵法 基础法阵"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 59,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "initial_formation",
+      "spellReleased": false,
+      "text": "玩家 2 设置初始阵法 基础法阵"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 9,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 9,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 9,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 9,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 59,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 9,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 59,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 9,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 1 进入抽卡阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "temporary_load_cleared",
+      "spellReleased": false,
+      "text": "抽牌阶段清除临时荷载"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "temporary_life_cleared",
+      "spellReleased": false,
+      "text": "抽牌阶段清除到期临时生命"
+    },
+    {
+      "actualAmount": 1,
+      "affectedPlayer": 0,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "mana_gain",
+      "spellReleased": false,
+      "text": ""
+    },
+    {
+      "actualAmount": 1,
+      "affectedPlayer": 0,
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": 7,
+      "kind": "effect",
+      "spellReleased": false,
+      "text": "获得 1 魔素"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "income",
+      "spellReleased": false,
+      "text": "玩家 1 获得阵法收入 1"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 抽卡阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 抽卡阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 抽卡阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 1 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 1 进入准备阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 准备阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 准备阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 准备阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 1 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 1 进入主要阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 主要阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 主要阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 主要阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 23,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "leave",
+      "spellReleased": false,
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 39,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "leave",
+      "spellReleased": false,
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 7,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "formation_set",
+      "spellReleased": false,
+      "text": "玩家 1 设置阵法《阿克乌姆之弧》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 设置阵法《阿克乌姆之弧》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 设置阵法《阿克乌姆之弧》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 7,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 9,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 7,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 9,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 23,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 6,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 23,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 6,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 39,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 6,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 39,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 6,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 设置阵法《阿克乌姆之弧》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 主要阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 主要阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 主要阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 1 主要阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 1 进入施法阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 施法阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 施法阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 施法阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 施法阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 施法阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 施法阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 1 施法阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 1 进入结束阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 结束阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 结束阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 结束阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 结束阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 结束阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 结束阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 1 结束阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 2 进入抽卡阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "temporary_load_cleared",
+      "spellReleased": false,
+      "text": "抽牌阶段清除临时荷载"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "temporary_life_cleared",
+      "spellReleased": false,
+      "text": "抽牌阶段清除到期临时生命"
+    },
+    {
+      "actualAmount": 1,
+      "affectedPlayer": 1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "mana_gain",
+      "spellReleased": false,
+      "text": ""
+    },
+    {
+      "actualAmount": 1,
+      "affectedPlayer": 1,
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": 7,
+      "kind": "effect",
+      "spellReleased": false,
+      "text": "获得 1 魔素"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "income",
+      "spellReleased": false,
+      "text": "玩家 2 获得阵法收入 1"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 83,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 83,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 1,
+      "affectedPlayer": 1,
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": 2,
+      "kind": "effect",
+      "spellReleased": false,
+      "text": "抽取 1 张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 抽卡阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 抽卡阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 抽卡阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 2 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 2 进入准备阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 准备阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 准备阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 准备阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 2 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 2 进入主要阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 主要阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 主要阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 主要阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 61,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "leave",
+      "spellReleased": false,
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 70,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "leave",
+      "spellReleased": false,
+      "text": "卡牌进入灰烬区"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 57,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "formation_set",
+      "spellReleased": false,
+      "text": "玩家 2 设置阵法《阿克乌姆之弧》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 设置阵法《阿克乌姆之弧》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 设置阵法《阿克乌姆之弧》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 57,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 9,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 57,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 9,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 61,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 6,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 61,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 6,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 70,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 6,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 70,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 1,
+        "fromRing": -1,
+        "to": 6,
+        "toHost": 0,
+        "toPlayer": 1,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 设置阵法《阿克乌姆之弧》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 主要阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 主要阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 主要阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 2 主要阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 2 进入施法阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 施法阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 施法阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 施法阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 施法阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 施法阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 施法阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 2 施法阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 2 进入结束阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 结束阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 结束阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 结束阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 2 结束阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 2 结束阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 2 结束阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 2 结束阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 1 进入抽卡阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "temporary_load_cleared",
+      "spellReleased": false,
+      "text": "抽牌阶段清除临时荷载"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "temporary_life_cleared",
+      "spellReleased": false,
+      "text": "抽牌阶段清除到期临时生命"
+    },
+    {
+      "actualAmount": 1,
+      "affectedPlayer": 0,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "mana_gain",
+      "spellReleased": false,
+      "text": ""
+    },
+    {
+      "actualAmount": 1,
+      "affectedPlayer": 0,
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": 7,
+      "kind": "effect",
+      "spellReleased": false,
+      "text": "获得 1 魔素"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "income",
+      "spellReleased": false,
+      "text": "玩家 1 获得阵法收入 1"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 25,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "draw",
+      "spellReleased": false,
+      "text": "抽取一张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 25,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": true,
+        "from": 0,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 1,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 1,
+      "affectedPlayer": 0,
+      "amount": 1,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": 2,
+      "kind": "effect",
+      "spellReleased": false,
+      "text": "抽取 1 张牌"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 抽卡阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 抽卡阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 抽卡阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 1 抽卡阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 1 进入准备阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 准备阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 准备阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 准备阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_end",
+      "spellReleased": false,
+      "text": "玩家 1 准备阶段结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "phase_enter",
+      "spellReleased": false,
+      "text": "玩家 1 进入主要阶段"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 主要阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 主要阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 41,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 9,
+        "toPlayer": 0,
+        "toRing": 0
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 41,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 1,
+        "fromHost": 0,
+        "fromPlayer": 0,
+        "fromRing": -1,
+        "to": 3,
+        "toHost": 9,
+        "toPlayer": 0,
+        "toRing": 0
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 2,
+      "audience": -1,
+      "card": 41,
+      "chainIndex": 2,
+      "effectType": null,
+      "kind": "word_response",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 从手牌发动言灵法术《恶言相加》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 0,
+      "card": 41,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 3,
+        "fromHost": 9,
+        "fromPlayer": 0,
+        "fromRing": 0,
+        "to": 5,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": 1,
+      "card": 41,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "card_move",
+      "spellReleased": false,
+      "text": "",
+      "travel": {
+        "back": false,
+        "from": 3,
+        "fromHost": 9,
+        "fromPlayer": 0,
+        "fromRing": 0,
+        "to": 5,
+        "toHost": 0,
+        "toPlayer": 0,
+        "toRing": -1
+      }
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": -3,
+      "affectedPlayer": 0,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "life_delta",
+      "spellReleased": false,
+      "text": ""
+    },
+    {
+      "actualAmount": 3,
+      "affectedPlayer": 0,
+      "amount": 3,
+      "audience": -1,
+      "card": 41,
+      "chainIndex": 2,
+      "effectType": 0,
+      "kind": "effect",
+      "spellReleased": false,
+      "text": "造成 3 点心灵伤害"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 41,
+      "chainIndex": 2,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": true,
+      "text": "结算：玩家 1 从手牌发动言灵法术《恶言相加》"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 主要阶段开始"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_open",
+      "spellReleased": false,
+      "text": "建立连锁：玩家 1 进入连锁处理后的响应时点"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_declared",
+      "spellReleased": false,
+      "text": "宣告：玩家 1 进入连锁处理后的响应时点"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 2 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "response_pass",
+      "spellReleased": false,
+      "text": "玩家 1 放弃响应"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_resolve",
+      "spellReleased": false,
+      "text": "双方连续放弃，逆序结算"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 1,
+      "effectType": null,
+      "kind": "link_resolved",
+      "spellReleased": false,
+      "text": "结算：玩家 1 进入连锁处理后的响应时点"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "chain_closed",
+      "spellReleased": false,
+      "text": "连锁结束"
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "defeat_reason",
+      "spellReleased": false,
+      "text": "玩家 2 败北：投降 "
+    },
+    {
+      "actualAmount": 0,
+      "affectedPlayer": -1,
+      "amount": 0,
+      "audience": -1,
+      "card": 0,
+      "chainIndex": 0,
+      "effectType": null,
+      "kind": "game_over",
+      "spellReleased": false,
+      "text": "玩家 1 获胜"
+    }
+  ],
+  "finalDigest": "8e34753e7e6b6e28",
+  "format": 6,
+  "mechanicsRevision": 13,
+  "players": [
+    {
+      "cards": [
+        "v260-word-0001",
+        "v260-word-0001",
+        "v260-word-0002",
+        "v260-word-0002",
+        "v260-word-0003",
+        "v260-word-0003",
+        "v260-word-0004",
+        "v260-word-0004",
+        "v260-word-0005",
+        "v260-word-0005",
+        "v260-word-0006",
+        "v260-word-0006",
+        "v260-word-0007",
+        "v260-word-0007",
+        "v260-word-0008",
+        "v260-word-0008",
+        "v260-word-0009",
+        "v260-word-0009",
+        "v260-word-0010",
+        "v260-word-0010",
+        "v260-word-0011",
+        "v260-word-0011",
+        "v260-word-0012",
+        "v260-word-0012",
+        "v260-word-0013",
+        "v260-word-0013",
+        "v260-word-0014",
+        "v260-word-0014",
+        "v260-word-0015",
+        "v260-word-0015",
+        "v260-word-0016",
+        "v260-word-0016",
+        "v260-word-0017",
+        "v260-word-0017",
+        "v260-word-0018",
+        "v260-word-0018",
+        "v260-word-0019",
+        "v260-word-0019",
+        "v260-word-0020",
+        "v260-word-0020"
+      ],
+      "sideDeck": [
+        "v260-formation-0001",
+        "v260-formation-0002",
+        "v260-formation-0003",
+        "v260-formation-0004",
+        "v260-formation-0005",
+        "v260-formation-0006",
+        "v260-formation-0007",
+        "v260-formation-0008",
+        "v260-formation-0009",
+        "v260-formation-0010"
+      ]
+    },
+    {
+      "cards": [
+        "v260-word-0001",
+        "v260-word-0001",
+        "v260-word-0002",
+        "v260-word-0002",
+        "v260-word-0003",
+        "v260-word-0003",
+        "v260-word-0004",
+        "v260-word-0004",
+        "v260-word-0005",
+        "v260-word-0005",
+        "v260-word-0006",
+        "v260-word-0006",
+        "v260-word-0007",
+        "v260-word-0007",
+        "v260-word-0008",
+        "v260-word-0008",
+        "v260-word-0009",
+        "v260-word-0009",
+        "v260-word-0010",
+        "v260-word-0010",
+        "v260-word-0011",
+        "v260-word-0011",
+        "v260-word-0012",
+        "v260-word-0012",
+        "v260-word-0013",
+        "v260-word-0013",
+        "v260-word-0014",
+        "v260-word-0014",
+        "v260-word-0015",
+        "v260-word-0015",
+        "v260-word-0016",
+        "v260-word-0016",
+        "v260-word-0017",
+        "v260-word-0017",
+        "v260-word-0018",
+        "v260-word-0018",
+        "v260-word-0019",
+        "v260-word-0019",
+        "v260-word-0020",
+        "v260-word-0020"
+      ],
+      "sideDeck": [
+        "v260-formation-0001",
+        "v260-formation-0002",
+        "v260-formation-0003",
+        "v260-formation-0004",
+        "v260-formation-0005",
+        "v260-formation-0006",
+        "v260-formation-0007",
+        "v260-formation-0008",
+        "v260-formation-0009",
+        "v260-formation-0010"
+      ]
+    }
+  ],
+  "programVersion": "2.6.4-hotfix.1",
+  "rulesVersion": "2.6.4-hotfix.1",
+  "seed": 3679227511,
+  "statistics": {
+    "commandCount": 79,
+    "firstPlayer": 0,
+    "result": 0,
+    "turns": [
+      2,
+      1
+    ]
+  },
+  "technicalPaused": false
+}

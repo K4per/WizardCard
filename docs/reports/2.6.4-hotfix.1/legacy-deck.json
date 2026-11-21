@@ -1,0 +1,109 @@
+{
+	"format": "wizardcard-deck",
+	"main": [
+		{
+			"count": 2,
+			"id": "v260-analytic-0001"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0002"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0003"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0004"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0005"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0006"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0007"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0008"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0009"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0010"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0011"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0012"
+		},
+		{
+			"count": 3,
+			"id": "v260-analytic-0013"
+		},
+		{
+			"count": 1,
+			"id": "v260-analytic-0014"
+		},
+		{
+			"count": 1,
+			"id": "v260-analytic-0024"
+		}
+	],
+	"name": "示范卡组 · 副本",
+	"side": [
+		{
+			"count": 1,
+			"id": "v260-formation-0001"
+		},
+		{
+			"count": 1,
+			"id": "v260-formation-0002"
+		},
+		{
+			"count": 1,
+			"id": "v260-formation-0003"
+		},
+		{
+			"count": 1,
+			"id": "v260-formation-0004"
+		},
+		{
+			"count": 1,
+			"id": "v260-formation-0005"
+		},
+		{
+			"count": 1,
+			"id": "v260-formation-0006"
+		},
+		{
+			"count": 1,
+			"id": "v260-formation-0007"
+		},
+		{
+			"count": 1,
+			"id": "v260-formation-0008"
+		},
+		{
+			"count": 1,
+			"id": "v260-formation-0009"
+		},
+		{
+			"count": 1,
+			"id": "v260-formation-0010"
+		}
+	],
+	"version": 1
+}

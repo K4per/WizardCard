@@ -1,0 +1,176 @@
+{
+  "sourceCommit": "31655e1e4228f1dca3de464f1c6e780b09543662",
+  "sourceTree": "d4c2d98ce636fa9b10a7f4388b378704eb7d0cce",
+  "remoteSourceCommit": "31655e1e4228f1dca3de464f1c6e780b09543662",
+  "windowsClient": {
+    "archive": "WizardCard-2.6.4-hotfix.1-windows-x64.zip",
+    "bytes": 329278431,
+    "sha256": "6a53f5fc7f65e2c6636e027e93b0e3860d7eb2f96105086a30da63dbc2d384e4",
+    "verifiedFiles": 266,
+    "packedIllustrationTextures": 212,
+    "originalWindowsIconSizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "packedBrandingFiles": [
+      "res://art/branding/wizardcard-app-v1.png",
+      "res://art/menu-v2/logo-1080p.png"
+    ],
+    "zipCrc": "passed",
+    "release": {
+      "programVersion": "2.6.4-hotfix.1",
+      "rulesVersion": "2.6.4-hotfix.1",
+      "cardSetVersion": "2.6.4-hotfix.1",
+      "contentHash": "54d3d845557007f7",
+      "sourceCommit": "31655e1e4228f1dca3de464f1c6e780b09543662",
+      "sourceTree": "d4c2d98ce636fa9b10a7f4388b378704eb7d0cce",
+      "packageVersion": "2.6.4-hotfix.1",
+      "status": "released",
+      "mechanicsRevision": 13,
+      "cardCount": 90,
+      "engine": "4.7.2.stable.official.ed1daf0bf",
+      "catalogSha256": "19be8c270b56cefcb4c0440e6f32163f41ba5ac28a8abe525d6c4d69c01aca16",
+      "bridgeSha256": "c93250296937d6f27281cf2698e5fd15b621b03047ab76f6445d33eae6fde0c2"
+    },
+    "startupFromUnrelatedDirectory": "passed",
+    "offlineGuide": {
+      "bundledCertificate": true,
+      "cards": 90,
+      "chapters": 5,
+      "networkUsed": false,
+      "passed": true,
+      "ruleSections": 15
+    },
+    "network": {
+      "endpoint": "localhost:4884",
+      "room": "5ZGGXLEN",
+      "clients": [
+        {
+          "connected": true,
+          "defaultConnection": false,
+          "openingModeSwitch": true,
+          "openingPrivacy": true,
+          "openingTieObserved": true,
+          "phase": "completed",
+          "releasedSpellObserved": true,
+          "replayDelivered": true,
+          "result": 0,
+          "role": "host",
+          "roomCode": "5ZGGXLEN"
+        },
+        {
+          "defaultConnection": false,
+          "left": true,
+          "openingModeSwitch": true,
+          "openingPrivacy": true,
+          "openingTieObserved": true,
+          "phase": "completed",
+          "releasedSpellObserved": true,
+          "replayDelivered": true,
+          "role": "guest",
+          "roomCode": "5ZGGXLEN"
+        }
+      ],
+      "commands": {
+        "21": 4,
+        "18": 2,
+        "13": 57,
+        "14": 12,
+        "0": 2,
+        "5": 1,
+        "11": 1
+      },
+      "commandCount": 79,
+      "matchingReplayDigest": "8e34753e7e6b6e28",
+      "identicalReplay": true,
+      "verifiedManualReconnects": 2,
+      "unexpectedDisconnects": 0
+    }
+  },
+  "linuxServer": {
+    "archive": "WizardCard-CentralServer-2.6.4-hotfix.1-linux-x86_64.tar.gz",
+    "sha256": "b458cf9a4279aee6a7dc99ccc073d964caa8000123f3a171e15846d5d110c143",
+    "bytes": 1369742,
+    "inventoryVerified": 143,
+    "release": {
+      "sourceCommit": "31655e1e4228f1dca3de464f1c6e780b09543662",
+      "sourceTree": "d4c2d98ce636fa9b10a7f4388b378704eb7d0cce",
+      "format": 1,
+      "version": "2.6.4-hotfix.1",
+      "target": "linux-x86_64",
+      "buildEnvironment": "Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+      "libc": [
+        "glibc",
+        "2.41"
+      ],
+      "content": {
+        "path": "assets/release-v260",
+        "rulesVersion": "2.6.4-hotfix.1",
+        "cardSetVersion": "2.6.4-hotfix.1",
+        "mechanicsRevision": 13,
+        "hash": "54d3d845557007f7"
+      },
+      "privateKeyIncluded": false
+    }
+  },
+  "ctest": {
+    "windows": {
+      "passed": 390,
+      "failed": 0
+    },
+    "linux": {
+      "passed": 363,
+      "failed": 0
+    }
+  },
+  "seed42": {
+    "commands": 2579,
+    "finalDigest": "20ccdb7b1474a233",
+    "sha256": "ec3568b99908b63d62acc6e076ced38424c0e261bf0736045dc5085a4ec897ca",
+    "identicalFiles": true
+  },
+  "networkReplay": {
+    "sha256": "6c8ae646b09c5509c95984727c44d312551ca34d8c9cc5396a3f17f5fb7b649f",
+    "identicalFiles": true,
+    "linuxDigest": "8e34753e7e6b6e28",
+    "windowsDigest": "8e34753e7e6b6e28"
+  },
+  "compatibility": {
+    "mixedHandshake": {
+      "client": "2.6.4",
+      "server": "2.6.4-hotfix.1",
+      "reply": {
+        "code": "incompatible",
+        "error": "程序、协议、规则或卡池版本不一致",
+        "type": "Error"
+      }
+    },
+    "oldReplayProgram": "2.6.4",
+    "oldReplayRejection": "incompatible replay version or content hash",
+    "legacyDeckFrom": "2.6.4",
+    "importedStableID": "v260-analytic-0024"
+  },
+  "rendered": {
+    "archive": "WizardCard-2.6.4-hotfix.1-windows-x64.zip",
+    "archiveSha256": "6a53f5fc7f65e2c6636e027e93b0e3860d7eb2f96105086a30da63dbc2d384e4",
+    "replaySha256": "6c8ae646b09c5509c95984727c44d312551ca34d8c9cc5396a3f17f5fb7b649f",
+    "entries": {
+      "ai": {
+        "image": "ai.png",
+        "sha256": "2d55d15eecef70ea6a36c87fa7a951cc51d0d8eea84674c94c511a0da72f0f30"
+      },
+      "tutorial": {
+        "image": "tutorial.png",
+        "sha256": "5487f08ce12bfc0339126f5e6f467a13e7047de02bfdf3a2139be4724dea4025"
+      },
+      "replay": {
+        "image": "replay.png",
+        "sha256": "d4e927e236f165937330fea03a845549f4e6a0e82a97c070220cc29ab069891d"
+      }
+    }
+  }
+}

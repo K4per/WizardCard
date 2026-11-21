@@ -1,0 +1,86 @@
+{
+	"errors": [
+		"Closing details keeps the required upkeep target highlighted",
+		"Visible maintain action shows its actual fee",
+		"Actual maintain after collapse/Esc must submit",
+		"Closing details keeps the required upkeep target highlighted",
+		"Visible maintain action shows its actual fee",
+		"Actual maintain after collapse/Esc must submit"
+	],
+	"observations": [
+		{
+			"abandon": false,
+			"afterDecision": {
+				"id": "134",
+				"kind": 9,
+				"mayPass": true,
+				"options": [
+					{
+						"kind": 1,
+						"value": "103"
+					}
+				],
+				"player": 0,
+				"source": "103"
+			},
+			"afterMana": 1,
+			"beforeMana": 1,
+			"card": "v260-analytic-0013",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "134",
+			"highlightAfterDetail": false,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 1）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "匕首之云",
+			"queryAliveAfterEsc": false,
+			"revision": "143",
+			"revisionAfterSubmit": "143",
+			"round": "5",
+			"shortMana": false,
+			"source": "103",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]",
+			"visibleAfterEsc": true
+		},
+		{
+			"abandon": false,
+			"afterDecision": {
+				"id": "75",
+				"kind": 9,
+				"mayPass": true,
+				"options": [
+					{
+						"kind": 1,
+						"value": "104"
+					}
+				],
+				"player": 0,
+				"source": "104"
+			},
+			"afterMana": 2,
+			"beforeMana": 2,
+			"card": "v260-talisman-0005",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "75",
+			"highlightAfterDetail": false,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 2）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "避火咒",
+			"queryAliveAfterEsc": false,
+			"revision": "228",
+			"revisionAfterSubmit": "228",
+			"round": "3",
+			"shortMana": false,
+			"source": "104",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]",
+			"visibleAfterEsc": true
+		}
+	]
+}

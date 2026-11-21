@@ -329,6 +329,11 @@ func concentration(def: String, rank: int, fee: int, abandon: bool = false, shor
 		row.maintainCaption = page._decision._labels["1:"+id].text
 		check(str(row.maintainCaption).contains("维持") and str(row.maintainCaption).contains(str(fee)), "Visible maintain action shows its actual fee")
 	await mode(ResponseTiming.Mode.IGNORE)
+	await button(page._decision._collapse)
+	await key(KEY_ESCAPE)
+	row.queryRestoredAfterEsc = page._decision.visible and page._selection.current()
+	if not check(row.queryRestoredAfterEsc, "Escape reopens the live mandatory choice after collapsing it"):
+		return
 	await button(page._decision._options["0:0" if abandon else "1:"+id])
 	await button(page._decision._confirm)
 	var after: Dictionary = view()

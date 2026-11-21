@@ -1332,6 +1332,9 @@ func dismiss_cancel() -> bool:
 	if _decision.visible and _decision.request != null and _decision.request.browse_mode:
 		_close_collection()
 		return true
+	if _tray_suspended and _query_is_decision and service.match_snapshot.get("decision") is Dictionary:
+		_show_tray()
+		return true
 	if _decision.visible and not _query_is_decision and _selection.active:
 		_decision_cancelled("", "", "")
 		return true

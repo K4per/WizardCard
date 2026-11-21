@@ -1,0 +1,371 @@
+{
+	"errors": [],
+	"observations": [
+		{
+			"afterEscape": true,
+			"afterIgnore": true,
+			"case": "B01 ai",
+			"firstTurn": "1",
+			"gesture": -1,
+			"handCounts": [
+				5,
+				5
+			],
+			"revision": "1",
+			"round": 1,
+			"stages": [
+				"gestures/1/0",
+				"formation/1/0"
+			]
+		},
+		{
+			"afterEscape": true,
+			"afterIgnore": true,
+			"case": "B01 hotseat",
+			"firstTurn": "1",
+			"gesture": -1,
+			"handCounts": [
+				5,
+				5
+			],
+			"revision": "6",
+			"round": 1,
+			"stages": [
+				"gestures/1/0",
+				"gestures/1/1",
+				"gestures/2/0",
+				"gestures/2/1",
+				"formation/2/0",
+				"formation/2/1"
+			]
+		},
+		{
+			"case": "O02 native action",
+			"host": "9",
+			"manaAfter": 14,
+			"manaBefore": 16,
+			"ring": 0,
+			"source": "103"
+		},
+		{
+			"abandon": false,
+			"afterLoad": 4,
+			"afterMana": 0,
+			"afterPhase": 1,
+			"afterRevision": "156",
+			"beforeLoad": 4,
+			"beforeMana": 1,
+			"card": "v260-analytic-0013",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "134",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 1）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "维持专注（魔素 1）",
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "155",
+			"round": "5",
+			"shortMana": false,
+			"source": "103",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]",
+			"zoneAfter": 3
+		},
+		{
+			"abandon": false,
+			"afterLoad": 2,
+			"afterMana": 0,
+			"afterPhase": 1,
+			"afterRevision": "251",
+			"beforeLoad": 2,
+			"beforeMana": 2,
+			"card": "v260-talisman-0005",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "75",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 2）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "维持专注（魔素 2）",
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "250",
+			"round": "3",
+			"shortMana": false,
+			"source": "104",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]",
+			"zoneAfter": 3
+		},
+		{
+			"abandon": true,
+			"afterLoad": 0,
+			"afterMana": 2,
+			"afterPhase": 1,
+			"afterRevision": "342",
+			"beforeLoad": 2,
+			"beforeMana": 2,
+			"card": "v260-talisman-0005",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "75",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 2）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "维持专注（魔素 2）",
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "341",
+			"round": "3",
+			"shortMana": false,
+			"source": "104",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]",
+			"zoneAfter": 6
+		},
+		{
+			"abandon": true,
+			"afterLoad": 0,
+			"afterMana": 1,
+			"afterPhase": 1,
+			"afterRevision": "433",
+			"beforeLoad": 2,
+			"beforeMana": 1,
+			"card": "v260-talisman-0005",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "75",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"无法维持专注：准备收入前的可用资源不足",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "432",
+			"round": "3",
+			"shortMana": true,
+			"source": "104",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]",
+			"unavailableLabel": "无法维持专注：准备收入前的可用资源不足",
+			"zoneAfter": 6
+		},
+		{
+			"abandon": false,
+			"afterLoad": 3,
+			"afterMana": 0,
+			"afterPhase": 1,
+			"afterRevision": "590",
+			"beforeLoad": 3,
+			"beforeMana": 1,
+			"card": "v260-analytic-0014",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "142",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 1）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "维持专注（魔素 1）",
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "589",
+			"round": "5",
+			"shortMana": false,
+			"source": "103",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]",
+			"zoneAfter": 3
+		},
+		{
+			"abandon": false,
+			"afterLoad": 6,
+			"afterMana": 0,
+			"afterPhase": 1,
+			"afterRevision": "747",
+			"beforeLoad": 6,
+			"beforeMana": 4,
+			"card": "v260-analytic-0027",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "140",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 4）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "维持专注（魔素 4）",
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "746",
+			"round": "5",
+			"shortMana": false,
+			"source": "105",
+			"sourceFace": "[P: (112.736, 513.1403), S: (31.2352, 41.64694)]",
+			"zoneAfter": 3
+		},
+		{
+			"abandon": false,
+			"afterLoad": 5,
+			"afterMana": 0,
+			"afterPhase": 1,
+			"afterRevision": "900",
+			"beforeLoad": 5,
+			"beforeMana": 1,
+			"card": "v260-analytic-0017",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "137",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 1）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "维持专注（魔素 1）",
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "899",
+			"round": "5",
+			"shortMana": false,
+			"source": "104",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]",
+			"zoneAfter": 3
+		},
+		{
+			"abandon": false,
+			"afterLoad": 3,
+			"afterMana": 0,
+			"afterPhase": 1,
+			"afterRevision": "1045",
+			"beforeLoad": 3,
+			"beforeMana": 2,
+			"card": "v260-analytic-0031",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "131",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 2）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "维持专注（魔素 2）",
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "1044",
+			"round": "5",
+			"shortMana": false,
+			"source": "102",
+			"sourceFace": "[P: (112.736, 532.6044), S: (49.3528, 65.80373)]",
+			"zoneAfter": 3
+		},
+		{
+			"abandon": false,
+			"afterLoad": 2,
+			"afterMana": 0,
+			"afterPhase": 1,
+			"afterRevision": "1194",
+			"beforeLoad": 2,
+			"beforeMana": 2,
+			"card": "v260-analytic-0008",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "134",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 2）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "维持专注（魔素 2）",
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "1193",
+			"round": "5",
+			"shortMana": false,
+			"source": "103",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]",
+			"zoneAfter": 3
+		},
+		{
+			"abandon": false,
+			"afterLoad": 10,
+			"afterMana": 0,
+			"afterPhase": 1,
+			"afterRevision": "1364",
+			"beforeLoad": 10,
+			"beforeMana": 6,
+			"card": "v260-analytic-0028",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "148",
+			"highlightAfterDetail": true,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 6）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "维持专注（魔素 6）",
+			"queryRestoredAfterEsc": true,
+			"reached": "主要阶段",
+			"revision": "1363",
+			"round": "5",
+			"shortMana": false,
+			"source": "106",
+			"sourceFace": "[P: (112.736, 513.1403), S: (31.2352, 41.64694)]",
+			"zoneAfter": 3
+		},
+		{
+			"automaticPasses": 0,
+			"case": "O01",
+			"mode": 0,
+			"prompts": 3,
+			"totalPasses": 3
+		},
+		{
+			"automaticPasses": 2,
+			"case": "O01",
+			"mode": 1,
+			"prompts": 1,
+			"totalPasses": 3
+		},
+		{
+			"automaticPasses": 3,
+			"case": "O01",
+			"mode": 2,
+			"prompts": 0,
+			"totalPasses": 3
+		},
+		{
+			"cancelDidNotPass": true,
+			"case": "O02",
+			"dialogTypes": [
+				"response",
+				"action"
+			],
+			"draggedToAllEdges": true,
+			"resolutions": [
+				[
+					1280,
+					720
+				],
+				[
+					1920,
+					1080
+				]
+			]
+		}
+	]
+}

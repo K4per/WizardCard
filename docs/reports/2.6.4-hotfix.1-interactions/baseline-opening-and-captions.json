@@ -1,0 +1,60 @@
+{
+	"errors": [
+		"Switching to IGNORE retains this round's gesture chooser",
+		"Escape returns to gestures",
+		"Closing details keeps the required upkeep target highlighted",
+		"Visible maintain action shows its actual fee",
+		"Closing details keeps the required upkeep target highlighted",
+		"Visible maintain action shows its actual fee"
+	],
+	"observations": [
+		{
+			"afterEscape": false,
+			"afterIgnore": false,
+			"case": "B01 AI",
+			"gesture": -1,
+			"revision": "1",
+			"round": 1
+		},
+		{
+			"afterMana": 0,
+			"afterRevision": "145",
+			"beforeMana": 1,
+			"card": "v260-analytic-0013",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "134",
+			"highlightAfterDetail": false,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 1）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "匕首之云",
+			"revision": "144",
+			"round": "5",
+			"source": "103",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]"
+		},
+		{
+			"afterMana": 0,
+			"afterRevision": "231",
+			"beforeMana": 2,
+			"card": "v260-talisman-0005",
+			"case": "B02 AI",
+			"choicesVisible": true,
+			"decision": "75",
+			"highlightAfterDetail": false,
+			"highlighted": true,
+			"labels": [
+				"维持专注（魔素 2）",
+				"放弃专注（法术送入灰烬区）"
+			],
+			"maintainCaption": "避火咒",
+			"revision": "230",
+			"round": "3",
+			"source": "104",
+			"sourceFace": "[P: (115.6306, 504.9213), S: (43.5637, 58.08493)]"
+		}
+	]
+}

@@ -73,11 +73,11 @@ def verify_network(output, evidence, args):
         assert recordings[0] == recordings[1], "Both clients must receive the same verified replay"
         recording = recordings[0]
         for name in ("programVersion", "rulesVersion", "cardSetVersion"):
-            assert recording[name] == "2.6.4", (name, recording[name])
-        assert recording["digestSchema"] == 4 and recording["mechanicsRevision"] == 12
+            assert recording[name] == "2.6.4-hotfix.1", (name, recording[name])
+        assert recording["digestSchema"] == 4 and recording["mechanicsRevision"] == 13
         commands = Counter(item["command"]["type"] for item in recording["commands"])
         assert commands[21] >= 4 and commands[18] == 2, commands
-        assert all(client["openingPrivacy"] and client["openingTieObserved"] for client in clients)
+        assert all(client["openingPrivacy"] and client["openingTieObserved"] and client["openingModeSwitch"] for client in clients)
         assert sum(commands.values()) >= 47, commands  # opening + 40 actions + surrender
         assert commands[17] + commands[5] > 0, "The match must include a real spell activation"
         return {"endpoint": f"{args.server_host or 'aq.rainplay.cn'}:{args.server_port}", "room": room,
@@ -126,8 +126,8 @@ def main():
                                   if p.is_file() and p.name != "SHA256.json"}
         release = read_json(output / "RELEASE.json")
         for name in ("packageVersion", "programVersion", "rulesVersion", "cardSetVersion"):
-            assert release[name] == "2.6.4", (name, release[name])
-        assert release["contentHash"] == "dcb43fe56f6d250d" and release["mechanicsRevision"] == 12
+            assert release[name] == "2.6.4-hotfix.1", (name, release[name])
+        assert release["contentHash"] == "54d3d845557007f7" and release["mechanicsRevision"] == 13
         assert release["bridgeSha256"] == digest(output / "bin/wizard_godot_bridge.release.dll")
         illustration_count = audit_pck(output / "WizardCard.pck", ROOT / "godot/art/assets.json")
         icon_sizes = verify_application_icon(output / PLATFORMS["windows"].executable)

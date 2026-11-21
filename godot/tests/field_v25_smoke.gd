@@ -365,6 +365,8 @@ func _run() -> void:
 	var dynamic: CardPresentation = CardPresentation.from_projection({"id": "99", "definition": {"id": "sunburst", "illustrationId": "v2-sunburst", "name": "阳炎爆", "type": 1, "cost": 20, "castCost": 2}, "effectiveSettingCost": 17, "effectiveCastCost": 2})
 	_expect(dynamic.primary_value == "17/2", "analytic face uses live setting and casting costs")
 	_expect(dynamic.metadata_text.contains("设置费用：17　施法费用：2"), "details use live costs")
+	var word: CardPresentation = CardPresentation.from_projection({"id": "98", "definition": {"id": "word", "type": 2, "cost": 2, "castCost": 0}, "effectiveSettingCost": 2, "effectiveCastCost": 1})
+	_expect(word.primary_value == "2/1" and word.metadata_text.contains("设置费用：2　施法费用：1"), "words distinguish the locked setting payment from the activation payment")
 	var storm: CardPresentation = CardPresentation.from_projection({"id": "42", "stormPoints": 6, "definition": {"id": "storm-crest", "name": "风暴纹章", "type": 3, "tags": ["风暴"], "body": 1, "rings": 1, "capacity": 5, "income": 1}})
 	_expect(storm.detail_text().contains("风暴点数：6"), "visible storm card details show its projected point count")
 	var wind: CardPresentation = CardPresentation.from_projection({"id": "44", "stormPoints": 0, "definition": {"id": "storm-crest", "name": "风契·风暴纹章", "type": 3, "tags": ["风契"], "body": 2, "rings": 1, "capacity": 5, "income": 1}})

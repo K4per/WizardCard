@@ -11,9 +11,9 @@ import import_alpha_v260_xlsx as reader
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "assets/source-archive/alpha-v263"
 OUTPUT = ROOT / "assets/release-v260"
-RELEASE_VERSION = "2.6.4"
+RELEASE_VERSION = "2.6.4-hotfix.1"
 METADATA = {"rulesVersion": RELEASE_VERSION, "cardSetVersion": RELEASE_VERSION,
-            "mechanicsRevision": 12, "baseLoadCapacity": 2, "status": "released"}
+            "mechanicsRevision": 13, "baseLoadCapacity": 2, "status": "released"}
 # Executable clauses whose historical adapters differ from the approved text.
 RULE_UPDATES = {
     "v260-word-0013": {"traits": ["return_enemy_ambush"]},
@@ -26,6 +26,7 @@ RULE_UPDATES = {
     "v260-formation-0003": {"traits": [], "onLeave": [{"kind": "ankh_recover"}]},
     "v260-formation-0007": {"traits": ["replace_formation_destruction"]},
     "v260-analytic-0021": {"traits": ["end_phase_start"]},
+    "v260-analytic-0024": {"analysisTurns": 1},
     "v260-analytic-0029": {"effects": []},
     "v260-talisman-0002": {"effects": [], "responses": [{
         "id": "capture_physical", "name": "捕获打击", "sources": ["ambush", "casting"],

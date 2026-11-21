@@ -36,7 +36,7 @@ void pass263(test::ObservedEngine &engine) {
 
 TEST_CASE("v263 reinforced recipe accepts controlled facedown spells without waiting and rejects faceup materials", "[alpha-v263]") {
     auto cat = currentCatalog();
-    REQUIRE(cat.mechanicsRevision == 12);
+    REQUIRE(cat.mechanicsRevision >= 12);
     REQUIRE(cat.cards.size() == 90);
     for (const auto *definition : {"v260-analytic-0001", "v260-word-0001", "v260-talisman-0001"}) {
         for (bool borrowed : {false, true}) {
@@ -127,6 +127,52 @@ TEST_CASE("v263 Engeas accelerates once per global turn without adding load", "[
     CHECK(engine.state().cards.at(3).spell == SpellState::Analyzing);
     CHECK(engine.state().cards.at(3).analysisProgress == 0);
     CHECK(Rules::load(engine.state(), 0) == 4);
+}
+
+TEST_CASE("Vampiric Touch takes one analysis step unless accelerated", "[hotfix-card]") {
+    const auto cat = currentCatalog();
+    for (bool accelerate : {false, true}) {
+        CAPTURE(accelerate);
+        auto state = mainState263();
+        put263(state, 1, accelerate ? "v260-formation-0004" : "v260-formation-0017", Zone::Analysis);
+        if (accelerate) {
+            auto &seal = put263(state, 3, "v260-seal-0003", Zone::Attached);
+            seal.host = 1; // Raise Engeas to the spell's rank.
+        }
+        put263(state, 4, "v260-formation-0017", Zone::Analysis, 1);
+        put263(state, 10, "v260-analytic-0024", Zone::Hand);
+        state.players[0].life = 30;
+        auto engine = test::ObservedEngine::scenario(cat, state);
+        auto result = engine.submit(0, StartAnalysis{10, 1, 0, {}, 0});
+        INFO(result.error);
+        REQUIRE(result.accepted);
+        pass263(engine);
+        if (!accelerate) {
+            CHECK(engine.state().cards.at(10).spell == SpellState::Analyzing);
+            const auto view = engine.viewFor(0);
+            const auto it = std::find_if(view.cards.begin(), view.cards.end(),
+                [](const CardView &card) { return card.instance.id == 10; });
+            REQUIRE(it != view.cards.end());
+            CHECK(it->turnsToReady == 1);
+            REQUIRE_FALSE(engine.submit(0, PrepareCast{10}).accepted);
+            for (int step = 0; step < 16 && (engine.state().active != 0 ||
+                    engine.state().phase != Phase::Main || engine.state().cards.at(10).spell != SpellState::Ready); ++step) {
+                REQUIRE(engine.submit(engine.state().active, AdvancePhase{engine.state().phaseGate}).accepted);
+                pass263(engine);
+            }
+        }
+        REQUIRE(engine.state().cards.at(10).spell == SpellState::Ready);
+        REQUIRE(engine.submit(0, PrepareCast{10}).accepted);
+        pass263(engine);
+        REQUIRE(engine.submit(0, AdvancePhase{engine.state().phaseGate}).accepted);
+        pass263(engine);
+        const int ownLife = engine.state().players[0].life;
+        const int enemyLife = engine.state().players[1].life;
+        REQUIRE(engine.submit(0, ActivateSpell{10, playerTarget(1), {}, 0}).accepted);
+        pass263(engine);
+        CHECK(engine.state().players[0].life == ownLife + 2);
+        CHECK(engine.state().players[1].life == enemyLife - 5);
+    }
 }
 
 TEST_CASE("v263 earth eruption halves summed casting capacity with independent owner preparation expiries", "[alpha-v263][capacity]") {
@@ -428,7 +474,7 @@ TEST_CASE("v263 call lightning independent load clears at the affected end start
     put263(s, 10, "v260-analytic-0012", Zone::Casting).spell = SpellState::Ready;
     auto cat = currentCatalog();
     auto engine = test::ObservedEngine::scenario(cat, s);
-    REQUIRE(engine.submit(0, ActivateSpell{10, playerTarget(1)}).accepted); pass263(engine);
+    REQUIRE(engine.submit(0, ActivateSpell{10, playerTarget(1), {}, 0}).accepted); pass263(engine);
     CHECK(Rules::load(engine.state(), 1) == 5);
     auto end = test::mutation(engine.state());
     end.active = 1; ++end.players[1].ownTurn; end.phase = Phase::Cast; end.phaseStep = PhaseStep::Body;

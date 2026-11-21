@@ -96,7 +96,7 @@ jobs:
             -v "$PWD:/workspace:ro" -v "$PWD/dist:/output" -w /workspace \
             wizard-central-debian13 python3 tools/package_central_server.py \
             --build /src/build/server-release \
-            --output /output/WizardCard-CentralServer-2.6.4-linux-x86_64
+            --output /output/WizardCard-CentralServer-2.6.4-hotfix.1-linux-x86_64
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -210,12 +210,12 @@ jobs:
           cmake --build --preset linux-godot-release --parallel 4
           python tools/package_godot.py --platform linux --godot "$GODOT_BIN" --build build/linux-godot-release
           mkdir -p build/linux-extracted
-          tar -xzf dist/WizardCard-2.6.4-linux-x86_64.tar.gz -C build/linux-extracted
+          tar -xzf dist/WizardCard-2.6.4-hotfix.1-linux-x86_64.tar.gz -C build/linux-extracted
       - name: Verify rendered X11 and real keyboard input
         run: |
           xvfb-run -a -s '-screen 0 1920x1080x24' python tools/linux_desktop_smoke.py \
             --godot "$GODOT_BIN" --driver x11 --output build/linux-x11
-          package_dir="$PWD/build/linux-extracted/WizardCard-2.6.4-linux-x86_64"
+          package_dir="$PWD/build/linux-extracted/WizardCard-2.6.4-hotfix.1-linux-x86_64"
           log="$PWD/build/linux-x11/extracted-startup.log"
           data="$PWD/build/linux-x11/extracted-data"
           cd "$RUNNER_TEMP"
@@ -238,7 +238,7 @@ jobs:
           done
           test -S "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
           python tools/linux_desktop_smoke.py --godot "$GODOT_BIN" --driver wayland --output build/linux-wayland
-          package_dir="$PWD/build/linux-extracted/WizardCard-2.6.4-linux-x86_64"
+          package_dir="$PWD/build/linux-extracted/WizardCard-2.6.4-hotfix.1-linux-x86_64"
           log="$PWD/build/linux-wayland/extracted-startup.log"
           data="$PWD/build/linux-wayland/extracted-data"
           cd "$RUNNER_TEMP"
@@ -258,13 +258,13 @@ jobs:
             build/linux-network/
             build/linux-x11/
             build/linux-wayland/
-            dist/WizardCard-2.6.4-linux-x86_64/package-checks/
-            dist/WizardCard-2.6.4-linux-x86_64-archive-checks/
+            dist/WizardCard-2.6.4-hotfix.1-linux-x86_64/package-checks/
+            dist/WizardCard-2.6.4-hotfix.1-linux-x86_64-archive-checks/
       - uses: actions/upload-artifact@v7
         with:
-          name: WizardCard-2.6.4-linux-x86_64
+          name: WizardCard-2.6.4-hotfix.1-linux-x86_64
           path: |
-            dist/WizardCard-2.6.4-linux-x86_64.tar.gz
-            dist/WizardCard-2.6.4-linux-x86_64.tar.gz.sha256
-            dist/WizardCard-2.6.4-linux-x86_64/RELEASE.json
-            dist/WizardCard-2.6.4-linux-x86_64/SHA256.json
+            dist/WizardCard-2.6.4-hotfix.1-linux-x86_64.tar.gz
+            dist/WizardCard-2.6.4-hotfix.1-linux-x86_64.tar.gz.sha256
+            dist/WizardCard-2.6.4-hotfix.1-linux-x86_64/RELEASE.json
+            dist/WizardCard-2.6.4-hotfix.1-linux-x86_64/SHA256.json

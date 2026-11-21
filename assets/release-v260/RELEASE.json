@@ -1,8 +1,8 @@
 {
   "format": 1,
-  "rulesVersion": "2.6.4",
-  "cardSetVersion": "2.6.4",
-  "mechanicsRevision": 12,
+  "rulesVersion": "2.6.4-hotfix.1",
+  "cardSetVersion": "2.6.4-hotfix.1",
+  "mechanicsRevision": 13,
   "baseLoadCapacity": 2,
   "status": "released",
   "cardCount": 90,

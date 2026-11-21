@@ -1,6 +1,6 @@
 # 中央游戏服务器部署
 
-服务器运行 Linux x86_64、C++17 权威服务，正式卡池固定为 `assets/release-v260`（程序、规则和卡池 2.6.4、mechanics 12、hash `dcb43fe56f6d250d`）。Debian 13 是交付基线；在 Arch 或其他系统构建的二进制必须先确认目标机的 glibc 与共享库版本兼容。
+服务器运行 Linux x86_64、C++17 权威服务，正式卡池固定为 `assets/release-v260`（程序、规则和卡池 2.6.4-hotfix.1、mechanics 13、hash `54d3d845557007f7`）。Debian 13 是交付基线；在 Arch 或其他系统构建的二进制必须先确认目标机的 glibc 与共享库版本兼容。
 
 游戏 TLS 监听 TCP 24443。健康和就绪 HTTP 端口 24444 只绑定服务器 loopback，不应映射或放行到公网。NAT 的公网端口可以不同，客户端填写公网端口。当前部署已验证 `aq.rainplay.cn:23513` → 服务器 `24443`，主机名验证仍使用 `aq.rainplay.cn`。实际部署证据见 `docs/central-server-delivery.md`。
 
@@ -12,7 +12,7 @@
 cmake --preset server-release
 cmake --build --preset server-release --target wizard_server --parallel 2
 python tools/package_central_server.py --build build/server-release
-(cd dist && sha256sum -c WizardCard-CentralServer-2.6.4-linux-x86_64.tar.gz.sha256)
+(cd dist && sha256sum -c WizardCard-CentralServer-2.6.4-hotfix.1-linux-x86_64.tar.gz.sha256)
 ```
 
 要部署到 Debian 13，请在 Debian 13 x86_64 上直接构建，或使用 `deploy/Dockerfile` 的 Debian 13 构建阶段。Release 目录包含服务端、正式卡池、用户服务单元和校验清单，不包含 TLS 私钥。
@@ -22,9 +22,9 @@ python tools/package_central_server.py --build build/server-release
 在目标账户下解压归档，然后运行安装脚本：
 
 ```sh
-tar -xzf WizardCard-CentralServer-2.6.4-linux-x86_64.tar.gz
-./WizardCard-CentralServer-2.6.4-linux-x86_64/install-user-service.sh \
-  WizardCard-CentralServer-2.6.4-linux-x86_64.tar.gz
+tar -xzf WizardCard-CentralServer-2.6.4-hotfix.1-linux-x86_64.tar.gz
+./WizardCard-CentralServer-2.6.4-hotfix.1-linux-x86_64/install-user-service.sh \
+  WizardCard-CentralServer-2.6.4-hotfix.1-linux-x86_64.tar.gz
 ```
 
 编辑 `~/.config/wizardcard-central-server/server.env`，放置证书和私钥，并将私钥权限设为 `0600`。安装脚本保留旧 release 和历史房间数据；配置仍含示例路径时只安装 unit，不会启动服务。配置完成后：

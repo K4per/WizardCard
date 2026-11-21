@@ -1,7 +1,7 @@
 {
-  "rulesVersion": "2.6.4",
-  "cardSetVersion": "2.6.4",
-  "mechanicsRevision": 12,
+  "rulesVersion": "2.6.4-hotfix.1",
+  "cardSetVersion": "2.6.4-hotfix.1",
+  "mechanicsRevision": 13,
   "baseLoadCapacity": 2,
   "status": "released",
   "cards": [
@@ -1093,7 +1093,7 @@
       "rank": 3,
       "cost": 2,
       "castCost": 2,
-      "analysisTurns": 0,
+      "analysisTurns": 1,
       "speed": 1,
       "text": "选择1个目标才能发动。对其造成5点暗蚀伤害，己方恢复2点生命值。",
       "effects": [

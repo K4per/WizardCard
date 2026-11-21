@@ -21,9 +21,9 @@ class Content263Tests(unittest.TestCase):
     def test_current_release_versions_are_synchronized(self):
         release = json.loads((RELEASE / "RELEASE.json").read_text(encoding="utf-8"))
         for data in (release, self.manifest["metadata"]):
-            self.assertEqual(data["rulesVersion"], "2.6.4")
-            self.assertEqual(data["cardSetVersion"], "2.6.4")
-            self.assertEqual(data["mechanicsRevision"], 12)
+            self.assertEqual(data["rulesVersion"], "2.6.4-hotfix.1")
+            self.assertEqual(data["cardSetVersion"], "2.6.4-hotfix.1")
+            self.assertEqual(data["mechanicsRevision"], 13)
         self.assertEqual(release["cardCount"], len(self.cards))
 
     def test_retired_formations_are_absent_without_renumbering_other_cards(self):
@@ -48,7 +48,11 @@ class Content263Tests(unittest.TestCase):
             count += 1
             card = self.cards[name]
             for field, key in {"阶级":"rank", "设置费用":"cost", "解析时间":"analysisTurns", "咒文速度":"speed"}.items():
-                self.assertEqual(card[key], reader.value(values, headers, field), (name, field))
+                expected = reader.value(values, headers, field)
+                if card["id"] == "v260-analytic-0024" and key == "analysisTurns":
+                    self.assertEqual(expected, 0, "archived workbook before the hotfix")
+                    expected = 1
+                self.assertEqual(card[key], expected, (name, field))
             self.assertEqual(card.get("flavor"), reader.value(values, headers, "风味文本"), name)
             fee = reader.value(values, headers, "发动费用")
             if fee == "X":

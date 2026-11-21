@@ -25,12 +25,14 @@ def attributes(card):
         pairs += [("附着费用", card["cost"])]
     else:
         pairs += [("学派", SCHOOLS.get(card.get("school"), "无")), ("位阶", card["rank"]), ("速度", card.get("speed", 1))]
-        if card["type"] == "analytic":
-            pairs += [("设置费用", card["cost"]), ("施法费用", card.get("castCost", 0)), ("解析回合", card.get("analysisTurns", 1))]
+        if card["type"] in ("analytic", "word"):
+            pairs += [("设置费用", card["cost"]), ("施法费用", card.get("castCost", 0))]
+            if card["type"] == "analytic":
+                pairs.append(("解析回合", card.get("analysisTurns", 1)))
         else:
             if card["type"] == "talisman":
                 pairs.append(("盖伏费用", 0))
-            pairs.append(("施法费用", "X" if card.get("dynamicCost") else card["cost"]))
+            pairs.append(("施法费用", "X" if card.get("dynamicCost") else card.get("castCost", 0)))
         pairs.append(("持续方式", "专注" if card.get("concentration") else "永续" if card.get("perpetual") else "计时 " + str(card["duration"]) if card.get("duration") else "通常"))
     return pairs
 

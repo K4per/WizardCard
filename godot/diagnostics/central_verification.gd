@@ -5,6 +5,7 @@ var _failures: int = 0
 var _released_spell: bool = false
 var _opening_privacy: bool = false
 var _opening_tie: bool = false
+var _opening_mode_switch: bool = false
 var _default_connection: bool = false
 
 func _ready() -> void:
@@ -55,7 +56,7 @@ func _verification_deck() -> String:
 		cards["v260-word-%04d" % index] = 2
 	for index: int in range(1, 11):
 		formations["v260-formation-%04d" % index] = 1
-	_app.service.editing_draft["name"] = "Alpha 2.6.4 release verification"
+	_app.service.editing_draft["name"] = "Alpha 2.6.4-hotfix.1 release verification"
 	_app.service.editing_draft["cards"] = cards
 	_app.service.editing_draft["sideCards"] = formations
 	if not _expect(_app.service.draft_problems().is_empty() and _app.service.save_draft(), "verification deck passes normal 40+10 validation"):
@@ -264,7 +265,7 @@ func _run() -> void:
 			_expect(false, "surrender saves the replay and finishes leaving automatically")
 			await _stop(1)
 			return
-		_write_report(report_path, {"role": role, "roomCode": room_code, "phase": "completed", "replayDelivered": true, "left": true, "releasedSpellObserved": _released_spell, "openingPrivacy": _opening_privacy, "openingTieObserved": _opening_tie, "defaultConnection": _default_connection})
+		_write_report(report_path, {"role": role, "roomCode": room_code, "phase": "completed", "replayDelivered": true, "left": true, "releasedSpellObserved": _released_spell, "openingPrivacy": _opening_privacy, "openingTieObserved": _opening_tie, "openingModeSwitch": _opening_mode_switch, "defaultConnection": _default_connection})
 		await _stop(0 if _failures == 0 else 1)
 		return
 	if not await _wait_for(func() -> bool:
@@ -283,7 +284,7 @@ func _run() -> void:
 		"result": int(_app.service.match_snapshot.get("result", -1)),
 		"releasedSpellObserved": _released_spell,
 		"openingPrivacy": _opening_privacy,
-		"openingTieObserved": _opening_tie,
+		"openingTieObserved": _opening_tie, "openingModeSwitch": _opening_mode_switch,
 		"defaultConnection": _default_connection,
 	}
 	_expect(result.phase == "completed" and result.replayDelivered, "normal terminal result and replay are visible")
@@ -321,6 +322,12 @@ func _play_opening(role: String) -> bool:
 				await get_tree().create_timer(0.01).timeout
 				continue
 		var page: MatchPage = _app.page as MatchPage
+		if stage == "gestures" and round_number == 1 and not _opening_mode_switch:
+			for mode: int in [ResponseTiming.Mode.IGNORE, ResponseTiming.Mode.AUTO]:
+				page._response_mode.select(mode)
+				page._response_mode.item_selected.emit(mode)
+			page.dismiss_cancel()
+			_opening_mode_switch = true
 		var panel: DecisionPanel = page._decision
 		if panel.visible and panel.request != null and not panel.request.choices.is_empty() \
 			and panel.request.generation == str(snapshot.get("generation")) and panel.request.revision == str(snapshot.get("revision")):

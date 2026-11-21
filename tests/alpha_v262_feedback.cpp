@@ -757,10 +757,11 @@ TEST_CASE("hand word responses require the owner's turn at every speed", "[hotfi
     for (const int speed : {2, 3}) for (const bool ownTurn : {false, true})
     for (const bool ambush : {false, true}) {
         CAPTURE(speed, ownTurn, ambush);
-        auto cat = feedbackCatalog();
-        cat.cards.at("v260-word-0009").speed = speed;
+        const auto cat = feedbackCatalog();
+        const char *definition = speed == 3 ? "v260-word-0009" : "v260-word-0018";
+        REQUIRE(cat.at(definition).speed == speed);
         auto s = feedbackState(); s.active = ownTurn ? 0 : 1; feedbackWindow(s, 0);
-        auto &word = feedbackCard(s, 10, "v260-word-0009", 0, ambush ? Zone::Analysis : Zone::Hand);
+        auto &word = feedbackCard(s, 10, definition, 0, ambush ? Zone::Analysis : Zone::Hand);
         word.faceDown = word.wasAmbushed = ambush; word.ambushedTurn = 1;
         auto e = test::ObservedEngine::scenario(cat, s);
         const Command cmd = ambush ? Command{FlipAmbush{10, 0, {}, 1}}
@@ -769,9 +770,24 @@ TEST_CASE("hand word responses require the owner's turn at every speed", "[hotfi
         CHECK(std::any_of(actions.begin(), actions.end(), [&](const LegalAction &action) {
             return encodeCommand(action.command) == encodeCommand(cmd);
         }) == (ownTurn || ambush));
+        ActionIntent source; source.source = 10;
+        const auto throughNetwork = net::decodeOptions(net::encodeOptions(e.queryActions(0, source)));
+        const auto op = std::to_string(static_cast<int>(commandKind(cmd)));
+        CHECK(std::any_of(throughNetwork.options.begin(), throughNetwork.options.end(), [&](const ActionOption &option) {
+            return option.value == op;
+        }) == (ownTurn || ambush));
         const auto before = e.digest();
         CHECK(e.submit(0, cmd).accepted == (ownTurn || ambush));
-        if (!ownTurn && !ambush) CHECK(e.digest() == before);
+        if (!ownTurn && !ambush) {
+            CHECK(e.digest() == before);
+            for (const GameState *state : {static_cast<const GameState *>(&s), &e.state()}) {
+                CHECK(state->cards.at(10).zone == Zone::Hand);
+                CHECK(state->players[0].mana == 20);
+                CHECK(Rules::load(*state, 0) == 0);
+                REQUIRE(state->chain);
+                CHECK(state->chain->links.size() == 1);
+            }
+        }
     }
 }
 

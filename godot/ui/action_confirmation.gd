@@ -88,4 +88,3 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		_pressed_context = ""
 		_finish(event.keycode != KEY_ESCAPE and get_viewport().gui_get_focus_owner() != %Cancel)
-

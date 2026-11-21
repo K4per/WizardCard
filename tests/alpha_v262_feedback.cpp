@@ -145,6 +145,33 @@ TEST_CASE("v262 death ward consumes itself before lethal damage and ignores true
     ResourceRules::damage(s, 1, 2, "overload", &cat); CHECK(s.players[1].life == 0);
 }
 
+TEST_CASE("Fireball feedback separates prevented damage from the Death Ward life change", "[hotfix-v08]") {
+    const auto catalog = feedbackCatalog();
+    for (const bool ward : {false, true}) {
+        CAPTURE(ward);
+        auto state = feedbackState();
+        state.players[1].life = 4;
+        ResourceRules::grantTemporaryLife(state, 1, 0, 1, 3);
+        const auto &fireball = feedbackCard(state, 20, "v260-analytic-0001", 0, Zone::Casting, SpellState::Ready);
+        if (ward) feedbackCard(state, 10, "v260-analytic-0023", 1, Zone::Analysis, SpellState::Active);
+        Trigger trigger;
+        trigger.owner = 0; trigger.source = fireball.id; trigger.targetPlayer = 1;
+        EffectResolver::apply(state, catalog, trigger, catalog.at(fireball.definition).effects.front());
+        const auto result = std::find_if(state.events.begin(), state.events.end(), [](const GameEvent &event) {
+            return event.kind == "effect" && event.effectType == EffectKind::Damage && event.card == 20;
+        });
+        REQUIRE(result != state.events.end());
+        const int damage = ward ? 0 : 5;
+        CHECK(result->actualAmount == damage);
+        CHECK(result->text.find(std::to_string(damage) + " 点") != std::string::npos);
+        CHECK(state.players[1].life == (ward ? 1 : 0));
+        CHECK(state.players[1].temporaryLife == (ward ? 1 : 0));
+        CHECK(std::any_of(state.events.begin(), state.events.end(), [ward](const GameEvent &event) {
+            return event.kind == "life_delta" && event.affectedPlayer == 1 && event.actualAmount == (ward ? -3 : -4);
+        }));
+    }
+}
+
 TEST_CASE("v262 setup delay changes only later hand settings", "[alpha-v262][setup]") {
     const auto cat = feedbackCatalog(); auto s = feedbackState(); s.active = 1;
     auto &old = feedbackCard(s, 10, "v260-analytic-0001", 1, Zone::Analysis, SpellState::Analyzing); old.analysisProgress = 0;

@@ -45,6 +45,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     const int previousLife = s.players[p].life;
     const int previousMana = s.players[t.owner].mana;
     const auto previousDeck = s.players[t.owner].deck.size();
+    int damageDealt = 0;
     if (e.kind == EffectKind::V260Structured) {
         if (e.semantic == "halve_casting_capacity" && cat.mechanicsRevision >= 12) {
             spell_rules::addModifier(s, t, ModifierKind::HalfCasting, ModifierExpiry::NextPrepare, 1, 1 - t.owner);
@@ -120,6 +121,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         ResourceRules::absorbTemporaryLife(s, p, shield);
         const int actualDamage = amount - shield;
         ResourceRules::setLife(s, p, cat.mechanicsRevision >= 11 ? std::max(0, s.players[p].life - actualDamage) : s.players[p].life - actualDamage);
+        damageDealt = shield + previousLife - s.players[p].life;
         card_rules::damaged(s, cat, p, t.source, actualDamage);
         if (cat.mechanicsRevision >= 11)
             spell_rules::damaged(s, cat, p, t, std::min(amount, previousLife + shield), e.damageType);
@@ -394,8 +396,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     std::string message;
     switch (e.kind) {
     case EffectKind::Damage:
-        message =
-            "造成 " + std::to_string(Rules::damage(s, cat, p, e)) + " 点" + damageName(e.damageType) + "伤害";
+        message = "造成 " + std::to_string(damageDealt) + " 点" + damageName(e.damageType) + "伤害";
         break;
     case EffectKind::Heal:
         message = "恢复 " + std::to_string(e.amount) + " 点生命";
@@ -544,7 +545,7 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
     event.affectedPlayer = p;
     event.actualAmount = std::abs(s.players[p].life - previousLife);
     if (e.kind == EffectKind::Damage)
-        event.actualAmount += previousTemporaryLife - s.players[p].temporaryLife;
+        event.actualAmount = damageDealt;
     if (e.kind == EffectKind::GainMana) {
         event.actualAmount = s.players[t.owner].mana - previousMana;
         event.affectedPlayer = t.owner;

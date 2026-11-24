@@ -96,21 +96,29 @@ func _run() -> void:
 	await process_frame
 	var recipe: CardPresentation = _side_card(snapshot, "v260-formation-0007")
 	_start_recipe(recipe)
-	if not check(page._material_bar.visible and not page._decision.visible and page.canvas.target_ids.size() >= 2, "Two-material recipe is selectable in the hand"):
+	if not check(page._material_menu.visible and not page._decision.visible and page.canvas.target_ids.size() >= 2, "Two-material recipe is selectable in the hand"):
 		_finish()
 		return
 	var ids: Array[String] = page.canvas.target_ids.keys()
 	page._select_card(MatchProjection.card(snapshot, ids[1]))
 	page._select_card(MatchProjection.card(snapshot, ids[0]))
-	check(page._material_count.text == "材料 2 / 2" and not page._continue_materials.disabled, "Full reverse-order material set enables confirmation")
+	check(page._continue_materials.text == "确认材料（2 / 2）" and not page._continue_materials.disabled, "Full reverse-order material set enables confirmation")
 	page._select_card(MatchProjection.card(snapshot, ids[1]))
-	check(page._material_count.text == "材料 1 / 2" and page._continue_materials.disabled, "First selected instance can be removed after completing the set")
-	page._dismiss_confirmation()
+	check(page._continue_materials.text == "确认材料（1 / 2）" and page._continue_materials.disabled, "First selected instance can be removed after completing the set")
+	await process_frame
+	var confirm_rect: Rect2 = page._continue_materials.get_global_rect()
+	var cancel: Button = page._material_menu.get_child(1)
+	var hand_rect: Rect2 = page.canvas.card_bounds(MatchProjection.card(snapshot, ids[0]))
+	hand_rect.position += page.canvas.global_position
+	check(confirm_rect.size.y == 44 and cancel.global_position.y >= confirm_rect.end.y and cancel.size == confirm_rect.size, "Material actions stack in compact equal-size rows")
+	check(page._material_menu.get_global_rect().end.y <= hand_rect.position.y and absf(page._material_menu.get_global_rect().get_center().x - hand_rect.get_center().x) <= 1.0, "Material actions appear directly above the selected hand card")
+	cancel.pressed.emit()
+	check(not page._material_menu.visible, "Cancel closes the material menu")
 	check(view(0).revision == snapshot.revision and view(0).players == snapshot.players, "Cancelling material choice preserves the authoritative state")
 	page._clear_card()
 	var basic: CardPresentation = _side_card(snapshot, "v260-formation-0009")
 	_start_recipe(basic)
-	if not check(page._material_bar.visible, "Additional base formation has a legal discard recipe"):
+	if not check(page._material_menu.visible, "Additional base formation has a legal discard recipe"):
 		_finish()
 		return
 	var discard: String = page.canvas.target_ids.keys()[0]

@@ -104,8 +104,8 @@ var _forced_ack_id: String = ""
 var _concentration_selected_id: String = ""
 var _chain_text: RichTextLabel
 var _empty_actions: Label
-var _material_bar: HBoxContainer
-var _material_count: Label
+var _material_menu: VBoxContainer
+var _material_anchor: CardPresentation
 var _continue_materials: Button
 var _waiting_intent: Dictionary = {}
 var _dropped_host: String = ""
@@ -198,14 +198,13 @@ func _ready() -> void:
 	_empty_actions.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	canvas.add_child(_empty_actions)
 	_empty_actions.hide()
-	_material_bar = HBoxContainer.new()
-	_material_count = UiFactory.label("", 16, true)
-	_material_bar.add_child(_material_count)
-	_continue_materials = UiFactory.button("确认材料", _selection.choose.bind("@confirm"))
-	_material_bar.add_child(_continue_materials)
-	_material_bar.add_child(UiFactory.button("取消", _dismiss_confirmation))
-	add_child(_material_bar)
-	_material_bar.hide()
+	_material_menu = VBoxContainer.new()
+	_material_menu.z_index = _action_popup.z_index
+	_continue_materials = _card_action_button("确认材料", _selection.choose.bind("@confirm"))
+	_material_menu.add_child(_continue_materials)
+	_material_menu.add_child(_card_action_button("取消", _dismiss_confirmation))
+	add_child(_material_menu)
+	_material_menu.hide()
 	_feedback = MatchFeedback.new()
 	add_child(_feedback)
 	_build_dialogs()
@@ -249,9 +248,9 @@ func _position_selected_actions() -> void:
 		var top: bool = _contextual_query and _selected != null and canvas.card_bounds(_selected).has_area() and canvas.card_bounds(_selected).get_center().y < canvas.size.y * 0.5
 		_empty_actions.reset_size()
 		_empty_actions.position = Vector2(canvas.size.x - _empty_actions.size.x - 12, 12) if top else Vector2(12, canvas.size.y - _empty_actions.size.y - 12)
-	if _material_bar != null and _material_bar.visible:
-		_material_bar.reset_size()
-		_material_bar.position = canvas.position + Vector2((canvas.size.x - _material_bar.size.x) * 0.5, canvas.size.y * 0.50 - _material_bar.size.y * 0.5)
+	if _material_menu != null and _material_menu.visible:
+		_material_menu.size = Vector2(_action_popup.custom_minimum_size.x, _material_menu.get_combined_minimum_size().y)
+		_material_menu.position = _action_menu_position(_material_anchor, _material_menu.size, size)
 
 func _position_phase_button() -> void:
 	if _end_phase == null or canvas == null:
@@ -603,7 +602,7 @@ func _refresh() -> void:
 		canvas.clear_action_targets()
 		_waiting_intent.clear()
 		_empty_actions.hide()
-		_material_bar.hide()
+		_material_menu.hide()
 		_dropped_host = ""
 		_dropped_ring = -1
 	else:
@@ -812,14 +811,22 @@ func _position_action_popup(contextual: bool) -> void:
 	var header_height: float = 0.0 if contextual else 30.0
 	var desired_height: float = clampf(header_height + _action_list.get_combined_minimum_size().y, 44, maxf(44, minf(500, available.y - 32)))
 	_action_popup.size = Vector2(maxf(160, minf(220, available.x - 24)), desired_height)
+	_action_popup.position = _action_menu_position(_selected if contextual else null, _action_popup.size, available)
+
+func _card_action_button(label: String, callback: Callable) -> Button:
+	var button: Button = UiFactory.button(label, callback)
+	button.custom_minimum_size = Vector2(196, 44)
+	return button
+
+func _action_menu_position(anchor: CardPresentation, menu_size: Vector2, available: Vector2) -> Vector2:
 	var point: Vector2
-	var max_right: float = available.x - _action_popup.size.x - 8
+	var max_right: float = available.x - menu_size.x - 8
 	var min_left: float = canvas.position.x + 4.0
-	if contextual and _selected != null:
-		var bounds: Rect2 = canvas.card_bounds(_selected)
+	if anchor != null:
+		var bounds: Rect2 = canvas.card_bounds(anchor)
 		if not bounds.has_area():
 			for row: Dictionary in service.match_snapshot.get("cards", []):
-				if str(row.get("id", "0")) != _selected.instance_id:
+				if str(row.get("id", "0")) != anchor.instance_id:
 					continue
 				var kind: String = "side_deck" if int(row.get("zone", -1)) == 9 else "ash"
 				for hit: Dictionary in canvas._zone_hits:
@@ -827,12 +834,12 @@ func _position_action_popup(contextual: bool) -> void:
 						bounds = hit["rect"]
 						break
 				break
-		point = canvas.global_position - global_position + Vector2(bounds.get_center().x - _action_popup.size.x * 0.5, bounds.position.y - _action_popup.size.y - 8)
+		point = canvas.global_position - global_position + Vector2(bounds.get_center().x - menu_size.x * 0.5, bounds.position.y - menu_size.y - 8)
 		if point.y < 8:
-			point.y = bounds.end.y + 8
+			point.y = canvas.global_position.y - global_position.y + bounds.end.y + 8
 	else:
-		point = _action_button.global_position - global_position + Vector2(_action_button.size.x - _action_popup.size.x, _action_button.size.y + 4)
-	_action_popup.position = Vector2(clampf(point.x, min_left, maxf(min_left, max_right)), clampf(point.y, 8, maxf(8, available.y - _action_popup.size.y - 8)))
+		point = _action_button.global_position - global_position + Vector2(_action_button.size.x - menu_size.x, _action_button.size.y + 4)
+	return Vector2(clampf(point.x, min_left, maxf(min_left, max_right)), clampf(point.y, 8, maxf(8, available.y - menu_size.y - 8)))
 
 func _query_changed(options: ActionOptions) -> void:
 	if not options.matches(service.match_snapshot, service.match_viewer):
@@ -840,7 +847,7 @@ func _query_changed(options: ActionOptions) -> void:
 	_update_phase_gate()
 	canvas.clear_action_targets()
 	_empty_actions.hide()
-	_material_bar.hide()
+	_material_menu.hide()
 	if _query_title == "结束当前阶段" and options.field == KernelContract.ActionField.Choice:
 		var phases: Array[Dictionary] = []
 		for option: Dictionary in options.options:
@@ -863,9 +870,7 @@ func _query_changed(options: ActionOptions) -> void:
 			var label: String = MatchProjection.action_label(service.match_snapshot, {"source": str(_selection.intent.get("source", "0")), "command": {"type": operation}})
 			if operation == KernelContract.CommandKind.ActivateAbility:
 				label = str(option.get("label", "发动能力"))
-			var button: Button = UiFactory.button(label, _selection.choose.bind(str(option["value"])))
-			button.custom_minimum_size = Vector2(196, 44)
-			_action_list.add_child(button)
+			_action_list.add_child(_card_action_button(label, _selection.choose.bind(str(option["value"]))))
 		if _action_list.get_child_count() == 0:
 			_action_popup.hide()
 			_empty_actions.show()
@@ -1002,7 +1007,7 @@ func _query_rings(targets: Dictionary[String, PackedInt32Array]) -> void:
 	_restore_tray_hand()
 	_action_popup.hide()
 	_empty_actions.hide()
-	_material_bar.hide()
+	_material_menu.hide()
 
 func _render_materials(options: ActionOptions) -> void:
 	var selected: Array[String] = _selection.material_ids()
@@ -1021,7 +1026,8 @@ func _render_materials(options: ActionOptions) -> void:
 		for cost: Dictionary in service.definitions.get(source.definition_id, {}).get("recipe", []):
 			if int(cost.get("kind", -1)) in [1, 2, 3]:
 				required += int(cost.get("amount", 0))
-	_material_count.text = "材料 %d / %d" % [selected.size(), required]
+	_material_anchor = source if selected.is_empty() else MatchProjection.card(service.match_snapshot, selected.back())
+	_continue_materials.text = "确认材料（%d / %d）" % [selected.size(), required]
 	_continue_materials.disabled = options.complete.is_empty()
 	_decision.hide()
 	_restore_tray_hand()
@@ -1030,8 +1036,8 @@ func _render_materials(options: ActionOptions) -> void:
 		canvas.set_hand_collapsed(false)
 		_hand_button.text = "▾ 手牌"
 	canvas.set_action_targets(candidates, {}, selected)
-	_material_bar.show()
-	_material_bar.move_to_front()
+	_material_menu.show()
+	_material_menu.move_to_front()
 	_position_selected_actions()
 
 func _describe_overflow(request: DecisionPresentation, candidate: String) -> void:
@@ -1062,7 +1068,7 @@ func _query_completed(command: Dictionary, intent: Dictionary) -> void:
 		_waiting_intent = {"command": command, "intent": intent}
 		return
 	_decision.hide()
-	_material_bar.hide()
+	_material_menu.hide()
 	_restore_tray_hand()
 	_pending_generation = generation
 	_pending_revision = revision
@@ -1153,8 +1159,8 @@ func _clear_action_targets() -> void:
 	_dropped_ring = -1
 	if _empty_actions != null:
 		_empty_actions.hide()
-	if _material_bar != null:
-		_material_bar.hide()
+	if _material_menu != null:
+		_material_menu.hide()
 	if canvas != null:
 		canvas.clear_action_targets()
 
@@ -1429,7 +1435,7 @@ func _update_chain(snapshot: Dictionary) -> void:
 func _select_card(card: CardPresentation) -> void:
 	if _privacy_layer.visible or _network_waiting:
 		return
-	if _material_bar.visible:
+	if _material_menu.visible:
 		_selection.toggle_material(card.instance_id)
 		return
 	var decision: Variant = service.match_snapshot.get("decision")

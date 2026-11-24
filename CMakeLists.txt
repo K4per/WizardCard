@@ -154,7 +154,7 @@ if(BUILD_TESTING)
       "${GODOT_BIN}" ${CMAKE_CURRENT_BINARY_DIR}/godot-frontend-probe
       ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260)
     set_tests_properties(central_godot_smoke PROPERTIES
-      FIXTURES_REQUIRED frontend_import TIMEOUT 90 RUN_SERIAL TRUE
+      FIXTURES_REQUIRED frontend_import TIMEOUT 450 RUN_SERIAL TRUE
       FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
   endif()
   # Historical cases are still runnable directly from wizard_tests, but do not

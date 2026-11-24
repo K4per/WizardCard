@@ -127,15 +127,31 @@ def main():
             code = wait_for_room_code(owner_report, owner)
             guest = launch_client(godot, project, assets, "guest", game_port, cert, guest_data, guest_report, code)
             clients.append(guest)
-            deadline = time.monotonic() + 60
+            # Random openings need different numbers of turns to cast the first spell.
+            # Give a progressing match time to finish while bounding stalls and total runtime.
+            deadline = time.monotonic() + 360
+            stall_deadline = time.monotonic() + 60
+            progress = None
+            rooms = root / "rooms"
+            metadata_path = None
             while any(client.poll() is None for client in clients):
                 failed = [client for client in clients if client.poll() not in (None, 0)]
                 if failed:
                     diagnostics = "\n".join(client.stdout.read() for client in failed)
                     raise RuntimeError("a Godot central client failed:\n" + diagnostics)
+                if metadata_path is None:
+                    metadata_path = next(rooms.glob(code + "-*/metadata.json"), None)
+                if metadata_path is not None:
+                    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+                    current = (metadata["phase"], metadata["revision"])
+                    if current != progress:
+                        progress = current
+                        stall_deadline = time.monotonic() + 60
+                if time.monotonic() >= stall_deadline:
+                    raise RuntimeError(f"No authoritative match progress for 60 seconds: {progress}")
                 if time.monotonic() >= deadline:
-                    raise RuntimeError("Godot central clients did not finish within 60 seconds")
-                time.sleep(0.05)
+                    raise RuntimeError(f"Godot central clients exceeded the 360-second match limit: {progress}")
+                time.sleep(0.1)
             output = "\n".join(client.stdout.read() for client in clients)
             if any(client.returncode != 0 for client in clients):
                 raise RuntimeError("Godot central frontend smoke failed:\n" + output)

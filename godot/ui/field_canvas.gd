@@ -85,7 +85,7 @@ var _opponent_region: Rect2
 var _own_casting_region: Rect2
 var _opponent_casting_region: Rect2
 var _board_transform: Transform2D = Transform2D.IDENTITY
-var _field_card_width: float = 0.0
+var _analysis_card_width: float = 0.0
 var selected_id: String = "":
 	set(value):
 		if selected_id != value:
@@ -311,7 +311,7 @@ func _draw() -> void:
 	# Keep deck labels clear of the first formation even when the live match
 	# shares the viewport with its action panel.
 	_update_regions()
-	_field_card_width = _minimum_field_card_width()
+	_analysis_card_width = _minimum_analysis_card_width()
 	_draw_formations(field.opponent_formations, _opponent_region, false)
 	_draw_formations(field.own_formations, _own_region, true)
 	_draw_casting(field.opponent_casting, field.opponent_casting_slots, _opponent_casting_region, false)
@@ -742,7 +742,9 @@ func _paint_board_card(card: CardPresentation, face: Rect2) -> void:
 	CardPainter.paint_miniature(self, card, face, card.instance_id in [_hover_id, selected_id])
 
 func _draw_card(card: CardPresentation, cell: Rect2, casting: bool = false) -> void:
-	var face_width: float = minf(_field_card_width, minf(cell.size.x, cell.size.y * 0.75)) if _field_card_width > 0.0 else minf(cell.size.x, cell.size.y * 0.75)
+	var face_width: float = minf(cell.size.x, cell.size.y * 0.75)
+	if not casting and _analysis_card_width > 0.0:
+		face_width = minf(face_width, _analysis_card_width)
 	var face_size: Vector2 = Vector2(face_width, face_width / 0.75)
 	var rect: Rect2 = Rect2(cell.get_center() - face_size * 0.5, face_size)
 	var art: Rect2 = rect.grow(-rect.size.x * 0.085) if casting else board_artwork_rect(rect, card)
@@ -811,16 +813,16 @@ func _add_rune_items(host: CardPresentation) -> void:
 	for rune: CardPresentation in field.attachments.get(host.instance_id, []):
 		var marker: String = "　✓" if _marked_card(rune) else ""
 		var index: int = _host_menu.item_count
-		var icon: Texture2D = _expanded_rune_face(rune)
+		var icon: Texture2D = _expanded_rune_face(rune, host)
 		_host_menu.add_icon_item(icon, "　符文 · " + rune.title + marker, index)
 		_host_menu.set_item_icon_max_width(index, icon.get_width())
 		_host_menu.set_item_metadata(index, {"card": rune})
 
-func _expanded_rune_face(rune: CardPresentation) -> Texture2D:
-	var width: float = _field_card_width
+func _expanded_rune_face(rune: CardPresentation, host: CardPresentation) -> Texture2D:
+	var width: float = _analysis_card_width
 	if width <= 0.0:
 		# A formation can have attached runes while every spell slot is empty.
-		width = minf(_own_casting_region.size.y, _opponent_casting_region.size.y) * 0.45
+		width = card_bounds(host).size.x
 	var extent: Vector2i = Vector2i(maxi(3, roundi(width)), maxi(4, roundi(width / 0.75)))
 	var face: Image = Image.create_empty(extent.x, extent.y, false, Image.FORMAT_RGBA8)
 	face.fill(Color("78919f"))
@@ -917,8 +919,6 @@ func _draw_casting(cards: Array[CardPresentation], slots: int, region: Rect2, ow
 	var gap: float = 4.0
 	var available: float = track.size.x - 2 * arrow_width - gap * maxi(0, count - 1)
 	var card_width: float = minf(track.size.y * 0.75, available / maxi(count, 1))
-	if _field_card_width > 0.0:
-		card_width = minf(card_width, _field_card_width)
 	var x: float = track.get_center().x - (count * card_width + gap * maxi(0, count - 1)) * 0.5
 	for index: int in range(count):
 		_draw_card(cards[first + index], Rect2(x, track.get_center().y - card_width / 0.75 * 0.5, card_width, card_width / 0.75), true)
@@ -945,7 +945,7 @@ func _casting_page_size(count: int, region: Rect2) -> int:
 	var capacity: int = maxi(1, floori((region.size.x - 6) / maxf(40, region.size.y - 19)))
 	return maxi(1, floori((region.size.x - 62) / maxf(40, region.size.y - 19))) if count > capacity else capacity
 
-func _minimum_field_card_width() -> float:
+func _minimum_analysis_card_width() -> float:
 	var minimum_width: float = INF
 	for own: bool in [true, false]:
 		var formations: Array[FormationPresentation] = field.own_formations if own else field.opponent_formations
@@ -962,23 +962,7 @@ func _minimum_field_card_width() -> float:
 					var cell: Rect2 = rings[ring].grow(-1)
 					minimum_width = minf(minimum_width, minf(cell.size.x, cell.size.y * 0.75))
 			slot += span
-		var cards: Array[CardPresentation] = field.own_casting if own else field.opponent_casting
-		var casting_region: Rect2 = _own_casting_region if own else _opponent_casting_region
-		minimum_width = minf(minimum_width, _casting_card_width(cards, casting_region, own))
 	return maxf(0.0, minimum_width) if is_finite(minimum_width) else 0.0
-
-func _casting_card_width(cards: Array[CardPresentation], region: Rect2, own: bool) -> float:
-	if cards.is_empty() or region.size.x < 24 or region.size.y < 16:
-		return INF
-	var capacity: int = _casting_page_size(cards.size(), region)
-	var side: int = 0 if own else 1
-	var page: int = clampi(_casting_start[side] / capacity, 0, maxi(0, (cards.size() - 1) / capacity))
-	var count: int = mini(capacity, cards.size() - page * capacity)
-	var header_height: float = minf(23, region.size.y * 0.4)
-	var track: Rect2 = Rect2(region.position + Vector2(3, header_height), region.size - Vector2(6, header_height + 4))
-	var arrow_width: float = minf(28, region.size.x * 0.12) if cards.size() > capacity else 0.0
-	var available: float = track.size.x - 2 * arrow_width - 4.0 * maxi(0, count - 1)
-	return minf(track.size.y * 0.75, available / maxi(count, 1))
 
 func _scroll_casting(point: Vector2, direction: int) -> bool:
 	var own: bool = _own_casting_region.has_point(point)

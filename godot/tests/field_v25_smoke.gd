@@ -129,7 +129,7 @@ func _check_expansion(canvas: FieldCanvas, group: FormationPresentation, attache
 			var item: Variant = menu.get_item_metadata(index)
 			if item is Dictionary and item.get("card") in attached:
 				seen.append((item["card"] as CardPresentation).instance_id)
-				_expect(menu.get_item_icon(index) != null and menu.get_item_icon_max_width(index) == maxi(1, roundi(canvas._field_card_width)), "expanded rune row uses the shared occupied-card image size")
+				_expect(menu.get_item_icon(index) != null and menu.get_item_icon_max_width(index) == maxi(1, roundi(canvas._analysis_card_width)), "expanded rune row uses the shared occupied-card image size")
 				_card_selection = ""
 				menu.id_pressed.emit(menu.get_item_id(index))
 				_expect(_card_selection == seen.back(), "expanded rune selects its own instance")
@@ -485,6 +485,15 @@ func _run() -> void:
 	opponent_cast.instance_id = "opponent-casting"
 	field.opponent_casting.append(opponent_cast)
 	canvas.configure(field)
+	root.size = Vector2i(1920, 1080)
+	group.ring_count = 2
+	await process_frame
+	await process_frame
+	var sparse_cell: Rect2 = canvas._ring_grid(canvas._formation_slot(canvas._own_region, 0, true), group.ring_count, true)[0].grow(-1)
+	var sparse_width: float = canvas.card_bounds(group.occupants[0]).size.x
+	_expect(is_equal_approx(sparse_width, minf(sparse_cell.size.x, sparse_cell.size.y * 0.75)) and sparse_width > canvas.card_bounds(own_cast).size.x, "Casting cards do not shrink analysis cards in spacious rings")
+	group.ring_count = 12
+	canvas.queue_redraw()
 	var capture_output: String = ""
 	var arguments: PackedStringArray = OS.get_cmdline_user_args()
 	for index: int in range(arguments.size() - 1):
@@ -517,7 +526,10 @@ func _run() -> void:
 		var occupied_rect: Rect2 = canvas.card_bounds(group.occupants[0])
 		_expect(canvas._own_casting_region.encloses(own_cast_rect), "casting cards stay inside the compact own track")
 		_expect(canvas._opponent_casting_region.encloses(opponent_cast_rect), "casting cards stay inside the compact opponent track")
-		_expect(own_cast_rect.size.is_equal_approx(opponent_cast_rect.size) and own_cast_rect.size.is_equal_approx(occupied_rect.size), "occupied analysis and casting cards share one portrait size: %s %s %s width=%f ring=%s" % [own_cast_rect.size, opponent_cast_rect.size, occupied_rect.size, canvas._field_card_width, canvas._ring_hits[0].rect])
+		var ring_cell: Rect2 = canvas._ring_grid(canvas._formation_slot(canvas._own_region, 0, true), group.ring_count, true)[0].grow(-1)
+		_expect(is_equal_approx(occupied_rect.size.x, minf(ring_cell.size.x, ring_cell.size.y * 0.75)), "Occupied analysis cards fit their smallest occupied ring")
+		var casting_width: float = (canvas._own_casting_region.size.y - 23 - 4) * 0.75
+		_expect(is_equal_approx(own_cast_rect.size.x, casting_width) and own_cast_rect.size.is_equal_approx(opponent_cast_rect.size), "Casting cards use the full height of each track independently of crowded rings")
 		_expect(is_equal_approx(own_cast_rect.position.y, opponent_cast_rect.position.y), "casting cards align across the central band")
 		var own_deck_hit: Rect2 = Rect2()
 		var own_side_hit: Rect2 = Rect2()

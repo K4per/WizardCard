@@ -531,13 +531,9 @@ func _run() -> void:
 		if canvas.has_method("_open_host_menu"):
 			await _check_expansion(canvas, group, field.attachments[formation.instance_id])
 		var hand_extent: Vector2 = canvas._hand_card_size(canvas.size.y * canvas.layout.hand_height_ratio)
-		for hand_hit: Dictionary in canvas._card_hits:
-			var hand_card_hit: CardPresentation = hand_hit.card
-			if not hand_card_hit.instance_id.begins_with("hand-"):
-				continue
-			var rest_rect: Rect2 = hand_hit.get("rest_rect", hand_hit.rect)
-			var visible_height: float = minf(rest_rect.end.y, canvas.size.y) - maxf(rest_rect.position.y, 0.0)
-			_expect(visible_height >= 20.0 and visible_height < hand_extent.y, "resting hand cards expose a clipped but hittable strip")
+		for card: CardPresentation in field.hand:
+			var bounds: Rect2 = canvas.card_bounds(card)
+			_expect(bounds.has_area() and Rect2(Vector2.ZERO, canvas.size).encloses(bounds), "resting hand cards fit entirely inside the window at " + str(dimensions))
 		var was_reduced: bool = UiFactory.reduced_motion
 		UiFactory.reduced_motion = true
 		for card: CardPresentation in field.hand:

@@ -559,7 +559,7 @@ func _draw_opponent_hand() -> void:
 	var band: Rect2 = _mirror(own_baseline)
 	_scene_region("OpponentHand", band)
 	for index: int in _fan_draw_order(count):
-		var pose: Transform2D = mirror * _hand_pose(index, count, start_x, stride, extent, false, false)
+		var pose: Transform2D = mirror * _hand_pose(index, count, start_x, stride, extent, false, true)
 		_opponent_hand_hits.append({"pose": pose, "rect": pose * rect, "local_rect": rect})
 		draw_set_transform_matrix(pose)
 		_draw_editor_card(rect)
@@ -1034,11 +1034,13 @@ func _hand_stride(width: float, count: int) -> float:
 	var hand_width: float = minf(size.x * layout.hand_width_ratio, maxf(width, size.x - hand_side_clearance * 2.0))
 	return maxf(0.0, minf(width * layout.hand_card_spacing_ratio, (hand_width - width) / maxi(1, count - 1)))
 
-func _hand_pose(index: int, count: int, start_x: float, stride: float, extent: Vector2, raised: bool, clipped: bool = true) -> Transform2D:
+func _hand_pose(index: int, count: int, start_x: float, stride: float, extent: Vector2, raised: bool, opponent: bool = false) -> Transform2D:
 	var fraction: float = (2.0 * index / (count - 1) - 1.0) if count > 1 else 0.0
 	var angle: float = deg_to_rad(minf(layout.fan_max_angle, (count - 1) * layout.fan_angle_per_card) * fraction)
 	var arch: float = layout.fan_arch_ratio if count > 1 else 0.0
-	var band: Rect2 = _hand_band(extent) if clipped else Rect2(0, size.y - extent.y, size.x, extent.y)
+	var band: Rect2 = Rect2(0, size.y - extent.y, size.x, extent.y)
+	if not opponent:
+		band = _scene_region("OwnHand", band)
 	var center: Vector2 = Vector2(start_x + index * stride, band.end.y - extent.y * (0.5 + arch) - layout.hand_bottom_margin + fraction * fraction * extent.y * layout.fan_edge_drop_ratio)
 	if raised:
 		center.y -= extent.y * layout.hover_raise_ratio
@@ -1046,13 +1048,10 @@ func _hand_pose(index: int, count: int, start_x: float, stride: float, extent: V
 	# A rotated Rect2 can extend past its unrotated center by a larger amount
 	# than either half dimension. Clamp the transformed bounding box so every
 	# real hit rectangle stays inside the full-screen field at every viewport.
-	center = _clamp_hand_center(center, angle, extent, clipped and not raised)
+	center = _clamp_hand_center(center, angle, extent)
 	return Transform2D(angle, center)
 
-func _hand_band(extent: Vector2) -> Rect2:
-	return _scene_region("OwnHand", Rect2(0, size.y - extent.y * 0.2, size.x, extent.y))
-
-func _clamp_hand_center(center: Vector2, angle: float, extent: Vector2, clipped: bool) -> Vector2:
+func _clamp_hand_center(center: Vector2, angle: float, extent: Vector2) -> Vector2:
 	var cosine: float = absf(cos(angle))
 	var sine: float = absf(sin(angle))
 	var half_width: float = cosine * extent.x * 0.5 + sine * extent.y * 0.5
@@ -1060,7 +1059,7 @@ func _clamp_hand_center(center: Vector2, angle: float, extent: Vector2, clipped:
 	var margin: float = 1.0
 	return Vector2(
 		clampf(center.x, half_width + margin, maxf(half_width + margin, size.x - half_width - margin)),
-		clampf(center.y, half_height + margin, maxf(half_height + margin, size.y + half_height - 20.0 if clipped else size.y - half_height - margin))
+		clampf(center.y, half_height + margin, maxf(half_height + margin, size.y - half_height - margin))
 	)
 
 func _draw_hand_card(index: int, start_x: float, stride: float, extent: Vector2, raised: bool, rest_order: int) -> void:

@@ -8,17 +8,32 @@
 #endif
 namespace wizard {
 namespace {
+// std::filesystem exception text uses the Windows ANSI code page. UI errors must be UTF-8.
+std::string writeError(const std::error_code &error) {
+    if (error == std::errc::permission_denied || error == std::errc::operation_not_permitted)
+        return "无法写入：没有写入权限";
+    if (error == std::errc::read_only_file_system) return "无法写入：文件系统为只读";
+    if (error == std::errc::file_exists) return "同名文件已存在";
+    if (error == std::errc::not_a_directory) return "路径中的一项不是目录";
+    if (error == std::errc::is_a_directory) return "目标文件名已被目录占用";
+    if (error == std::errc::no_space_on_device) return "存储空间不足";
+    return "无法写入：文件系统错误 " + std::to_string(error.value());
+}
+
 void writeJsonFile(const std::filesystem::path &path, const Json &j, bool replace) {
     std::error_code filesystemError;
     std::filesystem::create_directories(path.parent_path(), filesystemError);
-    if (filesystemError) throw std::runtime_error("无法创建用户数据目录：" + filesystemError.message());
+    if (filesystemError) throw std::runtime_error(writeError(filesystemError));
     static std::atomic<std::uint64_t> serial{};
     std::filesystem::path staging;
-    do {
+    for (;;) {
         staging = path.parent_path() / (".wizardcard-tmp-" +
             std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()) + "-" +
             std::to_string(serial++));
-    } while (!std::filesystem::create_directory(staging));
+        if (std::filesystem::create_directory(staging, filesystemError)) break;
+        if (filesystemError && filesystemError != std::errc::file_exists)
+            throw std::runtime_error(writeError(filesystemError));
+    }
     const auto temporary = staging / "data";
     try {
         {
@@ -42,7 +57,7 @@ void writeJsonFile(const std::filesystem::path &path, const Json &j, bool replac
         else std::filesystem::create_hard_link(temporary, path, filesystemError);
 #endif
         if (filesystemError)
-            throw std::filesystem::filesystem_error("无法保存用户数据文件", path, filesystemError);
+            throw std::runtime_error(writeError(filesystemError));
     } catch (...) {
         std::error_code ignored;
         std::filesystem::remove(temporary, ignored);

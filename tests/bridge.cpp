@@ -72,7 +72,11 @@ TEST_CASE("desktop keeps a surrendered match in memory until a named save or dep
     REQUIRE(saved.at("ok") == true);
     const auto path = isolated / "replays" / std::filesystem::u8path("测试对局.json");
     REQUIRE(desktop.verifyReplay(path).at("ok") == true);
-    CHECK_FALSE(desktop.saveReplay("测试对局.json").at("ok").get<bool>());
+    const auto duplicate = desktop.saveReplay("测试对局.json");
+    REQUIRE_FALSE(duplicate.at("ok").get<bool>());
+    CHECK_NOTHROW(duplicate.dump());
+    CHECK(duplicate.at("error").get<std::string>().find("同名文件已存在") != std::string::npos);
+    CHECK(duplicate.at("error").get<std::string>().find(path.u8string()) != std::string::npos);
     REQUIRE(desktop.leaveMatch(0, false).at("ok") == true);
     CHECK(std::filesystem::is_regular_file(path));
     CHECK_FALSE(desktop.snapshot(0).at("ok").get<bool>());
@@ -116,12 +120,29 @@ TEST_CASE("desktop can start on an unwritable path and recover without losing th
     REQUIRE(desktop.surrenderMatch(0).at("ok") == true);
     const auto failed = desktop.saveReplay("记录");
     CHECK_FALSE(failed.at("ok").get<bool>());
+    CHECK_NOTHROW(failed.dump());
     CHECK(failed.at("error").get<std::string>().find(blocked.lexically_normal().u8string()) != std::string::npos);
     CHECK(desktop.replayStatus().at("data").at("ready") == true);
     const auto replacement = f.directory / "replacement";
     REQUIRE(desktop.setSaveDirectory(replacement).at("ok") == true);
     REQUIRE(desktop.saveReplay("记录").at("ok") == true);
     REQUIRE(desktop.verifyReplay(replacement / "replays" / std::filesystem::u8path("记录.json")).at("ok") == true);
+}
+
+TEST_CASE("desktop deck save errors preserve the UTF-8 target and explain a write failure", "[bridge][desktop-storage]") {
+    Fixture f;
+    const auto saves = f.directory / std::filesystem::u8path("存档目标");
+    bridge::LocalSession desktop({}, {}, app::ReplayPersistence::Explicit);
+    REQUIRE(desktop.initialize(f.assets, f.directory / "profile", saves).at("ok") == true);
+    const auto draft = desktop.createDraft("default", 3).at("data");
+    const auto target = saves / "decks.json";
+    std::filesystem::create_directories(target);
+    const auto result = desktop.saveDraft(draft);
+    REQUIRE_FALSE(result.at("ok").get<bool>());
+    CHECK_NOTHROW(result.dump());
+    const auto detail = result.at("error").get<std::string>();
+    CHECK(detail.find(target.lexically_normal().u8string()) != std::string::npos);
+    CHECK((detail.find("无法写入") != std::string::npos || detail.find("目录") != std::string::npos));
 }
 
 TEST_CASE("desktop keeps old saves accessible when first migration fails", "[bridge][desktop-storage]") {

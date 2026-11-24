@@ -15,9 +15,14 @@ Json clockDto(const MatchClockView &);
 
 class LocalSession {
   public:
-    explicit LocalSession(RoomFactory roomFactory = {}, RoomFactory centralRoomFactory = {})
-        : roomFactory_(std::move(roomFactory)), centralRoomFactory_(std::move(centralRoomFactory)) {}
-    Json initialize(const std::filesystem::path &assets, const std::filesystem::path &userDirectory);
+    explicit LocalSession(RoomFactory roomFactory = {}, RoomFactory centralRoomFactory = {},
+                          app::ReplayPersistence replayPersistence = app::ReplayPersistence::Automatic)
+        : roomFactory_(std::move(roomFactory)), centralRoomFactory_(std::move(centralRoomFactory)),
+          replayPersistence_(replayPersistence) {}
+    Json initialize(const std::filesystem::path &assets, const std::filesystem::path &userDirectory,
+                    const std::filesystem::path &saveDirectory = {});
+    Json storageStatus() const;
+    Json setSaveDirectory(const std::filesystem::path &);
     Json start(const Json &options);
     Json snapshot(PlayerId viewer) const;
     Json queryActions(PlayerId viewer, const Json &intent, const std::string &generation, const std::string &revision);
@@ -33,6 +38,8 @@ class LocalSession {
     Json stepAi(const std::string &generation, const std::string &revision);
     Json continueTutorial(const std::string &generation, const std::string &revision);
     Json saveReplay() const;
+    Json saveReplay(const std::string &filename) const;
+    Json replayStatus() const;
     Json restart(std::uint32_t seed);
     Json release();
     Json library() const;
@@ -42,7 +49,8 @@ class LocalSession {
     Json eraseDraft(const std::string &);
     Json query(const Json &) const;
     Json applySettings(const Json &);
-    Json leaveMatch(PlayerId);
+    Json surrenderMatch(PlayerId);
+    Json leaveMatch(PlayerId, bool saveReplay = false);
     Json interact(PlayerId, const Json &, const std::string &generation, const std::string &revision);
     Json networkRequest(const Json &request);
     Json pollNetwork();
@@ -90,6 +98,7 @@ class LocalSession {
     mutable bool replaySaveHealthy_{true};
     RoomFactory roomFactory_;
     RoomFactory centralRoomFactory_;
+    app::ReplayPersistence replayPersistence_;
     void prepareReplay(const std::filesystem::path &) const;
     bool visibleTo(PlayerId viewer) const;
     bool current(const std::string &generation, const std::string &revision) const;

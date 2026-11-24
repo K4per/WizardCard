@@ -1,5 +1,7 @@
 extends SceneTree
 
+const HandInput = preload("res://tests/hand_input.gd")
+
 var app: WizardFrontend
 var _capture: bool = false
 var _output: String = ""
@@ -137,7 +139,7 @@ func _run() -> void:
 	await process_frame
 	if not _expect(match_page.canvas.selected_id.is_empty() and match_page._detail.visible and match_page._detail.card == null and not match_page._action_popup.visible, "Escape clears the selected card context"):
 		return
-	var second_point: Vector2 = match_page.canvas.global_position + match_page.canvas.card_bounds(second_card).get_center()
+	var second_point: Vector2 = HandInput.point(match_page.canvas, second_card)
 	var second_motion: InputEventMouseMotion = InputEventMouseMotion.new()
 	second_motion.position = second_point
 	second_motion.global_position = second_point
@@ -250,7 +252,7 @@ func _run() -> void:
 	if not _expect(str(app.service.match_snapshot.get("revision", "")) == str(app.service.snapshot().get("revision", "")), "replay leaves live match unchanged"):
 		return
 	await _capture_page("replay")
-	if not _expect(app.service.leave_match(), "leave hotseat: " + app.service.error):
+	if not _expect(app.service.surrender_match() and app.service.leave_match(), "leave hotseat: " + app.service.error):
 		return
 	app.navigate(&"setup")
 	await process_frame
@@ -264,7 +266,7 @@ func _run() -> void:
 	if not _expect(app.service.snapshot(1).is_empty(), "AI opponent projection stays private"):
 		return
 	app.service.match_viewer = 0
-	if not _expect(app.service.save_replay() and app.service.leave_match(), "AI match leaves with saved replay"):
+	if not _expect(app.service.surrender_match() and app.service.save_replay() and app.service.leave_match(), "AI match leaves with saved replay"):
 		return
 	app.navigate(&"guide")
 	await process_frame
@@ -312,7 +314,7 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 	match_page._clear_card()
 	await process_frame
 	await process_frame
-	var point: Vector2 = match_page.canvas.global_position + match_page.canvas.card_bounds(playable).get_center()
+	var point: Vector2 = HandInput.point(match_page.canvas, playable)
 	_mouse_button(point, true)
 	_mouse_button(point, false)
 	await process_frame
@@ -334,7 +336,7 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 			await process_frame
 			if not _expect(match_page._selected == null and not match_page._action_popup.visible, "Escape clears card actions before reselection"):
 				return false
-			point = match_page.canvas.global_position + match_page.canvas.card_bounds(playable).get_center()
+			point = HandInput.point(match_page.canvas, playable)
 			_mouse_button(point, true)
 			_mouse_button(point, false)
 			# Compare the endpoint of the hand raise, not two intermediate poses.
@@ -346,7 +348,7 @@ func _exercise_card_input(match_page: MatchPage) -> bool:
 			return false
 	var selected_bounds: Rect2 = match_page.canvas.card_bounds(playable)
 	var selected_top: float = match_page.canvas.global_position.y + selected_bounds.position.y
-	if not _expect(absf(match_page._action_popup.get_global_rect().end.y + 8.0 - selected_top) < 1.0, "card actions follow the raised hand card after redraw"):
+	if not _expect(absf(match_page._action_popup.get_global_rect().end.y + 8.0 - selected_top) < 1.0, "card actions follow the selected hand card after redraw"):
 		return false
 	await _capture_page("card-actions")
 	var action_button: Button = match_page._action_list.get_child(0) as Button

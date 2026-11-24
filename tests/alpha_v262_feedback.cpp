@@ -167,8 +167,51 @@ TEST_CASE("Fireball feedback separates prevented damage from the Death Ward life
         CHECK(state.players[1].life == (ward ? 1 : 0));
         CHECK(state.players[1].temporaryLife == (ward ? 1 : 0));
         CHECK(std::any_of(state.events.begin(), state.events.end(), [ward](const GameEvent &event) {
-            return event.kind == "life_delta" && event.affectedPlayer == 1 && event.actualAmount == (ward ? -3 : -4);
+            return event.kind == "life_delta" && event.affectedPlayer == 1 && event.actualAmount == (ward ? -3 : -4) &&
+                bridge::eventDto(event).value("damageType", std::string{}) == (ward ? "" : "fire");
         }));
+    }
+}
+
+TEST_CASE("Typed life deltas survive local, recording and network event projection", "[damage-feedback]") {
+    const auto catalog = feedbackCatalog();
+    const std::pair<DamageType, const char *> types[] = {
+        {DamageType::Fire, "fire"}, {DamageType::Cold, "cold"}, {DamageType::Acid, "acid"},
+        {DamageType::Radiant, "radiant"}, {DamageType::Necrotic, "necrotic"}, {DamageType::Poison, "poison"},
+        {DamageType::Lightning, "lightning"}, {DamageType::Psychic, "psychic"}, {DamageType::Thunder, "thunder"},
+        {DamageType::Force, "force"}, {DamageType::Slashing, "slashing"}, {DamageType::Bludgeoning, "bludgeoning"},
+        {DamageType::Piercing, "piercing"},
+    };
+    for (const auto &[type, id] : types) {
+        CAPTURE(id);
+        auto state = feedbackState();
+        ResourceRules::grantTemporaryLife(state, 0, 0, 3, 3);
+        Trigger trigger;
+        trigger.owner = 1;
+        trigger.targetPlayer = 0;
+        EffectResolver::apply(state, catalog, trigger, {EffectKind::Damage, 1, type}); // Fully absorbed.
+        EffectResolver::apply(state, catalog, trigger, {EffectKind::Damage, 5, type}); // Two shield, three life.
+        state.players[0].nextDamageImmune = true;
+        EffectResolver::apply(state, catalog, trigger, {EffectKind::Damage, 5, type});
+        const EventBatch batch{1, 0, state.events.size(), false, state.events};
+        const auto received = net::decodeEvents(net::encodeEvents(batch));
+        REQUIRE(received.events.size() == state.events.size());
+        int lifeDeltas = 0;
+        for (std::size_t i = 0; i < state.events.size(); ++i) {
+            const auto &event = state.events[i];
+            const auto local = bridge::eventDto(event);
+            CHECK(bridge::eventDto(received.events[i]) == local);
+            if (event.kind == "life_delta") {
+                ++lifeDeltas;
+                CHECK(local.at("affectedPlayer") == 0);
+                CHECK(local.at("actualAmount") == -3);
+                CHECK(local.value("damageType", std::string{}) == id);
+                CHECK(encodeEvent(event).value("damageType", std::string{}) == id);
+            } else {
+                CHECK_FALSE(local.contains("damageType"));
+            }
+        }
+        CHECK(lifeDeltas == 1);
     }
 }
 

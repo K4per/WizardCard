@@ -26,6 +26,11 @@ var _status_own: PlayerStatusBar
 var _status_opponent: PlayerStatusBar
 var _logs_panel: PanelContainer
 var _logs_text: RichTextLabel
+@onready var _play: Button = %Play
+@onready var _speed: OptionButton = %Speed
+@onready var _progress: HSlider = %Progress
+@onready var _timer: Timer = $PlaybackTimer
+var _dragging_progress: bool = false
 
 func _ready() -> void:
 	_files = %Files
@@ -41,8 +46,17 @@ func _ready() -> void:
 	(%Hand as Button).pressed.connect(_toggle_hand)
 	(%Back as Button).pressed.connect(_return)
 	(%Load as Button).pressed.connect(_load)
-	_previous.pressed.connect(_move.bind(-1))
-	_next.pressed.connect(_move.bind(1))
+	_files.item_selected.connect(func(_index: int) -> void: _load())
+	_previous.pressed.connect(_manual_move.bind(-1))
+	_next.pressed.connect(_manual_move.bind(1))
+	_play.pressed.connect(_toggle_playback)
+	for multiplier: int in [1, 2, 4]:
+		_speed.add_item("%d×" % multiplier, multiplier)
+	_speed.item_selected.connect(_change_speed)
+	_progress.drag_started.connect(_begin_seek)
+	_progress.drag_ended.connect(_end_seek)
+	_progress.value_changed.connect(_progress_changed)
+	_timer.timeout.connect(_advance_playback)
 	_viewer.add_item("玩家一视角")
 	_viewer.add_item("玩家二视角")
 	_viewer.item_selected.connect(_viewer_changed)
@@ -72,7 +86,7 @@ func configure(value: FrontendService) -> void:
 	service = value
 	_paths.clear()
 	_files.clear()
-	var directory: String = service.user_directory.path_join("replays").replace("\\", "/").simplify_path()
+	var directory: String = service.replay_directory.replace("\\", "/").simplify_path()
 	var access: DirAccess = DirAccess.open(directory)
 	if access != null:
 		var files: PackedStringArray = access.get_files()
@@ -87,27 +101,14 @@ func configure(value: FrontendService) -> void:
 		if index >= 0:
 			_files.select(index)
 	if _paths.is_empty():
-		_notice.text = "暂无已保存的复盘。"
+		_notice.text = "暂无已保存的复盘。\n" + directory
 	else:
 		_load()
 
 func _load() -> void:
+	_reset_replay()
 	if _files.selected < 0 or _files.selected >= _paths.size():
 		return
-	_path = ""
-	_table.clear_feedback()
-	_rows.clear()
-	_frame_cache.clear()
-	_frame = {}
-	_table.show_frame({})
-	_status_own.hide()
-	_status_opponent.hide()
-	_table.clock.text = ""
-	_update_logs({})
-	_command.clear()
-	_canvas.configure(FieldPresentation.new())
-	_step = 0
-	_hide_detail()
 	var path: String = _paths[_files.selected]
 	# read_replay_plan validates every digest and builds the seek checkpoints.
 	var plan: Dictionary = service.match_request(&"read_replay_plan", [path])
@@ -121,8 +122,70 @@ func _load() -> void:
 		return
 	_path = path
 	_rows.assign((plan.get("data", {}) as Dictionary).get("commands", []))
-	_notice.text = "验证通过 · %d 步 · 逐步浏览完整对局" % _rows.size()
+	_notice.text = "验证通过 · %d 步" % _rows.size()
 	_step = 0
+	_show_frame()
+
+func _reset_replay() -> void:
+	_path = ""
+	_stop_playback()
+	_dragging_progress = false
+	_rows.clear()
+	_frame_cache.clear()
+	_frame.clear()
+	_table.clear_feedback()
+	_table.show_frame({})
+	_status_own.hide()
+	_status_opponent.hide()
+	_table.clock.text = ""
+	_update_logs({})
+	_command.clear()
+	_canvas.configure(FieldPresentation.new())
+	_step = 0
+	_hide_detail()
+	_update_controls()
+
+func _toggle_playback() -> void:
+	if not _timer.is_stopped():
+		_stop_playback()
+	elif not _path.is_empty() and _step < _rows.size():
+		_timer.start(1.0 / float(_speed.get_selected_id()))
+		_play.text = "暂停"
+
+func _change_speed(index: int) -> void:
+	_speed.select(index)
+	if not _timer.is_stopped():
+		_timer.start(1.0 / float(_speed.get_selected_id()))
+
+func _stop_playback() -> void:
+	_timer.stop()
+	_play.text = "播放"
+
+func _advance_playback() -> void:
+	_move(1)
+
+func _manual_move(delta: int) -> void:
+	_stop_playback()
+	_move(delta)
+
+func _begin_seek() -> void:
+	_stop_playback()
+	_dragging_progress = true
+
+func _end_seek(changed: bool) -> void:
+	_dragging_progress = false
+	if changed:
+		_seek(int(_progress.value))
+
+func _progress_changed(value: float) -> void:
+	if not _dragging_progress:
+		_seek(int(value))
+
+func _seek(step: int) -> void:
+	if _path.is_empty():
+		return
+	_stop_playback()
+	_step = clampi(step, 0, _rows.size())
 	_show_frame()
 
 func _move(delta: int) -> void:
@@ -130,6 +193,8 @@ func _move(delta: int) -> void:
 	var sequential: bool = next == _step + 1
 	_step = next
 	_show_frame(sequential)
+	if _step >= _rows.size():
+		_stop_playback()
 
 func _viewer_changed(_index: int) -> void:
 	_show_frame()
@@ -145,10 +210,12 @@ func _show_frame(sequential: bool = false) -> void:
 		var response: Dictionary = service.match_request(&"replay_frame", [_path, _step, _viewer.selected])
 		if not bool(response.get("ok", false)):
 			_notice.text = "无法显示此步骤：" + service.error
+			_reset_replay()
 			return
 		frame = (response.get("data", {}) as Dictionary).duplicate(true)
 		if int(frame.get("schema", -1)) != KernelContract.SCHEMA:
 			_notice.text = "复盘数据版本不匹配，请更新客户端。"
+			_reset_replay()
 			return
 		if _frame_cache.size() >= 16:
 			_frame_cache.erase(_frame_cache.keys()[0])
@@ -197,6 +264,11 @@ func _update_controls() -> void:
 	_previous.disabled = _path.is_empty() or _step <= 0
 	_next.disabled = _path.is_empty() or _step >= _rows.size()
 	_position.text = "%d / %d" % [_step, _rows.size()]
+	_play.disabled = _next.disabled
+	_speed.disabled = _path.is_empty() or _rows.is_empty()
+	_progress.editable = not _speed.disabled
+	_progress.max_value = _rows.size()
+	_progress.set_value_no_signal(_step)
 
 func _show_detail(card: CardPresentation) -> void:
 	_canvas.selected_id = card.instance_id
@@ -221,4 +293,9 @@ func _toggle_hand() -> void:
 	_canvas.set_hand_collapsed(not _canvas.hand_collapsed)
 
 func _return() -> void:
+	_stop_playback()
 	navigation_requested.emit(&"match" if service != null and service.match_active else &"menu")
+
+func _exit_tree() -> void:
+	if is_instance_valid(_timer):
+		_timer.stop()

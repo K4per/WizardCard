@@ -114,6 +114,7 @@ Json encodeEvent(const GameEvent &e) {
         {"card", e.card}, {"amount", e.amount}, {"actualAmount", e.actualAmount},
         {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
         {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}, {"chainIndex", e.chainIndex}};
+    if (e.damageType) row["damageType"] = damageTypeId(*e.damageType);
     if (e.travel) {
         const auto &m = *e.travel;
         row["travel"] = {{"from", m.from}, {"to", m.to}, {"fromPlayer", m.fromPlayer},
@@ -161,11 +162,14 @@ GameEngine replay(const Content &c, const Json &j,
     const bool currentRules = (c.catalog.rulesVersion == "2.6.0" && c.catalog.mechanicsRevision == 10) ||
         (c.catalog.rulesVersion == "2.6.2" && c.catalog.mechanicsRevision == 11) ||
         (c.catalog.rulesVersion == "2.6.4-hotfix.1" && c.catalog.mechanicsRevision == 13);
+    const bool compatibleProgram = j.at("programVersion") == programVersion ||
+        (format == 6 && c.catalog.rulesVersion == "2.6.4-hotfix.1" && c.catalog.mechanicsRevision == 13 &&
+         j.at("programVersion") == "2.6.4-hotfix.1");
     if ((!legacy && format != (c.catalog.mechanicsRevision >= 12 ? 6 : 5)) ||
         (legacy && (!legacyRules || j.at("programVersion") != "2.5.5-hotfix.1" ||
                     j.at("rulesVersion") != "2.5.5" ||
                     (j.contains("mechanicsRevision") && j.at("mechanicsRevision") != 9))) ||
-        (!legacy && (!currentRules && !legacyRules || j.at("programVersion") != programVersion ||
+        (!legacy && ((!currentRules && !legacyRules) || !compatibleProgram ||
                      j.at("contentSchema") != 1 || j.at("commandSchema") != 1 || j.at("digestSchema") != (c.catalog.mechanicsRevision >= 12 ? 4 : c.catalog.mechanicsRevision >= 11 ? 3 : 2) ||
                      j.at("mechanicsRevision") != c.catalog.mechanicsRevision ||
                      j.at("rulesVersion") != c.catalog.rulesVersion)) ||

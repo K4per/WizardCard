@@ -5,16 +5,18 @@
 
 namespace wizard {
 namespace {
-void resourceDelta(MutationContext &s, PlayerId p, const char *kind, int delta) {
+void resourceDelta(MutationContext &s, PlayerId p, const char *kind, int delta,
+                   std::optional<DamageType> damageType = std::nullopt) {
     if (!delta) return;
     GameEvent event{kind, ""};
     event.affectedPlayer = p;
     event.actualAmount = delta;
+    event.damageType = damageType;
     s.events.push_back(std::move(event));
 }
 }
-void ResourceRules::setLife(MutationContext &s, PlayerId p, int value) {
-    resourceDelta(s, p, "life_delta", value - s.players[p].life);
+void ResourceRules::setLife(MutationContext &s, PlayerId p, int value, std::optional<DamageType> damageType) {
+    resourceDelta(s, p, "life_delta", value - s.players[p].life, damageType);
     s.players[p].life = value;
 }
 void ResourceRules::gainMana(MutationContext &s, PlayerId p, int amount) {

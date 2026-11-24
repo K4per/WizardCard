@@ -55,6 +55,105 @@ TEST_CASE("bridge IDs preserve the complete unsigned 64 bit range without floati
     REQUIRE(view.at("decision").at("id") == dto.at("decision"));
     REQUIRE(view.at("chain").at("id") == dto.at("decision"));
 }
+TEST_CASE("desktop keeps a surrendered match in memory until a named save or departure", "[bridge][desktop-storage]") {
+    Fixture f;
+    bridge::LocalSession desktop({}, {}, app::ReplayPersistence::Explicit);
+    const auto isolated = f.directory / "desktop";
+    REQUIRE(desktop.initialize(f.assets, isolated).at("ok") == true);
+    REQUIRE(desktop.start({{"seed", 71}}).at("ok") == true);
+    CHECK_FALSE(std::filesystem::exists(isolated / "replays"));
+    REQUIRE(desktop.surrenderMatch(0).at("ok") == true);
+    CHECK(desktop.snapshot(0).at("data").at("result") == 1);
+    CHECK(desktop.replayStatus().at("data").at("ready") == true);
+    CHECK_FALSE(std::filesystem::exists(isolated / "replays"));
+    CHECK_FALSE(desktop.saveReplay("../escaped").at("ok").get<bool>());
+    CHECK_FALSE(desktop.saveReplay("CON.json").at("ok").get<bool>());
+    const auto saved = desktop.saveReplay("测试对局");
+    REQUIRE(saved.at("ok") == true);
+    const auto path = isolated / "replays" / std::filesystem::u8path("测试对局.json");
+    REQUIRE(desktop.verifyReplay(path).at("ok") == true);
+    CHECK_FALSE(desktop.saveReplay("测试对局.json").at("ok").get<bool>());
+    REQUIRE(desktop.leaveMatch(0, false).at("ok") == true);
+    CHECK(std::filesystem::is_regular_file(path));
+    CHECK_FALSE(desktop.snapshot(0).at("ok").get<bool>());
+}
+
+TEST_CASE("desktop save directory migrates without overwriting and keeps settings in the user directory", "[bridge][desktop-storage]") {
+    Fixture f;
+    const auto saves = f.directory / "portable";
+    const auto settings = f.directory / "profile";
+    const auto relocated = f.directory / std::filesystem::u8path("另选存档");
+    writeAtomicJson(settings / "replays" / "same.json", {{"value", 1}});
+    writeAtomicJson(settings / "replays" / "old.json", {{"value", 2}});
+    writeAtomicJson(saves / "replays" / "same.json", {{"value", 3}});
+    writeAtomicJson(settings / "technical-pause.json", {{"value", 4}});
+    bridge::LocalSession desktop({}, {}, app::ReplayPersistence::Explicit);
+    REQUIRE(desktop.initialize(f.assets, settings).at("ok") == true);
+    const auto draft = desktop.createDraft("default", 3).at("data");
+    REQUIRE(desktop.saveDraft(draft).at("ok") == true);
+    REQUIRE(desktop.initialize(f.assets, settings, saves).at("ok") == true);
+    CHECK(desktop.library().at("data").at("drafts").size() == 1);
+    CHECK(readJson(saves / "replays" / "same.json").at("value") == 3);
+    CHECK(readJson(saves / "replays" / "old.json").at("value") == 2);
+    CHECK(readJson(settings / "replays" / "same.json").at("value") == 1);
+    CHECK_FALSE(std::filesystem::exists(saves / "technical-pause.json"));
+    REQUIRE(desktop.setSaveDirectory(relocated).at("ok") == true);
+    CHECK(readJson(relocated / "replays" / "same.json").at("value") == 3);
+    REQUIRE(desktop.initialize(f.assets, settings, saves).at("ok") == true);
+    CHECK(std::filesystem::equivalent(
+        std::filesystem::u8path(desktop.storageStatus().at("data").at("saveDirectory").get<std::string>()), relocated));
+    REQUIRE(desktop.initialize(f.assets, settings).at("ok") == true);
+    CHECK(desktop.storageStatus().at("data").at("saveDirectory") == settings.u8string());
+}
+
+TEST_CASE("desktop can start on an unwritable path and recover without losing the finished recording", "[bridge][desktop-storage]") {
+    Fixture f;
+    const auto blocked = f.directory / "blocked";
+    writeAtomicJson(blocked, {{"value", 1}});
+    bridge::LocalSession desktop({}, {}, app::ReplayPersistence::Explicit);
+    REQUIRE(desktop.initialize(f.assets, f.directory / "empty-profile", blocked).at("ok") == true);
+    REQUIRE(desktop.start({{"mode", "ai"}, {"seed", 42}}).at("ok") == true);
+    REQUIRE(desktop.surrenderMatch(0).at("ok") == true);
+    const auto failed = desktop.saveReplay("记录");
+    CHECK_FALSE(failed.at("ok").get<bool>());
+    CHECK(failed.at("error").get<std::string>().find(blocked.lexically_normal().u8string()) != std::string::npos);
+    CHECK(desktop.replayStatus().at("data").at("ready") == true);
+    const auto replacement = f.directory / "replacement";
+    REQUIRE(desktop.setSaveDirectory(replacement).at("ok") == true);
+    REQUIRE(desktop.saveReplay("记录").at("ok") == true);
+    REQUIRE(desktop.verifyReplay(replacement / "replays" / std::filesystem::u8path("记录.json")).at("ok") == true);
+}
+
+TEST_CASE("desktop keeps old saves accessible when first migration fails", "[bridge][desktop-storage]") {
+    Fixture f;
+    const auto blocked = f.directory / "blocked";
+    const auto profile = f.directory / "profile";
+    writeAtomicJson(blocked, {{"value", 1}});
+    bridge::LocalSession desktop({}, {}, app::ReplayPersistence::Explicit);
+    REQUIRE(desktop.initialize(f.assets, profile).at("ok") == true);
+    REQUIRE(desktop.saveDraft(desktop.createDraft("default", 3).at("data")).at("ok") == true);
+    REQUIRE(desktop.initialize(f.assets, profile, blocked).at("ok") == true);
+    CHECK(desktop.library().at("data").at("drafts").size() == 1);
+    CHECK(std::filesystem::equivalent(
+        std::filesystem::u8path(desktop.storageStatus().at("data").at("saveDirectory").get<std::string>()), profile));
+    CHECK_FALSE(desktop.storageStatus().at("data").at("notice").get<std::string>().empty());
+    const auto replacement = f.directory / "replacement";
+    REQUIRE(desktop.setSaveDirectory(replacement).at("ok") == true);
+    REQUIRE(std::filesystem::is_regular_file(replacement / "decks.json"));
+}
+
+TEST_CASE("2.6.5 reads the published 2.6.4-hotfix.1 recording with exact compatibility checks", "[bridge][desktop-storage]") {
+    const auto root = std::filesystem::path(WIZARD_SOURCE_DIR);
+    const auto content = loadContent(root / "assets" / "release-v260");
+    const auto recorded = readJson(root / "docs" / "reports" / "2.6.4-hotfix.1" / "network-replay.json");
+    REQUIRE(recorded.at("programVersion") == "2.6.4-hotfix.1");
+    CHECK(replay(content, recorded).digest() == recorded.at("finalDigest").get<std::string>());
+    for (const auto *key : {"programVersion", "cardSetVersion", "rulesVersion", "contentHash", "digestSchema", "finalDigest"}) {
+        auto altered = recorded;
+        altered[key] = "unexpected";
+        CHECK_THROWS(replay(content, altered));
+    }
+}
 TEST_CASE("bridge selection does not pay and duplicate confirmation cannot submit twice") {
     Fixture f; const auto before = f.actingView();
     REQUIRE(f.select(before).at("ok") == true);

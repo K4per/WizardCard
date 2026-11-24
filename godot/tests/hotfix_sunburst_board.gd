@@ -1,5 +1,6 @@
 extends "res://tests/hotfix_interactions.gd"
 
+const HandInput = preload("res://tests/hand_input.gd")
 const SUN: String = "v260-analytic-0009"
 const FUEL: String = "v260-analytic-0001"
 
@@ -113,7 +114,19 @@ func inspect_board() -> void:
 	for id: String in [first_id,other_id]:
 		var actual: CardPresentation = MatchProjection.card(service.match_snapshot,id)
 		var bounds: Rect2 = page.canvas.card_bounds(actual)
-		await click(page.canvas.global_position + bounds.get_center())
+		var point: Vector2 = page.canvas.global_position + bounds.get_center()
+		if id == other_id:
+			actual = page.canvas.field.hand[0]
+			point = HandInput.point(page.canvas, actual)
+			var motion: InputEventMouseMotion = InputEventMouseMotion.new()
+			motion.position = point
+			root.push_input(motion, true)
+			await create_timer(0.2).timeout
+			await settle()
+			bounds = page.canvas.card_bounds(actual)
+			check(Rect2(Vector2.ZERO, page.canvas.size).encloses(bounds), "Hovered hand card is fully visible before detail selection")
+			point = page.canvas.global_position + bounds.get_center()
+		await click(point)
 		if page._action_popup.visible:
 			page._action_popup.hide()
 		await settle()

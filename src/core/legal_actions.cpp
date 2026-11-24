@@ -211,8 +211,10 @@ void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const Le
                         if (controllerOf(material) == p && (material.zone == Zone::Analysis || material.zone == Zone::Casting ||
                         material.zone == Zone::Hand))
                         pool.push_back(materialId);
-                auto choose = [&](auto &&self, std::size_t pos) -> void {
+                const auto required = detail::intentPrefix(intent, ActionField::Material);
+                auto choose = [&](auto &&self, std::size_t pos, std::size_t remaining) -> void {
                     if (static_cast<int>(selected.size()) == count) {
+                        if (remaining) return;
                         auto add_formation = [&](CardId replace) {
                             if (!detail::intentAllows(intent, ActionField::Replacement, replace)) return;
                             if (!validate(p, SetFormation{id, replace, selected}).empty()) return;
@@ -229,13 +231,14 @@ void GameEngine::visitLegalActions(PlayerId p, const std::function<bool(const Le
                                 add_formation(host);
                         return;
                     }
-                    const auto prefix = detail::intentPrefix(intent, ActionField::Material);
+                    if (count - static_cast<int>(selected.size()) < static_cast<int>(remaining)) return;
                     for (std::size_t i = pos; i < pool.size(); ++i) {
-                        if (selected.size() < prefix.size() && pool[i] != prefix[selected.size()]) continue;
-                        selected.push_back(pool[i]); self(self, i + 1); selected.pop_back();
+                        const bool mandatory = std::find(required.begin(), required.end(), pool[i]) != required.end();
+                        selected.push_back(pool[i]); self(self, i + 1, remaining - mandatory); selected.pop_back();
+                        if (mandatory) break;
                     }
                 };
-                if (count <= 5 && s.phase == Phase::Main) choose(choose, 0);
+                if (count <= 5 && s.phase == Phase::Main) choose(choose, 0, required.size());
             }
             if (card.zone == Zone::Hand && (!selectedOperation || *selectedOperation == static_cast<unsigned>(CommandKind::SetAmbush) || *selectedOperation == static_cast<unsigned>(CommandKind::StartAnalysis) || *selectedOperation == static_cast<unsigned>(CommandKind::PreloadWord) || *selectedOperation == static_cast<unsigned>(CommandKind::AttachSeal))) {
                 for (const auto &[host, formation] : s.cards) {

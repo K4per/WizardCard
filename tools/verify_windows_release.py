@@ -67,12 +67,22 @@ def verify_network(output, evidence, args):
             clients.append(read_json(evidence / (role + ".json")))
             assert clients[-1]["phase"] == "completed" and clients[-1]["replayDelivered"]
             assert clients[-1]["releasedSpellObserved"], "Both clients must observe a real spell resolution"
-            replays = list((evidence / (role + "-data/replays")).glob("network-*.json"))
-            assert len(replays) == 1, (role, replays)
-            recordings.append(read_json(replays[0]))
-        assert recordings[0] == recordings[1], "Both clients must receive the same verified replay"
+            assert clients[-1]["left"] and clients[-1]["settlement"], clients[-1]
+            replays = list((evidence / (role + "-data/replays")).glob("*.json"))
+            if role == "host":
+                assert len(replays) == 1 and replays[0].name == "联机验收.json", (role, replays)
+                recordings.append(read_json(replays[0]))
+            else:
+                assert not replays and clients[-1]["savedPath"] == "", (role, replays)
         recording = recordings[0]
-        for name in ("programVersion", "rulesVersion", "cardSetVersion"):
+        reasons = [event["text"].strip() for event in recording["events"]
+                   if event["kind"] in ("defeat_reason", "timeout", "seven_lamp_defeat")
+                   or event["kind"] == "game_over" and event["text"].startswith("强制循环")]
+        assert reasons, "Terminal replay has no authoritative reason"
+        for client in clients:
+            assert all(reason in client["settlement"] for reason in reasons), (client["settlement"], reasons)
+        assert recording["programVersion"] == "2.6.5", recording["programVersion"]
+        for name in ("rulesVersion", "cardSetVersion"):
             assert recording[name] == "2.6.4-hotfix.1", (name, recording[name])
         assert recording["digestSchema"] == 4 and recording["mechanicsRevision"] == 13
         commands = Counter(item["command"]["type"] for item in recording["commands"])
@@ -82,7 +92,7 @@ def verify_network(output, evidence, args):
         assert commands[17] + commands[5] > 0, "The match must include a real spell activation"
         return {"endpoint": f"{args.server_host or 'aq.rainplay.cn'}:{args.server_port}", "room": room,
                 "clients": clients, "commands": dict(commands), "commandCount": sum(commands.values()),
-                "matchingReplayDigest": recording["finalDigest"], "identicalReplay": True,
+                "replayDigest": recording["finalDigest"], "independentSaveChoices": True,
                 "verifiedManualReconnects": 2, "unexpectedDisconnects": 0}
     finally:
         for process in processes:
@@ -125,7 +135,8 @@ def main():
         assert set(inventory) == {p.relative_to(output).as_posix() for p in output.rglob("*")
                                   if p.is_file() and p.name != "SHA256.json"}
         release = read_json(output / "RELEASE.json")
-        for name in ("packageVersion", "programVersion", "rulesVersion", "cardSetVersion"):
+        assert release["packageVersion"] == release["programVersion"] == "2.6.5"
+        for name in ("rulesVersion", "cardSetVersion"):
             assert release[name] == "2.6.4-hotfix.1", (name, release[name])
         assert release["contentHash"] == "54d3d845557007f7" and release["mechanicsRevision"] == 13
         assert release["bridgeSha256"] == digest(output / "bin/wizard_godot_bridge.release.dll")

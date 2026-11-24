@@ -3,7 +3,7 @@ services:
     build:
       context: ..
       dockerfile: deploy/Dockerfile
-    image: wizardcard-central-server:2.6.4-hotfix.1
+    image: wizardcard-central-server:2.6.5
     restart: unless-stopped
     read_only: true
     tmpfs:

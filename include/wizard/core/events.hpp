@@ -22,5 +22,6 @@ struct GameEvent {
     int chainIndex{}; // Public, one-based position in the current chain.
     std::optional<CardTravel> travel{};
     std::vector<CardId> publicTargets{};
+    std::optional<DamageType> damageType{}; // Set on life_delta when typed damage removes ordinary life.
 };
 } // namespace wizard

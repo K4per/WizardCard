@@ -28,6 +28,8 @@ var _pool_page_label: Label
 var _save: Button
 var _back: Button
 var _notice: Button
+var _storage_picker: FileDialog
+var _storage_button: Button
 var _dialog: DeckDialog
 var _dialog_kind: String = ""
 var _leave_quits: bool = false
@@ -194,6 +196,17 @@ func _build_interface() -> void:
 	_notice.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_notice.clip_text = true
 	footer.add_child(_notice)
+	_storage_picker = FileDialog.new()
+	_storage_picker.title = "选择存档目录"
+	_storage_picker.file_mode = FileDialog.FILE_MODE_OPEN_DIR
+	_storage_picker.access = FileDialog.ACCESS_FILESYSTEM
+	_storage_picker.dir_selected.connect(_deck_storage_chosen)
+	add_child(_storage_picker)
+	_storage_button = UiFactory.button("选择存档目录", func() -> void:
+		_storage_picker.current_dir = service.save_directory
+		_storage_picker.popup_centered_ratio(0.7))
+	_storage_button.hide()
+	footer.add_child(_storage_button)
 	_back = _button("返回卡组列表")
 	_back.custom_minimum_size.x = 160
 	footer.add_child(_back)
@@ -321,9 +334,13 @@ func _refresh() -> void:
 	_state.text = "尚未保存" if service.draft_dirty() else "已保存"
 	_save.text = "保存卡组 / 草稿 *" if service.draft_dirty() else "已保存 · 再次保存"
 	_save.disabled = not service.writable
+	_storage_button.visible = service.can_choose_save_directory and not service.writable
 	var problems: Array[String] = service.draft_problems()
 	_notice.text = "构筑检查通过" if problems.is_empty() else problems[0] + " · 查看详情"
 	_notice.tooltip_text = "\n".join(problems)
+	if not service.writable:
+		_notice.text = service.save_directory + " · " + service.notice
+		_notice.tooltip_text = _notice.text
 	_refresh_pool()
 
 func _refresh_pool() -> void:
@@ -397,13 +414,23 @@ func _adjust(id: String, delta: int, source_section: String) -> void:
 
 func _save_draft() -> bool:
 	if not service.save_draft():
-		_notice.text = service.error
+		_notice.text = service.save_directory + " · " + service.error
+		_notice.tooltip_text = _notice.text
+		_storage_button.visible = service.can_choose_save_directory
 		UiFactory.flash(_notice, Color("f1aaa0"))
 		return false
+	_storage_button.hide()
 	_refresh()
 	_notice.text = "卡组已保存" if service.draft_problems().is_empty() else "草稿已保存，请补齐主／副卡组"
 	UiFactory.flash(_save)
 	return true
+
+func _deck_storage_chosen(directory: String) -> void:
+	if service.set_save_directory(directory):
+		_save_draft()
+	else:
+		_notice.text = directory + " · " + service.error
+		_notice.tooltip_text = _notice.text
 
 func _show_problems() -> void:
 	_dialog_kind = "problems"

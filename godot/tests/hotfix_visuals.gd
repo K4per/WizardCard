@@ -1,5 +1,7 @@
 extends SceneTree
 
+const HandInput = preload("res://tests/hand_input.gd")
+
 # Runs the Windows viewport against real native commands. Movie mode records the
 # unmodified presentation clock at 30 frames per second.
 var service: FrontendService = FrontendService.new()
@@ -154,7 +156,7 @@ func _run() -> void:
 	var card: CardPresentation = canvas.field.hand[0]
 	var initial: Rect2 = canvas.card_bounds(card)
 	var motion: InputEventMouseMotion = InputEventMouseMotion.new()
-	motion.position = canvas.position + initial.get_center() + canvas.get_parent_control().global_position
+	motion.position = HandInput.point(canvas, card)
 	var marker: Polygon2D = Polygon2D.new()
 	marker.polygon = PackedVector2Array([Vector2.ZERO, Vector2(3, 17), Vector2(6, 11), Vector2(13, 10)])
 	marker.color = Color.WHITE
@@ -181,6 +183,7 @@ func _run() -> void:
 	evidence["hover"] = {"instance":card.instance_id,"beforeY":initial.get_center().y,"samples":samples}
 	page.queue_free()
 	await frames()
+	service.surrender_match()
 	service.leave_match()
 	if not check(service.start_match({"mode":"hotseat","seed":73}), service.error):
 		quit(1)

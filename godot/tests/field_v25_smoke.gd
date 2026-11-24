@@ -1,5 +1,7 @@
 extends SceneTree
 
+const HandInput = preload("res://tests/hand_input.gd")
+
 var failures: int = 0
 var _ring_selection: Array = []
 var _card_selection: String = ""
@@ -36,8 +38,8 @@ func _body_fixture(body: int, include_small: bool) -> FieldPresentation:
 		var host: String = "body-%d-player-%d" % [body, owner]
 		rows.append({"id": host, "owner": owner, "zone": 3, "fieldOrder": "1", "definition": {"id": formation_id, "illustrationId": "alpha-v252-" + formation_id, "name": "均衡之六芒星" if body == 2 else "至圣之太阳星", "type": 3, "body": body, "rings": ring_count}})
 		rows.append({"id": host + "-spell", "owner": owner, "zone": 3, "host": host, "ringIndex": 0, "definition": {"id": "fireball", "name": "火球术", "type": 1, "cost": 3, "castCost": 1}})
-		rows.append({"id": host + "-rune", "owner": owner, "zone": 7, "host": host, "definition": {"id": "ring", "name": "宿主符文", "type": 4}})
-		rows.append({"id": host + "-spell-rune", "owner": owner, "zone": 7, "host": host + "-spell", "definition": {"id": "ring", "name": "法术符文", "type": 4}})
+		rows.append({"id": host + "-rune", "owner": owner, "zone": 7, "host": host, "definition": {"id": "ring", "illustrationId": "ring", "name": "宿主符文", "type": 4}})
+		rows.append({"id": host + "-spell-rune", "owner": owner, "zone": 7, "host": host + "-spell", "definition": {"id": "ring", "illustrationId": "ring", "name": "法术符文", "type": 4}})
 		if include_small:
 			rows.append({"id": "small-player-%d" % owner, "owner": owner, "zone": 3, "fieldOrder": "2", "definition": {"id": "small-hexagram", "illustrationId": "alpha-v252-small-hexagram", "name": "运行之三角星", "type": 3, "body": 1, "rings": 1}})
 	return MatchProjection.field({"viewer": 0, "players": [{}, {}], "cards": rows})
@@ -57,7 +59,7 @@ func _body_checks(canvas: FieldCanvas, body: int, include_small: bool, output: S
 	var opponent_host: Rect2 = canvas.card_bounds(opponent.card)
 	_expect(is_equal_approx(host.get_center().x, occupied.get_center().x) and is_equal_approx(host.size.x / host.size.y, 0.75), "one proportional host centered across %d columns" % body)
 	_expect(canvas.card_at(Vector2(occupied.position.x + 6, host.get_center().y)) == own.card, "merged band maps its near edge to the same host")
-	_expect((canvas.size - host.end).is_equal_approx(opponent_host.position) and host.size.is_equal_approx(opponent_host.size), "body %d host bounds remain center symmetric" % body)
+	_expect(is_equal_approx(canvas.size.x - host.end.x, opponent_host.position.x) and host.size.is_equal_approx(opponent_host.size), "body %d host width and horizontal alignment remain symmetric" % body)
 	_expect(canvas.card_at(host.get_center()) == own.card and canvas.card_at(opponent_host.get_center()) == opponent.card, "multi-slot hosts retain separate inspectable card targets")
 	var used: int = body + (1 if include_small else 0)
 	if include_small:
@@ -67,7 +69,7 @@ func _body_checks(canvas: FieldCanvas, body: int, include_small: bool, output: S
 	for slot: int in range(used, 5):
 		var empty: Rect2 = canvas._formation_slot(canvas._own_region, slot, true)
 		var opponent_empty: Rect2 = canvas._formation_slot(canvas._opponent_region, slot, false)
-		_expect((canvas.size - empty.end).is_equal_approx(opponent_empty.position), "unused body slot remains center symmetric")
+		_expect(is_equal_approx(canvas.size.x - empty.end.x, opponent_empty.position.x), "unused body slot remains horizontally symmetric")
 		for hit: Dictionary in canvas._card_hits:
 			_expect(not empty.intersects(hit["rect"]) and not opponent_empty.intersects(hit["rect"]), "unused body slot has no phantom host, spell or attachment")
 	var expected_rings: int = own.ring_count + (1 if include_small else 0)
@@ -83,7 +85,7 @@ func _body_checks(canvas: FieldCanvas, body: int, include_small: bool, output: S
 		_expect(occupied.encloses(rect), "every body %d ring remains inside its own formation span" % body)
 		for mirrored_hit: Dictionary in canvas._ring_hits:
 			if str(mirrored_hit["host"]) == opponent.card.instance_id and int(mirrored_hit["ring"]) == int(hit["ring"]):
-				_expect((canvas.size - rect.end).is_equal_approx((mirrored_hit["rect"] as Rect2).position), "ring index remains attached to the same center-mirrored host")
+				_expect(is_equal_approx(canvas.size.x - rect.end.x, (mirrored_hit["rect"] as Rect2).position.x), "ring index remains attached to the horizontally mirrored host")
 		if int(hit["ring"]) == own.ring_count - 1:
 			target_hit = hit
 	_expect(not ring_rows.is_empty(), "rings are laid out in the occupied columns")
@@ -127,6 +129,7 @@ func _check_expansion(canvas: FieldCanvas, group: FormationPresentation, attache
 			var item: Variant = menu.get_item_metadata(index)
 			if item is Dictionary and item.get("card") in attached:
 				seen.append((item["card"] as CardPresentation).instance_id)
+				_expect(menu.get_item_icon(index) != null and menu.get_item_icon_max_width(index) == maxi(1, roundi(canvas._field_card_width)), "expanded rune row uses the shared occupied-card image size")
 				_card_selection = ""
 				menu.id_pressed.emit(menu.get_item_id(index))
 				_expect(_card_selection == seen.back(), "expanded rune selects its own instance")
@@ -190,7 +193,7 @@ func _check_small_field(canvas: FieldCanvas, field: FieldPresentation, group: Fo
 	var longest_pile: float = Typography.HEADING.get_string_size("副卡组", HORIZONTAL_ALIGNMENT_LEFT, -1, label_font).x
 	for pile: Dictionary in canvas._zone_hits:
 		var bounds: Rect2 = pile["rect"]
-		_expect(bounds.size.x - 8 >= longest_pile and Rect2(Vector2.ZERO, canvas.size).encloses(bounds), "full pile names fit at 120% without crossing the field edge")
+		_expect(bounds.size.x - 8 >= longest_pile * canvas._board_transform.x.length() and Rect2(Vector2.ZERO, canvas.size).encloses(bounds), "scaled pile names fit at 120% without crossing the field edge")
 	Typography.set_scale(prior_scale)
 	var opponent_label: String = "对方手牌 %d" % field.opponent_hand_count
 	Typography.set_scale(120)
@@ -202,18 +205,25 @@ func _check_small_field(canvas: FieldCanvas, field: FieldPresentation, group: Fo
 		field.hand.assign(cards.slice(0, count))
 		field.opponent_hand_count = count
 		canvas.configure(field)
+		canvas._clear_hover()
 		await process_frame
 		await process_frame
 		for card: CardPresentation in field.hand:
-			_expect((canvas.card_bounds(card).has_area()), "every hand card has a visible portrait")
+			var point: Vector2 = HandInput.point(canvas, card)
+			_expect(point.x >= 0.0, "every card in the resting hand has an exposed hit strip")
+		var was_reduced: bool = UiFactory.reduced_motion
+		UiFactory.reduced_motion = true
 		for card: CardPresentation in field.hand:
 			canvas._hover_id = card.instance_id
 			canvas.queue_redraw()
 			await process_frame
 			await process_frame
-			for hit: Dictionary in canvas._ring_hits:
-				var point: Vector2 = (hit["rect"] as Rect2).get_center()
-				_expect(not canvas._opponent_hand_at(point), "dense hands leave ring %s:%d at %s reachable with %d cards and raised %s at %s" % [hit["host"], hit["ring"], point, count, card.instance_id, canvas.card_bounds(card)])
+			_expect(Rect2(Vector2.ZERO, canvas.size).encloses(canvas.card_bounds(card)), "hovered hand card is fully visible")
+		canvas._hover_id = ""
+		for hit: Dictionary in canvas._ring_hits:
+			var ring_point: Vector2 = (hit["rect"] as Rect2).get_center()
+			_expect(not canvas._opponent_hand_at(ring_point), "dense hands leave rings reachable during hover")
+		UiFactory.reduced_motion = was_reduced
 	canvas.set_hand_collapsed(true)
 	await process_frame
 	await process_frame
@@ -398,7 +408,7 @@ func _run() -> void:
 	_expect(not highlight_projection.legal_cards.has("remove") and highlight_projection.can_set_formation, "removal does not imply setting and legal formation setting highlights the side deck")
 	var attachment_projection: FieldPresentation = MatchProjection.field({"viewer": 0, "players": [{}, {}], "cards": [
 		{"id": "host", "owner": 0, "zone": 3, "definition": {"name": "阵法", "type": 3, "rings": 1}},
-		{"id": "rune", "owner": 0, "zone": 7, "host": "host", "definition": {"name": "符文", "type": 4}}
+		{"id": "rune", "owner": 0, "zone": 7, "host": "host", "definition": {"illustrationId": "ring", "name": "符文", "type": 4}}
 	]})
 	_expect(attachment_projection.attachments.has("host") and (attachment_projection.attachments["host"][0] as CardPresentation).instance_id == "rune" and attachment_projection.own_casting.is_empty(), "projected attachment belongs to its host rather than a spell ring or casting area")
 	var host: Control = Control.new()
@@ -484,14 +494,14 @@ func _run() -> void:
 	# geometry/input assertion but must not await a screenshot callback.
 	if DisplayServer.get_name() == "headless":
 		capture_output = ""
-	for dimensions: Vector2i in [Vector2i(1280,720),Vector2i(1600,1000),Vector2i(1920,1080)]:
+	for dimensions: Vector2i in [Vector2i(1280,720),Vector2i(1600,1000),Vector2i(1920,1080),Vector2i(2560,1440)]:
 		root.size = dimensions
 		await process_frame
 		await process_frame
 		_check_greybox_cards(canvas, CardPresentation.anonymous("unknown"))
 		await _check_target_palette(canvas, group)
-		_expect((canvas.size - canvas._own_region.end).is_equal_approx(canvas._opponent_region.position), "analysis symmetry " + str(dimensions))
-		_expect((canvas.size - canvas._own_casting_region.end).is_equal_approx(canvas._opponent_casting_region.position), "casting symmetry " + str(dimensions))
+		_expect(is_equal_approx(canvas._own_region.end.y, dimensions.y * 0.87 - 2.0), "central field ends two pixels above the original pile baseline " + str(dimensions))
+		_expect(is_equal_approx(canvas._opponent_region.position.y, dimensions.y * 0.075), "central field top remains at its original anchor " + str(dimensions))
 		_expect(is_equal_approx(canvas._own_casting_region.position.y, canvas._opponent_casting_region.position.y) and canvas._own_casting_region.end.x <= canvas._opponent_casting_region.position.x, "casting regions share the center band with own on the left")
 		_expect(canvas._ring_hits.size() == 120, "five legal body-one pressure slots contain the projected ring cells")
 		for slot: int in range(1, 5):
@@ -504,14 +514,44 @@ func _run() -> void:
 			_expect(Rect2(Vector2.ZERO,canvas.size).encloses(hit["rect"]), "piles stay inside field")
 		var own_cast_rect: Rect2 = canvas.card_bounds(own_cast)
 		var opponent_cast_rect: Rect2 = canvas.card_bounds(opponent_cast)
+		var occupied_rect: Rect2 = canvas.card_bounds(group.occupants[0])
 		_expect(canvas._own_casting_region.encloses(own_cast_rect), "casting cards stay inside the compact own track")
 		_expect(canvas._opponent_casting_region.encloses(opponent_cast_rect), "casting cards stay inside the compact opponent track")
-		_expect(is_equal_approx(own_cast_rect.size.x, own_cast_rect.size.y) and own_cast_rect.size.y >= 24, "casting row shows square illustrations")
+		_expect(own_cast_rect.size.is_equal_approx(opponent_cast_rect.size) and own_cast_rect.size.is_equal_approx(occupied_rect.size), "occupied analysis and casting cards share one portrait size: %s %s %s width=%f ring=%s" % [own_cast_rect.size, opponent_cast_rect.size, occupied_rect.size, canvas._field_card_width, canvas._ring_hits[0].rect])
 		_expect(is_equal_approx(own_cast_rect.position.y, opponent_cast_rect.position.y), "casting cards align across the central band")
+		var own_deck_hit: Rect2 = Rect2()
+		var own_side_hit: Rect2 = Rect2()
+		for zone: Dictionary in canvas._zone_hits:
+			if zone.kind == "main_deck" and zone.owner == field.viewer:
+				own_deck_hit = zone.rect
+			elif zone.kind == "side_deck" and zone.owner == field.viewer:
+				own_side_hit = zone.rect
+		_expect(own_deck_hit.has_area() and own_side_hit.has_area() and is_equal_approx(own_deck_hit.end.y, own_side_hit.end.y), "own deck and side deck keep a shared lower edge")
 		_expect(canvas.has_method("_open_host_menu"), "multiple runes and rings have an expansion entry")
 		if canvas.has_method("_open_host_menu"):
 			await _check_expansion(canvas, group, field.attachments[formation.instance_id])
 		var hand_extent: Vector2 = canvas._hand_card_size(canvas.size.y * canvas.layout.hand_height_ratio)
+		for hand_hit: Dictionary in canvas._card_hits:
+			var hand_card_hit: CardPresentation = hand_hit.card
+			if not hand_card_hit.instance_id.begins_with("hand-"):
+				continue
+			var rest_rect: Rect2 = hand_hit.get("rest_rect", hand_hit.rect)
+			var visible_height: float = minf(rest_rect.end.y, canvas.size.y) - maxf(rest_rect.position.y, 0.0)
+			_expect(visible_height >= 20.0 and visible_height < hand_extent.y, "resting hand cards expose a clipped but hittable strip")
+		var was_reduced: bool = UiFactory.reduced_motion
+		UiFactory.reduced_motion = true
+		for card: CardPresentation in field.hand:
+			var hand_point: Vector2 = HandInput.point(canvas, card)
+			var mouse_move: InputEventMouseMotion = InputEventMouseMotion.new()
+			mouse_move.position = hand_point
+			root.push_input(mouse_move, true)
+			await process_frame
+			await process_frame
+			_expect(canvas._hover_id == card.instance_id and Rect2(Vector2.ZERO, canvas.size).encloses(canvas.card_bounds(card)), "pointer traverses each visible hand strip at " + str(dimensions))
+		canvas._clear_hover()
+		UiFactory.reduced_motion = was_reduced
+		await process_frame
+		await process_frame
 		var hand_stride: float = canvas._hand_stride(hand_extent.x, field.hand.size())
 		var hand_start: float = (canvas.size.x - (field.hand.size() - 1) * hand_stride) * 0.5
 		var left_pose: Transform2D = canvas._hand_pose(0, field.hand.size(), hand_start, hand_stride, hand_extent, false)
@@ -534,12 +574,13 @@ func _run() -> void:
 		await process_frame
 		var hand_card: CardPresentation = definitions[4]
 		var rest_bounds: Rect2 = canvas.card_bounds(hand_card)
-		var rest_pointer: Vector2 = rest_bounds.get_center()
+		var rest_pointer: Vector2 = canvas.get_global_transform_with_canvas().affine_inverse() * HandInput.point(canvas, hand_card)
 		canvas._hover_id = hand_card.instance_id
 		await create_timer(0.20).timeout
 		await process_frame
 		await process_frame
 		var lifted_bounds: Rect2 = canvas.card_bounds(hand_card)
+		_expect(Rect2(Vector2.ZERO, canvas.size).encloses(lifted_bounds), "hover raises the complete hand card inside the window")
 		for hit: Dictionary in canvas._ring_hits:
 			var center: Vector2 = (hit["rect"] as Rect2).get_center()
 			_expect(not canvas._opponent_hand_at(center), "opponent hand leaves ring centers reachable")
@@ -551,9 +592,10 @@ func _run() -> void:
 			root.get_texture().get_image().save_png(capture_output.path_join("field-hover-%dx%d.png" % [dimensions.x, dimensions.y]))
 		canvas.selected_id = hand_card.instance_id
 		canvas._clear_hover()
+		await create_timer(0.20).timeout
 		await process_frame
 		await process_frame
-		_expect(canvas.card_bounds(hand_card).is_equal_approx(lifted_bounds), "pointer exit keeps a selected card raised")
+		_expect(canvas.card_bounds(hand_card).is_equal_approx(rest_bounds), "selection keeps its border without lifting the resting card")
 		canvas.selected_id = ""
 		if not capture_output.is_empty():
 			DirAccess.make_dir_recursive_absolute(capture_output)

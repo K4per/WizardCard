@@ -41,6 +41,8 @@ class RoomSession : public Session {
     virtual bool ended() const = 0;
     virtual bool closing() const = 0;
     virtual bool replayDelivered() const = 0;
+    virtual const Json *verifiedReplay() const { return nullptr; }
+    virtual std::string replayError() const { return {}; }
     virtual bool takeReset() = 0;
     virtual const GameView &view() const = 0;
     virtual const Json &room() const = 0;

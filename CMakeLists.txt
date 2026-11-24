@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(WizardCard VERSION 2.6.4.1 LANGUAGES CXX)
+project(WizardCard VERSION 2.6.5 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -151,7 +151,7 @@ if(BUILD_TESTING)
   if(WIZARD_BUILD_SERVER AND WIZARD_BUILD_GODOT AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
     add_test(NAME central_godot_smoke COMMAND "${Python3_EXECUTABLE}"
       ${CMAKE_CURRENT_SOURCE_DIR}/tests/central_godot_smoke.py $<TARGET_FILE:wizard_server>
-      "${GODOT_BIN}" ${CMAKE_CURRENT_SOURCE_DIR}/godot
+      "${GODOT_BIN}" ${CMAKE_CURRENT_BINARY_DIR}/godot-frontend-probe
       ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260)
     set_tests_properties(central_godot_smoke PROPERTIES
       FIXTURES_REQUIRED frontend_import TIMEOUT 90 RUN_SERIAL TRUE
@@ -207,12 +207,12 @@ if(WIZARD_BUILD_BENCHMARKS)
   endif()
 endif()
 set(CPACK_PACKAGE_NAME WizardCard)
-set(CPACK_PACKAGE_VERSION "2.6.4-hotfix.1")
+set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  set(CPACK_PACKAGE_FILE_NAME "WizardCard-2.6.4-hotfix.1-linux-${CMAKE_SYSTEM_PROCESSOR}")
+  set(CPACK_PACKAGE_FILE_NAME "WizardCard-${CPACK_PACKAGE_VERSION}-linux-${CMAKE_SYSTEM_PROCESSOR}")
   set(CPACK_GENERATOR TGZ)
 else()
-  set(CPACK_PACKAGE_FILE_NAME "WizardCard-2.6.4-hotfix.1-windows-x64")
+  set(CPACK_PACKAGE_FILE_NAME "WizardCard-${CPACK_PACKAGE_VERSION}-windows-x64")
   set(CPACK_GENERATOR ZIP)
 endif()
 include(CPack)

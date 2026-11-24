@@ -91,7 +91,7 @@ func _run() -> void:
 	_check(service.save_draft(), "Deck saves to the isolated user directory")
 	_check(service.start_match({"mode": "hotseat", "seed": 42}), "Match starts")
 	_check(service.save_replay() and FileAccess.file_exists(service.last_replay_path), "Replay is saved")
-	_check(service.leave_match(), "Match exits cleanly")
+	_check(service.surrender_match() and service.leave_match(), "Match exits cleanly")
 	var reopened: FrontendService = FrontendService.new()
 	_check(reopened.initialize(service.assets_directory, service.user_directory), "Saved data can be reopened")
 	_check(int(reopened.settings.get("fontScale", 0)) == 110, "Font scale persists after reopening")

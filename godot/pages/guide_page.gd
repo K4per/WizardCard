@@ -24,7 +24,7 @@ func _ready() -> void:
 	var heading: HBoxContainer = HBoxContainer.new()
 	column.add_child(heading)
 	heading.add_child(UiFactory.button("‹ 返回主菜单", navigation_requested.emit.bind(&"menu")))
-	heading.add_child(UiFactory.label("巫师指南 · Alpha 2.6.4-hotfix.1", 28, true))
+	heading.add_child(UiFactory.label("巫师指南 · Alpha 2.6.5", 28, true))
 	tabs = TabContainer.new()
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(tabs)

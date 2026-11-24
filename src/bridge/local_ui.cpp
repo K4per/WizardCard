@@ -135,9 +135,49 @@ Json LocalSession::applySettings(const Json &data) {
         return ok(app::encodeSettings(match_.application->settings()));
     } catch (const std::exception &e) { return fail(e.what()); }
 }
-Json LocalSession::leaveMatch(PlayerId viewer) {
+Json LocalSession::surrenderMatch(PlayerId viewer) {
+    if (!visibleTo(viewer)) return fail("没有此查看者的对局");
+    if (view(viewer).result != -1) return fail("对局已结束");
+    std::string error;
+    match_.application->requestSurrender();
+    if (!match_.application->confirmSurrender(viewer, error)) {
+        match_.application->cancelConfirmation();
+        return fail(error);
+    }
+    match_.pending.reset();
+    match_.interaction.cancel();
+    match_.interactionViewer = -1;
+    return ok();
+}
+Json LocalSession::leaveMatch(PlayerId viewer, bool saveReplay) {
     if (!visibleTo(viewer)) return fail("没有此查看者的对局");
     std::string error;
+    if (replayPersistence_ == app::ReplayPersistence::Explicit) {
+        auto &app = *match_.application;
+        const auto *room = app.network();
+        if (app.mode() != app::MatchMode::Tutorial && view(viewer).result == -1 && !app.technicalPaused() &&
+            !(room && room->ended()))
+            return fail("请先投降结束对局");
+        if (saveReplay) {
+            const auto response = this->saveReplay("");
+            if (!response.at("ok").get<bool>()) return response;
+        }
+        if (room) {
+            // The central authority keeps its completed recording independently
+            // of this client and its connection.
+            const bool external = dynamic_cast<const ExternalRoomTransport *>(room) != nullptr;
+            const bool force = external ? (!room->connected() || !room->replayError().empty()) : !room->isHost();
+            if (!app.leaveNetwork(error, force)) {
+                if (room->closing()) return ok({{"pending", true}});
+                return fail(error);
+            }
+            ++match_.generation;
+            match_.pending.reset();
+            match_.interaction.cancel();
+            match_.interactionViewer = -1;
+            return ok();
+        }
+    }
     match_.application->requestLeave();
     if (!match_.application->confirmLeave(viewer, error)) {
         match_.application->cancelConfirmation();

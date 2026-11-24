@@ -16,6 +16,8 @@ var _previous: Button
 var _next: Button
 var _count: Label
 var _notice: Label
+var _directory_button: Button
+var _storage_picker: FileDialog
 var _back: Button
 var _dialog: DeckDialog
 var _delete_id: String = ""
@@ -66,6 +68,19 @@ func _ready() -> void:
 	add_child(_import_dialog)
 	import_button.pressed.connect(func() -> void: _import_dialog.popup_centered_ratio(0.7))
 	_import_dialog.file_selected.connect(_import_deck)
+	_directory_button = UiFactory.button("选择存档目录", func() -> void:
+		_storage_picker.current_dir = service.save_directory
+		_storage_picker.popup_centered_ratio(0.7))
+	_copy.get_parent().add_child(_directory_button)
+	_storage_picker = FileDialog.new()
+	_storage_picker.file_mode = FileDialog.FILE_MODE_OPEN_DIR
+	_storage_picker.access = FileDialog.ACCESS_FILESYSTEM
+	_storage_picker.dir_selected.connect(func(directory: String) -> void:
+		if service.set_save_directory(directory):
+			configure(service)
+		else:
+			_notice.text = directory + " · " + service.error)
+	add_child(_storage_picker)
 
 func _import_deck(path: String) -> void:
 	if service.import_deck(path):
@@ -103,6 +118,9 @@ func _refresh() -> void:
 	_count.text = "%d 个自建卡组 · %d / %d 页" % [service.drafts.size(), _page_index + 1, maxi(1, ceili(service.drafts.size() / 6.0))]
 	_empty.visible = service.drafts.is_empty()
 	_notice.text = service.error if not service.error.is_empty() else service.notice
+	_directory_button.visible = service.can_choose_save_directory and (not service.writable or not service.storage_notice.is_empty())
+	if _directory_button.visible:
+		_notice.text = service.save_directory + " · " + service.storage_notice + " " + _notice.text
 
 func _create() -> void:
 	if service.create_draft():

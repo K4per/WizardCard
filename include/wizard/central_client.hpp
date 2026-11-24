@@ -13,7 +13,7 @@ class ClientRoom final : public RoomSession, public ExternalRoomTransport {
     Json entry_, room_ = Json::object(), replay_;
     std::deque<Json> outgoing_;
     std::string token_, instanceId_, candidateToken_, candidateInstance_;
-    std::string notice_, replayBytes_;
+    std::string notice_, replayBytes_, replayError_;
     std::uint64_t revision_{};
     std::size_t replaySize_{};
     std::chrono::steady_clock::time_point lastReceive_{}, heartbeatAt_{}, replayRetryAt_{};
@@ -46,6 +46,8 @@ class ClientRoom final : public RoomSession, public ExternalRoomTransport {
     bool ended() const override { return ended_; }
     bool closing() const override { return closing_; }
     bool replayDelivered() const override { return replayDelivered_; }
+    const Json *verifiedReplay() const override { return replay_.is_null() ? nullptr : &replay_; }
+    std::string replayError() const override { return replayError_; }
     bool takeReset() override;
     const GameView &view() const override { return guest_.view(); }
     const Json &room() const override { return room_; }

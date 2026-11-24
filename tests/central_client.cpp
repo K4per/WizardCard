@@ -2,6 +2,7 @@
 #include "wizard/central_server.hpp"
 #include "wizard/bridge.hpp"
 #include <catch2/catch_test_macros.hpp>
+#include <thread>
 
 using namespace wizard;
 
@@ -64,6 +65,31 @@ TEST_CASE("central surrender and leave finishes after verified replay without a 
     REQUIRE(f.owner.ended());
     REQUIRE_FALSE(f.owner.closing());
     REQUIRE(f.guest.view().result == 1);
+}
+
+TEST_CASE("desktop central clients choose independently whether to write the verified recording", "[central][client][desktop-storage]") {
+    Clients f;
+    f.owner = central::ClientRoom(f.content, {});
+    f.guest = central::ClientRoom(f.content, {});
+    f.start();
+    REQUIRE(f.owner.submit(Surrender{}).accepted);
+    f.pump();
+    REQUIRE(f.owner.replayDelivered());
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(2);
+    while (!f.guest.replayDelivered() && std::chrono::steady_clock::now() < deadline) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        f.guest.tick();
+        f.pump();
+    }
+    REQUIRE(f.guest.replayDelivered());
+    REQUIRE(f.owner.verifiedReplay());
+    REQUIRE(f.guest.verifiedReplay());
+    CHECK(*f.owner.verifiedReplay() == *f.guest.verifiedReplay());
+    CHECK_FALSE(std::filesystem::exists(f.root / "owner.json"));
+    CHECK_FALSE(std::filesystem::exists(f.root / "guest.json"));
+    f.guest.stop();
+    CHECK_FALSE(f.guest.verifiedReplay());
+    CHECK(f.owner.verifiedReplay());
 }
 
 TEST_CASE("central rejected surrender lets the player try leaving again", "[central][client]") {

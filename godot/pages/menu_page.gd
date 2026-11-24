@@ -59,8 +59,8 @@ func _reflow() -> void:
 
 func configure(service: FrontendService) -> void:
 	_service = service
-	_status.text = "" if service.error.is_empty() else service.error
-	_status.visible = not service.error.is_empty()
+	_status.text = service.error if not service.error.is_empty() else service.storage_notice
+	_status.visible = not _status.text.is_empty()
 
 func _single_player() -> void:
 	_service.setup_mode = "ai"

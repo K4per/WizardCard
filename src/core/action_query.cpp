@@ -48,8 +48,18 @@ SelectionPath actionPath(const Command &command) {
 }
 bool matches(const SelectionPath &path, const SelectionPath &selection) {
     if (selection.size() > path.size()) return false;
-    for (std::size_t i = 0; i < selection.size(); ++i)
-        if (path[i].field != selection[i].field || path[i].value != selection[i].value) return false;
+    std::set<std::string> materials;
+    for (std::size_t i = 0; i < selection.size(); ++i) {
+        if (path[i].field != selection[i].field) return false;
+        if (selection[i].field != ActionField::Material) {
+            if (path[i].value != selection[i].value) return false;
+            continue;
+        }
+        if (!materials.insert(selection[i].value).second ||
+            std::none_of(path.begin(), path.end(), [&](const auto &entry) {
+                return entry.field == ActionField::Material && entry.value == selection[i].value;
+            })) return false;
+    }
     return true;
 }
 bool intentAllows(const ActionIntent *intent, ActionField field, std::uint64_t value) {

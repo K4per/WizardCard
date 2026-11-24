@@ -34,6 +34,32 @@ void pass263(test::ObservedEngine &engine) {
 }
 }
 
+TEST_CASE("formation material query permits reverse selection of two identically named hand cards", "[alpha-v265][formation]") {
+    auto state = mainState263();
+    put263(state, 1, "v260-formation-0009", Zone::Analysis);
+    put263(state, 2, "v260-formation-0007", Zone::SideDeck);
+    for (CardId id : {10, 11, 12}) put263(state, id, "v260-analytic-0001", Zone::Hand);
+    auto engine = test::ObservedEngine::scenario(currentCatalog(), state);
+    ActionIntent intent;
+    intent.selections = {{ActionField::Operation, std::to_string(static_cast<unsigned>(CommandKind::SetFormation))},
+                         {ActionField::Source, "2"}, {ActionField::Replacement, "0"}};
+    auto options = engine.queryActions(0, intent);
+    REQUIRE(options.field == ActionField::Material);
+    REQUIRE(options.options.size() == 3);
+    intent.selections.push_back({ActionField::Material, "12"});
+    options = engine.queryActions(0, intent);
+    REQUIRE(options.field == ActionField::Material);
+    REQUIRE(options.options.size() == 2);
+    for (const auto &option : options.options) CHECK(option.card != 12);
+    intent.selections.push_back({ActionField::Material, "10"});
+    const auto selected = engine.queryActions(0, intent);
+    REQUIRE(selected.complete);
+    REQUIRE(engine.submit(0, *selected.complete).accepted);
+    CHECK(engine.state().cards.at(10).zone == Zone::Ash);
+    CHECK(engine.state().cards.at(12).zone == Zone::Ash);
+    CHECK(engine.state().cards.at(11).zone == Zone::Hand);
+}
+
 TEST_CASE("v263 reinforced recipe accepts controlled facedown spells without waiting and rejects faceup materials", "[alpha-v263]") {
     auto cat = currentCatalog();
     REQUIRE(cat.mechanicsRevision >= 12);

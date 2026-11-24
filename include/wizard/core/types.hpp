@@ -16,7 +16,7 @@ using CardId = std::uint32_t;
 using DecisionId = std::uint64_t;
 using ChainId = std::uint64_t;
 using LinkId = std::uint64_t;
-inline constexpr const char *programVersion = "2.6.4-hotfix.1";
+inline constexpr const char *programVersion = "2.6.5";
 inline constexpr int startingLife = 40, maximumLife = 40;
 inline constexpr int maximumMana = 20;
 // Player target tokens share the existing deterministic command target field.
@@ -149,6 +149,8 @@ enum class EffectRecipient { Target, Owner, Opponent };
 enum class LinkKind { Phase, Action, Preparation, Spell, Response, Trigger, Setup };
 std::string fingerprint(const std::string &bytes);
 std::string damageName(DamageType);
+const char *damageTypeId(DamageType);
+std::optional<DamageType> damageTypeFromId(const std::string &);
 std::string schoolName(const std::string &);
 std::string phaseName(Phase);
 std::string zoneName(Zone);

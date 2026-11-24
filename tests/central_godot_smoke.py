@@ -141,22 +141,21 @@ def main():
                 raise RuntimeError("Godot central frontend smoke failed:\n" + output)
             final_reports = [json.loads(owner_report.read_text()), json.loads(guest_report.read_text())]
             if any(row.get("phase") != "completed" or row.get("replayDelivered") is not True for row in final_reports):
-                raise RuntimeError("both clients did not report a completed match and saved replay")
+                raise RuntimeError("both clients must receive and verify the terminal replay")
             if any(row.get("roomCode") != code for row in final_reports):
                 raise RuntimeError("the two Godot clients reported different rooms")
-            owner_replays = sorted((owner_data / "replays").glob("network-*.json"))
-            guest_replays = sorted((guest_data / "replays").glob("network-*.json"))
-            if len(owner_replays) != 1 or len(guest_replays) != 1:
-                raise RuntimeError("expected one saved replay from each Godot client")
-            records = [json.loads(owner_replays[0].read_text()), json.loads(guest_replays[0].read_text())]
-            if records[0] != records[1]:
-                raise RuntimeError("the two clients saved different terminal replay records")
+            owner_replays = sorted((owner_data / "replays").glob("*.json"))
+            guest_replays = sorted((guest_data / "replays").glob("*.json"))
+            if len(owner_replays) != 1 or owner_replays[0].name != "联机验收.json" or guest_replays:
+                raise RuntimeError("the local replay files must match independent save choices")
             metadata_path = next((root / "rooms").glob(code + "-*/metadata.json"))
             metadata = json.loads(metadata_path.read_text())
             if metadata.get("phase") != "completed":
                 raise RuntimeError("server journal did not record the completed match")
+            if json.loads(owner_replays[0].read_text(encoding="utf-8")) != json.loads(metadata_path.with_name("replay.json").read_text(encoding="utf-8")):
+                raise RuntimeError("client replay differs from the authoritative journal")
             print(output.strip())
-            print("CENTRAL_GODOT_SMOKE: both native TLS clients saved the same verified replay")
+            print("CENTRAL_GODOT_SMOKE: host reopened the authoritative replay and guest discarded its local copy")
         finally:
             for client in clients:
                 if client.poll() is None:

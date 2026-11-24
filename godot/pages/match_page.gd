@@ -103,6 +103,24 @@ var _response_cancel: Button
 var _forced_ack_id: String = ""
 var _concentration_selected_id: String = ""
 var _chain_text: RichTextLabel
+var _empty_actions: Label
+var _material_bar: HBoxContainer
+var _material_count: Label
+var _continue_materials: Button
+var _waiting_intent: Dictionary = {}
+var _dropped_host: String = ""
+var _dropped_ring: int = -1
+var _settlement: ConfirmationDialog
+var _settlement_discard: Button
+var _settlement_summary: String = ""
+var _replay_save: ConfirmationDialog
+var _replay_name: LineEdit
+var _replay_save_notice: Label
+var _save_directory_dialog: FileDialog
+var _choose_replay_directory: Button
+var _save_from_settlement: bool = false
+var _replay_available: bool = false
+var _leave_after_settlement: bool = false
 
 
 func _ready() -> void:
@@ -176,6 +194,18 @@ func _ready() -> void:
 	_action_title = %ActionTitle
 	_action_list = %ActionList
 	_action_popup.hide()
+	_empty_actions = UiFactory.label("暂无合法操作", 16, true)
+	_empty_actions.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	canvas.add_child(_empty_actions)
+	_empty_actions.hide()
+	_material_bar = HBoxContainer.new()
+	_material_count = UiFactory.label("", 16, true)
+	_material_bar.add_child(_material_count)
+	_continue_materials = UiFactory.button("确认材料", _selection.choose.bind("@confirm"))
+	_material_bar.add_child(_continue_materials)
+	_material_bar.add_child(UiFactory.button("取消", _dismiss_confirmation))
+	add_child(_material_bar)
+	_material_bar.hide()
 	_feedback = MatchFeedback.new()
 	add_child(_feedback)
 	_build_dialogs()
@@ -215,6 +245,13 @@ func _layout_panels() -> void:
 func _position_selected_actions() -> void:
 	if _action_popup != null and _action_popup.visible:
 		_position_action_popup(_selected != null)
+	if _empty_actions != null and _empty_actions.visible:
+		var top: bool = _contextual_query and _selected != null and canvas.card_bounds(_selected).has_area() and canvas.card_bounds(_selected).get_center().y < canvas.size.y * 0.5
+		_empty_actions.reset_size()
+		_empty_actions.position = Vector2(canvas.size.x - _empty_actions.size.x - 12, 12) if top else Vector2(12, canvas.size.y - _empty_actions.size.y - 12)
+	if _material_bar != null and _material_bar.visible:
+		_material_bar.reset_size()
+		_material_bar.position = canvas.position + Vector2((canvas.size.x - _material_bar.size.x) * 0.5, canvas.size.y * 0.50 - _material_bar.size.y * 0.5)
 
 func _position_phase_button() -> void:
 	if _end_phase == null or canvas == null:
@@ -252,6 +289,47 @@ func _build_dialogs() -> void:
 	_leave_dialog.confirmed.connect(_leave)
 	_force_dialog = %ConfirmForceLeave
 	_force_dialog.confirmed.connect(_force_leave_network)
+	_settlement = ConfirmationDialog.new()
+	_settlement.title = "对局结算"
+	_settlement.ok_button_text = "保存回放"
+	_settlement.cancel_button_text = "留在场地"
+	_settlement.dialog_hide_on_ok = false
+	_settlement.confirmed.connect(_open_named_save.bind(true))
+	_settlement_discard = _settlement.add_button("不保存", false, &"discard")
+	_settlement.custom_action.connect(_discard_settlement)
+	_settlement.canceled.connect(func() -> void:
+		_leave_after_settlement = false
+		_quitting = false)
+	add_child(_settlement)
+	_replay_save = ConfirmationDialog.new()
+	_replay_save.title = "保存回放"
+	_replay_save.ok_button_text = "保存"
+	_replay_save.cancel_button_text = "取消"
+	_replay_save.dialog_hide_on_ok = false
+	var save_fields: VBoxContainer = VBoxContainer.new()
+	_replay_name = LineEdit.new()
+	_replay_name.placeholder_text = "回放名称"
+	_replay_name.text_submitted.connect(func(_name: String) -> void: _write_named_replay())
+	save_fields.add_child(_replay_name)
+	_replay_save_notice = UiFactory.label("", 15, false)
+	_replay_save_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_replay_save_notice.custom_minimum_size.x = 420
+	save_fields.add_child(_replay_save_notice)
+	_replay_save.add_child(save_fields)
+	_replay_save.confirmed.connect(_write_named_replay)
+	_choose_replay_directory = _replay_save.add_button("选择存档目录", true, &"directory")
+	_replay_save.custom_action.connect(func(_action: StringName) -> void:
+		_save_directory_dialog.current_dir = service.save_directory
+		_save_directory_dialog.popup_centered_ratio(0.7))
+	_replay_save.canceled.connect(func() -> void:
+		if _save_from_settlement:
+			_settlement.popup_centered(Vector2i(450, 0)))
+	add_child(_replay_save)
+	_save_directory_dialog = FileDialog.new()
+	_save_directory_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
+	_save_directory_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	_save_directory_dialog.dir_selected.connect(_save_directory_chosen)
+	_replay_save.add_child(_save_directory_dialog)
 
 func _build_privacy() -> void:
 	_privacy_layer = %PrivacyLayer
@@ -478,12 +556,15 @@ func configure(value: FrontendService) -> void:
 	_selection.changed.connect(_query_changed)
 	_selection.completed.connect(_query_completed)
 	_selection.failed.connect(_query_failed)
+	_selection.rings_changed.connect(_query_rings)
 	service.match_changed.connect(_match_changed)
 	service.availability_changed.connect(_availability_changed)
 	service.clock_changed.connect(_clock_changed)
 	service.events_changed.connect(_events_changed)
 	service.session_polled.connect(_selection.poll)
 	service.session_polled.connect(_poll_response_sources)
+	service.session_polled.connect(_poll_settlement)
+	service.session_polled.connect(_poll_query_completion)
 	_events_changed({"reset": true, "events": service.event_log.entries})
 	%MenuSettings.text = "设置（继续计时）" if service.match_mode == "network" else "暂停 / 设置"
 	%MenuDebug.visible = service.match_mode == "ai"
@@ -521,6 +602,11 @@ func _refresh() -> void:
 	_phase_selector.hide()
 	if resume_selection:
 		canvas.clear_action_targets()
+		_waiting_intent.clear()
+		_empty_actions.hide()
+		_material_bar.hide()
+		_dropped_host = ""
+		_dropped_ring = -1
 	else:
 		_clear_action_targets()
 	if service.match_mode == "hotseat" and int(snapshot.get("actingPlayer", service.match_viewer)) != service.match_viewer and int(snapshot.get("result", -1)) == -1:
@@ -603,11 +689,13 @@ func _render_actions(restart_selection: bool = true) -> void:
 		_notice.text = "规则执行故障：对局已技术暂停，时钟已冻结。请导出诊断或退出。"
 		%MenuSaveReplay.text = "导出复盘与诊断"
 		_action_popup.hide()
+		_empty_actions.hide()
 		return
 	if not restart_selection:
 		return
 	if bool(snapshot.get("opening", false)) or (snapshot.get("decision") is Dictionary and not _response_browsing):
 		_action_popup.hide()
+		_empty_actions.hide()
 		return
 	if _selected != null:
 		_show_action_list(_selected.instance_id, _selected.title + " · 操作", true)
@@ -753,6 +841,8 @@ func _query_changed(options: ActionOptions) -> void:
 		return
 	_update_phase_gate()
 	canvas.clear_action_targets()
+	_empty_actions.hide()
+	_material_bar.hide()
 	if _query_title == "结束当前阶段" and options.field == KernelContract.ActionField.Choice:
 		var phases: Array[Dictionary] = []
 		for option: Dictionary in options.options:
@@ -779,7 +869,10 @@ func _query_changed(options: ActionOptions) -> void:
 			button.custom_minimum_size = Vector2(196, 44)
 			_action_list.add_child(button)
 		if _action_list.get_child_count() == 0:
-			_action_list.add_child(UiFactory.label("暂无合法操作。", 14, true))
+			_action_popup.hide()
+			_empty_actions.show()
+			_position_selected_actions()
+			return
 		_action_title.text = _query_title
 		_action_title.visible = not _contextual_query
 		_action_popup.reset_size()
@@ -805,6 +898,9 @@ func _query_changed(options: ActionOptions) -> void:
 			_action_popup.hide()
 			_notice.text = "点击高亮环位确认位置；取消不会支付费用。"
 			return
+	if options.field == KernelContract.ActionField.Material or not _selection.material_ids().is_empty():
+		_render_materials(options)
+		return
 	if options.field == KernelContract.ActionField.Replacement and _has_option(options, "0"):
 		var replacement_targets: Array[String] = []
 		for option: Dictionary in options.options:
@@ -890,6 +986,56 @@ func _query_changed(options: ActionOptions) -> void:
 	_show_tray()
 	_layout_panels()
 
+func _query_rings(targets: Dictionary[String, PackedInt32Array]) -> void:
+	_update_phase_gate()
+	var host: String = _dropped_host
+	var ring: int = _dropped_ring
+	_dropped_host = ""
+	_dropped_ring = -1
+	if not host.is_empty():
+		if _selection.choose_ring(host, ring):
+			return
+		_notice.text = "该落点当前不可用，请选择高亮环位。"
+	else:
+		_notice.text = "选择高亮环位"
+	canvas.set_action_targets([], targets)
+	canvas.grab_focus()
+	_decision.hide()
+	_restore_tray_hand()
+	_action_popup.hide()
+	_empty_actions.hide()
+	_material_bar.hide()
+
+func _render_materials(options: ActionOptions) -> void:
+	var selected: Array[String] = _selection.material_ids()
+	var candidates: Array[String] = []
+	if options.field == KernelContract.ActionField.Material:
+		for option: Dictionary in options.options:
+			candidates.append(str(option["value"]))
+	var source: CardPresentation = MatchProjection.card(service.match_snapshot, str(_selection.intent.get("source", "0")))
+	if source == null:
+		for entry: Dictionary in _selection.intent["selections"]:
+			if int(entry["field"]) == KernelContract.ActionField.Source:
+				source = MatchProjection.card(service.match_snapshot, str(entry["value"]))
+				break
+	var required: int = 0
+	if source != null:
+		for cost: Dictionary in service.definitions.get(source.definition_id, {}).get("recipe", []):
+			if int(cost.get("kind", -1)) in [1, 2, 3]:
+				required += int(cost.get("amount", 0))
+	_material_count.text = "材料 %d / %d" % [selected.size(), required]
+	_continue_materials.disabled = options.complete.is_empty()
+	_decision.hide()
+	_restore_tray_hand()
+	_action_popup.hide()
+	if canvas.hand_collapsed:
+		canvas.set_hand_collapsed(false)
+		_hand_button.text = "▾ 手牌"
+	canvas.set_action_targets(candidates, {}, selected)
+	_material_bar.show()
+	_material_bar.move_to_front()
+	_position_selected_actions()
+
 func _describe_overflow(request: DecisionPresentation, candidate: String) -> void:
 	var snapshot: Dictionary = service.match_snapshot
 	var field: FieldPresentation = MatchProjection.field(snapshot)
@@ -915,16 +1061,17 @@ func _query_completed(command: Dictionary, intent: Dictionary) -> void:
 		_query_failed(service.error)
 		return
 	if bool(selected.get("data", {}).get("pending", false)):
-		_selection.refresh()
+		_waiting_intent = {"command": command, "intent": intent}
 		return
 	_decision.hide()
+	_material_bar.hide()
 	_restore_tray_hand()
 	_pending_generation = generation
 	_pending_revision = revision
 	var response_decision: bool = service.match_snapshot.get("decision") is Dictionary and int(service.match_snapshot["decision"].get("kind", -1)) == KernelContract.DecisionKind.Response
 	var response_activation: bool = response_decision and int(command.get("type", -1)) in [KernelContract.CommandKind.Respond, KernelContract.CommandKind.PreloadWord, KernelContract.CommandKind.FlipAmbush, KernelContract.CommandKind.ActivateSpell]
 	var confirm_placement: bool = not _query_is_decision and int(command.get("ringIndex", -1)) >= 0
-	if (_query_is_decision or _query_confirmed) and not response_activation and not confirm_placement:
+	if (_query_is_decision or _query_confirmed) and not response_activation and not confirm_placement and _selection.material_ids().is_empty():
 		_selection.cancel()
 		_apply_result(service.match_request(&"confirm_action", [generation, revision]))
 	else:
@@ -938,19 +1085,29 @@ func _query_completed(command: Dictionary, intent: Dictionary) -> void:
 		_confirm.dialog_text += "\n\n确认执行？"
 		_confirm.popup_centered("action:%s:%s" % [generation, revision])
 
+func _poll_query_completion() -> void:
+	if _waiting_intent.is_empty():
+		return
+	var waiting: Dictionary = _waiting_intent
+	_waiting_intent = {}
+	if _selection.current() and _selection.intent == waiting["intent"]:
+		_query_completed(waiting["command"], waiting["intent"])
+
 func _query_failed(message: String) -> void:
 	_notice.text = message
 	_action_popup.hide()
 	_decision.hide()
 	_confirm.close_popup()
 	_pending.clear()
-	canvas.clear_action_targets()
+	_clear_action_targets()
 
 func _pick_action_target(id: String) -> void:
 	if _selection.active and not _selection.current():
 		_clear_action_targets()
 		return
 	if _selection.current() and _selection.options != null:
+		if _selection.options.field == KernelContract.ActionField.Host and not canvas.target_rings.is_empty():
+			return
 		for option: Dictionary in _selection.options.options:
 			if str(option.get("card", "0")) == id:
 				_query_confirmed = not _query_is_decision
@@ -968,6 +1125,8 @@ func _ring_selection_host() -> String:
 	return ""
 
 func _ring_selected(host_id: String, ring_index: int) -> void:
+	if _selection.choose_ring(host_id, ring_index):
+		return
 	if _selection.current() and _selection.options != null and _selection.options.field == KernelContract.ActionField.Ring:
 		if host_id != _ring_selection_host() or not _has_option(_selection.options, str(ring_index)):
 			return
@@ -989,7 +1148,14 @@ func _has_option(options: ActionOptions, value: String) -> bool:
 
 func _clear_action_targets() -> void:
 	_selection.cancel()
+	_waiting_intent.clear()
 	_target_decision_id = ""
+	_dropped_host = ""
+	_dropped_ring = -1
+	if _empty_actions != null:
+		_empty_actions.hide()
+	if _material_bar != null:
+		_material_bar.hide()
 	if canvas != null:
 		canvas.clear_action_targets()
 
@@ -1264,6 +1430,9 @@ func _update_chain(snapshot: Dictionary) -> void:
 func _select_card(card: CardPresentation) -> void:
 	if _privacy_layer.visible or _network_waiting:
 		return
+	if _material_bar.visible:
+		_selection.toggle_material(card.instance_id)
+		return
 	var decision: Variant = service.match_snapshot.get("decision")
 	if decision is Dictionary and int(decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration and _forced_ack_id == str(decision.get("id", "")):
 		_preview_candidate(card)
@@ -1281,6 +1450,8 @@ func _select_card(card: CardPresentation) -> void:
 	if _decision.visible:
 		return
 	_selected = card
+	_dropped_host = ""
+	_dropped_ring = -1
 	_selection_id = card.instance_id
 	_global_popup_open = false
 	canvas.selected_id = card.instance_id
@@ -1350,7 +1521,7 @@ func dismiss_cancel() -> bool:
 			_global_popup_open = false
 			_clear_card()
 		else:
-			_selection.cancel()
+			_clear_action_targets()
 			_action_popup.hide()
 			_global_popup_open = false
 		return true
@@ -1389,10 +1560,15 @@ func _toggle_hand() -> void:
 	canvas.set_hand_collapsed(not canvas.hand_collapsed)
 	_hand_button.text = "▴ 手牌" if canvas.hand_collapsed else "▾ 手牌"
 
-func _placement_requested(card_id: String, _host_id: String, _ring_index: int) -> void:
+func _placement_requested(card_id: String, host_id: String, ring_index: int) -> void:
+	if _selection.current() and str(_selection.intent.get("source", "0")) == card_id and _selection.choose_ring(host_id, ring_index):
+		return
 	var card: CardPresentation = MatchProjection.card(service.match_snapshot, card_id)
-	if card != null:
+	if card != null and not _privacy_layer.visible and not _network_waiting:
 		_select_card(card)
+		if _selection.current() and str(_selection.intent.get("source", "0")) == card_id and _selection.intent.get("selections", []).is_empty():
+			_dropped_host = host_id
+			_dropped_ring = ring_index
 
 func _choose_action(action: Dictionary) -> void:
 	var command: Dictionary = action.get("command", {})
@@ -1463,8 +1639,8 @@ func _apply_result(result: Dictionary) -> void:
 		_notice.text = "操作已发送，等待房主确认。"
 		_render_actions()
 		return
-	if not bool(data.get("replaySaved", true)):
-		_notice.text = "复盘自动保存失败：" + str(data.get("saveError", "请手动保存"))
+	if not str(data.get("saveError", "")).is_empty():
+		_notice.text = "回放保存失败：" + str(data["saveError"])
 	else:
 		_notice.text = "操作已执行。"
 	if service.match_mode == "hotseat":
@@ -1627,12 +1803,6 @@ func _open_settings() -> void:
 
 func _open_replay() -> void:
 	_close_match_menu()
-	if int(service.match_snapshot.get("result", -1)) == -1:
-		_notice.text = "完整复盘在对局结束后开放；现在可以先保存记录。"
-		return
-	if not service.save_replay():
-		_notice.text = service.error
-		return
 	if service.match_mode != "network":
 		var response: Dictionary = service.match_request(&"set_paused", [true])
 		if not bool(response.get("ok", false)):
@@ -1641,30 +1811,150 @@ func _open_replay() -> void:
 	navigation_requested.emit(&"replay")
 
 func _save_replay() -> void:
+	_close_match_menu()
 	if bool(service.match_snapshot.get("technicalPaused", false)):
 		var diagnostic: Dictionary = service.match_request(&"save_diagnostic")
 		if not bool(diagnostic.get("ok", false)):
 			_notice.text = service.error
 			return
-	_notice.text = "复盘已保存：" + service.last_replay_path if service.save_replay() else service.error
+	if bool(service.replay_status().get("ready", false)):
+		_open_named_save(false)
+	else:
+		_notice.text = "完整联机回放将在终局后验证。"
+
+func _open_named_save(from_settlement: bool) -> void:
+	_save_from_settlement = from_settlement
+	if from_settlement:
+		_settlement.hide()
+	_replay_name.text = "对局 " + Time.get_datetime_string_from_system().replace("T", " ").replace(":", "-")
+	_replay_save.get_cancel_button().show()
+	_choose_replay_directory.visible = service.can_choose_save_directory
+	_replay_save_notice.text = service.replay_directory
+	_replay_save.popup_centered(Vector2i(490, 0))
+	_replay_name.grab_focus()
+	_replay_name.select_all()
+
+func _save_directory_chosen(directory: String) -> void:
+	if service.set_save_directory(directory):
+		_replay_save_notice.text = service.replay_directory
+	else:
+		_replay_save_notice.text = directory + "\n" + service.error
+
+func _write_named_replay() -> void:
+	if not _replay_save.visible:
+		return
+	if _replay_name.text.strip_edges().is_empty():
+		_replay_save_notice.text = "请输入回放名称。\n" + service.replay_directory
+		return
+	if not service.save_replay(_replay_name.text):
+		_replay_save_notice.text = service.replay_directory + "\n" + service.error
+		return
+	_replay_save.hide()
+	_notice.text = "回放已保存 · " + service.last_replay_path.get_file()
+	if _save_from_settlement and _leave_after_settlement:
+		_leave_finished_match()
+	elif _save_from_settlement:
+		_settlement.dialog_text = _settlement_summary + "\n\n" + _notice.text
+		_settlement.cancel_button_text = "留在场地"
+		_settlement_discard.text = "离开对局"
+		_settlement.get_ok_button().hide()
+		_settlement.popup_centered(Vector2i(450, 0))
+
+func _terminal_summary(snapshot: Dictionary, abort_reason: String = "") -> String:
+	if not abort_reason.is_empty():
+		return "本局已中止，无胜者\n" + abort_reason
+	var result: int = int(snapshot.get("result", -1))
+	var title: String = "平局"
+	if result in [0, 1]:
+		if service.match_mode == "hotseat":
+			title = "玩家 %d 胜利 · 玩家 %d 失败" % [result + 1, 2 - result]
+		else:
+			title = "胜利" if result == service.match_viewer else "失败"
+	var reasons: PackedStringArray = []
+	for event: Dictionary in service.event_log.entries:
+		var kind: String = str(event.get("kind", ""))
+		var message: String = str(event.get("text", "")).strip_edges()
+		if not message.is_empty() and (kind in ["defeat_reason", "timeout", "seven_lamp_defeat"] or (kind == "game_over" and message.begins_with("强制循环"))):
+			reasons.append(message)
+	return title + "\n" + ("原因未知" if reasons.is_empty() else "\n".join(reasons))
+
+func _show_settlement(summary: String, can_save: bool) -> void:
+	_close_match_menu()
+	_settlement_summary = summary
+	_settlement_discard.text = "不保存" if can_save else "离开对局"
+	_settlement.get_ok_button().visible = can_save
+	_settlement.popup_centered(Vector2i(450, 0))
+
+func _poll_settlement() -> void:
+	var snapshot: Dictionary = service.match_snapshot
+	if snapshot.is_empty() or service.match_mode == "tutorial" or bool(snapshot.get("technicalPaused", false)):
+		return
+	var room: Dictionary = service.network_state.get("room", {}) if service.match_mode == "network" else {}
+	var aborted: bool = str(room.get("phase", "")) == "aborted" or bool(room.get("aborted", false)) or (service.match_mode == "network" and bool(service.network_state.get("ended", false)) and int(snapshot.get("result", -1)) == -1)
+	if int(snapshot.get("result", -1)) == -1 and not aborted:
+		return
+	var generation: String = str(snapshot.get("generation", ""))
+	if generation != service.settled_generation:
+		service.settled_generation = generation
+		var reason: String = str(room.get("abortReason", ""))
+		if aborted and reason.is_empty():
+			reason = "房间已关闭"
+		_show_settlement(_terminal_summary(snapshot, reason if aborted else ""), not aborted)
+	if _settlement.visible and not aborted:
+		_settlement_summary = _terminal_summary(snapshot)
+		var status: Dictionary = service.replay_status()
+		_replay_available = bool(status.get("ready", false))
+		_settlement.get_ok_button().disabled = not _replay_available
+		var replay_message: String = ""
+		if not _replay_available:
+			var failure: String = str(status.get("error", ""))
+			replay_message = "\n\n正在接收并验证回放…" if bool(status.get("pending", false)) else "\n\n" + ("联机回放暂不可用。" if failure.is_empty() else failure)
+		if _settlement.get_ok_button().visible:
+			_settlement.dialog_text = _settlement_summary + replay_message
+	elif _settlement.visible:
+		_settlement.dialog_text = _settlement_summary
+
+func _discard_settlement(_action: StringName) -> void:
+	_settlement.hide()
+	_leave_finished_match()
+
+func _leave_finished_match() -> void:
+	if service.leave_match():
+		if service.network_active:
+			_leaving_network = true
+			_notice.text = "等待服务器确认离开房间…"
+		else:
+			_finish_leave()
+	else:
+		_notice.text = service.error
 
 func request_leave(quit_application: bool = false) -> void:
 	_quitting = quit_application
-	_leave_dialog.dialog_text = "投降并等待终局复盘保存后离开房间？" if service.match_mode == "network" else "保存终局复盘，并结束当前对局？"
+	if _settlement.visible:
+		_leave_after_settlement = true
+		return
+	if int(service.match_snapshot.get("result", -1)) != -1 and service.match_mode != "tutorial":
+		_leave_after_settlement = true
+		_show_settlement(_terminal_summary(service.match_snapshot), true)
+		_poll_settlement()
+		return
+	_leave_dialog.dialog_text = "确定投降并结束当前对局？"
+	if service.match_mode == "tutorial" or bool(service.match_snapshot.get("technicalPaused", false)):
+		_leave_dialog.dialog_text = "结束当前对局？"
 	_leave_dialog.popup_centered()
 
 func _leave() -> void:
-	if service.match_mode == "network":
-		_leaving_network = true
-		var response: Dictionary = service.network_request({"operation": "leave", "force": false})
-		if not bool(response.get("ok", false)):
-			_notice.text = service.error
-			_force_leave.show()
-			return
-	elif not service.leave_match():
-		_notice.text = "保存终局记录失败，对局仍保留：" + service.error
+	var room: Dictionary = service.network_state.get("room", {}) if service.match_mode == "network" else {}
+	if str(room.get("phase", "")) == "aborted" or service.match_mode == "tutorial" or bool(service.match_snapshot.get("technicalPaused", false)):
+		_leave_finished_match()
 		return
-	_finish_leave()
+	_leave_after_settlement = true
+	if not service.surrender_match():
+		_notice.text = service.error
+		_force_leave.visible = service.match_mode == "network"
+	else:
+		_pending_viewer = -1
+		service.poll_session()
 
 func _finish_leave() -> void:
 	if _quitting:
@@ -1731,7 +2021,7 @@ func network_updated(state: Dictionary) -> void:
 		else:
 			_reconnect_started_at_msec = -1
 		if phase == "completed":
-			lifecycle_notices.append("对局已结束，复盘已验证并保存。" if bool(state.get("replayDelivered", false)) else "对局已结束，正在接收并验证复盘…")
+			lifecycle_notices.append("对局已结束，回放可保存。" if bool(state.get("replayDelivered", false)) else "对局已结束，正在接收并验证回放…")
 	if _network_recovery.blocked:
 		_close_response_question()
 		_clear_action_targets()

@@ -82,8 +82,6 @@ func stage_ring(card: CardPresentation, host: String) -> bool:
 	if not check(page._selection.current() and page._selection.options.field == F.Operation, "Card exposes operations"):
 		return false
 	page._selection.choose(str(K.SetAmbush))
-	if page._selection.options.field == F.Host:
-		page._pick_action_target(host)
 	if not check(page.canvas.target_rings.get(host, []).has(0) and page.canvas.target_rings.get(host, []).has(1), "Both rings are selectable"):
 		return false
 	var found: bool = false
@@ -173,6 +171,8 @@ func _run() -> void:
 	var log: Dictionary = service.match_request(&"events_since", [1, "0", "0"])
 	check(log.get("ok", false) and not log.data.events.is_empty() and log.data.events.any(func(event: Dictionary) -> bool: return event.kind == "ambush") and not JSON.stringify(log.data.events).contains(card.title), "Opponent log withholds the set card name")
 	page._save_replay()
+	page._replay_name.text = "盖伏环位-" + str(Time.get_ticks_usec())
+	page._write_named_replay()
 	var record: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(service.last_replay_path))
 	var placement_step: int = record.commands.size()
 	evidence["placementStep"] = placement_step
@@ -183,6 +183,11 @@ func _run() -> void:
 		return
 	service.poll_session()
 	page._refresh()
+	check(page._settlement.visible and page._settlement.dialog_text.contains("投降"), "Authoritative loss reason appears in the settlement")
+	page._open_named_save(true)
+	page._replay_name.text = "终局-" + str(Time.get_ticks_usec())
+	page._write_named_replay()
+	page._settlement.hide()
 	page._open_replay()
 	await process_frame
 	var replay: ReplayPage = app.page as ReplayPage
@@ -192,7 +197,19 @@ func _run() -> void:
 	for viewer: int in [0, 1]:
 		replay._viewer.select(viewer)
 		replay._viewer.item_selected.emit(viewer)
-		replay._move(placement_step - replay._step)
+		replay._seek(placement_step - 1)
+		replay._manual_move(1)
+		var expected_display: Array = [replay._frame.duplicate(true), replay._logs_text.text, replay._command.text]
+		replay._seek(placement_step - 1)
+		replay._change_speed(2)
+		replay._toggle_playback()
+		replay._timer.timeout.emit()
+		check([replay._frame, replay._logs_text.text, replay._command.text] == expected_display, "4× and manual stepping show the same authoritative projection")
+		replay._seek(replay._rows.size())
+		replay._begin_seek()
+		replay._progress.set_value_no_signal(placement_step)
+		replay._end_seek(true)
+		check(replay._timer.is_stopped() and [replay._frame, replay._logs_text.text, replay._command.text] == expected_display, "Dragging backwards pauses and shows the same projection, log and command")
 		var replayed: Dictionary = find_card(replay._frame, id)
 		check(replayed == (own_card if viewer == 0 else hidden), "Replay frame matches exact live card projection, player " + str(viewer))
 		check(replay._frame.players[0].mana == owner.players[0].mana, "Replay mana matches live mana")
@@ -275,6 +292,8 @@ func exercise_tutorial_chain() -> void:
 
 	service.poll_session()
 	lesson_page._save_replay()
+	lesson_page._replay_name.text = "教学-" + str(Time.get_ticks_usec())
+	lesson_page._write_named_replay()
 	evidence["tutorialReplay"] = service.last_replay_path
 	evidence["shieldCost"] = shield_cost
 	evidence["resolution"] = resolution.slice(-2)
@@ -284,6 +303,7 @@ func exercise_tutorial_chain() -> void:
 	if not submit(view(0), {"type": K.Surrender}):
 		return
 	service.poll_session()
+	check(service.save_replay("教学终局-" + str(Time.get_ticks_usec())), "Finished tutorial can be saved explicitly")
 	lesson_page._open_replay()
 	await process_frame
 	var replay: ReplayPage = app.page as ReplayPage
@@ -334,6 +354,8 @@ func exercise_overflow() -> void:
 			var done: Dictionary = view(0)
 			check(find_card(done, card_id).zone == 6 and done.players[0].castingCount == 0, "Chosen excess spell leaves the casting area for ash")
 			overflow_page._save_replay()
+			overflow_page._replay_name.text = "环位超额-" + str(Time.get_ticks_usec())
+			overflow_page._write_named_replay()
 			evidence["overflow"] = {"playedCard": card_id, "capacity": s.players[0].castingCapacity, "before": s.players[0].castingCount, "after": done.players[0].castingCount, "replay": service.last_replay_path}
 			return
 		elif s.viewer == 0 and s.phase == 2 and s.decision == null:

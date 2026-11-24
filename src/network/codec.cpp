@@ -263,6 +263,7 @@ EventBatch decodeEvents(const Json &j) {
         event.card = row.at("card"); event.amount = row.at("amount");
         if (!row.at("effectType").is_null()) event.effectType = row.at("effectType").get<EffectKind>();
         event.actualAmount = row.at("actualAmount"); event.affectedPlayer = row.at("affectedPlayer");
+        if (row.contains("damageType")) event.damageType = damageTypeFromId(row.at("damageType").get<std::string>());
         event.spellReleased = row.at("spellReleased");
         event.chainIndex = row.value("chainIndex", 0);
         if (row.contains("travel")) {

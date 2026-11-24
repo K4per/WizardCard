@@ -63,6 +63,8 @@ func mode(index: int) -> void:
 func start(mode_name: String) -> bool:
 	app.navigate(&"menu")
 	if service.match_active:
+		if int(service.snapshot().get("result", -1)) == -1:
+			service.surrender_match()
 		service.leave_match()
 	if not check(service.start_match({"mode":mode_name, "seed":42}), service.error):
 		return false

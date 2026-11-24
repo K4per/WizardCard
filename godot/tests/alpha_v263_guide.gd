@@ -25,7 +25,7 @@ func _run() -> void:
 	previous.close()
 	check(GuideProgress.mark(previous_directory, 1), "can save a new chapter after upgrading")
 	var migrated: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(previous_path)) as Dictionary
-	check(migrated.get("version") == "2.6.4-hotfix.1" and GuideProgress.completed(previous_directory) == [4, 1], "old completions survive the first 2.6.4-hotfix.1 save")
+	check(migrated.get("version") == "2.6.5" and GuideProgress.completed(previous_directory) == [4, 1], "old completions survive the first 2.6.5 save")
 	check((app.page as MenuPage)._buttons[3].text == "巫师指南", "menu has the unified guide entry")
 	app.navigate(&"setup")
 	await process_frame
@@ -38,7 +38,7 @@ func _run() -> void:
 	guide.tabs.current_tab = 1
 	for index: int in range(guide._rule_chapters.item_count):
 		guide._read_rule(index)
-		check(guide._rule_text.text.contains("2.6.4-hotfix.1") and not guide._rule_text.text.contains("\n略。"), "rule chapters are complete and versioned")
+		check(guide._rule_text.text.contains("2.6.4-hotfix.1") and not guide._rule_text.text.contains("\n略。"), "rule chapters preserve their rules version and remain complete")
 	check(not str(guide._rules["chapters"][0]["text"]).contains("②在自己的结束阶段"), "overload is a defeat condition, not victory for the overloaded player")
 	await capture("guide-rulebook")
 	guide.tabs.current_tab = 2
@@ -73,7 +73,7 @@ func _run() -> void:
 		await process_frame
 	app.queue_free()
 	await process_frame
-	print("Alpha v2.6.4-hotfix.1 guide failures: ", failures)
+	print("Alpha v2.6.5 guide failures: ", failures)
 	quit(0 if failures == 0 else 1)
 
 func capture(label: String) -> void:

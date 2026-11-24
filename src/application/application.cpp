@@ -1,5 +1,6 @@
 #include "wizard/application.hpp"
 #include <algorithm>
+#include <atomic>
 #include <chrono>
 #include <cstdlib>
 #include <fstream>
@@ -24,6 +25,62 @@ std::filesystem::path environmentPath(const char *key) {
     return value && *value ? std::filesystem::u8path(value) : std::filesystem::path{};
 }
 #endif
+std::string asciiLower(std::string text) {
+    for (auto &c : text)
+        if (c >= 'A' && c <= 'Z') c = static_cast<char>(c - 'A' + 'a');
+    return text;
+}
+std::string replayFilename(std::string name) {
+    if (name.size() > 240 || name.empty() || name.front() == ' ' || name.back() == ' ' ||
+        name.back() == '.' || name.find_first_of("<>:\"/\\|?*") != std::string::npos ||
+        std::any_of(name.begin(), name.end(), [](unsigned char c) { return c < 32 || c == 127; }))
+        throw std::invalid_argument("复盘文件名无效");
+    (void)Json(name).dump(); // Reject malformed UTF-8 on every platform.
+    const auto lower = asciiLower(name);
+    auto stem = lower.substr(0, lower.find('.'));
+    const auto last = stem.find_last_not_of(' ');
+    stem.resize(last == std::string::npos ? 0 : last + 1);
+    const auto port = stem.size() > 3 ? stem.substr(3) : std::string{};
+    const bool devicePort = (stem.rfind("com", 0) == 0 || stem.rfind("lpt", 0) == 0) &&
+        ((port.size() == 1 && port.front() >= '0' && port.front() <= '9') ||
+         port == "¹" || port == "²" || port == "³");
+    if (stem.empty() || stem == "con" || stem == "prn" || stem == "aux" || stem == "nul" ||
+        stem == "conin$" || stem == "conout$" || devicePort)
+        throw std::invalid_argument("复盘文件名无效");
+    if (lower.size() < 5 || lower.substr(lower.size() - 5) != ".json")
+        name += ".json";
+    else
+        name.replace(name.size() - 5, 5, ".json");
+    return name;
+}
+
+std::string copySaves(const std::filesystem::path &source, const std::filesystem::path &target) {
+    namespace fs = std::filesystem;
+    std::error_code ignored;
+    if (source == target || fs::equivalent(source, target, ignored)) return {};
+    if (!fs::is_directory(source)) return {};
+    unsigned copied = 0, skipped = 0;
+    auto copy = [&](const fs::path &from, const fs::path &to) {
+        if (!fs::is_regular_file(fs::symlink_status(from))) return;
+        fs::create_directories(to.parent_path());
+        if (fs::copy_file(from, to, fs::copy_options::skip_existing)) ++copied;
+        else ++skipped;
+    };
+    copy(source / "decks.json", target / "decks.json");
+    const auto replays = source / "replays";
+    if (fs::is_directory(replays)) {
+        for (const auto &entry : fs::directory_iterator(replays)) {
+            const auto &path = entry.path();
+            const auto name = asciiLower(path.filename().u8string());
+            const std::string suffix = ".diagnostic.json";
+            if (asciiLower(path.extension().u8string()) == ".json" &&
+                (name.size() < suffix.size() || name.substr(name.size() - suffix.size()) != suffix))
+                copy(path, target / "replays" / path.filename());
+        }
+    }
+    if (!copied && !skipped) return {};
+    return "已复制 " + std::to_string(copied) + " 个存档，" + std::to_string(skipped) + " 个同名存档已保留。";
+}
 } // namespace
 float Settings::effectiveSoundVolume() const {
     return static_cast<float>(masterVolume * soundVolume) / 100.f;
@@ -140,9 +197,51 @@ std::vector<DeckPreset> loadPresets(const Content &content, const std::filesyste
     }
     return out;
 }
-Application::Application(Content content, std::filesystem::path directory, std::vector<DeckPreset> presets, RoomFactory roomFactory)
-    : content_(std::move(content)), directory_(std::move(directory)), presets_(std::move(presets)),
-      decks_(content_.catalog, directory_), roomFactory_(std::move(roomFactory)) {
+std::filesystem::path Application::loadSaveDirectory() {
+    namespace fs = std::filesystem;
+    if (defaultSaveDirectory_.empty()) return directory_;
+    const auto config = directory_ / "save-directory.json";
+    auto selected = fs::absolute(defaultSaveDirectory_).lexically_normal();
+    std::string overridePath;
+    try {
+        if (fs::exists(config)) {
+            const auto json = readJson(config);
+            if (json.at("format") != 1) throw std::runtime_error("存档目录配置版本不兼容");
+            overridePath = json.value("directory", std::string{});
+            const auto overrideDirectory = fs::u8path(overridePath);
+            if (!overridePath.empty() && !overrideDirectory.is_absolute())
+                throw std::runtime_error("存档目录应为绝对路径");
+            if (!overrideDirectory.empty()) selected = overrideDirectory;
+            migratedLegacyDirectory_ = fs::u8path(json.value("migratedLegacyDirectory", std::string{}));
+        }
+        if (migratedLegacyDirectory_ != selected) {
+            try {
+                storageNotice_ = copySaves(directory_, selected);
+            } catch (const std::exception &e) {
+                storageNotice_ = "无法迁移存档至 " + selected.u8string() + "，正在使用 " +
+                    directory_.u8string() + "：" + e.what();
+                return directory_;
+            }
+            // Write the marker only when there were old files, so a clean installation
+            // does not create data on launch and later upgrades can still import.
+            if (!storageNotice_.empty()) {
+                atomicWriteJson(config, {{"format", 1}, {"directory", overridePath},
+                    {"migratedLegacyDirectory", selected.u8string()}});
+                migratedLegacyDirectory_ = selected;
+            }
+        }
+    } catch (const std::exception &e) {
+        storageNotice_ = "无法读取目录配置或迁移存档至 " + selected.u8string() + "：" + e.what();
+    }
+    return selected;
+}
+
+Application::Application(Content content, std::filesystem::path directory, std::vector<DeckPreset> presets,
+                         RoomFactory roomFactory, ReplayPersistence persistence, std::filesystem::path defaultSaveDirectory)
+    : content_(std::move(content)), directory_(std::move(directory)),
+      defaultSaveDirectory_(std::move(defaultSaveDirectory)), replayPersistence_(persistence),
+      presets_(std::move(presets)), decks_(content_.catalog, saveDirectory_ = loadSaveDirectory()),
+      roomFactory_(std::move(roomFactory)) {
     if (presets_.empty())
         presets_.push_back({"default", "示范卡组", content_.defaultPlayerDeck()});
     for (const auto &preset : presets_) {
@@ -160,6 +259,34 @@ Application::Application(Content content, std::filesystem::path directory, std::
     }
     if (!decks_.notice().empty())
         notice_ += (notice_.empty() ? "" : " ") + decks_.notice();
+}
+bool Application::setSaveDirectory(const std::filesystem::path &path, std::string &error) {
+    namespace fs = std::filesystem;
+    if (!canChooseSaveDirectory() || path.empty()) {
+        error = "当前启动方式无法更改存档目录，或所选目录无效";
+        return false;
+    }
+    try {
+        auto selected = fs::absolute(path).lexically_normal();
+        fs::create_directories(selected);
+        auto notice = copySaves(saveDirectory_, selected);
+        if (migratedLegacyDirectory_ != saveDirectory_) {
+            const auto legacyNotice = copySaves(directory_, selected);
+            if (!legacyNotice.empty()) notice += (notice.empty() ? "" : " ") + legacyNotice;
+        }
+        DeckLibrary decks(content_.catalog, selected);
+        if (!decks.writable()) throw std::runtime_error(decks.notice());
+        atomicWriteJson(directory_ / "save-directory.json", {{"format", 1}, {"directory", selected.u8string()},
+            {"migratedLegacyDirectory", selected.u8string()}});
+        migratedLegacyDirectory_ = selected;
+        saveDirectory_ = std::move(selected);
+        decks_ = std::move(decks);
+        storageNotice_ = std::move(notice);
+        return true;
+    } catch (const std::exception &e) {
+        error = "无法使用存档目录 " + path.u8string() + "：" + e.what();
+        return false;
+    }
 }
 std::vector<DeckPreset> Application::playableDecks() const {
     auto choices = presets_;
@@ -217,10 +344,11 @@ bool Application::start(const MatchConfig &config, std::string &error, SessionOp
             throw std::invalid_argument("教学局面仅可用于教程");
         auto next = std::make_unique<MatchSession>(content_, config);
         next->enableDebug(options.mode == MatchMode::Ai);
-        auto path = directory_ / "replays" /
+        auto path = saveDirectory_ / "replays" /
                     ("match-" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) +
                      "-" + std::to_string(generation_ + 1) + ".json");
-        atomicWriteJson(path, next->recording());
+        if (replayPersistence_ == ReplayPersistence::Automatic)
+            atomicWriteJson(path, next->recording());
         match_ = std::move(next);
         configuration_ = config;
         replayPath_ = std::move(path);
@@ -344,6 +472,32 @@ bool Application::saveReplay(std::string &error) const {
         return false;
     }
 }
+bool Application::replayReady() const {
+    if (network_) return network_->verifiedReplay() != nullptr;
+    return match_ != nullptr;
+}
+std::filesystem::path Application::saveNamedReplay(const std::string &filename) const {
+    if (!replayReady()) throw std::runtime_error("当前没有可保存的复盘");
+    const auto directory = saveDirectory_ / "replays";
+    static std::atomic<std::uint64_t> serial{};
+    auto name = filename;
+    if (name.empty())
+        name = "match-" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) +
+            "-" + std::to_string(serial++);
+    const auto path = directory / std::filesystem::u8path(replayFilename(name));
+    try {
+        if (network_) {
+            createAtomicJson(path, *network_->verifiedReplay());
+        } else {
+            const auto recording = match_->recording();
+            (void)replay(content_, recording);
+            createAtomicJson(path, recording);
+        }
+        return path;
+    } catch (const std::exception &e) {
+        throw std::runtime_error("复盘未保存至 " + path.u8string() + "：" + e.what());
+    }
+}
 void Application::requestLeave(bool quit) {
     if (network_) {
         if (page_ == Page::ConfirmLeave || page_ == Page::ConfirmSurrender)
@@ -376,6 +530,19 @@ bool Application::confirmLeave(PlayerId actor, std::string &error) {
     if (page_ != Page::ConfirmLeave || !match_) {
         error = "离开确认已失效";
         return false;
+    }
+    if (replayPersistence_ == ReplayPersistence::Explicit) {
+        if (mode() != MatchMode::Tutorial && match_->engine().state().result == -1 && !match_->technicalPaused()) {
+            error = "请先投降结束对局";
+            return false;
+        }
+        match_.reset();
+        options_ = {};
+        tutorial_ = {};
+        ++generation_;
+        page_ = Page::Menu;
+        quit_ = leaveQuits_;
+        return true;
     }
     try {
         auto finished = *match_;
@@ -427,7 +594,8 @@ bool Application::confirmSurrender(PlayerId actor, std::string &error) {
         auto r = finished->submit(actor, Surrender{});
         if (!r.accepted)
             throw std::runtime_error(r.error);
-        atomicWriteJson(replayPath_, finished->recording());
+        if (replayPersistence_ == ReplayPersistence::Automatic)
+            atomicWriteJson(replayPath_, finished->recording());
         match_ = std::move(finished);
         ++revision_;
         page_ = Page::Match;
@@ -518,8 +686,8 @@ bool Application::startNetwork(const RoomConnectOptions &options, const PlayerDe
         if (!factory)
             throw std::runtime_error("当前应用未配置联机会话适配器");
         auto serial = std::chrono::steady_clock::now().time_since_epoch().count();
-        auto path = directory_ / "replays" / ("network-" + std::to_string(serial) + ".json");
-        auto peer = factory(content_, path);
+        auto path = saveDirectory_ / "replays" / ("network-" + std::to_string(serial) + ".json");
+        auto peer = factory(content_, replayPersistence_ == ReplayPersistence::Explicit ? std::filesystem::path{} : path);
         if (!peer)
             throw std::runtime_error("联机会话适配器创建失败");
         peer->connect(options, d);

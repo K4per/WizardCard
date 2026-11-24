@@ -35,6 +35,44 @@ func _start_recipe(card: CardPresentation) -> void:
 	page._selection.choose(str(K.SetFormation))
 	page._formation_slot_selected(1)
 
+func _check_network_ring_refresh(snapshot: Dictionary, source: CardPresentation, hosts: Array) -> void:
+	var fixture := QueryFixtureService.new()
+	fixture.match_active = true
+	fixture.match_mode = "network"
+	fixture.match_snapshot = snapshot.duplicate(true)
+	var actions: Array[Dictionary] = []
+	for host_id: String in hosts:
+		actions.append({"source": source.instance_id, "command": {"type": K.SetAmbush, "card": source.instance_id, "formation": host_id, "ringIndex": 0}})
+	fixture.set_actions(actions)
+	var network_page: MatchPage = load("res://pages/match_page.tscn").instantiate()
+	root.add_child(network_page)
+	network_page.configure(fixture)
+	network_page._select_card(source)
+	network_page._selection.choose(str(K.SetAmbush))
+	check(network_page.canvas.target_rings.size() == 2, "Network match displays both legal host rings")
+	fixture.set_actions([actions[0]])
+	fixture.match_snapshot.revision = str(int(snapshot.revision) + 1)
+	fixture.match_changed.emit(fixture.match_snapshot)
+	var rings: Dictionary = network_page.canvas.target_rings
+	check(rings.size() == 1 and rings.has(hosts[0]), "New revision retains only the surviving host ring")
+	network_page._ring_selected(hosts[1], 0)
+	check(not network_page._confirm.visible and fixture.confirmations == 0, "Obsolete ring cannot confirm or submit")
+	network_page.dismiss_cancel()
+	check(network_page.canvas.target_rings.is_empty(), "Cancelling removes the remaining ring highlight")
+	actions.clear()
+	for host_id: String in hosts:
+		actions.append({"source": source.instance_id, "command": {"type": K.ActivateSpell, "card": source.instance_id, "target": host_id}})
+	fixture.set_actions(actions)
+	network_page._selection.begin(source.instance_id, K.ActivateSpell)
+	var panel: DecisionPanel = network_page._decision
+	panel._options[hosts[0]].button_pressed = true
+	for keep_pick: bool in [true, false]:
+		fixture.set_actions([actions[0] if keep_pick else actions[1]])
+		fixture.match_snapshot.revision = str(int(fixture.match_snapshot.revision) + 1)
+		fixture.match_changed.emit(fixture.match_snapshot)
+		check(panel._selected.has(hosts[0]) == keep_pick and not panel._selected.has(hosts[1]), "Only a still-legal choice survives a revision of the same target request")
+	network_page.free()
+
 func _run() -> void:
 	app = load("res://app/main.tscn").instantiate()
 	root.add_child(app)
@@ -94,6 +132,7 @@ func _run() -> void:
 	if not check(page.canvas.target_rings.size() >= 2 and page.canvas.target_rings.has(basic.instance_id), "Both actual hosts expose their same-numbered ring together"):
 		_finish()
 		return
+	_check_network_ring_refresh(snapshot, source, page.canvas.target_rings.keys())
 	page._ring_selected(basic.instance_id, 0)
 	check(page._confirm.visible and str(page._pending.command.formation) == basic.instance_id, "Ring click binds the second host")
 	page._confirm.get_node("%Cancel").pressed.emit()

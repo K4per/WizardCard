@@ -589,7 +589,6 @@ func _refresh() -> void:
 	var preserved_id: String = _selection_id if not _selection_id.is_empty() else (_selected.instance_id if _selected != null else (canvas.selected_id if canvas != null else ""))
 	var snapshot: Dictionary = service.snapshot()
 	var resume_selection: bool = _selection.active
-	var prior_picks: Array[String] = _decision._selected.duplicate()
 	if snapshot.is_empty():
 		_notice.text = service.error
 		return
@@ -674,7 +673,6 @@ func _refresh() -> void:
 	if resume_selection:
 		_selection.revalidate()
 		if _selection.active:
-			_decision.restore_selection(prior_picks)
 			_schedule_automatic()
 			return
 	_render_decision()
@@ -979,7 +977,7 @@ func _query_changed(options: ActionOptions) -> void:
 		more.label = "下一页"
 		request.choices.append(more)
 	canvas.set_action_targets(card_ids)
-	_decision.configure(request)
+	_decision.configure(request, [options.viewer, options.field, _selection.intent])
 	_decision.show()
 	_action_popup.hide()
 	_detail_shade.hide()
@@ -1148,6 +1146,7 @@ func _has_option(options: ActionOptions, value: String) -> bool:
 
 func _clear_action_targets() -> void:
 	_selection.cancel()
+	_decision.forget_query_context()
 	_waiting_intent.clear()
 	_target_decision_id = ""
 	_dropped_host = ""

@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "collection": "WizardCard card illustrations, application icon, main menu banner and licensed CJK fonts",
+  "collection": "WizardCard card illustrations, damage border, application icon, main menu banner and licensed CJK fonts",
   "additionalSourceManifests": [
     {
       "file": "assets/art/fonts/noto-sans-cjk-sc/manifest.json",
@@ -24,6 +24,13 @@
     }
   ],
   "assets": [
+    {
+      "id": "fx.damage-border",
+      "file": "res://art/fx/damage-border.png",
+      "source": "tools/bake_damage_border.mjs",
+      "size": [1152, 510],
+      "sha256": "18cb0f39f4246ce28b53019f6580069a0e1072296a07506d4968c1d3fc3e259f"
+    },
     {
       "id": "branding.app.icon",
       "file": "res://art/branding/wizardcard-app-v1.png",

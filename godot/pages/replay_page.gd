@@ -139,7 +139,7 @@ func _reset_replay() -> void:
 	_status_opponent.hide()
 	_table.clock.text = ""
 	_update_logs({})
-	_command.clear()
+	_command.text = ""
 	_canvas.configure(FieldPresentation.new())
 	_step = 0
 	_hide_detail()

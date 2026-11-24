@@ -25,6 +25,11 @@ func _run() -> void:
 	page._paths.append("record")
 	page._files.add_item("record")
 	page._load()
+	page._load()
+	if page._command.get_parsed_text() != "对局开始":
+		push_error("Reloading at step zero must show the opening command caption")
+		quit(1)
+		return
 	if not page.has_method("_toggle_playback"):
 		push_error("Replay page is missing playback controls")
 		quit(1)

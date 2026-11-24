@@ -7,9 +7,9 @@ import re
 import struct
 
 if __package__:
-    from .prepare_godot_frontend_assets import BRAND_FILES, FONT_IDS
+    from .prepare_godot_frontend_assets import FONT_IDS, TEXTURE_FILES
 else:
-    from prepare_godot_frontend_assets import BRAND_FILES, FONT_IDS
+    from prepare_godot_frontend_assets import FONT_IDS, TEXTURE_FILES
 
 
 def read_directory(stream):
@@ -38,8 +38,9 @@ def read_directory(stream):
 def audit_pck(pck, manifest):
     expected_manifest = manifest.read_bytes()
     entries = json.loads(expected_manifest)["assets"]
-    if set(BRAND_FILES) - {entry["id"] for entry in entries}:
-        raise ValueError("The approved manifest must include the application icon and menu banner")
+    missing = TEXTURE_FILES.keys() - {entry["id"] for entry in entries}
+    if missing:
+        raise ValueError(f"Missing required art IDs: {sorted(missing)}")
     with pck.open("rb") as stream:
         directory = read_directory(stream)
 
@@ -60,8 +61,8 @@ def audit_pck(pck, manifest):
             name = entry["file"].removeprefix("res://")
             asset_id = entry["id"]
             is_illustration = asset_id.startswith("illustration.")
-            is_brand = BRAND_FILES.get(asset_id) == entry["file"]
-            if not is_illustration and not is_brand and asset_id not in FONT_IDS:
+            is_texture = is_illustration or TEXTURE_FILES.get(asset_id) == entry["file"]
+            if not is_texture and asset_id not in FONT_IDS:
                 raise ValueError(f"Unexpected art ID or path: {asset_id}")
             if name.endswith(".txt"):
                 if hashlib.sha256(read(name)).hexdigest() != entry["sha256"]:
@@ -77,10 +78,10 @@ def audit_pck(pck, manifest):
             # Godot identifies an imported resource by its original basename and the MD5 of its res:// path.
             identity = hashlib.md5(entry["file"].encode("utf-8")).hexdigest()
             prefix = f".godot/imported/{Path(name).name}-{identity}."
-            suffix = ".ctex" if is_illustration or is_brand else ".fontdata"
+            suffix = ".ctex" if is_texture else ".fontdata"
             if any(not path.startswith(prefix) or not path.endswith(suffix) for path in resources):
                 raise ValueError(f"Unexpected compiled resource for {name}")
-            if is_illustration or is_brand:
+            if is_texture:
                 textures.update(resources)
             if is_illustration:
                 illustrations.update(resources)
@@ -110,6 +111,6 @@ if __name__ == "__main__":
     parser.add_argument("--manifest", type=Path, default=Path(__file__).resolve().parents[1] / "godot/art/assets.json")
     args = parser.parse_args()
     try:
-        print(f"Verified {audit_pck(args.pck, args.manifest)} packed illustration textures, the application icon and menu banner.")
+        print(f"Verified {audit_pck(args.pck, args.manifest)} packed illustration textures, damage border, application icon and menu banner.")
     except (KeyError, ValueError, OSError, struct.error) as error:
         raise SystemExit(str(error)) from error

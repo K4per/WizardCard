@@ -9,6 +9,7 @@ signal collapse_requested()
 
 var request: DecisionPresentation
 var _selected: Array[String] = []
+var _query_context: Array = []
 var _column: VBoxContainer
 var _confirm: Button
 var _options: Dictionary[String, Button] = {}
@@ -77,7 +78,12 @@ func _own_structure(node: Node) -> void:
 func _layout_skin() -> void:
 	_padding.set_content_margin_all(8 if request != null and request.docked else content_padding)
 
-func configure(value: DecisionPresentation) -> void:
+func configure(value: DecisionPresentation, query_context: Array = []) -> void:
+	var retained: Array[String] = []
+	if request != null and not query_context.is_empty() and query_context == _query_context \
+			and request.generation == value.generation and request.decision_id == value.decision_id and request.revision != value.revision:
+		retained.assign(_selected)
+	_query_context = query_context.duplicate(true)
 	request = value
 	_selected.clear()
 	_options.clear()
@@ -162,18 +168,17 @@ func configure(value: DecisionPresentation) -> void:
 	_cancel.visible = value.may_cancel or not value.pass_id.is_empty()
 	_cancel.text = "放弃" if not value.pass_id.is_empty() else "返回"
 	if not value.browse_mode:
+		for id: String in retained:
+			if _options.has(id) and not _options[id].disabled:
+				_selected.append(id)
 		_refresh()
+
+func forget_query_context() -> void:
+	_query_context.clear()
 
 func _preview_choice(choice: DecisionChoice) -> void:
 	_show_preview(choice)
 	card_hovered.emit(choice.card)
-
-func restore_selection(ids: Array[String]) -> void:
-	for id: String in ids:
-		if _options.has(id) and not _options[id].disabled:
-			_options[id].set_pressed_no_signal(true)
-			_selected.append(id)
-	_refresh()
 
 func _disconnect_actions() -> void:
 	for button: Button in [_confirm, _cancel]:

@@ -1,5 +1,7 @@
 extends SceneTree
 
+const HandInput = preload("res://tests/hand_input.gd")
+
 var _failures: Array[String] = []
 var _confirmed: Array = []
 var _cancelled: bool = false
@@ -66,10 +68,14 @@ func _run() -> void:
 		_check(page.canvas.get_child_count() == 9 and page.canvas.has_node("OwnAnalysis"), "Editable region nodes remain stable while cards/rings are drawn from projection")
 		var bounds: Rect2 = Rect2(Vector2.ZERO, page.canvas.size)
 		_check(page.canvas._own_region.size.x >= page.canvas.size.x * 0.65, "Analysis leaves side lanes clear for deck piles")
-		_check((page.canvas.size - page.canvas._own_region.end).is_equal_approx(page.canvas._opponent_region.position), "Player analysis regions are centrally symmetric")
+		var board_center: Vector2 = page.canvas._board_transform * (page.canvas.size * 0.5)
+		_check((board_center * 2.0 - page.canvas._own_region.end).is_equal_approx(page.canvas._opponent_region.position), "Player analysis regions mirror around the scaled field center")
 		_check(page.canvas._own_casting_region.size.y >= 24 and not page.canvas._own_casting_region.intersects(page.canvas._own_region), "Compact casting tracks do not overlap the analysis area")
 		for hit: Dictionary in page.canvas._card_hits:
-			_check(bounds.encloses(hit["rect"]), "Cards must fit field at " + str(dimensions))
+			if page.canvas.field.hand.has(hit["card"]):
+				_check(HandInput.point(page.canvas, hit["card"]).x >= 0, "Each resting hand card exposes a hit area at " + str(dimensions))
+			else:
+				_check(bounds.encloses(hit["rect"]), "Board cards fit field at " + str(dimensions))
 		_check(page.canvas._card_hits.size() >= 8, "Field must contain rendered card hit regions")
 		var own: FormationPresentation = page.canvas.field.own_formations[0]
 		var host_anchor: Rect2 = page.canvas.card_bounds(own.card)
@@ -123,7 +129,8 @@ func _run() -> void:
 		for hit: Dictionary in page.canvas._card_hits:
 			var shown: CardPresentation = hit["card"]
 			last_visible = last_visible or shown.instance_id.begins_with("extra-")
-			_check(bounds.encloses(hit["rect"]), "Formation clusters remain inside field")
+			if not page.canvas.field.hand.has(shown):
+				_check(bounds.encloses(hit["rect"]), "Formation clusters remain inside field")
 		_check(last_visible and page.canvas.field.own_formations.size() == 5, "All five formation rows are visible at " + str(dimensions))
 		# All ordinary pages also reflow at each required size.
 		_app.navigate(&"menu")
@@ -314,7 +321,7 @@ func _projection_reset_checks() -> void:
 	field.hand.append(CardPresentation.anonymous("previous-projection-hand"))
 	canvas.configure(field)
 	await _settle()
-	var point: Vector2 = canvas.card_bounds(field.hand[0]).get_center()
+	var point: Vector2 = canvas.get_global_transform_with_canvas().affine_inverse() * HandInput.point(canvas, field.hand[0])
 	_check(canvas.card_at(point) == field.hand[0], "Previous projection creates a real pointer hitbox")
 	canvas.selected_id = field.hand[0].instance_id
 	canvas._dragged = field.hand[0]
@@ -464,7 +471,7 @@ func _field_input_checks(page: FieldPage) -> void:
 	page.canvas._card_hits = [hand_region]
 	_check(page.canvas.card_at(hand_hit.position + Vector2.ONE) != hand_card, "Transparent corners of a rotated card cannot capture clicks")
 	page.canvas._card_hits = all_hits
-	var point: Vector2 = page.canvas.global_position + hand_hit.get_center()
+	var point: Vector2 = HandInput.point(page.canvas, hand_card)
 	_mouse_button(point, true)
 	_mouse_button(point, false)
 	await _settle()
@@ -473,11 +480,12 @@ func _field_input_checks(page: FieldPage) -> void:
 	_check(page._detail.find_children("*", "TextureRect", true, false).is_empty(), "Card detail uses flat controls without baked panel textures")
 	await create_timer(0.20).timeout
 	await _settle()
-	_check(page.canvas.card_bounds(hand_card).position.y < hand_hit.position.y, "Selection raises the hand card before hover")
+	_check(page.canvas.card_bounds(hand_card).is_equal_approx(hand_hit), "Selection alone preserves the resting hand position")
 	var hover_motion: InputEventMouseMotion = InputEventMouseMotion.new()
 	hover_motion.position = point
 	hover_motion.global_position = point
 	root.push_input(hover_motion, true)
+	await create_timer(0.22).timeout
 	await _settle()
 	var raised: Rect2 = page.canvas.card_bounds(hand_card)
 	_check(raised.position.y < hand_hit.position.y - 15, "Hovered hand card extends out of the fan")
@@ -486,8 +494,9 @@ func _field_input_checks(page: FieldPage) -> void:
 	hover_motion.position = page.canvas.global_position + page.canvas.size * Vector2(0.96, 0.48)
 	hover_motion.global_position = hover_motion.position
 	root.push_input(hover_motion, true)
+	await create_timer(0.22).timeout
 	await _settle()
-	_check(page.canvas.card_bounds(hand_card).is_equal_approx(raised) and page.canvas.selected_id == hand_card.instance_id, "Hover exit retains the selected card height and detail")
+	_check(page.canvas.card_bounds(hand_card).is_equal_approx(hand_hit) and page.canvas.selected_id == hand_card.instance_id, "Hover exit restores the resting height while retaining selection")
 	_mouse_button(point, true, MOUSE_BUTTON_RIGHT)
 	_mouse_button(point, false, MOUSE_BUTTON_RIGHT)
 	await _settle()
@@ -506,7 +515,7 @@ func _field_input_checks(page: FieldPage) -> void:
 	_check(not page._detail.visible and _app.current_page == &"field", "Escape closes detail before navigating away")
 	_check(not page._actions.visible and page.canvas.selected_id.is_empty(), "Closing details clears context actions and selection")
 	var second_hand_card: CardPresentation = page.canvas.field.hand[1]
-	var second_hand_point: Vector2 = page.canvas.global_position + page.canvas.card_bounds(second_hand_card).get_center()
+	var second_hand_point: Vector2 = HandInput.point(page.canvas, second_hand_card)
 	_mouse_button(second_hand_point, true)
 	_mouse_button(second_hand_point, false)
 	await _settle()
@@ -563,15 +572,18 @@ func _hand_layout_checks(page: FieldPage) -> void:
 	await _settle()
 	var bounds: Rect2 = Rect2(Vector2.ZERO, page.canvas.size)
 	for hit: Dictionary in page.canvas._card_hits:
-		_check(bounds.encloses(hit["rect"]), "A twenty-card fan stays within the battlefield")
+		if many.has(hit["card"]):
+			_check(HandInput.point(page.canvas, hit["card"]).x >= 0, "Each card in a twenty-card fan exposes a clickable strip")
+		else:
+			_check(bounds.encloses(hit["rect"]), "Field cards fit within the battlefield")
 	page._show_detail(many[9])
 	await _settle()
-	var selected: Rect2 = page.canvas.card_bounds(many[9])
-	_check(page.canvas.card_at(selected.get_center()) == many[9], "Raised card remains clickable in a crowded hand")
+	var selected: Vector2 = HandInput.point(page.canvas, many[9])
+	_check(selected.x >= 0, "Selected card remains clickable in a crowded hand")
 	if root.size == Vector2i(1920, 1080):
 		await _screenshot("battle-hand-many-1920x1080")
-	_mouse_button(page.canvas.global_position + selected.get_center(), true, MOUSE_BUTTON_RIGHT)
-	_mouse_button(page.canvas.global_position + selected.get_center(), false, MOUSE_BUTTON_RIGHT)
+	_mouse_button(selected, true, MOUSE_BUTTON_RIGHT)
+	_mouse_button(selected, false, MOUSE_BUTTON_RIGHT)
 	await _settle()
 	_check(page.canvas.selected_id.is_empty(), "Right click retracts a card in a crowded hand")
 	page.canvas.field.hand = original

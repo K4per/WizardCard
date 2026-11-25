@@ -34,20 +34,25 @@ var response_modes: Array[int] = [ResponseTiming.Mode.AUTO, ResponseTiming.Mode.
 var last_replay_path: String = ""
 var assets_directory: String = ""
 var user_directory: String = ""
+var save_directory: String = ""
+var replay_directory: String = ""
+var storage_notice: String = ""
+var can_choose_save_directory: bool = false
+var settled_generation: String = ""
 var setup_mode: String = "ai"
 var network_active: bool = false
 var network_state: Dictionary = {}
 var _bridge: RefCounted
 var _card_cache: Dictionary[String, CardPresentation] = {}
 
-func initialize(assets: String, user_directory: String) -> bool:
+func initialize(assets: String, user_directory: String, default_saves: String = "") -> bool:
 	assets_directory = assets
 	self.user_directory = user_directory
 	if not ClassDB.class_exists(&"WizardBridge"):
 		error = "原生模块尚未加载，请构建对应版本后重试。"
 		return false
 	_bridge = ClassDB.instantiate(&"WizardBridge") as RefCounted
-	var response: Dictionary = _bridge.call(&"initialize", assets, user_directory)
+	var response: Dictionary = _bridge.call(&"initialize", assets, user_directory, default_saves)
 	if not bool(response.get("ok", false)):
 		error = str(response.get("error", "内容读取失败"))
 		return false
@@ -67,7 +72,23 @@ func initialize(assets: String, user_directory: String) -> bool:
 		return false
 	data = response.get("data", {})
 	_ingest_library(data)
+	var storage: Dictionary = _request(&"storage_status")
+	if bool(storage.get("ok", false)):
+		_ingest_storage(storage.get("data", {}))
 	return true
+
+func _ingest_storage(data: Dictionary) -> void:
+	save_directory = str(data.get("saveDirectory", user_directory))
+	replay_directory = str(data.get("replayDirectory", save_directory.path_join("replays")))
+	storage_notice = str(data.get("notice", ""))
+	can_choose_save_directory = bool(data.get("canChooseDirectory", false))
+
+func set_save_directory(directory: String) -> bool:
+	var result: Dictionary = _request(&"set_save_directory", [directory])
+	if not bool(result.get("ok", false)):
+		return false
+	_ingest_storage(result.get("data", {}))
+	return refresh_library()
 
 func _ingest_library(data: Dictionary) -> void:
 	cards.clear()
@@ -266,6 +287,7 @@ func start_match(options: Dictionary) -> bool:
 	_query_cache.clear()
 	match_active = true
 	last_replay_path = ""
+	settled_generation = ""
 	return true
 
 func snapshot(viewer: int = -1) -> Dictionary:
@@ -349,12 +371,21 @@ func poll_session() -> void:
 	session_polled.emit()
 
 
-func save_replay() -> bool:
-	var response: Dictionary = _request(&"save_replay")
+func save_replay(filename: String = "") -> bool:
+	var response: Dictionary = _request(&"save_replay", [filename])
 	if not bool(response.get("ok", false)):
 		return false
 	last_replay_path = str((response.get("data", {}) as Dictionary).get("path", ""))
 	return true
+
+func replay_status() -> Dictionary:
+	var result: Dictionary = _request(&"replay_status")
+	return result.get("data", {}) if bool(result.get("ok", false)) else {}
+
+func surrender_match() -> bool:
+	var response: Dictionary = _request(&"surrender_match", [match_viewer])
+	_snapshot_dirty = true
+	return bool(response.get("ok", false))
 
 func leave_match() -> bool:
 	if not match_active:
@@ -362,7 +393,11 @@ func leave_match() -> bool:
 	var response: Dictionary = _request(&"leave_match", [match_viewer])
 	if not bool(response.get("ok", false)):
 		return false
+	if bool(response.get("data", {}).get("pending", false)):
+		return true
 	match_active = false
+	if match_mode == "network":
+		network_active = false
 	match_snapshot.clear()
 	return true
 
@@ -395,6 +430,8 @@ func poll_network() -> Dictionary:
 	if network_active and bool(network_state.get("started", false)):
 		if not match_active:
 			response_modes = [ResponseTiming.Mode.AUTO, ResponseTiming.Mode.AUTO]
+			last_replay_path = ""
+			settled_generation = ""
 		match_active = true
 		match_mode = "network"
 		match_viewer = int(network_state.get("viewer", 0))

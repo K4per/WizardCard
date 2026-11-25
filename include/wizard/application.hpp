@@ -47,6 +47,7 @@ struct DeckPreset {
 std::vector<DeckPreset> loadPresets(const Content &, const std::filesystem::path &assets);
 
 enum class MatchMode { Hotseat, Ai, Tutorial, Network };
+enum class ReplayPersistence { Automatic, Explicit };
 struct SessionOptions {
     MatchMode mode{MatchMode::Hotseat};
     ai::Difficulty difficulty{ai::Difficulty::Normal};
@@ -58,7 +59,8 @@ struct AiPlan {
 // No window dependencies. AI receives only a projection; settings pause all submissions.
 class Application {
   public:
-    Application(Content, std::filesystem::path userDirectory, std::vector<DeckPreset> = {}, RoomFactory = {});
+    Application(Content, std::filesystem::path userDirectory, std::vector<DeckPreset> = {}, RoomFactory = {},
+                ReplayPersistence = ReplayPersistence::Automatic, std::filesystem::path defaultSaveDirectory = {});
     Page page() const {
         return page_;
     }
@@ -74,6 +76,10 @@ class Application {
     const std::filesystem::path &replayPath() const {
         return replayPath_;
     }
+    const std::filesystem::path &saveDirectory() const { return saveDirectory_; }
+    const std::string &storageNotice() const { return storageNotice_; }
+    bool canChooseSaveDirectory() const { return !defaultSaveDirectory_.empty(); }
+    bool setSaveDirectory(const std::filesystem::path &, std::string &error);
     const std::vector<DeckPreset> &presets() const {
         return presets_;
     }
@@ -149,6 +155,8 @@ class Application {
     }
     void continueTutorial();
     bool saveReplay(std::string &error) const;
+    bool replayReady() const;
+    std::filesystem::path saveNamedReplay(const std::string &filename) const;
     void requestLeave(bool quit = false);
     void cancelConfirmation();
     bool confirmLeave(PlayerId, std::string &error);
@@ -157,7 +165,11 @@ class Application {
 
   private:
     Content content_;
-    std::filesystem::path directory_, replayPath_;
+    std::filesystem::path directory_, defaultSaveDirectory_, saveDirectory_, replayPath_;
+    std::filesystem::path migratedLegacyDirectory_;
+    std::string storageNotice_;
+    ReplayPersistence replayPersistence_;
+    std::filesystem::path loadSaveDirectory();
     Settings settings_;
     std::vector<DeckPreset> presets_;
     DeckLibrary decks_;

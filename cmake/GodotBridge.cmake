@@ -119,7 +119,11 @@ if(BUILD_TESTING AND GODOT_BIN)
     --evidence ${CMAKE_CURRENT_BINARY_DIR}/v264-match-acceptance.json)
   set_tests_properties(godot_v264_match_acceptance PROPERTIES FIXTURES_REQUIRED frontend_import
     RUN_SERIAL TRUE TIMEOUT 90 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
-  foreach(suite hotfix_interactions hotfix_sunburst_board hotfix_visuals)
+  add_test(NAME godot_v265_playback COMMAND "${GODOT_BIN}" --headless
+    --path ${frontend_dir} --script res://tests/v265_playback.gd)
+  set_tests_properties(godot_v265_playback PROPERTIES FIXTURES_REQUIRED frontend_import
+    RUN_SERIAL TRUE TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
+  foreach(suite hotfix_interactions hotfix_sunburst_board hotfix_visuals v265_battle_actions)
     add_test(NAME godot_${suite} COMMAND "${GODOT_BIN}" --headless
       --path ${frontend_dir} --script res://tests/${suite}.gd --
       --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260

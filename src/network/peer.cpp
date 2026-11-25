@@ -29,6 +29,14 @@ bool Peer::persist() {
     if (!host_ || !host_->started())
         return true;
     try {
+        if (replayPath_.empty()) {
+            if (host_->view().result != -1 && replay_.is_null()) {
+                auto record = host_->recording();
+                (void)replay(content_, record);
+                replay_ = std::move(record);
+            }
+            return true;
+        }
         writeAtomicJson(replayPath_, host_->recording());
         if (host_->technicalPaused()) {
             auto diagnosticPath = replayPath_; diagnosticPath += ".diagnostic.json";
@@ -50,7 +58,7 @@ void Peer::tick() {
         if (replayValidation_.valid() && replayValidation_.wait_for(0ms) == std::future_status::ready) {
             replay_ = replayValidation_.get();
             std::string error;
-            if (!save(error)) notice_ = error;
+            if (!replayPath_.empty() && !save(error)) notice_ = error;
             if (authenticated_ && connected_)
                 tcp_.send({{"type", "ReplayReceived"}, {"session", guest_->room().at("session")}});
         }
@@ -330,6 +338,7 @@ CommandResult Peer::submit(const Command &c) {
     return {true, {}, {}, {}, {}, true};
 }
 bool Peer::save(std::string &error) {
+    if (replayPath_.empty()) return !replay_.is_null();
     if (host_) {
         if (!host_->started()) {
             error = "对局尚未开始";
@@ -454,6 +463,7 @@ void Peer::stop() {
     connected_ = authenticated_ = false;
     if (host_)
         host_->end();
+    if (replayPath_.empty()) replay_ = nullptr;
 }
 void Peer::reconnect() {
     if (!guest_ || !guest_->canResume() || ended_)

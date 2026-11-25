@@ -172,8 +172,13 @@ void ClientRoom::receiveTransportMessage(const Json &message) {
         replaySize_ = static_cast<std::size_t>(size);
         replayBytes_ += data;
         replayRequested_ = false;
-        if (message.at("complete").get<bool>()) completeReplay();
-        else requestReplay();
+        if (message.at("complete").get<bool>()) {
+            try { completeReplay(); }
+            catch (const std::exception &e) {
+                replayError_ = std::string("终局复盘校验或读取失败：") + e.what();
+                notice_ = replayError_;
+            }
+        } else requestReplay();
         return;
     }
     const auto pending = guest_.retry();
@@ -198,7 +203,8 @@ void ClientRoom::updateRoom(const Json &room) {
 }
 
 void ClientRoom::requestReplay() {
-    if (!connected() || replayDelivered_ || replayRequested_ || room_.value("phase", std::string{}) != "completed") return;
+    if (!connected() || replayDelivered_ || replayRequested_ || !replayError_.empty() ||
+        room_.value("phase", std::string{}) != "completed") return;
     if (Clock::now() < replayRetryAt_) return;
     queue({{"type", "Replay"}, {"offset", std::to_string(replayBytes_.size())}});
     replayRequested_ = true;
@@ -207,14 +213,18 @@ void ClientRoom::requestReplay() {
 
 void ClientRoom::completeReplay() {
     if (replayBytes_.size() != replaySize_) throw std::runtime_error("incomplete replay transfer");
-    auto record = Json::parse(replayBytes_);
-    (void)wizard::replay(content_, record);
-    writeAtomicJson(replayPath_, record);
-    replay_ = std::move(record);
+    if (!started() || view().result == -1 || room_.value("phase", std::string{}) != "completed")
+        throw std::runtime_error("终局前禁止完整复盘");
+    auto bytes = std::move(replayBytes_);
     replayBytes_.clear();
     replaySize_ = 0;
+    auto record = Json::parse(bytes);
+    const auto verified = wizard::replay(content_, record);
+    if (verified.state().result != view().result) throw std::runtime_error("终局复盘与房间结果不一致");
+    if (!replayPath_.empty()) writeAtomicJson(replayPath_, record);
+    replay_ = std::move(record);
     replayDelivered_ = true;
-    notice_ = "终局复盘已验证并保存";
+    notice_ = replayPath_.empty() ? "终局复盘已验证" : "终局复盘已验证并保存";
     advanceLeave();
 }
 
@@ -317,6 +327,11 @@ void ClientRoom::stop() {
     ended_ = true;
     closing_ = false;
     outgoing_.clear();
+    if (replayPath_.empty()) {
+        replayBytes_.clear();
+        replay_ = nullptr;
+        replayDelivered_ = false;
+    }
 }
 
 void ClientRoom::reconnect() {

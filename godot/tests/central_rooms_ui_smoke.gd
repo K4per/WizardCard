@@ -35,7 +35,7 @@ func _run() -> void:
 		"exists": true, "started": true, "blocked": true, "connected": true,
 		"notice": "", "replayDelivered": false, "room": {"phase": "completed"}
 	})
-	_expect(match_page._notice.text.contains("复盘"), "completed matches show replay transfer status")
+	_expect(match_page._notice.text.contains("回放"), "completed matches show replay transfer status")
 	match_page.network_updated({
 		"exists": true, "started": true, "blocked": true, "connected": true,
 		"room": {"phase": "playing", "storageBlocked": true}

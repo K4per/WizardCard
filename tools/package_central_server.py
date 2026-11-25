@@ -13,7 +13,7 @@ from release_source import provenance
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "2.6.4-hotfix.1"
+VERSION = "2.6.5"
 CONTENT_HASH = "54d3d845557007f7"
 
 
@@ -47,8 +47,8 @@ def stage_release(build, output):
     dependencies = verify_binary(binary)
     catalog = json.loads((ROOT / "assets/release-v260/catalog.json").read_text(encoding="utf-8"))
     metadata = catalog["metadata"]
-    if (metadata.get("rulesVersion") != VERSION
-            or metadata.get("cardSetVersion") != VERSION
+    if (metadata.get("rulesVersion") != "2.6.4-hotfix.1"
+            or metadata.get("cardSetVersion") != "2.6.4-hotfix.1"
             or metadata.get("mechanicsRevision") != 13):
         raise ValueError("assets/release-v260 is not the approved production catalogue")
     aggregate = dict(metadata)

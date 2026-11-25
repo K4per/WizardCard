@@ -1,5 +1,7 @@
 extends SceneTree
 
+const HandInput = preload("res://tests/hand_input.gd")
+
 var _failures: Array[String] = []
 var _checks: int = 0
 
@@ -33,7 +35,7 @@ func _run() -> void:
 	canvas.configure(first)
 	await _settle()
 	var motion := InputEventMouseMotion.new()
-	motion.position = canvas.card_bounds(first.hand[0]).get_center()
+	motion.position = canvas.get_global_transform_with_canvas().affine_inverse() * HandInput.point(canvas, first.hand[0])
 	canvas._gui_input(motion)
 	await create_timer(0.18).timeout
 	var held: Rect2 = canvas.card_bounds(first.hand[0])

@@ -8,12 +8,16 @@ TEST_CASE("central handshake selects protocol five while diagnostic peers keep f
     REQUIRE(net::hello(content).at("protocol") == 4);
     REQUIRE(central::compatibilityError(content, central::hello(content)).empty());
     const auto current = central::hello(content);
-    for (const char *field : {"program", "rules", "cards"})
+    CHECK(current.at("program") == "2.6.5");
+    for (const char *field : {"rules", "cards"})
         CHECK(current.at(field) == "2.6.4-hotfix.1");
     CHECK(current.at("hash") == "54d3d845557007f7");
     auto previous = current;
     previous["program"] = previous["rules"] = previous["cards"] = "2.6.4";
     previous["hash"] = "dcb43fe56f6d250d";
+    CHECK_FALSE(central::compatibilityError(content, previous).empty());
+    previous = current;
+    previous["program"] = "2.6.4-hotfix.1";
     CHECK_FALSE(central::compatibilityError(content, previous).empty());
     for (const auto *key : {"protocol", "program", "rules", "mechanics", "cards", "hash"}) {
         auto incompatible = central::hello(content);

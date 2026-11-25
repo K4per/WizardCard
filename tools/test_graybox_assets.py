@@ -1,4 +1,4 @@
-"""Release art includes only card illustrations, two brand assets and supporting fonts."""
+"""Release art includes only approved card illustrations, effects, branding and fonts."""
 import hashlib
 import json
 import os
@@ -27,7 +27,7 @@ class GrayboxAssetsTests(unittest.TestCase):
         ids = {entry["id"] for entry in manifest["assets"]}
         self.assertFalse(expected - ids)
         self.assertEqual({name for name in ids if not name.startswith("illustration.")},
-                         frontend.FONT_IDS | {"branding.app.icon", "c2d.v2.menu.logo"})
+                         frontend.FONT_IDS | {"branding.app.icon", "c2d.v2.menu.logo", "fx.damage-border"})
         by_id = {entry["id"]: entry for entry in manifest["assets"]}
         self.assertEqual(by_id["branding.app.icon"]["sha256"],
                          "a7f523a893477b28c1503980e4a24f932233717bfa06a8bc8b1468b09a3a7e4f")
@@ -47,7 +47,7 @@ class GrayboxAssetsTests(unittest.TestCase):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / name, path)
             with patch.multiple(frontend, ROOT=art.parents[1], GODOT=art.parent, ART=art):
-                self.assertEqual(frontend.check_art(), 219)
+                self.assertEqual(frontend.check_art(), 220)
                 (art / "orphan.png.import").touch()
                 with self.assertRaisesRegex(ValueError, "orphan.png.import"):
                     frontend.check_art()
@@ -59,7 +59,8 @@ class GrayboxAssetsTests(unittest.TestCase):
         runtime = ROOT / "godot/art"
         images = {file.relative_to(ROOT / "godot").as_posix() for file in runtime.rglob("*")
                   if file.suffix.lower() in {".png", ".jpg", ".jpeg", ".svg", ".webp", ".ico"}}
-        self.assertEqual(illustrations | {"art/menu-v2/logo-1080p.png", "art/branding/wizardcard-app-v1.png"}, images)
+        self.assertEqual(illustrations | {"art/menu-v2/logo-1080p.png", "art/branding/wizardcard-app-v1.png",
+                                         "art/fx/damage-border.png"}, images)
         for file in runtime.rglob("*.import"):
             self.assertTrue(file.with_suffix("").is_file(), file)
 
@@ -90,10 +91,11 @@ class ExportedArtTests(unittest.TestCase):
         header = struct.pack("<4sIIIIIQQ", b"GDPC", 4, 4, 7, 2, 2, base, base + len(body))
         path.write_bytes(header.ljust(base, b"\0") + body + directory)
 
-    def test_only_card_textures_and_requested_branding_are_shipped(self):
+    def test_only_approved_textures_are_shipped(self):
         card = "res://art/cards/card.png"
         entries = [{"id": "illustration.card", "file": card}]
         entries += [{"id": name, "file": path} for name, path in frontend.BRAND_FILES.items()]
+        entries.append({"id": "fx.damage-border", "file": "res://art/fx/damage-border.png"})
         files = {}
         icon = frontend.BRAND_FILES["branding.app.icon"].removeprefix("res://")
         files[icon] = b"embedded raw application PNG"
@@ -119,7 +121,8 @@ class ExportedArtTests(unittest.TestCase):
                     self.write_pck(pck, {**files, extra: b"unlisted"})
                     with self.assertRaises(ValueError):
                         audit_pck(pck, manifest_file)
-            for name in (icon, frontend.BRAND_FILES["c2d.v2.menu.logo"].removeprefix("res://") + ".import"):
+            for name in (icon, frontend.BRAND_FILES["c2d.v2.menu.logo"].removeprefix("res://") + ".import",
+                         "art/fx/damage-border.png.import"):
                 with self.subTest(missing=name):
                     self.write_pck(pck, {key: value for key, value in files.items() if key != name})
                     with self.assertRaises((ValueError, KeyError)):

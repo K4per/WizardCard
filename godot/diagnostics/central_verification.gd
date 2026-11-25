@@ -56,7 +56,7 @@ func _verification_deck() -> String:
 		cards["v260-word-%04d" % index] = 2
 	for index: int in range(1, 11):
 		formations["v260-formation-%04d" % index] = 1
-	_app.service.editing_draft["name"] = "Alpha 2.6.4-hotfix.1 release verification"
+	_app.service.editing_draft["name"] = "Alpha 2.6.5 release verification"
 	_app.service.editing_draft["cards"] = cards
 	_app.service.editing_draft["sideCards"] = formations
 	if not _expect(_app.service.draft_problems().is_empty() and _app.service.save_draft(), "verification deck passes normal 40+10 validation"):
@@ -260,14 +260,9 @@ func _run() -> void:
 		await get_tree().create_timer(0.01).timeout
 	if role == "guest":
 		await get_tree().create_timer(4.0).timeout
-		_app.service.network_request({"operation": "leave"})
-		if not await _wait_for(func() -> bool: return not _app.service.network_active):
-			_expect(false, "surrender saves the replay and finishes leaving automatically")
+		if int(_app.service.match_snapshot.get("result", -1)) == -1 and not _expect(_app.service.surrender_match(), "guest surrenders through the session"):
 			await _stop(1)
 			return
-		_write_report(report_path, {"role": role, "roomCode": room_code, "phase": "completed", "replayDelivered": true, "left": true, "releasedSpellObserved": _released_spell, "openingPrivacy": _opening_privacy, "openingTieObserved": _opening_tie, "openingModeSwitch": _opening_mode_switch, "defaultConnection": _default_connection})
-		await _stop(0 if _failures == 0 else 1)
-		return
 	if not await _wait_for(func() -> bool:
 		return bool(_app.service.network_state.get("replayDelivered", false))
 	):
@@ -288,6 +283,31 @@ func _run() -> void:
 		"defaultConnection": _default_connection,
 	}
 	_expect(result.phase == "completed" and result.replayDelivered, "normal terminal result and replay are visible")
+	var match_page: MatchPage = _app.page as MatchPage
+	if not _expect(match_page != null and match_page._settlement.visible and not match_page._settlement.get_ok_button().disabled, "terminal settlement has a verified replay ready"):
+		await _stop(1)
+		return
+	result["settlement"] = match_page._settlement.dialog_text
+	_expect(not str(result["settlement"]).contains("原因未知"), "settlement shows the authoritative terminal reason")
+	if role == "host":
+		match_page._open_named_save(true)
+		match_page._replay_name.text = "联机验收"
+		match_page._write_named_replay()
+		_expect(FileAccess.file_exists(_app.service.last_replay_path), "host explicitly saves a named replay")
+		_app.navigate(&"replay")
+		var replay: ReplayPage = _app.page as ReplayPage
+		_expect(replay != null and not replay._path.is_empty() and replay._rows.size() >= 47, "host reopens the saved replay from its list")
+		result["savedPath"] = _app.service.last_replay_path
+		_expect(_app.service.leave_match(), "host leaves the completed match")
+	else:
+		match_page._discard_settlement(&"discard")
+		_expect(await _wait_for(func() -> bool: return not _app.service.network_active), "guest's terminal leave is acknowledged")
+		_app.navigate(&"replay")
+		var replay: ReplayPage = _app.page as ReplayPage
+		_expect(replay != null and replay._paths.is_empty(), "guest playback list remains empty after choosing not to save")
+		result["savedPath"] = ""
+	result["left"] = await _wait_for(func() -> bool: return not _app.service.network_active)
+	_expect(result["left"], "server acknowledged terminal departure")
 	_write_report(report_path, result)
 	print("CENTRAL_FRONTEND_CLIENT: role=", role, " room=", room_code, " phase=", result.phase)
 	await _stop(0 if _failures == 0 else 1)

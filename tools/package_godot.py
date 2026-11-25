@@ -27,7 +27,7 @@ else:
     from windows_icons import verify_application_icon
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_PACKAGE_VERSION = "2.6.4-hotfix.1"
+DEFAULT_PACKAGE_VERSION = "2.6.5"
 
 
 @dataclass(frozen=True)
@@ -254,7 +254,7 @@ def main():
     for name in ("alpha-v2.5-rules.md", "architecture.md", "network-play.md",
                  "card-catalog.md", "card-catalog.html", "sique-cards.md",
                  "releases/2.6.1-hotfix.1.md", "reports/2.6.1-hotfix.1.md",
-                 "releases/2.6.1.md", "releases/2.6.2.md", "releases/2.6.3.md", "releases/2.6.4.md", "releases/2.6.4-hotfix.1.md",
+                 "releases/2.6.1.md", "releases/2.6.2.md", "releases/2.6.3.md", "releases/2.6.4.md", "releases/2.6.4-hotfix.1.md", "releases/2.6.5.md",
                  "releases/2.6.0-hotfix.1.md", "reports/2.6.0-hotfix.1.md",
                  "releases/2.6.0.md", "reports/2.6.0.md",
                  "releases/2.5.5-hotfix.1.md", "reports/2.5.5-hotfix.1.md",

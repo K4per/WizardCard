@@ -413,7 +413,7 @@ bool DeckLibrary::save(const DeckDraft &draft, std::string &error) {
         drafts_ = std::move(next);
         return true;
     } catch (const std::exception &e) {
-        error = std::string("卡组未保存，编辑内容仍保留：") + e.what();
+        error = "卡组未保存至 " + path_.u8string() + "，编辑内容仍保留：" + e.what();
         return false;
     }
 }

@@ -21,4 +21,5 @@ std::vector<std::string> parseDeck(const Json&,const CardCatalog&,const std::str
 Json readJson(const std::filesystem::path&);
 void writeJson(const std::filesystem::path&,const Json&);
 void writeAtomicJson(const std::filesystem::path&,const Json&);
+void createAtomicJson(const std::filesystem::path&,const Json&);
 }

@@ -13,11 +13,13 @@ Json fail(const std::string &code, const std::string &error) {
 }
 }
 Json LocalSession::initialize(const std::filesystem::path &assets,
-                              const std::filesystem::path &userDirectory) {
+                              const std::filesystem::path &userDirectory,
+                              const std::filesystem::path &saveDirectory) {
     try {
         auto content = loadContent(assets);
         auto next = std::make_unique<app::Application>(content, userDirectory,
-                                                      app::loadPresets(content, assets), roomFactory_);
+                                                      app::loadPresets(content, assets), roomFactory_,
+                                                      replayPersistence_, saveDirectory);
         match_.application = std::move(next);
         decks_.content = std::move(content);
         decks_.libraryCache.reset();
@@ -32,12 +34,31 @@ Json LocalSession::initialize(const std::filesystem::path &assets,
         Json presets = Json::array();
         for (const auto &preset : match_.application->playableDecks())
             presets.push_back({{"id", preset.id}, {"name", preset.name}, {"description", preset.description}});
-        return ok({{"programVersion", programVersion}, {"rulesVersion", decks_.content->catalog.rulesVersion},
+        auto data = storageStatus().at("data");
+        data.update({{"programVersion", programVersion}, {"rulesVersion", decks_.content->catalog.rulesVersion},
                    {"cardSetVersion", decks_.content->catalog.cardSetVersion},
                    {"contentHash", decks_.content->catalog.contentHash}, {"presets", presets},
                    {"settings", app::encodeSettings(match_.application->settings())},
-                   {"notice", match_.application->notice()}, {"generation", std::to_string(match_.generation)}});
+                   {"generation", std::to_string(match_.generation)}});
+        const auto &notice = match_.application->notice();
+        if (!notice.empty())
+            data["notice"] = data.at("notice").get<std::string>() + " " + notice;
+        return ok(std::move(data));
     } catch (const std::exception &e) { return fail("initialize_failed", e.what()); }
+}
+Json LocalSession::storageStatus() const {
+    if (!match_.application) return fail("not_initialized", "请先加载内容");
+    const auto &app = *match_.application;
+    return ok({{"saveDirectory", app.saveDirectory().u8string()},
+               {"replayDirectory", (app.saveDirectory() / "replays").u8string()},
+               {"notice", app.storageNotice()}, {"canChooseDirectory", app.canChooseSaveDirectory()}});
+}
+Json LocalSession::setSaveDirectory(const std::filesystem::path &path) {
+    if (!match_.application) return fail("not_initialized", "请先加载内容");
+    std::string error;
+    if (!match_.application->setSaveDirectory(path, error)) return fail("save_directory_error", error);
+    decks_.libraryCache.reset();
+    return storageStatus();
 }
 Json LocalSession::start(const Json &options) {
     if (!match_.application) return fail("not_initialized", "请先加载内容");
@@ -242,14 +263,14 @@ Json LocalSession::accepted(const CommandResult &result, const GameView &before)
     if (match_.application->mode() == app::MatchMode::Network)
         match_.application->tickNetwork();
     std::string error;
-    bool saved = true;
+    bool saved = replayPersistence_ == app::ReplayPersistence::Automatic;
     const bool terminal = match_.application->technicalPaused() ||
         (match_.application->mode() != app::MatchMode::Network &&
          match_.application->match().engine().state().result != -1);
     const bool batchedAutosave = match_.application->mode() == app::MatchMode::Network ||
         !replaySaveHealthy_ || terminal || match_.application->match().commandCount() == 1 ||
         match_.application->match().commandCount() % replayAutosaveInterval == 0;
-    if (batchedAutosave) {
+    if (saved && batchedAutosave) {
         saved = match_.application->saveReplay(error);
         replaySaveHealthy_ = saved;
     }
@@ -299,8 +320,9 @@ Json LocalSession::debugCommand(const Json &request) {
         if (!result.accepted) return fail(result.errorCode, result.error);
         match_.pending.reset(); match_.interaction.cancel();
         std::string saveError;
-        const bool saved = match_.application->saveReplay(saveError);
-        replaySaveHealthy_ = saved;
+        const bool saved = replayPersistence_ == app::ReplayPersistence::Automatic &&
+            match_.application->saveReplay(saveError);
+        if (replayPersistence_ == app::ReplayPersistence::Automatic) replaySaveHealthy_ = saved;
         return ok({{"message", result.events.empty() ? "调试操作已执行" : result.events.front().text},
             {"parameters", encodeDebugOperation(operation)}, {"containsDebugOperations", true},
             {"generation", std::to_string(match_.generation)}, {"revision", std::to_string(match_.application->revision())},
@@ -327,6 +349,7 @@ Json LocalSession::continueTutorial(const std::string &generation, const std::st
     match_.application->continueTutorial(); match_.pending.reset(); return ok();
 }
 Json LocalSession::saveReplay() const {
+    if (replayPersistence_ == app::ReplayPersistence::Explicit) return saveReplay("");
     if (!match_.application || !match_.application->hasMatch()) return fail("no_match", "没有对局");
     if (match_.application->mode() == app::MatchMode::Network && match_.application->network()->view().result == -1)
         return fail("replay_unavailable", "完整联机复盘在对局结束后开放");
@@ -337,6 +360,23 @@ Json LocalSession::saveReplay() const {
     }
     replaySaveHealthy_ = true;
     return ok({{"path", match_.application->replayPath().u8string()}});
+}
+Json LocalSession::saveReplay(const std::string &filename) const {
+    if (!match_.application || !match_.application->hasMatch()) return fail("no_match", "没有对局");
+    if (!match_.application->replayReady()) return fail("replay_unavailable", "完整联机复盘尚未验证完成");
+    try {
+        const auto path = match_.application->saveNamedReplay(filename);
+        return ok({{"path", path.u8string()}});
+    } catch (const std::exception &e) { return fail("save_failed", e.what()); }
+}
+Json LocalSession::replayStatus() const {
+    const auto *app = match_.application.get();
+    const auto *room = app ? app->network() : nullptr;
+    const bool ready = app && app->hasMatch() && app->replayReady();
+    const auto error = room ? room->replayError() : std::string{};
+    const bool pending = room && room->started() && room->view().result != -1 && !room->ended() &&
+        !ready && error.empty();
+    return ok({{"ready", ready}, {"pending", pending}, {"error", error}});
 }
 Json LocalSession::restart(std::uint32_t seed) {
     if (!match_.application) return fail("not_initialized", "请先加载内容");

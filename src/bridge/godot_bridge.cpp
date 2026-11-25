@@ -73,11 +73,14 @@ template<class F> Dictionary bridgeCall(F &&function) {
 
 class WizardBridge : public godot::RefCounted {
     GDCLASS(WizardBridge, godot::RefCounted)
-    wizard::bridge::LocalSession session_{wizard::net::createRoom, wizard::central::createClientRoom};
+    wizard::bridge::LocalSession session_{wizard::net::createRoom, wizard::central::createClientRoom,
+        wizard::app::ReplayPersistence::Explicit};
   protected:
     static void _bind_methods() {
         using namespace godot;
-        ClassDB::bind_method(D_METHOD("initialize", "assets", "user_directory"), &WizardBridge::initialize);
+        ClassDB::bind_method(D_METHOD("initialize", "assets", "user_directory", "save_directory"), &WizardBridge::initialize, DEFVAL(String()));
+        ClassDB::bind_method(D_METHOD("storage_status"), &WizardBridge::storage_status);
+        ClassDB::bind_method(D_METHOD("set_save_directory", "directory"), &WizardBridge::set_save_directory);
         ClassDB::bind_method(D_METHOD("start_match", "options"), &WizardBridge::start_match);
         ClassDB::bind_method(D_METHOD("snapshot", "viewer"), &WizardBridge::snapshot);
         ClassDB::bind_method(D_METHOD("query_actions", "viewer", "intent", "generation", "revision"), &WizardBridge::query_actions);
@@ -92,7 +95,8 @@ class WizardBridge : public godot::RefCounted {
         ClassDB::bind_method(D_METHOD("set_paused", "paused"), &WizardBridge::set_paused);
         ClassDB::bind_method(D_METHOD("step_ai", "generation", "revision"), &WizardBridge::step_ai);
         ClassDB::bind_method(D_METHOD("continue_tutorial", "generation", "revision"), &WizardBridge::continue_tutorial);
-        ClassDB::bind_method(D_METHOD("save_replay"), &WizardBridge::save_replay);
+        ClassDB::bind_method(D_METHOD("save_replay", "filename"), &WizardBridge::save_replay, DEFVAL(String()));
+        ClassDB::bind_method(D_METHOD("replay_status"), &WizardBridge::replay_status);
         ClassDB::bind_method(D_METHOD("restart_match", "seed"), &WizardBridge::restart_match);
         ClassDB::bind_method(D_METHOD("release_session"), &WizardBridge::release_session);
         ClassDB::bind_method(D_METHOD("read_replay_plan", "path"), &WizardBridge::read_replay_plan);
@@ -106,7 +110,8 @@ class WizardBridge : public godot::RefCounted {
         ClassDB::bind_method(D_METHOD("erase_draft", "id"), &WizardBridge::erase_draft);
         ClassDB::bind_method(D_METHOD("query_cards", "query"), &WizardBridge::query_cards);
         ClassDB::bind_method(D_METHOD("apply_settings", "settings"), &WizardBridge::apply_settings);
-        ClassDB::bind_method(D_METHOD("leave_match", "viewer"), &WizardBridge::leave_match);
+        ClassDB::bind_method(D_METHOD("surrender_match", "viewer"), &WizardBridge::surrender_match);
+        ClassDB::bind_method(D_METHOD("leave_match", "viewer", "save_replay"), &WizardBridge::leave_match, DEFVAL(false));
         ClassDB::bind_method(D_METHOD("interact", "viewer", "request", "generation", "revision"), &WizardBridge::interact);
         ClassDB::bind_method(D_METHOD("network_request", "request"), &WizardBridge::network_request);
         ClassDB::bind_method(D_METHOD("poll_network"), &WizardBridge::poll_network);
@@ -117,9 +122,14 @@ class WizardBridge : public godot::RefCounted {
         ClassDB::bind_method(D_METHOD("network_transport_drain"), &WizardBridge::network_transport_drain);
     }
   public:
-    Dictionary initialize(const String &assets, const String &user_directory) {
+    Dictionary initialize(const String &assets, const String &user_directory, const String &save_directory) {
         return bridgeCall([&] { return session_.initialize(std::filesystem::u8path(utf8(assets)),
-            user_directory.is_empty() ? wizard::app::userDataDirectory() : std::filesystem::u8path(utf8(user_directory))); });
+            user_directory.is_empty() ? wizard::app::userDataDirectory() : std::filesystem::u8path(utf8(user_directory)),
+            std::filesystem::u8path(utf8(save_directory))); });
+    }
+    Dictionary storage_status() { return bridgeCall([&] { return session_.storageStatus(); }); }
+    Dictionary set_save_directory(const String &directory) {
+        return bridgeCall([&] { return session_.setSaveDirectory(std::filesystem::u8path(utf8(directory))); });
     }
     Dictionary start_match(const Dictionary &options) { return bridgeCall([&] { return session_.start(json(options)); }); }
     Dictionary snapshot(std::int64_t viewer) {
@@ -153,7 +163,8 @@ class WizardBridge : public godot::RefCounted {
     Dictionary continue_tutorial(const String &generation, const String &revision) {
         return bridgeCall([&] { return session_.continueTutorial(utf8(generation), utf8(revision)); });
     }
-    Dictionary save_replay() { return bridgeCall([&] { return session_.saveReplay(); }); }
+    Dictionary save_replay(const String &filename) { return bridgeCall([&] { return session_.saveReplay(utf8(filename)); }); }
+    Dictionary replay_status() { return bridgeCall([&] { return session_.replayStatus(); }); }
     Dictionary restart_match(std::int64_t seed) {
         return bridgeCall([&]() -> Json {
             if (seed < 0 || seed > std::numeric_limits<std::uint32_t>::max())
@@ -183,8 +194,11 @@ class WizardBridge : public godot::RefCounted {
     Dictionary erase_draft(const String &id) { return bridgeCall([&] { return session_.eraseDraft(utf8(id)); }); }
     Dictionary query_cards(const Dictionary &query) { return bridgeCall([&] { return session_.query(json(query)); }); }
     Dictionary apply_settings(const Dictionary &settings) { return bridgeCall([&] { return session_.applySettings(json(settings)); }); }
-    Dictionary leave_match(std::int64_t viewer) {
-        return bridgeCall([&] { return session_.leaveMatch(viewer == 0 || viewer == 1 ? static_cast<int>(viewer) : -1); });
+    Dictionary surrender_match(std::int64_t viewer) {
+        return bridgeCall([&] { return session_.surrenderMatch(viewer == 0 || viewer == 1 ? static_cast<int>(viewer) : -1); });
+    }
+    Dictionary leave_match(std::int64_t viewer, bool save_replay) {
+        return bridgeCall([&] { return session_.leaveMatch(viewer == 0 || viewer == 1 ? static_cast<int>(viewer) : -1, save_replay); });
     }
     Dictionary interact(std::int64_t viewer, const Dictionary &request, const String &generation, const String &revision) {
         return bridgeCall([&] { return session_.interact(viewer == 0 || viewer == 1 ? static_cast<int>(viewer) : -1,

@@ -237,6 +237,7 @@ class Peer : public RoomSession {
     bool replayDelivered() const {
         return replayDelivered_;
     }
+    const Json *verifiedReplay() const override { return replay_.is_null() ? nullptr : &replay_; }
     bool takeReset() {
         bool r = reset_;
         reset_ = false;

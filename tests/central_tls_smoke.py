@@ -98,7 +98,7 @@ def main():
 
             catalog = json.loads((assets / "catalog.json").read_text())
             hello = {
-                "type": "Hello", "protocol": 5, "program": "2.6.4-hotfix.1",
+                "type": "Hello", "protocol": 5, "program": "2.6.5",
                 "rules": catalog["metadata"]["rulesVersion"],
                 "mechanics": catalog["metadata"]["mechanicsRevision"],
                 "cards": catalog["metadata"]["cardSetVersion"],

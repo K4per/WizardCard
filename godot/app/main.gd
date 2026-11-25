@@ -39,6 +39,9 @@ func _ready() -> void:
 	if FileAccess.file_exists(packaged_assets.path_join("cards.json")):
 		assets = packaged_assets
 	var user_directory: String = ProjectSettings.globalize_path("user://alpha-v2-frontend")
+	var default_saves: String = ""
+	if not OS.has_feature("editor"):
+		default_saves = OS.get_executable_path().get_base_dir().path_join("saves")
 	if OS.has_feature("linux"):
 		user_directory = OS.get_environment("XDG_DATA_HOME")
 		if user_directory.is_empty():
@@ -54,6 +57,7 @@ func _ready() -> void:
 			assets_overridden = true
 		elif arguments[index] == "--user-data":
 			user_directory = arguments[index + 1]
+			default_saves = ""
 	# The repository keeps the previous pool for compatibility fixtures, while
 	# the default playable frontend follows the approved Alpha v2.6 snapshot.
 	# Explicit --assets remains authoritative for diagnostics and tests.
@@ -62,7 +66,7 @@ func _ready() -> void:
 		assets = release_assets
 	_background.color = DeckTheme.BACKGROUND
 	get_window().min_size = Vector2i(1280, 720)
-	if service.initialize(assets, user_directory):
+	if service.initialize(assets, user_directory, default_saves):
 		FrontendDisplay.apply(service.settings)
 	UiFactory.reduced_motion = bool(service.settings.get("reducedMotion", false))
 	Typography.set_scale(int(service.settings.get("fontScale", Typography.DEFAULT_SCALE)))
@@ -155,11 +159,8 @@ func _on_close_requested() -> void:
 	elif page is MatchPage:
 		(page as MatchPage).request_leave(true)
 	elif service.match_active:
-		if service.match_mode == "network":
-			navigate(&"match")
-			(page as MatchPage).request_leave(true)
-		elif service.save_replay() and service.leave_match():
-			get_tree().quit()
+		navigate(&"match")
+		(page as MatchPage).request_leave(true)
 	elif service.network_active:
 		if bool(service.network_request({"operation": "leave", "force": true}).get("ok", false)):
 			get_tree().quit()

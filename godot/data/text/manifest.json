@@ -6,7 +6,8 @@
   "files": [
     "ui.json",
     "terms.json",
-    "tutorial.json"
+    "tutorial.json",
+    "network.json"
   ],
   "fallbacks": {}
 }

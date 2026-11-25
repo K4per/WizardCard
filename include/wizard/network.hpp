@@ -24,6 +24,7 @@ Command unwireCommand(Json);
 std::uint64_t number(const Json &);
 std::string token();
 Json hello(const Content &);
+bool containsTutorialConfig(const Json &);
 std::vector<unsigned char> frame(const Json &);
 class Decoder {
     std::vector<unsigned char> bytes_;

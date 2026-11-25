@@ -59,6 +59,8 @@ class GameEngine {
 
 
   private:
+    friend class TutorialScenario;
+    bool orderedTutorialOpening_{};
     GameEngine() = default;
     std::shared_ptr<const CardCatalog> catalog_;
     MutationContext state_;

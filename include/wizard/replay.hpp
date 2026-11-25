@@ -6,6 +6,7 @@
 #include <chrono>
 #include <functional>
 namespace wizard {
+class TutorialScenario;
 Json encodeEvent(const GameEvent &);
 Json encodeDebugOperation(const DebugOperation &);
 DebugOperation decodeDebugOperation(const Json &);
@@ -19,6 +20,7 @@ public:
     using TimeSource = std::function<Clock::time_point()>;
     MatchSession(Content content,std::uint32_t seed);
     MatchSession(Content content,MatchConfig config);
+    MatchSession(Content content, const TutorialScenario &lesson);
     CommandResult submit(PlayerId,const Command&) override;
     void enableDebug(bool enabled);
     bool debugEnabled() const { return debugEnabled_; }
@@ -48,6 +50,7 @@ public:
     void save(const std::filesystem::path&) const;
 private:
     Content content_; MatchConfig config_; GameEngine engine_; std::vector<RecordedCommand> commands_;
+    std::string lessonId_, lessonDigest_;
     std::vector<GameEvent> events_;
     std::array<std::vector<std::size_t>, 2> visibleEvents_;
     std::uint64_t revision_{}, eventEpoch_{1};
@@ -86,5 +89,6 @@ private:
 // Observer runs only after each state has passed its recorded digest check.
 GameEngine replay(const Content&, const Json&,
                   const std::function<void(std::size_t, const GameEngine&)> &observer = {},
-                  const std::function<void(std::size_t, const std::vector<GameEvent>&)> &eventObserver = {});
+                  const std::function<void(std::size_t, const std::vector<GameEvent>&)> &eventObserver = {},
+                  const TutorialScenario *localLesson = nullptr);
 }

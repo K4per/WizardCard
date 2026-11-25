@@ -381,3 +381,14 @@ TEST_CASE("central replay transfer requires persisted normal completion and pres
     aborted.start(); aborted.server.abortRoom(aborted.code, "server_shutdown");
     REQUIRE(aborted.send(1, {{"type", "Replay"}}, "Error").at("code") == "replay_not_ready");
 }
+TEST_CASE("central room rejects embedded course configuration before creating a match", "[central][tutorial-scenario]") {
+    Fixture f;
+    f.welcome(1);
+    const auto deck = encodeDeck(f.content.defaultPlayerDeck());
+    CHECK(f.send(1, {{"type", "CreateRoom"}, {"deck", deck}, {"lessonId", "sample"}}, "Error").at("code") == "tutorial_config_not_allowed");
+    CHECK(f.server.roomCodes().empty());
+    auto shortDeck = deck;
+    shortDeck["cards"] = {f.content.deck.front()};
+    CHECK(f.send(1, {{"type", "CreateRoom"}, {"deck", shortDeck}}, "Error").at("type") == "Error");
+    CHECK(f.server.roomCodes().empty());
+}

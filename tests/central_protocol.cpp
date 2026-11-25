@@ -48,3 +48,13 @@ TEST_CASE("central handshake survives bytewise framing", "[central][protocol]") 
     REQUIRE(received.front().at("protocol") == 5);
     REQUIRE(received.front().at("hash") == content.catalog.contentHash);
 }
+
+TEST_CASE("central admission rejects local tutorial configuration", "[central][protocol][tutorial-scenario]") {
+    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/release-v260");
+    const auto valid = central::encodeDeck(content.defaultPlayerDeck());
+    for (const auto &field : {"lessonId", "lessonDigest", "scenario", "tutorialChapter"}) {
+        auto deck = valid;
+        deck[field] = "local";
+        CHECK_THROWS(central::decodeDeck(deck, content.catalog));
+    }
+}

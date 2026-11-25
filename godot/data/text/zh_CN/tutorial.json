@@ -1,1 +1,4 @@
-{}
+{
+  "tutorial.replay.invalid": "教学复盘只接受课程引用和正常对局命令。",
+  "tutorial.replay.changed": "教学课程已变更，无法还原这份复盘。"
+}

@@ -518,3 +518,20 @@ TEST_CASE("network save failure keeps the authoritative match until explicit exi
     CHECK(host.leave(error, true));
     CHECK(host.ended());
 }
+
+TEST_CASE("TCP room refuses lesson flags even with valid base decks", "[tutorial-scenario][network]") {
+    const auto c = content();
+    HostSession room(c);
+    room.receive(hello(c));
+    const Json deck = {{"baseFormation", c.initialFormation}, {"cards", c.deck}, {"sideDeck", c.sideDeck}};
+    Json packet = {{"type", "Deck"}, {"session", room.session()}, {"deck", deck}};
+    packet["lessonId"] = "fixture-local";
+    CHECK_THROWS(room.receive(packet));
+    packet.erase("lessonId");
+    packet["deck"]["scenario"] = Json::object();
+    CHECK_THROWS(room.receive(packet));
+    packet["deck"] = deck;
+    packet["deck"]["cards"] = {c.deck.front()};
+    CHECK_THROWS(room.receive(packet));
+    CHECK_FALSE(room.started());
+}

@@ -1,4 +1,5 @@
 #include "wizard/replay.hpp"
+#include "wizard/tutorial_scenario.hpp"
 #include "json_integer.hpp"
 #include <limits>
 #include <type_traits>
@@ -18,6 +19,10 @@ MatchConfig sharedConfig(const Content &c, std::uint32_t seed) {
 MatchSession::MatchSession(Content c, std::uint32_t seed) : MatchSession(c, sharedConfig(c, seed)) {}
 MatchSession::MatchSession(Content c, MatchConfig config)
     : content_(std::move(c)), config_(std::move(config)), engine_(content_.catalog, config_) {
+    appendEvents(engine_.takeInitialEvents());
+}
+MatchSession::MatchSession(Content c, const TutorialScenario &lesson)
+    : content_(std::move(c)), engine_(lesson.start(content_.catalog)), lessonId_(lesson.id()), lessonDigest_(lesson.digest()) {
     appendEvents(engine_.takeInitialEvents());
 }
 void MatchSession::changed() {
@@ -98,6 +103,12 @@ Json MatchSession::recordingHeader() const {
               {"players", players},
               {"commands", Json::array()},
               {"finalDigest", engine_.digest()}};
+    if (!lessonId_.empty()) {
+        j.erase("players");
+        j.erase("seed");
+        j["lessonId"] = lessonId_;
+        j["lessonDigest"] = lessonDigest_;
+    }
     j["containsDebugOperations"] = engine_.state().debugUsed;
     if (config_.tutorialChapter) j["tutorialChapter"] = config_.tutorialChapter;
     j["technicalPaused"] = technicalPaused_;
@@ -155,7 +166,8 @@ void MatchSession::save(const std::filesystem::path &path) const {
 }
 GameEngine replay(const Content &c, const Json &j,
                   const std::function<void(std::size_t, const GameEngine&)> &observer,
-                  const std::function<void(std::size_t, const std::vector<GameEvent>&)> &eventObserver) {
+                  const std::function<void(std::size_t, const std::vector<GameEvent>&)> &eventObserver,
+                  const TutorialScenario *localLesson) {
     const int format = j.at("format").get<int>();
     const bool legacy = format == 4;
     const bool legacyRules = c.catalog.rulesVersion == "2.5.5" && c.catalog.mechanicsRevision == 9;
@@ -175,17 +187,30 @@ GameEngine replay(const Content &c, const Json &j,
                      j.at("rulesVersion") != c.catalog.rulesVersion)) ||
         j.at("cardSetVersion") != c.catalog.cardSetVersion || j.at("contentHash") != c.catalog.contentHash)
         throw std::runtime_error("incompatible replay version or content hash");
-    MatchConfig config;
-    config.seed =
-        static_cast<std::uint32_t>(integer(j.at("seed"), std::numeric_limits<std::uint32_t>::max()));
-    config.tutorialChapter = j.value("tutorialChapter", 0);
-    if (!j.at("players").is_array() || j.at("players").size() != 2)
-        throw std::runtime_error("replay requires two player decks");
-    for (int p = 0; p < 2; ++p) {
-        config.players[p].cards = j.at("players").at(p).at("cards").get<std::vector<std::string>>();
-        config.players[p].sideDeck = j.at("players").at(p).at("sideDeck").get<std::vector<std::string>>();
-    }
-    GameEngine engine(c.catalog, config);
+    const bool lessonRecording = j.contains("lessonId") || j.contains("lessonDigest");
+    if (j.contains("scenario")) throw std::invalid_argument("unexpected replay scenario");
+    auto makeEngine = [&]() {
+        if (lessonRecording) {
+            if (!localLesson || format != 6 || j.contains("players") || j.contains("seed") ||
+                j.contains("tutorialChapter") || j.value("containsDebugOperations", false))
+                throw std::invalid_argument(c.renderText({"tutorial.replay.invalid", {}}));
+            if (j.at("lessonId") != localLesson->id() || j.at("lessonDigest") != localLesson->digest())
+                throw std::invalid_argument(c.renderText({"tutorial.replay.changed", {}}));
+            return localLesson->start(c.catalog);
+        }
+        MatchConfig config;
+        config.seed =
+            static_cast<std::uint32_t>(integer(j.at("seed"), std::numeric_limits<std::uint32_t>::max()));
+        config.tutorialChapter = j.value("tutorialChapter", 0);
+        if (!j.at("players").is_array() || j.at("players").size() != 2)
+            throw std::runtime_error("replay requires two player decks");
+        for (int p = 0; p < 2; ++p) {
+            config.players[p].cards = j.at("players").at(p).at("cards").get<std::vector<std::string>>();
+            config.players[p].sideDeck = j.at("players").at(p).at("sideDeck").get<std::vector<std::string>>();
+        }
+        return GameEngine(c.catalog, config);
+    };
+    GameEngine engine = makeEngine();
     if (!j.at("commands").is_array())
         throw std::runtime_error("invalid replay commands");
     int n = 0;
@@ -193,6 +218,7 @@ GameEngine replay(const Content &c, const Json &j,
     if (eventObserver) eventObserver(0, initialEvents);
     if (observer) observer(0, engine);
     for (const auto &row : j.at("commands")) {
+        if (lessonRecording && row.contains("debug")) throw std::invalid_argument(c.renderText({"tutorial.replay.invalid", {}}));
         if (row.contains("debug") && !j.value("containsDebugOperations", false))
             throw std::runtime_error("debug replay operation missing debug marker");
         const auto result = applyRecordedCommand(engine, row, legacy);

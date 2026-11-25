@@ -19,6 +19,7 @@ Json encodeDeck(const PlayerDeck &deck) {
     return {{"baseFormation", deck.baseFormation}, {"cards", deck.cards}, {"sideDeck", deck.sideDeck}};
 }
 PlayerDeck decodeDeck(const Json &message, const CardCatalog &catalog) {
+    if (net::containsTutorialConfig(message)) throw std::invalid_argument("tutorial_config_not_allowed");
     PlayerDeck deck{message.value("baseFormation", std::string{}),
                     message.at("cards").get<std::vector<std::string>>(),
                     message.at("sideDeck").get<std::vector<std::string>>()};

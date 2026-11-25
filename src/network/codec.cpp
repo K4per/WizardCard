@@ -34,6 +34,12 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChainState, id, window, mode, initiator, prio
                                    responded, hadActualLinks)
 } // namespace wizard
 namespace wizard::net {
+bool containsTutorialConfig(const Json &message) {
+    if (!message.is_object()) return false;
+    for (const auto *field : {"lessonId", "lessonDigest", "scenario", "tutorialChapter", "tutorial"})
+        if (message.contains(field)) return true;
+    return message.contains("mode") && message.at("mode") == "tutorial";
+}
 namespace {
 bool wide(const std::string &k) {
     return k == "id" || k == "decision" || k == "gate" || k == "link" || k == "targetLink" ||

@@ -186,6 +186,8 @@ std::vector<Delivery> Authority::receive(Connection id, const Json &message) {
     try {
         if (!id || !message.is_object()) return {{id, error("invalid_request", "非法消息")}};
         const auto type = message.at("type").get<std::string>();
+        if (net::containsTutorialConfig(message) || (message.contains("deck") && net::containsTutorialConfig(message.at("deck"))))
+            return {{id, error("tutorial_config_not_allowed", content_.renderText({"network.reject.tutorial_config", {}}))}};
         if (type == "Hello" || type == "CreateRoom" || type == "JoinRoom" || type == "Resume") return entry(id, message);
         std::shared_ptr<Room> room;
         int seat = -1;

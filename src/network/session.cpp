@@ -173,6 +173,8 @@ void HostSession::freeze(bool value) {
 }
 Json HostSession::receive(const Json &j) {
     const auto type = j.at("type").get<std::string>();
+    if (containsTutorialConfig(j) || (j.contains("deck") && containsTutorialConfig(j.at("deck"))))
+        throw std::invalid_argument(content_.renderText({"network.reject.tutorial_config", {}}));
     if (ended_)
         throw std::runtime_error("房间已结束");
     if (type == "Hello") {

@@ -55,6 +55,7 @@ CommandResult applyRecordedCommand(GameEngine &engine, const Json &row, bool leg
     return std::holds_alternative<Timeout>(command) ? engine.timeout(actor) : engine.submit(actor, command);
 }
 void MatchSession::enableDebug(bool enabled) {
+    if (enabled && !lessonId_.empty()) return;
     if (debugEnabled_ == enabled) return;
     debugEnabled_ = enabled;
     turnCheckpoints_.clear();

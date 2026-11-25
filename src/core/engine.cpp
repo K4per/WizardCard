@@ -119,8 +119,9 @@ void GameEngine::finishOpening() {
 void GameEngine::drawOpeningHands() {
     for (int p = 0; p < 2; ++p) {
         auto &deck = state_.players[p].deck;
-        for (std::size_t i = deck.size(); i > 1; --i)
-            std::swap(deck[i - 1], deck[bounded(state_, static_cast<std::uint32_t>(i))]);
+        if (!orderedTutorialOpening_)
+            for (std::size_t i = deck.size(); i > 1; --i)
+                std::swap(deck[i - 1], deck[bounded(state_, static_cast<std::uint32_t>(i))]);
         Trigger t;
         t.owner = p;
         EffectResolver::apply(state_, catalog(), t, {EffectKind::Draw, 5});

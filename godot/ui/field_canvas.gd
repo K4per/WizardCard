@@ -97,6 +97,11 @@ var _transition: FieldTransition = FieldTransition.new()
 var _transition_strength: float = 0.0
 var _transition_tween: Tween
 var _has_projection: bool = false
+const DamageBorder = preload("res://ui/damage_border.gd")
+const DAMAGE_BORDER_SECONDS: float = 0.8
+const LIFE_LOSS_BORDER_SECONDS: float = 0.24
+const HIT_STAGGER_SECONDS: float = 0.13
+var _damage_borders: Array[Dictionary] = []
 
 func set_action_targets(ids: Array[String], rings: Dictionary[String, PackedInt32Array] = {}) -> void:
 	target_ids.clear()
@@ -215,6 +220,7 @@ func _begin_transition(next: FieldPresentation) -> void:
 func stop_feedback() -> void:
 	_flights.clear()
 	_flight_bounds.clear()
+	_damage_borders.clear()
 	_clear_outlines()
 
 func _clear_outlines() -> void:
@@ -306,6 +312,11 @@ func _draw() -> void:
 	_draw_opponent_hand()
 	_draw_hand(size.y * layout.hand_height_ratio)
 	_transition.paint(self, _card_hits, _own_region, _opponent_region, _transition_strength)
+	if not UiFactory.reduced_motion:
+		for hit: Dictionary in _damage_borders:
+			if hit.age >= 0:
+				var region: Rect2 = _own_region if hit.player == field.viewer else _opponent_region
+				DamageBorder.paint(self, region, hit.kind, hit.age / hit.duration)
 	_cache_flight_bounds()
 	_draw_flights()
 	if _drag_active and _dragged != null:
@@ -330,14 +341,52 @@ func _process(delta: float) -> void:
 		flight.age += delta
 		if flight.age >= FLIGHT_SECONDS or UiFactory.reduced_motion:
 			_flights.remove_at(index)
-	set_process(moving or not _flights.is_empty())
+	for index: int in range(_damage_borders.size() - 1, -1, -1):
+		var hit: Dictionary = _damage_borders[index]
+		hit.age += delta
+		if hit.age >= hit.duration or UiFactory.reduced_motion:
+			_damage_borders.remove_at(index)
+	set_process(moving or not _flights.is_empty() or not _damage_borders.is_empty())
 	queue_redraw()
+
+func _queue_damage_border(player: int, kind: String) -> void:
+	if player not in [0, 1]:
+		return
+	if kind not in DamageBorder.TYPES:
+		kind = ""
+	var duration: float = LIFE_LOSS_BORDER_SECONDS if kind.is_empty() else DAMAGE_BORDER_SECONDS
+	var delay: float = 0.0
+	if not _damage_borders.is_empty():
+		# Start in event order. Opposite sides can overlap; each side finishes its previous hit.
+		delay = maxf(0.0, HIT_STAGGER_SECONDS - float(_damage_borders.back().age))
+		for index: int in range(_damage_borders.size() - 1, -1, -1):
+			var queued: Dictionary = _damage_borders[index]
+			if queued.player == player:
+				delay = maxf(delay, queued.duration - queued.age)
+				break
+	_damage_borders.append({"player": player, "kind": kind, "age": -delay, "duration": duration})
 
 func present_events(events: Array) -> void:
 	if privacy or UiFactory.reduced_motion:
 		return
 	var delay: float = 0.0
-	for event: Dictionary in events:
+	for index: int in range(events.size()):
+		var event: Dictionary = events[index]
+		var kind: String = str(event.get("kind", ""))
+		var amount: int = int(event.get("actualAmount", 0))
+		var player: int = int(event.get("affectedPlayer", -1))
+		if kind in ["overload", "exhaustion"]:
+			_queue_damage_border(player, kind)
+		elif kind == "mana_gain" and amount > 0:
+			_queue_damage_border(player, "mana_recovery")
+		elif kind == "life_delta" and amount < 0:
+			var has_next_event: bool = index + 1 < events.size() and events[index + 1] is Dictionary
+			var next_kind: String = str(events[index + 1].get("kind", "")) if has_next_event else ""
+			var next_player: int = int(events[index + 1].get("affectedPlayer", -1)) if has_next_event else -1
+			if next_kind not in ["overload", "exhaustion"] or next_player != player:
+				_queue_damage_border(player, str(event.get("damageType", "")))
+		elif kind == "life_delta" and amount > 0:
+			_queue_damage_border(player, "life_recovery")
 		if not event.get("travel") is Dictionary:
 			continue
 		var move: Dictionary = event.travel
@@ -352,7 +401,7 @@ func present_events(events: Array) -> void:
 				start_delay = maxf(start_delay, FLIGHT_SECONDS - float(queued.age))
 		_flights.append({"move": move, "id": id, "card": card, "age": -start_delay})
 		delay += 0.065
-	if not _flights.is_empty():
+	if not _flights.is_empty() or not _damage_borders.is_empty():
 		set_process(true)
 		queue_redraw()
 

@@ -30,8 +30,8 @@ func prepare(previous: FieldPresentation, next: FieldPresentation, old_hits: Arr
 	var old_life: Array[int] = [previous.own_life, previous.opponent_life]
 	var new_life: Array[int] = [next.own_life, next.opponent_life]
 	for index: int in range(2):
-		if old_life[index] != new_life[index]:
-			life[index] = Color("e89191") if new_life[index] < old_life[index] else Color("92d3a6")
+		if new_life[index] > old_life[index]:
+			life[index] = Color("92d3a6")
 	return not changed.is_empty() or not departures.is_empty() or life[0].a > 0.0 or life[1].a > 0.0
 
 func paint(surface: CanvasItem, hits: Array[Dictionary], own_region: Rect2, opponent_region: Rect2, strength: float) -> void:

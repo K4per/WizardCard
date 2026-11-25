@@ -114,6 +114,7 @@ Json encodeEvent(const GameEvent &e) {
         {"card", e.card}, {"amount", e.amount}, {"actualAmount", e.actualAmount},
         {"effectType", e.effectType ? Json(static_cast<int>(*e.effectType)) : Json()},
         {"affectedPlayer", e.affectedPlayer}, {"spellReleased", e.spellReleased}, {"chainIndex", e.chainIndex}};
+    if (e.damageType) row["damageType"] = damageTypeId(*e.damageType);
     if (e.travel) {
         const auto &m = *e.travel;
         row["travel"] = {{"from", m.from}, {"to", m.to}, {"fromPlayer", m.fromPlayer},

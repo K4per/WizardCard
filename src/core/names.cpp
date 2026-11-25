@@ -7,6 +7,20 @@
 #include <stdexcept>
 
 namespace wizard {
+namespace {
+constexpr std::array<const char *, 13> damageTypeIds = {
+    "fire", "cold", "radiant", "necrotic", "poison", "lightning", "psychic",
+    "thunder", "force", "slashing", "bludgeoning", "piercing", "acid"
+};
+}
+const char *damageTypeId(DamageType type) {
+    return damageTypeIds.at(static_cast<std::size_t>(type));
+}
+std::optional<DamageType> damageTypeFromId(const std::string &id) {
+    const auto it = std::find(damageTypeIds.begin(), damageTypeIds.end(), id);
+    if (it == damageTypeIds.end()) return std::nullopt;
+    return static_cast<DamageType>(it - damageTypeIds.begin());
+}
 std::string fingerprint(const std::string &bytes) {
     std::uint64_t h = 14695981039346656037ull;
     for (unsigned char c : bytes) {

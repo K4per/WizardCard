@@ -31,21 +31,9 @@ T enumeration(const std::string &value, const std::map<std::string, T> &table, c
     return i->second;
 }
 DamageType damageType(const std::string &v, const std::string &path) {
-    return enumeration(v,
-                       std::map<std::string, DamageType>{{"fire", DamageType::Fire},
-                                                         {"acid", DamageType::Acid},
-                                                         {"cold", DamageType::Cold},
-                                                         {"radiant", DamageType::Radiant},
-                                                         {"necrotic", DamageType::Necrotic},
-                                                         {"poison", DamageType::Poison},
-                                                         {"lightning", DamageType::Lightning},
-                                                         {"psychic", DamageType::Psychic},
-                                                         {"thunder", DamageType::Thunder},
-                                                         {"force", DamageType::Force},
-                                                         {"slashing", DamageType::Slashing},
-                                                         {"bludgeoning", DamageType::Bludgeoning},
-                                                         {"piercing", DamageType::Piercing}},
-                       path);
+    const auto type = damageTypeFromId(v);
+    if (!type) fail(path, "unknown value: " + v);
+    return *type;
 }
 std::vector<Effect> effects(const Json &j, const std::string &path, bool allowStructured = false) {
     if (!j.is_array())

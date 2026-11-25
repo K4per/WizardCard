@@ -149,6 +149,8 @@ enum class EffectRecipient { Target, Owner, Opponent };
 enum class LinkKind { Phase, Action, Preparation, Spell, Response, Trigger, Setup };
 std::string fingerprint(const std::string &bytes);
 std::string damageName(DamageType);
+const char *damageTypeId(DamageType);
+std::optional<DamageType> damageTypeFromId(const std::string &);
 std::string schoolName(const std::string &);
 std::string phaseName(Phase);
 std::string zoneName(Zone);

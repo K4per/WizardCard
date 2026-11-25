@@ -120,7 +120,8 @@ void EffectResolver::apply(MutationContext &s, const CardCatalog &cat, const Tri
         const int shield = std::min(amount, s.players[p].temporaryLife);
         ResourceRules::absorbTemporaryLife(s, p, shield);
         const int actualDamage = amount - shield;
-        ResourceRules::setLife(s, p, cat.mechanicsRevision >= 11 ? std::max(0, s.players[p].life - actualDamage) : s.players[p].life - actualDamage);
+        const int remainingLife = s.players[p].life - actualDamage;
+        ResourceRules::setLife(s, p, cat.mechanicsRevision >= 11 ? std::max(0, remainingLife) : remainingLife, e.damageType);
         damageDealt = shield + previousLife - s.players[p].life;
         card_rules::damaged(s, cat, p, t.source, actualDamage);
         if (cat.mechanicsRevision >= 11)

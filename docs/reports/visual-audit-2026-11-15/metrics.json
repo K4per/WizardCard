@@ -1,0 +1,1322 @@
+[
+	{
+		"analysis_width": 732.440002441406,
+		"canvas": [
+			1012.0,
+			720.0
+		],
+		"canvas_left": 268.0,
+		"casting_visible": 7,
+		"opponent": [
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3760070800781
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3760070800781
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3760070800781
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3760070800781
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3760070800781
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3760070800781
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3760070800781
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3760070800781
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3759994506836
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3759994506836
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8479919433594
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8479919433594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8479919433594
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8479919433594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8480224609375
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8480224609375
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8480224609375
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8480224609375
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8480224609375
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8480224609375
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 1,
+		"scenario": "five-body1",
+		"viewport": [
+			1280,
+			720
+		]
+	},
+	{
+		"analysis_width": 732.440002441406,
+		"canvas": [
+			1012.0,
+			720.0
+		],
+		"canvas_left": 268.0,
+		"casting_visible": 7,
+		"opponent": [
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3760070800781
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3760070800781
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3760070800781
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3760070800781
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3760070800781
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3760070800781
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3760070800781
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3760070800781
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3759994506836
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3759994506836
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8479919433594
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8479919433594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8479919433594
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8479919433594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8480224609375
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8480224609375
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8480224609375
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8480224609375
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8480224609375
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8480224609375
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 0,
+		"scenario": "five-body1-hand-hidden",
+		"viewport": [
+			1280,
+			720
+		]
+	},
+	{
+		"analysis_width": 732.440002441406,
+		"canvas": [
+			1012.0,
+			720.0
+		],
+		"canvas_left": 268.0,
+		"casting_visible": 7,
+		"opponent": [
+			{
+				"body": 2,
+				"host_art_height": 5.32460308074951,
+				"host_size": [
+					83.498161315918,
+					62.7519836425781
+				],
+				"name": "混沌之环",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					197.10661315918,
+					29.8759918212891
+				],
+				"ring_title_font_px": 12,
+				"rings": 5
+			},
+			{
+				"body": 2,
+				"host_art_height": 5.32463359832764,
+				"host_size": [
+					83.498161315918,
+					62.7520141601563
+				],
+				"name": "硫磺",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					197.10661315918,
+					29.8760070800781
+				],
+				"ring_title_font_px": 12,
+				"rings": 6
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3759994506836
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3759994506836
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 2,
+				"host_art_height": 16.2686042785645,
+				"host_size": [
+					83.498161315918,
+					73.6959838867188
+				],
+				"name": "混沌之环",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					197.10661315918,
+					35.3479919433594
+				],
+				"ring_title_font_px": 12,
+				"rings": 5
+			},
+			{
+				"body": 2,
+				"host_art_height": 16.2686653137207,
+				"host_size": [
+					83.498161315918,
+					73.696044921875
+				],
+				"name": "硫磺",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					197.10661315918,
+					35.3480224609375
+				],
+				"ring_title_font_px": 12,
+				"rings": 6
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8480224609375
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8480224609375
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 1,
+		"scenario": "mixed-2-2-1",
+		"viewport": [
+			1280,
+			720
+		]
+	},
+	{
+		"analysis_width": 732.440002441406,
+		"canvas": [
+			1012.0,
+			720.0
+		],
+		"canvas_left": 268.0,
+		"casting_visible": 7,
+		"opponent": [
+			{
+				"body": 4,
+				"host_art_height": 72.3998184204102,
+				"host_size": [
+					83.498161315918,
+					141.503997802734
+				],
+				"name": "完美法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					297.159912109375,
+					33.1259994506836
+				],
+				"ring_title_font_px": 12,
+				"rings": 7
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					23.3759994506836
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					23.3759994506836
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 4,
+				"host_art_height": 86.554084777832,
+				"host_size": [
+					83.498161315918,
+					163.392028808594
+				],
+				"name": "完美法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					297.159912109375,
+					38.5980072021484
+				],
+				"ring_title_font_px": 12,
+				"rings": 7
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					83.498161315918,
+					28.8480224609375
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					597.31982421875,
+					28.8480224609375
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 1,
+		"scenario": "large-4-1",
+		"viewport": [
+			1280,
+			720
+		]
+	},
+	{
+		"analysis_width": 1181.0400390625,
+		"canvas": [
+			1596.0,
+			1080.0
+		],
+		"canvas_left": 324.0,
+		"casting_visible": 14,
+		"opponent": [
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					45.2640075683594
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					45.2640075683594
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					45.2639923095703
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					45.2639923095703
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					45.2639923095703
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					45.2639923095703
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					45.2640075683594
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					53.4719848632813
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					53.4719848632813
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					53.4719848632813
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					53.4719848632813
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					53.4719848632813
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 1,
+		"scenario": "five-body1",
+		"viewport": [
+			1920,
+			1080
+		]
+	},
+	{
+		"analysis_width": 1181.0400390625,
+		"canvas": [
+			1596.0,
+			1080.0
+		],
+		"canvas_left": 324.0,
+		"casting_visible": 14,
+		"opponent": [
+			{
+				"body": 2,
+				"host_art_height": 45.776538848877,
+				"host_size": [
+					134.638565063477,
+					106.528045654297
+				],
+				"name": "混沌之环",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					322.116485595703,
+					51.7640228271484
+				],
+				"ring_title_font_px": 12,
+				"rings": 5
+			},
+			{
+				"body": 2,
+				"host_art_height": 45.7764930725098,
+				"host_size": [
+					134.638565063477,
+					106.52799987793
+				],
+				"name": "硫磺",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					322.116485595703,
+					51.7639999389648
+				],
+				"ring_title_font_px": 12,
+				"rings": 6
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					45.2640075683594
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 2,
+				"host_art_height": 58.86767578125,
+				"host_size": [
+					134.638565063477,
+					122.943969726563
+				],
+				"name": "混沌之环",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					322.116485595703,
+					59.9719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 5
+			},
+			{
+				"body": 2,
+				"host_art_height": 58.86767578125,
+				"host_size": [
+					134.638565063477,
+					122.943969726563
+				],
+				"name": "硫磺",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					322.116485595703,
+					59.9719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 6
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					53.4719848632813
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 1,
+		"scenario": "mixed-2-2-1",
+		"viewport": [
+			1920,
+			1080
+		]
+	},
+	{
+		"analysis_width": 1181.0400390625,
+		"canvas": [
+			1596.0,
+			1080.0
+		],
+		"canvas_left": 324.0,
+		"casting_visible": 14,
+		"opponent": [
+			{
+				"body": 4,
+				"host_art_height": 148.304534912109,
+				"host_size": [
+					134.638565063477,
+					229.056045532227
+				],
+				"name": "完美法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					484.674743652344,
+					55.0140113830566
+				],
+				"ring_title_font_px": 12,
+				"rings": 7
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					45.2640075683594
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 4,
+				"host_art_height": 181.136489868164,
+				"host_size": [
+					134.638565063477,
+					261.888000488281
+				],
+				"name": "完美法阵",
+				"ring_art_height": 2.22200012207031,
+				"ring_size": [
+					484.674743652344,
+					63.2220001220703
+				],
+				"ring_title_font_px": 12,
+				"rings": 7
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					134.638565063477,
+					53.4719848632813
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					972.349487304688,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 1,
+		"scenario": "large-4-1",
+		"viewport": [
+			1920,
+			1080
+		]
+	},
+	{
+		"analysis_width": 1654.64001464844,
+		"canvas": [
+			2236.0,
+			1080.0
+		],
+		"canvas_left": 324.0,
+		"casting_visible": 20,
+		"opponent": [
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					45.2640075683594
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					45.2640075683594
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					45.2639923095703
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					45.2639923095703
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					45.2639923095703
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					45.2639923095703
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					45.2640075683594
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					53.4719848632813
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					53.4719848632813
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					53.4719848632813
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					53.4719848632813
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					53.4719848632813
+				],
+				"name": "恩格亚斯之星",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 1,
+		"scenario": "five-body1",
+		"viewport": [
+			2560,
+			1080
+		]
+	},
+	{
+		"analysis_width": 1654.64001464844,
+		"canvas": [
+			2236.0,
+			1080.0
+		],
+		"canvas_left": 324.0,
+		"casting_visible": 20,
+		"opponent": [
+			{
+				"body": 2,
+				"host_art_height": 45.5280456542969,
+				"host_size": [
+					188.628952026367,
+					106.528045654297
+				],
+				"name": "混沌之环",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					454.093017578125,
+					51.7640228271484
+				],
+				"ring_title_font_px": 12,
+				"rings": 5
+			},
+			{
+				"body": 2,
+				"host_art_height": 45.5279998779297,
+				"host_size": [
+					188.628952026367,
+					106.52799987793
+				],
+				"name": "硫磺",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					454.093017578125,
+					51.7639999389648
+				],
+				"ring_title_font_px": 12,
+				"rings": 6
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					45.2640075683594
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 2,
+				"host_art_height": 58.6191825866699,
+				"host_size": [
+					188.628952026367,
+					122.943969726563
+				],
+				"name": "混沌之环",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					454.093017578125,
+					59.9719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 5
+			},
+			{
+				"body": 2,
+				"host_art_height": 58.6191825866699,
+				"host_size": [
+					188.628952026367,
+					122.943969726563
+				],
+				"name": "硫磺",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					454.093017578125,
+					59.9719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 6
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					53.4719848632813
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 1,
+		"scenario": "mixed-2-2-1",
+		"viewport": [
+			2560,
+			1080
+		]
+	},
+	{
+		"analysis_width": 1654.64001464844,
+		"canvas": [
+			2236.0,
+			1080.0
+		],
+		"canvas_left": 324.0,
+		"casting_visible": 20,
+		"opponent": [
+			{
+				"body": 4,
+				"host_art_height": 148.056045532227,
+				"host_size": [
+					188.628952026367,
+					229.056045532227
+				],
+				"name": "完美法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					682.639526367188,
+					55.0140113830566
+				],
+				"ring_title_font_px": 12,
+				"rings": 7
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					45.2640075683594
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					45.2640075683594
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"opponent_ring_centers_blocked_by_hand": 1,
+		"own": [
+			{
+				"body": 4,
+				"host_art_height": 180.888000488281,
+				"host_size": [
+					188.628952026367,
+					261.888000488281
+				],
+				"name": "完美法阵",
+				"ring_art_height": 2.22200012207031,
+				"ring_size": [
+					682.639526367188,
+					63.2220001220703
+				],
+				"ring_title_font_px": 12,
+				"rings": 7
+			},
+			{
+				"body": 1,
+				"host_art_height": 0.0,
+				"host_size": [
+					188.628952026367,
+					53.4719848632813
+				],
+				"name": "基础法阵",
+				"ring_art_height": 0.0,
+				"ring_size": [
+					1368.27905273438,
+					53.4719848632813
+				],
+				"ring_title_font_px": 12,
+				"rings": 1
+			}
+		],
+		"own_ring_centers_blocked_by_hand": 1,
+		"scenario": "large-4-1",
+		"viewport": [
+			2560,
+			1080
+		]
+	}
+]

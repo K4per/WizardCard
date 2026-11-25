@@ -21,6 +21,7 @@ var rules_version: String = ""
 var definitions: Dictionary[String, Dictionary] = {}
 var drafts: Array[Dictionary] = []
 var presets: Array[Dictionary] = []
+var tutorial_lessons: Array[Dictionary] = []
 var playable: Array[Dictionary] = []
 var writable: bool = false
 var notice: String = ""
@@ -58,6 +59,7 @@ func initialize(assets: String, user_directory: String, default_saves: String = 
 		return false
 	var data: Dictionary = response.get("data", {})
 	rules_version = str(data.get("rulesVersion", ""))
+	tutorial_lessons.assign(data.get("lessons", []))
 	settings = data.get("settings", {}).duplicate(true)
 	# The native defaults also serve the legacy client. Only Godot first-run data changes.
 	if not FileAccess.file_exists(user_directory.path_join("settings.json")):

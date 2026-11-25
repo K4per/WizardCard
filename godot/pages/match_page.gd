@@ -1778,8 +1778,13 @@ func _inspect_tutorial_area(area: String) -> void:
 		_continue_tutorial()
 
 func _restart_tutorial() -> void:
-	var chapter: int = int(service.match_snapshot.get("tutorial", {}).get("chapter", 1))
-	if not service.leave_match() or not service.start_match({"mode": "tutorial", "chapter": chapter}):
+	var lesson: Dictionary = service.match_snapshot.get("tutorial", {})
+	var options := {"mode": "tutorial"}
+	if lesson.has("lessonId"):
+		options["lessonId"] = lesson["lessonId"]
+	else:
+		options["chapter"] = int(lesson.get("chapter", 1))
+	if not service.leave_match() or not service.start_match(options):
 		_notice.text = service.error
 		return
 	navigation_requested.emit(&"match")

@@ -713,6 +713,7 @@ Content loadContent(const std::filesystem::path &dir) {
     const auto sourceText = std::filesystem::path("godot/data/text");
     for (const auto &path : {assets / "text", parent / "text", parent / sourceText, parent.parent_path() / sourceText}) {
         if (std::filesystem::exists(path)) {
+            c.dataDirectory = path.parent_path();
             c.textCatalog = std::make_shared<const TextCatalog>(TextCatalog::load(path));
             break;
         }

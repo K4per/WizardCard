@@ -1,4 +1,7 @@
 {
+  "tutorial.lesson.invalid": "请选择本地课程目录中的课程。",
+  "tutorial.lesson.unavailable": "无法加载所选教学课程。",
+  "tutorial.lesson.blocked": "请按这一步的提示操作。",
   "tutorial.replay.invalid": "教学复盘只接受课程引用和正常对局命令。",
   "tutorial.replay.changed": "教学课程已变更，无法还原这份复盘。"
 }

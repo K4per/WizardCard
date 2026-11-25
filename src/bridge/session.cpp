@@ -34,7 +34,12 @@ Json LocalSession::initialize(const std::filesystem::path &assets,
         Json presets = Json::array();
         for (const auto &preset : match_.application->playableDecks())
             presets.push_back({{"id", preset.id}, {"name", preset.name}, {"description", preset.description}});
+        Json lessons = Json::array();
+        for (const auto &lesson : match_.application->lessons().lessons())
+            lessons.push_back({{"id", lesson.scenario.id()}, {"order", lesson.order}, {"titleKey", lesson.titleKey},
+                               {"title", decks_.content->renderText({lesson.titleKey, {}})}});
         auto data = storageStatus().at("data");
+        data["lessons"] = std::move(lessons);
         data.update({{"programVersion", programVersion}, {"rulesVersion", decks_.content->catalog.rulesVersion},
                    {"cardSetVersion", decks_.content->catalog.cardSetVersion},
                    {"contentHash", decks_.content->catalog.contentHash}, {"presets", presets},
@@ -70,7 +75,16 @@ Json LocalSession::start(const Json &options) {
             return fail("invalid_options", "无效对局模式");
         std::string error;
         bool started{};
-        if (mode == "tutorial") started = match_.application->startTutorial(error, options.value("chapter", 0));
+        if (options.contains("lessonId")) {
+            for (const auto &[key, unused] : options.items()) {
+                if (key != "mode" && key != "lessonId")
+                    return fail("invalid_options", decks_.content->renderText({"tutorial.lesson.invalid", {}}));
+            }
+            if (mode != "tutorial") return fail("invalid_options", decks_.content->renderText({"tutorial.lesson.invalid", {}}));
+            started = match_.application->startTutorial(error, options.at("lessonId").get<std::string>());
+        } else if (options.contains("scenario") || options.contains("lessonDigest"))
+            return fail("invalid_options", decks_.content->renderText({"tutorial.lesson.invalid", {}}));
+        else if (mode == "tutorial") started = match_.application->startTutorial(error, options.value("chapter", 0));
         else {
             MatchConfig config;
             if (options.contains("seed")) {
@@ -146,7 +160,8 @@ Json LocalSession::snapshot(PlayerId viewer) const {
         match_.application->mode() != app::MatchMode::Tutorial && match_.application->mode() != app::MatchMode::Network);
     if (automatic) data["automaticCommand"] = commandDto(Command(*automatic));
     data["technicalPaused"] = match_.application->technicalPaused();
-    if (const auto *tutorial = match_.application->tutorial())
+    if (match_.application->lessonScript()) data["tutorial"] = match_.application->lessonSnapshot();
+    else if (const auto *tutorial = match_.application->tutorial())
         data["tutorial"] = {{"chapter", tutorial->chapter}, {"step", tutorial->step},
                             {"lesson", static_cast<int>(tutorial->lesson)}, {"title", tutorial->title()},
                             {"hint", tutorial->hint(v)}, {"canContinue", tutorial->canContinue(v)},
@@ -252,7 +267,14 @@ Json LocalSession::saveDiagnostic() const {
     return ok();
 }
 Json LocalSession::accepted(const CommandResult &result, const GameView &before) {
-    if (!result.accepted) return fail(result.errorCode.empty() ? "rejected" : result.errorCode, result.error);
+    if (!result.accepted) {
+        auto failure = fail(result.errorCode.empty() ? "rejected" : result.errorCode, result.error);
+        if (result.errorCode == "tutorial_blocked" && match_.application->lessonScript()) {
+            const auto &hint = match_.application->lessonScript()->blockedHint();
+            failure["blockedHint"] = hint.empty() ? "tutorial.lesson.blocked" : hint;
+        }
+        return failure;
+    }
     match_.pending.reset();
     if (result.pending) {
         return ok({{"generation", std::to_string(match_.generation)},
@@ -263,7 +285,7 @@ Json LocalSession::accepted(const CommandResult &result, const GameView &before)
     if (match_.application->mode() == app::MatchMode::Network)
         match_.application->tickNetwork();
     std::string error;
-    bool saved = replayPersistence_ == app::ReplayPersistence::Automatic;
+    bool saved = replayPersistence_ == app::ReplayPersistence::Automatic && !match_.application->lessonScript();
     const bool terminal = match_.application->technicalPaused() ||
         (match_.application->mode() != app::MatchMode::Network &&
          match_.application->match().engine().state().result != -1);
@@ -345,7 +367,8 @@ Json LocalSession::continueTutorial(const std::string &generation, const std::st
     if (!current(generation, revision)) return fail("stale_action", "教学操作已过期");
     if (match_.application->paused()) return fail("match_paused", "对局已暂停");
     const auto *tutorial = match_.application->tutorial();
-    if (!tutorial || !tutorial->canContinue(view(0))) return fail("tutorial_unavailable", "当前没有教学讲解");
+    const auto *script = match_.application->lessonScript();
+    if (!(script ? script->canContinue(view(0)) : tutorial && tutorial->canContinue(view(0)))) return fail("tutorial_unavailable", "当前没有教学讲解");
     match_.application->continueTutorial(); match_.pending.reset(); return ok();
 }
 Json LocalSession::saveReplay() const {
@@ -404,9 +427,13 @@ Json LocalSession::readReplayPlan(const std::filesystem::path &path) const {
             if (row.contains("debug")) commands.push_back(row);
             else commands.push_back({{"actor", row.at("actor")},
                 {"command", commandDto(j.value("format", 5) == 4 ? decodeLegacyCommand(row.at("command")) : decodeCommand(row.at("command")))}, {"digest", row.at("digest")}});
-        return ok({{"schema", schemaVersion}, {"format", j.at("format")}, {"readOnly", j.value("format", 5) == 4},
-                   {"seed", j.at("seed")}, {"players", j.at("players")},
-                   {"commands", commands}, {"finalDigest", j.at("finalDigest")}});
+        Json plan = {{"schema", schemaVersion}, {"format", j.at("format")}, {"readOnly", j.value("format", 5) == 4},
+                     {"commands", commands}, {"finalDigest", j.at("finalDigest")}};
+        if (j.contains("lessonId"))
+            plan.update({{"lessonId", j.at("lessonId")}, {"lessonDigest", j.at("lessonDigest")}});
+        else
+            plan.update({{"seed", j.at("seed")}, {"players", j.at("players")}});
+        return ok(std::move(plan));
     } catch (const std::exception &e) { return fail("invalid_replay", e.what()); }
 }
 Json LocalSession::verifyReplay(const std::filesystem::path &path) const {
@@ -429,6 +456,7 @@ void LocalSession::prepareReplay(const std::filesystem::path &path) const {
         replay_.fileSize == fileSize) return;
     replay_.valid = false;
     auto record = readJson(path);
+    const auto *lesson = record.contains("lessonId") ? match_.application->lessons().find(record.at("lessonId").get<std::string>()) : nullptr;
     const auto count = record.at("commands").size();
     // Replay browsing has a fixed memory bound independent of recording length.
     const auto stride = std::max<std::size_t>(8, (count + 14) / 15);
@@ -449,7 +477,7 @@ void LocalSession::prepareReplay(const std::filesystem::path &path) const {
                 history.push_back(event);
                 if (history.size() > 512) history.erase(history.begin());
             }
-    });
+    }, lesson ? &lesson->scenario : nullptr);
     record.erase("events");
     replay_.record = std::move(record);
     replay_.checkpoints = std::move(checkpoints);

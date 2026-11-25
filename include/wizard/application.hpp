@@ -3,6 +3,7 @@
 #include "wizard/decks.hpp"
 #include "wizard/room.hpp"
 #include "wizard/tutorial.hpp"
+#include "wizard/lesson_script.hpp"
 #include <memory>
 
 namespace wizard::app {
@@ -137,6 +138,10 @@ class Application {
     bool applySettings(const Settings &, std::string &error);
     bool start(const MatchConfig &, std::string &error, SessionOptions = {});
     bool startTutorial(std::string &error, int chapter = 0);
+    bool startTutorial(std::string &error, const std::string &lessonId);
+    const LessonCatalog &lessons() const { return lessons_; }
+    const LessonScript *lessonScript() const { return lessonScript_ ? &*lessonScript_ : nullptr; }
+    Json lessonSnapshot() const;
     bool restart(std::uint32_t seed, std::string &error);
     CommandResult submit(PlayerId, const Command &, std::uint64_t generation);
     bool debugAvailable() const { return match_ && !network_ && options_.mode == MatchMode::Ai; }
@@ -151,7 +156,7 @@ class Application {
     std::optional<AiPlan> planAi() const;
     CommandResult commitAi(const AiPlan &);
     const Tutorial *tutorial() const {
-        return mode() == MatchMode::Tutorial && hasMatch() ? &tutorial_ : nullptr;
+        return mode() == MatchMode::Tutorial && !lessonScript_ && hasMatch() ? &tutorial_ : nullptr;
     }
     void continueTutorial();
     bool saveReplay(std::string &error) const;
@@ -183,6 +188,10 @@ class Application {
     bool quit_{}, leaveQuits_{}, leavePending_{}, networkReset_{};
     SessionOptions options_;
     Tutorial tutorial_;
+    LessonCatalog lessons_;
+    const LessonDefinition *activeLesson_{};
+    std::optional<LessonScript> lessonScript_;
+    bool startSession(const MatchConfig &, std::string &, SessionOptions, const LessonDefinition *);
     std::uint64_t revision_{};
 };
 } // namespace wizard::app

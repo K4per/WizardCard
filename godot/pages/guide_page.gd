@@ -8,6 +8,7 @@ var service: FrontendService
 var tabs: TabContainer
 var chapter_buttons: Array[Button] = []
 var _library: LibraryPage
+var _course_list: VBoxContainer
 var _notice: Label
 var _rule_text: RichTextLabel
 var _rule_chapters: OptionButton
@@ -32,6 +33,8 @@ func _ready() -> void:
 	lessons.name = "新手教程"
 	lessons.add_theme_constant_override(&"separation", 12)
 	tabs.add_child(lessons)
+	_course_list = VBoxContainer.new()
+	lessons.add_child(_course_list)
 	lessons.add_child(UiFactory.label("五章均可直接进入；重试从章首开始。完成标记保存在本机。", 18, true))
 	for index: int in range(5):
 		var button: Button = UiFactory.button("第%d章 · %s" % [index + 1, TITLES[index]], start_chapter.bind(index + 1))
@@ -62,6 +65,13 @@ func _ready() -> void:
 
 func configure(value: FrontendService) -> void:
 	service = value
+	for child: Node in _course_list.get_children():
+		_course_list.remove_child(child)
+		child.queue_free()
+	for lesson: Dictionary in service.tutorial_lessons:
+		var button := UiFactory.button(str(lesson["title"]), _start_course.bind({"mode": "tutorial", "lessonId": lesson["id"]}))
+		_course_list.add_child(button)
+	_course_list.visible = not service.tutorial_lessons.is_empty()
 	_library.configure(service)
 	var completed: Array = GuideProgress.completed(service.user_directory)
 	for index: int in range(5):
@@ -74,7 +84,10 @@ func _read_rule(index: int) -> void:
 		_rule_text.scroll_to_line(0)
 
 func start_chapter(chapter: int) -> void:
-	if not service.start_match({"mode": "tutorial", "chapter": chapter}):
+	_start_course({"mode": "tutorial", "chapter": chapter})
+
+func _start_course(options: Dictionary) -> void:
+	if not service.start_match(options):
 		_notice.text = service.error
 		return
 	navigation_requested.emit(&"match")

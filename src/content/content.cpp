@@ -707,6 +707,26 @@ Content loadContent(const std::filesystem::path &dir) {
         if (c.sideDeck.size() != 10 || !hasInitial)
             fail((dir / "side-deck.json").string(), "invalid initial formation or side deck size");
     }
+    auto assets = std::filesystem::absolute(dir).lexically_normal();
+    if (!assets.has_filename()) assets = assets.parent_path();
+    const auto parent = assets.parent_path();
+    const auto sourceText = std::filesystem::path("godot/data/text");
+    for (const auto &path : {assets / "text", parent / "text", parent / sourceText, parent.parent_path() / sourceText}) {
+        if (std::filesystem::exists(path)) {
+            c.textCatalog = std::make_shared<const TextCatalog>(TextCatalog::load(path));
+            break;
+        }
+    }
     return c;
+}
+
+std::string Content::renderText(const TextRef &ref, std::string_view locale,
+                                const TextCatalog::Diagnostic &diagnostic) const {
+    const auto card = [&](const std::string &id) {
+        const auto found = catalog.cards.find(id);
+        return found != catalog.cards.end() ? found->second.name : std::string{};
+    };
+    static const TextCatalog empty;
+    return (textCatalog ? *textCatalog : empty).render(ref, locale, card, diagnostic);
 }
 } // namespace wizard

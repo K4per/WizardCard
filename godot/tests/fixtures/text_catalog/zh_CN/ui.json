@@ -1,0 +1,7 @@
+{
+  "ui.test.summary": "{player}施放{spell}并支付{mana}魔素。{player}进入{phase:terms.phase.casting}。",
+  "ui.test.static_card": "查看{card:spark-card}",
+  "ui.test.escaped": "{{{mana}}}",
+  "ui.test.chain": "默认",
+  "ui.test.default": "回退至默认语言"
+}

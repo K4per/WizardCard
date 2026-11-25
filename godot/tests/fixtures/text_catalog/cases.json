@@ -1,0 +1,51 @@
+{
+  "cards": {"spark-card": "火花"},
+  "cases": [
+    {
+      "name": "named numeric repeated and nested arguments",
+      "key": "ui.test.summary",
+      "args": {
+        "player": "洛江",
+        "mana": 2,
+        "spell": {"key": "terms.spell.alias", "args": {"card": {"card": "spark-card"}}}
+      },
+      "locale": "zh_CN",
+      "expected": "洛江施放火花并支付2魔素。洛江进入施法阶段。"
+    },
+    {
+      "name": "explicit fallback and inline terminology",
+      "key": "ui.test.summary",
+      "args": {"mana": 1.5, "spell": {"card": "spark-card"}, "player": "Player"},
+      "locale": "en_GB",
+      "expected": "Player casts 火花 for 1.5 mana. Player enters casting phase."
+    },
+    {
+      "name": "implicit default fallback",
+      "key": "ui.test.default",
+      "args": {},
+      "locale": "en_GB",
+      "expected": "回退至默认语言"
+    },
+    {
+      "name": "static card reference",
+      "key": "ui.test.static_card",
+      "args": {},
+      "locale": "zh_CN",
+      "expected": "查看火花"
+    },
+    {
+      "name": "escaped braces",
+      "key": "ui.test.escaped",
+      "args": {"mana": 0},
+      "locale": "zh_CN",
+      "expected": "{0}"
+    },
+    {
+      "name": "missing key shows its identifier",
+      "key": "ui.test.unknown",
+      "args": {},
+      "locale": "en_GB",
+      "expected": "ui.test.unknown"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""Report new Chinese string literals in production C++, Godot scripts and scenes."""
+import argparse
+from collections import Counter
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+
+HAN = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
+QUOTED = r'''(?P<string>"""(?:\\.|(?!""").)*"""|''' + "'''(?:\\\\.|(?!''').)*'''" + r'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')'''
+CPP = re.compile(r'//[^\n]*|/\*.*?(?:\*/|\Z)|R"(?P<tag>[^()\s]{0,16})\((?P<raw>.*?)\)(?P=tag)"|' + QUOTED, re.S)
+GDSCRIPT = re.compile(r"#[^\n]*|" + QUOTED, re.S)
+SCENE = re.compile(r";[^\n]*|" + QUOTED, re.S)
+LOG_CALL = re.compile(r"(?:\b(?:push_error|push_warning|print|printerr|print_verbose|perror)\s*\(|std::(?:clog|cerr)\s*<<)\s*$")
+
+
+def chinese_literals(source, suffix):
+    scanner = {".cpp": CPP, ".gd": GDSCRIPT, ".tscn": SCENE}[suffix]
+    for token in scanner.finditer(source):
+        literal = token.group("string")
+        if literal:
+            delim = literal[:3] if literal.startswith(('"""', "'''")) else literal[:1]
+            literal = literal[len(delim):-len(delim)]
+        elif suffix == ".cpp":
+            literal = token.group("raw")
+        if literal and HAN.search(literal):
+            line = source[source.rfind("\n", 0, token.start()) + 1:token.start()]
+            if not LOG_CALL.search(line):
+                yield literal
+
+
+def git(*args, check=True):
+    return subprocess.run(["git", *args], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=check)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--base", default="HEAD", help="compare the working tree to this tree-ish")
+    args = parser.parse_args()
+    root = Path(git("rev-parse", "--show-toplevel").stdout.decode().strip())
+    paths = set()
+    for output in (git("-C", str(root), "diff", "--no-renames", "--name-only", "-z", args.base),
+                   git("-C", str(root), "ls-files", "--others", "--exclude-standard", "-z")):
+        paths.update(p for p in output.stdout.decode().split("\0") if p)
+    violations = 0
+    for path in sorted(paths):
+        target = root / path
+        if target.suffix not in {".gd", ".tscn", ".cpp"} or not target.is_file():
+            continue
+        if any(part in {"tests", "fixtures"} for part in Path(path).parts):
+            continue
+        old = git("-C", str(root), "show", f"{args.base}:{path}", check=False)
+        before = Counter(chinese_literals(old.stdout.decode("utf-8-sig"), target.suffix))
+        after = Counter(chinese_literals(target.read_text(encoding="utf-8-sig"), target.suffix))
+        for literal in after - before:
+            print(f"{path}: move player text to the catalogue: {literal}")
+            violations += 1
+    return int(violations > 0)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+

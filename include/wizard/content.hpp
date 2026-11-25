@@ -1,6 +1,7 @@
 #pragma once
 #include "wizard/core/catalog.hpp"
 #include "wizard/core/config.hpp"
+#include "wizard/text_catalog.hpp"
 #include <filesystem>
 #include <nlohmann/json.hpp>
 
@@ -11,7 +12,10 @@ struct Content {
     std::vector<std::string> deck;
     std::vector<std::string> sideDeck;
     std::string initialFormation{"balance"};
+    std::shared_ptr<const TextCatalog> textCatalog{};
     PlayerDeck defaultPlayerDeck() const { return {initialFormation, deck, sideDeck}; }
+    std::string renderText(const TextRef &, std::string_view locale = {},
+                           const TextCatalog::Diagnostic &diagnostic = {}) const;
 };
 Content loadContent(const std::filesystem::path& directory);
 CardCatalog parseCatalog(const Json&,const std::string& source="cards.json");

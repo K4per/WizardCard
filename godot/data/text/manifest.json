@@ -1,0 +1,12 @@
+{
+  "defaultLocale": "zh_CN",
+  "locales": [
+    "zh_CN"
+  ],
+  "files": [
+    "ui.json",
+    "terms.json",
+    "tutorial.json"
+  ],
+  "fallbacks": {}
+}

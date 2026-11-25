@@ -11,6 +11,7 @@ COPY include ./include
 COPY src ./src
 COPY assets/catalog.json ./assets/catalog.json
 COPY assets/release-v260 ./assets/release-v260
+COPY godot/data/text ./godot/data/text
 COPY docs/central-server-deploy.md ./docs/central-server-deploy.md
 COPY deploy ./deploy
 COPY THIRD_PARTY_NOTICES.md ./
@@ -22,6 +23,7 @@ RUN cmake --preset server-release -DBUILD_TESTING=OFF \
     && install -D -m 0755 deploy/bin/wizard-server /opt/wizard/bin/wizard-server \
     && install -d -m 0755 /opt/wizard/assets \
     && cp -a assets/release-v260 /opt/wizard/assets/ \
+    && cp -a godot/data/text /opt/wizard/assets/text \
     && cp -a THIRD_PARTY_NOTICES.md licenses /opt/wizard/
 
 FROM debian:trixie-slim

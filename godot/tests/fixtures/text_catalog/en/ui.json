@@ -1,0 +1,4 @@
+{
+  "ui.test.summary": "{player} casts {spell} for {mana} mana. {player} enters {phase:terms.phase.casting}.",
+  "ui.test.chain": "Fallback to English"
+}

@@ -199,7 +199,7 @@ if(BUILD_TESTING AND GODOT_BIN)
     --path ${frontend_dir} --script res://tests/card_tray_smoke.gd)
   set_tests_properties(godot_card_tray_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 60 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")
-  foreach(smoke response_collection response_timing alpha_v262_ui)
+  foreach(smoke response_collection response_timing alpha_v262_ui text_catalog)
     add_test(NAME godot_${smoke}_smoke COMMAND "${GODOT_BIN}" --headless
       --path ${frontend_dir} --script res://tests/${smoke}_smoke.gd)
     set_tests_properties(godot_${smoke}_smoke PROPERTIES FIXTURES_REQUIRED frontend_import

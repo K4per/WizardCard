@@ -79,6 +79,7 @@ def stage_release(build, output):
         (stage / "bin/wizard_server").chmod(0o755)
         (stage / "bin/wizard-server").chmod(0o755)
         shutil.copytree(ROOT / "assets/release-v260", stage / "assets/release-v260")
+        shutil.copytree(ROOT / "godot/data/text", stage / "assets/text")
         shutil.copy2(ROOT / "deploy/server.env.example", stage / "server.env.example")
         shutil.copy2(ROOT / "deploy/systemd/wizard-server.service", stage / "systemd/wizard-server.service")
         shutil.copy2(ROOT / "deploy/systemd/wizard-server-system.service", stage / "systemd/wizard-server-system.service")

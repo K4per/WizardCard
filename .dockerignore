@@ -11,6 +11,10 @@
 !assets/catalog.json
 !assets/release-v260/
 !assets/release-v260/**
+!godot/
+!godot/data/
+!godot/data/text/
+!godot/data/text/**
 !docs/
 !docs/central-server-deploy.md
 !deploy/

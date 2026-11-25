@@ -22,6 +22,7 @@ config/custom_user_dir_name.windows="Godot/app_userdata/WizardCard Alpha v2.6.3"
 
 [autoload]
 
+Text="*res://app/text.gd"
 GlobalTypography="*res://ui/global_typography.gd"
 
 [debug]

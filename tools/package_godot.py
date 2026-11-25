@@ -226,6 +226,7 @@ def main():
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
     audio_source = content / "audio" if (content / "audio").is_dir() else ROOT / "assets/audio"
+    shutil.copytree(ROOT / "godot/data/text", output / "assets/text")
     shutil.copytree(audio_source, output / "assets/audio", ignore=shutil.ignore_patterns("*.py"))
     if args.platform == "linux":
         shutil.copytree(ROOT / "assets/fonts", output / "assets/fonts")

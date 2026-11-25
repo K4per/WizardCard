@@ -94,10 +94,16 @@ func _ingest_library(data: Dictionary) -> void:
 	cards.clear()
 	_card_cache.clear()
 	definitions.clear()
+	var card_names: Dictionary = {}
 	var rows: Array = data.get("cards", [])
 	for definition: Dictionary in rows:
 		cards.append(CardPresentation.from_definition(definition))
 		definitions[str(definition["id"])] = definition.duplicate(true)
+		card_names[str(definition["id"])] = str(definition.get("name", definition["id"]))
+	var tree := Engine.get_main_loop() as SceneTree
+	var text := tree.root.get_node_or_null("Text") if tree else null
+	if text:
+		text.set("card_names", card_names)
 	drafts.assign(data.get("drafts", []))
 	presets.assign(data.get("presets", []))
 	playable.assign(data.get("playable", data.get("presets", [])))

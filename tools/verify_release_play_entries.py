@@ -33,6 +33,9 @@ def main():
         for route in ("ai", "tutorial", "replay"):
             data = work / ("player-" + route)
             data.mkdir()
+            # These routes begin at the main menu after the first-run prompt has been answered.
+            progress = {"schemaVersion": 2, "askedIntro": True, "isVeteran": True}
+            (data / "guide-progress.json").write_text(json.dumps(progress), encoding="utf-8")
             if route == "replay":
                 (data / "replays").mkdir()
                 shutil.copyfile(args.replay, data / "replays" / "acceptance.json")

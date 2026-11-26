@@ -1020,3 +1020,65 @@ TEST_CASE("all released concentration sources can be maintained or declined befo
         }
     }
 }
+
+TEST_CASE("overload preview quotes current incremental damage without executing the action", "[overload-preview]") {
+    auto cat = feedbackCatalog();
+    auto s = feedbackState();
+    auto &spell = cat.cards.at("v260-analytic-0001");
+    spell.cost = 3;
+    feedbackCard(s, 10, "v260-analytic-0001", 0, Zone::Hand);
+    int previous = Rules::capacity(s, cat, 0) - 1;
+    int expected = 4;
+    SECTION("crossing the limit") {}
+    SECTION("already over the limit") { previous += 2; expected = 6; }
+    SECTION("exactly at the limit after payment") { previous -= 2; expected = 0; }
+    SECTION("new load is doubled before testing capacity") {
+        Trigger source; source.owner = 0;
+        EffectResolver::apply(s, cat, source, {EffectKind::DoubleLoad, 2});
+        expected = 10;
+    }
+    SECTION("infinite load suppresses overload") { s.players[0].debugInfiniteLoad = true; expected = 0; }
+    SECTION("immune to damage") { s.players[0].debugInfiniteLife = true; expected = 0; }
+    s.temporary.push_back({s.nextLoad++, 0, 0, previous, 0, true});
+    auto e = test::ObservedEngine::scenario(cat, s);
+    const auto before = e.canonicalState();
+    ActionIntent intent;
+    intent.selections = {{ActionField::Operation, std::to_string(static_cast<int>(CommandKind::StartAnalysis))},
+                         {ActionField::Source, "10"}, {ActionField::Host, "1"}, {ActionField::Ring, "0"}};
+    const auto options = e.queryActions(0, intent);
+    REQUIRE(options.complete);
+    CHECK(e.canonicalState() == before);
+    const auto wire = net::encodeOptions(options);
+    CHECK(wire.value("overloadPreview", -1) == expected);
+    CHECK(net::decodeOptions(wire).overloadPreview == expected);
+    auto earlierWire = wire;
+    earlierWire.erase("overloadPreview");
+    CHECK(net::decodeOptions(earlierWire).overloadPreview == 0);
+    feedbackSend(e, 0, *options.complete);
+    CHECK(s.players[0].life - e.state().players[0].life == expected);
+}
+
+TEST_CASE("response overload uses the linked spell payment and the selected ability burden", "[overload-preview]") {
+    auto cat = feedbackCatalog();
+    auto s = feedbackState();
+    s.phase = Phase::Cast;
+    auto &counter = cat.cards.at("v260-talisman-0004");
+    REQUIRE(counter.responses.size() == 1);
+    counter.responses.front().burden = 2;
+    s.temporary.push_back({s.nextLoad++, 1, 0, Rules::capacity(s, cat, 1), 0, true});
+    feedbackCard(s, 10, "v260-talisman-0004", 1, Zone::Casting, SpellState::Ready);
+    feedbackCard(s, 20, "v260-analytic-0001", 0, Zone::Casting, SpellState::Ready).settingPaid = 3;
+    auto e = test::ObservedEngine::scenario(cat, s);
+    feedbackSend(e, 0, ActivateSpell{20, playerTarget(1)});
+    const int paid = 3 + e.state().cards.at(20).payments.back().paid;
+    ActionIntent intent;
+    intent.selections = {{ActionField::Operation, std::to_string(static_cast<int>(CommandKind::Respond))},
+                         {ActionField::Source, "10"}, {ActionField::Ability, "respond"},
+                         {ActionField::Link, std::to_string(e.state().chain->links.front().id)}};
+    const auto options = e.queryActions(1, intent);
+    REQUIRE(options.complete);
+    CHECK(options.overloadPreview == 2 * (paid + 2));
+    const int life = e.state().players[1].life;
+    feedbackSend(e, 1, *options.complete);
+    CHECK(life - e.state().players[1].life == options.overloadPreview);
+}

@@ -9,6 +9,7 @@ var field: int = KernelContract.ActionField.Operation
 var options: Array[Dictionary] = []
 var complete: Dictionary = {}
 var cost_quote: String = ""
+var overload_preview: int = 0
 var has_more: bool = false
 var pending: bool = false
 
@@ -30,6 +31,7 @@ static func parse(value: Dictionary) -> ActionOptions:
 	if value.get("complete") is Dictionary:
 		result.complete = value["complete"]
 	result.cost_quote = str(value.get("costQuote", ""))
+	result.overload_preview = int(value.get("overloadPreview", 0))
 	result.has_more = bool(value.get("hasMore", false))
 	result.pending = bool(value.get("pending", false))
 	return result

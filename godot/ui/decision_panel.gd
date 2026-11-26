@@ -96,6 +96,7 @@ func configure(value: DecisionPresentation, query_context: Array = []) -> void:
 		child.queue_free()
 	_title.text = value.title
 	_counter.text = ""
+	%CostSummary.text = value.cost_summary
 	_description.text = value.description
 	_description.visible = not value.docked and not value.description.is_empty()
 	_preview_column.visible = not value.docked and not value.response_mode

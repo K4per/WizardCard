@@ -49,14 +49,17 @@ func _run() -> void:
 		page._refresh_tutorial({"tutorial": anchored})
 		var bottom: Rect2 = page._overlay.bar.get_global_rect()
 		check(bottom.get_center().y > dimensions.y * 0.75, "explicit bottom anchor")
-		page._confirm.show()
+		page._confirm.popup_response("response:test", "响应", "查看", "放弃")
+		check(page._overlay.highlights.has(page.tutorial_target_rects("zone:opponent.casting")[0]), "every tutorial response highlights the opponent casting zone")
+		check(not anchored.highlights.has("zone:opponent.casting"), "response geometry never changes the lesson snapshot")
 		page._confirm.size = Vector2(440, 150)
 		page._confirm.position = bottom.get_center() - page._confirm.size * 0.5
 		await process_frame
 		await process_frame
 		check(not page._overlay.bar.get_global_rect().intersects(page._confirm.get_global_rect()), "hint avoids a moved confirmation panel")
-		page._confirm.hide()
+		page._confirm.close_popup()
 		await process_frame
+		check(page._overlay.highlights.is_empty(), "closing the question restores the course targets")
 		_check_installed_steps(page)
 	page._refresh_tutorial({"tutorial": lesson})
 	check(page._lesson_badge.text == "教学模式 · 第 4 课" and page._overlay.hint.text == page._lesson_badge.text, "snapshot order and localized hint parameters")

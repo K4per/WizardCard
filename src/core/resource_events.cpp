@@ -123,16 +123,25 @@ void ResourceRules::damage(MutationContext &state, PlayerId player, int amount, 
         spell_rules::damaged(state, *catalog, player, cause, std::min(previousLife, amount), std::nullopt);
     }
 }
+int Rules::overloadDamage(const GameState &state, const CardCatalog &catalog, PlayerId player,
+                          int previousLoad, int capacity, int increment) {
+    if (increment <= 0 || previousLoad + increment <= capacity || state.players[player].debugInfiniteLoad ||
+        state.players[player].debugInfiniteLife || card_rules::hasFormation(state, catalog, player, Capability::Moon) ||
+        card_rules::damageImmune(state, catalog, player))
+        return 0;
+    if (catalog.mechanicsRevision < 11) return 2 * increment;
+    return 2 * (previousLoad + increment - capacity - std::max(0, previousLoad - capacity));
+}
 void ResourceRules::increasedLoad(MutationContext &state, const CardCatalog &catalog, PlayerId player, int increment) {
     if (!state.players[0].debugInfiniteLife && state.players[0].life <= 0 || !state.players[1].debugInfiniteLife && state.players[1].life <= 0) {
         StateMaintenance::check(state, catalog);
         return;
     }
-    if (!state.players[player].debugInfiniteLoad && increment > 0 && Rules::load(state, player) > Rules::capacity(state, catalog, player)) {
-        if (!card_rules::hasFormation(state, catalog, player, Capability::Moon))
-            damage(state, player, catalog.mechanicsRevision < 11 ? increment * 2 :
-                2 * (std::max(0, Rules::load(state, player) - Rules::capacity(state, catalog, player)) -
-                std::max(0, Rules::load(state, player) - increment - Rules::capacity(state, catalog, player))), "overload", &catalog);
+    if (state.players[player].debugInfiniteLoad || increment <= 0) return;
+    const int load = Rules::load(state, player), capacity = Rules::capacity(state, catalog, player);
+    if (load > capacity) {
+        damage(state, player, Rules::overloadDamage(state, catalog, player, load - increment, capacity, increment),
+               "overload", &catalog);
         StateMaintenance::check(state, catalog);
     }
 }

@@ -266,6 +266,7 @@ TEST_CASE("local bridge plays a catalog lesson and verifies its course-only repl
         Json{{"id", "play"}, {"hint", "tutorial.test.play"}, {"blockedHint", "tutorial.test.blocked"},
              {"allow", Json::array({word})}, {"until", {{"command", word}}}}
     }));
+    course["scenario"]["players"][0]["load"] = 20;
     fixture.write(course);
     bridge::LocalSession session;
     const auto storage = fixture.path / "profile";
@@ -303,9 +304,30 @@ TEST_CASE("local bridge plays a catalog lesson and verifies its course-only repl
         return !cast;
     });
     REQUIRE(cast);
+    const auto &command = std::get<PreloadWord>(*cast);
+    const auto entry = [](ActionField field, auto value) {
+        return Json{{"field", static_cast<int>(field)}, {"value", std::to_string(value)}};
+    };
+    Json intent{{"source", std::to_string(command.card)}, {"selections", Json::array({
+        entry(ActionField::Operation, static_cast<int>(CommandKind::PreloadWord)),
+        entry(ActionField::Source, command.card), entry(ActionField::Host, command.formation),
+        entry(ActionField::Ring, command.ringIndex)})}};
+    const auto quote = session.queryActions(0, intent, view.at("generation"), view.at("revision"));
+    REQUIRE(quote.at("ok") == true);
+    REQUIRE(quote.at("data").at("field") == static_cast<int>(ActionField::Target));
+    const int damage = quote.at("data").at("overloadPreview");
+    REQUIRE(damage > 0);
+    intent["selections"].push_back(entry(ActionField::Target, command.target));
+    const auto confirmation = session.queryActions(0, intent, view.at("generation"), view.at("revision"));
+    REQUIRE(confirmation.at("ok") == true);
+    CHECK(confirmation.at("data").at("overloadPreview") == damage);
+    CHECK_FALSE(confirmation.at("data").at("costQuote").get<std::string>().empty());
+    CHECK(session.snapshot(0).at("data") == view);
     auto result = session.submitCommand(0, bridge::commandDto(*cast), view.at("generation"), view.at("revision"));
     INFO(result.dump()); REQUIRE(result.at("ok") == true);
-    CHECK(session.snapshot(0).at("data").at("tutorial").at("complete") == true);
+    const auto after = session.snapshot(0).at("data");
+    CHECK(view.at("players")[0].at("life").get<int>() - after.at("players")[0].at("life").get<int>() == damage);
+    CHECK(after.at("tutorial").at("complete") == true);
     CHECK_FALSE(std::filesystem::exists(storage / "replays"));
     const auto written = session.saveReplay("lesson");
     REQUIRE(written.at("ok") == true);

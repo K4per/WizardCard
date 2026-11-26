@@ -1,6 +1,7 @@
 #include "engine_internal.hpp"
 #include "wizard/core/action_query.hpp"
 #include "wizard/core/card_rules.hpp"
+#include "wizard/core/spell_rules.hpp"
 #include <set>
 #include <type_traits>
 #include <charconv>
@@ -159,34 +160,44 @@ ActionOptions GameEngine::queryActions(PlayerId viewer, const ActionIntent &inte
     }, &intent);
     if (first) {
         const auto path = detail::actionPath(first->command);
-        if (path.size() == intent.selections.size()) {
-            out.complete = first->command;
-            out.field = ActionField::Confirm;
-            if (catalog().mechanicsRevision >= 13) {
-                if (const auto fees = detail::spellPayment(state_, catalog(), first->command)) {
-                    const auto type = catalog().at(state_.cards.at(first->source).definition).type;
-                    const bool setup = std::holds_alternative<StartAnalysis>(first->command) ||
-                        std::holds_alternative<PreloadWord>(first->command) || state_.cards.at(first->source).faceDown;
-                    if (setup && type != CardType::Talisman)
-                        out.costQuote = "设置费用：" + std::to_string(fees->setting) + " 魔素";
-                    if (!setup || type != CardType::Analytic) {
-                        if (!out.costQuote.empty()) out.costQuote += "　";
-                        out.costQuote += "发动费用：" + std::to_string(fees->activation) + " 魔素";
-                    }
-                } else if (const auto *setup = std::get_if<SetFormation>(&first->command)) {
-                    const auto fees = card_rules::formationCost(catalog().at(state_.cards.at(setup->card).definition));
-                    out.costQuote = "设置费用：" + std::to_string(fees.mana) + " 魔素";
-                    if (fees.life) out.costQuote += "，" + std::to_string(fees.life) + " 生命";
-                } else if (const auto *attach = std::get_if<AttachSeal>(&first->command)) {
-                    const auto &def = catalog().at(state_.cards.at(attach->card).definition);
-                    out.costQuote = "附着费用：" + std::to_string(def.cost) + " 魔素";
-                    if (const int life = card_rules::attachmentLifeCost(def))
-                        out.costQuote += "，" + std::to_string(life) + " 生命";
+        const bool complete = path.size() == intent.selections.size();
+        out.field = complete ? ActionField::Confirm : path[intent.selections.size()].field;
+        // At these stages the source, operation, host and priced chain link are already fixed.
+        if (catalog().mechanicsRevision >= 13 && (complete || out.field == ActionField::Target ||
+            out.field == ActionField::Discard || out.field == ActionField::Ring)) {
+            if (const auto fees = detail::spellPayment(state_, catalog(), first->command)) {
+                int burden = 0;
+                if (const auto *response = std::get_if<Respond>(&first->command)) {
+                    const auto &def = catalog().at(state_.cards.at(response->card).definition);
+                    if (const auto *ability = detail::ability(def, response->ability)) burden = ability->burden;
                 }
+                const int increment = (fees->total() + burden) * spell_rules::loadMultiplier(state_, viewer);
+                out.overloadPreview = Rules::overloadDamage(state_, catalog(), viewer, Rules::load(state_, viewer),
+                                                          Rules::capacity(state_, catalog(), viewer), increment);
+                const auto type = catalog().at(state_.cards.at(first->source).definition).type;
+                const bool setup = std::holds_alternative<StartAnalysis>(first->command) ||
+                    std::holds_alternative<PreloadWord>(first->command) || state_.cards.at(first->source).faceDown;
+                if (setup && type != CardType::Talisman)
+                    out.costQuote = "设置费用：" + std::to_string(fees->setting) + " 魔素";
+                if (!setup || type != CardType::Analytic) {
+                    if (!out.costQuote.empty()) out.costQuote += "　";
+                    out.costQuote += "发动费用：" + std::to_string(fees->activation) + " 魔素";
+                }
+            } else if (const auto *setup = std::get_if<SetFormation>(&first->command)) {
+                const auto fees = card_rules::formationCost(catalog().at(state_.cards.at(setup->card).definition));
+                out.costQuote = "设置费用：" + std::to_string(fees.mana) + " 魔素";
+                if (fees.life) out.costQuote += "，" + std::to_string(fees.life) + " 生命";
+            } else if (const auto *attach = std::get_if<AttachSeal>(&first->command)) {
+                const auto &def = catalog().at(state_.cards.at(attach->card).definition);
+                out.costQuote = "附着费用：" + std::to_string(def.cost) + " 魔素";
+                if (const int life = card_rules::attachmentLifeCost(def))
+                    out.costQuote += "，" + std::to_string(life) + " 生命";
             }
+        }
+        if (complete) {
+            out.complete = first->command;
             return out;
         }
-        out.field = path[intent.selections.size()].field;
         std::vector<std::string> candidates;
         auto add = [&](auto value) { candidates.push_back(std::to_string(value)); };
         if (out.field == ActionField::Ability) {

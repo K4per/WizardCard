@@ -215,7 +215,8 @@ Json LocalSession::queryActions(PlayerId viewer, const Json &intent, const std::
             {"decisionId", v.decision ? std::to_string(v.decision->id) : v.opening ?
                 std::string("opening:") + openingStageName(v.openingStage) + ":" + std::to_string(v.openingRound) : "0"},
             {"field", static_cast<int>(options.field)}, {"options", rows}, {"hasMore", options.hasMore},
-            {"pending", options.pending}, {"costQuote", options.costQuote}, {"complete", options.complete ? commandDto(*options.complete) : Json()}});
+            {"pending", options.pending}, {"costQuote", options.costQuote}, {"overloadPreview", options.overloadPreview},
+            {"complete", options.complete ? commandDto(*options.complete) : Json()}});
     } catch (const std::exception &e) { return fail("invalid_query", e.what()); }
 }
 Json LocalSession::selectIntent(PlayerId viewer, const Json &intent, const std::string &generation, const std::string &revision) {

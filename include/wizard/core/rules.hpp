@@ -8,6 +8,8 @@ struct SpellFees {
 };
 struct Rules {
     static int load(const GameState &, PlayerId);
+    // Rule damage from a load increase, given the pre-increase load and capacity.
+    static int overloadDamage(const GameState &, const CardCatalog &, PlayerId, int previousLoad, int capacity, int increment);
     static int capacity(const GameState &, const CardCatalog &, PlayerId);
     static int income(const GameState &, const CardCatalog &, CardId);
     static int level(const GameState &, const CardCatalog &, CardId);

@@ -752,7 +752,7 @@ func _update_clock() -> void:
 	_table.show_clock(service.match_snapshot.get("clock", {}), service.match_viewer, Time.get_ticks_msec() - _clock_received)
 
 func _hover_card(card: CardPresentation) -> void:
-	if _privacy_layer.visible or _match_menu.visible or _confirm.visible:
+	if _privacy_layer.visible or _match_menu.visible or (_confirm.visible and not _confirm.response_question):
 		return
 	if card != null:
 		_detail.configure(card)
@@ -939,6 +939,9 @@ func _query_changed(options: ActionOptions) -> void:
 	request.decision_id = options.decision_id
 	var titles: Array[String] = ["选择操作", "选择卡牌", "选择宿主", "选择替换阵法", "选择材料", "选择目标", "选择支付卡牌", "选择连锁目标", "选择能力", "选择环位", "完成规则选择", "确认"]
 	request.title = titles[options.field]
+	request.cost_summary = options.cost_quote
+	if options.overload_preview > 0:
+		request.cost_summary += "　" + _text.t("ui.match.overload_preview", {"damage": options.overload_preview})
 	request.description = "选择选项后确认；费用仅在完整命令确认后支付。"
 	if current_decision is Dictionary and int(current_decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration:
 		request.title = "选择是否维持专注"
@@ -1086,7 +1089,7 @@ func _query_completed(command: Dictionary, intent: Dictionary) -> void:
 	var response_decision: bool = service.match_snapshot.get("decision") is Dictionary and int(service.match_snapshot["decision"].get("kind", -1)) == KernelContract.DecisionKind.Response
 	var response_activation: bool = response_decision and int(command.get("type", -1)) in [KernelContract.CommandKind.Respond, KernelContract.CommandKind.PreloadWord, KernelContract.CommandKind.FlipAmbush, KernelContract.CommandKind.ActivateSpell]
 	var confirm_placement: bool = not _query_is_decision and int(command.get("ringIndex", -1)) >= 0
-	if (_query_is_decision or _query_confirmed) and not response_activation and not confirm_placement and _selection.material_ids().is_empty():
+	if (_query_is_decision or _query_confirmed) and not response_activation and not confirm_placement and _selection.options.overload_preview == 0 and _selection.material_ids().is_empty():
 		_selection.cancel()
 		_apply_result(service.match_request(&"confirm_action", [generation, revision]))
 	else:
@@ -1098,7 +1101,9 @@ func _query_completed(command: Dictionary, intent: Dictionary) -> void:
 		if confirm_placement:
 			_confirm.dialog_text += "\n环位：第 %d 环" % [int(command.ringIndex) + 1]
 		_confirm.dialog_text += "\n\n确认执行？"
-		_confirm.popup_centered("action:%s:%s" % [generation, revision])
+		var damage: int = _selection.options.overload_preview
+		var warning: String = _text.t("ui.match.overload_preview", {"damage": damage}) if damage > 0 else ""
+		_confirm.popup_centered("action:%s:%s" % [generation, revision], warning)
 
 func _poll_query_completion() -> void:
 	if _waiting_intent.is_empty():
@@ -1301,7 +1306,9 @@ func _show_response_question() -> void:
 	_action_popup.hide()
 	_response_question_context = _current_dialog_context()
 	_confirm.dialog_text = _response_text() + ("\n响应可选择来源，放弃将交出本时点的优先权。" if available else "\n当前没有可以发动的效果。可以查看场面或放弃本时点。")
-	_confirm.popup_centered("response:%s:%s:%s" % [_response_question_context[0], service.match_viewer, _response_decision_id], "是否进行连锁？" if available else "查看场上情况", "响应" if available else "查看场面", "放弃时点", _response_mode)
+	_confirm.popup_response("response:%s:%s:%s" % [_response_question_context[0], service.match_viewer, _response_decision_id], "是否进行连锁？" if available else "查看场上情况", "响应" if available else "查看场面", "放弃时点")
+	if _match_menu.visible:
+		_confirm.hide()
 
 func _current_dialog_context() -> Array:
 	var snapshot: Dictionary = service.match_snapshot
@@ -1446,6 +1453,9 @@ func _update_chain(snapshot: Dictionary) -> void:
 func _select_card(card: CardPresentation) -> void:
 	if _privacy_layer.visible or _network_waiting:
 		return
+	if _confirm.visible and _confirm.response_question:
+		_preview_candidate(card)
+		return
 	if _material_menu.visible:
 		_selection.toggle_material(card.instance_id)
 		return
@@ -1554,6 +1564,8 @@ func dismiss_cancel() -> bool:
 	return true
 
 func _open_match_menu() -> void:
+	if _confirm.response_question:
+		_confirm.hide()
 	_overlay.hide()
 	_menu_shade.show()
 	_menu_shade.move_to_front()
@@ -1562,10 +1574,14 @@ func _open_match_menu() -> void:
 	%Resume.grab_focus()
 
 func _close_match_menu() -> void:
+	var resume_response: bool = _match_menu.visible and _confirm.response_question
 	_match_menu.hide()
 	_menu_shade.hide()
 	_overlay.visible = _lesson_state.has("lessonId") and not bool(_lesson_state.get("complete", false))
-	if canvas != null and canvas.focus_mode != Control.FOCUS_NONE:
+	if resume_response and _response_question_context == _current_dialog_context():
+		_confirm.show()
+		_confirm.get_node("%Confirm").grab_focus()
+	elif canvas != null and canvas.focus_mode != Control.FOCUS_NONE:
 		canvas.grab_focus()
 
 func _toggle_hand() -> void:
@@ -1764,6 +1780,7 @@ func _build_lesson_controls() -> void:
 	%SkipLesson.text = _text.t("ui.lesson.skip")
 	%SkipLesson.pressed.connect(_lesson_action.bind(&"skip"))
 	_overlay.continue_requested.connect(_continue_tutorial)
+	_confirm.visibility_changed.connect(_response_highlight_changed)
 	_lesson_end.action_requested.connect(_lesson_action)
 	for button: Node in find_children("*", "BaseButton", true, false):
 		_register_lesson_control("ui:" + str(button.name).to_snake_case(), button as Control)
@@ -1802,7 +1819,7 @@ func _refresh_tutorial(snapshot: Dictionary) -> void:
 	var complete: bool = scripted and bool(_lesson_state.get("complete", false))
 	var terminal: bool = scripted and int(snapshot.get("result", -1)) >= 0
 	%SkipLesson.visible = scripted and not (complete or terminal)
-	_overlay.configure(_lesson_state if scripted and not terminal else {}, tutorial_target_rects, [_confirm, _decision, _action_popup])
+	_configure_lesson_overlay(_lesson_state if scripted and not terminal else {})
 	if _match_menu.visible:
 		_overlay.hide()
 	if not complete and not terminal:
@@ -1825,6 +1842,17 @@ func _refresh_tutorial(snapshot: Dictionary) -> void:
 	_lesson_end.present(order, message, complete)
 	if complete:
 		lesson_completed.emit(str(_lesson_state.lessonId), order)
+
+func _response_highlight_changed() -> void:
+	if _overlay.visible:
+		_configure_lesson_overlay(_lesson_state)
+
+func _configure_lesson_overlay(lesson: Dictionary) -> void:
+	var highlights: Array = lesson.get("highlights", [])
+	if not lesson.is_empty() and _confirm.visible and _confirm.response_question and not highlights.has("zone:opponent.casting"):
+		lesson = lesson.duplicate()
+		lesson["highlights"] = highlights + ["zone:opponent.casting"]
+	_overlay.configure(lesson, tutorial_target_rects, [_confirm, _decision, _action_popup])
 
 func tutorial_target_rects(id: String) -> Array[Rect2]:
 	var rects: Array[Rect2] = []

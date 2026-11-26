@@ -6,6 +6,7 @@ var revision: String = ""
 var decision_id: String = ""
 var title: String = ""
 var description: String = ""
+var cost_summary: String = ""
 var choices: Array[DecisionChoice] = []
 var minimum: int = 1
 var maximum: int = 1

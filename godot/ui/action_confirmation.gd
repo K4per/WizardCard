@@ -4,14 +4,14 @@ extends PanelContainer
 signal confirmed
 signal canceled
 
-const ConfirmationShade = preload("res://ui/confirmation_shade.gd")
-
 var dialog_text: String = ""
 var context: String = ""
+var response_question: bool = false
+var _bottom_docked: bool = false
 var _dragging: bool = false
 var _drag_offset: Vector2
 var _pressed_context: String = ""
-@onready var _shade: ConfirmationShade = get_parent().get_node("ConfirmShade") as ConfirmationShade
+@onready var _shade: ColorRect = get_parent().get_node("ConfirmShade") as ColorRect
 @onready var _heading: Label = %Heading
 @onready var _message: RichTextLabel = %Message
 
@@ -27,26 +27,40 @@ func _ready() -> void:
 	get_parent_control().resized.connect(_layout)
 	hide()
 
-func popup_centered(identity: String = "action", title: String = "确认操作", accept_label: String = "确认", cancel_label: String = "取消", mode_control: Control = null) -> void:
+func popup_centered(identity: String = "action", overload_warning: String = "") -> void:
+	_present(identity, "确认操作", "确认", "取消", false, overload_warning)
+
+func popup_response(identity: String, title: String, accept_label: String, cancel_label: String) -> void:
+	_present(identity, title, accept_label, cancel_label, true, "")
+
+func _present(identity: String, title: String, accept_label: String, cancel_label: String, response: bool, warning: String) -> void:
 	var keep_position: bool = visible and context == identity
 	context = identity
+	response_question = response
+	if not keep_position:
+		_bottom_docked = response
 	_heading.text = title
 	_message.text = dialog_text
 	%Confirm.text = accept_label
 	%Cancel.text = cancel_label
-	_shade.passthrough = mode_control
-	_shade.show()
-	_shade.move_to_front()
+	%OverloadWarning.text = warning
+	%OverloadWarning.visible = not warning.is_empty()
+	_shade.visible = not response
+	if not response:
+		_shade.move_to_front()
 	show()
 	move_to_front()
 	_layout()
 	if not keep_position:
-		position = (get_parent_control().size - size) * 0.5
+		if not response:
+			position = (get_parent_control().size - size) * 0.5
 		%Confirm.grab_focus()
 
 func close_popup() -> void:
 	_dragging = false
 	context = ""
+	response_question = false
+	_bottom_docked = false
 	_shade.hide()
 	hide()
 
@@ -55,6 +69,8 @@ func _layout() -> void:
 		return
 	var available: Vector2 = get_parent_control().size
 	size = Vector2(minf(560.0, available.x), minf(284.0, available.y))
+	if _bottom_docked:
+		position = Vector2((available.x - size.x) * 0.5, available.y - size.y - 8.0)
 	position = position.clamp(Vector2.ZERO, (available - size).max(Vector2.ZERO))
 
 func _drag_title(event: InputEvent) -> void:
@@ -63,6 +79,7 @@ func _drag_title(event: InputEvent) -> void:
 		_drag_offset = event.global_position - global_position
 		accept_event()
 	elif _dragging and event is InputEventMouseMotion:
+		_bottom_docked = false
 		global_position = event.global_position - _drag_offset
 		_layout()
 		accept_event()

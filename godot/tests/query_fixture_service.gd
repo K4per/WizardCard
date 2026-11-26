@@ -67,6 +67,7 @@ func _query(intent: Dictionary) -> Dictionary:
 			continue
 		if selections.size() == path.size():
 			data["complete"] = action.get("command", {})
+			data["overloadPreview"] = action.get("overloadPreview", 0)
 			data["field"] = KernelContract.ActionField.Confirm
 			_selected_fixture = action
 			return data

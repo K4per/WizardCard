@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=9 format=3]
 [ext_resource type="Script" path="res://pages/match_page.gd" id="1"]
 [ext_resource type="PackedScene" path="res://ui/battle_table.tscn" id="2"]
 [ext_resource type="Theme" path="res://ui/simple_battle_theme.tres" id="theme"]
 [ext_resource type="PackedScene" path="res://ui/decision_panel.tscn" id="decision"]
 [ext_resource type="PackedScene" path="res://ui/action_confirmation.tscn" id="confirm"]
-[ext_resource type="Script" path="res://ui/confirmation_shade.gd" id="confirm_shade"]
 [ext_resource type="PackedScene" path="res://ui/tutorial_overlay.tscn" id="tutorial_overlay"]
 [ext_resource type="PackedScene" path="res://ui/lesson_end_panel.tscn" id="lesson_end"]
 [sub_resource type="StyleBoxEmpty" id="action_unframed"]
@@ -179,7 +178,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ConfirmShade" type="ColorRect" parent="."]
-script = ExtResource("confirm_shade")
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

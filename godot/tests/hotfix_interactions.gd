@@ -430,7 +430,7 @@ func response_windows() -> void:
 			s.actionSummary = {"hasNonPhaseAction":available,"safeAdvance":pass_cmd}
 			var actions: Array = [{"id":"pass","source":"0","command":pass_cmd}]
 			if available:
-				actions.append({"id":"respond","source":"33","command":respond_cmd})
+				actions.append({"id":"respond","source":"33","command":respond_cmd,"overloadPreview":6})
 			fixture.set_actions(actions)
 			page._network_waiting = false
 			var before: int = fixture.confirmations
@@ -442,8 +442,15 @@ func response_windows() -> void:
 			if page._confirm.visible:
 				prompts += 1
 				if counter == 1:
+					check(not page.get_node("%ConfirmShade").visible, "Response question has no full-screen shade")
+					check(absf(page._confirm.get_rect().end.y - (page.size.y - 8.0)) <= 1.0, "New response question is docked at the bottom")
+					var field_card: CardPresentation = MatchProjection.card(s, "33")
+					var face: Rect2 = page.canvas.card_bounds(field_card)
+					check(face.has_area(), "A real card is available behind the response prompt")
+					await click(page.canvas.global_position + face.get_center())
+					check(page._confirm.visible and page._detail.card != null and page._detail.card.instance_id == "33" and before == fixture.confirmations, "Clicking the battlefield inspects the card without answering")
 					await button(page._response_mode)
-					check(page._response_mode.get_popup().visible, "Timing control remains clickable through response shade")
+					check(page._response_mode.get_popup().visible, "Response timing selector remains clickable")
 					page._response_mode.get_popup().hide()
 					for size_px: Vector2i in [Vector2i(1280,720),Vector2i(1920,1080)]:
 						await check_drag(size_px)
@@ -459,6 +466,9 @@ func response_windows() -> void:
 					page._select_card(MatchProjection.card(s,"33"))
 					page._selection.choose(str(K.Respond))
 					check(page._confirm.visible and not page._pending.is_empty(),"Response action reaches shared modal")
+					check(page.get_node("%ConfirmShade").visible, "Ordinary action confirmation remains modal")
+					var notice: Label = page._confirm.get_node_or_null("%OverloadWarning") as Label
+					check(notice != null and notice.visible and notice.text.contains("6 点过载伤害"), "A quoted overload is shown beside the final confirmation")
 					for size_px: Vector2i in [Vector2i(1280,720),Vector2i(1920,1080)]:
 						await check_drag(size_px)
 						await shot("action-dialog-" + str(size_px.x))
@@ -480,6 +490,22 @@ func response_windows() -> void:
 	var count_before: int = fixture.confirmations
 	await button(page._confirm.get_node("%Cancel"))
 	check(fixture.confirmations == count_before, "Expired dialog cannot submit even before a repaint")
+	# A chosen target usually commits directly. Positive overload always gives
+	# the player a final chance to cancel, in a regular match as well as a lesson.
+	page._confirm.close_popup()
+	fixture.match_snapshot.erase("decision")
+	fixture.match_snapshot.revision = "1000"
+	var spell: Dictionary = {"type": K.ActivateSpell, "card": "33", "target": "77"}
+	fixture.set_actions([{"id":"overload","source":"33","command":spell,"overloadPreview":4}])
+	var prior_count: int = fixture.confirmations
+	page._query_confirmed = true
+	page._query_is_decision = false
+	page._selection.begin("33", K.ActivateSpell)
+	page._selection.choose("77")
+	check(page._confirm.visible and fixture.confirmations == prior_count, "Selecting an overload target waits for explicit confirmation")
+	check(page._confirm.get_node("%OverloadWarning").text.contains("4 点过载伤害"), "Final warning uses the currently selected quote")
+	page._confirm.get_node("%Cancel").pressed.emit()
+	check(fixture.confirmations == prior_count, "Canceling overload does not submit the command")
 	evidence.append({"case":"O02","resolutions":[[1280,720],[1920,1080]],"dialogTypes":["response","action"],"draggedToAllEdges":true, "cancelDidNotPass":fixture.confirmations == count_before})
 	page.queue_free()
 	await settle()

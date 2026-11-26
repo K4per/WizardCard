@@ -26,6 +26,7 @@ struct ActionOptions {
     bool hasMore{}, pending{};
     std::string error;
     std::string costQuote;
+    int overloadPreview{};
 };
 struct ActionSummary {
     bool actionable{}, hasNonPhaseAction{};

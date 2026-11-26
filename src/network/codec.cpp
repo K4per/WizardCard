@@ -218,6 +218,7 @@ ActionIntent decodeIntent(const Json &value) {
 Json encodeOptions(const ActionOptions &options) {
     Json out = {{"field", static_cast<int>(options.field)}, {"options", Json::array()},
                 {"hasMore", options.hasMore}, {"pending", options.pending}, {"error", options.error}, {"costQuote", options.costQuote},
+                {"overloadPreview", options.overloadPreview},
                 {"complete", options.complete ? wireCommand(*options.complete) : Json()}};
     for (const auto &option : options.options)
         out["options"].push_back({{"value", option.value}, {"label", option.label},
@@ -231,6 +232,7 @@ ActionOptions decodeOptions(const Json &j) {
         j.at("options").size() > 256) throw std::runtime_error("invalid action options");
     out.field = static_cast<ActionField>(field);
     out.costQuote = j.value("costQuote", std::string{});
+    out.overloadPreview = j.value("overloadPreview", 0);
     out.hasMore = j.at("hasMore"); out.pending = j.at("pending"); out.error = j.at("error");
     if (!j.at("complete").is_null()) out.complete = unwireCommand(j.at("complete"));
     for (const auto &option : j.at("options"))

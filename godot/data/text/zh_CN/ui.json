@@ -1,4 +1,5 @@
 {
+  "ui.match.overload_preview": "将受到 {damage} 点过载伤害",
   "ui.lesson.mode": "教学模式",
   "ui.lesson.badge": "教学模式 · 第 {order} 课",
   "ui.lesson.continue": "继续",

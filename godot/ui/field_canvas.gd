@@ -148,6 +148,52 @@ func card_bounds(card: CardPresentation) -> Rect2:
 			return hit.get("face_rect", hit["rect"])
 	return Rect2()
 
+# Course highlights use definition IDs; multiple visible copies are valid targets.
+const TUTORIAL_ZONES := ["deck", "hand", "action", "analysis", "words", "casting", "ash", "attached", "resolving", "side_deck", "exile"]
+
+func tutorial_card_rects(zone: String, definition: String) -> Array[Rect2]:
+	var rects: Array[Rect2] = []
+	var zone_index: int = TUTORIAL_ZONES.find(zone)
+	var clip: Rect2 = Rect2(Vector2.ZERO, size)
+	for hit: Dictionary in _card_hits:
+		var card: CardPresentation = hit.card
+		if not card.hidden and card.definition_id == definition and field.card_zones.get(card.instance_id, -1) == zone_index:
+			var rect: Rect2 = clip.intersection(hit.get("face_rect", hit.rect))
+			if rect.has_area():
+				rects.append(rect)
+	return rects
+
+func tutorial_zone_rect(owner: int, zone: String) -> Rect2:
+	var own: bool = owner == field.viewer
+	match zone:
+		"analysis", "words", "attached":
+			return _own_region if own else _opponent_region
+		"formation":
+			var region: Rect2 = _own_region if own else _opponent_region
+			var first: Rect2 = _formation_band(_formation_slot(region, 0, own), own)
+			var last: Rect2 = _formation_band(_formation_slot(region, layout.formation_slot_count - 1, own), own)
+			return first.merge(last)
+		"action", "casting", "resolving":
+			return _own_casting_region if own else _opponent_casting_region
+		"hand":
+			var band: Rect2 = Rect2()
+			if own:
+				for card: CardPresentation in field.hand:
+					var face: Rect2 = card_bounds(card)
+					if face.has_area():
+						band = face if not band.has_area() else band.merge(face)
+			else:
+				for hit: Dictionary in _opponent_hand_hits:
+					band = hit.rect if not band.has_area() else band.merge(hit.rect)
+			if not band.has_area():
+				var height: float = _hand_card_size(size.y * (layout.hand_height_ratio if own else 0.066)).y
+				band = Rect2(size.x * 0.15, size.y - height if own else 0.0, size.x * 0.7, height)
+			return band.intersection(Rect2(Vector2.ZERO, size))
+	for hit: Dictionary in _zone_hits:
+		if hit.owner == owner and hit.kind == ("main_deck" if zone == "deck" else zone):
+			return hit.rect
+	return Rect2()
+
 func _ready() -> void:
 	if not layout.changed.is_connected(_layout_resource_changed):
 		layout.changed.connect(_layout_resource_changed)

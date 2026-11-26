@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ui/tutorial_overlay.gd" id="script"]
+
+[sub_resource type="StyleBoxFlat" id="hint_style"]
+bg_color = Color(0.06, 0.12, 0.16, 0.97)
+border_color = Color(0.48, 0.77, 0.83, 1)
+border_width_left = 3
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+content_margin_left = 12.0
+content_margin_right = 12.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+
+[node name="TutorialOverlay" type="CanvasLayer"]
+layer = 3
+visible = false
+script = ExtResource("script")
+
+[node name="Surface" type="Control" parent="."]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="HintBar" type="PanelContainer" parent="Surface"]
+unique_name_in_owner = true
+mouse_filter = 2
+theme_override_styles/panel = SubResource("hint_style")
+
+[node name="Row" type="HBoxContainer" parent="Surface/HintBar"]
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Hint" type="Label" parent="Surface/HintBar/Row"]
+unique_name_in_owner = true
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_font_sizes/font_size = 17
+autowrap_mode = 3
+
+[node name="Continue" type="Button" parent="Surface/HintBar/Row"]
+unique_name_in_owner = true
+
+[node name="BlockedTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 2.0
+one_shot = true

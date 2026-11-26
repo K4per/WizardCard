@@ -2,10 +2,23 @@ class_name MatchPage
 extends Control
 
 signal navigation_requested(page: StringName)
+signal lesson_completed(lesson_id: String, order: int)
+signal lesson_navigation_requested(action: StringName, lesson_id: String, order: int)
 
 const BattleTable = preload("res://ui/battle_table.gd")
+const TutorialOverlay = preload("res://ui/tutorial_overlay.gd")
+const LessonEndPanel = preload("res://ui/lesson_end_panel.gd")
+const TextCatalog = preload("res://app/text.gd")
 
 @onready var _table: BattleTable = %Table
+@onready var _overlay: TutorialOverlay = %TutorialOverlay
+@onready var _lesson_end: LessonEndPanel = %LessonEndPanel
+@onready var _text: TextCatalog = get_node("/root/Text") as TextCatalog
+var _lesson_badge: Label
+var _lesson_controls: Dictionary[String, Array] = {}
+var _lesson_generation: String = ""
+var _lesson_state: Dictionary = {}
+var _unknown_highlights: Dictionary[String, bool] = {}
 var _clock: Label
 var service: FrontendService
 var canvas: FieldCanvas
@@ -213,6 +226,7 @@ func _ready() -> void:
 	_collection = _build_collection()
 	_collection.hide()
 	_build_debug_console()
+	_build_lesson_controls()
 	resized.connect(_layout_panels)
 	get_viewport().size_changed.connect(_layout_panels)
 	_layout_panels()
@@ -652,18 +666,9 @@ func _refresh() -> void:
 	_hand_button.text = "▴ 手牌" if canvas.hand_collapsed else "▾ 手牌"
 	if int(snapshot.get("result", -1)) != -1:
 		_notice.text = "对局已结束，可保存并查看复盘。"
-	_tutorial.visible = snapshot.get("tutorial") is Dictionary
-	_tutorial_panel.visible = _tutorial.visible
-	_tutorial_mode = _tutorial.visible
-	_tutorial_button.visible = _tutorial.visible
-	if _tutorial.visible:
-		var lesson: Dictionary = snapshot["tutorial"]
-		_tutorial.text = str(lesson.get("title", "教学")) + "\n" + str(lesson.get("hint", ""))
-		_tutorial_button.disabled = not bool(lesson.get("canContinue", false))
-		_tutorial_button.visible = int(lesson.get("chapter", 0)) == 0
-		if bool(lesson.get("complete", false)) and int(lesson.get("chapter", 0)) > 0:
-			if not GuideProgress.mark(service.user_directory, int(lesson["chapter"])):
-				_notice.text = "本章完成，但完成标记保存失败。请检查用户目录。"
+	_refresh_tutorial(snapshot)
+	if _lesson_end.visible:
+		return
 	_update_chain(snapshot)
 	if not _pending.is_empty() and _confirm.visible:
 		_update_phase_gate()
@@ -870,9 +875,15 @@ func _query_changed(options: ActionOptions) -> void:
 			var label: String = MatchProjection.action_label(service.match_snapshot, {"source": str(_selection.intent.get("source", "0")), "command": {"type": operation}})
 			if operation == KernelContract.CommandKind.ActivateAbility:
 				label = str(option.get("label", "发动能力"))
-			_action_list.add_child(_card_action_button(label, _selection.choose.bind(str(option["value"]))))
+			var button: Button = _card_action_button(label, _selection.choose.bind(str(option["value"])))
+			button.name = str(KernelContract.CommandKind.find_key(operation))
+			_action_list.add_child(button)
 		if _action_list.get_child_count() == 0:
 			_action_popup.hide()
+			if _contextual_query and _overlay.visible:
+				_overlay.show_blocked()
+				_empty_actions.hide()
+				return
 			_empty_actions.show()
 			_position_selected_actions()
 			return
@@ -1492,6 +1503,8 @@ func _clear_card() -> void:
 		_render_actions()
 
 func dismiss_cancel() -> bool:
+	if _lesson_end.visible:
+		return true
 	if _match_menu.visible:
 		_close_match_menu()
 		return true
@@ -1541,6 +1554,7 @@ func dismiss_cancel() -> bool:
 	return true
 
 func _open_match_menu() -> void:
+	_overlay.hide()
 	_menu_shade.show()
 	_menu_shade.move_to_front()
 	_match_menu.show()
@@ -1550,6 +1564,7 @@ func _open_match_menu() -> void:
 func _close_match_menu() -> void:
 	_match_menu.hide()
 	_menu_shade.hide()
+	_overlay.visible = _lesson_state.has("lessonId") and not bool(_lesson_state.get("complete", false))
 	if canvas != null and canvas.focus_mode != Control.FOCUS_NONE:
 		canvas.grab_focus()
 
@@ -1636,6 +1651,8 @@ func _apply_result(result: Dictionary) -> void:
 	if not bool(result.get("ok", false)):
 		_notice.text = service.error
 		_refresh()
+		if result.get("errorCode", "") == "tutorial_blocked":
+			_overlay.show_blocked(str(result.get("blockedHint", "")))
 		return
 	var data: Dictionary = result.get("data", {})
 	if bool(data.get("pending", false)):
@@ -1716,7 +1733,7 @@ func _reveal() -> void:
 	_refresh()
 
 func _schedule_automatic() -> void:
-	if _auto_busy or _pending_viewer >= 0 or _privacy_layer.visible or _decision.visible or _tray_suspended or _network_waiting or not _pending.is_empty():
+	if _lesson_end.visible or _auto_busy or _pending_viewer >= 0 or _privacy_layer.visible or _decision.visible or _tray_suspended or _network_waiting or not _pending.is_empty():
 		return
 	if not AutomaticActionController.request(service.match_snapshot, _current_response_mode()).is_empty():
 		_auto_busy = true
@@ -1727,7 +1744,7 @@ func _automatic_step(generation: String, revision: String) -> void:
 		return
 	await get_tree().create_timer(0.1).timeout
 	_auto_busy = false
-	if not is_inside_tree() or _privacy_layer.visible or _network_waiting or not _pending.is_empty():
+	if not is_inside_tree() or _lesson_end.visible or _privacy_layer.visible or _network_waiting or not _pending.is_empty():
 		return
 	if str(service.match_snapshot.get("generation", "")) != generation or str(service.match_snapshot.get("revision", "")) != revision:
 		_schedule_automatic()
@@ -1735,6 +1752,128 @@ func _automatic_step(generation: String, revision: String) -> void:
 	var request: Dictionary = AutomaticActionController.request(service.match_snapshot, _current_response_mode())
 	if not request.is_empty():
 		_apply_result(service.match_request(request["method"], request["arguments"]))
+
+func _build_lesson_controls() -> void:
+	_lesson_badge = UiFactory.label("", 16)
+	_lesson_badge.name = "LessonBadge"
+	_lesson_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_lesson_badge.add_theme_color_override(&"font_color", DeckTheme.ACCENT)
+	_phase.get_parent().add_child(_lesson_badge)
+	_phase.get_parent().move_child(_lesson_badge, _phase.get_index())
+	_lesson_badge.hide()
+	%SkipLesson.text = _text.t("ui.lesson.skip")
+	%SkipLesson.pressed.connect(_lesson_action.bind(&"skip"))
+	_overlay.continue_requested.connect(_continue_tutorial)
+	_lesson_end.action_requested.connect(_lesson_action)
+	for button: Node in find_children("*", "BaseButton", true, false):
+		_register_lesson_control("ui:" + str(button.name).to_snake_case(), button as Control)
+	_register_lesson_control("zone:learner.status", _status_own)
+	_register_lesson_control("zone:opponent.status", _status_opponent)
+	_register_lesson_control("ui:chain", _chain_text)
+	_register_lesson_control("ui:phase", _phase)
+	_register_lesson_control("ui:log", _logs_panel)
+	_register_lesson_control("ui:pass", _confirm.get_node("%Cancel") as Control)
+
+func _register_lesson_control(id: String, control: Control) -> void:
+	if not _lesson_controls.has(id):
+		_lesson_controls[id] = []
+	_lesson_controls[id].append(control)
+
+func _lesson_action(action: StringName) -> void:
+	if _lesson_state.has("lessonId"):
+		lesson_navigation_requested.emit(action, str(_lesson_state.lessonId), int(_lesson_state.order))
+
+func _refresh_tutorial(snapshot: Dictionary) -> void:
+	_tutorial_mode = snapshot.get("tutorial") is Dictionary
+	_lesson_state = snapshot.tutorial if _tutorial_mode else {}
+	var scripted: bool = _lesson_state.has("lessonId")
+	var order: int = int(_lesson_state.get("order", _lesson_state.get("chapter", 0)))
+	_lesson_badge.visible = _tutorial_mode
+	if _tutorial_mode:
+		_lesson_badge.text = _text.t("ui.lesson.badge", {"order": order}) if order > 0 else _text.t("ui.lesson.mode")
+	_tutorial.visible = _tutorial_mode and not scripted
+	_tutorial_panel.visible = _tutorial.visible
+	_tutorial_button.visible = _tutorial.visible and order == 0
+	if _tutorial.visible:
+		_tutorial.text = str(_lesson_state.get("title", "教学")) + "\n" + str(_lesson_state.get("hint", ""))
+		_tutorial_button.disabled = not bool(_lesson_state.get("canContinue", false))
+		if bool(_lesson_state.get("complete", false)) and order > 0 and not GuideProgress.mark(service.user_directory, order):
+			_notice.text = "本章完成，但完成标记保存失败。请检查用户目录。"
+	var complete: bool = scripted and bool(_lesson_state.get("complete", false))
+	var terminal: bool = scripted and int(snapshot.get("result", -1)) >= 0
+	%SkipLesson.visible = scripted and not (complete or terminal)
+	_overlay.configure(_lesson_state if scripted and not terminal else {}, tutorial_target_rects, [_confirm, _decision, _action_popup])
+	if _match_menu.visible:
+		_overlay.hide()
+	if not complete and not terminal:
+		_lesson_end.hide()
+		_lesson_generation = ""
+		return
+	var generation: String = str(snapshot.get("generation", "")) + "/" + str(_lesson_state.lessonId)
+	if _lesson_generation == generation:
+		return
+	_lesson_generation = generation
+	_close_response_question()
+	_confirm.close_popup()
+	_decision.hide()
+	_shade.hide()
+	_close_match_menu()
+	_overlay.hide()
+	var message: String = _text.t(str(_lesson_state.hintKey), _lesson_state.get("params", {}))
+	if not complete:
+		message += "\n" + _text.t("ui.lesson.retry_hint")
+	_lesson_end.present(order, message, complete)
+	if complete:
+		lesson_completed.emit(str(_lesson_state.lessonId), order)
+
+func tutorial_target_rects(id: String) -> Array[Rect2]:
+	var rects: Array[Rect2] = []
+	var path: String = id.get_slice(":", 1)
+	if id.begins_with("ui:"):
+		var key: String = path.to_snake_case()
+		for button: Node in _action_list.get_children():
+			if str(button.name).to_snake_case() == key:
+				_append_control_rect(rects, button as Control)
+		if key == "pass" and not _confirm.context.begins_with("response:"):
+			if _decision.visible and _decision.request != null and not _decision.request.pass_id.is_empty():
+				_append_control_rect(rects, _decision._options.get(_decision.request.pass_id, _decision._cancel) as Control)
+			return rects
+		id = "ui:" + key
+	if _lesson_controls.has(id):
+		for control: Control in _lesson_controls[id]:
+			_append_control_rect(rects, control)
+		return rects
+	var zone: String = path.get_slice(".", 0)
+	var target: String = path.get_slice(".", 1)
+	var transform_to_viewport: Transform2D = canvas.get_global_transform_with_canvas()
+	if id.begins_with("zone:") and zone in ["learner", "opponent"]:
+		var owner: int = canvas.field.viewer if zone == "learner" else 1 - canvas.field.viewer
+		var bounds: Rect2 = canvas.tutorial_zone_rect(owner, target)
+		if bounds.has_area():
+			rects.append(transform_to_viewport * bounds)
+	elif id.begins_with("card:"):
+		for bounds: Rect2 in canvas.tutorial_card_rects(zone, target):
+			rects.append(transform_to_viewport * bounds)
+		if _decision.visible and _decision.request != null:
+			for choice: DecisionChoice in _decision.request.choices:
+				if choice.card != null and choice.card.definition_id == target and canvas.field.card_zones.get(choice.card.instance_id, -1) == FieldCanvas.TUTORIAL_ZONES.find(zone):
+					_append_control_rect(rects, _decision._options.get(choice.id) as Control)
+	elif rects.is_empty() and path.to_pascal_case() not in KernelContract.CommandKind and not _unknown_highlights.has(id):
+		_unknown_highlights[id] = true
+		push_warning("Unknown tutorial highlight ID: " + id)
+	return rects
+
+func _append_control_rect(rects: Array[Rect2], control: Control) -> void:
+	if not is_instance_valid(control) or not control.is_visible_in_tree():
+		return
+	var rect: Rect2 = control.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, control.size)
+	var parent_control: Control = control.get_parent_control()
+	while parent_control != null:
+		if parent_control.clip_contents:
+			rect = rect.intersection(parent_control.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, parent_control.size))
+		parent_control = parent_control.get_parent_control()
+	if rect.has_area():
+		rects.append(rect)
 
 func _build_tutorial_panel() -> void:
 	_tutorial_panel = PanelContainer.new()

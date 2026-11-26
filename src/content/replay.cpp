@@ -110,7 +110,6 @@ Json MatchSession::recordingHeader() const {
         j["lessonDigest"] = lessonDigest_;
     }
     j["containsDebugOperations"] = engine_.state().debugUsed;
-    if (config_.tutorialChapter) j["tutorialChapter"] = config_.tutorialChapter;
     j["technicalPaused"] = technicalPaused_;
     const auto &s = engine_.state();
     j["statistics"] = {{"turns", {s.players[0].ownTurn, s.players[1].ownTurn}},
@@ -188,11 +187,13 @@ GameEngine replay(const Content &c, const Json &j,
         j.at("cardSetVersion") != c.catalog.cardSetVersion || j.at("contentHash") != c.catalog.contentHash)
         throw std::runtime_error("incompatible replay version or content hash");
     const bool lessonRecording = j.contains("lessonId") || j.contains("lessonDigest");
+    if (j.contains("tutorialChapter") || j.contains("chapter") || j.contains("tutorial") || j.value("mode", std::string{}) == "tutorial")
+        throw std::invalid_argument(c.renderText({"tutorial.replay.invalid", {}}));
     if (j.contains("scenario")) throw std::invalid_argument("unexpected replay scenario");
     auto makeEngine = [&]() {
         if (lessonRecording) {
             if (!localLesson || format != 6 || j.contains("players") || j.contains("seed") ||
-                j.contains("tutorialChapter") || j.value("containsDebugOperations", false))
+                j.value("containsDebugOperations", false))
                 throw std::invalid_argument(c.renderText({"tutorial.replay.invalid", {}}));
             if (j.at("lessonId") != localLesson->id() || j.at("lessonDigest") != localLesson->digest())
                 throw std::invalid_argument(c.renderText({"tutorial.replay.changed", {}}));
@@ -201,7 +202,6 @@ GameEngine replay(const Content &c, const Json &j,
         MatchConfig config;
         config.seed =
             static_cast<std::uint32_t>(integer(j.at("seed"), std::numeric_limits<std::uint32_t>::max()));
-        config.tutorialChapter = j.value("tutorialChapter", 0);
         if (!j.at("players").is_array() || j.at("players").size() != 2)
             throw std::runtime_error("replay requires two player decks");
         for (int p = 0; p < 2; ++p) {

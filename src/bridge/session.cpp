@@ -87,9 +87,9 @@ Json LocalSession::start(const Json &options) {
             }
             if (mode != "tutorial") return fail("invalid_options", decks_.content->renderText({"tutorial.lesson.invalid", {}}));
             started = match_.application->startTutorial(error, options.at("lessonId").get<std::string>());
-        } else if (options.contains("scenario") || options.contains("lessonDigest"))
+        } else if (mode == "tutorial" || options.contains("chapter") || options.contains("tutorialChapter") ||
+                   options.contains("tutorial") || options.contains("scenario") || options.contains("lessonDigest"))
             return fail("invalid_options", decks_.content->renderText({"tutorial.lesson.invalid", {}}));
-        else if (mode == "tutorial") started = match_.application->startTutorial(error, options.value("chapter", 0));
         else {
             MatchConfig config;
             if (options.contains("seed")) {
@@ -165,13 +165,7 @@ Json LocalSession::snapshot(PlayerId viewer) const {
         match_.application->mode() != app::MatchMode::Tutorial && match_.application->mode() != app::MatchMode::Network);
     if (automatic) data["automaticCommand"] = commandDto(Command(*automatic));
     data["technicalPaused"] = match_.application->technicalPaused();
-    if (match_.application->lessonScript()) data["tutorial"] = match_.application->lessonSnapshot();
-    else if (const auto *tutorial = match_.application->tutorial())
-        data["tutorial"] = {{"chapter", tutorial->chapter}, {"step", tutorial->step},
-                            {"lesson", static_cast<int>(tutorial->lesson)}, {"title", tutorial->title()},
-                            {"hint", tutorial->hint(v)}, {"canContinue", tutorial->canContinue(v)},
-                            {"complete", tutorial->lesson == app::Lesson::Complete}};
-    else data["tutorial"] = nullptr;
+    data["tutorial"] = match_.application->lessonSnapshot();
     return ok(std::move(data));
 }
 namespace {
@@ -372,9 +366,8 @@ Json LocalSession::stepAi(const std::string &generation, const std::string &revi
 Json LocalSession::continueTutorial(const std::string &generation, const std::string &revision) {
     if (!current(generation, revision)) return fail("stale_action", "教学操作已过期");
     if (match_.application->paused()) return fail("match_paused", "对局已暂停");
-    const auto *tutorial = match_.application->tutorial();
     const auto *script = match_.application->lessonScript();
-    if (!(script ? script->canContinue(view(0)) : tutorial && tutorial->canContinue(view(0)))) return fail("tutorial_unavailable", "当前没有教学讲解");
+    if (!script || !script->canContinue(view(0))) return fail("tutorial_unavailable", "当前没有教学讲解");
     match_.application->continueTutorial(); match_.pending.reset(); return ok();
 }
 Json LocalSession::saveReplay() const {

@@ -67,7 +67,7 @@ build/windows/Release/wizard_cli.exe validate assets
 build/windows/Release/wizard_cli.exe smoke assets build/smoke.json 42
 build/windows/Release/wizard_cli.exe replay assets build/smoke.json
 build/windows/Release/wizard_cli.exe ai-match assets build/ai-replay.json 42 2
-build/windows/Release/wizard_cli.exe tutorial-smoke assets build/tutorial-replay.json
+build/windows/Release/wizard_cli.exe tutorial-smoke assets/release-v260 build/tutorial-replay.json
 ```
 
 `validate-catalog` 只验证卡池，适合开发者卡包；`validate` 会加载完整 Content，包括默认牌表。`smoke` 是确定性场景驱动，不能用来代表 AI 强度或平衡性。`play` 是开发交互入口，`script` 按 JSON 命令序列执行；不应把它们当作同机双人隐私界面。
@@ -432,9 +432,11 @@ assets/catalog.json（显式清单、版本、机制修订）
 
 ### 9.4 教学与调试
 
-教学用真实引擎、合法命令和固定配置，通过 `allows/observe/opponent` 控制步骤。不得为“讲解顺利”直接改 GameState 或跳过费用。
+指南从 `godot/data/tutorial/lessons/` 加载按 `order` 排序的课程，通过字符串 `lessonId` 启动。前七课使用真实对局。仅本地课程目录可以创建 `TutorialScenario`，预设双方数值、场面及固定牌序。开局后，`LessonScript::allows` 筛选玩家动作，`observe` 根据引擎接受的命令与事件推进，`opponent` 从合法候选中选择对手行动。费用、法术解析和连锁结算都由规则引擎处理。
 
-调试控制台只在本地 AI 模式启用，教学、同机双人、网络和观战/复盘浏览不开放。调试操作会改变 revision，记录调试标记及操作日志；带调试操作的复盘应与正常对局区分。
+第八课的 `kind` 为 `editor`。指南打开卡组编辑器，由玩家把 37 张主卡的草稿补至 40 张并保存。课程状态按 ID 存入 `guide-progress.json`。教学复盘记录 `lessonId`、`lessonDigest` 与真实命令，回放时从本地目录加载对应的场景。课程内容变更会导致摘要校验失败。
+
+本地 AI 模式可启用调试控制台。调试操作会改变 revision，记录调试标记及操作日志。回放可据此识别调试记录。
 
 ## 10. 桥接协议与信息可见性
 
@@ -674,7 +676,7 @@ Godot 测试需要配置匹配的 GODOT_BIN 并构建扩展，然后使用相应
 2. `engine.cpp`、`planning.cpp`、`commands.cpp`、`current_commands.cpp`、`chain.cpp`、`phases.cpp`、`current_phases.cpp`：理解规划、命令与可暂停状态机。
 3. `resources.cpp`、`resource_events.cpp`、`zones.cpp`、`invariants.cpp`、`effects.cpp`、`current_effects.cpp`、`card_rules.cpp`、`rules_effects.cpp`：理解资源与具体规则。
 4. `catalog_loader.cpp`、`content.cpp`、`command_codec.cpp`、`replay.cpp`：理解输入、协议和确定性。
-5. `application.cpp`、`decks.cpp`、`ai.cpp`、`tutorial.cpp`：理解应用编排。
+5. 阅读 `application.cpp`、`decks.cpp`、`ai.cpp` 与 `lesson_script.cpp`，了解对局、构筑、AI 和教程如何调用规则引擎。
 6. `bridge/session.cpp`、`snapshot.cpp`、`godot_bridge.cpp`，再到 Godot service/models/pages/ui。
 7. `network/session.cpp`、`codec.cpp`、`peer.cpp`、`tcp.cpp` 与 network tests：最后研究传输适配。
 8. 根据要改的行为读对应测试；完整路径、文件职责、符号和测试场景见[逐文件源码索引](developer-source-index.md)。

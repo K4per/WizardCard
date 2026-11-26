@@ -15,7 +15,17 @@ int main(int argc,char** argv) {
         auto content=loadContent(argv[2]);
         if(mode=="ai-match" || mode=="tutorial-smoke") return runAi(content,argv[2],argc,argv);
         if(mode=="validate") { std::cout<<content.catalog.cards.size()<<" definitions; "<<content.deck.size()<<" cards; hash "<<content.catalog.contentHash<<'\n'; return 0; }
-        if(mode=="replay") { if(argc<4) return 1; auto engine=replay(content,readJson(argv[3])); std::cout<<engine.digest()<<'\n'; return 0; }
+        if(mode=="replay") {
+            if(argc<4) return 1;
+            const auto record=readJson(argv[3]);
+            std::optional<TutorialScenario> lesson;
+            if(record.contains("lessonId") && !content.dataDirectory.empty())
+                lesson=TutorialScenario::load(content.dataDirectory / "tutorial/lessons",
+                    record.at("lessonId").get<std::string>(),content.catalog);
+            const auto engine=replay(content,record,{}, {},lesson ? &*lesson : nullptr);
+            std::cout<<engine.digest()<<'\n';
+            return 0;
+        }
         std::uint32_t seed=argc>4?static_cast<std::uint32_t>(std::stoul(argv[4])):42;
         MatchSession session(content,seed);
         if(mode=="script") {

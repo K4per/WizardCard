@@ -271,12 +271,12 @@ func _run() -> void:
 	app.navigate(&"guide")
 	await process_frame
 	var guide: GuidePage = app.page as GuidePage
-	guide.start_chapter(1)
+	guide.lesson_requested.emit("lesson-01-first-match")
 	await process_frame
 	if not _expect(app.page is MatchPage and app.service.match_mode == "tutorial", "tutorial starts from the guide: " + app.service.error):
 		return
 	match_page = app.page as MatchPage
-	if not _expect(match_page._tutorial.visible and not match_page._tutorial.text.is_empty(), "native tutorial guidance is visible"):
+	if not _expect(match_page._overlay.visible and not match_page._overlay.hint.text.is_empty(), "native tutorial guidance is visible"):
 		return
 	await _capture_page("tutorial")
 	if not _expect(app.service.leave_match(), "tutorial leaves safely"):

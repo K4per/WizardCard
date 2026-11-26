@@ -33,7 +33,12 @@ func _run() -> void:
 		return
 	var mode: String = str(_options.get("--mode", "hotseat"))
 	var difficulty: int = int(_options.get("--difficulty", 1))
-	_check(_bridge.start_match({"mode": mode, "difficulty": difficulty, "seed": plan["seed"], "players": plan["players"]}), "start")
+	var options: Dictionary
+	if mode == "tutorial":
+		options = {"mode": mode, "lessonId": plan["lessonId"]}
+	else:
+		options = {"mode": mode, "difficulty": difficulty, "seed": plan["seed"], "players": plan["players"]}
+	_check(_bridge.start_match(options), "start")
 	var rows: Array = plan["commands"] as Array
 	var expected_final_digest: String = str(plan["finalDigest"])
 	if _options.has("--limit"):

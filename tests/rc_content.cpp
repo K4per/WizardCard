@@ -606,35 +606,3 @@ TEST_CASE("sleep blocks next turn hand incantations while permitting an older am
     send(engine, 0, FlipAmbush{20});
     REQUIRE(engine.state().players[1].life == startingLife - 3);
 }
-TEST_CASE("rc tutorial completes using normal 40 plus 10 rules and recorded shield response", "[rc-content]") {
-    const auto content = rcContent();
-    const auto path = std::filesystem::path(WIZARD_SOURCE_DIR) / "build/rc-tutorial-test";
-    app::Application application(content, path);
-    std::string error; REQUIRE(application.startTutorial(error));
-    REQUIRE(application.configuration().players[0].cards.size() == 40);
-    REQUIRE(application.configuration().players[0].sideDeck.size() == 10);
-    REQUIRE(application.match().engine().state().opening);
-    for (int step = 0; application.tutorial()->lesson != app::Lesson::Complete; ++step) {
-        INFO(step); INFO(static_cast<int>(application.tutorial()->lesson));
-        REQUIRE(step < 250);
-        REQUIRE(application.match().engine().state().result == -1);
-        auto view = test::view(application.match().engine(),0);
-        if (application.tutorial()->canContinue(view)) { application.continueTutorial(); continue; }
-        if (application.aiTurn()) {
-            const auto plan = application.planAi(); REQUIRE(plan);
-            const auto result = application.commitAi(*plan); INFO(result.error); REQUIRE(result.accepted);
-            continue;
-        }
-        view.actions.erase(std::remove_if(view.actions.begin(), view.actions.end(), [&](const LegalAction &a) {
-            return !application.tutorial()->allows(view, a.command, [&](const auto &visitor) { application.match().engine().visitLegalActions(0,visitor); });
-        }), view.actions.end());
-        const auto selected = test::choose(view, ai::Difficulty::Normal); REQUIRE(selected);
-        const auto result = application.submit(0, selected->command, application.generation());
-        INFO(result.error); REQUIRE(result.accepted);
-    }
-    REQUIRE(application.tutorial()->countered);
-    REQUIRE_FALSE(application.match().engine().state().opening);
-    REQUIRE(application.match().engine().state().first == 0);
-    REQUIRE(application.match().engine().state().players[1].life == startingLife - 10);
-    REQUIRE(replay(content, application.match().recording()).digest() == application.match().engine().digest());
-}

@@ -45,7 +45,7 @@ jobs:
       - run: python tools/network_smoke.py --exe build/windows/Release/wizard_network_probe.exe --output build/network-ci
       - run: build/windows/Release/wizard_cli.exe smoke assets build/windows/cross-platform.json 42
       - run: build/windows/Release/wizard_cli.exe ai-match assets build/windows/ai-replay.json 42 2
-      - run: build/windows/Release/wizard_cli.exe tutorial-smoke assets build/windows/tutorial-replay.json
+      - run: build/windows/Release/wizard_cli.exe tutorial-smoke assets/release-v260 build/windows/tutorial-replay.json
       - run: cmake --install build/windows --config Release --prefix dist/WizardCard
       - uses: actions/upload-artifact@v7
         with:
@@ -162,7 +162,7 @@ jobs:
       - run: chmod +x build/headless/wizard_cli
       - run: build/headless/wizard_cli replay assets build/reference/cross-platform.json
       - run: build/headless/wizard_cli replay assets build/reference/ai-replay.json
-      - run: build/headless/wizard_cli replay assets build/reference/tutorial-replay.json
+      - run: build/headless/wizard_cli replay assets/release-v260 build/reference/tutorial-replay.json
   linux-godot:
     runs-on: ubuntu-24.04
     timeout-minutes: 45

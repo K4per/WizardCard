@@ -45,8 +45,7 @@ static func answer(directory: String, veteran: bool) -> bool:
 static func completed(directory: String) -> Array:
 	return read(directory).completed
 
-static func mark(directory: String, lesson: Variant) -> bool:
-	var id := str(lesson) if lesson is String else "legacy-chapter-%d" % int(lesson)
+static func mark(directory: String, id: String) -> bool:
 	var state := read(directory)
 	if state.completed.has(id):
 		return true

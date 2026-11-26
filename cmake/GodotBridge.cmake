@@ -179,7 +179,7 @@ if(BUILD_TESTING AND GODOT_BIN)
   endif()
   add_test(NAME godot_match_frontend_smoke COMMAND "${GODOT_BIN}" --headless
     --path ${frontend_dir} --script res://tests/match_frontend_smoke.gd --
-    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets
+    --assets ${CMAKE_CURRENT_SOURCE_DIR}/assets/release-v260
     --user-data ${CMAKE_CURRENT_BINARY_DIR}/match-frontend-smoke-data)
   set_tests_properties(godot_match_frontend_smoke PROPERTIES FIXTURES_REQUIRED frontend_import
     TIMEOUT 90 FAIL_REGULAR_EXPRESSION "SCRIPT ERROR;ERROR:")

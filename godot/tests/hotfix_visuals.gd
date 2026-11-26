@@ -145,7 +145,7 @@ func _run() -> void:
 		quit(1)
 		return
 	root.size = Vector2i(1280, 720)
-	if not check(service.start_match({"mode": "tutorial", "chapter": 1}), service.error):
+	if not check(service.start_match({"mode": "tutorial", "lessonId": "lesson-05-runes"}), service.error):
 		quit(1)
 		return
 	var page: MatchPage = load("res://pages/match_page.tscn").instantiate()

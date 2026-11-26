@@ -30,11 +30,6 @@ var _action_button: Button
 var _action_popup: PanelContainer
 var _detail_shade: ColorRect
 var _detail: CardDetail
-var _tutorial: Label
-var _tutorial_button: Button
-var _tutorial_panel: PanelContainer
-var _tutorial_retry: Button
-var _tutorial_return: Button
 var _tutorial_mode: bool = false
 var _privacy_layer: ColorRect
 var _privacy_title: Label
@@ -171,9 +166,6 @@ func _ready() -> void:
 	_hand_button = %HandToggle
 	_status_own = _table.own
 	_status_opponent = _table.opponent
-	_tutorial = %Tutorial
-	_tutorial_button = %TutorialContinue
-	_build_tutorial_panel()
 	_cue = %Cue
 	_cue.reparent(canvas, false)
 	_detail = _table.detail
@@ -188,7 +180,6 @@ func _ready() -> void:
 	_force_leave.pressed.connect(_request_force_leave)
 	_end_phase.pressed.connect(_end_current_phase)
 	_hand_button.pressed.connect(_toggle_hand)
-	_tutorial_button.pressed.connect(_continue_tutorial)
 	canvas.card_hovered.connect(_hover_card)
 	canvas.resized.connect(_position_selected_actions)
 	canvas.card_selected.connect(_select_card)
@@ -197,6 +188,7 @@ func _ready() -> void:
 	canvas.placement_requested.connect(_placement_requested)
 	canvas.ring_selected.connect(_ring_selected)
 	canvas.formation_slot_selected.connect(_formation_slot_selected)
+	canvas.gui_input.connect(_tutorial_board_input)
 	canvas.zone_clicked.connect(_zone_clicked)
 	canvas.layout_changed.connect(_position_selected_actions)
 	canvas.layout_changed.connect(_position_phase_button)
@@ -767,6 +759,9 @@ func _render_opening() -> void:
 	var snapshot: Dictionary = service.match_snapshot
 	if not bool(snapshot.get("opening", false)) or int(snapshot.get("result", -1)) != -1 or bool(snapshot.get("aiTurn", false)) or _network_waiting or _privacy_layer.visible:
 		return
+	if snapshot.get("tutorial") is Dictionary and bool(snapshot.tutorial.get("canContinue", false)):
+		_decision.hide()
+		return
 	if str(snapshot.get("openingStage", "formation")) == "gestures":
 		if int(snapshot.get("openingGesture", -1)) >= 0:
 			_response_cancel.hide()
@@ -1194,8 +1189,6 @@ func _toggle_action_popup() -> void:
 func _zone_clicked(kind: String, owner: int) -> void:
 	if _privacy_layer.visible or _decision.visible:
 		return
-	if owner == service.match_viewer:
-		_inspect_tutorial_area(kind)
 	if kind == "side_deck":
 		if owner == service.match_viewer:
 			_open_collection("side_deck", owner)
@@ -1494,10 +1487,6 @@ func _select_card(card: CardPresentation) -> void:
 	_detail.show()
 	_layout_panels()
 	_render_actions()
-	for row: Dictionary in service.match_snapshot.get("cards", []):
-		if str(row.get("id", "")) == card.instance_id and int(row.get("owner", -1)) == service.match_viewer:
-			_inspect_tutorial_area("hand" if int(row.get("zone", -1)) == 1 else "formation" if card.type_key == "formation" else "")
-			break
 
 func _clear_card() -> void:
 	if service != null and not _privacy_layer.visible:
@@ -1811,18 +1800,10 @@ func _refresh_tutorial(snapshot: Dictionary) -> void:
 	_tutorial_mode = snapshot.get("tutorial") is Dictionary
 	_lesson_state = snapshot.tutorial if _tutorial_mode else {}
 	var scripted: bool = _lesson_state.has("lessonId")
-	var order: int = int(_lesson_state.get("order", _lesson_state.get("chapter", 0)))
+	var order: int = int(_lesson_state.get("order", 0))
 	_lesson_badge.visible = _tutorial_mode
 	if _tutorial_mode:
 		_lesson_badge.text = _text.t("ui.lesson.badge", {"order": order, "mode": {"key": "tutorial.general.g02"}}) if order > 0 else _text.t("tutorial.general.g02")
-	_tutorial.visible = _tutorial_mode and not scripted
-	_tutorial_panel.visible = _tutorial.visible
-	_tutorial_button.visible = _tutorial.visible and order == 0
-	if _tutorial.visible:
-		_tutorial.text = str(_lesson_state.get("title", "教学")) + "\n" + str(_lesson_state.get("hint", ""))
-		_tutorial_button.disabled = not bool(_lesson_state.get("canContinue", false))
-		if bool(_lesson_state.get("complete", false)) and order > 0 and not GuideProgress.mark(service.user_directory, order):
-			_notice.text = "本章完成，但完成标记保存失败。请检查用户目录。"
 	var complete: bool = scripted and bool(_lesson_state.get("complete", false))
 	var terminal: bool = scripted and int(snapshot.get("result", -1)) >= 0
 	%SkipLesson.visible = scripted and not (complete or terminal)
@@ -1921,64 +1902,29 @@ func _append_control_rect(rects: Array[Rect2], control: Control) -> void:
 	if rect.has_area():
 		rects.append(rect)
 
-func _build_tutorial_panel() -> void:
-	_tutorial_panel = PanelContainer.new()
-	_tutorial_panel.add_theme_stylebox_override(&"panel", DeckTheme.box(DeckTheme.PANEL, DeckTheme.BORDER, 8))
-	_table.controls.add_child(_tutorial_panel)
-	var column: VBoxContainer = VBoxContainer.new()
-	_tutorial_panel.add_child(column)
-	_tutorial.reparent(column)
-	_tutorial.custom_minimum_size = Vector2.ZERO
-	_tutorial.add_theme_font_size_override(&"font_size", 14)
-	var actions: HFlowContainer = HFlowContainer.new()
-	column.add_child(actions)
-	_tutorial_button.reparent(actions)
-	_tutorial_retry = UiFactory.button("重试本章", _restart_tutorial)
-	_tutorial_return = UiFactory.button("章节列表", _return_tutorial)
-	actions.add_child(_tutorial_retry)
-	actions.add_child(_tutorial_return)
-	DeckUi.compact_button(_tutorial_retry)
-	DeckUi.compact_button(_tutorial_return)
-	_status_own.mouse_filter = Control.MOUSE_FILTER_PASS
-	_status_opponent.mouse_filter = Control.MOUSE_FILTER_PASS
-	_status_own.gui_input.connect(_tutorial_area_input.bind("own_status"))
-	_status_opponent.gui_input.connect(_tutorial_area_input.bind("opponent_status"))
-	_phase.mouse_filter = Control.MOUSE_FILTER_STOP
-	_phase.gui_input.connect(_tutorial_area_input.bind("phase"))
-	_tutorial_panel.hide()
-
-func _tutorial_area_input(event: InputEvent, area: String) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-		_inspect_tutorial_area(area)
-
-func _inspect_tutorial_area(area: String) -> void:
-	if service == null or not service.match_snapshot.get("tutorial") is Dictionary:
+# Check the rendered board bounds on release. A covered card in the
+# overlapping hand fan must never advance the visible card's instruction.
+func _tutorial_board_input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT or event.pressed:
 		return
-	var lesson: Dictionary = service.match_snapshot["tutorial"]
-	if int(lesson.get("chapter", 0)) != 1 or bool(lesson.get("complete", false)):
+	if not _overlay.visible or not bool(_lesson_state.get("canContinue", false)):
 		return
-	var expected: Array[String] = ["own_status", "opponent_status", "hand", "main_deck", "side_deck", "formation", "casting", "ash", "phase"]
-	var step: int = int(lesson.get("step", 0))
-	if step < expected.size() and expected[step] == area:
-		_continue_tutorial()
-
-func _restart_tutorial() -> void:
-	var lesson: Dictionary = service.match_snapshot.get("tutorial", {})
-	var options := {"mode": "tutorial"}
-	if lesson.has("lessonId"):
-		options["lessonId"] = lesson["lessonId"]
-	else:
-		options["chapter"] = int(lesson.get("chapter", 1))
-	if not service.leave_match() or not service.start_match(options):
-		_notice.text = service.error
-		return
-	navigation_requested.emit(&"match")
-
-func _return_tutorial() -> void:
-	if not service.leave_match():
-		_notice.text = service.error
-		return
-	navigation_requested.emit(&"guide")
+	var point: Vector2 = event.position
+	var card := canvas.card_at(point)
+	for id: String in _lesson_state.get("highlights", []):
+		var group := id.get_slice(":", 1).get_slice(".", 0)
+		var target := id.get_slice(".", 1)
+		if id.begins_with("card:") and card != null and card.definition_id == target:
+			if canvas.field.card_zones.get(card.instance_id, -1) == FieldCanvas.TUTORIAL_ZONES.find(group):
+				_continue_tutorial()
+				return
+		elif id.begins_with("zone:"):
+			var owner := canvas.field.viewer if group == "learner" else 1 - canvas.field.viewer
+			if target == "analysis" and canvas.tutorial_zone_rect(owner, "formation").has_point(point):
+				continue
+			if canvas.tutorial_zone_rect(owner, target).has_point(point):
+				_continue_tutorial()
+				return
 
 func _continue_tutorial() -> void:
 	var snapshot: Dictionary = service.match_snapshot

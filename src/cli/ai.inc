@@ -7,14 +7,15 @@ int runAi(const Content &content, const std::filesystem::path &assets, int argc,
         app::Application application(content, path.parent_path() / "tutorial-smoke-data",
                                      app::loadPresets(content, assets));
         std::string error;
-        if (!application.startTutorial(error))
+        const auto id = argc > 4 ? argv[4] : "lesson-04-spells";
+        if (!application.startTutorial(error, id))
             throw std::runtime_error(error);
         std::size_t steps = 0;
-        while (application.tutorial()->lesson != app::Lesson::Complete) {
+        while (!application.lessonScript()->complete()) {
             if (++steps > 500)
                 throw std::runtime_error("tutorial did not complete");
             auto v = application.match().engine().viewFor(0);
-            if (!v.opening && application.tutorial()->canContinue(v)) {
+            if (application.lessonScript()->canContinue(v)) {
                 application.continueTutorial();
                 continue;
             }
@@ -29,16 +30,16 @@ int runAi(const Content &content, const std::filesystem::path &assets, int argc,
                 const auto selected = ai::choose(v, candidates, ai::Difficulty::Normal);
                 if (!selected)
                     throw std::runtime_error("student has no action at lesson " +
-                                             application.tutorial()->title());
+                                             application.lessonSnapshot().at("step").get<std::string>());
                 result = application.submit(0, selected->command, application.generation());
             }
             if (!result.accepted)
                 throw std::runtime_error(result.error);
         }
         writeJson(path, application.match().recording());
-        const auto verified = replay(content, application.match().recording());
+        const auto verified = replay(content, application.match().recording(), {}, {}, &application.lessons().find(id)->scenario);
         std::cout << "tutorial complete; " << steps
-                  << " steps; countered=" << application.tutorial()->countered
+                  << " steps; course=" << id
                   << "; enemy life=" << verified.state().players[1].life << "; digest=" << verified.digest()
                   << '\n';
         return 0;

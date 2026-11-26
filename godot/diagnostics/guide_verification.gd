@@ -11,7 +11,7 @@ func _run() -> void:
 	await get_tree().process_frame
 	var page: GuidePage = _app.page as GuidePage
 	var passed: bool = _app.service.error.is_empty() and page.tabs.get_tab_count() == 3
-	passed = passed and page.chapter_buttons.size() == 5 and page._library._grid.get_child_count() == 90
+	passed = passed and page._course_list.get_child_count() == _app.service.tutorial_lessons.size() and page._course_list.get_child_count() == 8 and page._library._grid.get_child_count() == 90
 	page.tabs.current_tab = 1
 	for index: int in range(page._rule_chapters.item_count):
 		page._read_rule(index)
@@ -19,7 +19,7 @@ func _run() -> void:
 	page.tabs.current_tab = 2
 	var certificate: X509Certificate = X509Certificate.new()
 	passed = passed and certificate.load(RoomsPage.PRODUCTION_CA) == OK
-	var report: Dictionary = {"passed": passed, "chapters": page.chapter_buttons.size(),
+	var report: Dictionary = {"passed": passed, "lessons": page._course_list.get_child_count(),
 		"ruleSections": page._rule_chapters.item_count, "cards": page._library._grid.get_child_count(),
 		"bundledCertificate": true, "networkUsed": _app.service.network_active}
 	var arguments: PackedStringArray = OS.get_cmdline_user_args()

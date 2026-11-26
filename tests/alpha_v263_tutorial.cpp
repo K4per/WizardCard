@@ -1,94 +1,97 @@
-#include "wizard/bridge.hpp"
 #include "wizard/application.hpp"
+#include "wizard/bridge.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
 
 using namespace wizard;
 
-TEST_CASE("v263 all five tutorial chapters start with legal current content", "[alpha-v263][tutorial-v263]") {
-    const auto assets = std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/release-v260";
-    for (int chapter = 1; chapter <= 5; ++chapter) {
-        INFO(chapter);
-        const auto directory = std::filesystem::temp_directory_path() /
-            ("wizard-v263-chapter-" + std::to_string(chapter) + "-" +
-             std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
-        bridge::LocalSession session;
-        REQUIRE(session.initialize(assets, directory).at("ok") == true);
-        const auto started = session.start({{"mode", "tutorial"}, {"chapter", chapter}});
-        INFO(started.dump());
-        REQUIRE(started.at("ok") == true);
-        const auto snapshot = session.snapshot(0).at("data");
-        REQUIRE(snapshot.at("tutorial").at("chapter") == chapter);
-        REQUIRE(snapshot.at("opening") == (chapter == 2));
-        std::filesystem::remove_all(directory);
+TEST_CASE("only a named local course can start tutorial mode", "[tutorial-retirement]") {
+    const auto root = std::filesystem::path(WIZARD_SOURCE_DIR);
+    const auto data = loadContent(root / "assets/release-v260");
+    const auto dir =
+        std::filesystem::temp_directory_path() /
+        ("wizard-retired-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    app::Application app(data, dir);
+    std::string error;
+    MatchConfig config;
+    for (auto &player : config.players) {
+        player.cards = data.deck;
+        player.sideDeck = data.sideDeck;
     }
+    CHECK_FALSE(app.start(config, error, {app::MatchMode::Tutorial}));
+    bridge::LocalSession session;
+    REQUIRE(session.initialize(root / "assets/release-v260", dir).at("ok") == true);
+    for (const auto *mode : {"tutorial", "ai", "hotseat"}) {
+        for (const auto *removed : {"chapter", "tutorialChapter", "tutorial", "scenario", "lessonDigest"}) {
+            CAPTURE(mode, removed);
+            CHECK(session.start({{"mode", mode}, {removed, 1}}).at("ok") == false);
+        }
+    }
+    CHECK(session.start({{"mode", "tutorial"}}).at("ok") == false);
+    const auto ordinary = MatchSession(data, config).recording();
+    REQUIRE_NOTHROW(replay(data, ordinary));
+    for (const auto *field : {"chapter", "tutorialChapter", "tutorial", "scenario"}) {
+        auto forged = ordinary;
+        forged[field] = 1;
+        CHECK_THROWS(replay(data, forged));
+    }
+    auto embedded = ordinary;
+    embedded["mode"] = "tutorial";
+    CHECK_THROWS(replay(data, embedded));
+    std::filesystem::remove_all(dir);
 }
 
-TEST_CASE("v263 tutorial exercises execute real costs damage and replay", "[alpha-v263][tutorial-v263]") {
-    const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/release-v260");
-    for (int chapter = 2; chapter <= 5; ++chapter) {
-        INFO(chapter);
-        const auto directory = std::filesystem::temp_directory_path() /
-            ("wizard-v263-exercise-" + std::to_string(chapter) + "-" +
-             std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
-        app::Application application(content, directory);
-        std::string error;
-        REQUIRE(application.startTutorial(error, chapter));
-        const auto initial = application.match().engine().digest();
-        REQUIRE_FALSE(application.submit(0, RemoveFormation{9}, application.generation()).accepted);
-        REQUIRE(application.match().engine().digest() == initial);
-        bool optionalMissileChoice = false;
-        bool shieldPaid = false;
-        bool formationPaid = false;
-        int steps = 0;
-        for (; steps < 400 && application.tutorial()->lesson != app::Lesson::Complete; ++steps) {
-            const auto &state = application.match().engine().state();
-            if (state.decision && state.decision->kind == DecisionKind::DestroyAmbush) optionalMissileChoice = true;
-            const auto mana0 = state.players[0].mana;
-            Command command;
-            CommandResult result;
-            if (application.aiTurn()) {
-                auto plan = application.planAi();
-                INFO("AI step " << steps << " tutorial " << application.tutorial()->step);
-                REQUIRE(plan);
-                command = plan->selection.command;
-                result = application.commitAi(*plan);
-            } else {
-                std::optional<Command> selected;
-                application.visitActions(0, [&](const LegalAction &action) {
-                    if (std::holds_alternative<Surrender>(action.command)) return true;
-                    // Rock wins the scripted opponent's scissors, without bypassing opening.
-                    if (const auto *gesture = std::get_if<SubmitOpeningGesture>(&action.command); gesture && gesture->gesture != 0) return true;
-                    selected = action.command; return false;
-                });
-                INFO("learner step " << steps << " tutorial " << application.tutorial()->step << " phase " << int(state.phase));
-                REQUIRE(selected);
-                command = *selected;
-                result = application.submit(0, command, application.generation());
-                if (std::holds_alternative<SetFormation>(command)) {
-                    REQUIRE(application.match().engine().state().players[0].mana == mana0 - 2);
-                    formationPaid = true;
-                }
-                if (std::holds_alternative<Respond>(command) || std::holds_alternative<FlipAmbush>(command)) {
-                    REQUIRE(application.match().engine().state().players[0].mana == mana0 - 3);
-                    shieldPaid = true;
-                }
+TEST_CASE("course mode starts its ordered short deck and scripted opponent with debug and autosaves off",
+          "[tutorial-retirement][tutorial-a4]") {
+    const auto data = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/release-v260");
+    const auto dir =
+        std::filesystem::temp_directory_path() /
+        ("wizard-a4-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    app::Application app(data, dir);
+    std::string error;
+    REQUIRE(app.startTutorial(error, "lesson-04-spells"));
+    REQUIRE_FALSE(app.debugAvailable());
+    const auto &state = app.match().engine().state();
+    CHECK(state.players[0].deck.size() == 5);
+    std::vector<std::string> hand;
+    for (const auto &[id, card] : state.cards)
+        if (card.owner == 0 && card.zone == Zone::Hand)
+            hand.push_back(card.definition);
+    REQUIRE(hand == std::vector<std::string>{"v260-analytic-0006", "v260-word-0001", "v260-talisman-0003",
+                                             "v260-word-0021", "v260-word-0021"});
+    CHECK(app.lessonSnapshot().at("lessonId") == "lesson-04-spells");
+    bool enemyPlayedSpark = false;
+    for (int step = 0; state.result == -1; ++step) {
+        REQUIRE(step < 200);
+        if (app.lessonScript()->canContinue(app.viewFor(0))) {
+            app.continueTutorial();
+            continue;
+        }
+        if (app.aiTurn()) {
+            auto plan = app.planAi();
+            REQUIRE(plan);
+            if (const auto *word = std::get_if<PreloadWord>(&plan->selection.command)) {
+                CHECK(state.cards.at(word->card).definition == "v260-word-0001");
+                CHECK(word->target == playerTarget(0));
+                enemyPlayedSpark = true;
             }
-            INFO(result.error);
-            REQUIRE(result.accepted);
+            REQUIRE(app.commitAi(*plan).accepted);
+        } else {
+            std::optional<Command> command;
+            app.visitActions(0, [&](const LegalAction &action) {
+                if (std::holds_alternative<StartAnalysis>(action.command) ||
+                    std::holds_alternative<AdvancePhase>(action.command) ||
+                    std::holds_alternative<PassResponse>(action.command))
+                    command = action.command;
+                return !command;
+            });
+            REQUIRE(command);
+            REQUIRE(app.submit(0, *command, app.generation()).accepted);
         }
-        INFO("completed commands " << steps);
-        REQUIRE(application.tutorial()->lesson == app::Lesson::Complete);
-        const auto &state = application.match().engine().state();
-        if (chapter == 2) REQUIRE(formationPaid);
-        if (chapter == 3) REQUIRE(state.players[1].life == 33);
-        if (chapter == 4) REQUIRE(state.players[1].life == 37);
-        if (chapter == 5) {
-            REQUIRE(shieldPaid);
-            REQUIRE(optionalMissileChoice);
-            REQUIRE(state.players[0].life == 40);
-        }
-        REQUIRE(replay(content, application.match().recording()).digest() == application.match().engine().digest());
-        std::filesystem::remove_all(directory);
     }
+    CHECK(enemyPlayedSpark);
+    CHECK(state.result == 1);
+    CHECK_FALSE(app.lessonScript()->complete());
+    CHECK_FALSE(std::filesystem::exists(app.saveDirectory() / "replays"));
+    std::filesystem::remove_all(dir);
 }

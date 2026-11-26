@@ -156,18 +156,31 @@ func _tutorial() -> bool:
 	if not await _press(_app.page.get_node_or_null("%Library"), "guide"):
 		return false
 	var guide := _app.page as GuidePage
-	if guide == null or guide.chapter_buttons.is_empty():
+	if guide == null or guide._course_list.get_child_count() == 0:
 		return _fail("tutorial chapter missing")
-	if not await _press(guide.chapter_buttons[0], "chapter one"):
+	if not await _press(guide._course_list.get_child(0) as Control, "chapter one"):
 		return false
 	var page := _app.page as MatchPage
-	if page == null or int(_app.service.match_snapshot.get("tutorial", {}).get("step", -1)) != 0:
+	if page == null or _app.service.match_snapshot.get("tutorial", {}).get("step", "") != "welcome":
 		return _fail("tutorial did not open")
-	if not await _press(page._status_own, "inspect own status"):
+	if not await _press(page._overlay.advance, "continue the first lesson"):
 		return false
-	if int(_app.service.match_snapshot.get("tutorial", {}).get("step", -1)) != 1:
+	if _app.service.match_snapshot.get("tutorial", {}).get("step", "") != "gesture":
 		return _fail("tutorial step did not advance")
-	return true
+	# The real opening deals the hand only after both players confirm their gesture.
+	var snapshot := _app.service.snapshot()
+	var gesture := {"type": KernelContract.CommandKind.SubmitOpeningGesture, "round": str(snapshot.openingRound), "gesture": "0"}
+	var response := _app.service.match_request(&"submit_command", [0, gesture, snapshot.generation, snapshot.revision])
+	if not response.get("ok", false):
+		return _fail("opening gesture was rejected")
+	snapshot = _app.service.snapshot()
+	if snapshot.tutorial.step == "gesture":
+		response = _app.service.match_request(&"step_ai", [snapshot.generation, snapshot.revision])
+		if not response.get("ok", false):
+			return _fail("scripted opponent could not confirm its gesture")
+	_app.service.poll_session()
+	await _settle()
+	return not page.canvas.field.hand.is_empty()
 
 func _replay() -> bool:
 	if not await _press(_app.page.get_node_or_null("%Replay"), "replay"):

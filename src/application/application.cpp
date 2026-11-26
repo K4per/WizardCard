@@ -363,8 +363,8 @@ bool Application::startSession(const MatchConfig &config, std::string &error, Se
         if (options.mode != MatchMode::Hotseat && options.mode != MatchMode::Ai &&
             options.mode != MatchMode::Tutorial)
             throw std::invalid_argument("无效对局模式");
-        if (config.tutorialChapter && options.mode != MatchMode::Tutorial)
-            throw std::invalid_argument("教学局面仅可用于教程");
+        if ((options.mode == MatchMode::Tutorial) != (lesson != nullptr))
+            throw std::invalid_argument(content_.renderText({"tutorial.lesson.invalid", {}}));
         auto next = lesson ? std::make_unique<MatchSession>(content_, lesson->scenario)
                            : std::make_unique<MatchSession>(content_, config);
         std::optional<LessonScript> script;
@@ -381,8 +381,6 @@ bool Application::startSession(const MatchConfig &config, std::string &error, Se
         ++generation_;
         ++revision_;
         options_ = options;
-        tutorial_ = {};
-        tutorial_.chapter = config.tutorialChapter;
         activeLesson_ = lesson;
         lessonScript_ = std::move(script);
         page_ = Page::Match;
@@ -392,21 +390,13 @@ bool Application::startSession(const MatchConfig &config, std::string &error, Se
         return false;
     }
 }
-bool Application::startTutorial(std::string &error, int chapter) {
-    try {
-        return start(tutorialConfiguration(content_, chapter), error, {MatchMode::Tutorial, ai::Difficulty::Easy});
-    } catch (const std::exception &e) {
-        error = e.what();
-        return false;
-    }
-}
 bool Application::restart(std::uint32_t seed, std::string &error) {
     if (!match_ || (match_->engine().state().result == -1 && !(lessonScript_ && lessonScript_->complete()))) {
         error = "当前对局尚未结束";
         return false;
     }
     auto config = configuration_;
-    if (!activeLesson_) config.seed = mode() == MatchMode::Tutorial ? tutorialConfiguration(content_).seed : seed;
+    if (!activeLesson_) config.seed = seed;
     const auto options = options_;
     auto previous = std::move(match_);
     if (startSession(config, error, options, activeLesson_))
@@ -434,9 +424,7 @@ CommandResult Application::submit(PlayerId actor, const Command &command, std::u
             const auto &hint = lessonScript_->blockedHint();
             return {false, content_.renderText({hint.empty() ? "tutorial.lesson.blocked" : hint, {}}), {}, {}, "tutorial_blocked"};
         }
-    } else if (mode() == MatchMode::Tutorial && actor == 0 &&
-        !tutorial_.allows(viewFor(0), command, [&](const auto &visitor) { match_->engine().visitLegalActions(0, visitor); }))
-        return {false, tutorial_.hint(match_->engine().viewFor(0)), {}, {}, "tutorial_hint"};
+    }
     const auto beforeRevision = match_->revision();
     auto result = match_->submit(actor, command);
     revision_ += match_->revision() - beforeRevision;
@@ -444,8 +432,6 @@ CommandResult Application::submit(PlayerId actor, const Command &command, std::u
     if (result.accepted) {
         if (lessonScript_)
             lessonScript_->observe(actor, command, *before, viewFor(actor), result.events);
-        else if (mode() == MatchMode::Tutorial)
-            tutorial_.observe(actor, command, match_->engine().viewFor(0), result.events);
     }
     return result;
 }
@@ -463,11 +449,7 @@ bool Application::aiTurn() const {
     const auto &s = match_->engine().state();
     if (lessonScript_)
         return actingPlayer() == 1 && !lessonScript_->complete() && !lessonScript_->canContinue(viewFor(0));
-    if ((s.decision ? s.decision->player : s.active) != 1)
-        return false;
-    if (mode() == MatchMode::Tutorial && tutorial_.canContinue(match_->engine().viewFor(0)))
-        return false;
-    return true;
+    return (s.decision ? s.decision->player : s.active) == 1;
 }
 std::optional<AiPlan> Application::planAi() const {
     if (!aiTurn())
@@ -475,8 +457,7 @@ std::optional<AiPlan> Application::planAi() const {
     const auto view = viewFor(1);
     ai::CandidateSource source = [&](const auto &visitor) { visitActions(1, visitor); };
     auto selection = lessonScript_ ? lessonScript_->opponent(view, source)
-        : mode() == MatchMode::Tutorial ? tutorial_.opponent(view, source)
-                                        : ai::choose(view, source, options_.difficulty);
+        : ai::choose(view, source, options_.difficulty);
     if (!selection)
         return {};
     return AiPlan{generation_, revision_, *selection};
@@ -491,17 +472,8 @@ CommandResult Application::commitAi(const AiPlan &plan) {
     return submit(1, plan.selection.command, plan.generation);
 }
 void Application::continueTutorial() {
-    if (paused() || mode() != MatchMode::Tutorial)
-        return;
-    const auto view = match_->engine().viewFor(0);
-    if (lessonScript_) {
-        if (lessonScript_->continueLesson(view)) ++revision_;
-        return;
-    }
-    if (!tutorial_.canContinue(view))
-        return;
-    tutorial_.continueLesson(view);
-    ++revision_;
+    if (lessonScript_ && !paused() && lessonScript_->continueLesson(match_->engine().viewFor(0)))
+        ++revision_;
 }
 bool Application::saveReplay(std::string &error) const {
     if (network_)
@@ -586,7 +558,6 @@ bool Application::confirmLeave(PlayerId actor, std::string &error) {
         options_ = {};
         activeLesson_ = nullptr;
         lessonScript_.reset();
-        tutorial_ = {};
         ++generation_;
         page_ = Page::Menu;
         quit_ = leaveQuits_;
@@ -604,7 +575,6 @@ bool Application::confirmLeave(PlayerId actor, std::string &error) {
         options_ = {};
         activeLesson_ = nullptr;
         lessonScript_.reset();
-        tutorial_ = {};
         ++generation_;
         page_ = Page::Menu;
         quit_ = leaveQuits_;
@@ -685,12 +655,8 @@ bool Application::saveDiagnostic(std::string &error) const {
 void Application::visitActions(PlayerId viewer, const std::function<bool(const LegalAction &)> &visitor) const {
     if (!match_ || network_ || match_->technicalPaused()) return;
     const auto view = viewFor(viewer);
-    ai::CandidateSource raw = [&](const auto &next) { match_->engine().visitLegalActions(viewer,next); };
-    raw([&](const LegalAction &action) {
-        if (mode() == MatchMode::Tutorial && viewer == 0) {
-            const bool allowed = lessonScript_ ? lessonScript_->allows(view, action.command) : tutorial_.allows(view, action.command, raw);
-            if (!allowed) return true;
-        }
+    match_->engine().visitLegalActions(viewer, [&](const LegalAction &action) {
+        if (lessonScript_ && viewer == 0 && !lessonScript_->allows(view, action.command)) return true;
         return visitor(action);
     });
 }
@@ -705,11 +671,10 @@ ActionOptions Application::queryActions(PlayerId viewer, std::uint64_t generatio
         return network_->queryActions(viewer,generation,revision,intent);
     }
     if(!match_) { result.error="no_match"; return result; }
-    if(mode()!=MatchMode::Tutorial || viewer!=0)
+    if(!lessonScript_ || viewer!=0)
         return match_->queryActions(viewer,generation,match_->revision(),intent);
     const auto view=viewFor(viewer);
-    ai::CandidateSource raw=[&](const auto &next){ match_->engine().visitLegalActions(viewer,next); };
-    return match_->engine().queryActions(viewer,intent,[&](const Command &command){return lessonScript_ ? lessonScript_->allows(view,command) : tutorial_.allows(view,command,raw);});
+    return match_->engine().queryActions(viewer,intent,[&](const Command &command){return lessonScript_->allows(view,command);});
 }
 PlayerId Application::actingPlayer() const {
     if (network_)

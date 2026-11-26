@@ -94,7 +94,7 @@ CLI 和网络探针属于开发工具，不随玩家便携包分发。构建后�
 ./build/windows/Release/wizard_cli.exe smoke assets/release-v260 verification.json 42
 ./build/windows/Release/wizard_cli.exe replay assets/release-v260 verification.json
 ./build/windows/Release/wizard_cli.exe ai-match assets/release-v260 ai.json 42 2
-./build/windows/Release/wizard_cli.exe tutorial-smoke assets tutorial.json
+./build/windows/Release/wizard_cli.exe tutorial-smoke assets/release-v260 tutorial.json
 ```
 
 `smoke` 是固定启发式验证驱动；`ai-match` 的最后一项0/1/2分别对应入门/标准/进阶，对手固定标准。`tutorial-smoke` 使用正常核心完成教学目标。CLI `play`、`script` 属于开发入口，不提供本地换手遮挡。Godot 自动检查覆盖导入、冷启动、桥接、完整复盘、场地、决策托盘、构筑及真实输入；实际截图与双进程联机结果见交付报告。

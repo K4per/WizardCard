@@ -5,13 +5,10 @@ signal navigation_requested(page: StringName)
 
 signal lesson_requested(id: String)
 
-const TITLES: Array[String] = ["认识状态与区域", "猜拳开局与付费阵法", "解析法术：火球术", "言灵法术：火花", "咒符法术：护盾与连锁"]
 var service: FrontendService
 var tabs: TabContainer
-var chapter_buttons: Array[Button] = []
 var _library: LibraryPage
 var _course_list: VBoxContainer
-var _notice: Label
 var _rule_text: RichTextLabel
 var _rule_chapters: OptionButton
 var _rules: Dictionary
@@ -37,14 +34,6 @@ func _ready() -> void:
 	tabs.add_child(lessons)
 	_course_list = VBoxContainer.new()
 	lessons.add_child(_course_list)
-	lessons.add_child(UiFactory.label("五章均可直接进入；重试从章首开始。完成标记保存在本机。", 18, true))
-	for index: int in range(5):
-		var button: Button = UiFactory.button("第%d章 · %s" % [index + 1, TITLES[index]], start_chapter.bind(index + 1))
-		button.custom_minimum_size.y = 64
-		chapter_buttons.append(button)
-		lessons.add_child(button)
-	_notice = UiFactory.label("", 16, true)
-	lessons.add_child(_notice)
 	var rules_page: VBoxContainer = VBoxContainer.new()
 	rules_page.name = "规则书"
 	tabs.add_child(rules_page)
@@ -80,21 +69,9 @@ func configure(value: FrontendService) -> void:
 		_course_list.add_child(button)
 	_course_list.visible = not service.tutorial_lessons.is_empty()
 	_library.configure(service)
-	var completed: Array = GuideProgress.completed(service.user_directory)
-	for index: int in range(5):
-		chapter_buttons[index].text = "第%d章 · %s%s" % [index + 1, TITLES[index], "　✓ 已完成" if completed.has("legacy-chapter-%d" % (index + 1)) else ""]
 
 func _read_rule(index: int) -> void:
 	var chapters: Array = _rules.get("chapters", [])
 	if index >= 0 and index < chapters.size():
 		_rule_text.text = "规则版本 %s\n\n" % _rules["version"] + str(chapters[index]["title"]) + "\n\n" + str(chapters[index]["text"])
 		_rule_text.scroll_to_line(0)
-
-func start_chapter(chapter: int) -> void:
-	_start_course({"mode": "tutorial", "chapter": chapter})
-
-func _start_course(options: Dictionary) -> void:
-	if not service.start_match(options):
-		_notice.text = service.error
-		return
-	navigation_requested.emit(&"match")

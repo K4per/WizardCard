@@ -2,7 +2,7 @@
 #include "wizard/replay.hpp"
 #include "wizard/decks.hpp"
 #include "wizard/room.hpp"
-#include "wizard/tutorial.hpp"
+#include "wizard/replay.hpp"
 #include "wizard/lesson_script.hpp"
 #include <memory>
 
@@ -137,7 +137,6 @@ class Application {
     void closeSettings();
     bool applySettings(const Settings &, std::string &error);
     bool start(const MatchConfig &, std::string &error, SessionOptions = {});
-    bool startTutorial(std::string &error, int chapter = 0);
     bool startTutorial(std::string &error, const std::string &lessonId);
     const LessonCatalog &lessons() const { return lessons_; }
     const LessonScript *lessonScript() const { return lessonScript_ ? &*lessonScript_ : nullptr; }
@@ -155,9 +154,6 @@ class Application {
     bool aiTurn() const;
     std::optional<AiPlan> planAi() const;
     CommandResult commitAi(const AiPlan &);
-    const Tutorial *tutorial() const {
-        return mode() == MatchMode::Tutorial && !lessonScript_ && hasMatch() ? &tutorial_ : nullptr;
-    }
     void continueTutorial();
     bool saveReplay(std::string &error) const;
     bool replayReady() const;
@@ -187,7 +183,6 @@ class Application {
     std::uint64_t generation_{};
     bool quit_{}, leaveQuits_{}, leavePending_{}, networkReset_{};
     SessionOptions options_;
-    Tutorial tutorial_;
     LessonCatalog lessons_;
     const LessonDefinition *activeLesson_{};
     std::optional<LessonScript> lessonScript_;

@@ -151,8 +151,8 @@ TEST_CASE("Alpha v2.5.3 debug authority rejects hotseat tutorial network mode an
     std::string error;
     REQUIRE(application.start(debugConfig(content), error, {app::MatchMode::Hotseat}));
     REQUIRE_FALSE(application.debug(operation("gain_mana", 0, 2)).accepted);
-    app::Application tutorialApplication(content, directory.path / "tutorial");
-    REQUIRE(tutorialApplication.startTutorial(error));
+    app::Application tutorialApplication(loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/release-v260"), directory.path / "tutorial");
+    REQUIRE(tutorialApplication.startTutorial(error, "lesson-04-spells"));
     REQUIRE_FALSE(tutorialApplication.debug(operation("gain_mana", 0, 2)).accepted);
     REQUIRE_FALSE(application.start(debugConfig(content), error, {app::MatchMode::Network}));
     bridge::LocalSession bridge;

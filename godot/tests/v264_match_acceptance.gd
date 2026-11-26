@@ -244,27 +244,47 @@ func exercise_tutorial_chain() -> void:
 		return
 	app.navigate(&"guide")
 	await process_frame
-	(app.page as GuidePage).start_chapter(5)
+	(app.page as GuidePage).lesson_requested.emit("lesson-07-chain")
 	await process_frame
 	var lesson_page: MatchPage = app.page as MatchPage
+	# A4 jointly exercises the real tutorial entry, short ordered deck,
+	# restricted debug surface, course AI, result panel and progress file.
+	var opening := view(0)
+	var hand: Array[String] = []
+	for card: Dictionary in opening.cards:
+		if card.owner == 0 and card.zone == 1:
+			hand.append(str(card.definition.id))
+	check(hand == ["v260-analytic-0006", "v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021"], "A4 fixed teaching hand from the short main deck")
+	check(int(opening.players[0].deckCount) == 5 and not opening.debug.available, "A4 accepts a short course and disables debug")
 	var links: Array = []
 	var shield_cost: int = -1
 	var complete: bool = false
 	for step: int in range(160):
 		var s: Dictionary = view(0)
-		if not check(s.get("tutorial") is Dictionary, "Tutorial page starts native chapter 5: " + service.error):
+		if not check(s.get("tutorial") is Dictionary, "Tutorial page starts the chain lesson: " + service.error):
 			return
 		if s.tutorial.complete:
 			complete = true
 			break
+		if s.tutorial.canContinue:
+			var next := service.match_request(&"continue_tutorial", [s.generation, s.revision])
+			if not check(next.get("ok", false), "Tutorial explanation advances"):
+				return
+			continue
 		if s.aiTurn:
 			var ai: Dictionary = service.match_request(&"step_ai", [s.generation, s.revision])
 			if not check(ai.get("ok", false), "Tutorial opponent submits its legal command"):
 				return
 		else:
 			var cmd: Dictionary = {}
-			for op: int in [K.Respond, K.FlipAmbush, K.SetAmbush, K.Choose, K.PassResponse, K.AdvancePhase]:
+			for op: int in [K.FlipAmbush, K.StartAnalysis, K.PrepareCast, K.ActivateSpell, K.Choose, K.PassResponse, K.AdvancePhase]:
 				cmd = query(s, "0", op)
+				if cmd.is_empty() and op in [K.FlipAmbush, K.StartAnalysis, K.PrepareCast, K.ActivateSpell]:
+					for card: Dictionary in s.cards:
+						if int(card.get("owner", -1)) == 0 and not bool(card.get("hidden", false)):
+							cmd = query(s, str(card.id), op)
+							if not cmd.is_empty():
+								break
 				if not cmd.is_empty():
 					break
 			if not check(not cmd.is_empty(), "Tutorial has a legal learner action") or not submit(s, cmd):
@@ -288,9 +308,11 @@ func exercise_tutorial_chain() -> void:
 			if event.kind == "link_resolved" and str(event.card) in [str(links[0].source), str(links[1].source)]:
 				resolution.append(int(event.chainIndex))
 				resolution_ids.append(str(event.card))
-	check(resolution.slice(-2) == [2, 1] and resolution_ids.slice(-2) == [str(links[1].source), str(links[0].source)], "Shield C2 resolves before missile C1")
+	check(resolution.slice(-2) == [2, 1] and resolution_ids.slice(-2) == [str(links[1].source), str(links[0].source)], "Shield C2 resolves before Fireball C1")
 
 	service.poll_session()
+	check(lesson_page._lesson_end.visible and not lesson_page._settlement.visible, "A4 course outcome replaces the normal settlement")
+	check(GuideProgress.completed(service.user_directory).has("lesson-07-chain") and FileAccess.file_exists(service.user_directory.path_join("guide-progress.json")), "A4 completion is recorded in the local guide progress file")
 	lesson_page._save_replay()
 	lesson_page._replay_name.text = "教学-" + str(Time.get_ticks_usec())
 	lesson_page._write_named_replay()
@@ -299,9 +321,7 @@ func exercise_tutorial_chain() -> void:
 	evidence["resolution"] = resolution.slice(-2)
 	evidence["resolvedCards"] = resolution_ids.slice(-2)
 	evidence["protectedLife"] = view(0).players[0].life
-	check(evidence.protectedLife == 40, "Shield prevents all missile damage")
-	if not submit(view(0), {"type": K.Surrender}):
-		return
+	check(evidence.protectedLife == 1, "Shield reduces seven fire damage to four")
 	service.poll_session()
 	check(service.save_replay("教学终局-" + str(Time.get_ticks_usec())), "Finished tutorial can be saved explicitly")
 	lesson_page._open_replay()
@@ -309,9 +329,13 @@ func exercise_tutorial_chain() -> void:
 	var replay: ReplayPage = app.page as ReplayPage
 	if not check(replay != null, "Ended tutorial opens through the match replay control"):
 		return
-	replay._move(replay._rows.size())
-	var captions: String = replay._table.chain_text.get_parsed_text()
-	check(captions.contains("C2 → C1"), "Replay displays the same multi-link resolution order")
+	var found_reverse := false
+	for index in range(replay._rows.size()):
+		replay._move(1)
+		if replay._table.chain_text.get_parsed_text().contains("C2 → C1"):
+			found_reverse = true
+			break
+	check(found_reverse, "Replay displays the same multi-link resolution order")
 	evidence["tutorialReplay"] = service.last_replay_path
 
 func exercise_overflow() -> void:

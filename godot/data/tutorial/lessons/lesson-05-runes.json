@@ -67,7 +67,7 @@
     },
     {
       "id": "prepare",
-      "hint": "tutorial.l05.prepare",
+      "hint": "tutorial.lesson.prepare",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:analysis.v260-analytic-0001"],
       "allow": [{"command": "PrepareCast", "card": "v260-analytic-0001"}],
@@ -75,7 +75,7 @@
     },
     {
       "id": "cast",
-      "hint": "tutorial.l05.activate",
+      "hint": "tutorial.lesson.activate",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:casting.v260-analytic-0001", "ui:phase"],
       "allow": [{"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "opponent"}],
@@ -86,7 +86,7 @@
     },
     {
       "id": "resolving",
-      "hint": "tutorial.l05.settle",
+      "hint": "tutorial.lesson.settle",
       "highlight": ["ui:chain"],
       "until": {"gameOver": "learner"}
     },

@@ -131,7 +131,7 @@ func _offer_intro() -> void:
 	var catalog := get_node("/root/Text")
 	_intro = preload("res://ui/deck_dialog.tscn").instantiate() as DeckDialog
 	page.add_child(_intro)
-	_intro.present(catalog.t("ui.lesson.mode"), catalog.t("tutorial.general.g01"),
+	_intro.present(catalog.t("tutorial.general.g02"), catalog.t("tutorial.general.g01"),
 		[catalog.t("tutorial.general.g01.new"), catalog.t("tutorial.general.g01.veteran")], 0)
 	_intro.chosen.connect(_answer_intro)
 

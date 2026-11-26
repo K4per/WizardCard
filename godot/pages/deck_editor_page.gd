@@ -296,7 +296,7 @@ func _editor_step(event: String) -> void:
 		_overlay.hide()
 		_skip.hide()
 		var catalog := get_node("/root/Text")
-		_end.present(int(lesson.order), str(catalog.t(lesson.steps.saved.hintKey)) + "\n" + str(catalog.t(step.hintKey)))
+		_end.present(str(catalog.t(lesson.steps.saved.hintKey)) + "\n" + str(catalog.t(step.hintKey)), true, true)
 		lesson_completed.emit(str(lesson.id), int(lesson.order))
 
 

@@ -42,14 +42,14 @@
     },
     {
       "id": "analytic",
-      "hint": "tutorial.l04.s03",
+      "hint": "tutorial.l04.s03", "hintSurface": "detail",
       "highlight": ["card:hand.v260-analytic-0006"],
       "continue": true
     },
-    {"id": "word", "hint": "tutorial.l04.s04", "highlight": ["card:hand.v260-word-0001"], "continue": true},
+    {"id": "word", "hint": "tutorial.l04.s04", "hintSurface": "detail", "highlight": ["card:hand.v260-word-0001"], "continue": true},
     {
       "id": "talisman",
-      "hint": "tutorial.l04.s05",
+      "hint": "tutorial.l04.s05", "hintSurface": "detail",
       "highlight": ["card:hand.v260-talisman-0003"],
       "continue": true
     },
@@ -95,8 +95,8 @@
       "highlight": ["card:analysis.v260-analytic-0006", "ui:end_phase"],
       "until": {"gameOver": true}
     },
-    {"id": "resolve", "hint": "tutorial.l04.s07", "highlight": ["ui:chain"], "until": {"gameOver": true}},
-    {"id": "won", "hint": "tutorial.l04.s06", "continue": true},
+    {"id": "resolve", "hint": "tutorial.lesson.settle", "highlight": ["ui:chain"], "until": {"gameOver": true}},
+    {"id": "won", "hint": "tutorial.l04.s06", "recapHint": "tutorial.l04.s07", "continue": true},
     {"id": "lost", "hint": "tutorial.l04.lost", "continue": true}
   ],
   "opponent": [

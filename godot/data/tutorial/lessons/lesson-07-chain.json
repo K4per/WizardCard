@@ -54,6 +54,7 @@
     },
     {
       "id": "respond",
+      "hintSurface": "response",
       "hint": "tutorial.l07.s03",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["zone:opponent.casting", "card:analysis.v260-talisman-0003"],
@@ -67,6 +68,12 @@
     {
       "id": "reverse-order",
       "hint": "tutorial.l07.s05",
+      "highlight": ["ui:chain"],
+      "continue": true
+    },
+    {
+      "id": "resolve-shield",
+      "hint": "tutorial.lesson.settle",
       "highlight": ["ui:chain"],
       "until": {"event": "phase_enter", "next": "counter", "active": "learner", "phase": "Draw"}
     },
@@ -89,7 +96,7 @@
     },
     {
       "id": "prepare",
-      "hint": "tutorial.l07.prepare",
+      "hint": "tutorial.lesson.prepare",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:analysis.v260-analytic-0006"],
       "allow": [{"command": "PrepareCast", "card": "v260-analytic-0006"}],
@@ -97,7 +104,7 @@
     },
     {
       "id": "cast",
-      "hint": "tutorial.l07.activate",
+      "hint": "tutorial.lesson.activate",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:casting.v260-analytic-0006", "ui:phase"],
       "allow": [{"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"}],
@@ -108,7 +115,7 @@
     },
     {
       "id": "resolving",
-      "hint": "tutorial.l07.settle",
+      "hint": "tutorial.lesson.settle",
       "highlight": ["ui:chain"],
       "until": {"gameOver": "learner"}
     },

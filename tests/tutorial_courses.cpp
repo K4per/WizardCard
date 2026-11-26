@@ -35,10 +35,29 @@ struct Play {
     GameEngine engine;
     LessonScript script;
     std::vector<int> sparkTurns;
-    std::vector<std::string> visited;
+    std::set<std::string> shown;
+    std::string textPrefix;
+
+    void recordText() {
+        const auto state = script.snapshot();
+        shown.insert(state.at("hintKey").get<std::string>());
+        if (state.contains("recapHint")) shown.insert(state.at("recapHint").get<std::string>());
+        if (state.contains("actionHints"))
+            for (const auto &key : state.at("actionHints")) shown.insert(key.get<std::string>());
+    }
+    void expectText(std::initializer_list<int> numbers) const {
+        for (auto number : numbers) {
+            const auto key = textPrefix + (number < 10 ? "0" : "") + std::to_string(number);
+            INFO(key);
+            CHECK(shown.count(key) == 1);
+        }
+    }
 
     explicit Play(const char *id)
-        : engine(course(id).scenario.start(content().catalog)), script(course(id)) {}
+        : engine(course(id).scenario.start(content().catalog)), script(course(id)),
+          textPrefix("tutorial.l" + std::string(id).substr(7, 2) + ".s") {
+        recordText();
+    }
     int mana() const {
         return engine.state().players[0].mana;
     }
@@ -69,11 +88,12 @@ struct Play {
         INFO(result.error);
         REQUIRE(result.accepted);
         script.observe(seat, c, before, engine.viewFor(seat), result.events);
+        recordText();
     }
     void reading() {
         for (int i = 0; i < 64 && script.canContinue(engine.viewFor(0)); ++i) {
-            visited.push_back(script.snapshot().at("step").get<std::string>());
             REQUIRE(script.continueLesson(engine.viewFor(0)));
+            recordText();
         }
     }
     // Advance the ordinary phase gate, AI, or pending mandatory choice. Never
@@ -188,6 +208,7 @@ TEST_CASE("first match opens with real gestures, explorable hand and two schedul
         p.phase(4, Phase::Cast);
         p.activate(bolt);
         p.finish(true);
+        p.expectText({1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14});
     }
     SECTION("abandoning the Bolt leaves the second Spark lethal") {
         p.place(bolt, standard);
@@ -197,6 +218,7 @@ TEST_CASE("first match opens with real gestures, explorable hand and two schedul
     }
     SECTION("a concealed Bolt never progresses on its own") {
         p.ambush(bolt, standard);
+        p.expectText({10});
         p.phase(4, Phase::Main);
         const auto spell = p.card(Zone::Analysis, bolt);
         CHECK(p.engine.state().cards.at(spell).analysisProgress == 0);
@@ -210,6 +232,9 @@ TEST_CASE("face-up and ambush routes finish on different turns and both survive"
     for (bool hidden : {false, true}) {
         CAPTURE(hidden);
         Play p("lesson-02-set-ambush");
+        p.reading();
+        const auto options = p.script.snapshot().at("actionHints");
+        CHECK(options == Json{{"StartAnalysis", "tutorial.l02.s02"}, {"SetAmbush", "tutorial.l02.s02.ambush"}});
         const auto spell = p.card(Zone::Hand, bolt);
         if (hidden) {
             p.ambush(bolt, reinforced);
@@ -233,6 +258,10 @@ TEST_CASE("face-up and ambush routes finish on different turns and both survive"
         p.phase(last, Phase::Cast);
         p.activate(bolt);
         p.finish(true);
+        if (hidden)
+            p.expectText({1, 2, 4, 5, 6, 7});
+        else
+            p.expectText({1, 2, 3, 7});
         CHECK(p.life() == (hidden ? 2 : 8));
         CHECK(p.mana() == (hidden ? 10 : 4));
         CHECK(p.sparkTurns == (hidden ? std::vector<int>{2, 3} : std::vector<int>{}));
@@ -286,6 +315,7 @@ TEST_CASE("all seven formation levels consume their actual recipes over eight tu
     CHECK(p.engine.state().result == -1);
     CHECK(p.script.complete());
     REQUIRE(p.card(Zone::Analysis, perfect));
+    p.expectText({1, 2, 3, 4, 5, 6, 7, 8});
 }
 
 TEST_CASE("spell choice permits slow losses and a free shield followed by a winning Spark",
@@ -321,6 +351,8 @@ TEST_CASE("spell choice permits slow losses and a free shield followed by a winn
         playSpark();
     }
     p.finish(win);
+    p.expectText({1, 2, 3, 4, 5});
+    if (win) p.expectText({6, 7});
     CHECK(p.sparkTurns.size() == (win ? 0 : 1));
 }
 
@@ -345,11 +377,13 @@ TEST_CASE("attaching the rune raises the host rank and lowers next turn's income
     p.finish(true);
     CHECK(p.mana() == 0);
     CHECK(p.load() == 4);
+    p.expectText({1, 2, 3, 4, 5, 6});
 }
 
 TEST_CASE("load lesson admits every four and five spell order and all shortfall choices",
           "[tutorial-courses]") {
     auto def = [](char c) { return c == 'S' ? spike : c == 'F' ? fire : bolt; };
+    std::set<std::string> allRoutes;
     for (const std::string selection : {"BFFS", "BBFFS", "BBS", "BBF", "BFF", "BFS", "FFS"}) {
         CAPTURE(selection);
         Play base("lesson-06-load");
@@ -381,6 +415,7 @@ TEST_CASE("load lesson admits every four and five spell order and all shortfall 
                 if (p.engine.state().result != -1)
                     break;
             }
+            allRoutes.insert(p.shown.begin(), p.shown.end());
             if (selection.size() == 3) {
                 int damage = 0;
                 for (char c : selection)
@@ -392,6 +427,7 @@ TEST_CASE("load lesson admits every four and five spell order and all shortfall 
             p.finish(true);
             CHECK(p.script.snapshot().at("hintKey") ==
                   (selection.size() == 4 ? "tutorial.l06.s08" : "tutorial.l06.s10"));
+            CHECK(p.script.snapshot().at("recapHint") == "tutorial.l06.s09");
             if (selection.size() == 4) {
                 CHECK(p.load() == 17);
                 CHECK(p.life() == 10);
@@ -413,6 +449,11 @@ TEST_CASE("load lesson admits every four and five spell order and all shortfall 
             CHECK(late == 18);
         }
     }
+    for (int i = 1; i <= 10; ++i) {
+        const auto key = std::string("tutorial.l06.s") + (i < 10 ? "0" : "") + std::to_string(i);
+        INFO(key);
+        CHECK(allRoutes.count(key) == 1);
+    }
 }
 
 TEST_CASE("the real response window accepts a chained shield and permits a lethal pass",
@@ -423,6 +464,7 @@ TEST_CASE("the real response window accepts a chained shield and permits a letha
         auto d = p.engine.viewFor(0).decision;
         return d && d->kind == DecisionKind::Response && p.script.snapshot().at("step") == "respond";
     });
+    CHECK(p.script.snapshot().at("hintSurface") == "response");
     const auto shieldId = p.card(Zone::Analysis, shield);
     REQUIRE(p.engine.state().cards.at(shieldId).faceDown);
     REQUIRE(p.engine.state().cards.at(shieldId).host == p.card(Zone::Analysis, compound));
@@ -430,6 +472,7 @@ TEST_CASE("the real response window accepts a chained shield and permits a letha
         p.send(0, PassResponse{p.engine.state().decision->id});
         p.finish(false);
         CHECK(p.script.snapshot().at("hintKey") == "tutorial.l07.s07");
+        p.expectText({1, 2, 3, 7, 9});
     }
     SECTION("chain shield then counter with Bolt") {
         std::optional<Command> flip;
@@ -454,5 +497,6 @@ TEST_CASE("the real response window accepts a chained shield and permits a letha
         p.finish(true);
         CHECK(p.mana() == 6);
         CHECK(p.script.snapshot().at("hintKey") == "tutorial.l07.s08");
+        p.expectText({1, 2, 3, 4, 5, 6, 8, 9});
     }
 }

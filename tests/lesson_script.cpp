@@ -93,6 +93,16 @@ TEST_CASE("lesson discovery sorts valid courses and isolates bad definitions", "
     auto wrongParameter = lesson("bad-parameter", 12);
     wrongParameter["steps"][0]["hint"] = "tutorial.test.intro";
     courses.write(wrongParameter);
+    const auto invalidStep = [&](std::string id, Json properties) {
+        auto invalid = lesson(id, 13);
+        invalid["steps"][0].update(properties);
+        courses.write(invalid);
+    };
+    invalidStep("unknown-surface", {{"hintSurface", "unknown"}});
+    invalidStep("detail-without-card", {{"hintSurface", "detail"}, {"highlight", {"zone:learner.hand"}}});
+    invalidStep("invalid-action-hint", {{"actionHints", {{"NeverACommand", "tutorial.test.play"}}}});
+    invalidStep("missing-choice-text", {{"actionHints", {{"SetAmbush", "tutorial.test.missing"}}}});
+    invalidStep("missing-recap", {{"recapHint", "tutorial.test.missing"}});
 
     std::vector<std::string> diagnostics;
     const auto catalog = courses.load([&](const std::string &message) { diagnostics.push_back(message); });
@@ -102,7 +112,7 @@ TEST_CASE("lesson discovery sorts valid courses and isolates bad definitions", "
     REQUIRE(catalog.find("zebra"));
     CHECK(catalog.find("zebra")->titleKey == "tutorial.test.title");
     CHECK_FALSE(catalog.find("mismatch"));
-    CHECK(diagnostics.size() == 10);
+    CHECK(diagnostics.size() == 15);
 }
 
 TEST_CASE("lesson branches on an accepted learner action in the requested turn", "[lesson-script]") {

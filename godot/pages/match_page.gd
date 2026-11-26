@@ -875,8 +875,12 @@ func _query_changed(options: ActionOptions) -> void:
 			var label: String = MatchProjection.action_label(service.match_snapshot, {"source": str(_selection.intent.get("source", "0")), "command": {"type": operation}})
 			if operation == KernelContract.CommandKind.ActivateAbility:
 				label = str(option.get("label", "发动能力"))
+			var command_name: String = str(KernelContract.CommandKind.find_key(operation))
+			var hint_key: String = _lesson_state.get("actionHints", {}).get(command_name, "")
+			if not hint_key.is_empty():
+				label = _text.t(hint_key)
 			var button: Button = _card_action_button(label, _selection.choose.bind(str(option["value"])))
-			button.name = str(KernelContract.CommandKind.find_key(operation))
+			button.name = command_name
 			_action_list.add_child(button)
 		if _action_list.get_child_count() == 0:
 			_action_popup.hide()
@@ -1306,7 +1310,10 @@ func _show_response_question() -> void:
 	_action_popup.hide()
 	_response_question_context = _current_dialog_context()
 	_confirm.dialog_text = _response_text() + ("\n响应可选择来源，放弃将交出本时点的优先权。" if available else "\n当前没有可以发动的效果。可以查看场面或放弃本时点。")
-	_confirm.popup_response("response:%s:%s:%s" % [_response_question_context[0], service.match_viewer, _response_decision_id], "是否进行连锁？" if available else "查看场上情况", "响应" if available else "查看场面", "放弃时点")
+	var title: String = "是否进行连锁？" if available else "查看场上情况"
+	if _lesson_state.get("hintSurface") == "response":
+		title = _text.t(_lesson_state.hintKey, _lesson_state.get("params", {}))
+	_confirm.popup_response("response:%s:%s:%s" % [_response_question_context[0], service.match_viewer, _response_decision_id], title, "响应" if available else "查看场面", "放弃时点")
 	if _match_menu.visible:
 		_confirm.hide()
 
@@ -1807,7 +1814,7 @@ func _refresh_tutorial(snapshot: Dictionary) -> void:
 	var order: int = int(_lesson_state.get("order", _lesson_state.get("chapter", 0)))
 	_lesson_badge.visible = _tutorial_mode
 	if _tutorial_mode:
-		_lesson_badge.text = _text.t("ui.lesson.badge", {"order": order}) if order > 0 else _text.t("ui.lesson.mode")
+		_lesson_badge.text = _text.t("ui.lesson.badge", {"order": order, "mode": {"key": "tutorial.general.g02"}}) if order > 0 else _text.t("tutorial.general.g02")
 	_tutorial.visible = _tutorial_mode and not scripted
 	_tutorial_panel.visible = _tutorial.visible
 	_tutorial_button.visible = _tutorial.visible and order == 0
@@ -1819,6 +1826,16 @@ func _refresh_tutorial(snapshot: Dictionary) -> void:
 	var complete: bool = scripted and bool(_lesson_state.get("complete", false))
 	var terminal: bool = scripted and int(snapshot.get("result", -1)) >= 0
 	%SkipLesson.visible = scripted and not (complete or terminal)
+	var detail_target: String = ""
+	var detail_text: String = ""
+	if scripted and not terminal and _lesson_state.get("hintSurface") == "detail":
+		detail_target = str(_lesson_state.highlights[0]).trim_prefix("card:hand.")
+		detail_text = _text.t(_lesson_state.hintKey, _lesson_state.get("params", {}))
+		for card: CardPresentation in canvas.field.hand:
+			if not card.hidden and card.definition_id == detail_target:
+				_detail.configure(card)
+				break
+	_detail.set_lesson_hint(detail_target, detail_text)
 	_configure_lesson_overlay(_lesson_state if scripted and not terminal else {})
 	if _match_menu.visible:
 		_overlay.hide()
@@ -1837,9 +1854,10 @@ func _refresh_tutorial(snapshot: Dictionary) -> void:
 	_close_match_menu()
 	_overlay.hide()
 	var message: String = _text.t(str(_lesson_state.hintKey), _lesson_state.get("params", {}))
-	if not complete:
-		message += "\n" + _text.t("ui.lesson.retry_hint")
-	_lesson_end.present(order, message, complete)
+	var recap: String = _lesson_state.get("recapHint", "")
+	if not recap.is_empty():
+		message += "\n" + _text.t(recap)
+	_lesson_end.present(message, complete)
 	if complete:
 		lesson_completed.emit(str(_lesson_state.lessonId), order)
 

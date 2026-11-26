@@ -4,6 +4,8 @@ extends PanelContainer
 signal closed()
 
 var card: CardPresentation
+var _lesson_definition: String = ""
+var _lesson_text: String = ""
 @onready var _title: Label = %Title
 @onready var _type: Label = %Type
 @onready var _art: CardFace = %Art
@@ -15,10 +17,20 @@ func _ready() -> void:
 	if card != null:
 		configure(card)
 
+func set_lesson_hint(definition: String, text: String) -> void:
+	_lesson_definition = definition
+	_lesson_text = text
+	_update_lesson_hint()
+
+func _update_lesson_hint() -> void:
+	%LessonHint.text = _lesson_text
+	%LessonHint.visible = card != null and not card.hidden and card.definition_id == _lesson_definition and not _lesson_text.is_empty()
+
 func clear_card() -> void:
 	card = null
 	$Column.hide()
 	if is_node_ready():
+		_update_lesson_hint()
 		_art.configure(null)
 		_title.text = ""
 		_type.text = ""
@@ -30,6 +42,7 @@ func configure(value: CardPresentation) -> void:
 	$Column.show()
 	if not is_node_ready():
 		return
+	_update_lesson_hint()
 	_art.configure(card)
 	if card.hidden:
 		_title.text = "盖伏卡"

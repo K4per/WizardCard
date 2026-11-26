@@ -28,8 +28,8 @@ struct Transition {
     std::size_t next{};
 };
 struct Step {
-    std::string id, hint, blockedHint, anchor;
-    Json params, highlights;
+    std::string id, hint, blockedHint, anchor, hintSurface, recapHint;
+    Json params, highlights, actionHints;
     std::vector<CommandPattern> allow;
     std::vector<Transition> until;
 };
@@ -321,7 +321,7 @@ std::shared_ptr<const LessonProgram> parseProgram(const Json &document, const Ca
     if (steps.empty()) reject("lesson needs at least one step");
     std::set<std::string> stepIds;
     for (const auto &input : steps) {
-        fields(input, {"id", "hint", "params", "blockedHint", "highlight", "hintAnchor", "allow", "continue", "until"});
+        fields(input, {"id", "hint", "params", "blockedHint", "highlight", "hintAnchor", "hintSurface", "actionHints", "recapHint", "allow", "continue", "until"});
         Step step;
         step.id = input.at("id").get<std::string>();
         if (!name(step.id, "-_") || !stepIds.insert(step.id).second) reject("invalid or duplicate step ID " + step.id);
@@ -341,6 +341,22 @@ std::shared_ptr<const LessonProgram> parseProgram(const Json &document, const Ca
             const auto id = highlight.get<std::string>();
             requireHighlight(id, cards);
             if (!highlights.insert(id).second) reject("duplicate highlight " + id);
+        }
+        step.hintSurface = input.value("hintSurface", std::string("bar"));
+        if (step.hintSurface != "bar" && step.hintSurface != "response" && step.hintSurface != "detail")
+            reject("invalid hint surface");
+        if (step.hintSurface == "detail" &&
+            (highlights.size() != 1 || highlights.begin()->rfind("card:hand.", 0) != 0))
+            reject("detail hint requires one highlighted hand card");
+        step.actionHints = input.value("actionHints", Json::object());
+        if (!step.actionHints.is_object()) reject("action hints must be an object");
+        for (const auto &option : step.actionHints.items()) {
+            if (!commands.count(option.key())) reject("unknown action hint command " + option.key());
+            requireText(text, cards, option.value().get<std::string>());
+        }
+        if (input.contains("recapHint")) {
+            step.recapHint = input.at("recapHint").get<std::string>();
+            requireText(text, cards, step.recapHint);
         }
         for (const auto &allowed : list(input, "allow")) step.allow.push_back(commandPattern(allowed, cards));
         program->steps.push_back(std::move(step));
@@ -708,9 +724,13 @@ std::optional<ai::Selection> LessonScript::opponent(const GameView &view, const 
 
 Json LessonScript::snapshot() const {
     const auto &step = program_->steps.at(step_);
-    return {{"lessonId", lessonId_}, {"step", step.id}, {"hintKey", step.hint}, {"params", step.params},
+    Json result{{"lessonId", lessonId_}, {"step", step.id}, {"hintKey", step.hint}, {"params", step.params},
         {"highlights", step.highlights}, {"blockedHint", step.blockedHint}, {"hintAnchor", step.anchor},
         {"canContinue", hasContinue()}, {"complete", complete_}};
+    if (step.hintSurface != "bar") result["hintSurface"] = step.hintSurface;
+    if (!step.actionHints.empty()) result["actionHints"] = step.actionHints;
+    if (!step.recapHint.empty()) result["recapHint"] = step.recapHint;
+    return result;
 }
 
 const std::string &LessonScript::blockedHint() const { return program_->steps.at(step_).blockedHint; }

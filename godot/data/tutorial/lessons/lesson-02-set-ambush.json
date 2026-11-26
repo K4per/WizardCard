@@ -34,14 +34,9 @@
   "steps": [
     {"id": "intro", "hint": "tutorial.l02.s01", "continue": true},
     {
-      "id": "face-up-option",
-      "hint": "tutorial.l02.s02",
-      "highlight": ["card:hand.v260-analytic-0006"],
-      "continue": true
-    },
-    {
       "id": "conceal-or-set",
-      "hint": "tutorial.l02.s02.ambush",
+      "actionHints": {"StartAnalysis": "tutorial.l02.s02", "SetAmbush": "tutorial.l02.s02.ambush"},
+      "hint": "tutorial.l02.choose",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:hand.v260-analytic-0006"],
       "allow": [
@@ -93,7 +88,7 @@
     },
     {
       "id": "prepare",
-      "hint": "tutorial.l02.prepare",
+      "hint": "tutorial.lesson.prepare",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:analysis.v260-analytic-0006"],
       "allow": [{"command": "PrepareCast", "card": "v260-analytic-0006"}],
@@ -101,7 +96,7 @@
     },
     {
       "id": "cast",
-      "hint": "tutorial.l02.activate",
+      "hint": "tutorial.lesson.activate",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:casting.v260-analytic-0006", "ui:phase"],
       "allow": [{"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"}],
@@ -112,7 +107,7 @@
     },
     {
       "id": "resolving",
-      "hint": "tutorial.l02.settle",
+      "hint": "tutorial.lesson.settle",
       "highlight": ["ui:chain"],
       "until": {"gameOver": "learner"}
     },

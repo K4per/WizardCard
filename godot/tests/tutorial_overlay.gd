@@ -28,7 +28,7 @@ func _run() -> void:
 		field.card_zones[card.instance_id] = 1
 	field.opponent_hand_count = 3
 	page.canvas.configure(field)
-	var lesson: Dictionary = {"lessonId": "lesson-04", "order": 4, "step": "look", "hintKey": "ui.lesson.badge", "params": {"order": 4}, "highlights": [], "hintAnchor": "auto", "canContinue": true, "blockedHint": "tutorial.lesson.unavailable", "complete": false}
+	var lesson: Dictionary = {"lessonId": "lesson-04", "order": 4, "step": "look", "hintKey": "ui.lesson.badge", "params": {"order": 4, "mode": {"key": "tutorial.general.g02"}}, "highlights": [], "hintAnchor": "auto", "canContinue": true, "blockedHint": "tutorial.lesson.unavailable", "complete": false}
 	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080)]:
 		root.size = dimensions
 		await process_frame
@@ -61,6 +61,7 @@ func _run() -> void:
 		await process_frame
 		check(page._overlay.highlights.is_empty(), "closing the question restores the course targets")
 		_check_installed_steps(page)
+	await _check_authored_surfaces(page)
 	page._refresh_tutorial({"tutorial": lesson})
 	check(page._lesson_badge.text == "教学模式 · 第 4 课" and page._overlay.hint.text == page._lesson_badge.text, "snapshot order and localized hint parameters")
 	page._overlay.show_blocked()
@@ -96,22 +97,99 @@ func _run() -> void:
 		for repeat_index: int in range(2):
 			page._refresh_tutorial({"tutorial": complete.duplicate(true), "generation": str(order)})
 		check(page._lesson_end.visible and not page._overlay.visible, "lesson completion replaces the hint")
+		check(page._lesson_end.get_node("%Title").text == "这节课你会了。", "G03 is visible on completion")
 		check(page._lesson_end.get_node("%Message").text == "教学模式 · 第 4 课", "terminal step text is preserved")
+		check(page._lesson_end.get_node("%Next").text == "下一课" and page._lesson_end.get_node("%Menu").text == "回主菜单", "G03 uses course navigation at every battle order")
 		page._lesson_end.get_node("%Next").pressed.emit()
+	page._lesson_end.present("editor", true, true)
+	page._lesson_end.get_node("%Next").pressed.emit()
 	page._lesson_end.get_node("%Retry").pressed.emit()
 	page._lesson_end.get_node("%Menu").pressed.emit()
 	check(completions == ["lesson-04", "lesson-08"], "completed notifications are idempotent across refreshes")
-	check(actions == [&"skip", &"next", &"deck", &"retry", &"menu"], "each end action requests its destination")
+	check(actions == [&"skip", &"next", &"next", &"deck", &"retry", &"menu"], "each end action requests its destination")
+	var lost := _authored_step("lesson-07-chain", "lost")
 	for repeat_index: int in range(2):
-		page._refresh_tutorial({"tutorial": lesson, "generation": "lost", "result": 1})
+		page._refresh_tutorial({"tutorial": lost, "generation": "lost", "result": 1})
 	check(page._lesson_end.visible and not page._overlay.visible and not page._lesson_end.get_node("%Next").visible and page._lesson_end.get_node("%Retry").has_focus(), "an unfinished terminal lesson focuses retry and suppresses next")
-	check(completions.size() == 2 and page._lesson_end.get_node("%Message").text.contains("重新练习"), "an unfinished match shows retry feedback without recording completion")
+	check(completions.size() == 2 and page._lesson_end.get_node("%Title").text == "重来一次？", "G05 appears on loss")
+	check(completions.size() == 2 and page._lesson_end.get_node("%Message").text == page._text.t("tutorial.l07.s07"), "L07 pass keeps its explanation on the loss panel")
 	page._refresh_tutorial({})
 	check(not page._overlay.visible and not page._lesson_badge.visible and not page._lesson_end.visible, "ordinary matches have no tutorial UI")
 	page.queue_free()
 	await process_frame
 	print("Tutorial overlay failures: ", failures)
 	quit(0 if failures == 0 else 1)
+
+func _authored_step(file: String, id: String) -> Dictionary:
+	var lesson: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/tutorial/lessons/" + file + ".json"))
+	for step: Dictionary in lesson.steps:
+		if step.id == id:
+			return {"lessonId": lesson.id, "order": lesson.order, "step": id, "hintKey": step.hint,
+				"hintSurface": step.get("hintSurface", "bar"), "highlights": step.get("highlight", []),
+				"actionHints": step.get("actionHints", {}), "recapHint": step.get("recapHint", ""), "canContinue": step.get("continue", false)}
+	return {}
+
+func _check_authored_surfaces(page: MatchPage) -> void:
+	var catalog: Node = root.get_node("Text")
+	var service := QueryFixtureService.new()
+	service.match_mode = "tutorial"
+	service.match_viewer = 0
+	service.match_snapshot = {"generation": "1", "revision": "1", "viewer": 0, "result": -1, "cards": []}
+	page.service = service
+	page._selection.service = service
+	page._selection.changed.connect(page._query_changed)
+	var field := FieldPresentation.new()
+	for def: String in ["v260-analytic-0006", "v260-word-0001", "v260-talisman-0003"]:
+		var card := CardPresentation.from_definition({"id": def, "name": def, "illustrationId": "aid"})
+		card.instance_id = str(field.hand.size() + 1)
+		field.hand.append(card)
+	page.canvas.configure(field)
+	var detail: Label = page._detail.get_node("%LessonHint")
+	var lessons := {"lesson-01-first-match": ["rank", "cost", "type", "effect"], "lesson-04-spells": ["analytic", "word", "talisman"]}
+	for file: String in lessons:
+		for id: String in lessons[file]:
+			var step := _authored_step(file, id)
+			page._refresh_tutorial({"tutorial": step})
+			check(detail.is_visible_in_tree() and detail.text == catalog.t(step.hintKey), file + "/" + id + " appears in card details")
+			check(page._detail.card != null and page._detail.card.definition_id == str(step.highlights[0]).trim_prefix("card:hand."), "detail opens for the highlighted card")
+	page._hover_card(field.hand[0])
+	check(not detail.visible, "a different card hides the previous card's explanation")
+	page._hover_card(field.hand[2])
+	check(detail.is_visible_in_tree(), "returning to the lesson card restores its explanation")
+	var choice := _authored_step("lesson-02-set-ambush", "conceal-or-set")
+	page._refresh_tutorial({"tutorial": choice})
+	check(not detail.visible, "leaving a detail step clears its explanation")
+	service.set_actions([
+		{"source": "1", "command": {"type": KernelContract.CommandKind.StartAnalysis, "card": "1", "formation": "4"}},
+		{"source": "1", "command": {"type": KernelContract.CommandKind.SetAmbush, "card": "1", "formation": "4"}}])
+	page._show_action_list("1", "", true)
+	for operation: String in ["StartAnalysis", "SetAmbush"]:
+		var button := page._action_list.get_node_or_null(operation) as Button
+		var key: String = "tutorial.l02.s02" if operation == "StartAnalysis" else "tutorial.l02.s02.ambush"
+		check(button != null and button.is_visible_in_tree() and button.text == catalog.t(key), "L02-02 labels " + operation)
+	page._selection.cancel()
+	page.request_leave()
+	check(page._leave_dialog.visible and page._leave_dialog.dialog_text == catalog.t("tutorial.general.g04"), "G04 appears on leaving an unfinished lesson")
+	check(page._leave_dialog.get_cancel_button().text == catalog.t("tutorial.general.g04.continue") and page._leave_dialog.get_ok_button().text == catalog.t("tutorial.general.g04.exit"), "G04 choices")
+	page._leave_dialog.hide()
+	var response := _authored_step("lesson-07-chain", "respond")
+	service.match_snapshot["tutorial"] = response
+	service.match_snapshot["decision"] = {"id": "9", "kind": KernelContract.DecisionKind.Response, "player": 0}
+	service.match_snapshot["actionSummary"] = {"hasNonPhaseAction": true, "safeAdvance": {"type": KernelContract.CommandKind.PassResponse, "decision": "9"}}
+	page._refresh_tutorial(service.match_snapshot)
+	page._response_mode_changed(ResponseTiming.Mode.IGNORE)
+	await create_timer(0.2).timeout
+	check(page._confirm.is_visible_in_tree() and page._confirm.get_node("%Heading").text == catalog.t("tutorial.l07.s03"), "L07-03 asks in the actual response dialog, including Ignore mode")
+	check(service.selected_actions.is_empty(), "the learner retains the response decision")
+	page._confirm.close_popup()
+	var won := _authored_step("lesson-04-spells", "won")
+	won.complete = true
+	page._refresh_tutorial({"tutorial": won, "generation": "won", "result": 0})
+	var message: Label = page._lesson_end.get_node("%Message")
+	check(message.is_visible_in_tree() and message.text == catalog.t("tutorial.l04.s06") + "\n" + catalog.t("tutorial.l04.s07"), "L04 victory includes the recap after resolving")
+	completions.clear()
+	service.match_snapshot = {}
+	page._refresh_tutorial({})
 
 func _check_bar(page: MatchPage, label: String) -> void:
 	check(page._overlay.bar.is_visible_in_tree(), "hint remains visible for " + label)

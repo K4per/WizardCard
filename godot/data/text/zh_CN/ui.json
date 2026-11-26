@@ -1,13 +1,7 @@
 {
   "ui.match.overload_preview": "将受到 {damage} 点过载伤害",
-  "ui.lesson.mode": "教学模式",
-  "ui.lesson.badge": "教学模式 · 第 {order} 课",
+  "ui.lesson.badge": "{mode} · 第 {order} 课",
   "ui.lesson.continue": "继续",
-  "ui.lesson.complete": "第 {order} 课已完成",
-  "ui.lesson.incomplete": "第 {order} 课尚未完成",
-  "ui.lesson.retry_hint": "这次对局已结束。可以再玩一次，重新练习本课。",
-  "ui.lesson.next": "下一课",
-  "ui.lesson.menu": "回主菜单",
   "ui.lesson.retry": "再玩一次",
   "ui.lesson.deck": "去构筑卡组",
   "ui.lesson.skip": "跳过本课"

@@ -9,6 +9,9 @@ static func pass_action(snapshot: Dictionary, mode: int) -> Dictionary:
 	var decision: Variant = snapshot.get("decision")
 	if not decision is Dictionary or int(decision.get("kind", -1)) != KernelContract.DecisionKind.Response or int(decision.get("player", -1)) != int(snapshot.get("viewer", -2)):
 		return {}
+	var lesson: Variant = snapshot.get("tutorial")
+	if lesson is Dictionary and lesson.get("hintSurface") == "response":
+		return {}
 	var summary: Dictionary = snapshot.get("actionSummary", {})
 	if mode == Mode.AUTO and bool(summary.get("hasNonPhaseAction", false)):
 		return {}

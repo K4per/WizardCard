@@ -54,7 +54,6 @@
       "continue": true
     },
     {"id": "calculate", "hint": "tutorial.l06.s04", "highlight": ["zone:learner.hand"], "continue": true},
-    {"id": "two-costs", "hint": "tutorial.l06.s09", "highlight": ["zone:learner.status"], "continue": true},
     {
       "id": "choose",
       "hint": "tutorial.l06.choose",
@@ -163,8 +162,8 @@
       ],
       "until": {"event": "phase_enter", "next": "wait-draw", "active": "learner", "phase": "End"}
     },
-    {"id": "win-overload", "hint": "tutorial.l06.s10", "highlight": ["zone:learner.status"], "continue": true},
-    {"id": "won", "hint": "tutorial.l06.s08", "continue": true}
+    {"id": "win-overload", "hint": "tutorial.l06.s10", "recapHint": "tutorial.l06.s09", "highlight": ["zone:learner.status"], "continue": true},
+    {"id": "won", "hint": "tutorial.l06.s08", "recapHint": "tutorial.l06.s09", "continue": true}
   ],
   "branches": [
     {"gameOver": "learner", "learnerLoad": 20, "next": "win-overload"},

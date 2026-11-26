@@ -1,6 +1,7 @@
 #include "wizard/network.hpp"
 #include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <thread>
 using namespace wizard;
 int main(int argc, char **argv) {
@@ -114,6 +115,9 @@ int main(int argc, char **argv) {
                                     }
                                     choice = found;
                                 }
+                            } else if (!host && v.openingStage == OpeningStage::Gestures && options.field == ActionField::Choice) {
+                                // The host takes the first legal gesture. Use a different one to finish the opening.
+                                choice = std::prev(options.options.end());
                             }
                             intent.selections.push_back({options.field, choice->value});
                         }

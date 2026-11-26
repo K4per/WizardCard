@@ -2090,6 +2090,10 @@ func request_leave(quit_application: bool = false) -> void:
 	_leave_dialog.dialog_text = "确定投降并结束当前对局？"
 	if service.match_mode == "tutorial" or bool(service.match_snapshot.get("technicalPaused", false)):
 		_leave_dialog.dialog_text = "结束当前对局？"
+	if _lesson_state.has("lessonId"):
+		_leave_dialog.dialog_text = _text.t("tutorial.general.g04")
+		_leave_dialog.get_cancel_button().text = _text.t("tutorial.general.g04.continue")
+		_leave_dialog.get_ok_button().text = _text.t("tutorial.general.g04.exit")
 	_leave_dialog.popup_centered()
 
 func _leave() -> void:

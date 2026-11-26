@@ -13,7 +13,7 @@ from release_source import provenance
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "2.6.5"
+VERSION = "2.6.6"
 CONTENT_HASH = "54d3d845557007f7"
 
 

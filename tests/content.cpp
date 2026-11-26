@@ -78,11 +78,11 @@ TEST_CASE("replay detects incompatible content versions and tampering") {
     j["contentHash"]="changed";REQUIRE_THROWS(replay(c,j));j=session.recording();j["commands"][0]["digest"]="wrong";REQUIRE_THROWS(replay(c,j));
 }
 
-TEST_CASE("Alpha 2.6.5 replay keeps format six and rejects incompatible release metadata", "[alpha-v264]") {
+TEST_CASE("Alpha 2.6.6 replay keeps format six and rejects incompatible release metadata", "[alpha-v264]") {
     const auto content = loadContent(std::filesystem::path(WIZARD_SOURCE_DIR) / "assets/release-v260");
     MatchSession match(content, 42);
     const auto recording = match.recording();
-    CHECK(recording.at("programVersion") == "2.6.5");
+    CHECK(recording.at("programVersion") == "2.6.6");
     for (const char *field : {"rulesVersion", "cardSetVersion"})
         CHECK(recording.at(field) == "2.6.4-hotfix.1");
     CHECK(recording.at("mechanicsRevision") == 13);

@@ -18,6 +18,8 @@ const PAGES: Dictionary[StringName, PackedScene] = {
 }
 
 var service: FrontendService = FrontendService.new()
+var editor_lesson: Dictionary = {}
+var _intro: DeckDialog
 var current_page: StringName = &""
 var page: Control
 var _audio: MatchFeedback
@@ -74,6 +76,7 @@ func _ready() -> void:
 	_audio.service = service
 	add_child(_audio)
 	navigate(&"menu")
+	_offer_intro()
 	_network_timer = Timer.new()
 	_network_timer.wait_time = 0.05
 	_network_timer.timeout.connect(_poll_network)
@@ -94,6 +97,8 @@ func _ready() -> void:
 		get_tree().root.add_child.call_deferred(verification)
 
 func navigate(destination: StringName) -> void:
+	if destination != &"deck_editor":
+		editor_lesson.clear()
 	if not PAGES.has(destination):
 		return
 	if is_instance_valid(page):
@@ -106,9 +111,98 @@ func navigate(destination: StringName) -> void:
 	_host.add_child(page)
 	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	page.connect(&"navigation_requested", navigate)
+	if page.has_signal(&"deck_entry_requested"):
+		page.connect(&"deck_entry_requested", _deck_entry)
+	if page.has_signal(&"lesson_requested"):
+		page.connect(&"lesson_requested", _start_lesson)
+	if page.has_signal(&"lesson_completed"):
+		page.connect(&"lesson_completed", _mark_lesson)
+	if page.has_signal(&"lesson_navigation_requested"):
+		page.connect(&"lesson_navigation_requested", _lesson_navigation)
 	page.call(&"configure", service)
 	Typography.refresh()
 	page_changed.emit(destination)
+
+func _offer_intro() -> void:
+	if service.tutorial_lessons.is_empty() or GuideProgress.read(service.user_directory).askedIntro:
+		return
+	var catalog := get_node("/root/Text")
+	_intro = preload("res://ui/deck_dialog.tscn").instantiate() as DeckDialog
+	page.add_child(_intro)
+	_intro.present(catalog.t("ui.lesson.mode"), catalog.t("tutorial.general.g01"),
+		[catalog.t("tutorial.general.g01.new"), catalog.t("tutorial.general.g01.veteran")], 0)
+	_intro.chosen.connect(_answer_intro)
+
+func _answer_intro(index: int) -> void:
+	if not GuideProgress.answer(service.user_directory, index == 1):
+		_progress_error()
+		_intro.show()
+		return
+	if index == 0:
+		_start_lesson(str(service.tutorial_lessons.front().id))
+
+func _progress_error() -> void:
+	service.error = get_node("/root/Text").t("tutorial.guide.write_failed")
+	if page is MatchPage or page is GuidePage or page is DeckEditorPage:
+		page.get("_notice").text = service.error
+	elif page is MenuPage:
+		(page as MenuPage)._status.text = service.error
+		(page as MenuPage)._status.show()
+
+func _deck_entry() -> void:
+	var progress := GuideProgress.read(service.user_directory)
+	for lesson: Dictionary in service.tutorial_lessons:
+		if lesson.get("kind") == "editor" and progress.deckSkipCount < 2 and not progress.completed.has(lesson.id):
+			_start_lesson(str(lesson.id))
+			return
+	navigate(&"decks")
+
+func _start_lesson(id: String) -> void:
+	if service.match_active or service.network_active or not editor_lesson.is_empty():
+		return
+	for lesson: Dictionary in service.tutorial_lessons:
+		if lesson.id != id:
+			continue
+		if lesson.get("kind") == "editor":
+			if not service.create_draft(str(lesson.preset)):
+				return
+			for card: String in lesson.remove:
+				var main: Dictionary = service.editing_draft.cards
+				if not main.has(card) or int(main[card]) < 1:
+					return
+				main[card] -= 1
+				if main[card] == 0:
+					main.erase(card)
+			editor_lesson = lesson
+			navigate(&"deck_editor")
+		elif service.start_match({"mode": "tutorial", "lessonId": id}):
+			navigate(&"match")
+		return
+
+func _mark_lesson(id: String, _order: int) -> void:
+	if not GuideProgress.mark(service.user_directory, id):
+		_progress_error()
+
+func _lesson_navigation(action: StringName, id: String, order: int) -> void:
+	var editor := not editor_lesson.is_empty()
+	if action == &"skip" and not GuideProgress.skip(service.user_directory, id, editor):
+		_progress_error()
+		return
+	if service.match_active and not service.leave_match():
+		return
+	editor_lesson.clear()
+	if action == &"retry":
+		_start_lesson(id)
+	elif action == &"next":
+		for lesson: Dictionary in service.tutorial_lessons:
+			if int(lesson.order) > order:
+				_start_lesson(str(lesson.id))
+				return
+		navigate(&"menu")
+	elif action == &"deck" or (editor and action == &"skip"):
+		navigate(&"decks")
+	else:
+		navigate(&"guide" if action == &"skip" else &"menu")
 
 func _input(event: InputEvent) -> void:
 	if _audio == null:

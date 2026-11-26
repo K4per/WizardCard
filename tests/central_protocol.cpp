@@ -8,7 +8,7 @@ TEST_CASE("central handshake selects protocol five while diagnostic peers keep f
     REQUIRE(net::hello(content).at("protocol") == 4);
     REQUIRE(central::compatibilityError(content, central::hello(content)).empty());
     const auto current = central::hello(content);
-    CHECK(current.at("program") == "2.6.5");
+    CHECK(current.at("program") == "2.6.6");
     for (const char *field : {"rules", "cards"})
         CHECK(current.at(field) == "2.6.4-hotfix.1");
     CHECK(current.at("hash") == "54d3d845557007f7");

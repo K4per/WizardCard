@@ -18,7 +18,7 @@ func _ready() -> void:
 	resized.connect(_reflow)
 	hide()
 
-func present(title: String, body: String, actions: Array[String]) -> void:
+func present(title: String, body: String, actions: Array[String], default_action: int = -1) -> void:
 	_title.text = title
 	_body.text = body
 	for child: Node in _actions.get_children():
@@ -35,7 +35,7 @@ func present(title: String, body: String, actions: Array[String]) -> void:
 	show()
 	_reflow()
 	if not actions.is_empty():
-		(_actions.get_child(actions.size() - 1) as Button).grab_focus()
+		(_actions.get_child(default_action) as Button).grab_focus()
 
 func _reflow() -> void:
 	if _panel != null:

@@ -176,7 +176,7 @@ GameEngine replay(const Content &c, const Json &j,
         (c.catalog.rulesVersion == "2.6.4-hotfix.1" && c.catalog.mechanicsRevision == 13);
     const bool compatibleProgram = j.at("programVersion") == programVersion ||
         (format == 6 && c.catalog.rulesVersion == "2.6.4-hotfix.1" && c.catalog.mechanicsRevision == 13 &&
-         j.at("programVersion") == "2.6.4-hotfix.1");
+         (j.at("programVersion") == "2.6.4-hotfix.1" || j.at("programVersion") == "2.6.5"));
     if ((!legacy && format != (c.catalog.mechanicsRevision >= 12 ? 6 : 5)) ||
         (legacy && (!legacyRules || j.at("programVersion") != "2.5.5-hotfix.1" ||
                     j.at("rulesVersion") != "2.5.5" ||

@@ -81,7 +81,7 @@ def verify_network(output, evidence, args):
         assert reasons, "Terminal replay has no authoritative reason"
         for client in clients:
             assert all(reason in client["settlement"] for reason in reasons), (client["settlement"], reasons)
-        assert recording["programVersion"] == "2.6.5", recording["programVersion"]
+        assert recording["programVersion"] == "2.6.6", recording["programVersion"]
         for name in ("rulesVersion", "cardSetVersion"):
             assert recording[name] == "2.6.4-hotfix.1", (name, recording[name])
         assert recording["digestSchema"] == 4 and recording["mechanicsRevision"] == 13
@@ -135,7 +135,7 @@ def main():
         assert set(inventory) == {p.relative_to(output).as_posix() for p in output.rglob("*")
                                   if p.is_file() and p.name != "SHA256.json"}
         release = read_json(output / "RELEASE.json")
-        assert release["packageVersion"] == release["programVersion"] == "2.6.5"
+        assert release["packageVersion"] == release["programVersion"] == "2.6.6"
         for name in ("rulesVersion", "cardSetVersion"):
             assert release[name] == "2.6.4-hotfix.1", (name, release[name])
         assert release["contentHash"] == "54d3d845557007f7" and release["mechanicsRevision"] == 13

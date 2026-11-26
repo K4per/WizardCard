@@ -62,7 +62,7 @@ int fsync(int fd) {
             context = ssl.create_default_context(cafile=str(cert))
             with context.wrap_socket(raw, server_hostname="localhost") as stream:
                 metadata = json.loads((assets / "catalog.json").read_text())["metadata"]
-                send_message(stream, {"type": "Hello", "protocol": 5, "program": "2.6.5", "rules": metadata["rulesVersion"],
+                send_message(stream, {"type": "Hello", "protocol": 5, "program": "2.6.6", "rules": metadata["rulesVersion"],
                                       "cards": metadata["cardSetVersion"], "mechanics": metadata["mechanicsRevision"],
                                       "hash": "54d3d845557007f7"})
                 assert read_message(stream)["type"] == "Welcome"

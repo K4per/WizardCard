@@ -3,6 +3,8 @@ extends Control
 
 signal navigation_requested(page: StringName)
 
+signal lesson_requested(id: String)
+
 const TITLES: Array[String] = ["认识状态与区域", "猜拳开局与付费阵法", "解析法术：火球术", "言灵法术：火花", "咒符法术：护盾与连锁"]
 var service: FrontendService
 var tabs: TabContainer
@@ -25,7 +27,7 @@ func _ready() -> void:
 	var heading: HBoxContainer = HBoxContainer.new()
 	column.add_child(heading)
 	heading.add_child(UiFactory.button("‹ 返回主菜单", navigation_requested.emit.bind(&"menu")))
-	heading.add_child(UiFactory.label("巫师指南 · Alpha 2.6.5", 28, true))
+	heading.add_child(UiFactory.label(get_node("/root/Text").t("tutorial.guide.title", {"version": ProjectSettings.get_setting("application/config/version")}), 28, true))
 	tabs = TabContainer.new()
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(tabs)
@@ -68,14 +70,19 @@ func configure(value: FrontendService) -> void:
 	for child: Node in _course_list.get_children():
 		_course_list.remove_child(child)
 		child.queue_free()
+	var progress := GuideProgress.read(service.user_directory)
 	for lesson: Dictionary in service.tutorial_lessons:
-		var button := UiFactory.button(str(lesson["title"]), _start_course.bind({"mode": "tutorial", "lessonId": lesson["id"]}))
+		var id := str(lesson.id)
+		var key := "completed" if progress.completed.has(id) else ("skipped" if progress.skipped.has(id) else "available")
+		var catalog := get_node("/root/Text")
+		var label: String = catalog.t("tutorial.guide.entry", {"order": lesson.order, "title": lesson.title, "status": catalog.t("tutorial.guide." + key)})
+		var button := UiFactory.button(label, lesson_requested.emit.bind(id))
 		_course_list.add_child(button)
 	_course_list.visible = not service.tutorial_lessons.is_empty()
 	_library.configure(service)
 	var completed: Array = GuideProgress.completed(service.user_directory)
 	for index: int in range(5):
-		chapter_buttons[index].text = "第%d章 · %s%s" % [index + 1, TITLES[index], "　✓ 已完成" if completed.has(index + 1) else ""]
+		chapter_buttons[index].text = "第%d章 · %s%s" % [index + 1, TITLES[index], "　✓ 已完成" if completed.has("legacy-chapter-%d" % (index + 1)) else ""]
 
 func _read_rule(index: int) -> void:
 	var chapters: Array = _rules.get("chapters", [])

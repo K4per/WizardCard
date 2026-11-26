@@ -23,9 +23,11 @@ func _run() -> void:
 	var previous: FileAccess = FileAccess.open(previous_path, FileAccess.WRITE)
 	previous.store_string(JSON.stringify({"version": "2.6.4", "completed": [4]}))
 	previous.close()
-	check(GuideProgress.mark(previous_directory, 1), "can save a new chapter after upgrading")
+	var upgrade := GuideProgress.read(previous_directory)
+	check(upgrade.askedIntro and upgrade.isVeteran and upgrade.completed.is_empty(), "legacy progress migrates without mapping integer chapters")
+	check(GuideProgress.mark(previous_directory, "example-lesson"), "can save a new course after upgrading")
 	var migrated: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(previous_path)) as Dictionary
-	check(migrated.get("version") == "2.6.5" and GuideProgress.completed(previous_directory) == [4, 1], "old completions survive the first 2.6.5 save")
+	check(migrated.get("version") == "2.6.6" and migrated.schemaVersion == 2 and GuideProgress.completed(previous_directory) == ["example-lesson"], "new course IDs survive reload")
 	check((app.page as MenuPage)._buttons[3].text == "巫师指南", "menu has the unified guide entry")
 	app.navigate(&"setup")
 	await process_frame
@@ -56,7 +58,7 @@ func _run() -> void:
 		page._inspect_tutorial_area(area)
 		await process_frame
 	check(bool(app.service.snapshot().get("tutorial", {}).get("complete", false)), "area interactions complete chapter one")
-	check(GuideProgress.completed(app.service.user_directory).has(1), "completion is persisted locally")
+	check(GuideProgress.completed(app.service.user_directory).has("legacy-chapter-1"), "completion is persisted locally")
 	page._tutorial_retry.pressed.emit()
 	await process_frame
 	page = app.page as MatchPage

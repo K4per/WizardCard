@@ -27,7 +27,7 @@ else:
     from windows_icons import verify_application_icon
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_PACKAGE_VERSION = "2.6.5"
+DEFAULT_PACKAGE_VERSION = "2.6.6"
 
 
 @dataclass(frozen=True)

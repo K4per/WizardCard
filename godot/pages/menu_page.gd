@@ -3,6 +3,8 @@ extends Control
 
 signal navigation_requested(page: StringName)
 
+signal deck_entry_requested
+
 var _service: FrontendService
 var _status: Label
 var _column: VBoxContainer
@@ -17,7 +19,7 @@ func _ready() -> void:
 	_buttons.assign([%SinglePlayer, %Multiplayer, %Decks, %Library, %Replay, %Settings, %Quit])
 	_buttons[0].pressed.connect(_single_player)
 	_buttons[1].pressed.connect(navigation_requested.emit.bind(&"rooms"))
-	_buttons[2].pressed.connect(navigation_requested.emit.bind(&"decks"))
+	_buttons[2].pressed.connect(deck_entry_requested.emit)
 	_buttons[3].text = "巫师指南"
 	_buttons[3].pressed.connect(navigation_requested.emit.bind(&"guide"))
 	_buttons[4].pressed.connect(navigation_requested.emit.bind(&"replay"))
@@ -59,6 +61,13 @@ func _reflow() -> void:
 
 func configure(service: FrontendService) -> void:
 	_service = service
+	if not service.tutorial_lessons.is_empty():
+		var progress: Dictionary = GuideProgress.read(service.user_directory)
+		var count := 0
+		for lesson: Dictionary in service.tutorial_lessons:
+			if progress.completed.has(lesson.id):
+				count += 1
+		_buttons[3].text += " · " + str(get_node("/root/Text").t("tutorial.general.g06", {"completed": count, "total": service.tutorial_lessons.size()}))
 	_status.text = service.error if not service.error.is_empty() else service.storage_notice
 	_status.visible = not _status.text.is_empty()
 

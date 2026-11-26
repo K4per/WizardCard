@@ -14,11 +14,13 @@ struct CommandResult {
     std::optional<PendingDecision> waiting;
     std::string errorCode;
     bool pending{}; // frontend submission queued; authority has not acknowledged it yet
+    std::optional<TextRef> errorRef{};
 };
 struct LegalAction {
     std::string label;
     CardId source{}, target{};
     Command command;
+    std::optional<TextRef> labelRef{};
 };
 struct PlayerView {
     int life{}, mana{}, load{}, capacity{}, handCount{}, deckCount{}, ownTurn{}, actionsPlayed{};

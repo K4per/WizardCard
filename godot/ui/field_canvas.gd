@@ -352,7 +352,7 @@ func _draw() -> void:
 		draw_rect(Rect2(Vector2.ZERO, size), Color("14202b"))
 	draw_rect(Rect2(Vector2.ZERO, size), Color(0.031, 0.075, 0.122, 0.18))
 	if privacy:
-		_draw_label("交接设备后，再揭开场地", Rect2(Vector2(0, size.y * 0.5 - 24), Vector2(size.x, 48)), 26, Color("e4edf0"), true)
+		_draw_label(GameText.label("ui.field.handoff"), Rect2(Vector2(0, size.y * 0.5 - 24), Vector2(size.x, 48)), 26, Color("e4edf0"), true)
 		return
 	# Keep deck labels clear of the first formation even when the live match
 	# shares the viewport with its action panel.
@@ -567,10 +567,10 @@ func _draw_piles(own: bool) -> void:
 	var extent: Vector2 = size * layout.pile_size
 	var board_scale: float = _board_transform.x.length()
 	var label_size: int = Typography.fitted_size(maxi(1, roundi(17 * board_scale)), 24)
-	var minimum_width: float = ceilf(Typography.HEADING.get_string_size("副卡组", HORIZONTAL_ALIGNMENT_LEFT, -1, label_size).x) + 8
+	var minimum_width: float = ceilf(Typography.HEADING.get_string_size(GameText.label("terms.zone.side_deck"), HORIZONTAL_ALIGNMENT_LEFT, -1, label_size).x) + 8
 	extent.x = maxf(extent.x, minimum_width / maxf(board_scale, 0.01))
 	var pile_positions: Array[Vector2] = [layout.main_deck_position, layout.ash_position, layout.side_deck_position]
-	var names: Array[String] = ["牌库", "灰烬区", "副卡组"]
+	var names: Array[String] = [GameText.label("terms.zone.deck"), GameText.label("ui.zone.ash"), GameText.label("terms.zone.side_deck")]
 	var kinds: Array[String] = ["main_deck", "ash", "side_deck"]
 	var counts: Array[int] = [field.own_deck_count, field.own_ash_count, field.own_side_count]
 	if not own:
@@ -611,7 +611,7 @@ func _draw_opponent_hand() -> void:
 		_draw_editor_card(rect)
 	draw_set_transform_matrix(Transform2D.IDENTITY)
 	if count > 0:
-		_draw_label("对方手牌 %d" % count, _opponent_count_bounds(), 13, Color("b7c6ce"))
+		_draw_label(GameText.label("ui.field.opponent_hand", {"count": count}), _opponent_count_bounds(), 13, Color("b7c6ce"))
 
 func _opponent_count_bounds() -> Rect2:
 	var right: float = size.x
@@ -630,8 +630,8 @@ func _draw_editor_preview() -> void:
 	_zone_hits.clear()
 	for region: Rect2 in [_opponent_casting_region, _own_casting_region]:
 		draw_rect(region, Color("303540"), true)
-		_draw_label("施法区 · 编辑器预览", region.grow(-8), 22, Color("f1dfb3"), true)
-	_draw_label("场地布局 · 仅展示数据", Rect2(size.x * 0.35, 4, size.x * 0.30, 48), 24, Color("e4edf0"), true)
+		_draw_label(GameText.label("ui.field.casting_preview"), region.grow(-8), 22, Color("f1dfb3"), true)
+	_draw_label(GameText.label("ui.field.preview_only"), Rect2(size.x * 0.35, 4, size.x * 0.30, 48), 24, Color("e4edf0"), true)
 	var extent: Vector2 = _hand_card_size(size.y * layout.hand_height_ratio)
 	var stride: float = _hand_stride(extent.x, preview_hand_count)
 	var total: float = extent.x + (preview_hand_count - 1) * stride
@@ -723,10 +723,10 @@ func _draw_formations(formations: Array[FormationPresentation], region: Rect2, o
 		if highlighted:
 			_draw_glow(band.grow(-3), Color("f2cb62"))
 			_formation_slot_hits.append({"rect": band, "slot": empty_slot})
-		_draw_label("点击设置" if highlighted else "阵法槽 %d" % (empty_slot + 1), band, 13, Color("ffe69c") if highlighted else Color("829aa8"), true)
+		_draw_label(GameText.label("ui.field.click_to_set") if highlighted else GameText.label("ui.field.formation_slot", {"slot": (empty_slot + 1)}), band, 13, Color("ffe69c") if highlighted else Color("829aa8"), true)
 	var header_height: float = layout.analysis_header_height
 	var header_y: float = region.end.y - header_height if own else region.position.y
-	_draw_label(("己方" if own else "对方") + "解析区　阵体 %d/%d" % [slot,slot_count], Rect2(region.position.x + 6, header_y, region.size.x - 12, header_height), 12, Color("b7c6ce"))
+	_draw_label((GameText.label("ui.selection.own") if own else GameText.label("ui.selection.opponent")) + GameText.label("ui.field.analysis_capacity", {"slot": slot, "slots": slot_count}), Rect2(region.position.x + 6, header_y, region.size.x - 12, header_height), 12, Color("b7c6ce"))
 
 func _draw_formation_cluster(formation: FormationPresentation, cluster: Rect2, own: bool) -> void:
 	draw_rect(cluster, Color("162b36"))
@@ -744,7 +744,7 @@ func _draw_formation_cluster(formation: FormationPresentation, cluster: Rect2, o
 		_draw_legal_highlight(formation.card, band.grow(-3))
 	if formation.body_size > 1:
 		var side_width: float = face.position.x - band.position.x - 5
-		_draw_label("阵体 %d" % formation.body_size, Rect2(band.position + Vector2(4, 0), Vector2(side_width, band.size.y)), 14, Color("bfd0d4"), true)
+		_draw_label(GameText.label("ui.field.body", {"body": formation.body_size}), Rect2(band.position + Vector2(4, 0), Vector2(side_width, band.size.y)), 14, Color("bfd0d4"), true)
 	var rings: Array[Rect2] = _ring_grid(cluster, formation.ring_count, own)
 	for ring: int in range(rings.size()):
 		var rect: Rect2 = rings[ring]
@@ -841,7 +841,7 @@ func _draw_expand_button(host: CardPresentation, rect: Rect2, formation: Formati
 	_expand_hits.append({"host": host, "formation": formation, "rect": rect, "has_target": marked})
 	draw_rect(rect, Color("3c4859"))
 	draw_rect(rect, Color("82db9d") if marked else Color("95abc0"), false, 2 if marked else 1)
-	var caption: String = "展开" if formation != null else "符%d" % (field.attachments[host.instance_id] as Array).size()
+	var caption: String = GameText.label("ui.field.expand") if formation != null else GameText.label("ui.field.rune_count", {"count": (field.attachments[host.instance_id] as Array).size()})
 	_draw_label(caption if rect.size.x >= 30 else "+", rect, 12, Color("eaf0f4"), true)
 
 func _close_host_menu() -> void:
@@ -860,7 +860,7 @@ func _add_rune_items(host: CardPresentation) -> void:
 		var marker: String = "　✓" if _marked_card(rune) else ""
 		var index: int = _host_menu.item_count
 		var icon: Texture2D = _expanded_rune_face(rune, host)
-		_host_menu.add_icon_item(icon, "　符文 · " + rune.title + marker, index)
+		_host_menu.add_icon_item(icon, GameText.label("ui.field.runes", {"rune": rune.title, "marker": marker}), index)
 		_host_menu.set_item_icon_max_width(index, icon.get_width())
 		_host_menu.set_item_metadata(index, {"card": rune})
 
@@ -897,7 +897,7 @@ func _open_host_menu(hit: Dictionary) -> void:
 	if formation != null:
 		for ring: int in range(formation.ring_count):
 			var occupant: CardPresentation = formation.occupants.get(ring) as CardPresentation
-			var label: String = "环 %d · %s" % [ring + 1, occupant.title if occupant != null else "空"]
+			var label: String = GameText.label("ui.field.ring", {"ring": ring + 1, "occupant": occupant.title if occupant != null else GameText.label("ui.field.empty")})
 			if _legal_ring(host.instance_id, ring):
 				_add_menu_item(label + "　✓", {"host": host.instance_id, "ring": ring})
 			else:
@@ -956,9 +956,9 @@ func _draw_casting(cards: Array[CardPresentation], slots: int, region: Rect2, ow
 	_casting_start[side] = first
 	var count: int = mini(capacity, cards.size() - first)
 	var header_height: float = minf(23, region.size.y * 0.4)
-	var label: String = "%s施法区　%d/%d" % ["己方" if own else "对方", cards.size(), slots]
+	var label: String = GameText.label("ui.field.casting_capacity", {"owner": GameText.label("ui.selection.own") if own else GameText.label("ui.selection.opponent"), "occupied": cards.size(), "slots": slots})
 	if paged:
-		label += "　%d/%d 页" % [page + 1, last_page + 1]
+		label += GameText.label("ui.field.pages", {"page": page + 1, "pages": last_page + 1})
 	_draw_label(label, Rect2(region.position, Vector2(region.size.x, header_height)), 14, Color("e4d6b4"), true)
 	var track: Rect2 = Rect2(region.position + Vector2(3, header_height), region.size - Vector2(6, header_height + 4))
 	var arrow_width: float = minf(28, region.size.x * 0.12) if paged else 0.0

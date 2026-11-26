@@ -25,7 +25,7 @@ func _ready() -> void:
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	add_child(column)
-	_name = UiFactory.label("玩家", 12)
+	_name = UiFactory.label(GameText.label("ui.status.player"), 12)
 	_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(_name)
 	var stats: GridContainer = GridContainer.new()
@@ -35,10 +35,10 @@ func _ready() -> void:
 	stats.add_theme_constant_override(&"v_separation", 1)
 	stats.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(stats)
-	_life = _add_stat(stats, "生命", Color("f28a83"), HEART)
-	_temporary_life = _add_stat(stats, "临时生命", Color("85d8ec"), SHIELD)
-	_mana = _add_stat(stats, "魔素", Color("78cfb0"), CRYSTAL)
-	_load = _add_stat(stats, "荷载", Color("e9c978"), WEIGHT)
+	_life = _add_stat(stats, GameText.label("ui.status.life"), Color("f28a83"), HEART)
+	_temporary_life = _add_stat(stats, GameText.label("ui.status.temporary_life"), Color("85d8ec"), SHIELD)
+	_mana = _add_stat(stats, GameText.label("ui.status.mana"), Color("78cfb0"), CRYSTAL)
+	_load = _add_stat(stats, GameText.label("ui.status.load"), Color("e9c978"), WEIGHT)
 	custom_minimum_size = PANEL_SIZE
 
 func _add_stat(parent: GridContainer, caption: String, tint: Color, shape: PackedVector2Array) -> Label:
@@ -70,38 +70,38 @@ func set_status(player_name: String, player_index: int, values: Dictionary, load
 	if not is_node_ready():
 		return
 	var seven_mode: int = int(values.get("sevenMode", 0))
-	_player_caption = player_name + (" · 耀" if seven_mode == 1 else (" · 黯" if seven_mode == 2 else ""))
+	_player_caption = player_name + (GameText.label("ui.status.radiant_mark") if seven_mode == 1 else (GameText.label("ui.status.necrotic_mark") if seven_mode == 2 else ""))
 	set_clock(clock_text, clock_warning)
 	var unlimited_life: bool = bool(debug.get("infiniteLife", values.get("infiniteLife", false)))
 	var unlimited_mana: bool = bool(debug.get("infiniteMana", values.get("infiniteMana", false)))
 	var unlimited_capacity: bool = bool(debug.get("infiniteLoad", values.get("infiniteLoad", false)))
-	_life.text = "生命 %s/%d" % ["∞" if unlimited_life else str(int(values.get("life", 0))), int(values.get("lifeLimit", 40))]
-	_temporary_life.text = "临时生命 +%d" % int(values.get("temporaryLife", 0))
-	_mana.text = "魔素 %s/%d" % ["∞" if unlimited_mana else str(int(values.get("mana", 0))), 20]
-	_load.text = "荷载 %d/%s" % [int(values.get("load", 0)), "∞" if unlimited_capacity else str(int(values.get("capacity", 0)))]
+	_life.text = GameText.label("ui.status.life_value", {"current": "∞" if unlimited_life else str(int(values.get("life", 0))), "maximum": int(values.get("lifeLimit", 40))})
+	_temporary_life.text = GameText.label("ui.status.temporary_life_value", {"amount": int(values.get("temporaryLife", 0))})
+	_mana.text = GameText.label("ui.status.mana_value", {"current": "∞" if unlimited_mana else str(int(values.get("mana", 0))), "maximum": 20})
+	_load.text = GameText.label("ui.status.load_value", {"current": int(values.get("load", 0)), "maximum": "∞" if unlimited_capacity else str(int(values.get("capacity", 0)))})
 	var details: Array[String] = []
 	for card: Dictionary in cards:
 		if int(card.get("owner", -1)) != player_index:
 			continue
 		var bound: int = int(card.get("analysisLoad", 0)) + int(card.get("castLoad", 0))
 		if bound > 0:
-			var source_name: String = str((card.get("definition", {}) as Dictionary).get("name", "盖伏法术"))
-			details.append("绑定荷载 · %s · %d" % [source_name, bound])
+			var source_name: String = str((card.get("definition", {}) as Dictionary).get("name", GameText.label("ui.table.hidden_spell")))
+			details.append(GameText.label("ui.status.bound_load", {"source": source_name, "amount": bound}))
 	for entry: Dictionary in loads:
 		if int(entry.get("owner", -1)) != player_index:
 			continue
 		var source: String = str(entry.get("source", "0"))
-		var source_name: String = "未绑定来源"
+		var source_name: String = GameText.label("ui.status.unbound")
 		for card: Dictionary in cards:
 			if str(card.get("id", "0")) == source:
 				source_name = str((card.get("definition", {}) as Dictionary).get("name", source_name))
 				break
-		var kind: String = "独立荷载" if bool(entry.get("independent", false)) else ("绑定荷载" if bool(entry.get("sourceBound", false)) else "临时荷载")
+		var kind: String = GameText.label("ui.debug.independent_load") if bool(entry.get("independent", false)) else (GameText.label("ui.debug.bound_load") if bool(entry.get("sourceBound", false)) else GameText.label("ui.debug.temporary_load"))
 		details.append("%s · %s · %d" % [kind, source_name, int(entry.get("amount", 0))])
-	_load.tooltip_text = "荷载来源：\n" + ("\n".join(details) if not details.is_empty() else "暂无额外荷载来源")
-	_life.tooltip_text = "当前生命 / 生命上限，不含临时生命。"
-	_temporary_life.tooltip_text = "临时生命；己方抽卡阶段清除。"
-	_mana.tooltip_text = "当前魔素 / 上限 20。"
+	_load.tooltip_text = GameText.label("ui.status.load_sources", {"sources": ("\n".join(details) if not details.is_empty() else GameText.label("ui.status.no_extra_load"))})
+	_life.tooltip_text = GameText.label("ui.status.life_hint")
+	_temporary_life.tooltip_text = GameText.label("ui.status.temporary_life_hint")
+	_mana.tooltip_text = GameText.label("ui.status.mana_hint")
 
 var _delta_badges: Dictionary[String, Label] = {}
 var _delta_tweens: Dictionary[String, Tween] = {}

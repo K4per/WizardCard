@@ -38,9 +38,9 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="Panel/Column"]
+metadata/text_keys = {"text": "ui.match.confirm_action"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "确认操作"
 theme_override_font_sizes/font_size = 22
 
 [node name="Body" type="RichTextLabel" parent="Panel/Column"]

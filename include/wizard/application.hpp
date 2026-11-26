@@ -137,7 +137,7 @@ class Application {
     void closeSettings();
     bool applySettings(const Settings &, std::string &error);
     bool start(const MatchConfig &, std::string &error, SessionOptions = {});
-    bool startTutorial(std::string &error, const std::string &lessonId);
+    bool startTutorial(std::string &error, const std::string &lessonId, std::optional<TextRef> *errorRef = nullptr);
     const LessonCatalog &lessons() const { return lessons_; }
     const LessonScript *lessonScript() const { return lessonScript_ ? &*lessonScript_ : nullptr; }
     Json lessonSnapshot() const;

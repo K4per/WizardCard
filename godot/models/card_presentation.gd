@@ -1,12 +1,17 @@
 class_name CardPresentation
 extends Resource
 
-const RARITY_LABELS: Dictionary[String, String] = {
-	"common": "普通",
-	"uncommon": "罕见",
-	"rare": "稀有",
-	"epic": "史诗",
-	"legendary": "传说",
+const TYPE_KEYS: Array[String] = [
+	"terms.card_type.legacy_action", "terms.card_type.analysis", "terms.card_type.word",
+	"terms.card_type.formation", "terms.card_type.rune", "terms.card_type.talisman",
+]
+
+const RARITY_KEYS: Dictionary[String, String] = {
+	"common": "terms.rarity.common",
+	"uncommon": "terms.rarity.uncommon",
+	"rare": "terms.rarity.rare",
+	"epic": "terms.rarity.epic",
+	"legendary": "terms.rarity.legendary",
 }
 
 @export var instance_id: String = ""
@@ -35,9 +40,9 @@ const RARITY_LABELS: Dictionary[String, String] = {
 
 func token_label() -> String:
 	if wind_contract:
-		return "风契指示物：%d" % storm_points
+		return GameText.label("ui.card.wind_contract_tokens", {"count": storm_points})
 	if storm_points != 0:
-		return "风暴点数：%d" % storm_points
+		return GameText.label("ui.card.storm_points", {"points": storm_points})
 	return ""
 
 static func from_definition(data: Dictionary) -> CardPresentation:
@@ -53,25 +58,24 @@ static func from_definition(data: Dictionary) -> CardPresentation:
 	card.speed = int(data.get("speed", 1))
 	var type_index: int = int(data.get("type", 1))
 	card.type_key = ["incantation", "analysis", "incantation", "formation", "rune", "talisman"][clampi(type_index, 0, 5)]
-	card.type_label = str(data.get("typeLabel", ["行动（旧版）", "解析", "言灵", "阵法", "符文", "咒符"][clampi(type_index, 0, 5)]))
+	card.type_label = str(data["typeLabel"]) if data.has("typeLabel") else GameText.label(TYPE_KEYS[clampi(type_index, 0, 5)])
 	card.setting_cost = int(data.get("cost", 0)) if type_index != 5 else 0
 	card.cast_cost = int(data.get("castCost", 0))
 	card.dynamic_cost = bool(data.get("dynamicCost", false))
 	card._update_cost_label()
 	card.secondary_value = str(data.get("level", data.get("rank", 0)))
 	var lines: Array[String] = []
-	lines.append("等级：%d" % int(data.get("level", data.get("rank", 0))))
+	lines.append(GameText.label("ui.card.level", {"level": int(data.get("level", data.get("rank", 0)))}))
 	if type_index == 3:
-		lines.append("阵体：%d　环位：%d" % [int(data.get("body", 0)), int(data.get("rings", 0))])
-		lines.append("荷载上限：%d　魔素收入：%d" % [int(data.get("capacity", 0)), int(data.get("income", 0))])
-		lines.append("设置条件：" + formation_condition(data))
+		lines.append(GameText.label("ui.card.body_and_rings", {"body": int(data.get("body", 0)), "rings": int(data.get("rings", 0))}))
+		lines.append(GameText.label("ui.card.capacity_and_income", {"capacity": int(data.get("capacity", 0)), "income": int(data.get("income", 0))}))
+		lines.append(GameText.label("ui.card.setting_condition", {"condition": formation_condition(data)}))
 	else:
 		var school: String = str(data.get("school", ""))
-		var schools: Dictionary[String, String] = {"abjuration": "防护", "conjuration": "咒法", "divination": "预言", "enchantment": "惑控", "evocation": "塑能", "illusion": "幻术", "necromancy": "死灵", "transmutation": "变化", "arcana": "阿卡那"}
 		if not school.is_empty():
-			lines.append("派系：" + schools.get(school, school))
+			lines.append(GameText.label("ui.card.faction", {"school": (GameText.label("terms.school_short." + school) if GameText.shared().has_key("terms.school_short." + school) else school)}))
 		lines.append(card.cost_detail())
-		lines.append("解析时间：%d　速度：%d" % [int(data.get("analysisTurns", 0)), card.speed])
+		lines.append(GameText.label("ui.card.analysis_and_speed", {"turns": int(data.get("analysisTurns", 0)), "speed": card.speed}))
 	card.metadata_text = "\n".join(lines)
 	return card
 
@@ -92,18 +96,18 @@ static func from_preview_definition(data: Dictionary) -> CardPresentation:
 	# These design documents do not assign rarities or formation speeds.
 	card.rarity = ""
 	card.speed = int(data.get("speed", 0))
-	var lines: Array[String] = ["等级：%d" % int(data["level"])]
+	var lines: Array[String] = [GameText.label("ui.card.level", {"level": int(data["level"])})]
 	if card.type_key == "formation":
-		lines.append("阵体大小：%d    最大解析数：%d" % [int(data["body"]), int(data["rings"])])
-		lines.append("荷载上限：%d    魔素收入：%d" % [int(data["capacity"]), int(data["income"])])
-		lines.append("召唤条件：" + str(data["summonCondition"]))
+		lines.append(GameText.label("ui.card.preview_body_and_rings", {"body": int(data["body"]), "rings": int(data["rings"])}))
+		lines.append(GameText.label("ui.card.preview_capacity_and_income", {"capacity": int(data["capacity"]), "income": int(data["income"])}))
+		lines.append(GameText.label("ui.card.summon_condition", {"condition": str(data["summonCondition"])}))
 	else:
 		var costs: Array = data["costParts"]
 		var cost_text: String = str(data["costText"])
 		card.primary_value = cost_text if cost_text == "X" else str(int(costs[0]))
-		lines.append("学派：" + str(data["school"]))
-		lines.append("费用：" + cost_text)
-		lines.append("解析时间：%d    速度：%d" % [int(data["analysisTurns"]), card.speed])
+		lines.append(GameText.label("ui.card.school", {"school": str(data["school"])}))
+		lines.append(GameText.label("ui.card.cost", {"cost": cost_text}))
+		lines.append(GameText.label("ui.card.preview_analysis_and_speed", {"turns": int(data["analysisTurns"]), "speed": card.speed}))
 	card.metadata_text = "\n".join(lines)
 	return card
 
@@ -114,7 +118,7 @@ static func escape_bbcode(value: String) -> String:
 	return value.replace("[", "[lb]")
 
 func detail_text(rich: bool = false) -> String:
-	var result: String = (metadata_text + "\n\n" if not metadata_text.is_empty() else "") + "效果：\n" + text
+	var result: String = (metadata_text + "\n\n" if not metadata_text.is_empty() else "") + GameText.label("ui.card.effect", {"effect": text})
 	if rich:
 		result = escape_bbcode(result)
 	if not flavor.is_empty():
@@ -122,12 +126,12 @@ func detail_text(rich: bool = false) -> String:
 	return result
 
 func rarity_text() -> String:
-	return RARITY_LABELS.get(rarity, rarity)
+	return GameText.label(RARITY_KEYS[rarity]) if RARITY_KEYS.has(rarity) else rarity
 
 static func anonymous(id: String = "") -> CardPresentation:
 	var card: CardPresentation = CardPresentation.new()
 	card.instance_id = id
-	card.title = "盖伏卡"
+	card.title = GameText.label("ui.card.hidden")
 	card.type_key = ""
 	card.hidden = true
 	card.face_down = true
@@ -142,6 +146,7 @@ static func from_projection(data: Dictionary) -> CardPresentation:
 	card.face_down = bool(data.get("faceDown", false))
 	var definition_data: Dictionary = data.get("definition", {}) as Dictionary
 	var card_tags: Array = definition_data.get("tags", []) as Array
+	# Stable content tags used by existing card definitions.
 	card.wind_contract = card_tags.has("风契")
 	if card_tags.has("风暴") or card.wind_contract:
 		card.storm_points = int(data.get("stormPoints", 0))
@@ -155,24 +160,24 @@ static func from_projection(data: Dictionary) -> CardPresentation:
 		card.metadata_text += "\n" + token_text
 	card.status = str(data.get("statusLabel", ""))
 	if int(data.get("zone", -1)) in [6, 10]:
-		card.status = "已离场 · " + str(data.get("zoneName", "灰烬区"))
+		card.status = GameText.label("ui.card.departed", {"zone": GameText.term(data, "zoneName", GameText.label("ui.zone.ash"))})
 	if card.status.is_empty():
 		if bool(data.get("faceDown", false)):
-			card.status = "盖伏"
+			card.status = GameText.label("ui.card.face_down")
 		elif int(data.get("spellState", 0)) == 1:
-			card.status = "解析剩余 %d" % int(data.get("turnsToReady", 0))
+			card.status = GameText.label("ui.card.analysis_remaining", {"turns": int(data.get("turnsToReady", 0))})
 		elif int(data.get("spellState", 0)) == 2:
-			card.status = "已解析"
+			card.status = GameText.label("ui.card.ready")
 		elif int(data.get("spellState", 0)) == 4:
-			card.status = "持续生效"
+			card.status = GameText.label("ui.card.ongoing")
 			if int(definition_data.get("duration", 0)) > 0:
-				card.status += " · 计时剩余 %d；己方结束阶段先触发，再减1，归零送灰" % int(data.get("remaining", 0))
+				card.status += GameText.label("ui.card.duration_remaining", {"turns": int(data.get("remaining", 0))})
 		elif int(data.get("spellState", 0)) == 5:
-			card.status = "已结算 · 结束阶段清理"
+			card.status = GameText.label("ui.card.resolved")
 	for effect_status: Variant in data.get("statuses", []):
 		card.status += ("\n" if not card.status.is_empty() else "") + str(effect_status)
 	if not card.status.is_empty():
-		card.metadata_text += "\n状态：" + card.status
+		card.metadata_text += GameText.label("ui.card.status", {"status": card.status})
 	return card
 
 func _update_cost_label() -> void:
@@ -185,5 +190,5 @@ func cost_detail() -> String:
 	if type_key == "formation":
 		return ""
 	if type_key == "talisman":
-		return "施法费用：%s（盖伏免费）" % ("X" if dynamic_cost else str(cast_cost))
-	return "设置费用：%d　施法费用：%d" % [setting_cost, cast_cost]
+		return GameText.label("ui.card.talisman_cost", {"cost": ("X" if dynamic_cost else str(cast_cost))})
+	return GameText.label("ui.card.spell_cost", {"setting": setting_cost, "casting": cast_cost})

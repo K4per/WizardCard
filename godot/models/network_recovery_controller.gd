@@ -16,6 +16,7 @@ func update(state: Dictionary) -> bool:
 	var next_generation: String = str(state.get("generation", ""))
 	var next_revision: String = str(state.get("revision", ""))
 	var changed: bool = generation != next_generation or revision != next_revision
+	# Older servers identify a pending acknowledgement with this exact wire string.
 	if changed or blocked or (not notice.is_empty() and notice != "操作已发送，等待房主确认。"):
 		waiting = false
 	generation = next_generation

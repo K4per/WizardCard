@@ -35,16 +35,16 @@ theme_override_constants/separation = 10
 layout_mode = 2
 
 [node name="Back" parent="Margin/Column/Heading" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.navigation.back_arrow"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "‹ 返回"
 primary = false
 compact = false
 
 [node name="Title" type="Label" parent="Margin/Column/Heading"]
+metadata/text_keys = {"text": "ui.guide.library"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "卡牌图鉴"
 theme_override_font_sizes/font_size = 28
 size_flags_horizontal = 3
 
@@ -52,9 +52,9 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="Search" type="LineEdit" parent="Margin/Column/Filters"]
+metadata/text_keys = {"placeholder_text": "ui.library.search_placeholder_text"}
 layout_mode = 2
 unique_name_in_owner = true
-placeholder_text = "搜索编号、名称、学派或效果"
 custom_minimum_size = Vector2(0, 48)
 size_flags_horizontal = 3
 
@@ -64,9 +64,9 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(224, 48)
 
 [node name="Notice" type="Label" parent="Margin/Column"]
+metadata/text_keys = {"text": "ui.library.notice"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "正式卡池"
 theme_override_font_sizes/font_size = 16
 
 [node name="Content" type="HBoxContainer" parent="Margin/Column"]

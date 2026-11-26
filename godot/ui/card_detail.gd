@@ -45,21 +45,21 @@ func configure(value: CardPresentation) -> void:
 	_update_lesson_hint()
 	_art.configure(card)
 	if card.hidden:
-		_title.text = "盖伏卡"
-		_type.text = "身份未公开"
-		_body.text = "盖伏卡的名称、类型与能力在公开前不可见。"
+		_title.text = GameText.label("ui.card.hidden")
+		_type.text = GameText.label("ui.card.private_identity")
+		_body.text = GameText.label("ui.card.private_hint")
 		return
 	_title.text = card.title
 	_type.text = card.type_label
 	if card.speed > 0:
-		_type.text += " · %d速" % card.speed
+		_type.text += GameText.label("ui.card.speed", {"speed": card.speed})
 	if not card.rarity.is_empty():
 		_type.text += " · " + card.rarity_text()
 	if card.preview:
 		_type.text += " · 2.0"
 	var content: String = card.detail_text(true)
 	if not card.number.is_empty():
-		content += "\n\n编号：" + CardPresentation.escape_bbcode(card.number)
+		content += GameText.label("ui.card.number_line", {"number": CardPresentation.escape_bbcode(card.number)})
 	if _body.text != content:
 		var scroll: float = _body.get_v_scroll_bar().value
 		_body.text = content

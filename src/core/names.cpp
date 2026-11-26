@@ -1,10 +1,10 @@
-#include "wizard/core/rules.hpp"
+#include "wizard/core/types.hpp"
 #include <algorithm>
-#include <cstdlib>
+#include <array>
 #include <iomanip>
-#include <set>
+#include <map>
 #include <sstream>
-#include <stdexcept>
+#include <string_view>
 
 namespace wizard {
 namespace {
@@ -31,34 +31,63 @@ std::string fingerprint(const std::string &bytes) {
     o << std::hex << std::setfill('0') << std::setw(16) << h;
     return o.str();
 }
-std::string damageName(DamageType d) {
-    return std::array<const char *, 13>{"火焰", "寒冷", "光耀", "黯蚀", "毒素", "闪电",
-                                        "心灵", "雷鸣", "力场", "挥砍", "钝击", "穿刺", "强酸"}
-        .at(static_cast<std::size_t>(d));
+std::string damageTermKey(DamageType type) { return std::string("terms.damage.") + damageTypeId(type); }
+
+std::string schoolTermKey(const std::string &school) {
+    static const std::array<std::string_view, 9> schools = {
+        "evocation", "transmutation", "conjuration", "enchantment", "illusion",
+        "abjuration", "necromancy", "divination", "arcana"
+    };
+    return std::find(schools.begin(), schools.end(), school) == schools.end() ? "" : "terms.school." + school;
 }
-std::string schoolName(const std::string &s) {
-    const std::map<std::string, std::string> names{{"evocation", "塑能系"},   {"transmutation", "变化系"},
-                                                   {"conjuration", "咒法系"}, {"enchantment", "惑控系"},
-                                                   {"illusion", "幻术系"},    {"abjuration", "防护系"},
-                                                   {"necromancy", "死灵系"},  {"divination", "预言系"},
-                                                   {"arcana", "阿卡那"}};
-    auto i = names.find(s);
-    return i == names.end() ? "" : i->second;
+
+std::string phaseTermKey(Phase value) {
+    static constexpr std::array<const char *, 5> keys = {
+        "terms.phase.draw", "terms.phase.prepare", "terms.phase.main",
+        "terms.phase.cast", "terms.phase.end"
+    };
+    return keys.at(static_cast<std::size_t>(value));
 }
-std::string phaseName(Phase p) {
-    return std::array<const char *, 5>{"抽卡", "准备", "主要", "施法", "结束"}.at(
-        static_cast<std::size_t>(p));
+
+std::string zoneTermKey(Zone value) {
+    static constexpr std::array<const char *, 11> keys = {
+        "terms.zone.deck", "terms.zone.hand", "terms.zone.action",
+        "terms.zone.analysis", "terms.zone.words", "terms.zone.casting",
+        "terms.zone.ash", "terms.zone.attached", "terms.zone.resolving",
+        "terms.zone.side_deck", "terms.zone.exile"
+    };
+    return keys.at(static_cast<std::size_t>(value));
 }
-std::string zoneName(Zone p) {
-    return std::array<const char *, 11>{"牌库", "手牌", "行动", "解析", "言灵", "施法", "灰烬", "符文", "响应", "副卡组", "抹除"}
-        .at(static_cast<std::size_t>(p));
+
+std::string windowTermKey(ResponseWindow value) {
+    static constexpr std::array<const char *, 7> keys = {
+        "terms.window.phase_start", "terms.window.phase_end", "terms.window.action",
+        "terms.window.prepare", "terms.window.cast", "terms.window.trigger",
+        "terms.window.damage"
+    };
+    return keys.at(static_cast<std::size_t>(value));
 }
-std::string windowName(ResponseWindow p) {
-    return std::array<const char *, 7>{"阶段开始", "阶段结束", "行动宣告", "准备施法", "释放法术", "被动触发", "受到伤害"}
-        .at(static_cast<std::size_t>(p));
+
+std::string linkTermKey(LinkKind value) {
+    static constexpr std::array<const char *, 7> keys = {
+        "terms.link.phase", "terms.link.action", "terms.link.preparation",
+        "terms.link.spell", "terms.link.response", "terms.link.trigger",
+        "terms.link.setup"
+    };
+    return keys.at(static_cast<std::size_t>(value));
 }
-std::string linkName(LinkKind p) {
-    return std::array<const char *, 7>{"阶段", "行动宣告", "准备施法", "释放法术", "响应", "被动触发", "设置解析法术"}.at(
-        static_cast<std::size_t>(p));
+
+std::string legacyTermName(const std::string &key) {
+    static const std::map<std::string, std::string> names = {
+#include "legacy_terms.inc"
+    };
+    const auto found = names.find(key);
+    return found == names.end() ? "" : found->second;
 }
+std::string damageName(DamageType value) { return legacyTermName(damageTermKey(value)); }
+std::string schoolName(const std::string &value) { return legacyTermName(schoolTermKey(value)); }
+std::string phaseName(Phase value) { return legacyTermName(phaseTermKey(value)); }
+std::string zoneName(Zone value) { return legacyTermName(zoneTermKey(value)); }
+std::string windowName(ResponseWindow value) { return legacyTermName(windowTermKey(value)); }
+std::string linkName(LinkKind value) { return legacyTermName(linkTermKey(value)); }
 } // namespace wizard

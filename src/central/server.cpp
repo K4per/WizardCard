@@ -364,6 +364,7 @@ std::vector<Delivery> Authority::roomMessage(Room &room, Connection sender, int 
                     const auto result = room.match->submit(seat, command);
                     response["type"] = result.accepted ? "Accepted" : "Rejected";
                     response["code"] = result.errorCode; response["error"] = result.error;
+                    if (result.errorRef) response["errorRef"] = encodeTextRef(*result.errorRef);
                 } catch (const std::exception &e) { response["code"] = "invalid_command"; response["error"] = e.what(); }
             }
         }

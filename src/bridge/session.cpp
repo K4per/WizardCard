@@ -8,8 +8,14 @@ namespace wizard::bridge {
 namespace {
 constexpr std::size_t replayAutosaveInterval = 32;
 Json ok(Json data = Json::object()) { return {{"ok", true}, {"data", std::move(data)}}; }
-Json fail(const std::string &code, const std::string &error) {
-    return {{"ok", false}, {"errorCode", code}, {"error", error}};
+Json fail(const std::string &code, const std::string &error, const std::optional<TextRef> &ref = {}) {
+    Json result = {{"ok", false}, {"errorCode", code}, {"error", error}};
+    if (ref) result["errorRef"] = encodeTextRef(*ref);
+    return result;
+}
+Json tutorialOptionError(const Content &content) {
+    const TextRef ref{"tutorial.lesson.invalid", {}};
+    return fail("invalid_options", content.renderText(ref), ref);
 }
 }
 Json LocalSession::initialize(const std::filesystem::path &assets,
@@ -45,6 +51,7 @@ Json LocalSession::initialize(const std::filesystem::path &assets,
         std::sort(lessons.begin(), lessons.end(), [](const Json &a, const Json &b) { return a.at("order") < b.at("order"); });
         auto data = storageStatus().at("data");
         data["lessons"] = std::move(lessons);
+        if (decks_.content->textCatalog) data["textDirectory"] = decks_.content->textDirectory.u8string();
         data.update({{"programVersion", programVersion}, {"rulesVersion", decks_.content->catalog.rulesVersion},
                    {"cardSetVersion", decks_.content->catalog.cardSetVersion},
                    {"contentHash", decks_.content->catalog.contentHash}, {"presets", presets},
@@ -79,17 +86,18 @@ Json LocalSession::start(const Json &options) {
         if (mode != "hotseat" && mode != "ai" && mode != "tutorial")
             return fail("invalid_options", "无效对局模式");
         std::string error;
+        std::optional<TextRef> errorRef;
         bool started{};
         if (options.contains("lessonId")) {
             for (const auto &[key, unused] : options.items()) {
                 if (key != "mode" && key != "lessonId")
-                    return fail("invalid_options", decks_.content->renderText({"tutorial.lesson.invalid", {}}));
+                    return tutorialOptionError(*decks_.content);
             }
-            if (mode != "tutorial") return fail("invalid_options", decks_.content->renderText({"tutorial.lesson.invalid", {}}));
-            started = match_.application->startTutorial(error, options.at("lessonId").get<std::string>());
+            if (mode != "tutorial") return tutorialOptionError(*decks_.content);
+            started = match_.application->startTutorial(error, options.at("lessonId").get<std::string>(), &errorRef);
         } else if (mode == "tutorial" || options.contains("chapter") || options.contains("tutorialChapter") ||
                    options.contains("tutorial") || options.contains("scenario") || options.contains("lessonDigest"))
-            return fail("invalid_options", decks_.content->renderText({"tutorial.lesson.invalid", {}}));
+            return tutorialOptionError(*decks_.content);
         else {
             MatchConfig config;
             if (options.contains("seed")) {
@@ -122,7 +130,7 @@ Json LocalSession::start(const Json &options) {
                 {mode == "ai" ? app::MatchMode::Ai : app::MatchMode::Hotseat,
                  static_cast<ai::Difficulty>(difficulty)});
         }
-        if (!started) return fail("start_failed", error);
+        if (!started) return fail("start_failed", error, errorRef);
         replay_.browsing = false;
         match_.pending.reset(); replaySaveHealthy_ = true; ++match_.generation;
         match_.interactionViewer = -1;
@@ -145,7 +153,7 @@ GameView LocalSession::view(PlayerId viewer) const { return match_.application->
 Json LocalSession::snapshot(PlayerId viewer) const {
     if (!visibleTo(viewer)) return fail("invalid_viewer", "没有此查看者的对局视图");
     const auto v = view(viewer);
-    auto data = viewDto(v);
+    auto data = viewDto(v, &*decks_.content);
     data["generation"] = std::to_string(match_.generation);
     data["revision"] = std::to_string(match_.application->revision());
     data["paused"] = match_.application->paused();
@@ -205,17 +213,23 @@ Json LocalSession::queryActions(PlayerId viewer, const Json &intent, const std::
     if (!visibleTo(viewer)) return fail("invalid_viewer", "无权查询该查看者操作");
     try {
         const auto options = match_.application->queryActions(viewer, match_.application->generation(), match_.application->revision(), actionIntent(intent));
-        if (!options.error.empty()) return fail("invalid_query", options.error);
+        if (!options.error.empty()) return fail("invalid_query", options.error, options.errorRef);
         Json rows = Json::array();
-        for (const auto &option : options.options) rows.push_back({{"value", option.value}, {"label", option.label},
-            {"card", std::to_string(option.card)}, {"player", option.player}});
+        for (const auto &option : options.options) {
+            Json row = {{"value", option.value}, {"label", option.label},
+                        {"card", std::to_string(option.card)}, {"player", option.player}};
+            if (option.labelRef) row["labelRef"] = encodeTextRef(*option.labelRef);
+            rows.push_back(std::move(row));
+        }
         const auto v = view(viewer);
-        return ok({{"schema", schemaVersion}, {"generation", generation}, {"revision", revision}, {"viewer", viewer},
+        Json data = {{"schema", schemaVersion}, {"generation", generation}, {"revision", revision}, {"viewer", viewer},
             {"decisionId", v.decision ? std::to_string(v.decision->id) : v.opening ?
                 std::string("opening:") + openingStageName(v.openingStage) + ":" + std::to_string(v.openingRound) : "0"},
             {"field", static_cast<int>(options.field)}, {"options", rows}, {"hasMore", options.hasMore},
             {"pending", options.pending}, {"costQuote", options.costQuote}, {"overloadPreview", options.overloadPreview},
-            {"complete", options.complete ? commandDto(*options.complete) : Json()}});
+            {"complete", options.complete ? commandDto(*options.complete) : Json()}};
+        if (options.costQuoteRef) data["costQuoteRef"] = encodeTextRef(*options.costQuoteRef);
+        return ok(std::move(data));
     } catch (const std::exception &e) { return fail("invalid_query", e.what()); }
 }
 Json LocalSession::selectIntent(PlayerId viewer, const Json &intent, const std::string &generation, const std::string &revision) {
@@ -225,7 +239,7 @@ Json LocalSession::selectIntent(PlayerId viewer, const Json &intent, const std::
     try {
         const auto options = match_.application->queryActions(viewer, match_.application->generation(), match_.application->revision(), actionIntent(intent));
         if (options.pending) return ok({{"pending", true}});
-        if (!options.complete) return fail("incomplete_action", options.error.empty() ? "请完成当前选择" : options.error);
+        if (!options.complete) return fail("incomplete_action", options.error.empty() ? "请完成当前选择" : options.error, options.errorRef);
         match_.pending = Pending{viewer, *options.complete, match_.generation, match_.application->revision()};
         return ok({{"command", commandDto(*options.complete)}});
     } catch (const std::exception &e) { return fail("invalid_action", e.what()); }
@@ -268,11 +282,9 @@ Json LocalSession::saveDiagnostic() const {
 }
 Json LocalSession::accepted(const CommandResult &result, const GameView &before) {
     if (!result.accepted) {
-        auto failure = fail(result.errorCode.empty() ? "rejected" : result.errorCode, result.error);
-        if (result.errorCode == "tutorial_blocked" && match_.application->lessonScript()) {
-            const auto &hint = match_.application->lessonScript()->blockedHint();
-            failure["blockedHint"] = hint.empty() ? "tutorial.lesson.blocked" : hint;
-        }
+        auto failure = fail(result.errorCode.empty() ? "rejected" : result.errorCode, result.error, result.errorRef);
+        if (result.errorCode == "tutorial_blocked" && result.errorRef)
+            failure["blockedHint"] = result.errorRef->key;
         return failure;
     }
     match_.pending.reset();
@@ -339,7 +351,7 @@ Json LocalSession::debugCommand(const Json &request) {
     try {
         const auto operation = decodeDebugOperation(request);
         const auto result = match_.application->debug(operation);
-        if (!result.accepted) return fail(result.errorCode, result.error);
+        if (!result.accepted) return fail(result.errorCode, result.error, result.errorRef);
         match_.pending.reset(); match_.interaction.cancel();
         std::string saveError;
         const bool saved = replayPersistence_ == app::ReplayPersistence::Automatic &&
@@ -518,7 +530,7 @@ Json LocalSession::replayFrame(const std::filesystem::path &path, std::size_t st
                 }
         }
         replay_.step = step;
-        auto data = viewDto(replay_.engine->viewFor(viewer));
+        auto data = viewDto(replay_.engine->viewFor(viewer), &*decks_.content);
         replay_.browsing = true;
         data["debug"] = {{"available", false}, {"canRewind", false}, {"reason", "回放中不能调用调试操作"}};
         data["debug"]["players"] = Json::array();

@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <charconv>
 #include <limits>
+#include <set>
 #include <stdexcept>
 
 namespace wizard::bridge {
@@ -26,14 +27,28 @@ Json LocalSession::library() const {
     if (!match_.application) return fail("请先加载内容");
     if (decks_.libraryCache) return *decks_.libraryCache;
     Json cards = Json::array(), presets = Json::array(), drafts = Json::array();
+    std::set<std::string> tagValues;
+    std::set<std::string> termKeys;
     for (const auto &[id, definition] : decks_.content->catalog.cards) {
         (void)id;
         auto card = cardDefinitionDto(definition);
         card["typeLabel"] = app::cardTypeLabel(definition.type);
         card["costLabel"] = app::primaryCostLabel(definition.type);
         card["rarityLabel"] = app::rarityLabel(definition.rarity);
-        card["tags"] = app::cardTags(definition);
+        const auto tags = app::cardTags(definition);
+        card["tags"] = tags;
+        tagValues.insert(tags.begin(), tags.end());
+        if (!definition.school.empty())
+            termKeys.insert(schoolTermKey(definition.school));
         cards.push_back(std::move(card));
+    }
+    // Retain the tag value CardQuery expects while supplying a stable key for its caption.
+    for (int i = 0; i <= static_cast<int>(DamageType::Acid); ++i)
+        termKeys.insert(damageTermKey(static_cast<DamageType>(i)));
+    Json filterTerms = Json::object();
+    for (const auto &key : termKeys) {
+        const auto value = legacyTermName(key);
+        if (tagValues.count(value)) filterTerms[key] = value;
     }
     for (const auto &preset : match_.application->presets())
         presets.push_back({{"id", preset.id}, {"name", preset.name}, {"description", preset.description}});
@@ -46,7 +61,7 @@ Json LocalSession::library() const {
     Json playable = Json::array();
     for (const auto &preset : match_.application->playableDecks())
         playable.push_back({{"id", preset.id}, {"name", preset.name}, {"description", preset.description}});
-    decks_.libraryCache = ok({{"cards", cards}, {"presets", presets}, {"drafts", drafts}, {"playable", playable},
+    decks_.libraryCache = ok({{"cards", cards}, {"filterTerms", filterTerms}, {"presets", presets}, {"drafts", drafts}, {"playable", playable},
         {"settings", app::encodeSettings(match_.application->settings())},
         {"writable", match_.application->decks().writable()}, {"notice", match_.application->notice()}});
     return *decks_.libraryCache;

@@ -34,16 +34,16 @@ theme_override_constants/separation = 10
 layout_mode = 2
 
 [node name="Back" parent="Margin/Column/Heading" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.navigation.back_arrow"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "‹ 返回"
 primary = false
 compact = false
 
 [node name="Title" type="Label" parent="Margin/Column/Heading"]
+metadata/text_keys = {"text": "ui.menu.settings"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "游戏设置"
 theme_override_font_sizes/font_size = 28
 size_flags_horizontal = 3
 
@@ -81,9 +81,9 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
 [node name="AudioHeading" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Audio"]
+metadata/text_keys = {"text": "ui.settings.audio_heading"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "声音"
 theme_override_font_sizes/font_size = 26
 
 [node name="MasterGroup" type="VBoxContainer" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Audio"]
@@ -94,8 +94,8 @@ theme_override_constants/separation = 4
 layout_mode = 2
 
 [node name="MasterCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Audio/MasterGroup/Caption"]
+metadata/text_keys = {"text": "ui.settings.master_caption"}
 layout_mode = 2
-text = "总音量"
 theme_override_font_sizes/font_size = 18
 size_flags_horizontal = 3
 
@@ -124,8 +124,8 @@ theme_override_constants/separation = 4
 layout_mode = 2
 
 [node name="SoundCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Audio/SoundGroup/Caption"]
+metadata/text_keys = {"text": "ui.settings.sound_caption"}
 layout_mode = 2
-text = "音效音量"
 theme_override_font_sizes/font_size = 18
 size_flags_horizontal = 3
 
@@ -147,9 +147,9 @@ custom_minimum_size = Vector2(0, 42)
 size_flags_horizontal = 3
 
 [node name="DisplayHeading" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display"]
+metadata/text_keys = {"text": "ui.settings.display_heading"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "显示"
 theme_override_font_sizes/font_size = 26
 
 [node name="TypographyGroup" type="VBoxContainer" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display"]
@@ -157,8 +157,8 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="TypographyCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/TypographyGroup"]
+metadata/text_keys = {"text": "ui.settings.typography_caption"}
 layout_mode = 2
-text = "界面字号（全局）"
 theme_override_font_sizes/font_size = 18
 
 [node name="FontScale" type="OptionButton" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/TypographyGroup"]
@@ -172,8 +172,8 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="ResolutionCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/ResolutionGroup"]
+metadata/text_keys = {"text": "ui.settings.resolution_caption"}
 layout_mode = 2
-text = "窗口分辨率"
 theme_override_font_sizes/font_size = 18
 
 [node name="Resolution" type="OptionButton" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/ResolutionGroup"]
@@ -187,8 +187,8 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="ModeCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/ModeGroup"]
+metadata/text_keys = {"text": "ui.settings.mode_caption"}
 layout_mode = 2
-text = "窗口模式"
 theme_override_font_sizes/font_size = 18
 
 [node name="Mode" type="OptionButton" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/ModeGroup"]
@@ -202,8 +202,8 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="BackgroundCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/BackgroundGroup"]
+metadata/text_keys = {"text": "ui.settings.background_caption"}
 layout_mode = 2
-text = "对局背景"
 theme_override_font_sizes/font_size = 18
 
 [node name="Background" type="OptionButton" parent="Margin/Column/Scroll/Center/Panel/Options/Sections/Display/BackgroundGroup"]
@@ -219,24 +219,23 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Reduced" type="CheckButton" parent="Margin/Column/Scroll/Center/Panel/Options/Toggles"]
+metadata/text_keys = {"text": "ui.settings.reduced"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "精简动画"
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 60)
 
 [node name="Automatic" type="CheckButton" parent="Margin/Column/Scroll/Center/Panel/Options/Toggles"]
+metadata/text_keys = {"text": "ui.rooms.automatic"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "自动通过无操作阶段"
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 60)
 
 [node name="ResponseSound" type="CheckButton" parent="Margin/Column/Scroll/Center/Panel/Options/Toggles"]
+metadata/text_keys = {"text": "ui.settings.response_sound", "tooltip_text": "ui.settings.response_sound_tooltip_text"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "时点弹出音效"
-tooltip_text = "开启后，在有可响应时播放提示音；规则时点和优先权不受影响。"
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 60)
 
@@ -244,18 +243,18 @@ custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 
 [node name="Notice" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options/Footer"]
+metadata/text_keys = {"text": "ui.settings.notice"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "修改后，点击保存并应用。"
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
 [node name="Save" parent="Margin/Column/Scroll/Center/Panel/Options/Footer" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.settings.save"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "保存并应用"
 primary = true
 compact = false
 custom_minimum_size = Vector2(280, 64)

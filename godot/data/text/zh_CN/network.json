@@ -1,3 +1,20 @@
 {
-  "network.reject.tutorial_config": "教学课程只能在本地启动。"
+  "network.reject.tutorial_config": "教学课程只能在本地启动。",
+  "network.tls.buffer_limit": "服务器接收缓冲区超出上限",
+  "network.tls.certificate_failed": "证书校验失败：请检查信任证书、有效期和域名；可重试或恢复正式服配置",
+  "network.tls.disconnected": "与游戏服务器的连接已中断",
+  "network.tls.dns_failed": "服务器域名解析失败",
+  "network.tls.dns_start_failed": "服务器域名解析无法启动",
+  "network.tls.dns_timeout": "服务器域名解析超时",
+  "network.tls.handshake_start_failed": "无法启动 TLS 握手",
+  "network.tls.handshake_timeout": "TLS 握手超时",
+  "network.tls.invalid_address": "服务器地址或端口无效",
+  "network.tls.invalid_ca": "无法加载配置的服务器 CA 证书",
+  "network.tls.invalid_length": "服务器消息长度无效",
+  "network.tls.message_limit": "待发送消息超出上限",
+  "network.tls.no_addresses": "服务器域名解析未返回地址",
+  "network.tls.queue_limit": "待发送数据超过 4 MiB",
+  "network.tls.read_failed": "读取服务器数据失败",
+  "network.tls.send_failed": "发送服务器请求失败",
+  "network.tls.unreachable": "服务器不可达或拒绝连接，请检查网络后重试"
 }

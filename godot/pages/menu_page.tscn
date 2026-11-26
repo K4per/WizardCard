@@ -27,39 +27,39 @@ layout_mode = 0
 theme_override_constants/separation = 14
 
 [node name="SinglePlayer" parent="Buttons" instance=ExtResource("menu_button")]
+metadata/text_keys = {"text": "ui.menu.single_player"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "单人游戏"
 
 [node name="Multiplayer" parent="Buttons" instance=ExtResource("menu_button")]
+metadata/text_keys = {"text": "ui.menu.multiplayer"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "多人游戏"
 
 [node name="Decks" parent="Buttons" instance=ExtResource("menu_button")]
+metadata/text_keys = {"text": "ui.deck.editor"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "卡组构筑"
 
 [node name="Library" parent="Buttons" instance=ExtResource("menu_button")]
+metadata/text_keys = {"text": "ui.guide.library"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "卡牌图鉴"
 
 [node name="Replay" parent="Buttons" instance=ExtResource("menu_button")]
+metadata/text_keys = {"text": "ui.menu.replay"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "对局复盘"
 
 [node name="Settings" parent="Buttons" instance=ExtResource("menu_button")]
+metadata/text_keys = {"text": "ui.menu.settings"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "游戏设置"
 
 [node name="Quit" parent="Buttons" instance=ExtResource("menu_button")]
+metadata/text_keys = {"text": "ui.menu.quit"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "退出游戏"
 
 [node name="Status" type="Label" parent="."]
 unique_name_in_owner = true

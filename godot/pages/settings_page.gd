@@ -45,13 +45,13 @@ func _ready() -> void:
 	for dimensions: Vector2i in RESOLUTIONS:
 		var caption: String = "%d × %d" % [dimensions.x, dimensions.y]
 		_resolution.add_item(caption)
-	for caption: String in ["窗口", "无边框", "全屏"]:
+	for caption: String in [GameText.label("ui.settings.windowed"), GameText.label("ui.settings.borderless"), GameText.label("ui.settings.fullscreen")]:
 		_mode.add_item(caption)
-	for caption: String in ["奥术（默认）", "石板", "余烬"]:
+	for caption: String in [GameText.label("ui.settings.arcane"), GameText.label("ui.settings.slate"), GameText.label("ui.settings.ember")]:
 		_background.add_item(caption)
 	for scale: int in Typography.SCALES:
 		_font_scale.add_item("%d%%" % scale)
-	_font_scale.tooltip_text = "默认 100%。保存后同步调整所有界面、提示、弹窗和卡面文字，重启后保留。"
+	_font_scale.tooltip_text = GameText.label("ui.settings.scale_hint")
 	resized.connect(_reflow)
 	_reflow()
 
@@ -87,7 +87,7 @@ func save() -> void:
 		return
 	UiFactory.reduced_motion = bool(next.get("reducedMotion", false))
 	Typography.set_scale(int(next.get("fontScale", Typography.DEFAULT_SCALE)))
-	_notice.text = "已保存"
+	_notice.text = GameText.label("ui.deck.saved")
 	FrontendDisplay.apply(next)
 
 func _return() -> void:

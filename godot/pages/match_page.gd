@@ -11,6 +11,14 @@ const LessonEndPanel = preload("res://ui/lesson_end_panel.gd")
 const TextCatalog = preload("res://app/text.gd")
 
 @onready var _table: BattleTable = %Table
+const ACTION_FIELD_TITLE_KEYS: Array[String] = [
+	"ui.selection.choose_action", "ui.selection.choose_card", "ui.selection.choose_host",
+	"ui.selection.choose_replacement", "ui.selection.choose_materials", "ui.selection.choose_target",
+	"ui.selection.choose_payment", "ui.selection.choose_link", "ui.selection.choose_ability",
+	"ui.selection.choose_ring", "ui.selection.finish_rule", "ui.action.confirm",
+]
+
+
 @onready var _overlay: TutorialOverlay = %TutorialOverlay
 @onready var _lesson_end: LessonEndPanel = %LessonEndPanel
 @onready var _text: TextCatalog = get_node("/root/Text") as TextCatalog
@@ -148,13 +156,13 @@ func _ready() -> void:
 	_response_mode = OptionButton.new()
 	_response_mode.name = "ResponseMode"
 	_response_mode.add_theme_font_size_override(&"font_size", 13)
-	_response_mode.add_item("全时点", ResponseTiming.Mode.ALL)
-	_response_mode.add_item("可用时点", ResponseTiming.Mode.AUTO)
-	_response_mode.add_item("忽略时点", ResponseTiming.Mode.IGNORE)
+	_response_mode.add_item(GameText.label("ui.response.all"), ResponseTiming.Mode.ALL)
+	_response_mode.add_item(GameText.label("ui.response.available"), ResponseTiming.Mode.AUTO)
+	_response_mode.add_item(GameText.label("ui.response.ignore"), ResponseTiming.Mode.IGNORE)
 	_response_mode.select(ResponseTiming.Mode.AUTO)
-	_response_mode.tooltip_text = "全时点：每个可放弃响应的时点都询问。\n可用时点：有合法响应时询问，否则自动放弃。\n忽略时点：自动放弃可放弃的响应，直到切换模式。\n强制效果选择仍须完成。"
+	_response_mode.tooltip_text = GameText.label("ui.response.modes_hint")
 	_response_mode.item_selected.connect(_response_mode_changed)
-	_response_cancel = UiFactory.button("取消操作", _return_to_response)
+	_response_cancel = UiFactory.button(GameText.label("ui.response.cancel_action"), _return_to_response)
 	_response_cancel.hide()
 	var row: HFlowContainer = %Controls
 	row.reparent(_table.controls, false)
@@ -199,15 +207,15 @@ func _ready() -> void:
 	_action_title = %ActionTitle
 	_action_list = %ActionList
 	_action_popup.hide()
-	_empty_actions = UiFactory.label("暂无合法操作", 16, true)
+	_empty_actions = UiFactory.label(GameText.label("ui.match.no_actions"), 16, true)
 	_empty_actions.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	canvas.add_child(_empty_actions)
 	_empty_actions.hide()
 	_material_menu = VBoxContainer.new()
 	_material_menu.z_index = _action_popup.z_index
-	_continue_materials = _card_action_button("确认材料", _selection.choose.bind("@confirm"))
+	_continue_materials = _card_action_button(GameText.label("ui.match.confirm_materials"), _selection.choose.bind("@confirm"))
 	_material_menu.add_child(_continue_materials)
-	_material_menu.add_child(_card_action_button("取消", _dismiss_confirmation))
+	_material_menu.add_child(_card_action_button(GameText.label("ui.common.cancel"), _dismiss_confirmation))
 	add_child(_material_menu)
 	_material_menu.hide()
 	_feedback = MatchFeedback.new()
@@ -295,25 +303,25 @@ func _build_dialogs() -> void:
 	_force_dialog = %ConfirmForceLeave
 	_force_dialog.confirmed.connect(_force_leave_network)
 	_settlement = ConfirmationDialog.new()
-	_settlement.title = "对局结算"
-	_settlement.ok_button_text = "保存回放"
-	_settlement.cancel_button_text = "留在场地"
+	_settlement.title = GameText.label("ui.match.settlement")
+	_settlement.ok_button_text = GameText.label("ui.match.save_replay")
+	_settlement.cancel_button_text = GameText.label("ui.match.stay_on_field")
 	_settlement.dialog_hide_on_ok = false
 	_settlement.confirmed.connect(_open_named_save.bind(true))
-	_settlement_discard = _settlement.add_button("不保存", false, &"discard")
+	_settlement_discard = _settlement.add_button(GameText.label("ui.match.discard_replay"), false, &"discard")
 	_settlement.custom_action.connect(_discard_settlement)
 	_settlement.canceled.connect(func() -> void:
 		_leave_after_settlement = false
 		_quitting = false)
 	add_child(_settlement)
 	_replay_save = ConfirmationDialog.new()
-	_replay_save.title = "保存回放"
-	_replay_save.ok_button_text = "保存"
-	_replay_save.cancel_button_text = "取消"
+	_replay_save.title = GameText.label("ui.match.save_replay")
+	_replay_save.ok_button_text = GameText.label("ui.match.save")
+	_replay_save.cancel_button_text = GameText.label("ui.common.cancel")
 	_replay_save.dialog_hide_on_ok = false
 	var save_fields: VBoxContainer = VBoxContainer.new()
 	_replay_name = LineEdit.new()
-	_replay_name.placeholder_text = "回放名称"
+	_replay_name.placeholder_text = GameText.label("ui.match.replay_name")
 	_replay_name.text_submitted.connect(func(_name: String) -> void: _write_named_replay())
 	save_fields.add_child(_replay_name)
 	_replay_save_notice = UiFactory.label("", 15, false)
@@ -322,7 +330,7 @@ func _build_dialogs() -> void:
 	save_fields.add_child(_replay_save_notice)
 	_replay_save.add_child(save_fields)
 	_replay_save.confirmed.connect(_write_named_replay)
-	_choose_replay_directory = _replay_save.add_button("选择存档目录", true, &"directory")
+	_choose_replay_directory = _replay_save.add_button(GameText.label("ui.deck.storage_dir"), true, &"directory")
 	_replay_save.custom_action.connect(func(_action: StringName) -> void:
 		_save_directory_dialog.current_dir = service.save_directory
 		_save_directory_dialog.popup_centered_ratio(0.7))
@@ -374,10 +382,10 @@ func _build_debug_console() -> void:
 	_debug_panel.add_child(outer)
 	var heading: HBoxContainer = HBoxContainer.new()
 	outer.add_child(heading)
-	var title: Label = UiFactory.label("单人调试控制台", 20, true)
+	var title: Label = UiFactory.label(GameText.label("ui.debug.title"), 20, true)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	heading.add_child(title)
-	var close: Button = UiFactory.button("关闭", _close_debug_console)
+	var close: Button = UiFactory.button(GameText.label("ui.common.close"), _close_debug_console)
 	close.custom_minimum_size = Vector2(76, 42)
 	heading.add_child(close)
 	var scroll: ScrollContainer = ScrollContainer.new()
@@ -388,22 +396,22 @@ func _build_debug_console() -> void:
 	content.add_theme_constant_override(&"separation", 8)
 	scroll.add_child(content)
 	_debug_player = OptionButton.new()
-	_debug_player.add_item("玩家一")
-	_debug_player.add_item("玩家二")
+	_debug_player.add_item(GameText.label("ui.debug.player_one"))
+	_debug_player.add_item(GameText.label("ui.debug.player_two"))
 	_debug_player.set_item_metadata(0, 0)
 	_debug_player.set_item_metadata(1, 1)
 	_debug_player.select(0)
-	_add_debug_row(content, "操作玩家", _debug_player)
+	_add_debug_row(content, GameText.label("ui.debug.actor"), _debug_player)
 	_debug_operation = OptionButton.new()
-	for entry: Array in [["从虚空加入卡牌", "add_card"], ["获得魔素", "gain_mana"], ["失去魔素", "lose_mana"], ["获得生命", "gain_life"], ["失去生命", "lose_life"], ["获得临时生命", "gain_temporary_life"], ["失去临时生命", "lose_temporary_life"], ["增加荷载", "gain_load"], ["清除荷载", "clear_load"]]:
+	for entry: Array in [[GameText.label("ui.debug.add_card"), "add_card"], [GameText.label("ui.debug.gain_mana"), "gain_mana"], [GameText.label("ui.debug.lose_mana"), "lose_mana"], [GameText.label("ui.debug.gain_life"), "gain_life"], [GameText.label("ui.debug.lose_life"), "lose_life"], [GameText.label("ui.debug.gain_temporary_life"), "gain_temporary_life"], [GameText.label("ui.debug.lose_temporary_life"), "lose_temporary_life"], [GameText.label("ui.debug.gain_load"), "gain_load"], [GameText.label("ui.debug.clear_load"), "clear_load"]]:
 		_debug_operation.add_item(str(entry[0]))
 		_debug_operation.set_item_metadata(_debug_operation.item_count - 1, str(entry[1]))
 	_debug_operation.item_selected.connect(_debug_operation_changed)
-	_add_debug_row(content, "操作", _debug_operation)
+	_add_debug_row(content, GameText.label("ui.debug.operation"), _debug_operation)
 	_debug_card = LineEdit.new()
-	_debug_card.placeholder_text = "卡牌 ID/名称；荷载按来源区分时填来源 ID"
+	_debug_card.placeholder_text = GameText.label("ui.debug.card_hint")
 	_debug_card.custom_minimum_size.y = 42
-	_add_debug_row(content, "卡牌 / 来源", _debug_card)
+	_add_debug_row(content, GameText.label("ui.debug.card_source"), _debug_card)
 	var amount_row: HBoxContainer = HBoxContainer.new()
 	_debug_amount = SpinBox.new()
 	_debug_amount.min_value = 1
@@ -412,37 +420,37 @@ func _build_debug_console() -> void:
 	_debug_amount.custom_minimum_size = Vector2(140, 42)
 	amount_row.add_child(_debug_amount)
 	_debug_amount.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_add_debug_row(content, "数量", amount_row)
+	_add_debug_row(content, GameText.label("ui.debug.quantity"), amount_row)
 	_debug_load_kind = OptionButton.new()
-	for entry: Array in [["临时荷载", "temporary"], ["独立荷载", "independent"], ["绑定荷载", "bound"]]:
+	for entry: Array in [[GameText.label("ui.debug.temporary_load"), "temporary"], [GameText.label("ui.debug.independent_load"), "independent"], [GameText.label("ui.debug.bound_load"), "bound"]]:
 		_debug_load_kind.add_item(str(entry[0]))
 		_debug_load_kind.set_item_metadata(_debug_load_kind.item_count - 1, str(entry[1]))
-	_add_debug_row(content, "荷载来源类型", _debug_load_kind)
-	var run: Button = UiFactory.button("执行调试操作", _execute_debug_operation, true)
+	_add_debug_row(content, GameText.label("ui.debug.load_kind"), _debug_load_kind)
+	var run: Button = UiFactory.button(GameText.label("ui.debug.execute"), _execute_debug_operation, true)
 	run.custom_minimum_size.y = 50
 	content.add_child(run)
 	var toggles: HBoxContainer = HBoxContainer.new()
 	toggles.add_theme_constant_override(&"separation", 8)
 	content.add_child(toggles)
 	_debug_infinite_life = CheckBox.new()
-	_debug_infinite_life.text = "无限生命"
+	_debug_infinite_life.text = GameText.label("ui.debug.infinite_life")
 	_debug_infinite_life.toggled.connect(_set_debug_infinite.bind("life"))
 	toggles.add_child(_debug_infinite_life)
 	_debug_infinite_mana = CheckBox.new()
-	_debug_infinite_mana.text = "无限魔素"
+	_debug_infinite_mana.text = GameText.label("ui.debug.infinite_mana")
 	_debug_infinite_mana.toggled.connect(_set_debug_infinite.bind("mana"))
 	toggles.add_child(_debug_infinite_mana)
 	_debug_infinite_load = CheckBox.new()
-	_debug_infinite_load.text = "无限荷载上限"
+	_debug_infinite_load.text = GameText.label("ui.debug.infinite_load")
 	_debug_infinite_load.toggled.connect(_set_debug_infinite.bind("load"))
 	toggles.add_child(_debug_infinite_load)
-	_debug_rewind = UiFactory.button("回到上一回合", _rewind_debug, false)
+	_debug_rewind = UiFactory.button(GameText.label("ui.debug.rewind"), _rewind_debug, false)
 	content.add_child(_debug_rewind)
 	_debug_result = RichTextLabel.new()
 	_debug_result.custom_minimum_size = Vector2(0, 56)
 	_debug_result.fit_content = true
 	_debug_result.bbcode_enabled = false
-	_debug_result.text = "等待调试命令。"
+	_debug_result.text = GameText.label("ui.debug.waiting")
 	outer.add_child(_debug_result)
 	_debug_operation_changed(0)
 
@@ -477,7 +485,7 @@ func _debug_operation_changed(_index: int) -> void:
 		return
 	var operation: String = str(_debug_operation.get_item_metadata(_debug_operation.selected))
 	_debug_card.editable = operation in ["add_card", "gain_load", "clear_load"]
-	_debug_card.placeholder_text = "卡牌 ID 或名称" if operation == "add_card" else "绑定荷载来源卡牌 ID" if operation in ["gain_load", "clear_load"] else "该操作不需要卡牌或来源"
+	_debug_card.placeholder_text = GameText.label("ui.debug.card_name_or_id") if operation == "add_card" else GameText.label("ui.debug.bound_card_id") if operation in ["gain_load", "clear_load"] else GameText.label("ui.debug.card_unneeded")
 	_debug_load_kind.visible = operation in ["gain_load", "clear_load"]
 
 func _selected_debug_player() -> int:
@@ -512,10 +520,10 @@ func _rewind_debug() -> void:
 func _submit_debug(command: Dictionary) -> void:
 	var result: Dictionary = service.match_request(&"debug_command", [command])
 	if not bool(result.get("ok", false)):
-		_debug_result.text = "失败：" + str(result.get("error", service.error))
+		_debug_result.text = GameText.label("ui.debug.failure", {"error": str(result.get("error", service.error))})
 		return
 	var data: Dictionary = result.get("data", {}) if result.get("data", {}) is Dictionary else {}
-	_debug_result.text = str(data.get("message", "调试操作已执行。"))
+	_debug_result.text = str(data.get("message", GameText.label("ui.debug.executed")))
 	if not data.is_empty():
 		_debug_result.text += "\n" + JSON.stringify(data)
 	var updated: Dictionary = service.snapshot()
@@ -534,7 +542,7 @@ func _refresh_debug_controls() -> void:
 	_debug_infinite_load.set_pressed_no_signal(bool(debug_player.get("infiniteLoad", false)))
 	var available: bool = bool(debug.get("canRewind", false))
 	_debug_rewind.disabled = not available
-	_debug_rewind.tooltip_text = "回到上一回合开始时的完整状态。" if available else str(debug.get("reason", "没有可用的上一回合快照。"))
+	_debug_rewind.tooltip_text = GameText.label("ui.debug.rewind_hint") if available else str(debug.get("reason", GameText.label("ui.debug.no_snapshot")))
 
 func _events_changed(update: Dictionary) -> void:
 	if _privacy_layer.visible:
@@ -571,11 +579,11 @@ func configure(value: FrontendService) -> void:
 	service.session_polled.connect(_poll_settlement)
 	service.session_polled.connect(_poll_query_completion)
 	_events_changed({"reset": true, "events": service.event_log.entries})
-	%MenuSettings.text = "设置（继续计时）" if service.match_mode == "network" else "暂停 / 设置"
+	%MenuSettings.text = GameText.label("ui.match.network_settings") if service.match_mode == "network" else GameText.label("ui.match.pause_settings")
 	%MenuDebug.visible = service.match_mode == "ai"
 	_feedback.service = service
 	if not service.match_active:
-		_notice.text = "没有进行中的对局。"
+		_notice.text = GameText.label("ui.match.no_match")
 		return
 	if service.match_mode != "network":
 		var resumed: Dictionary = service.match_request(&"set_paused", [false])
@@ -634,7 +642,7 @@ func _refresh() -> void:
 		keep_selection = MatchProjection.card(snapshot, preserved_id)
 	if keep_selection == null and not preserved_id.is_empty() and _selected != null:
 		keep_selection = CardPresentation.anonymous(preserved_id)
-		keep_selection.title = "卡牌已离场"
+		keep_selection.title = GameText.label("ui.match.departed_card")
 	_selected = keep_selection
 	canvas.selected_id = preserved_id if keep_selection != null else ""
 	var generation: String = str(snapshot.get("generation", ""))
@@ -655,9 +663,9 @@ func _refresh() -> void:
 	_global_popup_open = false
 	_clock_received = service.clock_received
 	_update_status()
-	_hand_button.text = "▴ 手牌" if canvas.hand_collapsed else "▾ 手牌"
+	_hand_button.text = GameText.label("ui.match.hand_collapsed") if canvas.hand_collapsed else GameText.label("ui.match.hand_expanded")
 	if int(snapshot.get("result", -1)) != -1:
-		_notice.text = "对局已结束，可保存并查看复盘。"
+		_notice.text = GameText.label("ui.match.finished")
 	_refresh_tutorial(snapshot)
 	if _lesson_end.visible:
 		return
@@ -678,10 +686,10 @@ func _refresh() -> void:
 func _render_actions(restart_selection: bool = true) -> void:
 	var snapshot: Dictionary = service.match_snapshot
 	_update_phase_gate()
-	_action_button.text = "阶段操作"
+	_action_button.text = GameText.label("ui.match.phase_actions")
 	if bool(snapshot.get("technicalPaused", false)):
-		_notice.text = "规则执行故障：对局已技术暂停，时钟已冻结。请导出诊断或退出。"
-		%MenuSaveReplay.text = "导出复盘与诊断"
+		_notice.text = GameText.label("ui.match.rule_fault")
+		%MenuSaveReplay.text = GameText.label("ui.match.export_diagnostics")
 		_action_popup.hide()
 		_empty_actions.hide()
 		return
@@ -692,9 +700,9 @@ func _render_actions(restart_selection: bool = true) -> void:
 		_empty_actions.hide()
 		return
 	if _selected != null:
-		_show_action_list(_selected.instance_id, _selected.title + " · 操作", true)
+		_show_action_list(_selected.instance_id, GameText.label("ui.match.card_actions", {"card": _selected.title}), true)
 	elif _global_popup_open:
-		_show_action_list("0", "阶段操作", false)
+		_show_action_list("0", GameText.label("ui.match.phase_actions"), false)
 	else:
 		_action_popup.hide()
 
@@ -709,7 +717,7 @@ func _end_current_phase() -> void:
 	if _end_phase.disabled:
 		return
 	_query_is_decision = true
-	_query_title = "结束当前阶段"
+	_query_title = GameText.label("ui.action.end_current_phase")
 	_contextual_query = false
 	_selection.begin("0", KernelContract.CommandKind.AdvancePhase)
 
@@ -733,7 +741,7 @@ func _update_status() -> void:
 		var player: int = service.match_viewer if index == 0 else 1 - service.match_viewer
 		var values: Dictionary = players[player]
 		var player_debug: Dictionary = debug_players[player] if debug_players.size() > player else {}
-		bars[index].set_status("我方" if index == 0 else "对手", player, values, loads, cards, player_debug)
+		bars[index].set_status(GameText.label("ui.match.own") if index == 0 else GameText.label("ui.match.opponent"), player, values, loads, cards, player_debug)
 	_update_clock()
 
 func _process(_delta: float) -> void:
@@ -765,22 +773,22 @@ func _render_opening() -> void:
 	if str(snapshot.get("openingStage", "formation")) == "gestures":
 		if int(snapshot.get("openingGesture", -1)) >= 0:
 			_response_cancel.hide()
-			_notice.text = "手势已确认，等待对手；猜拳期间不扣对局时间。"
+			_notice.text = GameText.label("ui.match.gesture_confirmed")
 			return
 		_close_match_menu()
 		_response_cancel.show()
 		_query_is_decision = true
-		_query_title = "猜拳决定先手"
+		_query_title = GameText.label("ui.match.decide_first")
 		_contextual_query = false
 		_selection.begin("0", KernelContract.CommandKind.SubmitOpeningGesture)
 		return
 	var confirmed: Array = snapshot.get("initialFormationConfirmed", [false, false])
 	if confirmed.size() > service.match_viewer and bool(confirmed[service.match_viewer]):
-		_notice.text = "初始阵法已确认，等待对手确认。"
+		_notice.text = GameText.label("ui.match.formation_confirmed")
 		return
 	_close_match_menu()
 	_query_is_decision = true
-	_query_title = "选择初始阵法"
+	_query_title = GameText.label("ui.action.select_initial_formation")
 	_contextual_query = false
 	_selection.begin("0", KernelContract.CommandKind.SelectInitialFormation)
 
@@ -848,10 +856,10 @@ func _query_changed(options: ActionOptions) -> void:
 	canvas.clear_action_targets()
 	_empty_actions.hide()
 	_material_menu.hide()
-	if _query_title == "结束当前阶段" and options.field == KernelContract.ActionField.Choice:
+	if _selection.intent.get("selections", []).has({"field": KernelContract.ActionField.Operation, "value": str(KernelContract.CommandKind.AdvancePhase)}) and options.field == KernelContract.ActionField.Choice:
 		var phases: Array[Dictionary] = []
 		for option: Dictionary in options.options:
-			phases.append({"label": str(option.get("label", "结束阶段")), "command": {"type": KernelContract.CommandKind.AdvancePhase, "gate": str(service.match_snapshot.get("phaseGate", "0")), "skipCast": str(option["value"]) == "1"}})
+			phases.append({"label": str(option.get("label", GameText.label("ui.match.end_phase"))), "command": {"type": KernelContract.CommandKind.AdvancePhase, "gate": str(service.match_snapshot.get("phaseGate", "0")), "skipCast": str(option["value"]) == "1"}})
 		if phases.size() > 1:
 			_phase_selector.open_for(_end_phase, phases)
 		elif phases.size() == 1:
@@ -869,7 +877,7 @@ func _query_changed(options: ActionOptions) -> void:
 				continue
 			var label: String = MatchProjection.action_label(service.match_snapshot, {"source": str(_selection.intent.get("source", "0")), "command": {"type": operation}})
 			if operation == KernelContract.CommandKind.ActivateAbility:
-				label = str(option.get("label", "发动能力"))
+				label = str(option.get("label", GameText.label("ui.action.activate_ability")))
 			var command_name: String = str(KernelContract.CommandKind.find_key(operation))
 			var hint_key: String = _lesson_state.get("actionHints", {}).get(command_name, "")
 			if not hint_key.is_empty():
@@ -909,7 +917,7 @@ func _query_changed(options: ActionOptions) -> void:
 			_decision.hide()
 			_restore_tray_hand()
 			_action_popup.hide()
-			_notice.text = "点击高亮环位确认位置；取消不会支付费用。"
+			_notice.text = GameText.label("ui.match.ring_hint")
 			return
 	if options.field == KernelContract.ActionField.Material or not _selection.material_ids().is_empty():
 		_render_materials(options)
@@ -927,7 +935,7 @@ func _query_changed(options: ActionOptions) -> void:
 			_action_popup.hide()
 			_detail_shade.hide()
 			canvas.grab_focus()
-			_notice.text = "点击高亮空槽独立设置，或点选高亮阵法进行替换。"
+			_notice.text = GameText.label("ui.match.formation_slot_hint")
 			return
 	if options.options.size() == 1 and not options.has_more and options.field in [KernelContract.ActionField.Host, KernelContract.ActionField.Ability, KernelContract.ActionField.Replacement]:
 		_selection.choose(str(options.options[0]["value"]))
@@ -936,30 +944,29 @@ func _query_changed(options: ActionOptions) -> void:
 	request.generation = options.generation
 	request.revision = options.revision
 	request.decision_id = options.decision_id
-	var titles: Array[String] = ["选择操作", "选择卡牌", "选择宿主", "选择替换阵法", "选择材料", "选择目标", "选择支付卡牌", "选择连锁目标", "选择能力", "选择环位", "完成规则选择", "确认"]
-	request.title = titles[options.field]
+	request.title = GameText.label(ACTION_FIELD_TITLE_KEYS[options.field])
 	request.cost_summary = options.cost_quote
 	if options.overload_preview > 0:
 		request.cost_summary += "　" + _text.t("ui.match.overload_preview", {"damage": options.overload_preview})
-	request.description = "选择选项后确认；费用仅在完整命令确认后支付。"
+	request.description = GameText.label("ui.selection.confirm_choice_hint")
 	if current_decision is Dictionary and int(current_decision.get("kind", -1)) == KernelContract.DecisionKind.Concentration:
-		request.title = "选择是否维持专注"
-		request.description = "维持会支付显示的费用；无合法维持选项时，请选择放弃，法术送入灰烬区。"
+		request.title = GameText.label("ui.selection.concentration")
+		request.description = GameText.label("ui.selection.concentration_hint")
 	request.docked = true
 	request.response_mode = _query_is_decision and options.field == KernelContract.ActionField.Operation
 	request.may_cancel = not _query_is_decision or _response_browsing
 	if str(service.match_snapshot.get("openingStage", "")) == "gestures":
-		request.title = "猜拳决定先手 · 第 %d 轮" % int(service.match_snapshot.get("openingRound", 1))
-		request.description = "双方确认后同时公开，平局重来。猜拳期间不扣对局时间。"
+		request.title = GameText.label("ui.selection.gesture_round", {"round": int(service.match_snapshot.get("openingRound", 1))})
+		request.description = GameText.label("ui.selection.gesture_hint")
 	var card_ids: Array[String] = []
 	for option: Dictionary in options.options:
 		var choice: DecisionChoice = DecisionChoice.new()
 		choice.id = str(option["value"])
-		choice.label = str(option.get("label", "选择"))
+		choice.label = str(option.get("label", GameText.label("ui.selection.choose")))
 		var card_id: String = str(option.get("card", "0"))
 		choice.card = MatchProjection.card(service.match_snapshot, card_id)
 		if int(option.get("player", -1)) >= 0:
-			choice.label = "己方" if int(option["player"]) == service.match_viewer else "对方"
+			choice.label = GameText.label("ui.selection.own") if int(option["player"]) == service.match_viewer else GameText.label("ui.selection.opponent")
 		if card_id != "0":
 			card_ids.append(card_id)
 		if options.field == KernelContract.ActionField.Operation and int(choice.id) == KernelContract.CommandKind.Surrender:
@@ -971,7 +978,7 @@ func _query_changed(options: ActionOptions) -> void:
 			# fee on its button instead of replacing that text with its name.
 			choice.card = null
 			if card_id == "0":
-				choice.label = "放弃专注（法术送入灰烬区）"
+				choice.label = GameText.label("ui.selection.release_concentration")
 		request.choices.append(choice)
 	if current_decision is Dictionary and int(current_decision.get("kind", -1)) == KernelContract.DecisionKind.Overflow and not card_ids.is_empty():
 		_describe_overflow(request, card_ids[0])
@@ -980,19 +987,19 @@ func _query_changed(options: ActionOptions) -> void:
 		if card_ids.is_empty():
 			var unavailable: DecisionChoice = DecisionChoice.new()
 			unavailable.id = "@unavailable"
-			unavailable.label = "无法维持专注：" + str(current_decision.get("upkeepUnavailable", "费用不足或效果禁止"))
+			unavailable.label = GameText.label("ui.selection.upkeep_unavailable", {"reason": str(current_decision.get("upkeepUnavailable", GameText.label("ui.selection.upkeep_failure")))})
 			unavailable.available = false
 			request.choices.push_front(unavailable)
 		card_ids.clear()
 	if int(_selection.intent.get("offset", 0)) > 0:
 		var previous: DecisionChoice = DecisionChoice.new()
 		previous.id = "@previous"
-		previous.label = "上一页"
+		previous.label = GameText.label("ui.navigation.previous_page")
 		request.choices.append(previous)
 	if options.has_more:
 		var more: DecisionChoice = DecisionChoice.new()
 		more.id = "@next"
-		more.label = "下一页"
+		more.label = GameText.label("ui.navigation.next_page")
 		request.choices.append(more)
 	canvas.set_action_targets(card_ids)
 	_decision.configure(request, [options.viewer, options.field, _selection.intent])
@@ -1011,9 +1018,9 @@ func _query_rings(targets: Dictionary[String, PackedInt32Array]) -> void:
 	if not host.is_empty():
 		if _selection.choose_ring(host, ring):
 			return
-		_notice.text = "该落点当前不可用，请选择高亮环位。"
+		_notice.text = GameText.label("ui.selection.invalid_ring")
 	else:
-		_notice.text = "选择高亮环位"
+		_notice.text = GameText.label("ui.selection.highlighted_ring")
 	canvas.set_action_targets([], targets)
 	canvas.grab_focus()
 	_decision.hide()
@@ -1040,14 +1047,14 @@ func _render_materials(options: ActionOptions) -> void:
 			if int(cost.get("kind", -1)) in [1, 2, 3]:
 				required += int(cost.get("amount", 0))
 	_material_anchor = source if selected.is_empty() else MatchProjection.card(service.match_snapshot, selected.back())
-	_continue_materials.text = "确认材料（%d / %d）" % [selected.size(), required]
+	_continue_materials.text = GameText.label("ui.selection.material_count", {"selected": selected.size(), "required": required})
 	_continue_materials.disabled = options.complete.is_empty()
 	_decision.hide()
 	_restore_tray_hand()
 	_action_popup.hide()
 	if canvas.hand_collapsed:
 		canvas.set_hand_collapsed(false)
-		_hand_button.text = "▾ 手牌"
+		_hand_button.text = GameText.label("ui.match.hand_expanded")
 	canvas.set_action_targets(candidates, {}, selected)
 	_material_menu.show()
 	_material_menu.move_to_front()
@@ -1059,15 +1066,15 @@ func _describe_overflow(request: DecisionPresentation, candidate: String) -> voi
 	for card: CardPresentation in field.own_casting:
 		if card.instance_id == candidate:
 			var excess: int = field.own_casting.size() - field.own_casting_slots
-			request.title = "施法区容量超额"
-			request.description = "已占用 %d / %d · 还需选择 %d 张送灰，每次确认一张。" % [field.own_casting.size(), field.own_casting_slots, excess]
+			request.title = GameText.label("ui.selection.casting_overflow")
+			request.description = GameText.label("ui.selection.casting_discard_count", {"occupied": field.own_casting.size(), "capacity": field.own_casting_slots, "excess": excess})
 			return
 	for formation: FormationPresentation in field.own_formations:
 		for occupant: CardPresentation in formation.occupants.values():
 			if occupant.instance_id == candidate:
 				var excess: int = formation.occupants.size() - formation.ring_count
-				request.title = "解析环位超额"
-				request.description = "%s · 还需选择 %d 张送灰，每次确认一张。" % [formation.card.title, excess]
+				request.title = GameText.label("ui.selection.analysis_overflow")
+				request.description = GameText.label("ui.selection.analysis_discard_count", {"formation": formation.card.title, "excess": excess})
 				return
 
 func _query_completed(command: Dictionary, intent: Dictionary) -> void:
@@ -1098,8 +1105,8 @@ func _query_completed(command: Dictionary, intent: Dictionary) -> void:
 		if not _selection.options.cost_quote.is_empty():
 			_confirm.dialog_text += "\n" + _selection.options.cost_quote
 		if confirm_placement:
-			_confirm.dialog_text += "\n环位：第 %d 环" % [int(command.ringIndex) + 1]
-		_confirm.dialog_text += "\n\n确认执行？"
+			_confirm.dialog_text += GameText.label("ui.selection.ring_position", {"ring": int(command.ringIndex) + 1})
+		_confirm.dialog_text += GameText.label("ui.selection.confirm_prompt")
 		var damage: int = _selection.options.overload_preview
 		var warning: String = _text.t("ui.match.overload_preview", {"damage": damage}) if damage > 0 else ""
 		_confirm.popup_centered("action:%s:%s" % [generation, revision], warning)
@@ -1193,11 +1200,11 @@ func _zone_clicked(kind: String, owner: int) -> void:
 		if owner == service.match_viewer:
 			_open_collection("side_deck", owner)
 		else:
-			_notice.text = "对手副卡组内容不公开。"
+			_notice.text = GameText.label("ui.selection.private_side_deck")
 	elif kind == "ash":
 		_open_collection("ash", owner)
 	elif kind == "main_deck":
-		_notice.text = "主牌库内容保持未知。"
+		_notice.text = GameText.label("ui.selection.private_deck")
 
 func _open_collection(kind: String, owner: int) -> void:
 	if kind == "side_deck" and owner != service.match_viewer:
@@ -1205,12 +1212,12 @@ func _open_collection(kind: String, owner: int) -> void:
 	# Collections and mandatory choices share one tray. A collapsed rule choice
 	# still owns that tray: replacing its request would discard Confirm/Pass.
 	if service.match_snapshot.get("decision") is Dictionary or bool(service.match_snapshot.get("opening", false)):
-		_notice.text = "请先完成当前响应或选择。"
+		_notice.text = GameText.label("ui.selection.resolve_first")
 		return
 	_clear_card()
 	_collection_kind = kind
 	var request: DecisionPresentation = DecisionPresentation.new()
-	request.title = ("我方" if owner == service.match_viewer else "对手") + (" · 副卡组" if kind == "side_deck" else " · 灰烬区")
+	request.title = (GameText.label("ui.match.own") if owner == service.match_viewer else GameText.label("ui.match.opponent")) + (GameText.label("ui.selection.side_deck_suffix") if kind == "side_deck" else GameText.label("ui.selection.ash_suffix"))
 	request.browse_mode = true
 	request.docked = true
 	var wanted_zone: int = 9 if kind == "side_deck" else 6
@@ -1248,7 +1255,7 @@ func _show_tray() -> void:
 	_shade.hide()
 	_decision.show()
 	_decision.move_to_front()
-	_hand_button.text = "手牌"
+	_hand_button.text = GameText.label("terms.zone.hand")
 
 func _restore_tray_hand() -> void:
 	if _tray_active:
@@ -1264,15 +1271,17 @@ func _collapse_tray() -> void:
 	_tray_suspended = true
 	canvas.hand_collapsed = false
 	canvas.queue_redraw()
-	_hand_button.text = "展开选择"
+	_hand_button.text = GameText.label("ui.response.expand")
 
 func _response_text() -> String:
 	var snapshot: Dictionary = service.match_snapshot
 	var context: Dictionary = snapshot.get("responseContext", {})
-	var summary: String = str(context.get("text", "当前响应时点"))
+	var summary: String = str(context.get("text", GameText.label("ui.response.current")))
 	var chain: Variant = snapshot.get("chain")
-	if chain is Dictionary and not str(chain.get("windowName", "")).is_empty():
-		return str(chain.windowName) + " · " + summary
+	if chain is Dictionary:
+		var window := GameText.term(chain, "windowName")
+		if not window.is_empty():
+			return window + " · " + summary
 	return summary
 
 func _question(title: String, description: String, id: String, choices: Array[Dictionary]) -> void:
@@ -1302,11 +1311,11 @@ func _show_response_question() -> void:
 	_restore_tray_hand()
 	_action_popup.hide()
 	_response_question_context = _current_dialog_context()
-	_confirm.dialog_text = _response_text() + ("\n响应可选择来源，放弃将交出本时点的优先权。" if available else "\n当前没有可以发动的效果。可以查看场面或放弃本时点。")
-	var title: String = "是否进行连锁？" if available else "查看场上情况"
+	_confirm.dialog_text = _response_text() + (GameText.label("ui.response.choose_source") if available else GameText.label("ui.response.none_available"))
+	var title: String = GameText.label("ui.response.ask") if available else GameText.label("ui.response.inspect_question")
 	if _lesson_state.get("hintSurface") == "response":
 		title = _text.t(_lesson_state.hintKey, _lesson_state.get("params", {}))
-	_confirm.popup_response("response:%s:%s:%s" % [_response_question_context[0], service.match_viewer, _response_decision_id], title, "响应" if available else "查看场面", "放弃时点")
+	_confirm.popup_response("response:%s:%s:%s" % [_response_question_context[0], service.match_viewer, _response_decision_id], title, GameText.label("ui.action.respond") if available else GameText.label("ui.response.inspect"), GameText.label("ui.response.pass"))
 	if _match_menu.visible:
 		_confirm.hide()
 
@@ -1372,9 +1381,9 @@ func _show_response_sources() -> void:
 			offset += 64
 	canvas.set_action_targets(_response_sources)
 	if _response_query_pending:
-		_notice.text = "正在查询当前合法响应…"
+		_notice.text = GameText.label("ui.response.querying")
 		return
-	_notice.text = _response_text() + (" · 点击高亮卡牌选择响应；取消操作可返回询问。" if not _response_sources.is_empty() else " · 可查看场地；取消操作可返回询问。")
+	_notice.text = _response_text() + (GameText.label("ui.response.highlighted_hint") if not _response_sources.is_empty() else GameText.label("ui.response.inspect_hint"))
 
 func _return_to_response() -> void:
 	if _network_waiting or _privacy_layer.visible:
@@ -1408,7 +1417,7 @@ func _render_decision() -> void:
 		_restore_tray_hand()
 		return
 	_query_is_decision = true
-	_query_title = "规则选择"
+	_query_title = GameText.label("ui.match.rule_choice")
 	_contextual_query = false
 	var kind: int = int(decision.get("kind", -1))
 	var id: String = str(decision.get("id", ""))
@@ -1427,7 +1436,7 @@ func _render_decision() -> void:
 	_response_decision_id = ""
 	_response_browsing = false
 	if kind == KernelContract.DecisionKind.Concentration and _forced_ack_id != id:
-		_question("必须处理专注", "请处理【%s】的专注。完成维持或放弃前，不能推进阶段。" % MatchProjection.card_name(snapshot, str(decision.get("source", "0"))), id, [{"id": "@concentration", "label": "是"}])
+		_question(GameText.label("ui.match.concentration_required"), GameText.label("ui.match.concentration_prompt", {"card": MatchProjection.card_name(snapshot, str(decision.get("source", "0")))}), id, [{"id": "@concentration", "label": GameText.label("ui.match.yes")}])
 		return
 	if kind == KernelContract.DecisionKind.Concentration and _concentration_selected_id != id:
 		_selection.cancel()
@@ -1437,7 +1446,7 @@ func _render_decision() -> void:
 		canvas.set_hand_collapsed(true)
 		_end_phase.disabled = true
 		canvas.set_action_targets([str(decision.get("source", "0"))])
-		_notice.text = "点击高亮的专注法术，再选择维持或放弃。"
+		_notice.text = GameText.label("ui.match.concentration_select")
 		return
 	_selection.begin("0", KernelContract.CommandKind.Choose)
 
@@ -1590,7 +1599,7 @@ func _toggle_hand() -> void:
 		_show_tray()
 		return
 	canvas.set_hand_collapsed(not canvas.hand_collapsed)
-	_hand_button.text = "▴ 手牌" if canvas.hand_collapsed else "▾ 手牌"
+	_hand_button.text = GameText.label("ui.match.hand_collapsed") if canvas.hand_collapsed else GameText.label("ui.match.hand_expanded")
 
 func _placement_requested(card_id: String, host_id: String, ring_index: int) -> void:
 	if _selection.current() and str(_selection.intent.get("source", "0")) == card_id and _selection.choose_ring(host_id, ring_index):
@@ -1605,7 +1614,7 @@ func _placement_requested(card_id: String, host_id: String, ring_index: int) -> 
 func _choose_action(action: Dictionary) -> void:
 	var command: Dictionary = action.get("command", {})
 	_query_is_decision = false
-	_query_title = str(action.get("label", "确认操作"))
+	_query_title = str(action.get("label", GameText.label("ui.match.confirm_action")))
 	_selection.begin(str(command.get("card", "0")), int(command.get("type", -1)))
 
 func _dismiss_confirmation() -> void:
@@ -1670,13 +1679,13 @@ func _apply_result(result: Dictionary) -> void:
 	if bool(data.get("pending", false)):
 		_network_waiting = true
 		_network_recovery.submitted()
-		_notice.text = "操作已发送，等待房主确认。"
+		_notice.text = GameText.label("ui.network.action_pending")
 		_render_actions()
 		return
 	if not str(data.get("saveError", "")).is_empty():
-		_notice.text = "回放保存失败：" + str(data["saveError"])
+		_notice.text = GameText.label("ui.match.save_failed", {"error": str(data["saveError"])})
 	else:
-		_notice.text = "操作已执行。"
+		_notice.text = GameText.label("ui.match.action_executed")
 	if service.match_mode == "hotseat":
 		_cover(-1)
 	_refresh()
@@ -1693,7 +1702,7 @@ func _show_cue(data: Dictionary) -> void:
 	if cues.is_empty():
 		return
 	var latest: Dictionary = cues.back()
-	var message: String = str(latest.get("text", ""))
+	var message: String = GameText.field(latest, "text")
 	if message.is_empty():
 		return
 	_cue.text = message
@@ -1732,7 +1741,7 @@ func _cover(next_viewer: int) -> void:
 	canvas.set_privacy(true)
 	_privacy_layer.show()
 	_privacy_layer.move_to_front()
-	_privacy_title.text = "请将设备交给玩家 %d" % [next_viewer + 1] if next_viewer >= 0 else "正在确认下一位玩家"
+	_privacy_title.text = GameText.label("ui.match.handoff", {"player": next_viewer + 1}) if next_viewer >= 0 else GameText.label("ui.match.awaiting_player")
 	_decision.hide()
 	_shade.hide()
 	_response_mode.hide()
@@ -1961,13 +1970,13 @@ func _save_replay() -> void:
 	if bool(service.replay_status().get("ready", false)):
 		_open_named_save(false)
 	else:
-		_notice.text = "完整联机回放将在终局后验证。"
+		_notice.text = GameText.label("ui.match.replay_after_match")
 
 func _open_named_save(from_settlement: bool) -> void:
 	_save_from_settlement = from_settlement
 	if from_settlement:
 		_settlement.hide()
-	_replay_name.text = "对局 " + Time.get_datetime_string_from_system().replace("T", " ").replace(":", "-")
+	_replay_name.text = GameText.label("ui.match.replay_default_name", {"date": Time.get_datetime_string_from_system().replace("T", " ").replace(":", "-")})
 	_replay_save.get_cancel_button().show()
 	_choose_replay_directory.visible = service.can_choose_save_directory
 	_replay_save_notice.text = service.replay_directory
@@ -1985,44 +1994,44 @@ func _write_named_replay() -> void:
 	if not _replay_save.visible:
 		return
 	if _replay_name.text.strip_edges().is_empty():
-		_replay_save_notice.text = "请输入回放名称。\n" + service.replay_directory
+		_replay_save_notice.text = GameText.label("ui.match.replay_name_required", {"directory": service.replay_directory})
 		return
 	if not service.save_replay(_replay_name.text):
 		_replay_save_notice.text = service.replay_directory + "\n" + service.error
 		return
 	_replay_save.hide()
-	_notice.text = "回放已保存 · " + service.last_replay_path.get_file()
+	_notice.text = GameText.label("ui.match.replay_saved", {"filename": service.last_replay_path.get_file()})
 	if _save_from_settlement and _leave_after_settlement:
 		_leave_finished_match()
 	elif _save_from_settlement:
 		_settlement.dialog_text = _settlement_summary + "\n\n" + _notice.text
-		_settlement.cancel_button_text = "留在场地"
-		_settlement_discard.text = "离开对局"
+		_settlement.cancel_button_text = GameText.label("ui.match.stay_on_field")
+		_settlement_discard.text = GameText.label("ui.match.leave")
 		_settlement.get_ok_button().hide()
 		_settlement.popup_centered(Vector2i(450, 0))
 
 func _terminal_summary(snapshot: Dictionary, abort_reason: String = "") -> String:
 	if not abort_reason.is_empty():
-		return "本局已中止，无胜者\n" + abort_reason
+		return GameText.label("ui.match.aborted", {"reason": abort_reason})
 	var result: int = int(snapshot.get("result", -1))
-	var title: String = "平局"
+	var title: String = GameText.label("ui.match.draw")
 	if result in [0, 1]:
 		if service.match_mode == "hotseat":
-			title = "玩家 %d 胜利 · 玩家 %d 失败" % [result + 1, 2 - result]
+			title = GameText.label("ui.match.player_result", {"winner": result + 1, "loser": 2 - result})
 		else:
-			title = "胜利" if result == service.match_viewer else "失败"
+			title = GameText.label("ui.match.victory") if result == service.match_viewer else GameText.label("ui.match.defeat")
 	var reasons: PackedStringArray = []
 	for event: Dictionary in service.event_log.entries:
 		var kind: String = str(event.get("kind", ""))
-		var message: String = str(event.get("text", "")).strip_edges()
+		var message: String = GameText.field(event, "text").strip_edges()
 		if not message.is_empty() and (kind in ["defeat_reason", "timeout", "seven_lamp_defeat"] or (kind == "game_over" and message.begins_with("强制循环"))):
 			reasons.append(message)
-	return title + "\n" + ("原因未知" if reasons.is_empty() else "\n".join(reasons))
+	return title + "\n" + (GameText.label("ui.match.unknown_reason") if reasons.is_empty() else "\n".join(reasons))
 
 func _show_settlement(summary: String, can_save: bool) -> void:
 	_close_match_menu()
 	_settlement_summary = summary
-	_settlement_discard.text = "不保存" if can_save else "离开对局"
+	_settlement_discard.text = GameText.label("ui.match.discard_replay") if can_save else GameText.label("ui.match.leave")
 	_settlement.get_ok_button().visible = can_save
 	_settlement.popup_centered(Vector2i(450, 0))
 
@@ -2039,7 +2048,7 @@ func _poll_settlement() -> void:
 		service.settled_generation = generation
 		var reason: String = str(room.get("abortReason", ""))
 		if aborted and reason.is_empty():
-			reason = "房间已关闭"
+			reason = GameText.label("ui.match.room_closed")
 		_show_settlement(_terminal_summary(snapshot, reason if aborted else ""), not aborted)
 	if _settlement.visible and not aborted:
 		_settlement_summary = _terminal_summary(snapshot)
@@ -2049,7 +2058,7 @@ func _poll_settlement() -> void:
 		var replay_message: String = ""
 		if not _replay_available:
 			var failure: String = str(status.get("error", ""))
-			replay_message = "\n\n正在接收并验证回放…" if bool(status.get("pending", false)) else "\n\n" + ("联机回放暂不可用。" if failure.is_empty() else failure)
+			replay_message = GameText.label("ui.match.replay_receiving") if bool(status.get("pending", false)) else "\n\n" + (GameText.label("ui.match.replay_unavailable") if failure.is_empty() else failure)
 		if _settlement.get_ok_button().visible:
 			_settlement.dialog_text = _settlement_summary + replay_message
 	elif _settlement.visible:
@@ -2063,7 +2072,7 @@ func _leave_finished_match() -> void:
 	if service.leave_match():
 		if service.network_active:
 			_leaving_network = true
-			_notice.text = "等待服务器确认离开房间…"
+			_notice.text = GameText.label("ui.match.leaving")
 		else:
 			_finish_leave()
 	else:
@@ -2079,9 +2088,9 @@ func request_leave(quit_application: bool = false) -> void:
 		_show_settlement(_terminal_summary(service.match_snapshot), true)
 		_poll_settlement()
 		return
-	_leave_dialog.dialog_text = "确定投降并结束当前对局？"
+	_leave_dialog.dialog_text = GameText.label("ui.match.surrender_question")
 	if service.match_mode == "tutorial" or bool(service.match_snapshot.get("technicalPaused", false)):
-		_leave_dialog.dialog_text = "结束当前对局？"
+		_leave_dialog.dialog_text = GameText.label("ui.match.end_question")
 	if _lesson_state.has("lessonId"):
 		_leave_dialog.dialog_text = _text.t("tutorial.general.g04")
 		_leave_dialog.get_cancel_button().text = _text.t("tutorial.general.g04.continue")
@@ -2118,7 +2127,7 @@ func _force_leave_network() -> void:
 
 func _reconnect_network() -> void:
 	service.network_request({"operation": "reconnect"})
-	_notice.text = service.error if not service.error.is_empty() else "正在重新连接…"
+	_notice.text = service.error if not service.error.is_empty() else GameText.label("ui.match.reconnecting")
 
 func network_updated(state: Dictionary) -> void:
 	if service == null or service.match_mode != "network":
@@ -2132,7 +2141,7 @@ func network_updated(state: Dictionary) -> void:
 		if _leaving_network:
 			_finish_leave()
 		else:
-			_notice.text = str(state.get("notice", "房间已关闭"))
+			_notice.text = str(state.get("notice", GameText.label("ui.match.room_closed")))
 		return
 	var room_value: Variant = state.get("room", {})
 	var room: Dictionary = room_value as Dictionary if room_value is Dictionary else {}
@@ -2143,14 +2152,14 @@ func network_updated(state: Dictionary) -> void:
 	if phase == "aborted" or bool(room.get("aborted", false)) or (bool(state.get("ended", false)) and phase != "completed"):
 		var reason: String = str(room.get("abortReason", ""))
 		if reason.is_empty():
-			reason = "服务器已重启或房间已关闭"
-		lifecycle_notices.append("本局已中止，无胜者。原因：%s" % reason)
+			reason = GameText.label("ui.match.server_restart")
+		lifecycle_notices.append(GameText.label("ui.match.aborted_reason", {"reason": reason}))
 		_reconnect_started_at_msec = -1
 	else:
 		if bool(room.get("storageBlocked", false)):
-			lifecycle_notices.append("服务器记录写入暂停，正在恢复存储；对局操作已冻结。")
+			lifecycle_notices.append(GameText.label("ui.match.storage_paused"))
 		if bool(room.get("technicalPaused", false)):
-			lifecycle_notices.append("规则引擎已技术暂停，规则时钟已冻结。")
+			lifecycle_notices.append(GameText.label("ui.match.engine_paused"))
 		if reconnecting:
 			var now: int = Time.get_ticks_msec()
 			if _reconnect_started_at_msec < 0:
@@ -2162,11 +2171,11 @@ func network_updated(state: Dictionary) -> void:
 			else:
 				remaining_ms = mini(remaining_ms, local_remaining_ms)
 			var seconds: int = ceili(float(remaining_ms) / 1000.0)
-			lifecycle_notices.append("连接中断 · 剩余 %d 秒%s" % [seconds, "，正在重连" if not connected else "，等待对方重连"])
+			lifecycle_notices.append(GameText.label("ui.match.disconnect_remaining", {"seconds": seconds, "status": GameText.label("ui.match.reconnecting_self") if not connected else GameText.label("ui.match.reconnecting_opponent")}))
 		else:
 			_reconnect_started_at_msec = -1
 		if phase == "completed":
-			lifecycle_notices.append("对局已结束，回放可保存。" if bool(state.get("replayDelivered", false)) else "对局已结束，正在接收并验证回放…")
+			lifecycle_notices.append(GameText.label("ui.match.replay_ready") if bool(state.get("replayDelivered", false)) else GameText.label("ui.match.replay_verifying"))
 	if _network_recovery.blocked:
 		_close_response_question()
 		_clear_action_targets()

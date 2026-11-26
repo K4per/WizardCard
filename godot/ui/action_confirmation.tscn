@@ -12,10 +12,10 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Heading" type="Label" parent="Column"]
+metadata/text_keys = {"text": "ui.match.confirm_action"}
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
-text = "确认操作"
 horizontal_alignment = 1
 
 [node name="Message" type="RichTextLabel" parent="Column"]
@@ -41,15 +41,15 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="Confirm" type="Button" parent="Column/Actions/Buttons"]
+metadata/text_keys = {"text": "ui.action.confirm"}
 unique_name_in_owner = true
 custom_minimum_size = Vector2(132, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "确认"
 
 [node name="Cancel" type="Button" parent="Column/Actions/Buttons"]
+metadata/text_keys = {"text": "ui.action.abandon"}
 unique_name_in_owner = true
 custom_minimum_size = Vector2(132, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "放弃"

@@ -14,10 +14,10 @@ layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="Column"]
+metadata/text_keys = {"text": "ui.deck_detail_pane.title"}
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "卡牌详情"
 clip_text = true
 
 [node name="Face" type="Control" parent="Column"]
@@ -29,12 +29,12 @@ script = ExtResource("face")
 illustration_only = true
 
 [node name="Body" type="RichTextLabel" parent="Column"]
+metadata/text_keys = {"text": "ui.deck_detail_pane.body"}
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 15
-text = "悬停卡牌查看完整效果。"
 scroll_active = true
 selection_enabled = true
 
@@ -46,9 +46,9 @@ horizontal_alignment = 2
 text = ""
 
 [node name="Hint" type="Label" parent="Column"]
+metadata/text_keys = {"text": "ui.deck_detail_pane.hint"}
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 12
-text = "左键加入 · 右键移出\n拖动移动卡牌"
 autowrap_mode = 3

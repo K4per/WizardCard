@@ -13,7 +13,7 @@ static func create(library: Array[CardPresentation]) -> FieldPresentation:
 	own.body_size = 2
 	own.ring_count = 4
 	own.occupants[0] = _copy(by_id.get("fireball", library[0]), "own-spell")
-	own.occupants[0].status = "解析中"
+	own.occupants[0].status = GameText.label("ui.field.analyzing")
 	own.occupants[2] = CardPresentation.anonymous("own-covered")
 	field.own_formations.append(own)
 	var opponent: FormationPresentation = FormationPresentation.new()
@@ -36,7 +36,7 @@ static func create(library: Array[CardPresentation]) -> FieldPresentation:
 	field.opponent_load = 4
 	field.own_load_limit = 10
 	field.opponent_load_limit = 10
-	field.phase_label = "主要阶段"
+	field.phase_label = GameText.label("ui.field.main_phase")
 	return field
 
 static func _copy(card: CardPresentation, id: String) -> CardPresentation:

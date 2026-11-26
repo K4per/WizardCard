@@ -148,6 +148,15 @@ enum class DamageType {
 enum class EffectRecipient { Target, Owner, Opponent };
 enum class LinkKind { Phase, Action, Preparation, Spell, Response, Trigger, Setup };
 std::string fingerprint(const std::string &bytes);
+// Stable identifiers for the display catalog. Legacy *Name functions retain
+// the default spellings used by previous wire messages and replay records.
+std::string damageTermKey(DamageType);
+std::string schoolTermKey(const std::string &);
+std::string phaseTermKey(Phase);
+std::string zoneTermKey(Zone);
+std::string windowTermKey(ResponseWindow);
+std::string linkTermKey(LinkKind);
+std::string legacyTermName(const std::string &key);
 std::string damageName(DamageType);
 const char *damageTypeId(DamageType);
 std::optional<DamageType> damageTypeFromId(const std::string &);

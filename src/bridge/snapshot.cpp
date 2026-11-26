@@ -56,9 +56,12 @@ Json clockDto(const MatchClockView &clock) {
     return {{"enabled", clock.enabled}, {"running", clock.running}, {"runningPlayer", clock.runningPlayer},
         {"runningPlayers", clock.runningPlayers}, {"remainingMs", clock.remainingMs}, {"sequence", std::to_string(clock.sequence)}};
 }
-Json viewDto(const GameView &v) {
+Json viewDto(const GameView &v, const Content *content) {
+    const auto term = [content](const std::string &key) {
+        return content && content->textCatalog ? content->renderText({key, {}}) : legacyTermName(key);
+    };
     Json out = {{"schema", schemaVersion}, {"viewer", v.viewer}, {"activePlayer", v.active}, {"phase", static_cast<int>(v.phase)},
-                {"phaseName", phaseName(v.phase)}, {"phaseStep", static_cast<int>(v.phaseStep)},
+                {"phaseName", term(phaseTermKey(v.phase))}, {"phaseNameKey", phaseTermKey(v.phase)}, {"phaseStep", static_cast<int>(v.phaseStep)},
                 {"phaseGate", std::to_string(v.phaseGate)}, {"result", v.result},
                 {"globalTurn", std::to_string(v.globalTurn)}, {"opening", v.opening},
                 {"openingStage", openingStageName(v.openingStage)}, {"openingRound", v.openingRound},
@@ -97,7 +100,7 @@ Json viewDto(const GameView &v) {
     for (const auto &c : v.cards) {
         const auto &i = c.instance;
         Json card = {{"id", std::to_string(i.id)}, {"owner", controllerOf(i)}, {"originalOwner", i.owner}, {"controller", controllerOf(i)}, {"zone", static_cast<int>(i.zone)},
-                     {"zoneName", zoneName(i.zone)}, {"host", std::to_string(i.host)},
+                     {"zoneName", term(zoneTermKey(i.zone))}, {"zoneNameKey", zoneTermKey(i.zone)}, {"host", std::to_string(i.host)},
                      {"hidden", c.hidden}, {"faceDown", i.faceDown}};
         // Location metadata is public even when the card definition is hidden.
         // The client needs the real ring/order to render anonymous covers without
@@ -134,13 +137,13 @@ Json viewDto(const GameView &v) {
         Json links = Json::array();
         for (const auto &link : chain.links)
             links.push_back({{"id", std::to_string(link.id)}, {"kind", static_cast<int>(link.kind)},
-                {"kindName", linkName(link.kind)}, {"owner", link.item.owner},
+                {"kindName", term(linkTermKey(link.kind))}, {"kindNameKey", linkTermKey(link.kind)}, {"owner", link.item.owner},
                 {"source", std::to_string(link.item.source)}, {"target", std::to_string(link.item.targetCard)},
                 {"targetLink", std::to_string(link.item.targetLink)}, {"targets", ids(link.item.targetCards)},
                 {"speed", link.speed}, {"paid", link.paid}, {"addedLoad", link.addedLoad},
                 {"canceled", link.canceled}, {"sourceLost", link.sourceLost}});
         out["chain"] = {{"id", std::to_string(chain.id)}, {"window", static_cast<int>(chain.window)},
-            {"windowName", windowName(chain.window)}, {"mode", static_cast<int>(chain.mode)},
+            {"windowName", term(windowTermKey(chain.window))}, {"windowNameKey", windowTermKey(chain.window)}, {"mode", static_cast<int>(chain.mode)},
             {"priority", chain.priority}, {"passes", chain.passes}, {"links", links}};
         if (!chain.links.empty()) {
             const auto &last = chain.links.back();
@@ -152,7 +155,7 @@ Json viewDto(const GameView &v) {
             if (last.ability == "ambush") description = actor + "设置了1张盖伏卡";
             else if (last.kind == LinkKind::Phase)
                 description = actor + (chain.window == ResponseWindow::PhaseEnd ? "即将结束" :
-                    chain.window == ResponseWindow::PhaseStart ? "进入" : "完成操作：") + phaseName(v.phase) + "阶段";
+                    chain.window == ResponseWindow::PhaseStart ? "进入" : "完成操作：") + term(phaseTermKey(v.phase)) + "阶段";
             else if (last.kind == LinkKind::Setup) description = actor + "设置【" + name + "】";
             else if (last.kind == LinkKind::Preparation) description = actor + "准备施法【" + name + "】";
             else description = actor + "发动【" + name + "】";

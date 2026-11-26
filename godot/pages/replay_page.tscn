@@ -20,27 +20,26 @@ fit_to_longest_item = false
 clip_text = true
 theme_override_font_sizes/font_size = 13
 [node name="Load" type="Button" parent="Playback/FilesRow"]
+metadata/text_keys = {"text": "ui.replay.load", "tooltip_text": "ui.replay.load_tooltip_text"}
 unique_name_in_owner = true
-text = "打开"
-tooltip_text = "打开所选复盘"
 theme_override_font_sizes/font_size = 13
 [node name="ViewerRow" type="HBoxContainer" parent="Playback"]
 [node name="Back" type="Button" parent="Playback/ViewerRow"]
+metadata/text_keys = {"text": "ui.decision.back"}
 unique_name_in_owner = true
-text = "返回"
 theme_override_font_sizes/font_size = 13
 [node name="Viewer" type="OptionButton" parent="Playback/ViewerRow"]
 unique_name_in_owner = true
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
 [node name="Hand" type="Button" parent="Playback/ViewerRow"]
+metadata/text_keys = {"text": "terms.zone.hand"}
 unique_name_in_owner = true
-text = "手牌"
 theme_override_font_sizes/font_size = 13
 [node name="StepRow" type="HBoxContainer" parent="Playback"]
 [node name="Previous" type="Button" parent="Playback/StepRow"]
+metadata/text_keys = {"text": "ui.replay.previous"}
 unique_name_in_owner = true
-text = "上一步"
 theme_override_font_sizes/font_size = 13
 [node name="Position" type="Label" parent="Playback/StepRow"]
 unique_name_in_owner = true
@@ -48,21 +47,21 @@ size_flags_horizontal = 3
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 15
 [node name="Play" type="Button" parent="Playback/StepRow"]
+metadata/text_keys = {"text": "ui.replay.play"}
 unique_name_in_owner = true
-text = "播放"
 theme_override_font_sizes/font_size = 13
 [node name="Speed" type="OptionButton" parent="Playback/StepRow"]
 unique_name_in_owner = true
 theme_override_font_sizes/font_size = 13
 [node name="Progress" type="HSlider" parent="Playback"]
+metadata/text_keys = {"tooltip_text": "ui.replay.progress_tooltip_text"}
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 24)
 step = 1.0
-tooltip_text = "回放进度"
 [node name="PlaybackTimer" type="Timer" parent="."]
 [node name="Next" type="Button" parent="."]
+metadata/text_keys = {"text": "ui.replay.next"}
 unique_name_in_owner = true
-text = "下一步"
 theme_override_font_sizes/font_size = 14
 [node name="Command" type="RichTextLabel" parent="Playback"]
 unique_name_in_owner = true

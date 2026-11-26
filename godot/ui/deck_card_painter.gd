@@ -51,7 +51,7 @@ static func paint_artwork(surface: CanvasItem, value: CardPresentation, rect: Re
 static func paint_covered(surface: CanvasItem, rect: Rect2) -> void:
 	surface.draw_rect(rect, CARD_FILL)
 	surface.draw_rect(rect.grow(-0.5), BORDER, false, 1)
-	_label(surface, "盖伏", rect.grow(-1), 14, FONT, MUTED, true)
+	_label(surface, GameText.label("ui.card.face_down"), rect.grow(-1), 14, FONT, MUTED, true)
 
 static func paint(surface: CanvasItem, value: CardPresentation, bounds: Rect2, highlighted: bool = false, focus_color: Color = DeckTheme.ACCENT) -> void:
 	var rect: Rect2 = CardPainter.fitted_rect(bounds)
@@ -65,7 +65,7 @@ static func paint(surface: CanvasItem, value: CardPresentation, bounds: Rect2, h
 		paint_artwork(surface, value, art)
 		var title: Rect2 = Rect2(art.position.x, rect.position.y, art.size.x, art.position.y - rect.position.y)
 		_label(surface, value.title, title, clampi(roundi(rect.size.x * 0.13), 10, 17), TITLE_FONT, TEXT)
-		var status: String = value.status.get_slice("\n", 0).get_slice(" · ", 0).replace("解析剩余 ", "余")
+		var status: String = value.status.get_slice("\n", 0).get_slice(" · ", 0).replace(GameText.label("ui.card.analysis_prefix"), GameText.label("ui.card.short_remaining"))
 		var token: String = value.token_label()
 		if status.is_empty():
 			status = token
@@ -75,13 +75,13 @@ static func paint(surface: CanvasItem, value: CardPresentation, bounds: Rect2, h
 			_label(surface, token, tag, 12, FONT, TEXT, true)
 		var cost: String = value.primary_value
 		if value.type_key == "analysis" and not value.dynamic_cost and rect.size.x >= 85:
-			cost = "设%d / 施%d" % [value.setting_cost, value.cast_cost]
+			cost = GameText.label("ui.card.short_spell_cost", {"setting": value.setting_cost, "casting": value.cast_cost})
 		elif value.type_key == "formation":
-			cost = "等级 " + value.secondary_value
+			cost = GameText.label("ui.card.level_prefix", {"level": value.secondary_value})
 		elif value.type_key in ["incantation", "talisman"]:
-			cost = "施 " + cost
+			cost = GameText.label("ui.card.cast_prefix", {"cost": cost})
 		elif value.type_key == "rune":
-			cost = "附 " + cost
+			cost = GameText.label("ui.card.attach_prefix", {"cost": cost})
 		var footer: Rect2 = Rect2(art.position.x, art.end.y, art.size.x, rect.end.y - art.end.y - 1)
 		if footer.size.y >= 27:
 			var first: Rect2 = Rect2(footer.position, Vector2(footer.size.x, footer.size.y * 0.5))

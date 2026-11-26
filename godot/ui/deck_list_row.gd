@@ -28,14 +28,14 @@ func _draw() -> void:
 	var available_width: float = maxf(0.0, size.x - left - 16)
 	var title_size: int = Typography.scaled_size(18)
 	var subtitle_size: int = Typography.scaled_size(14)
-	var title: String = _fit_text(str(draft.get("name", "未命名卡组")), available_width, title_size)
+	var title: String = _fit_text(str(draft.get("name", GameText.label("ui.deck.unnamed"))), available_width, title_size)
 	draw_string(Typography.BODY, Vector2(left, 6 + Typography.BODY.get_ascent(title_size)), title, HORIZONTAL_ALIGNMENT_LEFT, -1, title_size, DeckTheme.TEXT)
 	var main_count: int = DeckUi.total(main_cards)
 	var side_count: int = DeckUi.total(side)
 	var problems: Array = draft.get("problems", [])
-	var subtitle: String = "主卡组 %d / 40    副卡组 %d / 10    %s" % [main_count, side_count, "可用于对局" if problems.is_empty() else "草稿 · 点击编辑"]
+	var subtitle: String = GameText.label("ui.deck.row_counts", {"main": main_count, "side": side_count, "status": GameText.label("ui.deck.playable") if problems.is_empty() else GameText.label("ui.deck.draft_edit")})
 	if int(draft.get("format", 1)) == 1:
-		subtitle = "旧版草稿 · 点击按新规则编辑"
+		subtitle = GameText.label("ui.deck.legacy_edit")
 	var subtitle_y: float = 8 + Typography.BODY.get_height(title_size) + Typography.BODY.get_ascent(subtitle_size)
 	draw_string(Typography.BODY, Vector2(left, subtitle_y), _fit_text(subtitle, available_width, subtitle_size), HORIZONTAL_ALIGNMENT_LEFT, -1, subtitle_size, DeckTheme.MUTED)
 

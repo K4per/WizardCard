@@ -57,8 +57,8 @@ func _ready() -> void:
 	_progress.drag_ended.connect(_end_seek)
 	_progress.value_changed.connect(_progress_changed)
 	_timer.timeout.connect(_advance_playback)
-	_viewer.add_item("玩家一视角")
-	_viewer.add_item("玩家二视角")
+	_viewer.add_item(GameText.label("ui.replay.viewer_one"))
+	_viewer.add_item(GameText.label("ui.replay.viewer_two"))
 	_viewer.item_selected.connect(_viewer_changed)
 	_canvas.card_selected.connect(_show_detail)
 	_canvas.card_hovered.connect(_hover_card)
@@ -101,7 +101,7 @@ func configure(value: FrontendService) -> void:
 		if index >= 0:
 			_files.select(index)
 	if _paths.is_empty():
-		_notice.text = "暂无已保存的复盘。\n" + directory
+		_notice.text = GameText.label("ui.replay.empty", {"directory": directory})
 	else:
 		_load()
 
@@ -113,16 +113,16 @@ func _load() -> void:
 	# read_replay_plan validates every digest and builds the seek checkpoints.
 	var plan: Dictionary = service.match_request(&"read_replay_plan", [path])
 	if not bool(plan.get("ok", false)):
-		_notice.text = "复盘读取失败：" + service.error
+		_notice.text = GameText.label("ui.replay.load_failed", {"error": service.error})
 		_update_controls()
 		return
 	if int(plan.get("data", {}).get("schema", -1)) != KernelContract.SCHEMA:
-		_notice.text = "复盘数据版本不匹配，请更新客户端。"
+		_notice.text = GameText.label("ui.replay.wrong_version")
 		_update_controls()
 		return
 	_path = path
 	_rows.assign((plan.get("data", {}) as Dictionary).get("commands", []))
-	_notice.text = "验证通过 · %d 步" % _rows.size()
+	_notice.text = GameText.label("ui.replay.verified", {"steps": _rows.size()})
 	_step = 0
 	_show_frame()
 
@@ -150,7 +150,7 @@ func _toggle_playback() -> void:
 		_stop_playback()
 	elif not _path.is_empty() and _step < _rows.size():
 		_timer.start(1.0 / float(_speed.get_selected_id()))
-		_play.text = "暂停"
+		_play.text = GameText.label("ui.replay.pause")
 
 func _change_speed(index: int) -> void:
 	_speed.select(index)
@@ -159,7 +159,7 @@ func _change_speed(index: int) -> void:
 
 func _stop_playback() -> void:
 	_timer.stop()
-	_play.text = "播放"
+	_play.text = GameText.label("ui.replay.play")
 
 func _advance_playback() -> void:
 	_move(1)
@@ -209,12 +209,12 @@ func _show_frame(sequential: bool = false) -> void:
 	else:
 		var response: Dictionary = service.match_request(&"replay_frame", [_path, _step, _viewer.selected])
 		if not bool(response.get("ok", false)):
-			_notice.text = "无法显示此步骤：" + service.error
+			_notice.text = GameText.label("ui.replay.step_failed", {"error": service.error})
 			_reset_replay()
 			return
 		frame = (response.get("data", {}) as Dictionary).duplicate(true)
 		if int(frame.get("schema", -1)) != KernelContract.SCHEMA:
-			_notice.text = "复盘数据版本不匹配，请更新客户端。"
+			_notice.text = GameText.label("ui.replay.wrong_version")
 			_reset_replay()
 			return
 		if _frame_cache.size() >= 16:
@@ -236,7 +236,7 @@ func _show_frame(sequential: bool = false) -> void:
 	else:
 		_canvas.stop_feedback()
 	_hide_detail()
-	_command.text = "对局开始" if _step == 0 else "步骤 %d · 玩家 %d\n%s" % [_step, int(_rows[_step - 1].get("actor", 0)) + 1, _command_label(_rows[_step - 1].get("command", {}))]
+	_command.text = GameText.label("ui.replay.start") if _step == 0 else GameText.label("ui.replay.step", {"step": _step, "player": int(_rows[_step - 1].get("actor", 0)) + 1, "command": _command_label(_rows[_step - 1].get("command", {}))})
 	_update_controls()
 
 func _update_status(frame: Dictionary) -> void:
@@ -252,7 +252,7 @@ func _update_status(frame: Dictionary) -> void:
 	for index: int in range(2):
 		var player: int = viewer if index == 0 else 1 - viewer
 		var values: Dictionary = (players[player] as Dictionary).duplicate()
-		bars[index].set_status("我方" if index == 0 else "对手", player, values, loads, cards, frame.get("debug", {}))
+		bars[index].set_status(GameText.label("ui.match.own") if index == 0 else GameText.label("ui.match.opponent"), player, values, loads, cards, frame.get("debug", {}))
 
 func _update_logs(frame: Dictionary) -> void:
 	_table.update_events(frame.get("eventLog", []), true)

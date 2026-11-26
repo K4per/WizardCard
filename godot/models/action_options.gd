@@ -27,10 +27,14 @@ static func parse(value: Dictionary) -> ActionOptions:
 	for row: Variant in value["options"]:
 		if not row is Dictionary or not row.get("value") is String:
 			return null
-		result.options.append(row)
+		var option: Dictionary = row
+		if option.has("labelRef"):
+			option = option.duplicate()
+			option["label"] = GameText.field(option, "label")
+		result.options.append(option)
 	if value.get("complete") is Dictionary:
 		result.complete = value["complete"]
-	result.cost_quote = str(value.get("costQuote", ""))
+	result.cost_quote = GameText.field(value, "costQuote")
 	result.overload_preview = int(value.get("overloadPreview", 0))
 	result.has_more = bool(value.get("hasMore", false))
 	result.pending = bool(value.get("pending", false))

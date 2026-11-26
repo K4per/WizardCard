@@ -302,6 +302,9 @@ TEST_CASE("local bridge plays a catalog lesson and verifies its course-only repl
         view.at("generation"), view.at("revision"));
     REQUIRE(rejection.at("errorCode") == "tutorial_blocked");
     CHECK(rejection.at("blockedHint") == "tutorial.test.blocked");
+    CHECK(rejection.at("errorRef") == Json{{"key", "tutorial.test.blocked"}, {"args", Json::object()}});
+    CHECK(rejection.at("error") == "请按提示操作");
+    CHECK(session.snapshot(0).at("data").at("revision") == view.at("revision"));
     // Select the legal word and target from this course's opening position.
     const auto catalog = fixture.load();
     const auto *definition = catalog.find("installed");

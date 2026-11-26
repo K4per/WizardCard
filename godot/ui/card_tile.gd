@@ -19,7 +19,7 @@ func _ready() -> void:
 
 func configure(value: CardPresentation) -> void:
 	card = value
-	tooltip_text = "盖伏卡" if card.hidden else card.title
+	tooltip_text = GameText.label("ui.card.hidden") if card.hidden else card.title
 	queue_redraw()
 
 func _draw() -> void:

@@ -23,19 +23,19 @@ func _ready() -> void:
 	margin.add_child(column)
 	var heading: HBoxContainer = HBoxContainer.new()
 	column.add_child(heading)
-	heading.add_child(UiFactory.button("‹ 返回主菜单", navigation_requested.emit.bind(&"menu")))
+	heading.add_child(UiFactory.button(GameText.label("ui.guide.back_to_menu"), navigation_requested.emit.bind(&"menu")))
 	heading.add_child(UiFactory.label(get_node("/root/Text").t("tutorial.guide.title", {"version": ProjectSettings.get_setting("application/config/version")}), 28, true))
 	tabs = TabContainer.new()
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(tabs)
 	var lessons: VBoxContainer = VBoxContainer.new()
-	lessons.name = "新手教程"
+	lessons.name = GameText.label("ui.guide.lessons")
 	lessons.add_theme_constant_override(&"separation", 12)
 	tabs.add_child(lessons)
 	_course_list = VBoxContainer.new()
 	lessons.add_child(_course_list)
 	var rules_page: VBoxContainer = VBoxContainer.new()
-	rules_page.name = "规则书"
+	rules_page.name = GameText.label("ui.guide.rulebook")
 	tabs.add_child(rules_page)
 	_rule_chapters = OptionButton.new()
 	rules_page.add_child(_rule_chapters)
@@ -50,7 +50,7 @@ func _ready() -> void:
 	_rule_chapters.item_selected.connect(_read_rule)
 	_read_rule(0)
 	_library = load("res://pages/library_page.tscn").instantiate() as LibraryPage
-	_library.name = "卡牌图鉴"
+	_library.name = GameText.label("ui.guide.library")
 	tabs.add_child(_library)
 	_library.get_node("Margin/Column/Heading/Back").hide()
 
@@ -73,5 +73,5 @@ func configure(value: FrontendService) -> void:
 func _read_rule(index: int) -> void:
 	var chapters: Array = _rules.get("chapters", [])
 	if index >= 0 and index < chapters.size():
-		_rule_text.text = "规则版本 %s\n\n" % _rules["version"] + str(chapters[index]["title"]) + "\n\n" + str(chapters[index]["text"])
+		_rule_text.text = GameText.label("ui.guide.rules_version", {"version": _rules["version"]}) + str(chapters[index]["title"]) + "\n\n" + str(chapters[index]["text"])
 		_rule_text.scroll_to_line(0)

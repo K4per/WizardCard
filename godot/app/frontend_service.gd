@@ -19,6 +19,7 @@ var cards: Array[CardPresentation] = []
 var settings: Dictionary = {}
 var rules_version: String = ""
 var definitions: Dictionary[String, Dictionary] = {}
+var filter_term_values: Dictionary = {}
 var drafts: Array[Dictionary] = []
 var presets: Array[Dictionary] = []
 var tutorial_lessons: Array[Dictionary] = []
@@ -58,6 +59,12 @@ func initialize(assets: String, user_directory: String, default_saves: String = 
 		error = str(response.get("error", "内容读取失败"))
 		return false
 	var data: Dictionary = response.get("data", {})
+	var native_text_directory: String = str(data.get("textDirectory", "")).simplify_path()
+	var catalog := GameText.shared()
+	if data.has("textDirectory") and native_text_directory != catalog.directory:
+		if not catalog.load_catalog(native_text_directory):
+			error = catalog.last_error
+			return false
 	rules_version = str(data.get("rulesVersion", ""))
 	tutorial_lessons.assign(data.get("lessons", []))
 	settings = data.get("settings", {}).duplicate(true)
@@ -96,6 +103,7 @@ func _ingest_library(data: Dictionary) -> void:
 	cards.clear()
 	_card_cache.clear()
 	definitions.clear()
+	filter_term_values = data.get("filterTerms", {})
 	var card_names: Dictionary = {}
 	var rows: Array = data.get("cards", [])
 	for definition: Dictionary in rows:
@@ -120,6 +128,9 @@ func _request(method: StringName, arguments: Array = []) -> Dictionary:
 		error = "请重新启动游戏，以加载新版卡组模块。"
 		return {"ok": false, "error": error}
 	var response: Dictionary = _bridge.callv(method, arguments)
+	if response.has("errorRef"):
+		response = response.duplicate()
+		response["error"] = GameText.field(response, "error")
 	error = "" if bool(response.get("ok", false)) else str(response.get("error", "操作失败"))
 	return response
 

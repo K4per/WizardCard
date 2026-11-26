@@ -81,17 +81,17 @@ func show_frame(snapshot: Dictionary) -> void:
 		waiting = int(snapshot.chain.get("priority", waiting))
 	if decision is Dictionary:
 		waiting = int(decision.get("player", waiting))
-	phase.text = "玩家 %d · 第 %d 个己方回合\n%s · 等待玩家 %d" % [player + 1, turn, str(snapshot.get("phaseName", "开局")), waiting + 1]
+	phase.text = GameText.label("ui.table.turn_status", {"player": player + 1, "turn": turn, "phase": GameText.term(snapshot, "phaseName", GameText.label("ui.table.opening")), "waiting": waiting + 1})
 	if bool(snapshot.get("opening", false)):
 		var gestures: bool = str(snapshot.get("openingStage", "")) == "gestures"
 		var confirmed: Array = snapshot.get("gestureConfirmed" if gestures else "initialFormationConfirmed", [])
-		var prompt: String = "等待双方确认"
+		var prompt: String = GameText.label("ui.table.await_both")
 		if confirmed.size() == 2 and bool(confirmed[0]) != bool(confirmed[1]):
-			prompt = "等待玩家 %d" % [2 if bool(confirmed[0]) else 1]
-		var stage: String = "猜拳第 %d 轮" % int(snapshot.get("openingRound", 1)) if gestures else "选择初始阵法"
-		phase.text = "开局 · %s\n%s" % [stage, prompt]
+			prompt = GameText.label("ui.table.await_player", {"player": 2 if bool(confirmed[0]) else 1})
+		var stage: String = GameText.label("ui.table.gesture_round", {"round": int(snapshot.get("openingRound", 1))}) if gestures else GameText.label("ui.action.select_initial_formation")
+		phase.text = GameText.label("ui.table.opening_status", {"stage": stage, "prompt": prompt})
 	if int(snapshot.get("result", -1)) >= 0:
-		phase.text = "对局结束 · " + ("平局" if int(snapshot.result) > 1 else "玩家 %d 获胜" % [int(snapshot.result) + 1])
+		phase.text = GameText.label("ui.table.finished", {"result": (GameText.label("ui.match.draw") if int(snapshot.result) > 1 else GameText.label("ui.table.winner", {"player": int(snapshot.result) + 1}))})
 	_render_chain()
 
 func present_events(events: Array) -> void:
@@ -124,22 +124,22 @@ func _present_next() -> void:
 		var name_text: String = _feedback_name(source)
 		var chain: int = int(event.get("chainIndex", 0))
 		var prefix: String = "C%d · " % chain if chain > 0 else ""
-		var result: String = str(event.get("text", "")) if kind == "effect" else ("失效" if kind == "link_skipped" else "结算完成")
-		if kind == "effect" and event.get("effectType") in [0, 1, 2, 7, 17]:
+		var result: String = GameText.field(event, "text") if kind == "effect" else (GameText.label("ui.table.invalid") if kind == "link_skipped" else GameText.label("ui.table.resolved"))
+		if not event.get("textRef") is Dictionary and kind == "effect" and event.get("effectType") in [0, 1, 2, 7, 17]:
 			var actual: int = int(event.get("actualAmount", 0))
 			match int(event.effectType):
-				0: result = "造成 %d 点伤害" % actual if actual > 0 else "未造成伤害"
-				1: result = "恢复 %d 点生命" % actual
-				2: result = "抽取 %d 张牌" % actual
-				7: result = "获得 %d 点魔素" % actual
-				17: result = "获得 %d 点临时生命" % actual
+				0: result = GameText.label("ui.table.damage", {"amount": actual}) if actual > 0 else GameText.label("ui.table.no_damage")
+				1: result = GameText.label("ui.table.heal", {"amount": actual})
+				2: result = GameText.label("ui.table.draw", {"count": actual})
+				7: result = GameText.label("ui.table.mana", {"amount": actual})
+				17: result = GameText.label("ui.table.temporary_life", {"amount": actual})
 		var targets: PackedStringArray = []
 		for id: Variant in event.get("targets", []):
 			var target: Dictionary = _public_card(str(id))
 			if not target.is_empty():
 				targets.append(_feedback_name(target))
 		if targets.is_empty() and kind == "effect" and player in [0, 1] and event.get("effectType") in [0, 1, 2, 7, 17]:
-			targets.append("玩家 %d" % (player + 1))
+			targets.append(GameText.label("ui.table.player", {"player": (player + 1)}))
 		_event_caption_label.text = prefix + name_text + (" → " + "、".join(targets) if not targets.is_empty() else "") + "\n" + result
 		_event_caption_label.show()
 	_event_tween = create_tween()
@@ -148,8 +148,8 @@ func _present_next() -> void:
 
 func _feedback_name(row: Dictionary) -> String:
 	if row.is_empty() or bool(row.get("hidden", false)) or bool(row.get("faceDown", false)):
-		return "卡牌"
-	return str(row.get("definition", {}).get("name", "卡牌"))
+		return GameText.label("ui.table.card")
+	return str(row.get("definition", {}).get("name", GameText.label("ui.table.card")))
 
 func clear_feedback() -> void:
 	canvas.stop_feedback()
@@ -182,7 +182,7 @@ func update_events(events: Array, reset: bool) -> void:
 				_resolved.clear()
 			"link_resolved", "link_skipped":
 				if index > 0:
-					_resolved.append("C%d%s" % [index, "（失效）" if event.kind == "link_skipped" else ""])
+					_resolved.append("C%d%s" % [index, GameText.label("ui.table.invalid_link") if event.kind == "link_skipped" else ""])
 			"chain_closed":
 				if _resolved.size() > 1:
 					_last_multi_chain = " → ".join(_resolved)
@@ -201,9 +201,9 @@ func _legacy_action(action: String, source: String, actor: int = -1, show_name: 
 		actor = int(card.get("controller", card.get("owner", -1)))
 	var name_text: String = str(card.get("definition", {}).get("name", ""))
 	var public_zone: bool = int(card.get("zone", -1)) in [2, 3, 4, 5, 6, 7, 8, 10]
-	if show_name and not name_text.is_empty() and not bool(card.get("hidden", false)) and not bool(card.get("faceDown", false)) and public_zone and action != "盖伏法术":
+	if show_name and not name_text.is_empty() and not bool(card.get("hidden", false)) and not bool(card.get("faceDown", false)) and public_zone and action != GameText.label("ui.table.hidden_spell"):
 		action += "《%s》" % name_text
-	return ("玩家 %d " % (actor + 1) if actor in [0, 1] else "") + action
+	return (GameText.label("ui.table.actor_prefix", {"player": (actor + 1)}) if actor in [0, 1] else "") + action
 
 func _remember_public_links(snapshot: Dictionary) -> void:
 	var chain: Variant = snapshot.get("chain")
@@ -214,25 +214,29 @@ func _remember_public_links(snapshot: Dictionary) -> void:
 		if id.is_empty() or _seen_links.has(id):
 			continue
 		var source: String = str(link.get("source", "0"))
-		var action: String = str(link.get("kindName", "行动"))
-		if action == "阶段":
+		var action: String = GameText.term(link, "kindName", GameText.label("ui.table.action"))
+		if int(link.get("kind", -1)) == 0 or (not link.has("kind") and action == GameText.label("terms.link.phase")):
 			if source != "0":
-				action = "盖伏法术"
+				action = GameText.label("ui.table.hidden_spell")
 			elif int(chain.get("window", -1)) in [0, 1]:
-				action = str(snapshot.get("phaseName", "")) + str(chain.get("windowName", "阶段时点"))
+				action = GameText.term(snapshot, "phaseName") + GameText.term(chain, "windowName", GameText.label("ui.table.phase_window"))
 			else:
-				action = "行动后的响应时点"
+				action = GameText.label("ui.table.action_response")
 		var actor: int = int(link.get("owner", -1))
 		_seen_links[id] = {"actor":actor, "action":_legacy_action(action, source, actor)}
 		if _seen_links.size() > MatchEventLog.CAPACITY:
 			_seen_links.erase(_seen_links.keys()[0])
 
+# These prefixes identify historical zh_CN replay messages. Keep the parser independent of display copy.
 func _old_link_id(message: String) -> String:
 	return message.get_slice("链节 #", 1) if message.contains("链节 #") else ""
 
 func _event_caption(event: Dictionary, following: Dictionary) -> String:
 	var kind: String = str(event.get("kind", ""))
-	var message: String = str(event.get("text", "对局状态已更新"))
+	# Keyed events already carry a complete caption; legacy replay rows can require reconstruction.
+	if event.get("textRef") is Dictionary:
+		return GameText.field(event, "text")
+	var message: String = str(event.get("text", GameText.label("ui.table.state_updated")))
 	var source: String = str(event.get("card", "0"))
 	var index: int = int(event.get("chainIndex", 0))
 	var previous: String = _preceding_action
@@ -261,36 +265,36 @@ func _event_caption(event: Dictionary, following: Dictionary) -> String:
 				# identity from a later frame. A trigger may have a private source.
 				var known_public: bool = _opening_action in ["准备施法", "释放法术"]
 				_opening_action = _legacy_action(_opening_action, first, -1, known_public)
-		return "建立连锁：" + _opening_action
+		return GameText.label("ui.log.chain_open", {"action": _opening_action})
 	var id: String = _old_link_id(message)
 	if kind == "link_declared" and not id.is_empty():
 		var action: String = _opening_action if index == 1 else ""
 		if action.is_empty():
-			action = str(_seen_links[id].action) if _seen_links.has(id) else (_legacy_action("发动响应", source) if index > 1 else "")
+			action = str(_seen_links[id].action) if _seen_links.has(id) else (_legacy_action(GameText.label("ui.log.activate_response"), source) if index > 1 else "")
 		if action.is_empty():
-			action = _legacy_action("行动", source, -1, false)
+			action = _legacy_action(GameText.label("ui.table.action"), source, -1, false)
 		_window_actions[index] = action
-		return "宣告：" + action
+		return GameText.label("ui.log.declared", {"action": action})
 	if kind in ["cast", "word_response", "prepare_declared", "flip"] and not message.contains("玩家"):
 		var action: String = _legacy_action(message.trim_prefix("宣告"), source)
 		if index > 0:
 			_window_actions[index] = action
-		return "宣告：" + action
+		return GameText.label("ui.log.declared", {"action": action})
 	if kind in ["link_resolved", "link_skipped"] and not id.is_empty():
-		var action: String = str(_window_actions.get(index, _seen_links[id].action if _seen_links.has(id) else "行动"))
-		return ("结算：" if kind == "link_resolved" else "取消或失效：") + action
+		var action: String = str(_window_actions.get(index, _seen_links[id].action if _seen_links.has(id) else GameText.label("ui.table.action")))
+		return GameText.label("ui.log.resolved" if kind == "link_resolved" else "ui.log.canceled", {"action": action})
 	if kind == "pay" and not message.contains("玩家"):
-		var payment := "支付 %d 魔素" % int(event.get("amount", 0)) if message == "支付魔素" else message
+		var payment := GameText.label("ui.log.payment", {"mana": int(event.get("amount", 0))}) if message == "支付魔素" else message
 		var next_link := _old_link_id(str(following.get("text", "")))
 		var payer: int = int(_seen_links.get(next_link, {}).get("actor", -1))
 		if payer in [0, 1] and str(following.get("card", "0")) == source:
-			return "玩家 %d %s" % [payer + 1, payment]
+			return GameText.label("ui.log.player_action", {"player": payer + 1, "action": payment})
 		return payment
 	# Draw events are delivered only to the player who drew the card.
 	if kind == "draw" and not message.contains("玩家") and int(_chain.get("viewer", -1)) in [0, 1]:
-		return "玩家 %d %s" % [int(_chain.viewer) + 1, message]
+		return GameText.label("ui.log.player_action", {"player": int(_chain.viewer) + 1, "action": message})
 	if kind == "chain_closed":
-		_preceding_action = "进入连锁处理后的响应时点"
+		_preceding_action = GameText.label("ui.log.after_chain")
 		_window_actions.clear()
 		_opening_action = ""
 	return message
@@ -303,25 +307,25 @@ func _render_chain() -> void:
 		var resolving: bool = int(chain.get("mode", 0)) == 1
 		for index: int in range(links.size()):
 			var link: Dictionary = links[index]
-			var caption: String = str(link.get("kindName", "阶段")) if str(link.get("source", "0")) == "0" else MatchProjection.card_name(_chain, str(link.source))
+			var caption: String = GameText.term(link, "kindName", GameText.label("terms.link.phase")) if str(link.get("source", "0")) == "0" else MatchProjection.card_name(_chain, str(link.source))
 			var current: bool = resolving and index == links.size() - 1
 			if current:
 				chain_text.push_color(Color("f3ce80"))
-			chain_text.add_text("%sC%d · %s%s\n" % ["正在结算 " if current else "", index + 1, caption, "（无效）" if bool(link.get("canceled", false)) else ""])
+			chain_text.add_text("%sC%d · %s%s\n" % [GameText.label("ui.log.resolving") if current else "", index + 1, caption, GameText.label("ui.log.invalid") if bool(link.get("canceled", false)) else ""])
 			if current:
 				chain_text.pop()
 		if resolving and not links.is_empty():
 			chain_text.scroll_to_paragraph(links.size() - 1)
 		if links.is_empty():
-			chain_text.add_text("等待响应")
+			chain_text.add_text(GameText.label("ui.log.waiting"))
 	else:
-		chain_text.add_text("当前无连锁")
+		chain_text.add_text(GameText.label("ui.log.no_chain"))
 	if not _last_multi_chain.is_empty():
-		chain_text.add_text("\n最近多节结算  " + _last_multi_chain)
+		chain_text.add_text(GameText.label("ui.log.last_chain", {"actions": _last_multi_chain}))
 
 func show_clock(state: Dictionary, viewer: int, elapsed_ms: int) -> void:
 	if not bool(state.get("enabled", false)):
-		clock.text = "未计时"
+		clock.text = GameText.label("ui.log.untimed")
 		return
 	var remaining: Array = state.get("remainingMs", [])
 	var running: Array = state.get("runningPlayers", [])
@@ -332,7 +336,7 @@ func show_clock(state: Dictionary, viewer: int, elapsed_ms: int) -> void:
 		if active and bool(state.get("running", false)):
 			ms -= elapsed_ms
 		var seconds: int = maxi(0, ceili(ms / 1000.0))
-		lines.append("%s %02d:%02d" % ["己" if player == viewer else "对", seconds / 60, seconds % 60])
+		lines.append("%s %02d:%02d" % [GameText.label("ui.log.own") if player == viewer else GameText.label("ui.log.opponent"), seconds / 60, seconds % 60])
 	clock.text = "\n".join(lines)
 
 func place_casting_control(control: Control, left: bool) -> void:

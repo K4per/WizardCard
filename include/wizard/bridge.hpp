@@ -7,7 +7,7 @@
 namespace wizard::bridge {
 // Engine-independent whitelist DTOs. uint64 values NEVER cross the scripting boundary as numbers.
 Json commandDto(const Command &);
-Json viewDto(const GameView &);
+Json viewDto(const GameView &, const Content *content = nullptr);
 Json cardDefinitionDto(const CardDefinition &);
 inline constexpr int schemaVersion = 2;
 Json eventDto(const GameEvent &);

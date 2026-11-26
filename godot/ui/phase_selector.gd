@@ -16,7 +16,7 @@ func open_for(button: Button, actions: Array[Dictionary]) -> void:
 		child.queue_free()
 	for action: Dictionary in actions:
 		var command: Dictionary = action.get("command", {})
-		var label: String = "切换到结束阶段" if bool(command.get("skipCast", false)) else "切换到施法阶段"
+		var label: String = GameText.label("ui.action.skip_to_end") if bool(command.get("skipCast", false)) else GameText.label("ui.action.switch_to_cast")
 		var choice: Button = UiFactory.button(label, _choose.bind(action))
 		choice.custom_minimum_size = Vector2(184, 40)
 		_choices.add_child(choice)

@@ -254,6 +254,7 @@ Json HostSession::receive(const Json &j) {
                 auto r = match_->submit(1 - hostPlayer_, command);
                 revision_ += match_->revision() - before;
                 result["error"] = r.error;
+                if (r.errorRef) result["errorRef"] = encodeTextRef(*r.errorRef);
                 result["revision"] = std::to_string(revision_);
                 if (r.accepted) {
                     result["type"] = "Accepted";

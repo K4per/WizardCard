@@ -23,7 +23,7 @@ static func field(snapshot: Dictionary) -> FieldPresentation:
 	result.opponent_deck_count = int(opponent.get("deckCount", 0))
 	result.own_side_count = int(own.get("sideDeckCount", 0))
 	result.opponent_side_count = int(opponent.get("sideDeckCount", 0))
-	result.phase_label = str(snapshot.get("phaseName", ""))
+	result.phase_label = GameText.term(snapshot, "phaseName")
 	result.global_turn = str(snapshot.get("globalTurn", "0"))
 	result.opening = bool(snapshot.get("opening", false))
 	result.opponent_hand_count = int(opponent.get("handCount", 0))
@@ -116,11 +116,11 @@ static func card(snapshot: Dictionary, id: String) -> CardPresentation:
 
 static func card_name(snapshot: Dictionary, id: String) -> String:
 	if id.is_empty() or id == "0":
-		return "无"
+		return GameText.label("ui.object.none")
 	if id in ["1073741825", "1073741826"]:
-		return "己方玩家" if id == str(1073741825 + int(snapshot.get("viewer", 0))) else "对方玩家"
+		return GameText.label("ui.object.own_player") if id == str(1073741825 + int(snapshot.get("viewer", 0))) else GameText.label("ui.object.opponent_player")
 	var value: CardPresentation = card(snapshot, id)
-	return value.title if value != null else "公开对象"
+	return value.title if value != null else GameText.label("ui.object.public_object")
 
 static func action_group_key(action: Dictionary) -> String:
 	var command: Dictionary = action.get("command", {})
@@ -134,28 +134,51 @@ static func action_group_key(action: Dictionary) -> String:
 		key += ":end" if bool(command.get("skipCast", false)) else ":next"
 	return key
 
+const ACTION_LABEL_KEYS: Dictionary[int, String] = {
+	KernelContract.CommandKind.RemoveFormation: "ui.action.remove_formation",
+	KernelContract.CommandKind.StartAnalysis: "ui.action.start_analysis",
+	KernelContract.CommandKind.PrepareCast: "ui.action.prepare_cast",
+	KernelContract.CommandKind.PlayAction: "ui.action.activate",
+	KernelContract.CommandKind.AttachSeal: "ui.action.attach_seal",
+	KernelContract.CommandKind.RemoveSeal: "ui.action.remove_seal",
+	KernelContract.CommandKind.Abandon: "ui.action.abandon",
+	KernelContract.CommandKind.Advance: "ui.action.advance",
+	KernelContract.CommandKind.Surrender: "ui.action.surrender",
+	KernelContract.CommandKind.Respond: "ui.action.respond",
+	KernelContract.CommandKind.PassResponse: "ui.action.pass_response",
+	KernelContract.CommandKind.AdvancePhase: "ui.action.advance_phase",
+	KernelContract.CommandKind.PreloadWord: "ui.action.preload_word",
+	KernelContract.CommandKind.SetAmbush: "ui.card.face_down",
+	KernelContract.CommandKind.FlipAmbush: "ui.action.flip_ambush",
+	KernelContract.CommandKind.ActivateSpell: "ui.action.activate",
+	KernelContract.CommandKind.SelectInitialFormation: "ui.action.select_initial_formation",
+	KernelContract.CommandKind.Timeout: "ui.action.timeout",
+	KernelContract.CommandKind.ActivateAbility: "ui.action.activate_ability",
+}
+
 static func action_label(snapshot: Dictionary, action: Dictionary) -> String:
+	if action.get("labelRef") is Dictionary:
+		return GameText.field(action, "label")
 	var command: Dictionary = action.get("command", {})
 	var type: int = int(command.get("type", -1))
-	var labels: Dictionary[int, String] = {KernelContract.CommandKind.RemoveFormation: "移除阵法", KernelContract.CommandKind.StartAnalysis: "设置解析", KernelContract.CommandKind.PrepareCast: "准备施法", KernelContract.CommandKind.PlayAction: "发动", KernelContract.CommandKind.AttachSeal: "附着符文", KernelContract.CommandKind.RemoveSeal: "拆除符文", KernelContract.CommandKind.Abandon: "放弃", KernelContract.CommandKind.Advance: "继续", KernelContract.CommandKind.Surrender: "投降", KernelContract.CommandKind.Respond: "响应", KernelContract.CommandKind.PassResponse: "放弃响应", KernelContract.CommandKind.AdvancePhase: "切换阶段", KernelContract.CommandKind.PreloadWord: "设置言灵", KernelContract.CommandKind.SetAmbush: "盖伏", KernelContract.CommandKind.FlipAmbush: "反转盖伏", KernelContract.CommandKind.ActivateSpell: "发动", KernelContract.CommandKind.SelectInitialFormation: "选择初始阵法", KernelContract.CommandKind.Timeout: "超时裁定", KernelContract.CommandKind.ActivateAbility: "发动能力"}
 	if type == KernelContract.CommandKind.SetFormation:
-		return "替换阵法" if str(command.get("replace", "0")) != "0" else "设置阵法"
+		return GameText.label("ui.action.replace_formation") if str(command.get("replace", "0")) != "0" else GameText.label("ui.action.set_formation")
 	if type == KernelContract.CommandKind.PreloadWord:
-		return "设置并发动" if bool(command.get("release", false)) else "设置言灵"
+		return GameText.label("ui.action.set_and_activate") if bool(command.get("release", false)) else GameText.label("ui.action.preload_word")
 	if type == KernelContract.CommandKind.Abandon:
 		for row: Dictionary in snapshot.get("cards", []):
 			if str(row.get("id", "0")) == str(action.get("source", "0")):
-				return "放弃施法" if int(row.get("zone", -1)) == 5 else "放弃"
+				return GameText.label("ui.action.abandon_cast") if int(row.get("zone", -1)) == 5 else GameText.label("ui.action.abandon")
 	if type == KernelContract.CommandKind.AdvancePhase:
 		if bool(command.get("skipCast", false)):
-			return "切换到结束阶段"
-		return "切换到施法阶段" if int(snapshot.get("phase", -1)) == 2 else "结束当前阶段"
+			return GameText.label("ui.action.skip_to_end")
+		return GameText.label("ui.action.switch_to_cast") if int(snapshot.get("phase", -1)) == 2 else GameText.label("ui.action.end_current_phase")
 	if type == KernelContract.CommandKind.Choose:
-		var label: String = str(action.get("label", "确认"))
+		var label: String = str(action.get("label", GameText.label("ui.action.confirm")))
 		var choice: Dictionary = command.get("option", {})
 		var option: String = str(choice.get("value", "0"))
 		return label.replace(" #" + option, "") if option != "0" else label
-	return labels.get(type, "确认")
+	return GameText.label(ACTION_LABEL_KEYS.get(type, "ui.action.confirm"))
 
 static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 	var command: Dictionary = action.get("command", {})
@@ -184,22 +207,22 @@ static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 					seals += 1
 				else:
 					spells.append(card_name(snapshot, id))
-		lines.append("免费，占用本回合一次阵法操作。")
+		lines.append(GameText.label("ui.formation.free_operation"))
 		if spells.is_empty() and seals == 0:
-			lines.append("离场影响：阵法进入灰烬区。")
+			lines.append(GameText.label("ui.formation.depart_alone"))
 		else:
-			var impact: String = "离场影响：阵法及其承载对象进入灰烬区"
+			var impact: String = GameText.label("ui.formation.depart_with_cards")
 			if not spells.is_empty():
-				impact += "（法术：" + "、".join(spells) + "）"
+				impact += GameText.label("ui.formation.departing_spells", {"spells": "、".join(spells)})
 			if seals > 0:
-				impact += "；附着符文 %d 张一并进入灰烬区" % seals
+				impact += GameText.label("ui.formation.departing_runes", {"count": seals})
 			lines.append(impact + "。")
-		lines.append("离场效果照常结算，并重新计算环位、荷载上限和魔素收入。")
-	for entry: Array in [["formation", "环位所属阵法"], ["host", "附着宿主"], ["replace", "替换阵法"], ["target", "目标"], ["discard", "弃牌成本"]]:
+		lines.append(GameText.label("ui.formation.recalculate_on_departure"))
+	for entry: Array in [["formation", GameText.label("ui.selection.ring_formation")], ["host", GameText.label("ui.selection.attached_host")], ["replace", GameText.label("ui.action.replace_formation")], ["target", GameText.label("ui.selection.target")], ["discard", GameText.label("ui.selection.discard_cost")]]:
 		var id: String = str(command.get(entry[0], "0"))
 		if id != "0" and not id.is_empty():
 			lines.append(str(entry[1]) + "：" + card_name(snapshot, id))
-	for entry: Array in [["targets", "目标"], ["materials", "材料成本"]]:
+	for entry: Array in [["targets", GameText.label("ui.selection.target")], ["materials", GameText.label("ui.selection.material_cost")]]:
 		var names: Array[String] = []
 		for id: Variant in command.get(entry[0], []):
 			names.append(card_name(snapshot, str(id)))
@@ -211,7 +234,7 @@ static func action_detail(snapshot: Dictionary, action: Dictionary) -> String:
 		for entry: Dictionary in chain.get("links", []):
 			if str(entry.get("id", "0")) == link:
 				var link_source: String = str(entry.get("source", "0"))
-				lines.append("连锁目标：" + (card_name(snapshot, link_source) if link_source != "0" else str(entry.get("kindName", "阶段"))))
+				lines.append(GameText.label("ui.selection.chain_target", {"target": (card_name(snapshot, link_source) if link_source != "0" else GameText.term(entry, "kindName", GameText.label("terms.link.phase")))}))
 				break
 	return "\n".join(lines)
 
@@ -238,7 +261,7 @@ static func blood_heartmark_hint(snapshot: Dictionary, action: Dictionary) -> St
 		var rune_definition: Dictionary = row.get("definition", {}) as Dictionary
 		var traits: Array = rune_definition.get("traits", []) as Array
 		if traits.has("blood_heartmark"):
-			return "血契·心印：可选支付 2 点生命值，造成的伤害 +8；放弃后仍可发动基础法术。"
+			return GameText.label("ui.action.blood_heartmark_hint")
 	return ""
 
 static func _definition_deals_damage(definition: Dictionary) -> bool:
@@ -263,11 +286,11 @@ static func formation_removal_unavailable(snapshot: Dictionary, id: String) -> S
 	if not formation:
 		return ""
 	if int(snapshot.get("result", -1)) != -1:
-		return "对局已结束，不能移除阵法。"
+		return GameText.label("ui.formation.removal_after_match")
 	if bool(snapshot.get("opening", false)):
-		return "开局确认完成后，才能进行阵法操作。"
+		return GameText.label("ui.formation.removal_during_opening")
 	if int(snapshot.get("phase", -1)) != 2 or int(snapshot.get("activePlayer", -1)) != viewer:
-		return "移除阵法仅在己方主要阶段可用。"
+		return GameText.label("ui.formation.removal_wrong_phase")
 	if snapshot.get("decision") is Dictionary or snapshot.get("chain") is Dictionary:
-		return "请先完成当前决策或连锁，再移除阵法。"
-	return "当前没有合法移除动作；设置与移除共享本回合一次阵法操作。"
+		return GameText.label("ui.formation.removal_blocked")
+	return GameText.label("ui.formation.removal_unavailable")

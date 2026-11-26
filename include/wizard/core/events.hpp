@@ -1,5 +1,6 @@
 #pragma once
 #include "wizard/core/types.hpp"
+#include "wizard/core/text_ref.hpp"
 
 namespace wizard {
 struct CardTravel {
@@ -23,5 +24,6 @@ struct GameEvent {
     std::optional<CardTravel> travel{};
     std::vector<CardId> publicTargets{};
     std::optional<DamageType> damageType{}; // Set on life_delta when typed damage removes ordinary life.
+    std::optional<TextRef> textRef{};
 };
 } // namespace wizard

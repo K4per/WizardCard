@@ -45,7 +45,7 @@ func _ready() -> void:
 	var body: VBoxContainer = _address.get_parent() as VBoxContainer
 	var insertion: int = _address.get_index()
 	var advanced_toggle: CheckButton = CheckButton.new()
-	advanced_toggle.text = "高级连接配置"
+	advanced_toggle.text = GameText.label("ui.rooms.advanced")
 	body.add_child(advanced_toggle)
 	body.move_child(advanced_toggle, insertion)
 	_advanced = VBoxContainer.new()
@@ -53,7 +53,7 @@ func _ready() -> void:
 	body.move_child(_advanced, insertion + 1)
 	for node: Node in [_address, body.get_node("PortCaption"), _port, body.get_node("TrustedCaCaption"), _trusted_ca]:
 		node.reparent(_advanced)
-	_advanced.add_child(UiFactory.button("恢复正式服配置", _restore_production))
+	_advanced.add_child(UiFactory.button(GameText.label("ui.rooms.restore_production"), _restore_production))
 	advanced_toggle.toggled.connect(_advanced.set_visible)
 	_advanced.hide()
 	_restore_production()
@@ -77,7 +77,7 @@ func configure(value: FrontendService) -> void:
 		_decks.add_item(str(deck.get("name", deck.get("id", ""))))
 		_decks.set_item_metadata(_decks.item_count - 1, str(deck.get("id", "")))
 	if not service.network_available():
-		_notice.text = "当前原生模块未加载中央房间接口。"
+		_notice.text = GameText.label("ui.rooms.interface_unavailable")
 	_network_buttons(service.network_available())
 	if service.network_active:
 		network_updated(service.poll_network())
@@ -106,7 +106,7 @@ func _send(request: Dictionary) -> void:
 	if not bool(response.get("ok", false)):
 		_notice.text = service.error
 		return
-	_notice.text = str((response.get("data", {}) as Dictionary).get("notice", "请求已提交"))
+	_notice.text = str((response.get("data", {}) as Dictionary).get("notice", GameText.label("ui.rooms.request_submitted")))
 	if service.network_active:
 		network_updated(service.poll_network())
 	else:
@@ -118,7 +118,7 @@ func _host_room() -> void:
 func _join_room() -> void:
 	var code: String = _room_code.text.strip_edges().to_upper()
 	if code.length() != 8:
-		_notice.text = "请输入 8 位房间码。"
+		_notice.text = GameText.label("ui.rooms.invalid_code")
 		return
 	_send({"operation": "central_join", "hostname": _address.text.strip_edges(), "port": int(_port.value), "trustedCa": _trusted_ca.text.strip_edges(), "roomCode": code, "deck": _deck_id()})
 
@@ -159,7 +159,7 @@ func network_updated(state: Dictionary) -> void:
 		var occupied: Array = room.get("occupied", [false, false])
 		var both_present: bool = occupied.size() == 2 and bool(occupied[0]) and bool(occupied[1])
 		_ready_button.disabled = not bool(state.get("connected", false)) or phase != "waiting" or not both_present or (ready.size() == 2 and bool(ready[own_player]))
-		_ready_button.text = "已准备" if ready.size() == 2 and bool(ready[own_player]) else "准备"
+		_ready_button.text = GameText.label("ui.rooms.ready") if ready.size() == 2 and bool(ready[own_player]) else GameText.label("ui.rooms.waiting_ready")
 		_configure.disabled = not owner or phase != "waiting" or not bool(state.get("connected", false))
 		_host_first.disabled = _configure.disabled
 		_automatic.disabled = _configure.disabled
@@ -167,21 +167,23 @@ func network_updated(state: Dictionary) -> void:
 		for seat: int in range(2):
 			var occupied_seat: bool = occupied.size() == 2 and bool(occupied[seat])
 			var seat_ready: bool = ready.size() == 2 and bool(ready[seat])
-			seats.append("席位 %d：%s%s" % [seat + 1, "已准备" if seat_ready else "未准备" if occupied_seat else "等待加入", " · 你" if seat == own_player else ""])
+			seats.append(GameText.label("ui.rooms.seat", {"seat": seat + 1, "status": GameText.label("ui.rooms.ready") if seat_ready else GameText.label("ui.rooms.not_ready") if occupied_seat else GameText.label("ui.rooms.empty_seat"), "viewer": GameText.label("ui.rooms.you") if seat == own_player else ""}))
 		var code: String = str(room.get("code", ""))
-		_room.text = "房间码：%s\n你是%s · %s\n%s · %s\n%s先手 · %s自动通过阶段" % [
-			code if not code.is_empty() else "正在连接…",
-			"房主" if owner else "玩家 2",
-			"已连接" if bool(state.get("connected", false)) else "正在连接服务器",
-			seats[0], seats[1],
-			"房主" if bool(room.get("ownerFirst", true)) else "玩家 2",
-			"已开启" if bool(room.get("automatic", true)) else "已关闭"]
+		_room.text = GameText.label("ui.rooms.summary", {
+			"code": code if not code.is_empty() else GameText.label("ui.rooms.connecting"),
+			"role": GameText.label("ui.rooms.owner") if owner else GameText.label("ui.rooms.guest"),
+			"connection": GameText.label("ui.rooms.connected") if bool(state.get("connected", false)) else GameText.label("ui.rooms.connecting_server"),
+			"first_seat": seats[0],
+			"second_seat": seats[1],
+			"first_player": GameText.label("ui.rooms.owner") if bool(room.get("ownerFirst", true)) else GameText.label("ui.rooms.guest"),
+			"automatic": GameText.label("ui.rooms.enabled") if bool(room.get("automatic", true)) else GameText.label("ui.rooms.disabled")
+		})
 		_host_first.set_pressed_no_signal(bool(room.get("ownerFirst", true)))
 		_automatic.set_pressed_no_signal(bool(room.get("automatic", true)))
 		if bool(room.get("aborted", false)) or phase == "aborted":
-			room_notice = "本房间已中止，无胜者。原因：%s" % str(room.get("abortReason", "未知"))
+			room_notice = GameText.label("ui.rooms.aborted", {"reason": str(room.get("abortReason", GameText.label("ui.rooms.unknown")))})
 	else:
-		_room.text = "当前没有中央房间"
+		_room.text = GameText.label("ui.rooms.empty")
 	_notice.text = room_notice
 	if bool(state.get("started", false)):
 		navigation_requested.emit(&"match")

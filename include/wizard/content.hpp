@@ -13,6 +13,7 @@ struct Content {
     std::vector<std::string> sideDeck;
     std::string initialFormation{"balance"};
     std::filesystem::path dataDirectory;
+    std::filesystem::path textDirectory;
     std::shared_ptr<const TextCatalog> textCatalog{};
     PlayerDeck defaultPlayerDeck() const { return {initialFormation, deck, sideDeck}; }
     std::string renderText(const TextRef &, std::string_view locale = {},

@@ -34,16 +34,16 @@ theme_override_constants/separation = 10
 layout_mode = 2
 
 [node name="Back" parent="Margin/Column/Heading" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.navigation.back_arrow"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "‹ 返回"
 primary = false
 compact = false
 
 [node name="Title" type="Label" parent="Margin/Column/Heading"]
+metadata/text_keys = {"text": "ui.setup.title"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "开始对局"
 theme_override_font_sizes/font_size = 28
 size_flags_horizontal = 3
 
@@ -66,14 +66,14 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="OptionsHeading" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options"]
+metadata/text_keys = {"text": "ui.setup.options_heading"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "选择玩法与卡组"
 theme_override_font_sizes/font_size = 30
 
 [node name="ModeCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options"]
+metadata/text_keys = {"text": "ui.setup.mode_caption"}
 layout_mode = 2
-text = "对局模式"
 theme_override_font_sizes/font_size = 18
 
 [node name="Mode" type="OptionButton" parent="Margin/Column/Scroll/Center/Panel/Options"]
@@ -82,8 +82,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 
 [node name="DifficultyCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options"]
+metadata/text_keys = {"text": "ui.setup.difficulty_caption"}
 layout_mode = 2
-text = "AI 难度"
 theme_override_font_sizes/font_size = 18
 
 [node name="Difficulty" type="OptionButton" parent="Margin/Column/Scroll/Center/Panel/Options"]
@@ -92,8 +92,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 
 [node name="PlayerDeckCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options"]
+metadata/text_keys = {"text": "ui.setup.player_deck_caption"}
 layout_mode = 2
-text = "玩家一 · 卡组"
 theme_override_font_sizes/font_size = 18
 
 [node name="PlayerDeck" type="OptionButton" parent="Margin/Column/Scroll/Center/Panel/Options"]
@@ -102,8 +102,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 
 [node name="OpponentDeckCaption" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options"]
+metadata/text_keys = {"text": "ui.setup.opponent_deck_caption"}
 layout_mode = 2
-text = "玩家二 / AI · 卡组"
 theme_override_font_sizes/font_size = 18
 
 [node name="OpponentDeck" type="OptionButton" parent="Margin/Column/Scroll/Center/Panel/Options"]
@@ -112,23 +112,23 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 
 [node name="Notice" type="Label" parent="Margin/Column/Scroll/Center/Panel/Options"]
+metadata/text_keys = {"text": "ui.setup.notice"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "使用合法的 40 张主卡组和 10 张副卡组。初始阵法在开局选择，换手时遮挡私有信息。"
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 size_flags_horizontal = 3
 
 [node name="Start" parent="Margin/Column/Scroll/Center/Panel/Options" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.setup.title"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "开始对局"
 primary = true
 compact = false
 
 [node name="BuildDeck" parent="Margin/Column/Scroll/Center/Panel/Options" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.setup.build_deck"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "前往卡组构筑"
 primary = false
 compact = false

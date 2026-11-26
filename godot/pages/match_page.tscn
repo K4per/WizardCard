@@ -28,22 +28,21 @@ color = Color(0.078, 0.125, 0.169, 1)
 [node name="Table" parent="." instance=ExtResource("2")]
 unique_name_in_owner = true
 [node name="EndPhase" type="Button" parent="."]
+metadata/text_keys = {"text": "ui.action.advance_phase"}
 unique_name_in_owner = true
 theme_override_font_sizes/font_size = 14
-text = "切换阶段"
 [node name="Controls" type="HFlowContainer" parent="."]
 unique_name_in_owner = true
 theme_override_constants/h_separation = 3
 theme_override_constants/v_separation = 3
 [node name="Menu" type="Button" parent="Controls"]
+metadata/text_keys = {"text": "ui.match.menu", "tooltip_text": "ui.match.menu_tooltip_text"}
 unique_name_in_owner = true
-text = "菜单"
-tooltip_text = "对局菜单（Esc）"
 theme_override_font_sizes/font_size = 13
 [node name="HandToggle" type="Button" parent="Controls"]
+metadata/text_keys = {"text": "ui.match.hand_expanded"}
 unique_name_in_owner = true
 theme_override_font_sizes/font_size = 13
-text = "▾ 手牌"
 [node name="Cue" type="Label" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -84,49 +83,49 @@ offset_bottom = 235.0
 layout_mode = 2
 theme_override_constants/separation = 8
 [node name="Title" type="Label" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.match.title"}
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "对局菜单"
 horizontal_alignment = 1
 [node name="Resume" type="Button" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.match.resume"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "继续对局"
 [node name="MenuSettings" type="Button" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.match.pause_settings"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "暂停 / 设置"
 [node name="MenuPhaseActions" type="Button" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.match.phase_actions"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "阶段操作"
 [node name="MenuSaveReplay" type="Button" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.match.menu_save_replay"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "保存复盘"
 [node name="MenuViewReplay" type="Button" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.match.menu_view_replay"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "查看复盘"
 [node name="MenuDebug" type="Button" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.debug.title"}
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-text = "单人调试控制台"
 [node name="MenuReconnect" type="Button" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.match.menu_reconnect"}
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-text = "重新连接"
 [node name="MenuForceLeave" type="Button" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.match.menu_force_leave"}
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-text = "强制离开"
 [node name="MenuLeave" type="Button" parent="MatchMenu/Column"]
+metadata/text_keys = {"text": "ui.match.menu_leave"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "结束对局"
 
 [node name="SkipLesson" type="Button" parent="MatchMenu/Column"]
 unique_name_in_owner = true
@@ -153,12 +152,12 @@ z_index = 5
 [node name="Column" type="VBoxContainer" parent="ActionPopup"]
 layout_mode = 2
 [node name="ActionTitle" type="Label" parent="ActionPopup/Column"]
+metadata/text_keys = {"text": "ui.debug.operation"}
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
-text = "操作"
 [node name="Scroll" type="ScrollContainer" parent="ActionPopup/Column"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 0)
@@ -185,13 +184,11 @@ z_index = 39
 unique_name_in_owner = true
 z_index = 40
 [node name="ConfirmLeave" type="ConfirmationDialog" parent="."]
+metadata/text_keys = {"title": "ui.match.menu_leave", "dialog_text": "ui.match.confirm_leave_dialog_text"}
 unique_name_in_owner = true
-title = "结束对局"
-dialog_text = "先保存复盘，再结束当前对局？"
 [node name="ConfirmForceLeave" type="ConfirmationDialog" parent="."]
+metadata/text_keys = {"title": "ui.match.confirm_force_leave_title", "dialog_text": "ui.match.confirm_force_leave_dialog_text"}
 unique_name_in_owner = true
-title = "强制离开房间"
-dialog_text = "强制离开会中止连接，尚未接收完成的终局复盘可能无法保存。确认离开？"
 
 [node name="PrivacyLayer" type="ColorRect" parent="."]
 z_index = 50
@@ -215,15 +212,15 @@ grow_vertical = 2
 custom_minimum_size = Vector2(560, 0)
 layout_mode = 2
 [node name="PrivacyTitle" type="Label" parent="PrivacyLayer/Center/Column"]
+metadata/text_keys = {"text": "ui.match.privacy_title"}
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "请把设备交给下一位玩家"
 horizontal_alignment = 1
 [node name="Reveal" type="Button" parent="PrivacyLayer/Center/Column"]
+metadata/text_keys = {"text": "ui.match.reveal"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "我已接手 · 揭开场地"
 
 [node name="DecisionShade" type="ColorRect" parent="."]
 unique_name_in_owner = true

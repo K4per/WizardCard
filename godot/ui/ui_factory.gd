@@ -50,7 +50,7 @@ static func margin(parent: Node, amount: int = 24) -> MarginContainer:
 static func heading(parent: Container, title: String, callback: Callable) -> HBoxContainer:
 	var row: HBoxContainer = HBoxContainer.new()
 	parent.add_child(row)
-	row.add_child(button("‹ 返回", callback))
+	row.add_child(button(GameText.label("ui.navigation.back_arrow"), callback))
 	var title_label: Label = label(title, 28)
 	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(title_label)

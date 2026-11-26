@@ -1,5 +1,6 @@
 #pragma once
 #include "wizard/core/commands.hpp"
+#include "wizard/core/text_ref.hpp"
 #include <functional>
 
 namespace wizard {
@@ -18,6 +19,7 @@ struct ActionOption {
     std::string value, label;
     CardId card{};
     PlayerId player{-1};
+    std::optional<TextRef> labelRef{};
 };
 struct ActionOptions {
     ActionField field{ActionField::Operation};
@@ -27,6 +29,8 @@ struct ActionOptions {
     std::string error;
     std::string costQuote;
     int overloadPreview{};
+    std::optional<TextRef> costQuoteRef{};
+    std::optional<TextRef> errorRef{};
 };
 struct ActionSummary {
     bool actionable{}, hasNonPhaseAction{};

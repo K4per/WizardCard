@@ -19,9 +19,9 @@ func _ready() -> void:
 	(%Back as Button).pressed.connect(navigation_requested.emit.bind(&"menu"))
 	(%BuildDeck as Button).pressed.connect(navigation_requested.emit.bind(&"decks"))
 	_start.pressed.connect(start)
-	for caption: String in ["挑战 AI", "本地双人换手"]:
+	for caption: String in [GameText.label("ui.setup.ai"), GameText.label("ui.setup.local_two")]:
 		_mode.add_item(caption)
-	for caption: String in ["入门", "标准", "进阶"]:
+	for caption: String in [GameText.label("ui.setup.easy"), GameText.label("ui.setup.normal"), GameText.label("ui.setup.advanced")]:
 		_difficulty.add_item(caption)
 	_difficulty.select(1)
 	_mode.item_selected.connect(_mode_changed)
@@ -40,7 +40,7 @@ func configure(value: FrontendService) -> void:
 			option.set_item_metadata(option.item_count - 1, str(deck.get("id", "")))
 	_start.disabled = service.playable.is_empty()
 	if _start.disabled:
-		_notice.text = "还没有可用于对局的合法卡组，请先完成卡组构筑。"
+		_notice.text = GameText.label("ui.setup.no_legal_deck")
 
 func _mode_changed(index: int) -> void:
 	_difficulty.disabled = index != 0
@@ -53,7 +53,7 @@ func start() -> void:
 	var modes: Array[String] = ["ai", "hotseat"]
 	var options: Dictionary = {"mode": modes[_mode.selected], "difficulty": _difficulty.selected, "seed": randi()}
 	if _decks[0].selected < 0 or _decks[1].selected < 0:
-		_notice.text = "请先选择双方卡组。"
+		_notice.text = GameText.label("ui.setup.select_both_decks")
 		return
 	options["playerDeck"] = _decks[0].get_item_metadata(_decks[0].selected)
 	options["opponentDeck"] = _decks[1].get_item_metadata(_decks[1].selected)

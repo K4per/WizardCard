@@ -28,7 +28,7 @@ func _ready() -> void:
 	hide()
 
 func popup_centered(identity: String = "action", overload_warning: String = "") -> void:
-	_present(identity, "确认操作", "确认", "取消", false, overload_warning)
+	_present(identity, GameText.label("ui.match.confirm_action"), GameText.label("ui.action.confirm"), GameText.label("ui.common.cancel"), false, overload_warning)
 
 func popup_response(identity: String, title: String, accept_label: String, cancel_label: String) -> void:
 	_present(identity, title, accept_label, cancel_label, true, "")

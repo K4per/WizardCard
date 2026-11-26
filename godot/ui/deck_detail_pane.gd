@@ -32,5 +32,5 @@ func inspect(id: String) -> void:
 	var rarity: String = str(data.get("rarityLabel", card.rarity_text()))
 	var heading: String = card.type_label + (" · " + rarity if not rarity.is_empty() else "")
 	_body.text = CardPresentation.escape_bbcode(heading) + "\n\n" + card.detail_text(true)
-	_number.text = "编号：" + card.number if not card.number.is_empty() else ""
+	_number.text = GameText.label("ui.card.number", {"number": card.number}) if not card.number.is_empty() else ""
 	_body.scroll_to_line(0)

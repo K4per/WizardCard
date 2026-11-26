@@ -45,7 +45,7 @@ func pump(service: FrontendService) -> void:
 	var port: int = int(state.get("port", 0))
 	var trusted_ca: String = str(state.get("trustedCa", ""))
 	if hostname.is_empty() or port < 1 or port > 65535:
-		_fail("服务器地址或端口无效")
+		_fail(GameText.label("network.tls.invalid_address"))
 		return
 	if hostname != _hostname or port != _port or trusted_ca != _trusted_ca:
 		_close_transport()
@@ -59,7 +59,7 @@ func pump(service: FrontendService) -> void:
 		return
 	if _phase == "resolving":
 		if _handshake_expired():
-			_fail("服务器域名解析超时")
+			_fail(GameText.label("network.tls.dns_timeout"))
 			return
 		_poll_resolve()
 		return
@@ -71,7 +71,7 @@ func pump(service: FrontendService) -> void:
 		return
 	if _phase == "tls":
 		if _handshake_expired():
-			_fail("TLS 握手超时")
+			_fail(GameText.label("network.tls.handshake_timeout"))
 			return
 		_poll_tls()
 		return
@@ -79,7 +79,7 @@ func pump(service: FrontendService) -> void:
 		_tcp.poll()
 		_tls.poll()
 		if _tcp.get_status() != StreamPeerTCP.STATUS_CONNECTED or _tls.get_status() != StreamPeerTLS.STATUS_CONNECTED:
-			_fail("与游戏服务器的连接已中断")
+			_fail(GameText.label("network.tls.disconnected"))
 			return
 		if not _reported_open:
 			_reported_open = true
@@ -100,7 +100,7 @@ func stop() -> void:
 func _start_resolve() -> void:
 	_resolve_id = IP.resolve_hostname_queue_item(_hostname, IP.TYPE_ANY)
 	if _resolve_id < 0:
-		_fail("服务器域名解析无法启动")
+		_fail(GameText.label("network.tls.dns_start_failed"))
 		return
 	_phase = "resolving"
 	_phase_started_at = Time.get_ticks_msec()
@@ -110,14 +110,14 @@ func _poll_resolve() -> void:
 	if status == IP.RESOLVER_STATUS_WAITING:
 		return
 	if status != IP.RESOLVER_STATUS_DONE:
-		_fail("服务器域名解析失败")
+		_fail(GameText.label("network.tls.dns_failed"))
 		return
 	_addresses = IP.get_resolve_item_addresses(_resolve_id)
 	_address_index = 0
 	IP.erase_resolve_item(_resolve_id)
 	_resolve_id = -1
 	if _addresses.is_empty():
-		_fail("服务器域名解析未返回地址")
+		_fail(GameText.label("network.tls.no_addresses"))
 		return
 	_connect_next_address()
 
@@ -132,7 +132,7 @@ func _connect_next_address() -> void:
 			_phase = "tcp"
 			_phase_started_at = Time.get_ticks_msec()
 			return
-	_fail("服务器不可达或拒绝连接，请检查网络后重试")
+	_fail(GameText.label("network.tls.unreachable"))
 
 func _poll_tcp() -> void:
 	_tcp.poll()
@@ -146,13 +146,13 @@ func _poll_tcp() -> void:
 	if not _trusted_ca.is_empty():
 		trusted = X509Certificate.new()
 		if trusted.load(_trusted_ca) != OK:
-			_fail("无法加载配置的服务器 CA 证书")
+			_fail(GameText.label("network.tls.invalid_ca"))
 			return
 	var options: TLSOptions = TLSOptions.client(trusted, _hostname)
 	_tls = StreamPeerTLS.new()
 	var error: Error = _tls.connect_to_stream(_tcp, _hostname, options)
 	if error != OK:
-		_fail("无法启动 TLS 握手")
+		_fail(GameText.label("network.tls.handshake_start_failed"))
 		return
 	_phase = "tls"
 	_phase_started_at = Time.get_ticks_msec()
@@ -164,7 +164,7 @@ func _poll_tls() -> void:
 	if status == StreamPeerTLS.STATUS_HANDSHAKING:
 		return
 	if status != StreamPeerTLS.STATUS_CONNECTED:
-		_fail("证书校验失败：请检查信任证书、有效期和域名；可重试或恢复正式服配置")
+		_fail(GameText.label("network.tls.certificate_failed"))
 		return
 	_phase = "open"
 
@@ -175,11 +175,11 @@ func _read_tls() -> void:
 			return
 		var result: Array = _tls.get_data(mini(available, 65536))
 		if int(result[0]) != OK:
-			_fail("读取服务器数据失败")
+			_fail(GameText.label("network.tls.read_failed"))
 			return
 		_receive.append_array(result[1] as PackedByteArray)
 		if _receive.size() > MAX_RECEIVE:
-			_fail("服务器接收缓冲区超出上限")
+			_fail(GameText.label("network.tls.buffer_limit"))
 			return
 		if not _decode_frames():
 			return
@@ -188,7 +188,7 @@ func _decode_frames() -> bool:
 	while _receive.size() >= 4:
 		var size: int = (int(_receive[0]) << 24) | (int(_receive[1]) << 16) | (int(_receive[2]) << 8) | int(_receive[3])
 		if size < 1 or size > MAX_FRAME:
-			_fail("服务器消息长度无效")
+			_fail(GameText.label("network.tls.invalid_length"))
 			return false
 		if _receive.size() < size + 4:
 			return true
@@ -208,7 +208,7 @@ func _queue_response(response: Dictionary) -> void:
 	for message: Dictionary in response.get("data", {}).get("messages", []):
 		var payload: PackedByteArray = JSON.stringify(message).to_utf8_buffer()
 		if payload.is_empty() or payload.size() > MAX_FRAME:
-			_fail("待发送消息超出上限")
+			_fail(GameText.label("network.tls.message_limit"))
 			return
 		var frame: PackedByteArray = PackedByteArray([
 			(payload.size() >> 24) & 255,
@@ -218,7 +218,7 @@ func _queue_response(response: Dictionary) -> void:
 		])
 		frame.append_array(payload)
 		if _outgoing_bytes + frame.size() > MAX_SEND:
-			_fail("待发送数据超过 4 MiB")
+			_fail(GameText.label("network.tls.queue_limit"))
 			return
 		_outgoing.append(frame)
 		_outgoing_bytes += frame.size()
@@ -231,7 +231,7 @@ func _flush_tls() -> void:
 		var result: Array = _tls.put_partial_data(packet.slice(_send_offset, mini(_send_offset + 16384, packet.size())))
 		var error: Error = int(result[0]) as Error
 		if error != OK:
-			_fail("发送服务器请求失败")
+			_fail(GameText.label("network.tls.send_failed"))
 			return
 		var sent: int = int(result[1])
 		if sent == 0:

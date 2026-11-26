@@ -1,4 +1,5 @@
-#include "wizard/content.hpp"
+#include "wizard/bridge.hpp"
+#include "wizard/network.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
 #include <fstream>
@@ -158,4 +159,114 @@ TEST_CASE("native content reads editable catalog from the asset tree", "[text-ca
 
     writeJson(assets / "text/zh_CN/ui.json", {{"ui.test.label", false}});
     REQUIRE_THROWS(loadContent(deck));
+}
+
+TEST_CASE("native term keys render editable snapshot captions without changing legacy names", "[text-catalog]") {
+    TextDirectory directory;
+    const auto key = phaseTermKey(Phase::Cast);
+    const auto production = loadContent(source / "assets/release-v260");
+    REQUIRE(production.renderText({key, {}}) == phaseName(Phase::Cast));
+    CHECK(production.renderText({schoolTermKey("evocation"), {}}) == schoolName("evocation"));
+    CHECK(production.renderText({damageTermKey(DamageType::Piercing), {}}) == damageName(DamageType::Piercing));
+    CHECK(production.renderText({zoneTermKey(Zone::Ash), {}}) == zoneName(Zone::Ash));
+    CHECK(production.renderText({windowTermKey(ResponseWindow::Damage), {}}) == windowName(ResponseWindow::Damage));
+    CHECK(production.renderText({linkTermKey(LinkKind::Setup), {}}) == linkName(LinkKind::Setup));
+    CHECK(schoolTermKey("unknown").empty());
+
+    auto terms = readJson(source / "godot/data/text/zh_CN/terms.json");
+    terms[key] = "Edited caption";
+    writeJson(directory.path / "zh_CN/terms.json", terms);
+    Content edited;
+    edited.textCatalog = std::make_shared<const TextCatalog>(TextCatalog::load(directory.path));
+    GameView view;
+    view.phase = Phase::Cast;
+    const auto snapshot = bridge::viewDto(view, &edited);
+    CHECK(snapshot.at("phaseNameKey") == key);
+    CHECK(snapshot.at("phaseName") == "Edited caption");
+    CHECK(bridge::viewDto(view).at("phaseName") == "施法");
+}
+
+TEST_CASE("edited term files keep every digest of the published 79-command network replay", "[text-catalog][replay]") {
+    TextDirectory directory;
+    auto terms = readJson(source / "godot/data/text/zh_CN/terms.json");
+    for (const auto &group : {"terms.phase.", "terms.link.", "terms.window.", "terms.zone."}) {
+        for (auto &[key, name] : terms.items())
+            if (key.compare(0, std::string_view(group).size(), group) == 0) name = "Edited " + key;
+    }
+    writeJson(directory.path / "zh_CN/terms.json", terms);
+    const auto record = readJson(source / "docs/reports/2.6.4-hotfix.1/network-replay.json");
+    auto content = loadContent(source / "assets/release-v260");
+    content.textCatalog = std::make_shared<const TextCatalog>(TextCatalog::load(directory.path));
+    REQUIRE(content.catalog.contentHash == record.at("contentHash"));
+    REQUIRE(record.at("commands").size() == 79);
+    bool checkedOpenChain = false;
+    const auto completed = replay(content, record, [&](std::size_t step, const GameEngine &engine) {
+        if (step) REQUIRE(engine.digest() == record.at("commands").at(step - 1).at("digest"));
+        if (checkedOpenChain || !engine.state().chain || engine.state().chain->links.empty()) return;
+        const auto snapshot = bridge::viewDto(engine.viewFor(0), &content);
+        const auto &chain = snapshot.at("chain");
+        CHECK(snapshot.at("phaseName") == "Edited " + snapshot.at("phaseNameKey").get<std::string>());
+        CHECK(chain.at("windowName") == "Edited " + chain.at("windowNameKey").get<std::string>());
+        const auto &link = chain.at("links").front();
+        CHECK(link.at("kindName") == "Edited " + link.at("kindNameKey").get<std::string>());
+        const auto &card = snapshot.at("cards").front();
+        CHECK(card.at("zoneName") == "Edited " + card.at("zoneNameKey").get<std::string>());
+
+        // The historical public description lives on the chain, but never contributes to its state hash.
+        auto state = engine.state();
+        REQUIRE_FALSE(state.chain->links.front().publicAction.empty());
+        state.chain->links.front().publicAction = "A different public description";
+        const auto changed = GameEngine::scenario(engine.catalog(), std::move(state));
+        CHECK(changed.canonicalState() == engine.canonicalState());
+        CHECK(changed.digest() == engine.digest());
+        checkedOpenChain = true;
+    });
+    REQUIRE(checkedOpenChain);
+    CHECK(completed.digest() == "8e34753e7e6b6e28");
+}
+
+TEST_CASE("optional presentation references round trip alongside legacy event and option strings", "[text-catalog][network]") {
+    const TextRef ref{"ui.test.label", {{"mana", 5}}};
+    TextDirectory fixture;
+    const auto catalog = TextCatalog::load(fixture.path);
+    const auto rendered = catalog.render(ref);
+
+    LegalAction action{rendered, 0, 0, Advance{}, ref};
+    ActionOptions options;
+    options.options.push_back({"1", action.label, 0, -1, action.labelRef});
+    options.costQuote = rendered;
+    options.costQuoteRef = ref;
+    options.error = rendered;
+    options.errorRef = ref;
+    const auto encoded = net::encodeOptions(options);
+    REQUIRE(encoded.at("options").front().at("label") == rendered);
+    REQUIRE(encoded.at("options").front().at("labelRef") == encodeTextRef(ref));
+    const auto decoded = net::decodeOptions(encoded);
+    REQUIRE(decoded.options.front().labelRef);
+    REQUIRE(decoded.costQuoteRef);
+    REQUIRE(decoded.errorRef);
+    CHECK(catalog.render(*decoded.options.front().labelRef, "en") == "Mana 5");
+    CHECK(catalog.render(*decoded.costQuoteRef, "en") == "Mana 5");
+    CHECK(catalog.render(*decoded.errorRef, "en") == "Mana 5");
+
+    auto old = encoded;
+    old["options"].front().erase("labelRef");
+    old.erase("costQuoteRef");
+    old.erase("errorRef");
+    CHECK(net::encodeOptions(net::decodeOptions(old)) == old);
+    auto malformed = encoded;
+    malformed["options"].front()["labelRef"] = Json{{"unexpected", "field"}};
+    CHECK_THROWS(net::decodeOptions(malformed));
+
+    GameEvent event{"phase_enter", rendered};
+    event.textRef = ref;
+    EventBatch batch{1, 0, 1, true, {event}};
+    auto wire = net::encodeEvents(batch);
+    const auto roundTrip = net::decodeEvents(wire);
+    REQUIRE(roundTrip.events.front().textRef);
+    CHECK(catalog.render(*roundTrip.events.front().textRef, "en") == "Mana 5");
+    CHECK(bridge::eventDto(roundTrip.events.front()).at("textRef") == encodeTextRef(ref));
+    CHECK(bridge::eventDto(roundTrip.events.front()).at("text") == rendered);
+    wire["events"].front().erase("textRef");
+    CHECK(net::encodeEvents(net::decodeEvents(wire)) == wire);
 }

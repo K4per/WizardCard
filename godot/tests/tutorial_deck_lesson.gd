@@ -50,6 +50,7 @@ func _run() -> void:
 	var editor := app.page as DeckEditorPage
 	var catalog := root.get_node("Text")
 	check(editor._overlay.hint.text == catalog.t(course.steps.open.hintKey), "opening instruction appears in editor")
+	check(editor._main_count.get_theme_color(&"font_color") == Color("f1aaa0") and editor._side_count.get_theme_color(&"font_color") == DeckTheme.TEXT, "37/40 highlights the incomplete main deck")
 	check(editor._pool_ids.size() == 6 and editor._built.ids.size() == 37 and editor._side.ids.size() == 10, "approved starting deck and six choices")
 	editor._save.pressed.emit()
 	check(editor._step == "draft" and not GuideProgress.completed(directory).has(course.id), "37/10 is saved as a draft")
@@ -77,6 +78,7 @@ func _run() -> void:
 		editor._pool.adjusted.emit(id, 1, "sideCards")
 	editor._save.pressed.emit()
 	check(editor._end.visible and editor._step == "complete" and GuideProgress.completed(directory).has(course.id), "legal saved 40/10 earns completion")
+	check(editor._main_count.get_theme_color(&"font_color") == DeckTheme.TEXT, "40/40 clears the incomplete count highlight")
 	var receipt := editor._end.get_node("%Message") as Label
 	check(receipt.is_visible_in_tree() and receipt.text.contains(catalog.t(course.steps.saved.hintKey)) and receipt.text.contains(catalog.t(course.steps.complete.hintKey)), "saved receipt and next instruction are visible together")
 	var id: String = app.service.editing_draft.id

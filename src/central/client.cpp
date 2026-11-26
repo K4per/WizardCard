@@ -182,9 +182,10 @@ void ClientRoom::receiveTransportMessage(const Json &message) {
         return;
     }
     const auto pending = guest_.retry();
-    if (type == "Rejected" && closing_ && pending && pending->at("request") == message.at("request")) {
+    if (type == "Rejected" && (closing_ || message.contains("errorRef")) && pending && pending->at("request") == message.at("request")) {
         closing_ = false;
-        notice_ = message.value("error", "投降未被接受，请重试");
+        notice_ = message.contains("errorRef") ? content_.renderText(decodeTextRef(message.at("errorRef")))
+                                               : message.value("error", "投降未被接受，请重试");
     }
     guest_.receive(message);
     revision_ = guest_.revision();

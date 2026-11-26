@@ -220,9 +220,13 @@ Json encodeOptions(const ActionOptions &options) {
                 {"hasMore", options.hasMore}, {"pending", options.pending}, {"error", options.error}, {"costQuote", options.costQuote},
                 {"overloadPreview", options.overloadPreview},
                 {"complete", options.complete ? wireCommand(*options.complete) : Json()}};
-    for (const auto &option : options.options)
-        out["options"].push_back({{"value", option.value}, {"label", option.label},
-                                  {"card", option.card}, {"player", option.player}});
+    if (options.costQuoteRef) out["costQuoteRef"] = encodeTextRef(*options.costQuoteRef);
+    if (options.errorRef) out["errorRef"] = encodeTextRef(*options.errorRef);
+    for (const auto &option : options.options) {
+        Json row = {{"value", option.value}, {"label", option.label}, {"card", option.card}, {"player", option.player}};
+        if (option.labelRef) row["labelRef"] = encodeTextRef(*option.labelRef);
+        out["options"].push_back(std::move(row));
+    }
     return out;
 }
 ActionOptions decodeOptions(const Json &j) {
@@ -233,10 +237,15 @@ ActionOptions decodeOptions(const Json &j) {
     out.field = static_cast<ActionField>(field);
     out.costQuote = j.value("costQuote", std::string{});
     out.overloadPreview = j.value("overloadPreview", 0);
+    if (j.contains("costQuoteRef")) out.costQuoteRef = decodeTextRef(j.at("costQuoteRef"));
+    if (j.contains("errorRef")) out.errorRef = decodeTextRef(j.at("errorRef"));
     out.hasMore = j.at("hasMore"); out.pending = j.at("pending"); out.error = j.at("error");
     if (!j.at("complete").is_null()) out.complete = unwireCommand(j.at("complete"));
-    for (const auto &option : j.at("options"))
-        out.options.push_back({option.at("value"), option.at("label"), option.at("card"), option.at("player")});
+    for (const auto &option : j.at("options")) {
+        ActionOption row{option.at("value"), option.at("label"), option.at("card"), option.at("player")};
+        if (option.contains("labelRef")) row.labelRef = decodeTextRef(option.at("labelRef"));
+        out.options.push_back(std::move(row));
+    }
     return out;
 }
 Json encodeClock(const MatchClockView &clock) {
@@ -269,6 +278,7 @@ EventBatch decodeEvents(const Json &j) {
         GameEvent event;
         event.kind = row.at("kind"); event.text = row.at("text"); event.audience = row.at("audience");
         event.card = row.at("card"); event.amount = row.at("amount");
+        if (row.contains("textRef")) event.textRef = decodeTextRef(row.at("textRef"));
         if (!row.at("effectType").is_null()) event.effectType = row.at("effectType").get<EffectKind>();
         event.actualAmount = row.at("actualAmount"); event.affectedPlayer = row.at("affectedPlayer");
         if (row.contains("damageType")) event.damageType = damageTypeFromId(row.at("damageType").get<std::string>());

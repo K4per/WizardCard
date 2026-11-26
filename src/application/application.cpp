@@ -335,10 +335,13 @@ bool Application::applySettings(const Settings &s, std::string &error) {
 bool Application::start(const MatchConfig &config, std::string &error, SessionOptions options) {
     return startSession(config, error, options, nullptr);
 }
-bool Application::startTutorial(std::string &error, const std::string &lessonId) {
+bool Application::startTutorial(std::string &error, const std::string &lessonId, std::optional<TextRef> *errorRef) {
+    if (errorRef) errorRef->reset();
     const auto *definition = lessons_.find(lessonId);
     if (!definition) {
-        error = content_.renderText({"tutorial.lesson.unavailable", {}});
+        const TextRef ref{"tutorial.lesson.unavailable", {}};
+        error = content_.renderText(ref);
+        if (errorRef) *errorRef = ref;
         return false;
     }
     return startSession({}, error, {MatchMode::Tutorial, ai::Difficulty::Easy}, definition);
@@ -422,7 +425,8 @@ CommandResult Application::submit(PlayerId actor, const Command &command, std::u
         before = viewFor(actor);
         if (actor == 0 && !lessonScript_->allows(*before, command)) {
             const auto &hint = lessonScript_->blockedHint();
-            return {false, content_.renderText({hint.empty() ? "tutorial.lesson.blocked" : hint, {}}), {}, {}, "tutorial_blocked"};
+            TextRef ref{hint.empty() ? "tutorial.lesson.blocked" : hint, {}};
+            return {false, content_.renderText(ref), {}, {}, "tutorial_blocked", false, std::move(ref)};
         }
     }
     const auto beforeRevision = match_->revision();

@@ -57,7 +57,7 @@ func revalidate() -> void:
 		return
 	if viewer != service.match_viewer or generation != str(service.match_snapshot.get("generation", "")) or decision_id != ActionOptions.context_id(service.match_snapshot):
 		cancel()
-		failed.emit("当前时点已结束，请重新选择。")
+		failed.emit(GameText.label("ui.selection.stale_window"))
 		return
 	revision = str(service.match_snapshot.get("revision", ""))
 	_clear_probes()
@@ -70,7 +70,7 @@ func refresh() -> void:
 		return
 	var response: Dictionary = service.match_request(&"query_actions", [viewer, intent, generation, revision])
 	if not bool(response.get("ok", false)):
-		var message: String = "所选对象或费用已失效，请重新选择。" if _revalidating else str(response.get("error", "动作查询失败"))
+		var message: String = GameText.label("ui.selection.stale_choice") if _revalidating else str(response.get("error", GameText.label("ui.selection.query_failed")))
 		cancel()
 		failed.emit(message)
 		return
@@ -86,14 +86,14 @@ func refresh() -> void:
 	_revalidating = false
 	if revalidating and options.options.is_empty() and options.complete.is_empty():
 		cancel()
-		failed.emit("所选对象或费用已失效，请重新选择。")
+		failed.emit(GameText.label("ui.selection.stale_choice"))
 		return
 	if not options.complete.is_empty():
 		if not material_ids().is_empty():
 			changed.emit(options)
 		elif revalidating:
 			options.field = KernelContract.ActionField.Confirm
-			options.options = [{"value": "@confirm", "label": "确认当前合法选择"}]
+			options.options = [{"value": "@confirm", "label": GameText.label("ui.selection.confirm_valid")}]
 			changed.emit(options)
 		else:
 			completed.emit(options.complete, intent.duplicate(true))
@@ -150,7 +150,7 @@ func _poll_rings() -> void:
 		var hosts: ActionOptions = _probe(_ring_probe)
 		if hosts == null:
 			cancel()
-			failed.emit("宿主选择已失效，请重试。")
+			failed.emit(GameText.label("ui.selection.stale_host"))
 			return
 		if hosts.pending:
 			return
@@ -191,7 +191,7 @@ func _poll_material_pages() -> void:
 		var page: ActionOptions = _probe(_material_probe)
 		if page == null:
 			cancel()
-			failed.emit("材料选择已失效，请重试。")
+			failed.emit(GameText.label("ui.selection.stale_material"))
 			return
 		if page.pending:
 			return

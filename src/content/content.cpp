@@ -340,10 +340,10 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
                     (row.contains("definition") || row.contains("definitions") ||
                      row.contains("school") || row.contains("schools")))
                     fail(rp, "mana/life costs cannot select material cards");
-                if (!cost.school.empty() && schoolName(cost.school).empty())
+                if (!cost.school.empty() && schoolTermKey(cost.school).empty())
                     fail(rp + "/school", "unknown school");
                 for (const auto &school : cost.schools)
-                    if (schoolName(school).empty()) fail(rp + "/schools", "unknown school");
+                    if (schoolTermKey(school).empty()) fail(rp + "/schools", "unknown school");
                 if (cost.kind == RecipeCostKind::SacrificeFormation && cost.schools.size())
                     fail(rp + "/schools", "formation materials cannot use schools");
                 cost.readyOnly = boolean(row, "readyOnly", rp);
@@ -362,7 +362,7 @@ CardCatalog parseCatalog(const Json &j, const std::string &source) {
             fail(p + "/incomeBonus", "expected integer in [-1000,1000]");
         d.incomeBonus = card.value("incomeBonus", 0);
         d.school = card.value("school", std::string());
-        if (!d.school.empty() && schoolName(d.school).empty())
+        if (!d.school.empty() && schoolTermKey(d.school).empty())
             fail(p + "/school", "unknown school");
         d.speed = number(card, "speed", p, 1);
         if (d.speed < 1 || d.speed > 4)
@@ -714,6 +714,7 @@ Content loadContent(const std::filesystem::path &dir) {
     for (const auto &path : {assets / "text", parent / "text", parent / sourceText, parent.parent_path() / sourceText}) {
         if (std::filesystem::exists(path)) {
             c.dataDirectory = path.parent_path();
+            c.textDirectory = path;
             c.textCatalog = std::make_shared<const TextCatalog>(TextCatalog::load(path));
             break;
         }

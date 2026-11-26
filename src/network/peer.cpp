@@ -163,7 +163,8 @@ void Peer::tick() {
                             tcp_.send({{"type","ReplayReceived"},{"session",guest_->room().at("session")}});
                     }
                     if (type == "Rejected") {
-                        notice_ = j.at("error");
+                        notice_ = j.contains("errorRef") ? content_.renderText(decodeTextRef(j.at("errorRef")))
+                                                         : j.at("error").get<std::string>();
                         closing_ = false; // let a stale leave request be retried from confirmation UI
                     } else if (type == "Accepted")
                         notice_ = "操作已确认";

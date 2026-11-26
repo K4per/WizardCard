@@ -33,19 +33,19 @@ unique_name_in_owner = true
 [node name="Detail" parent="." instance=ExtResource("detail")]
 unique_name_in_owner = true
 [node name="Clock" type="Label" parent="."]
+metadata/text_keys = {"text": "ui.log.untimed"}
 unique_name_in_owner = true
 horizontal_alignment = 1
 vertical_alignment = 1
 mouse_filter = 2
-text = "未计时"
 theme_override_styles/normal = SubResource("rail_panel")
 theme_override_font_sizes/font_size = 13
 [node name="RightRail" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
 theme_override_constants/separation = 5
 [node name="Phase" type="Label" parent="RightRail"]
+metadata/text_keys = {"text": "ui.table.opening"}
 unique_name_in_owner = true
-text = "开局"
 autowrap_mode = 3
 theme_override_font_sizes/font_size = 15
 [node name="Controls" type="VBoxContainer" parent="RightRail"]
@@ -61,20 +61,20 @@ size_flags_stretch_ratio = 0.65
 theme_override_styles/panel = SubResource("rail_panel")
 [node name="Column" type="VBoxContainer" parent="RightRail/ChainPanel"]
 [node name="Caption" type="Label" parent="RightRail/ChainPanel/Column"]
-text = "连锁"
+metadata/text_keys = {"text": "ui.battle_table.chain_caption"}
 theme_override_colors/font_color = Color(0.64, 0.84, 0.89, 1)
 [node name="ChainText" type="RichTextLabel" parent="RightRail/ChainPanel/Column"]
+metadata/text_keys = {"text": "ui.log.no_chain"}
 unique_name_in_owner = true
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 14
-text = "当前无连锁"
 [node name="LogPanel" type="PanelContainer" parent="RightRail"]
 unique_name_in_owner = true
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("rail_panel")
 [node name="Column" type="VBoxContainer" parent="RightRail/LogPanel"]
 [node name="Caption" type="Label" parent="RightRail/LogPanel/Column"]
-text = "对局日志"
+metadata/text_keys = {"text": "ui.battle_table.log_caption"}
 theme_override_colors/font_color = Color(0.64, 0.84, 0.89, 1)
 [node name="LogText" type="RichTextLabel" parent="RightRail/LogPanel/Column"]
 unique_name_in_owner = true

@@ -9,7 +9,7 @@ static func load_catalogue() -> CardPreviewCatalogue:
 	var catalogue: CardPreviewCatalogue = CardPreviewCatalogue.new()
 	var document: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/card-previews-v2.json"))
 	if not document is Dictionary or (document as Dictionary).get("usage", "") != "illustrated-preview":
-		catalogue.error = "2.0 卡牌图鉴读取失败"
+		catalogue.error = GameText.label("ui.library.preview_load_failed")
 		return catalogue
 	var data: Dictionary = document
 	catalogue.version = str(data.get("cardSetVersion", ""))

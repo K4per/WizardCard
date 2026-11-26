@@ -122,7 +122,7 @@ ActionOptions GameEngine::queryActions(PlayerId viewer, const ActionIntent &inte
                 if (static_cast<unsigned>(commandKind(action.command)) != kind || (filter && !filter(action.command))) return true;
                 witness = action; return false;
             }, &probe);
-            if (witness) out.options.push_back({std::to_string(kind), witness->label});
+            if (witness) out.options.push_back({std::to_string(kind), witness->label, 0, -1, witness->labelRef});
         }
         out.field = ActionField::Operation;
         const auto begin = std::min(intent.offset, out.options.size());
@@ -242,7 +242,7 @@ ActionOptions GameEngine::queryActions(PlayerId viewer, const ActionIntent &inte
             if (!witness) continue;
             if (skipped++ < intent.offset) continue;
             if (out.options.size() == intent.limit) { out.hasMore = true; break; }
-            ActionOption option{value, witness->label};
+            ActionOption option{value, witness->label, 0, -1, witness->labelRef};
             if (out.field == ActionField::Source || out.field == ActionField::Host || out.field == ActionField::Replacement ||
                 out.field == ActionField::Material || out.field == ActionField::Target || out.field == ActionField::Discard) {
                 const auto id = static_cast<CardId>(std::stoull(value));

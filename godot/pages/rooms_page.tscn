@@ -34,16 +34,16 @@ theme_override_constants/separation = 10
 layout_mode = 2
 
 [node name="Back" parent="Margin/Column/Heading" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.navigation.back_arrow"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "‹ 返回"
 primary = false
 compact = false
 
 [node name="Title" type="Label" parent="Margin/Column/Heading"]
+metadata/text_keys = {"text": "ui.rooms.title"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "中央房间"
 theme_override_font_sizes/font_size = 28
 size_flags_horizontal = 3
 
@@ -59,23 +59,23 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 14
 
 [node name="HotseatHeading" type="Label" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.setup.local_two"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "本地双人换手"
 theme_override_font_sizes/font_size = 28
 
 [node name="HotseatDescription" type="Label" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.hotseat_description"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "在同一台设备上对战。每次换手前先遮挡私有信息。"
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 size_flags_horizontal = 3
 
 [node name="Hotseat" parent="Margin/Column/Scroll/Body" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.rooms.hotseat"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "配置本地双人"
 primary = false
 compact = false
 
@@ -83,29 +83,29 @@ compact = false
 layout_mode = 2
 
 [node name="LanHeading" type="Label" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.lan_heading"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "游戏服务器"
 theme_override_font_sizes/font_size = 28
 
 [node name="LanDescription" type="Label" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.lan_description"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "默认连接正式服 aq.rainplay.cn:23513。选择卡组后创建房间，或输入房间码加入；双方准备后猜拳决定先手。"
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 size_flags_horizontal = 3
 
 [node name="Address" type="LineEdit" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"placeholder_text": "ui.rooms.address_placeholder_text"}
 layout_mode = 2
 unique_name_in_owner = true
-placeholder_text = "服务器主机名"
 text = "aq.rainplay.cn"
 custom_minimum_size = Vector2(0, 48)
 
 [node name="PortCaption" type="Label" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.port_caption"}
 layout_mode = 2
-text = "TLS 端口"
 theme_override_font_sizes/font_size = 18
 
 [node name="Port" type="SpinBox" parent="Margin/Column/Scroll/Body"]
@@ -117,32 +117,32 @@ value = 23513.0
 custom_minimum_size = Vector2(0, 48)
 
 [node name="RoomCodeCaption" type="Label" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.room_code_caption"}
 layout_mode = 2
-text = "房间码"
 theme_override_font_sizes/font_size = 18
 
 [node name="RoomCode" type="LineEdit" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"placeholder_text": "ui.rooms.room_code_placeholder_text"}
 layout_mode = 2
 unique_name_in_owner = true
-placeholder_text = "8 位房间码"
 max_length = 8
 custom_minimum_size = Vector2(0, 48)
 
 [node name="TrustedCaCaption" type="Label" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.trusted_ca_caption"}
 layout_mode = 2
-text = "受信 CA 证书（可选）"
 theme_override_font_sizes/font_size = 18
 
 [node name="TrustedCa" type="LineEdit" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"placeholder_text": "ui.rooms.trusted_ca_placeholder_text"}
 layout_mode = 2
 unique_name_in_owner = true
-placeholder_text = "证书文件路径；留空时使用系统信任链"
 custom_minimum_size = Vector2(0, 48)
 
 [node name="DeckCaption" type="Label" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.deck_caption"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "入场卡组"
 theme_override_font_sizes/font_size = 18
 
 [node name="Decks" type="OptionButton" parent="Margin/Column/Scroll/Body"]
@@ -151,66 +151,66 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 
 [node name="HostFirst" type="CheckButton" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.host_first"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "房主先手"
 button_pressed = true
 
 [node name="Automatic" type="CheckButton" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.automatic"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "自动通过无操作阶段"
 button_pressed = true
 
 [node name="Controls" type="HFlowContainer" parent="Margin/Column/Scroll/Body"]
 layout_mode = 2
 
 [node name="Host" parent="Margin/Column/Scroll/Body/Controls" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.rooms.host"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "创建房间"
 primary = true
 compact = false
 
 [node name="Join" parent="Margin/Column/Scroll/Body/Controls" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.rooms.join"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "加入房间"
 primary = false
 compact = false
 
 [node name="Ready" parent="Margin/Column/Scroll/Body/Controls" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.rooms.waiting_ready"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "准备"
 primary = false
 compact = false
 
 [node name="Leave" parent="Margin/Column/Scroll/Body/Controls" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.rooms.leave"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "离开房间"
 primary = false
 compact = false
 
 [node name="Reconnect" parent="Margin/Column/Scroll/Body/Controls" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.match.menu_reconnect"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "重新连接"
 primary = false
 compact = false
 
 [node name="Configure" parent="Margin/Column/Scroll/Body" instance=ExtResource("button")]
+metadata/text_keys = {"text": "ui.rooms.configure"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "应用房间设置"
 primary = false
 compact = false
 
 [node name="Room" type="Label" parent="Margin/Column/Scroll/Body"]
+metadata/text_keys = {"text": "ui.rooms.room"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "当前没有房间"
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 size_flags_horizontal = 3

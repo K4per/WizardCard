@@ -160,14 +160,14 @@ func configure(value: DecisionPresentation, query_context: Array = []) -> void:
 			caption.size = option.custom_minimum_size - Vector2(16, 16)
 			caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	if value.browse_mode and value.choices.is_empty():
-		_choices.add_child(UiFactory.label("该区域当前没有卡牌。", 16, true))
+		_choices.add_child(UiFactory.label(GameText.label("ui.decision.empty"), 16, true))
 	_preview.simple_style = simple_style
 	if not value.choices.is_empty():
 		_show_preview(value.choices[0])
 	_confirm.pressed.connect(_on_confirm.bind(value.generation, value.revision, value.decision_id))
 	_cancel.pressed.connect(_on_cancel.bind(value.generation, value.revision, value.decision_id))
 	_cancel.visible = value.may_cancel or not value.pass_id.is_empty()
-	_cancel.text = "放弃" if not value.pass_id.is_empty() else "返回"
+	_cancel.text = GameText.label("ui.action.abandon") if not value.pass_id.is_empty() else GameText.label("ui.decision.back")
 	if not value.browse_mode:
 		for id: String in retained:
 			if _options.has(id) and not _options[id].disabled:
@@ -258,15 +258,15 @@ func _refresh() -> void:
 		option.set_pressed_no_signal(_selected.has(choice.id))
 		_labels[choice.id].text = choice.card.title if choice.card != null else choice.label
 	_confirm.disabled = not request.has_exact_context() or _selected.size() < request.minimum or _selected.size() > request.maximum
-	_confirm.text = "确定"
-	_counter.text = "" if request.maximum == 1 else "已选 %d / %d" % [_selected.size(), request.maximum]
+	_confirm.text = GameText.label("ui.common.ok")
+	_counter.text = "" if request.maximum == 1 else GameText.label("ui.decision.selected", {"selected": _selected.size(), "maximum": request.maximum})
 
 func _show_preview(choice: DecisionChoice) -> void:
 	var caption: String = CardPresentation.escape_bbcode(choice.label)
 	_preview.visible = choice.card != null
 	if choice.card != null:
 		_preview.configure(choice.card)
-		_preview_text.text = caption + "\n\n" + ("身份未公开" if choice.card.hidden else choice.card.detail_text(true))
+		_preview_text.text = caption + "\n\n" + (GameText.label("ui.card.private_identity") if choice.card.hidden else choice.card.detail_text(true))
 	else:
 		_preview_text.text = caption
 

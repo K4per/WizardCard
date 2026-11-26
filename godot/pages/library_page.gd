@@ -22,7 +22,7 @@ func _ready() -> void:
 	_kind_filter = %KindFilter
 	(%Back as Button).pressed.connect(navigation_requested.emit.bind(&"menu"))
 	_search.text_changed.connect(_populate)
-	for kind: String in ["全部类型", "解析法术", "言灵法术", "咒符法术", "阵法", "符文"]:
+	for kind: String in [GameText.label("ui.library.all_types"), GameText.label("terms.card_type.analytic_spell"), GameText.label("terms.card_type.word_spell"), GameText.label("terms.card_type.talisman_spell"), GameText.label("terms.card_type.formation"), GameText.label("terms.card_type.rune")]:
 		_kind_filter.add_item(kind)
 	_kind_filter.item_selected.connect(_kind_changed)
 	_detail.closed.connect(_close_detail)
@@ -52,7 +52,7 @@ func _populate(query: String) -> void:
 		_grid.add_child(tile)
 		tile.configure(card)
 		tile.card_selected.connect(_show_detail)
-	_notice.text = "正式卡池 %s · 显示 %d / %d 张" % [service.rules_version, _grid.get_child_count(), collection.size()]
+	_notice.text = GameText.label("ui.library.card_count", {"version": service.rules_version, "visible": _grid.get_child_count(), "total": collection.size()})
 	if not service.error.is_empty():
 		_notice.text = service.error
 

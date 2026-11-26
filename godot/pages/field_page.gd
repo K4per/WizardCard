@@ -18,8 +18,8 @@ func _ready() -> void:
 	var column: VBoxContainer = VBoxContainer.new()
 	column.add_theme_constant_override(&"separation", 8)
 	margin.add_child(column)
-	var header: HBoxContainer = UiFactory.heading(column, "场地预览", navigation_requested.emit.bind(&"menu"))
-	var status: Label = UiFactory.label("场地展示", 16)
+	var header: HBoxContainer = UiFactory.heading(column, GameText.label("ui.showcase.preview"), navigation_requested.emit.bind(&"menu"))
+	var status: Label = UiFactory.label(GameText.label("ui.showcase.title"), 16)
 	status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	header.add_child(status)
@@ -32,13 +32,13 @@ func _ready() -> void:
 	canvas.placement_requested.connect(_placement_preview)
 	var footer: HBoxContainer = HBoxContainer.new()
 	column.add_child(footer)
-	_notice = UiFactory.label("展示数据 · 右键收回选中牌，再按收起手牌", 16, true)
+	_notice = UiFactory.label(GameText.label("ui.showcase.intro"), 16, true)
 	footer.add_child(_notice)
-	_hand_button = UiFactory.button("收起手牌", _toggle_hand)
+	_hand_button = UiFactory.button(GameText.label("ui.showcase.collapse_hand"), _toggle_hand)
 	footer.add_child(_hand_button)
-	_privacy_button = UiFactory.button("交接遮挡", _toggle_privacy)
+	_privacy_button = UiFactory.button(GameText.label("ui.showcase.cover_field"), _toggle_privacy)
 	footer.add_child(_privacy_button)
-	var effect_button: Button = UiFactory.button("效果选择示例", _show_decision)
+	var effect_button: Button = UiFactory.button(GameText.label("ui.showcase.decision_example"), _show_decision)
 	footer.add_child(effect_button)
 	_detail = preload("res://ui/card_detail.tscn").instantiate() as CardDetail
 	add_child(_detail)
@@ -146,17 +146,17 @@ func _toggle_privacy() -> void:
 	_modal_shade.hide()
 	canvas.focus_mode = Control.FOCUS_NONE if canvas.privacy else Control.FOCUS_ALL
 	canvas.mouse_filter = Control.MOUSE_FILTER_STOP
-	_privacy_button.text = "揭开场地" if canvas.privacy else "交接遮挡"
+	_privacy_button.text = GameText.label("ui.showcase.reveal_field") if canvas.privacy else GameText.label("ui.showcase.cover_field")
 	_hand_button.disabled = canvas.privacy
 
 func _toggle_hand() -> void:
 	if canvas.privacy or _decision.visible:
 		return
 	canvas.set_hand_collapsed(not canvas.hand_collapsed)
-	_hand_button.text = "展开手牌" if canvas.hand_collapsed else "收起手牌"
+	_hand_button.text = GameText.label("ui.showcase.expand_hand") if canvas.hand_collapsed else GameText.label("ui.showcase.collapse_hand")
 
 func _placement_preview(_card_id: String, _host_id: String, ring_index: int) -> void:
-	_notice.text = "选择了环位 %d · 展示页不会支付费用或改变卡牌位置" % (ring_index + 1)
+	_notice.text = GameText.label("ui.showcase.ring_selected", {"ring": (ring_index + 1)})
 
 func _show_decision() -> void:
 	if canvas.privacy:
@@ -165,8 +165,8 @@ func _show_decision() -> void:
 	request.generation = "9007199254740993"
 	request.revision = "12"
 	request.decision_id = "18446744073709551615"
-	request.title = "效果检索 · 选择卡牌"
-	request.description = "从候选卡牌中选择1张，点选可查看详情。"
+	request.title = GameText.label("ui.showcase.choose_card")
+	request.description = GameText.label("ui.showcase.choice_hint")
 	for card: CardPresentation in canvas.field.hand:
 		var choice: DecisionChoice = DecisionChoice.new()
 		choice.id = card.instance_id
@@ -182,14 +182,14 @@ func _show_decision() -> void:
 	_actions.hide()
 
 func _decision_confirmed(_generation: String, _revision: String, _decision_id: String, _selected: Array[String]) -> void:
-	_notice.text = "选择已确认 · 本展示未提交规则命令"
+	_notice.text = GameText.label("ui.showcase.choice_confirmed")
 	_decision.hide()
 	_modal_shade.hide()
 	canvas.mouse_filter = Control.MOUSE_FILTER_STOP
 	canvas.focus_mode = Control.FOCUS_ALL
 
 func _decision_cancelled(_generation: String, _revision: String, _decision_id: String) -> void:
-	_notice.text = "已取消 · 卡牌与费用保持原状"
+	_notice.text = GameText.label("ui.showcase.canceled")
 	_decision.hide()
 	_modal_shade.hide()
 	canvas.mouse_filter = Control.MOUSE_FILTER_STOP

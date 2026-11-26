@@ -21,7 +21,21 @@ add_library(wizard_core
   src/core/legal_actions.cpp src/core/planning.cpp src/core/action_query.cpp src/core/view.cpp src/core/serialization.cpp
   src/core/card_rules.cpp src/core/rules_effects.cpp src/core/spell_rules.cpp src/core/spell_choices.cpp
   src/core/current_commands.cpp src/core/current_effects.cpp src/core/current_phases.cpp)
-target_include_directories(wizard_core PUBLIC include)
+# Legacy rule messages use default term spellings even in a core-only build.
+# The presentation layer reads editable terms through the runtime text catalog.
+set(term_catalog "${CMAKE_CURRENT_SOURCE_DIR}/godot/data/text/zh_CN/terms.json")
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${term_catalog}")
+file(READ "${term_catalog}" terms_json)
+string(JSON term_count LENGTH "${terms_json}")
+math(EXPR last_term "${term_count} - 1")
+set(legacy_terms "")
+foreach(index RANGE ${last_term})
+  string(JSON key MEMBER "${terms_json}" ${index})
+  string(JSON term GET "${terms_json}" "${key}")
+  string(APPEND legacy_terms "    {\"${key}\", R\"term(${term})term\"},\n")
+endforeach()
+file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/generated/legacy_terms.inc" CONTENT "${legacy_terms}")
+target_include_directories(wizard_core PUBLIC include PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated")
 wizard_warnings(wizard_core)
 if(WIZARD_CORE_ONLY)
   return()

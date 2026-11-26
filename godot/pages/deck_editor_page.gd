@@ -119,16 +119,16 @@ func _build_interface() -> void:
 	margin.add_child(page_column)
 	var header: HBoxContainer = HBoxContainer.new()
 	page_column.add_child(header)
-	_title = _label("卡组构筑", 21)
+	_title = _label(GameText.label("ui.deck.editor"), 21)
 	_title.custom_minimum_size.x = 118
 	header.add_child(_title)
 	_name = LineEdit.new()
-	_name.placeholder_text = "卡组名称"
+	_name.placeholder_text = GameText.label("ui.deck.name")
 	_name.max_length = 80
 	_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_name.custom_minimum_size.y = 36
 	header.add_child(_name)
-	_state = _label("尚未保存")
+	_state = _label(GameText.label("ui.deck.unsaved"))
 	_state.custom_minimum_size.x = 88
 	_state.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	header.add_child(_state)
@@ -142,16 +142,16 @@ func _build_interface() -> void:
 	_built_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	body.add_child(_built_panel)
 	var built_column: VBoxContainer = _panel_column(_built_panel)
-	_main_count = _label("主卡组  0 / 40", 17)
+	_main_count = _label(GameText.label("ui.deck.main_empty"), 17)
 	built_column.add_child(_main_count)
 	_built = _grid("cards", 10, 4)
 	_built.size_flags_stretch_ratio = 4.0
 	built_column.add_child(_built)
-	_side_count = _label("副卡组  0 / 10", 17)
+	_side_count = _label(GameText.label("ui.deck.side_empty"), 17)
 	built_column.add_child(_side_count)
 	_side = _grid("sideCards", 10, 1)
 	built_column.add_child(_side)
-	_initial = _label("初始阵法在对局开始时从副卡组选择", 13)
+	_initial = _label(GameText.label("ui.deck.initial_from_side"), 13)
 	_initial.add_theme_color_override(&"font_color", DeckTheme.MUTED)
 	built_column.add_child(_initial)
 	var rules := _label(get_node("/root/Text").t("tutorial.l08.s03"), 13)
@@ -163,13 +163,13 @@ func _build_interface() -> void:
 	var pool_column: VBoxContainer = _panel_column(_pool_panel)
 	var pool_header: HBoxContainer = HBoxContainer.new()
 	pool_column.add_child(pool_header)
-	_pool_title = _label("卡池", 17)
+	_pool_title = _label(GameText.label("ui.deck.pool"), 17)
 	_pool_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	pool_header.add_child(_pool_title)
-	_reset = _button("重置")
+	_reset = _button(GameText.label("ui.deck.reset"))
 	pool_header.add_child(_reset)
 	_search = LineEdit.new()
-	_search.placeholder_text = "搜索卡名（部分匹配）"
+	_search.placeholder_text = GameText.label("ui.deck.search")
 	_search.custom_minimum_size.y = 34
 	pool_column.add_child(_search)
 	var filters: GridContainer = GridContainer.new()
@@ -177,7 +177,7 @@ func _build_interface() -> void:
 	filters.add_theme_constant_override(&"h_separation", 6)
 	filters.add_theme_constant_override(&"v_separation", 6)
 	pool_column.add_child(filters)
-	for caption: String in ["类型", "稀有度", "费用", "施法", "位阶", "派系", "速度", "伤害类型", "标签"]:
+	for caption: String in [GameText.label("ui.deck.type"), GameText.label("ui.deck.rarity"), GameText.label("ui.deck.cost"), GameText.label("ui.deck.cast"), GameText.label("ui.deck.rank"), GameText.label("ui.deck.faction"), GameText.label("ui.deck.speed"), GameText.label("ui.deck.damage_type"), GameText.label("ui.deck.tags")]:
 		var filter: OptionButton = OptionButton.new()
 		filter.set_meta(&"caption", caption)
 		filter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -186,65 +186,65 @@ func _build_interface() -> void:
 		filter.add_theme_font_size_override(&"font_size", 12)
 		filters.add_child(filter)
 		_filters.append(filter)
-	_pool_hint = _label("左键加入 · 右键移出 · 拖入对应卡组", 12)
+	_pool_hint = _label(GameText.label("ui.deck.edit_hint"), 12)
 	_pool_hint.add_theme_color_override(&"font_color", DeckTheme.MUTED)
 	pool_column.add_child(_pool_hint)
 	_pool = _grid("cards", 3, 3, "pool")
 	pool_column.add_child(_pool)
 	var pool_pagination: HBoxContainer = HBoxContainer.new()
 	pool_column.add_child(pool_pagination)
-	_pool_prev = _button("上一页")
+	_pool_prev = _button(GameText.label("ui.navigation.previous_page"))
 	pool_pagination.add_child(_pool_prev)
 	_pool_page_label = _label("1 / 1", 13)
 	_pool_page_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_pool_page_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	pool_pagination.add_child(_pool_page_label)
-	_pool_next = _button("下一页")
+	_pool_next = _button(GameText.label("ui.navigation.next_page"))
 	pool_pagination.add_child(_pool_next)
 	var footer: HBoxContainer = HBoxContainer.new()
 	page_column.add_child(footer)
-	_save = _button("保存卡组 / 草稿")
+	_save = _button(GameText.label("ui.deck.save_draft"))
 	_save.custom_minimum_size.x = 180
 	footer.add_child(_save)
-	_notice = _button("构筑检查")
+	_notice = _button(GameText.label("ui.deck.validate"))
 	_notice.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_notice.clip_text = true
 	footer.add_child(_notice)
 	_storage_picker = FileDialog.new()
-	_storage_picker.title = "选择存档目录"
+	_storage_picker.title = GameText.label("ui.deck.storage_dir")
 	_storage_picker.file_mode = FileDialog.FILE_MODE_OPEN_DIR
 	_storage_picker.access = FileDialog.ACCESS_FILESYSTEM
 	_storage_picker.dir_selected.connect(_deck_storage_chosen)
 	add_child(_storage_picker)
-	_storage_button = UiFactory.button("选择存档目录", func() -> void:
+	_storage_button = UiFactory.button(GameText.label("ui.deck.storage_dir"), func() -> void:
 		_storage_picker.current_dir = service.save_directory
 		_storage_picker.popup_centered_ratio(0.7))
 	_storage_button.hide()
 	footer.add_child(_storage_button)
-	_back = _button("返回卡组列表")
+	_back = _button(GameText.label("ui.deck.back_to_decks"))
 	_back.custom_minimum_size.x = 160
 	footer.add_child(_back)
 	_skip = _button(get_node("/root/Text").t("ui.lesson.skip"))
 	_skip.hide()
 	_skip.pressed.connect(_lesson_action.bind(&"skip"))
 	footer.add_child(_skip)
-	var export_button: Button = _button("导出牌组")
+	var export_button: Button = _button(GameText.label("ui.deck.export"))
 	footer.add_child(export_button)
 	_export_dialog = FileDialog.new()
 	_export_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	_export_dialog.access = FileDialog.ACCESS_FILESYSTEM
-	_export_dialog.filters = PackedStringArray(["*.json ; 巫师牌牌组"])
+	_export_dialog.filters = PackedStringArray([GameText.label("ui.deck.export_filter")])
 	_export_dialog.current_file = "WizardCard-deck.json"
-	_export_dialog.title = "导出牌组"
+	_export_dialog.title = GameText.label("ui.deck.export")
 	add_child(_export_dialog)
 	export_button.pressed.connect(func() -> void: _export_dialog.popup_centered_ratio(0.7))
 	_export_dialog.file_selected.connect(_export_deck)
 
 func _export_deck(path: String) -> void:
 	if service.export_deck(path):
-		_dialog.present("导出完成", "牌组已保存到：\n" + path, ["确定"])
+		_dialog.present(GameText.label("ui.deck.export_done"), GameText.label("ui.deck.export_path", {"path": path}), [GameText.label("ui.common.ok")])
 	else:
-		_dialog.present("导出失败", service.error, ["确定"])
+		_dialog.present(GameText.label("ui.deck.export_failed"), service.error, [GameText.label("ui.common.ok")])
 
 func _cancel_drag() -> void:
 	if get_viewport().gui_is_dragging():
@@ -302,26 +302,31 @@ func _editor_step(event: String) -> void:
 
 func _build_filters() -> void:
 	_filter_values = [[null, 1, 2, 3, 4, 5], [null, "common", "uncommon", "rare", "epic", "legendary"], [null], [null], [null], [null], [null], [null], [null]]
-	var types: Array[String] = ["全部", "解析法术", "言灵法术", "阵法卡", "符文卡", "咒符法术"]
-	var rarities: Array[String] = ["全部", "普通", "罕见", "稀有", "史诗", "传说"]
+	var types: Array[String] = [GameText.label("ui.deck.all"), GameText.label("terms.card_type.analytic_spell"), GameText.label("terms.card_type.word_spell"), GameText.label("terms.card_type.formation_card"), GameText.label("terms.card_type.rune_card"), GameText.label("terms.card_type.talisman_spell")]
+	var rarities: Array[String] = [GameText.label("ui.deck.all"), GameText.label("terms.rarity.common"), GameText.label("terms.rarity.uncommon"), GameText.label("terms.rarity.rare"), GameText.label("terms.rarity.epic"), GameText.label("terms.rarity.legendary")]
 	var factions: Array[String] = []
 	var speeds: Array[String] = []
 	var damage_types: Array[String] = []
 	var tags: Array[String] = []
-	var damage_names: Array[String] = ["火焰", "寒冷", "光耀", "黯蚀", "毒素", "闪电", "心灵", "雷鸣", "力场", "挥砍", "钝击", "穿刺", "强酸"]
+	for key: String in service.filter_term_values:
+		if key.begins_with("terms.school."):
+			factions.append(key)
+		elif key.begins_with("terms.damage."):
+			damage_types.append(key)
+	var native_term_values: Array = service.filter_term_values.values()
 	for definition: Dictionary in service.definitions.values():
 		for tag: String in definition.get("tags", []):
-			if tag.ends_with("系") and not factions.has(tag):
-				factions.append(tag)
-			elif tag.ends_with("速") and not speeds.has(tag):
-				speeds.append(tag)
-			elif damage_names.has(tag) and not damage_types.has(tag):
-				damage_types.append(tag)
+			if native_term_values.has(tag):
+				continue
+			# Speed tags are supplied by the legacy CardQuery contract.
+			if tag.ends_with("速"):
+				if not speeds.has(tag):
+					speeds.append(tag)
 			elif tag != "former-action" and not tags.has(tag):
 				tags.append(tag)
-	factions.sort()
+	factions.sort_custom(func(a: String, b: String) -> bool: return GameText.label(a) < GameText.label(b))
 	speeds.sort()
-	damage_types.sort()
+	damage_types.sort_custom(func(a: String, b: String) -> bool: return GameText.label(a) < GameText.label(b))
 	tags.sort()
 	for number: int in range(8):
 		_filter_values[2].append(number)
@@ -336,11 +341,13 @@ func _build_filters() -> void:
 		filter.clear()
 		var caption: String = str(filter.get_meta(&"caption"))
 		for choice: int in range(_filter_values[index].size()):
-			var label: String = "全部" if choice == 0 else str(_filter_values[index][choice])
+			var label: String = GameText.label("ui.deck.all") if choice == 0 else str(_filter_values[index][choice])
 			if index == 0:
 				label = types[choice]
 			elif index == 1:
 				label = rarities[choice]
+			if index in [5, 7] and choice > 0:
+				label = GameText.label(label)
 			filter.add_item(caption + "：" + label)
 
 func _query_changed(_text: String) -> void:
@@ -352,6 +359,8 @@ func _query_changed(_text: String) -> void:
 		var selected: int = _filters[index].selected
 		if selected > 0:
 			var selected_value: Variant = _filter_values[index][selected]
+			if index in [5, 7]:
+				selected_value = service.filter_term_values[selected_value]
 			query[keys[index]] = [selected_value] if index in [5, 6, 7, 8] else selected_value
 	_pool_ids = service.query_cards(query)
 	if not lesson.is_empty():
@@ -378,8 +387,13 @@ func _reset_query() -> void:
 func _refresh() -> void:
 	var main: Dictionary = service.editing_draft.get("cards", {})
 	var side: Dictionary = service.editing_draft.get("sideCards", {})
-	_main_count.text = "主卡组  %d / 40" % DeckUi.total(main)
-	_side_count.text = "副卡组  %d / 10" % DeckUi.total(side)
+	var main_size := DeckUi.total(main)
+	var side_size := DeckUi.total(side)
+	_main_count.text = GameText.label("ui.deck.main_count", {"count": main_size})
+	_side_count.text = GameText.label("ui.deck.side_count", {"count": side_size})
+	if not lesson.is_empty():
+		_main_count.add_theme_color_override(&"font_color", Color("f1aaa0") if main_size != 40 else DeckTheme.TEXT)
+		_side_count.add_theme_color_override(&"font_color", Color("f1aaa0") if side_size != 10 else DeckTheme.TEXT)
 	for grid: DeckCardGrid in [_built, _side]:
 		var membership: Dictionary = service.editing_draft.get(grid.section, {})
 		var ordered: Array = membership.keys()
@@ -392,12 +406,12 @@ func _refresh() -> void:
 		grid.rows = maxi(4 if grid == _built else 1, ceili(grid.ids.size() / 10.0))
 		grid.slot_count = grid.rows * grid.columns
 		grid.queue_redraw()
-	_state.text = "尚未保存" if service.draft_dirty() else "已保存"
-	_save.text = "保存卡组 / 草稿 *" if service.draft_dirty() else "已保存 · 再次保存"
+	_state.text = GameText.label("ui.deck.unsaved") if service.draft_dirty() else GameText.label("ui.deck.saved")
+	_save.text = GameText.label("ui.deck.save_dirty") if service.draft_dirty() else GameText.label("ui.deck.save_again")
 	_save.disabled = not service.writable
 	_storage_button.visible = service.can_choose_save_directory and not service.writable
 	var problems: Array[String] = service.draft_problems()
-	_notice.text = "构筑检查通过" if problems.is_empty() else problems[0] + " · 查看详情"
+	_notice.text = GameText.label("ui.deck.valid") if problems.is_empty() else GameText.label("ui.deck.details", {"problem": problems[0]})
 	_notice.tooltip_text = "\n".join(problems)
 	if not service.writable:
 		_notice.text = service.save_directory + " · " + service.notice
@@ -409,14 +423,14 @@ func _refresh_pool() -> void:
 	_pool_page = clampi(_pool_page, 0, maxi(0, ceili(float(_pool_ids.size()) / page_size) - 1))
 	_pool.ids.assign(_pool_ids.slice(_pool_page * page_size, (_pool_page + 1) * page_size))
 	_pool.queue_redraw()
-	_pool_title.text = "卡池 · %d 种" % _pool_ids.size()
+	_pool_title.text = GameText.label("ui.deck.pool_count", {"count": _pool_ids.size()})
 	_pool_prev.disabled = _pool_page == 0
 	_pool_next.disabled = (_pool_page + 1) * page_size >= _pool_ids.size()
 	_pool_page_label.text = "%d / %d" % [_pool_page + 1, maxi(1, ceili(float(_pool_ids.size()) / page_size))]
 	if _pool_ids.is_empty():
-		_pool_hint.text = service.error if not service.error.is_empty() else "无匹配卡牌，请调整筛选"
+		_pool_hint.text = service.error if not service.error.is_empty() else GameText.label("ui.deck.no_matches")
 	else:
-		_pool_hint.text = get_node("/root/Text").t("tutorial.editor.pick") if not lesson.is_empty() else "阵法入副卡组 · 左键加入 · 右键移出"
+		_pool_hint.text = get_node("/root/Text").t("tutorial.editor.pick") if not lesson.is_empty() else GameText.label("ui.deck.pool_hint")
 
 func _reflow_pool() -> void:
 	var next_rows: int = clampi(floori(_pool.size.y / 115.0), 1, 3)
@@ -458,7 +472,7 @@ func _adjust(id: String, delta: int, source_section: String) -> void:
 	if delta > 0 and (service.named_copies(id, membership) >= 3 or DeckUi.total(cards) >= (10 if membership == "sideCards" else 40)):
 		if not lesson.is_empty() and service.named_copies(id, membership) >= 3:
 			_editor_step("limit")
-		_notice.text = "已达到卡组或同名份数上限"
+		_notice.text = GameText.label("ui.deck.limit_reached")
 		UiFactory.flash(_notice, Color("f1aaa0"))
 		return
 	if delta < 0 and count == 0:
@@ -474,7 +488,7 @@ func _adjust(id: String, delta: int, source_section: String) -> void:
 			_query_changed(_search.text)
 	_refresh()
 	_inspect(id)
-	_notice.text = "%s · %s · 现有 %d 张" % [service.card_by_id(id).title, "已加入" if delta > 0 else "已移出", maxi(0, count + delta)]
+	_notice.text = GameText.label("ui.deck.adjustment", {"card": service.card_by_id(id).title, "action": GameText.label("ui.deck.added") if delta > 0 else GameText.label("ui.deck.removed"), "count": maxi(0, count + delta)})
 	_notice.tooltip_text = _notice.text
 	_pool.flash_card(id)
 	(_side if membership == "sideCards" else _built).flash_card(id)
@@ -488,7 +502,7 @@ func _save_draft() -> bool:
 		return false
 	_storage_button.hide()
 	_refresh()
-	_notice.text = "卡组已保存" if service.draft_problems().is_empty() else "草稿已保存，请补齐主／副卡组"
+	_notice.text = GameText.label("ui.deck.saved_complete") if service.draft_problems().is_empty() else GameText.label("ui.deck.saved_incomplete")
 	if not lesson.is_empty():
 		var stored := false
 		for draft: Dictionary in service.drafts:
@@ -511,7 +525,7 @@ func _deck_storage_chosen(directory: String) -> void:
 func _show_problems() -> void:
 	_dialog_kind = "problems"
 	var problems: Array[String] = service.draft_problems()
-	_dialog.present("构筑检查", "构筑检查通过。" if problems.is_empty() else "\n\n".join(problems), ["关闭"])
+	_dialog.present(GameText.label("ui.deck.validate"), GameText.label("ui.deck.check_passed") if problems.is_empty() else "\n\n".join(problems), [GameText.label("ui.common.close")])
 
 func request_leave(quit_game: bool = false) -> void:
 	if _dialog.visible:
@@ -526,7 +540,7 @@ func request_leave(quit_game: bool = false) -> void:
 		return
 	if service.draft_dirty():
 		_dialog_kind = "leave"
-		_dialog.present("尚有未保存的修改", "保存草稿后离开，或放弃本次修改。", ["保存并离开", "放弃修改", "继续编辑"])
+		_dialog.present(GameText.label("ui.deck.unsaved_changes"), GameText.label("ui.deck.leave_hint"), [GameText.label("ui.deck.save_and_leave"), GameText.label("ui.deck.discard_changes"), GameText.label("ui.deck.continue_editing")])
 	else:
 		_finish_leave()
 

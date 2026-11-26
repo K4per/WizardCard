@@ -16,17 +16,16 @@ theme_override_constants/separation = 8
 layout_mode = 2
 
 [node name="Title" type="Label" parent="Column/Heading"]
+metadata/text_keys = {"text": "ui.selection.choose_card"}
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 22
-text = "选择卡牌"
 
 [node name="Collapse" type="Button" parent="Column/Heading"]
+metadata/text_keys = {"tooltip_text": "ui.decision_panel.collapse_tooltip_text", "text": "ui.decision_panel.collapse_tooltip_text"}
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "收起"
-text = "收起"
 visible = false
 
 [node name="Counter" type="Label" parent="Column/Heading"]
@@ -90,21 +89,21 @@ size_flags_horizontal = 3
 mouse_filter = 2
 
 [node name="Confirm" type="Button" parent="Column/Actions"]
+metadata/text_keys = {"text": "ui.decision_panel.confirm"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "确认选择"
 
 [node name="Cancel" type="Button" parent="Column/Actions"]
+metadata/text_keys = {"text": "ui.decision.back"}
 unique_name_in_owner = true
 layout_mode = 2
-text = "返回"
 
 [node name="ResponseHint" type="Label" parent="Column"]
+metadata/text_keys = {"text": "ui.decision_panel.response_hint"}
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
-text = "选择响应卡立即提交；也可选择不响应。"
 horizontal_alignment = 2
 autowrap_mode = 3

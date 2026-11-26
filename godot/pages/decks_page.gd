@@ -57,18 +57,18 @@ func _ready() -> void:
 		_delete_buttons.append(button)
 	_dialog.chosen.connect(_delete_confirmed)
 	var import_button: Button = Button.new()
-	import_button.text = "导入牌组"
+	import_button.text = GameText.label("ui.deck.import")
 	DeckTheme.button(import_button)
 	_copy.get_parent().add_child(import_button)
 	_import_dialog = FileDialog.new()
 	_import_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	_import_dialog.access = FileDialog.ACCESS_FILESYSTEM
-	_import_dialog.filters = PackedStringArray(["*.json ; 巫师牌牌组"])
-	_import_dialog.title = "导入牌组"
+	_import_dialog.filters = PackedStringArray([GameText.label("ui.deck.export_filter")])
+	_import_dialog.title = GameText.label("ui.deck.import")
 	add_child(_import_dialog)
 	import_button.pressed.connect(func() -> void: _import_dialog.popup_centered_ratio(0.7))
 	_import_dialog.file_selected.connect(_import_deck)
-	_directory_button = UiFactory.button("选择存档目录", func() -> void:
+	_directory_button = UiFactory.button(GameText.label("ui.deck.storage_dir"), func() -> void:
 		_storage_picker.current_dir = service.save_directory
 		_storage_picker.popup_centered_ratio(0.7))
 	_copy.get_parent().add_child(_directory_button)
@@ -96,7 +96,7 @@ func configure(value: FrontendService) -> void:
 	service.refresh_library()
 	_preset.clear()
 	for preset: Dictionary in service.presets:
-		_preset.add_item("预设：" + str(preset["name"]))
+		_preset.add_item(GameText.label("ui.deck.preset", {"name": str(preset["name"])}))
 	_copy.disabled = service.presets.is_empty() or not service.writable
 	_new.disabled = not service.writable
 	_refresh()
@@ -115,7 +115,7 @@ func _refresh() -> void:
 			_rows[index].queue_redraw()
 	_previous.disabled = _page_index == 0
 	_next.disabled = (_page_index + 1) * 6 >= service.drafts.size()
-	_count.text = "%d 个自建卡组 · %d / %d 页" % [service.drafts.size(), _page_index + 1, maxi(1, ceili(service.drafts.size() / 6.0))]
+	_count.text = GameText.label("ui.deck.count_page", {"count": service.drafts.size(), "page": _page_index + 1, "pages": maxi(1, ceili(service.drafts.size() / 6.0))})
 	_empty.visible = service.drafts.is_empty()
 	_notice.text = service.error if not service.error.is_empty() else service.notice
 	_directory_button.visible = service.can_choose_save_directory and (not service.writable or not service.storage_notice.is_empty())
@@ -148,7 +148,7 @@ func _turn_page(delta: int) -> void:
 func _request_delete(index: int) -> void:
 	var draft: Dictionary = service.drafts[_page_index * 6 + index]
 	_delete_id = str(draft["id"])
-	_dialog.present("删除卡组？", "确认删除「%s」？" % draft["name"], ["确认删除", "取消"])
+	_dialog.present(GameText.label("ui.deck.delete_question"), GameText.label("ui.deck.delete_named", {"name": draft["name"]}), [GameText.label("ui.deck.delete_confirm"), GameText.label("ui.common.cancel")])
 
 func _delete_confirmed(index: int) -> void:
 	if index == 0:

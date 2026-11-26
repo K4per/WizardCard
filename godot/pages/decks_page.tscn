@@ -28,15 +28,15 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="Margin/Column"]
+metadata/text_keys = {"text": "ui.deck.editor"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "卡组构筑"
 theme_override_font_sizes/font_size = 26
 
 [node name="Description" type="Label" parent="Margin/Column"]
+metadata/text_keys = {"text": "ui.decks.description"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "管理本地卡组 · 主卡组 40 张 / 阵法副卡组 10 张"
 theme_override_font_sizes/font_size = 16
 
 [node name="CreateActions" type="HBoxContainer" parent="Margin/Column"]
@@ -44,9 +44,9 @@ layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="New" parent="Margin/Column/CreateActions" type="Button"]
+metadata/text_keys = {"text": "ui.decks.new"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "新建卡组"
 custom_minimum_size = Vector2(140, 36)
 
 [node name="Preset" type="OptionButton" parent="Margin/Column/CreateActions"]
@@ -55,9 +55,9 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 36)
 
 [node name="Copy" parent="Margin/Column/CreateActions" type="Button"]
+metadata/text_keys = {"text": "ui.decks.copy"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "从预设复制"
 custom_minimum_size = Vector2(160, 36)
 
 [node name="Rows" type="VBoxContainer" parent="Margin/Column"]
@@ -77,9 +77,9 @@ size_flags_horizontal = 3
 script = ExtResource("row")
 
 [node name="Delete0" parent="Margin/Column/Rows/Row0" type="Button"]
+metadata/text_keys = {"text": "ui.decks.delete"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "删除"
 custom_minimum_size = Vector2(96, 0)
 
 [node name="Row1" type="HBoxContainer" parent="Margin/Column/Rows"]
@@ -94,9 +94,9 @@ size_flags_horizontal = 3
 script = ExtResource("row")
 
 [node name="Delete1" parent="Margin/Column/Rows/Row1" type="Button"]
+metadata/text_keys = {"text": "ui.decks.delete"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "删除"
 custom_minimum_size = Vector2(96, 0)
 
 [node name="Row2" type="HBoxContainer" parent="Margin/Column/Rows"]
@@ -111,9 +111,9 @@ size_flags_horizontal = 3
 script = ExtResource("row")
 
 [node name="Delete2" parent="Margin/Column/Rows/Row2" type="Button"]
+metadata/text_keys = {"text": "ui.decks.delete"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "删除"
 custom_minimum_size = Vector2(96, 0)
 
 [node name="Row3" type="HBoxContainer" parent="Margin/Column/Rows"]
@@ -128,9 +128,9 @@ size_flags_horizontal = 3
 script = ExtResource("row")
 
 [node name="Delete3" parent="Margin/Column/Rows/Row3" type="Button"]
+metadata/text_keys = {"text": "ui.decks.delete"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "删除"
 custom_minimum_size = Vector2(96, 0)
 
 [node name="Row4" type="HBoxContainer" parent="Margin/Column/Rows"]
@@ -145,9 +145,9 @@ size_flags_horizontal = 3
 script = ExtResource("row")
 
 [node name="Delete4" parent="Margin/Column/Rows/Row4" type="Button"]
+metadata/text_keys = {"text": "ui.decks.delete"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "删除"
 custom_minimum_size = Vector2(96, 0)
 
 [node name="Row5" type="HBoxContainer" parent="Margin/Column/Rows"]
@@ -162,32 +162,32 @@ size_flags_horizontal = 3
 script = ExtResource("row")
 
 [node name="Delete5" parent="Margin/Column/Rows/Row5" type="Button"]
+metadata/text_keys = {"text": "ui.decks.delete"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "删除"
 custom_minimum_size = Vector2(96, 0)
 
 [node name="Pagination" type="HBoxContainer" parent="Margin/Column"]
 layout_mode = 2
 
 [node name="Previous" parent="Margin/Column/Pagination" type="Button"]
+metadata/text_keys = {"text": "ui.navigation.previous_page"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "上一页"
 custom_minimum_size = Vector2(120, 34)
 
 [node name="Count" type="Label" parent="Margin/Column/Pagination"]
+metadata/text_keys = {"text": "ui.decks.count"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "0 个卡组"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 size_flags_horizontal = 3
 
 [node name="Next" parent="Margin/Column/Pagination" type="Button"]
+metadata/text_keys = {"text": "ui.navigation.next_page"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "下一页"
 custom_minimum_size = Vector2(120, 34)
 
 [node name="Footer" type="HBoxContainer" parent="Margin/Column"]
@@ -202,14 +202,14 @@ size_flags_horizontal = 3
 clip_text = true
 
 [node name="Back" parent="Margin/Column/Footer" type="Button"]
+metadata/text_keys = {"text": "ui.decks.back"}
 layout_mode = 2
 unique_name_in_owner = true
-text = "返回主菜单"
 custom_minimum_size = Vector2(150, 36)
 
 [node name="Empty" type="Label" parent="."]
+metadata/text_keys = {"text": "ui.decks.empty"}
 unique_name_in_owner = true
-text = "还没有自建卡组。\n新建草稿，或复制预设开始构筑。"
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 size_flags_horizontal = 3

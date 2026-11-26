@@ -28,7 +28,7 @@ struct Transition {
     std::size_t next{};
 };
 struct Step {
-    std::string id, hint, blockedHint, anchor, hintSurface, recapHint;
+    std::string id, hint, phaseHint, blockedHint, anchor, hintSurface, recapHint;
     Json params, highlights, actionHints;
     std::vector<CommandPattern> allow;
     std::vector<Transition> until;
@@ -46,6 +46,7 @@ struct LessonProgram {
     std::vector<OpponentAction> opponent;
     std::optional<Transition> completion;
     bool learnerWinsOpening{};
+    bool ignoreResponsesByDefault{};
 };
 } // namespace detail
 
@@ -317,17 +318,22 @@ std::size_t stepIndex(const LessonProgram &program, const std::string &id) {
 std::shared_ptr<const LessonProgram> parseProgram(const Json &document, const CardCatalog &cards,
                                                   const TextCatalog &text) {
     auto program = std::make_shared<LessonProgram>();
+    program->ignoreResponsesByDefault = document.value("ignoreResponsesByDefault", false);
     const auto &steps = list(document, "steps");
     if (steps.empty()) reject("lesson needs at least one step");
     std::set<std::string> stepIds;
     for (const auto &input : steps) {
-        fields(input, {"id", "hint", "params", "blockedHint", "highlight", "hintAnchor", "hintSurface", "actionHints", "recapHint", "allow", "continue", "until"});
+        fields(input, {"id", "hint", "params", "phaseHint", "blockedHint", "highlight", "hintAnchor", "hintSurface", "actionHints", "recapHint", "allow", "continue", "until"});
         Step step;
         step.id = input.at("id").get<std::string>();
         if (!name(step.id, "-_") || !stepIds.insert(step.id).second) reject("invalid or duplicate step ID " + step.id);
         step.hint = input.at("hint").get<std::string>();
         step.params = input.value("params", Json::object());
         requireText(text, cards, step.hint, step.params);
+        if (input.contains("phaseHint")) {
+            step.phaseHint = input.at("phaseHint").get<std::string>();
+            requireText(text, cards, step.phaseHint);
+        }
         if (input.contains("blockedHint")) {
             step.blockedHint = input.at("blockedHint").get<std::string>();
             requireText(text, cards, step.blockedHint);
@@ -575,7 +581,7 @@ LessonCatalog LessonCatalog::load(const std::filesystem::path &directory, const 
             }
             auto scenario = TutorialScenario::load(directory, path.stem().u8string(), cards);
             const auto &document = scenario.document();
-            fields(document, {"id", "order", "titleKey", "cardRevision", "scenario", "steps", "opponent", "complete", "openingOpponent", "allow", "branches"});
+            fields(document, {"id", "order", "titleKey", "cardRevision", "scenario", "steps", "opponent", "complete", "openingOpponent", "ignoreResponsesByDefault", "allow", "branches"});
             const auto order = static_cast<int>(integer(document.at("order"), 1, std::numeric_limits<int>::max(), "order"));
             auto title = document.at("titleKey").get<std::string>();
             requireText(text, cards, title);
@@ -722,12 +728,19 @@ std::optional<ai::Selection> LessonScript::opponent(const GameView &view, const 
     return selection;
 }
 
-Json LessonScript::snapshot() const {
+Json LessonScript::snapshot(const GameEngine &engine) const {
     const auto &step = program_->steps.at(step_);
     Json result{{"lessonId", lessonId_}, {"step", step.id}, {"hintKey", step.hint}, {"params", step.params},
         {"highlights", step.highlights}, {"blockedHint", step.blockedHint}, {"hintAnchor", step.anchor},
         {"canContinue", hasContinue()}, {"complete", complete_}};
+    if (!complete_ && !step.phaseHint.empty() && engine.validate(0, AdvancePhase{engine.state().phaseGate}).empty()) {
+        result["highlights"].push_back("ui:end_phase");
+        result["hintKey"] = "tutorial.lesson.phase_instruction";
+        result["params"] = {{"note", {{"key", step.hint}, {"args", step.params}}},
+                            {"instruction", {{"key", step.phaseHint}}}};
+    }
     if (step.hintSurface != "bar") result["hintSurface"] = step.hintSurface;
+    if (program_->ignoreResponsesByDefault) result["ignoreResponsesByDefault"] = true;
     if (!step.actionHints.empty()) result["actionHints"] = step.actionHints;
     if (!step.recapHint.empty()) result["recapHint"] = step.recapHint;
     return result;

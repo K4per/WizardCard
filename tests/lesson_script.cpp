@@ -102,6 +102,7 @@ TEST_CASE("lesson discovery sorts valid courses and isolates bad definitions", "
     invalidStep("detail-without-card", {{"hintSurface", "detail"}, {"highlight", {"zone:learner.hand"}}});
     invalidStep("invalid-action-hint", {{"actionHints", {{"NeverACommand", "tutorial.test.play"}}}});
     invalidStep("missing-choice-text", {{"actionHints", {{"SetAmbush", "tutorial.test.missing"}}}});
+    invalidStep("missing-phase-hint", {{"phaseHint", "tutorial.test.missing"}});
     invalidStep("missing-recap", {{"recapHint", "tutorial.test.missing"}});
 
     std::vector<std::string> diagnostics;
@@ -112,7 +113,7 @@ TEST_CASE("lesson discovery sorts valid courses and isolates bad definitions", "
     REQUIRE(catalog.find("zebra"));
     CHECK(catalog.find("zebra")->titleKey == "tutorial.test.title");
     CHECK_FALSE(catalog.find("mismatch"));
-    CHECK(diagnostics.size() == 15);
+    CHECK(diagnostics.size() == 16);
 }
 
 TEST_CASE("lesson branches on an accepted learner action in the requested turn", "[lesson-script]") {
@@ -133,7 +134,7 @@ TEST_CASE("lesson branches on an accepted learner action in the requested turn",
     auto engine = definition->scenario.start(content().catalog);
     LessonScript script(*definition);
     auto view = engine.viewFor(0);
-    CHECK(script.snapshot() == Json{{"lessonId", "branch"}, {"step", "intro"},
+    CHECK(script.snapshot(engine) == Json{{"lessonId", "branch"}, {"step", "intro"},
         {"hintKey", "tutorial.test.intro"}, {"params", intro["params"]}, {"hintAnchor", "bottom"},
         {"highlights", intro["highlight"]}, {"blockedHint", ""}, {"canContinue", true}, {"complete", false}});
     CHECK(script.canContinue(view));
@@ -160,14 +161,14 @@ TEST_CASE("lesson branches on an accepted learner action in the requested turn",
     auto later = view;
     later.globalTurn = 2;
     script.observe(0, *selected, later, later, {});
-    CHECK(script.snapshot()["step"] == "play");
+    CHECK(script.snapshot(engine)["step"] == "play");
     script.observe(0, PassResponse{}, later, later, {});
-    CHECK(script.snapshot()["step"] == "play");
+    CHECK(script.snapshot(engine)["step"] == "play");
     submit(script, engine, 0, *selected);
-    CHECK(script.snapshot()["step"] == "end");
+    CHECK(script.snapshot(engine)["step"] == "end");
     REQUIRE(script.continueLesson(engine.viewFor(0)));
     CHECK(script.complete());
-    CHECK_FALSE(script.snapshot()["canContinue"].get<bool>());
+    CHECK_FALSE(script.snapshot(engine)["canContinue"].get<bool>());
 }
 
 TEST_CASE("lesson opponent chooses the real legal losing gesture and observes the opening winner", "[lesson-script]") {
@@ -257,7 +258,7 @@ TEST_CASE("scripted opponent selects a matching legal source and opens the learn
     REQUIRE(engine.viewFor(0).decision);
     CHECK(engine.viewFor(0).decision->kind == DecisionKind::Response);
     CHECK_FALSE(engine.viewFor(1).decision);
-    CHECK(script.snapshot()["step"] == "respond");
+    CHECK(script.snapshot(engine)["step"] == "respond");
 }
 
 TEST_CASE("local bridge plays a catalog lesson and verifies its course-only replay", "[lesson-script][bridge]") {

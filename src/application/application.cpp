@@ -348,7 +348,7 @@ bool Application::startTutorial(std::string &error, const std::string &lessonId,
 }
 Json Application::lessonSnapshot() const {
     if (!lessonScript_) return nullptr;
-    auto data = lessonScript_->snapshot();
+    auto data = lessonScript_->snapshot(match_->engine());
     data["order"] = activeLesson_->order;
     data["titleKey"] = activeLesson_->titleKey;
     data["title"] = content_.renderText({activeLesson_->titleKey, {}});

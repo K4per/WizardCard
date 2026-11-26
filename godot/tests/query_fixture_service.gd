@@ -74,6 +74,8 @@ func _query(intent: Dictionary) -> Dictionary:
 		var next: Dictionary = path[selections.size()]
 		var value: String = str(next["value"])
 		var field: int = int(next["field"])
+		if field == KernelContract.ActionField.Target:
+			data["costQuote"] = action.get("costQuote", "")
 		if seen.has(value):
 			continue
 		seen[value] = true

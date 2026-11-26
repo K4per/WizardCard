@@ -339,6 +339,10 @@ func _install_snapshot(data: Dictionary) -> bool:
 	if parsed == null:
 		error = "对局数据版本不匹配，请更新客户端。"
 		return false
+	if match_mode == "tutorial" and (match_state == null or match_state.generation != parsed.generation):
+		var lesson: Variant = data.get("tutorial")
+		if lesson is Dictionary and lesson.get("ignoreResponsesByDefault", false):
+			response_modes[0] = ResponseTiming.Mode.IGNORE
 	if event_log.generation != parsed.generation or event_log.viewer != parsed.viewer:
 		event_log.reset(parsed.generation, parsed.viewer)
 		events_changed.emit({"reset": true, "events": []})

@@ -47,7 +47,7 @@ public:
     bool canContinue(const GameView &) const;
     bool continueLesson(const GameView &);
     std::optional<ai::Selection> opponent(const GameView &, const ai::CandidateSource &) const;
-    Json snapshot() const;
+    Json snapshot(const GameEngine &) const;
     bool complete() const { return complete_; }
     const std::string &blockedHint() const;
 

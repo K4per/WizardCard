@@ -3,6 +3,7 @@
   "order": 6,
   "titleKey": "tutorial.l06.title",
   "cardRevision": 13,
+  "ignoreResponsesByDefault": true,
   "scenario": {
     "players": [
       {
@@ -57,30 +58,39 @@
     {
       "id": "choose",
       "hint": "tutorial.l06.choose",
+      "phaseHint": "tutorial.l06.switch_done",
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["zone:learner.hand", "ui:end_phase"],
+      "highlight": ["zone:learner.hand"],
       "allow": [
         {"command": "StartAnalysis", "card": "v260-analytic-0034", "formation": "v260-formation-0013"},
         {"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0013"},
         {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0013"}
       ],
-      "until": {"event": "phase_enter", "next": "wait-draw", "active": "learner", "phase": "End"}
+      "until": {"command": "AdvancePhase", "phase": "Main", "next": "wait-draw"}
     },
     {
       "id": "wait-draw",
       "hint": "tutorial.l06.wait_draw",
+      "phaseHint": "tutorial.lesson.switch",
       "highlight": ["zone:learner.analysis"],
       "until": {"event": "phase_enter", "next": "draw", "active": "learner", "phase": "Draw"}
     },
     {
       "id": "draw",
       "hint": "tutorial.l06.draw",
-      "highlight": ["ui:phase"],
-      "until": {"event": "phase_enter", "next": "preparations", "active": "learner", "phase": "Prepare"}
+      "phaseHint": "tutorial.lesson.switch_prepare",
+      "until": {"event": "phase_enter", "next": "enter-main", "active": "learner", "phase": "Prepare"}
+    },
+    {
+      "id": "enter-main",
+      "hint": "tutorial.l06.analysis_done",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "preparations"}
     },
     {
       "id": "preparations",
       "hint": "tutorial.l06.prepare",
+      "phaseHint": "tutorial.l06.switch_after_prepare",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["zone:learner.analysis"],
       "allow": [
@@ -91,11 +101,15 @@
         {"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0013"},
         {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0013"}
       ],
-      "until": {"event": "phase_enter", "next": "cast", "active": "learner", "phase": "Cast"}
+      "until": [
+        {"event": "phase_enter", "next": "cast", "active": "learner", "phase": "Cast"},
+        {"command": {"command": "AdvancePhase", "skipCast": true}, "phase": "Main", "next": "wait-draw"}
+      ]
     },
     {
       "id": "cast",
       "hint": "tutorial.l06.cast",
+      "phaseHint": "tutorial.l06.switch_after_cast",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["zone:learner.casting"],
       "allow": [
@@ -111,6 +125,7 @@
     {
       "id": "overloaded",
       "hint": "tutorial.l06.s07",
+      "phaseHint": "tutorial.l06.switch_after_cast",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["zone:learner.status"],
       "allow": [
@@ -123,21 +138,13 @@
     {
       "id": "retry",
       "hint": "tutorial.l06.retry",
-      "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["zone:learner.hand", "zone:learner.analysis"],
-      "allow": [
-        {"command": "StartAnalysis", "card": "v260-analytic-0034", "formation": "v260-formation-0013"},
-        {"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0013"},
-        {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0013"},
-        {"command": "PrepareCast", "card": "v260-analytic-0034"},
-        {"command": "PrepareCast", "card": "v260-analytic-0001"},
-        {"command": "PrepareCast", "card": "v260-analytic-0006"}
-      ],
-      "until": {"event": "phase_enter", "next": "cast", "active": "learner", "phase": "Cast"}
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "next": "preparations", "active": "learner", "phase": "Main"}
     },
     {
       "id": "safe-limit",
       "hint": "tutorial.l06.s06",
+      "phaseHint": "tutorial.l06.switch_after_cast",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["zone:learner.status"],
       "allow": [
@@ -153,14 +160,15 @@
     {
       "id": "all-five",
       "hint": "tutorial.l06.s05",
+      "phaseHint": "tutorial.lesson.switch",
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["zone:learner.status", "ui:end_phase"],
+      "highlight": ["zone:learner.status"],
       "allow": [
         {"command": "StartAnalysis", "card": "v260-analytic-0034", "formation": "v260-formation-0013"},
         {"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0013"},
         {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0013"}
       ],
-      "until": {"event": "phase_enter", "next": "wait-draw", "active": "learner", "phase": "End"}
+      "until": {"command": "AdvancePhase", "phase": "Main", "next": "wait-draw"}
     },
     {"id": "win-overload", "hint": "tutorial.l06.s10", "recapHint": "tutorial.l06.s09", "highlight": ["zone:learner.status"], "continue": true},
     {"id": "won", "hint": "tutorial.l06.s08", "recapHint": "tutorial.l06.s09", "continue": true}

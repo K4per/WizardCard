@@ -83,6 +83,8 @@ func configure(value: DecisionPresentation, query_context: Array = []) -> void:
 	if request != null and not query_context.is_empty() and query_context == _query_context \
 			and request.generation == value.generation and request.decision_id == value.decision_id and request.revision != value.revision:
 		retained.assign(_selected)
+	elif not value.initial_choice.is_empty():
+		retained.append(value.initial_choice)
 	_query_context = query_context.duplicate(true)
 	request = value
 	_selected.clear()
@@ -246,7 +248,7 @@ func _on_choice(enabled: bool, id: String, generation: String, revision: String,
 		if request.maximum == 1:
 			_selected.clear()
 		_selected.append(id)
-	elif not enabled:
+	elif not enabled and id != request.initial_choice:
 		_selected.erase(id)
 	_refresh()
 

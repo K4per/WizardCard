@@ -81,8 +81,9 @@
     {
       "id": "shield-set",
       "hint": "tutorial.l04.shield_set",
+      "phaseHint": "tutorial.l04.switch_shield",
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:hand.v260-word-0001", "ui:end_phase"],
+      "highlight": ["card:hand.v260-word-0001"],
       "allow": [{"command": "PreloadWord", "card": "v260-word-0001", "target": "opponent", "release": true}],
       "until": {
         "command": {"command": "PreloadWord", "card": "v260-word-0001", "target": "opponent", "release": true},
@@ -92,7 +93,8 @@
     {
       "id": "too-slow",
       "hint": "tutorial.l04.s03",
-      "highlight": ["card:analysis.v260-analytic-0006", "ui:end_phase"],
+      "phaseHint": "tutorial.lesson.switch",
+      "highlight": ["card:analysis.v260-analytic-0006"],
       "until": {"gameOver": true}
     },
     {"id": "resolve", "hint": "tutorial.lesson.settle", "highlight": ["ui:chain"], "until": {"gameOver": true}},

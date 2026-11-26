@@ -9,6 +9,9 @@ const GAP := 8.0
 @onready var surface: Control = %Surface
 @onready var bar: PanelContainer = %HintBar
 @onready var hint: Label = %Hint
+@onready var _blocked_hint: Label = %BlockedHint
+@onready var _instructions: VBoxContainer = %Instructions
+@onready var _row: HBoxContainer = %Row
 @onready var advance: Button = %Continue
 @onready var _timer: Timer = %BlockedTimer
 
@@ -17,30 +20,47 @@ var _resolve: Callable
 var _obstructions: Array[Control] = []
 var highlights: Array[Rect2] = []
 var _last_layout: Array = []
+var _bar_size: Vector2 = Vector2.ZERO
 var _pulse: float = 0.0
 
 func _ready() -> void:
 	advance.text = _text.t("ui.lesson.continue")
+	advance.add_theme_font_override(&"font", Typography.HEADING)
+	advance.add_theme_stylebox_override(&"normal", DeckTheme.box(Color("215568"), DeckTheme.ACCENT, 8))
+	advance.add_theme_stylebox_override(&"hover", DeckTheme.box(Color("2b6779"), DeckTheme.ACCENT, 8))
 	advance.pressed.connect(continue_requested.emit)
+	surface.resized.connect(_scale_text)
+	_scale_text()
 	surface.draw.connect(_draw_highlights)
-	_timer.timeout.connect(_restore_hint)
+	bar.minimum_size_changed.connect(_resize_bar)
+	_timer.timeout.connect(_clear_blocked)
 	visibility_changed.connect(_visibility_changed)
 	set_process(false)
 
+func _scale_text() -> void:
+	var factor: float = clampf(minf(surface.size.x / 1600.0, surface.size.y / 900.0), 0.94, 1.32)
+	Typography.override_size(hint, &"font_size", roundi(24 * factor))
+	Typography.override_size(_blocked_hint, &"font_size", roundi(21 * factor))
+	Typography.override_size(advance, &"font_size", roundi(23 * factor))
+
 func configure(lesson: Dictionary, resolver: Callable, obstructions: Array[Control]) -> void:
-	var changed: bool = _lesson != lesson
+	# Editor lessons identify their steps by hint key, match snapshots carry a step ID.
+	var changed_step: bool = _lesson.get("lessonId") != lesson.get("lessonId") or _lesson.get("step", _lesson.get("hintKey")) != lesson.get("step", lesson.get("hintKey"))
 	_lesson = lesson
 	_resolve = resolver
 	_obstructions = obstructions
 	visible = not lesson.is_empty() and not bool(lesson.get("complete", false))
 	if not visible:
 		_timer.stop()
+		_blocked_hint.hide()
 		highlights.clear()
 		return
 	advance.visible = bool(lesson.get("canContinue", false))
-	if changed:
+	var key: String = str(lesson.get("hintKey", ""))
+	hint.text = _text.t(key, lesson.get("params", {})) if not key.is_empty() else ""
+	if changed_step:
 		_timer.stop()
-		_restore_hint()
+		_blocked_hint.hide()
 	_refresh_geometry()
 
 func _visibility_changed() -> void:
@@ -51,15 +71,13 @@ func show_blocked(key: String = "") -> void:
 		return
 	if key.is_empty():
 		key = str(_lesson.get("blockedHint", ""))
-	hint.text = _text.t(key if not key.is_empty() else "tutorial.lesson.blocked")
-	hint.modulate = Color("ffd28b")
+	_blocked_hint.text = _text.t(key if not key.is_empty() else "tutorial.lesson.blocked")
+	_blocked_hint.show()
 	_timer.start()
 	_refresh_geometry()
 
-func _restore_hint() -> void:
-	var key: String = str(_lesson.get("hintKey", ""))
-	hint.text = _text.t(key, _lesson.get("params", {})) if not key.is_empty() else ""
-	hint.modulate = Color.WHITE
+func _clear_blocked() -> void:
+	_blocked_hint.hide()
 	_refresh_geometry()
 
 func _process(delta: float) -> void:
@@ -92,35 +110,47 @@ func _refresh_geometry() -> void:
 			blocked.append(control.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, control.size))
 	var viewport: Rect2 = Rect2(Vector2.ZERO, surface.size).grow(-GAP)
 	var anchor: String = str(_lesson.get("hintAnchor", "auto"))
-	var layout_inputs: Array = [viewport, blocked, anchor, hint.text, advance.visible, hint.get_theme_font_size(&"font_size"), advance.get_combined_minimum_size()]
+	var layout_inputs: Array = [viewport, blocked, anchor, hint.text, _blocked_hint.text if _blocked_hint.visible else "", advance.visible, hint.get_theme_font_size(&"font_size"), advance.get_combined_minimum_size()]
 	if _last_layout == layout_inputs:
 		return
 	_last_layout = layout_inputs
-	if hint.text.is_empty() and not advance.visible:
+	if hint.text.is_empty() and not advance.visible and not _blocked_hint.visible:
 		bar.hide()
 		return
 	var placement: Rect2 = _place_bar(viewport, anchor, blocked)
 	if placement.has_area():
+		_bar_size = placement.size
 		bar.show()
 		bar.position = placement.position
-		bar.size = placement.size
+		_resize_bar()
 	else:
 		bar.hide()
 
+func _resize_bar() -> void:
+	# Wrapped labels can release their previous minimum height only after the
+	# row has received its new width from the container.
+	bar.size = _bar_size
+
 func _bar_extent(width: float) -> Vector2:
 	var button: Vector2 = advance.get_combined_minimum_size() if advance.visible else Vector2.ZERO
-	var label_width: float = maxf(1.0, width - 24 - button.x - (12 if advance.visible else 0))
-	var font: Font = hint.get_theme_font(&"font")
-	var font_size: int = hint.get_theme_font_size(&"font_size")
-	var text_size: Vector2 = font.get_multiline_string_size(hint.text, HORIZONTAL_ALIGNMENT_LEFT, label_width, font_size, -1, TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE)
+	var margins: Vector2 = bar.get_theme_stylebox(&"panel").get_minimum_size()
+	var label_width: float = maxf(1.0, width - margins.x - button.x - (_row.get_theme_constant(&"separation") if advance.visible else 0))
+	var height: float = _label_height(hint, label_width)
+	if _blocked_hint.visible:
+		height += _instructions.get_theme_constant(&"separation") + _label_height(_blocked_hint, label_width)
+	return Vector2(width, ceilf(maxf(height, button.y)) + margins.y)
+
+func _label_height(label: Label, width: float) -> float:
+	var font: Font = label.get_theme_font(&"font")
+	var font_size: int = label.get_theme_font_size(&"font_size")
+	var text_size: Vector2 = font.get_multiline_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, width, font_size, -1, TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE)
 	# Label includes theme line spacing between wrapped lines.
 	var lines: int = maxi(1, roundi(text_size.y / maxf(1.0, font.get_height(font_size))))
-	var height: float = text_size.y + (lines - 1) * hint.get_theme_constant(&"line_spacing")
-	return Vector2(width, ceilf(maxf(height, button.y)) + 12)
+	return lines * label.get_line_height() + (lines - 1) * label.get_theme_constant(&"line_spacing")
 
 func _place_bar(viewport: Rect2, preferred: String, blocked: Array[Rect2]) -> Rect2:
-	var wide: Vector2 = _bar_extent(minf(980.0, viewport.size.x * 0.78))
-	var narrow: Vector2 = _bar_extent(minf(340.0, viewport.size.x * 0.29))
+	var wide: Vector2 = _bar_extent(minf(1240.0, viewport.size.x * 0.78))
+	var narrow: Vector2 = _bar_extent(minf(440.0, viewport.size.x * 0.27))
 	var anchors: Array[String] = ["top", "bottom", "left", "right"]
 	if preferred in anchors:
 		anchors.erase(preferred)

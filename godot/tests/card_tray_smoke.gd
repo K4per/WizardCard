@@ -35,6 +35,64 @@ func _capture(label: String) -> void:
 	var capture: Image = root.get_texture().get_image()
 	_expect(capture.save_png(output.path_join(label + "-%dx%d.png" % [root.size.x, root.size.y])) == OK, "capture saves")
 
+func _activation_targets(single: bool) -> void:
+	root.size = Vector2i(1280, 720)
+	var page: MatchPage = preload("res://pages/match_page.tscn").instantiate()
+	page.theme = ArtBank.make_theme()
+	root.add_child(page)
+	var service := QueryFixtureService.new()
+	service.match_snapshot = {"generation": "10", "revision": "20", "viewer": 0, "result": -1,
+		"players": [{"castingCapacity": 4}, {}], "cards": [_card("33", "火球术", 5, 1)]}
+	var opponent := "1073741826"
+	var own := "1073741825"
+	var targets: Array[String] = [opponent]
+	if not single:
+		targets.push_front(own)
+	for target: String in targets:
+		service.fixture_actions.append({"source": "33", "id": target, "queryPlayer": 1 if target == opponent else 0, "costQuote": "发动费用：2 魔素",
+			"command": {"type": KernelContract.CommandKind.ActivateSpell, "card": "33", "target": target}})
+	page.configure(service)
+	page.canvas.configure(MatchProjection.field(service.match_snapshot))
+	await _settle()
+	_click(page.canvas.global_position + page.canvas.card_bounds(page.canvas.field.own_casting[0]).get_center())
+	await _settle()
+	for attempt: int in range(2):
+		var activate := page._action_list.get_node_or_null("ActivateSpell") as Button
+		_expect(activate != null and activate.is_visible_in_tree(), "casting card exposes its activation action")
+		if activate == null or not activate.is_visible_in_tree():
+			break
+		_click(activate.get_global_rect().get_center())
+		await _settle()
+		var panel := page._decision
+		_expect(panel.is_visible_in_tree() and panel._options.has(opponent), "opening activation exposes the legal opponent target")
+		if not panel._options.has(opponent):
+			break
+		for button: Button in [panel._confirm, panel._cancel]:
+			_expect(button.is_visible_in_tree() and root.get_visible_rect().encloses(button.get_global_rect()),
+				"first and reopened target trays fit action buttons inside the viewport: %s" % button.get_global_rect())
+		_expect(service.confirmations == 0 and service.selected_actions.is_empty(), "opening a target query never submits it")
+		if single:
+			_expect(panel._selected == [opponent] and not panel._confirm.disabled, "the only legal target is ready for explicit confirmation")
+			_click(panel._options[opponent].get_global_rect().get_center())
+			_expect(panel._selected == [opponent] and not panel._confirm.disabled, "clicking the sole target keeps it ready to confirm")
+		else:
+			_expect(panel._selected.is_empty() and panel._confirm.disabled, "multiple legal targets require an explicit choice")
+			_click(panel._options[own].get_global_rect().get_center())
+			_click(panel._options[opponent].get_global_rect().get_center())
+			_expect(panel._selected == [opponent] and not panel._confirm.disabled, "switching player targets enables the chosen one")
+		if attempt == 0:
+			_click(panel._cancel.get_global_rect().get_center())
+			await _settle()
+			_expect(not panel.visible and service.confirmations == 0, "back dismisses the first activation without committing")
+		else:
+			var confirm_point := panel._confirm.get_global_rect().get_center()
+			_click(confirm_point)
+			_click(confirm_point)
+			await _settle()
+			_expect(service.selected_actions == [opponent] and service.confirmations == 1, "confirming the reopened activation commits its target exactly once")
+	page.queue_free()
+	await _settle()
+
 func _run() -> void:
 	var arguments: PackedStringArray = OS.get_cmdline_user_args()
 	for index: int in range(arguments.size() - 1):
@@ -42,6 +100,8 @@ func _run() -> void:
 			output = arguments[index + 1]
 	if not output.is_empty():
 		DirAccess.make_dir_recursive_absolute(output)
+	await _activation_targets(true)
+	await _activation_targets(false)
 	var page: MatchPage = (load("res://pages/match_page.tscn") as PackedScene).instantiate() as MatchPage
 	root.add_child(page)
 	await _settle()
@@ -143,6 +203,23 @@ func _run() -> void:
 		root.size = dimensions
 		await _settle()
 		await _capture("damage-types")
+		if dimensions == Vector2i(1280, 720):
+			var panel := page._decision
+			for tick: int in range(30):
+				var wheel := InputEventMouseButton.new()
+				wheel.position = panel._candidate_scroll.get_global_rect().get_center()
+				wheel.global_position = wheel.position
+				wheel.button_index = MOUSE_BUTTON_WHEEL_RIGHT
+				wheel.pressed = true
+				root.push_input(wheel, true)
+				wheel = wheel.duplicate() as InputEventMouseButton
+				wheel.pressed = false
+				root.push_input(wheel, true)
+			await _settle()
+			var last := panel._options["13"].get_global_rect().get_center()
+			_expect(panel._candidate_scroll.get_global_rect().has_point(last) and panel._candidate_scroll.scroll_horizontal > 0, "the last candidate scrolls into view at 720p")
+			_click(last)
+			_expect(panel._selected == ["13"] and root.get_visible_rect().encloses(panel._confirm.get_global_rect()), "scrolling keeps the last choice and its confirmation accessible")
 	page._decision._candidate_scroll.scroll_horizontal = 0
 	await _settle()
 	_click(page._decision._options["1"].get_global_rect().get_center())

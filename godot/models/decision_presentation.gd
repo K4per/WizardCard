@@ -8,6 +8,7 @@ var title: String = ""
 var description: String = ""
 var cost_summary: String = ""
 var choices: Array[DecisionChoice] = []
+var initial_choice: String = ""
 var minimum: int = 1
 var maximum: int = 1
 var may_cancel: bool = true

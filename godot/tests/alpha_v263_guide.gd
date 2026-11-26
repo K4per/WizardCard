@@ -112,6 +112,33 @@ func _run() -> void:
 	check(app.service.leave_match(), "first course closes before starting the editor course")
 	app.navigate(&"guide")
 	await process_frame
+	for course_id: String in ["lesson-03-formations", "lesson-06-load", "lesson-07-chain", "lesson-03-formations"]:
+		(app.page as GuidePage).lesson_requested.emit(course_id)
+		await process_frame
+		var match_page := app.page as MatchPage
+		var expected := ResponseTiming.Mode.AUTO if course_id == "lesson-07-chain" else ResponseTiming.Mode.IGNORE
+		check(match_page._response_mode.selected == expected, "initial timing for " + course_id)
+		if course_id == "lesson-03-formations":
+			match_page._overlay.advance.pressed.emit()
+			var deadline := Time.get_ticks_msec() + 3000
+			while match_page._end_phase.disabled and Time.get_ticks_msec() < deadline:
+				await process_frame
+			await process_frame
+			var button_bounds := match_page._end_phase.get_global_rect()
+			check(not match_page._end_phase.disabled and match_page._overlay.highlights.has(button_bounds), "real course highlights the enabled phase button")
+			check(not match_page._end_phase.text.is_empty() and match_page._overlay.hint.text.contains(match_page._end_phase.text), "the visible instruction names the phase button")
+			var before: String = app.service.match_snapshot.revision
+			click_board(match_page.canvas, match_page.canvas.get_global_transform_with_canvas().affine_inverse() * button_bounds.get_center())
+			await process_frame
+			check(app.service.match_snapshot.revision != before, "clicking through the phase highlight advances the native match")
+		match_page._response_mode.select(ResponseTiming.Mode.ALL)
+		match_page._response_mode.item_selected.emit(ResponseTiming.Mode.ALL)
+		app.service.poll_session()
+		match_page._refresh()
+		check(match_page._response_mode.selected == ResponseTiming.Mode.ALL, "learner can override timing for this visit")
+		check(app.service.leave_match(), "close timing test course")
+		app.navigate(&"guide")
+		await process_frame
 	var last_course: Dictionary = app.service.tutorial_lessons.back()
 	check(last_course.get("kind") == "editor", "the eighth guide entry belongs to the deck editor")
 	var editor_button := (app.page as GuidePage)._course_list.get_child(7) as Button

@@ -14,6 +14,12 @@ func check(condition: bool, message: String) -> void:
 		push_error("TUTORIAL_OVERLAY: " + message)
 
 func _run() -> void:
+	var args: PackedStringArray = OS.get_cmdline_user_args()
+	var assets_index: int = args.find("--assets")
+	var assets: String = args[assets_index + 1] if assets_index >= 0 else ProjectSettings.globalize_path("res://../assets/release-v260")
+	var definitions: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(assets.path_join("cards.json")))
+	for card: Dictionary in definitions.cards:
+		GameText.shared().card_names[card.id] = card.name
 	var page: MatchPage = load("res://pages/match_page.tscn").instantiate() as MatchPage
 	root.add_child(page)
 	page.lesson_completed.connect(func(id: String, _order: int) -> void: completions.append(id))
@@ -29,7 +35,7 @@ func _run() -> void:
 	field.opponent_hand_count = 3
 	page.canvas.configure(field)
 	var lesson: Dictionary = {"lessonId": "lesson-04", "order": 4, "step": "look", "hintKey": "ui.lesson.badge", "params": {"order": 4, "mode": {"key": "tutorial.general.g02"}}, "highlights": [], "hintAnchor": "auto", "canContinue": true, "blockedHint": "tutorial.lesson.unavailable", "complete": false}
-	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080)]:
+	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080), Vector2i(2560, 1440)]:
 		root.size = dimensions
 		await process_frame
 		await process_frame
@@ -60,14 +66,35 @@ func _run() -> void:
 		page._confirm.close_popup()
 		await process_frame
 		check(page._overlay.highlights.is_empty(), "closing the question restores the course targets")
-		_check_installed_steps(page)
+		await _check_installed_steps(page)
+	page._lesson_end.present("教学模式 · 第 4 课")
+	var first_panel: Control = page._lesson_end.find_child("Panel", true, false)
+	check(first_panel.get_global_rect().get_center().distance_to(root.get_visible_rect().get_center()) < 2, "first terminal presentation is centered before container sorting")
+	page._lesson_end.hide()
 	await _check_authored_surfaces(page)
 	page._refresh_tutorial({"tutorial": lesson})
 	check(page._lesson_badge.text == "教学模式 · 第 4 课" and page._overlay.hint.text == page._lesson_badge.text, "snapshot order and localized hint parameters")
+	check(page._overlay.hint.get_theme_font_size(&"font_size") >= 22, "instruction uses readable body type")
+	check(page._overlay.advance.size.x >= 112 and page._overlay.advance.size.y >= 48, "Continue has a prominent click target")
+	page._overlay._timer.wait_time = 0.08
 	page._overlay.show_blocked()
-	check(page._overlay.hint.text == "无法加载所选教学课程。", "a blocked action uses the current step's text")
-	page._overlay._timer.timeout.emit()
-	check(page._overlay.hint.text == "教学模式 · 第 4 课", "blocked feedback restores the current step")
+	page._refresh_tutorial({"tutorial": lesson.duplicate(true)})
+	await process_frame
+	var warning: Label = page._overlay.bar.find_child("BlockedHint", true, false) as Label
+	check(page._overlay.hint.text == "教学模式 · 第 4 课", "a blocked action retains the instruction")
+	check(warning != null and warning.is_visible_in_tree() and warning.text == "无法加载所选教学课程。", "same-step refresh preserves the extra feedback")
+	if warning != null:
+		check(warning.get_global_rect().position.y >= page._overlay.hint.get_global_rect().end.y and page._overlay.bar.get_global_rect().encloses(warning.get_global_rect()), "feedback fits on its own line below the instruction")
+	await page._overlay._timer.timeout
+	check(warning == null or not warning.is_visible_in_tree(), "blocked feedback clears automatically")
+	check(page._overlay.hint.text == "教学模式 · 第 4 课", "timeout keeps the current instruction")
+	page._overlay.show_blocked()
+	var next_step: Dictionary = lesson.duplicate(true)
+	next_step.step = "next"
+	next_step.hintKey = "tutorial.general.g02"
+	next_step.params = {}
+	page._refresh_tutorial({"tutorial": next_step})
+	check((warning == null or not warning.is_visible_in_tree()) and page._overlay.hint.text == "教学模式", "advancing clears the old action feedback immediately")
 	page._overlay.continue_requested.disconnect(page._continue_tutorial)
 	page._overlay.continue_requested.connect(func() -> void: continued = true)
 	page._overlay.advance.pressed.emit()
@@ -113,12 +140,32 @@ func _run() -> void:
 	check(page._lesson_end.visible and not page._overlay.visible and not page._lesson_end.get_node("%Next").visible and page._lesson_end.get_node("%Retry").has_focus(), "an unfinished terminal lesson focuses retry and suppresses next")
 	check(completions.size() == 2 and page._lesson_end.get_node("%Title").text == "重来一次？", "G05 appears on loss")
 	check(completions.size() == 2 and page._lesson_end.get_node("%Message").text == page._text.t("tutorial.l07.s07"), "L07 pass keeps its explanation on the loss panel")
+	await _check_end_geometry(page._lesson_end)
 	page._refresh_tutorial({})
 	check(not page._overlay.visible and not page._lesson_badge.visible and not page._lesson_end.visible, "ordinary matches have no tutorial UI")
 	page.queue_free()
 	await process_frame
 	print("Tutorial overlay failures: ", failures)
 	quit(0 if failures == 0 else 1)
+
+func _check_end_geometry(end: Control) -> void:
+	var panel: PanelContainer = end.find_child("Panel", true, false) as PanelContainer
+	var message: Label = end.get_node("%Message")
+	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(1600, 900)]:
+		root.size = dimensions
+		await process_frame
+		for variant: Array in [[true, false], [false, false], [true, true]]:
+			end.hide()
+			end.call(&"present", message.text, variant[0], variant[1])
+			for frame: int in range(2):
+				var bounds: Rect2 = panel.get_global_rect()
+				var viewport: Rect2 = root.get_visible_rect()
+				check(bounds.get_center().distance_to(viewport.get_center()) < 2, "terminal panel is centered on frame %s at %s" % [frame, dimensions])
+				check(viewport.encloses(bounds) and bounds.size.x >= dimensions.x * 0.4 and bounds.size.y >= dimensions.y * 0.30, "terminal content is large and in view at %s" % dimensions)
+				await process_frame
+			var primary: Button = end.get_node("%Next") if variant[0] else end.get_node("%Retry")
+			check(primary.has_focus() and primary.size.y >= 48, "terminal action is prominent and focused")
+			check(panel.get_global_rect().encloses(message.get_global_rect()), "terminal message fits the panel")
 
 func _authored_step(file: String, id: String) -> Dictionary:
 	var lesson: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/tutorial/lessons/" + file + ".json"))
@@ -212,7 +259,19 @@ func _check_installed_steps(page: MatchPage) -> void:
 		for step: Dictionary in input.steps:
 			var projected: Dictionary = {"hintKey": step.hint, "params": step.get("params", {}), "highlights": step.get("highlight", []), "hintAnchor": step.get("hintAnchor", "auto"), "canContinue": step.get("continue", false)}
 			page._overlay.configure(projected, _area_envelope.bind(page), [])
+			if step.has("blockedHint"):
+				page._overlay.show_blocked(step.blockedHint)
+			await process_frame
 			_check_bar(page, file + "/" + str(step.id))
+			if step.has("phaseHint"):
+				projected = projected.duplicate(true)
+				projected.hintKey = "tutorial.lesson.phase_instruction"
+				projected.params = {"note": {"key": step.hint, "args": step.get("params", {})}, "instruction": {"key": step.phaseHint}}
+				projected.highlights.append("ui:end_phase")
+				page._overlay.configure(projected, _area_envelope.bind(page), [])
+				page._overlay.show_blocked()
+				await process_frame
+				_check_bar(page, file + "/" + str(step.id) + " with phase instruction and blocked feedback")
 
 func _area_envelope(id: String, page: MatchPage) -> Array[Rect2]:
 	var rects: Array[Rect2] = page.tutorial_target_rects(id)

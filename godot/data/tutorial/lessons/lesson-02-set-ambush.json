@@ -57,20 +57,29 @@
     {
       "id": "face-up",
       "hint": "tutorial.l02.s03",
+      "phaseHint": "tutorial.lesson.switch",
       "highlight": ["card:analysis.v260-analytic-0006"],
-      "until": {"event": "analysis_ready", "next": "prepare"}
+      "until": {"event": "analysis_ready", "next": "enter-main"}
     },
     {
       "id": "concealed",
       "hint": "tutorial.l02.s04",
+      "phaseHint": "tutorial.lesson.switch",
       "highlight": ["card:analysis.v260-analytic-0006"],
       "until": {"event": "phase_enter", "next": "compare", "active": "learner", "phase": "Prepare"}
     },
     {
       "id": "compare",
       "hint": "tutorial.l02.s05",
-      "highlight": ["card:analysis.v260-analytic-0006", "ui:end_phase"],
-      "until": {"event": "phase_enter", "next": "flip", "active": "learner", "phase": "Prepare"}
+      "phaseHint": "tutorial.lesson.switch",
+      "highlight": ["card:analysis.v260-analytic-0006"],
+      "until": {"event": "phase_enter", "next": "enter-flip-main", "active": "learner", "phase": "Prepare"}
+    },
+    {
+      "id": "enter-flip-main",
+      "hint": "tutorial.l02.flip_ready",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "flip"}
     },
     {
       "id": "flip",
@@ -83,8 +92,15 @@
     {
       "id": "flipped",
       "hint": "tutorial.l02.s06",
+      "phaseHint": "tutorial.lesson.switch",
       "highlight": ["card:analysis.v260-analytic-0006"],
-      "until": {"event": "analysis_ready", "next": "prepare"}
+      "until": {"event": "analysis_ready", "next": "enter-main"}
+    },
+    {
+      "id": "enter-main",
+      "hint": "tutorial.lesson.analysis_complete",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "prepare"}
     },
     {
       "id": "prepare",
@@ -92,13 +108,19 @@
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:analysis.v260-analytic-0006"],
       "allow": [{"command": "PrepareCast", "card": "v260-analytic-0006"}],
-      "until": {"command": {"command": "PrepareCast", "card": "v260-analytic-0006"}, "next": "cast"}
+      "until": {"command": {"command": "PrepareCast", "card": "v260-analytic-0006"}, "next": "enter-cast"}
+    },
+    {
+      "id": "enter-cast",
+      "hint": "tutorial.lesson.prepared",
+      "phaseHint": "tutorial.lesson.switch_cast",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Cast", "next": "cast"}
     },
     {
       "id": "cast",
       "hint": "tutorial.lesson.activate",
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:casting.v260-analytic-0006", "ui:phase"],
+      "highlight": ["card:casting.v260-analytic-0006"],
       "allow": [{"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"}],
       "until": {
         "command": {"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"},

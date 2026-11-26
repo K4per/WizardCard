@@ -62,8 +62,15 @@
     {
       "id": "wait-ready",
       "hint": "tutorial.l05.s05",
+      "phaseHint": "tutorial.lesson.switch",
       "highlight": ["card:analysis.v260-analytic-0001"],
-      "until": {"event": "analysis_ready", "next": "prepare"}
+      "until": {"event": "analysis_ready", "next": "enter-main"}
+    },
+    {
+      "id": "enter-main",
+      "hint": "tutorial.lesson.analysis_complete",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "prepare"}
     },
     {
       "id": "prepare",
@@ -71,13 +78,19 @@
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:analysis.v260-analytic-0001"],
       "allow": [{"command": "PrepareCast", "card": "v260-analytic-0001"}],
-      "until": {"command": {"command": "PrepareCast", "card": "v260-analytic-0001"}, "next": "cast"}
+      "until": {"command": {"command": "PrepareCast", "card": "v260-analytic-0001"}, "next": "enter-cast"}
+    },
+    {
+      "id": "enter-cast",
+      "hint": "tutorial.lesson.prepared",
+      "phaseHint": "tutorial.lesson.switch_cast",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Cast", "next": "cast"}
     },
     {
       "id": "cast",
       "hint": "tutorial.lesson.activate",
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:casting.v260-analytic-0001", "ui:phase"],
+      "highlight": ["card:casting.v260-analytic-0001"],
       "allow": [{"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "opponent"}],
       "until": {
         "command": {"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "opponent"},

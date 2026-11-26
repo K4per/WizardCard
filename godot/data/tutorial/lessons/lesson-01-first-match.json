@@ -205,20 +205,26 @@
     {
       "id": "first-income",
       "hint": "tutorial.l01.s07",
+      "phaseHint": "tutorial.lesson.switch_main",
       "highlight": ["zone:learner.status"],
       "until": {"event": "phase_enter", "active": "learner", "phase": "Main"}
     },
     {
       "id": "end-turn",
       "hint": "tutorial.l01.end_turn",
-      "highlight": ["ui:end_phase"],
-      "until": {"event": "phase_enter", "active": "learner", "phase": "Draw"}
+      "phaseHint": "tutorial.lesson.switch",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main"}
     },
     {
       "id": "upgrade",
-      "hint": "tutorial.l01.s08",
+      "hint": "tutorial.lesson.set_recipe",
+      "params": {
+        "note": {"key": "tutorial.l01.s08"},
+        "formation": {"card": "v260-formation-0010"},
+        "materials": {"card": "v260-formation-0009"}
+      },
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:side_deck.v260-formation-0010"],
+      "highlight": ["zone:learner.side_deck", "card:side_deck.v260-formation-0010", "card:analysis.v260-formation-0009"],
       "allow": [
         {
           "command": "SetFormation",
@@ -239,7 +245,7 @@
     {
       "id": "opponent-spark",
       "hint": "tutorial.l01.save_mana",
-      "highlight": ["ui:end_phase"],
+      "phaseHint": "tutorial.lesson.switch",
       "until": {
         "command": {"command": "PreloadWord", "card": "v260-word-0001", "target": "learner", "release": true},
         "actor": "opponent"
@@ -248,8 +254,9 @@
     {
       "id": "spark-hit",
       "hint": "tutorial.l01.spark_hit",
+      "phaseHint": "tutorial.lesson.switch_main",
       "highlight": ["zone:learner.status"],
-      "until": {"event": "phase_enter", "active": "learner", "phase": "Draw"}
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main"}
     },
     {
       "id": "place",
@@ -274,6 +281,7 @@
     {
       "id": "wait-ready",
       "hint": "tutorial.l01.s11",
+      "phaseHint": "tutorial.lesson.switch",
       "highlight": ["card:analysis.v260-analytic-0006"],
       "until": {"event": "analysis_ready", "next": "ready"}
     },
@@ -284,18 +292,30 @@
       "continue": true
     },
     {
+      "id": "enter-main",
+      "hint": "tutorial.lesson.analysis_complete",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "prepare"}
+    },
+    {
       "id": "prepare",
       "hint": "tutorial.l01.s13",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:analysis.v260-analytic-0006"],
       "allow": [{"command": "PrepareCast", "card": "v260-analytic-0006"}],
-      "until": {"command": {"command": "PrepareCast", "card": "v260-analytic-0006"}, "next": "cast"}
+      "until": {"command": {"command": "PrepareCast", "card": "v260-analytic-0006"}, "next": "enter-cast"}
+    },
+    {
+      "id": "enter-cast",
+      "hint": "tutorial.lesson.prepared",
+      "phaseHint": "tutorial.lesson.switch_cast",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Cast", "next": "cast"}
     },
     {
       "id": "cast",
       "hint": "tutorial.l01.s14",
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:casting.v260-analytic-0006", "ui:phase"],
+      "highlight": ["card:casting.v260-analytic-0006"],
       "allow": [{"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"}],
       "until": {
         "command": {"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"},
@@ -304,15 +324,16 @@
     },
     {
       "id": "resolving",
-      "hint": "tutorial.l01.s14",
+      "hint": "tutorial.lesson.settle",
       "highlight": ["ui:chain"],
       "until": {"gameOver": "learner"}
     },
     {
       "id": "concealed",
       "hint": "tutorial.l01.s10",
+      "phaseHint": "tutorial.lesson.switch",
       "highlight": ["card:analysis.v260-analytic-0006"],
-      "until": {"event": "phase_enter", "next": "flip", "active": "learner", "phase": "Prepare"}
+      "until": {"event": "phase_enter", "next": "flip", "active": "learner", "phase": "Main"}
     },
     {
       "id": "flip",
@@ -325,12 +346,14 @@
     {
       "id": "abandoned",
       "hint": "tutorial.l01.abandoned",
+      "phaseHint": "tutorial.lesson.switch_play_on",
       "highlight": ["zone:learner.ash"],
       "until": {"gameOver": true}
     },
     {
       "id": "no-formation",
       "hint": "tutorial.l01.no_formation",
+      "phaseHint": "tutorial.lesson.switch_play_on",
       "highlight": ["zone:learner.formation"],
       "until": {"gameOver": true}
     },

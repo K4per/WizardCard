@@ -245,9 +245,14 @@ func _layout_panels() -> void:
 	_table.arrange()
 	var available: Vector2 = size
 	var tray_height: float = minf(252.0, available.y * 0.35)
-	_decision.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	_decision.position = Vector2(canvas.position.x, available.y - tray_height - 8)
-	_decision.size = Vector2(canvas.size.x, tray_height)
+	# The wrapped cost quote can report a tall minimum before its first layout.
+	# Keep the requested edges so the tray shrinks as soon as the text reflows.
+	_decision.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	_decision.offset_left = canvas.position.x
+	_decision.offset_right = canvas.position.x + canvas.size.x - available.x
+	_decision.offset_top = -tray_height - 8
+	_decision.offset_bottom = -8
+	_decision.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_action_popup.custom_minimum_size.x = minf(220, available.x * 0.8)
 	_position_phase_button()
 	if _debug_panel != null:
@@ -1001,6 +1006,9 @@ func _query_changed(options: ActionOptions) -> void:
 		more.id = "@next"
 		more.label = GameText.label("ui.navigation.next_page")
 		request.choices.append(more)
+	# A paginated request also contains a navigation choice.
+	if options.field == KernelContract.ActionField.Target and options.options.size() == 1 and request.choices.size() == 1:
+		request.initial_choice = request.choices[0].id
 	canvas.set_action_targets(card_ids)
 	_decision.configure(request, [options.viewer, options.field, _selection.intent])
 	_decision.show()

@@ -3,6 +3,7 @@
   "order": 3,
   "titleKey": "tutorial.l03.title",
   "cardRevision": 13,
+  "ignoreResponsesByDefault": true,
   "scenario": {
     "phase": "Draw",
     "players": [
@@ -59,10 +60,21 @@
       "continue": true
     },
     {
+      "id": "enter-main",
+      "hint": "tutorial.l03.standard_turn",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "standard"}
+    },
+    {
       "id": "standard",
-      "hint": "tutorial.l03.s03",
+      "hint": "tutorial.lesson.set_recipe",
+      "params": {
+        "note": {"key": "tutorial.l03.s03"},
+        "formation": {"card": "v260-formation-0010"},
+        "materials": {"card": "v260-formation-0009"}
+      },
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:side_deck.v260-formation-0010"],
+      "highlight": ["zone:learner.side_deck", "card:side_deck.v260-formation-0010", "card:analysis.v260-formation-0009"],
       "allow": [
         {
           "command": "SetFormation",
@@ -81,10 +93,16 @@
       }
     },
     {
+      "id": "wait-second-base",
+      "hint": "tutorial.l03.base_turn",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "second-base"}
+    },
+    {
       "id": "second-base",
       "hint": "tutorial.l03.second_base",
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:side_deck.v260-formation-0009", "card:hand.v260-word-0021"],
+      "highlight": ["zone:learner.side_deck", "card:side_deck.v260-formation-0009", "card:hand.v260-word-0021"],
       "allow": [
         {
           "command": "SetFormation",
@@ -105,7 +123,7 @@
     {
       "id": "next-turn",
       "hint": "tutorial.l03.next_turn",
-      "highlight": ["ui:end_phase"],
+      "phaseHint": "tutorial.lesson.switch_main",
       "until": {"event": "phase_enter", "active": "learner", "phase": "Main"}
     },
     {
@@ -118,9 +136,14 @@
     },
     {
       "id": "reinforce",
-      "hint": "tutorial.l03.s04",
+      "hint": "tutorial.lesson.set_recipe",
+      "params": {
+        "note": {"key": "tutorial.l03.s04"},
+        "formation": {"card": "v260-formation-0011"},
+        "materials": {"key": "tutorial.lesson.material_pair", "args": {"first": {"card": "v260-formation-0010"}, "second": {"card": "v260-word-0021"}}}
+      },
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:side_deck.v260-formation-0011"],
+      "highlight": ["zone:learner.side_deck", "card:side_deck.v260-formation-0011", "card:analysis.v260-formation-0010", "card:analysis.v260-word-0021"],
       "allow": [
         {
           "command": "SetFormation",
@@ -139,10 +162,21 @@
       }
     },
     {
+      "id": "wait-compound",
+      "hint": "tutorial.l03.compound_turn",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "compound"}
+    },
+    {
       "id": "compound",
-      "hint": "tutorial.l03.s05",
+      "hint": "tutorial.lesson.set_recipe",
+      "params": {
+        "note": {"key": "tutorial.l03.s05"},
+        "formation": {"card": "v260-formation-0012"},
+        "materials": {"key": "tutorial.lesson.material_pair", "args": {"first": {"card": "v260-formation-0011"}, "second": {"card": "v260-formation-0009"}}}
+      },
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:side_deck.v260-formation-0012"],
+      "highlight": ["zone:learner.side_deck", "card:side_deck.v260-formation-0012", "card:analysis.v260-formation-0011", "card:analysis.v260-formation-0009"],
       "allow": [
         {
           "command": "SetFormation",
@@ -163,7 +197,7 @@
     {
       "id": "wait-material",
       "hint": "tutorial.l03.wait_material",
-      "highlight": ["ui:end_phase"],
+      "phaseHint": "tutorial.lesson.switch_main",
       "until": {"event": "phase_enter", "active": "learner", "phase": "Main"}
     },
     {
@@ -177,10 +211,21 @@
       }
     },
     {
+      "id": "wait-amplify",
+      "hint": "tutorial.l03.amplify_turn",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "amplify"}
+    },
+    {
       "id": "amplify",
-      "hint": "tutorial.l03.s06",
+      "hint": "tutorial.lesson.set_recipe",
+      "params": {
+        "note": {"key": "tutorial.l03.s06"},
+        "formation": {"card": "v260-formation-0013"},
+        "materials": {"key": "tutorial.lesson.material_pair", "args": {"first": {"card": "v260-formation-0012"}, "second": {"card": "v260-analytic-0015"}}}
+      },
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:side_deck.v260-formation-0013", "card:analysis.v260-analytic-0015"],
+      "highlight": ["zone:learner.side_deck", "card:side_deck.v260-formation-0013", "card:analysis.v260-formation-0012", "card:analysis.v260-analytic-0015"],
       "allow": [
         {
           "command": "SetFormation",
@@ -209,10 +254,16 @@
       }
     },
     {
+      "id": "wait-high",
+      "hint": "tutorial.l03.high_turn",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "high"}
+    },
+    {
       "id": "high",
       "hint": "tutorial.l03.high",
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:side_deck.v260-formation-0016"],
+      "highlight": ["zone:learner.side_deck", "card:side_deck.v260-formation-0016"],
       "allow": [
         {
           "command": "SetFormation",
@@ -252,31 +303,37 @@
     },
     {
       "id": "need-absorb",
-      "hint": "tutorial.l03.last_materials",
+      "hint": "tutorial.l03.need_absorb",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:hand.v260-analytic-0017"],
       "allow": [{"command": "StartAnalysis", "card": "v260-analytic-0017", "formation": "v260-formation-0016"}],
       "until": {
         "command": {"command": "StartAnalysis", "card": "v260-analytic-0017", "formation": "v260-formation-0016"},
-        "next": "perfect"
+        "next": "wait-perfect"
       }
     },
     {
       "id": "need-grease",
-      "hint": "tutorial.l03.last_materials",
+      "hint": "tutorial.l03.need_grease",
       "blockedHint": "tutorial.lesson.blocked",
       "highlight": ["card:hand.v260-analytic-0015"],
       "allow": [{"command": "StartAnalysis", "card": "v260-analytic-0015", "formation": "v260-formation-0016"}],
       "until": {
         "command": {"command": "StartAnalysis", "card": "v260-analytic-0015", "formation": "v260-formation-0016"},
-        "next": "perfect"
+        "next": "wait-perfect"
       }
+    },
+    {
+      "id": "wait-perfect",
+      "hint": "tutorial.l03.perfect_turn",
+      "phaseHint": "tutorial.lesson.switch_main",
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main", "next": "perfect"}
     },
     {
       "id": "perfect",
       "hint": "tutorial.l03.perfect",
       "blockedHint": "tutorial.lesson.blocked",
-      "highlight": ["card:side_deck.v260-formation-0017"],
+      "highlight": ["zone:learner.side_deck", "card:side_deck.v260-formation-0017"],
       "allow": [
         {
           "command": "SetFormation",

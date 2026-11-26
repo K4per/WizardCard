@@ -1,6 +1,7 @@
 #include "wizard/lesson_script.hpp"
 #include <algorithm>
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
 #include <set>
 
 using namespace wizard;
@@ -8,13 +9,17 @@ using namespace wizard::app;
 
 namespace {
 const auto root = std::filesystem::path(WIZARD_SOURCE_DIR);
+const auto &tutorialText() {
+    static const auto value = TextCatalog::load(root / "godot/data/text");
+    return value;
+}
 const auto &content() {
     static const auto value = loadContent(root / "assets/release-v260");
     return value;
 }
 const LessonDefinition &course(const char *id) {
     static const auto catalog = LessonCatalog::load(root / "godot/data/tutorial/lessons", content().catalog,
-                                                    TextCatalog::load(root / "godot/data/text"));
+                                                    tutorialText());
     INFO(id);
     const auto *found = catalog.find(id);
     REQUIRE(found);
@@ -37,10 +42,18 @@ struct Play {
     std::vector<int> sparkTurns;
     std::set<std::string> shown;
     std::string textPrefix;
+    bool skipCastWhenAdvancing{};
+
+    Json snapshot() const { return script.snapshot(engine); }
 
     void recordText() {
-        const auto state = script.snapshot();
+        const auto state = snapshot();
+        const auto &highlights = state.at("highlights");
+        if (std::find(highlights.begin(), highlights.end(), "ui:end_phase") != highlights.end())
+            CHECK(engine.validate(0, AdvancePhase{engine.state().phaseGate}).empty());
         shown.insert(state.at("hintKey").get<std::string>());
+        if (state.at("params").contains("note"))
+            shown.insert(state.at("params").at("note").at("key").get<std::string>());
         if (state.contains("recapHint")) shown.insert(state.at("recapHint").get<std::string>());
         if (state.contains("actionHints"))
             for (const auto &key : state.at("actionHints")) shown.insert(key.get<std::string>());
@@ -79,7 +92,7 @@ struct Play {
     }
     void send(int seat, const Command &c) {
         auto before = engine.viewFor(seat);
-        CAPTURE(script.snapshot(), seat, before.globalTurn, static_cast<int>(before.phase), c.index());
+        CAPTURE(snapshot(), seat, before.globalTurn, static_cast<int>(before.phase), c.index());
         if (seat == 0)
             REQUIRE(script.allows(before, c));
         if (seat == 1 && std::holds_alternative<PreloadWord>(c))
@@ -103,7 +116,7 @@ struct Play {
         const auto &s = engine.state();
         REQUIRE(s.result == -1);
         const auto seat = s.decision ? s.decision->player : s.active;
-        CAPTURE(script.snapshot(), seat, s.globalTurn, static_cast<int>(s.phase));
+        CAPTURE(snapshot(), seat, s.globalTurn, static_cast<int>(s.phase));
         if (seat == 1) {
             const auto choice = script.opponent(
                 engine.viewFor(1), [&](const auto &visit) { engine.visitLegalActions(1, visit); });
@@ -123,7 +136,14 @@ struct Play {
                     }
             send(0, Choose{d.id, option});
         } else {
-            send(0, AdvancePhase{s.phaseGate});
+            const auto lesson = snapshot();
+            const auto highlights = lesson.at("highlights");
+            INFO(lesson.dump());
+            CHECK(std::find(highlights.begin(), highlights.end(), "ui:end_phase") != highlights.end());
+            const auto hint = tutorialText().render(decodeTextRef({{"key", lesson.at("hintKey")},
+                                                                  {"args", lesson.at("params")}}));
+            CHECK(hint.find("【切换阶段】") != std::string::npos);
+            send(0, AdvancePhase{s.phaseGate, skipCastWhenAdvancing && s.phase == Phase::Main});
         }
     }
     template <class Predicate> void until(Predicate condition) {
@@ -133,7 +153,7 @@ struct Play {
                 return;
             tick();
         }
-        FAIL("Unreached state at " << script.snapshot().dump());
+        FAIL("Unreached state at " << snapshot().dump());
     }
     void phase(int ownTurn, Phase want) {
         until([&] {
@@ -205,7 +225,10 @@ TEST_CASE("first match opens with real gestures, explorable hand and two schedul
         p.place(bolt, standard);
         p.phase(4, Phase::Main);
         p.prepare(bolt);
+        CHECK(p.snapshot().at("step") == "enter-cast");
+        CHECK(p.snapshot().at("highlights") == Json::array({"ui:end_phase"}));
         p.phase(4, Phase::Cast);
+        CHECK(p.snapshot().at("hintKey") == "tutorial.l01.s14");
         p.activate(bolt);
         p.finish(true);
         p.expectText({1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14});
@@ -233,7 +256,7 @@ TEST_CASE("face-up and ambush routes finish on different turns and both survive"
         CAPTURE(hidden);
         Play p("lesson-02-set-ambush");
         p.reading();
-        const auto options = p.script.snapshot().at("actionHints");
+        const auto options = p.snapshot().at("actionHints");
         CHECK(options == Json{{"StartAnalysis", "tutorial.l02.s02"}, {"SetAmbush", "tutorial.l02.s02.ambush"}});
         const auto spell = p.card(Zone::Hand, bolt);
         if (hidden) {
@@ -270,8 +293,13 @@ TEST_CASE("face-up and ambush routes finish on different turns and both survive"
 
 TEST_CASE("all seven formation levels consume their actual recipes over eight turns", "[tutorial-courses]") {
     Play p("lesson-03-formations");
+    p.skipCastWhenAdvancing = GENERATE(false, true);
+    CAPTURE(p.skipCastWhenAdvancing);
     std::vector<int> balances;
     auto upgrade = [&](const char *name, std::vector<CardId> materials) {
+        const auto highlights = p.snapshot().at("highlights");
+        CHECK(std::find(highlights.begin(), highlights.end(), std::string("card:side_deck.") + name) != highlights.end());
+        CHECK(std::find(highlights.begin(), highlights.end(), "ui:end_phase") == highlights.end());
         // The recipe accepts selected materials independently of selection order.
         std::reverse(materials.begin(), materials.end());
         p.action(SetFormation{p.card(Zone::SideDeck, name), 0, materials});
@@ -304,8 +332,11 @@ TEST_CASE("all seven formation levels consume their actual recipes over eight tu
     balances.push_back(p.mana());
     p.phase(7, Phase::Main);
     upgrade(high, {p.card(Zone::Analysis, amplified), p.card(Zone::Analysis, absorb)});
-    p.place(absorb, high);
-    p.place(grease, high);
+    const auto first = p.skipCastWhenAdvancing ? grease : absorb;
+    const auto second = p.skipCastWhenAdvancing ? absorb : grease;
+    p.place(first, high);
+    CHECK(p.snapshot().at("highlights") == Json::array({std::string("card:hand.") + second}));
+    p.place(second, high);
     balances.push_back(p.mana());
     p.phase(8, Phase::Main);
     upgrade(perfect,
@@ -422,12 +453,25 @@ TEST_CASE("load lesson admits every four and five spell order and all shortfall 
                     damage += c == 'S' ? 10 : c == 'F' ? 7 : 5;
                 CHECK(p.engine.state().players[1].life == 29 - damage);
                 CHECK_FALSE(p.script.complete());
+                if (selection == "BBS") {
+                    p.phase(3, Phase::Main);
+                    p.place(fire, amplified);
+                    p.place(fire, amplified);
+                    p.send(0, AdvancePhase{p.engine.state().phaseGate, true});
+                    p.phase(4, Phase::Main);
+                    p.prepare(fire);
+                    p.prepare(fire);
+                    p.phase(4, Phase::Cast);
+                    p.activate(fire);
+                    p.activate(fire);
+                    p.finish(true);
+                }
                 break;
             }
             p.finish(true);
-            CHECK(p.script.snapshot().at("hintKey") ==
+            CHECK(p.snapshot().at("hintKey") ==
                   (selection.size() == 4 ? "tutorial.l06.s08" : "tutorial.l06.s10"));
-            CHECK(p.script.snapshot().at("recapHint") == "tutorial.l06.s09");
+            CHECK(p.snapshot().at("recapHint") == "tutorial.l06.s09");
             if (selection.size() == 4) {
                 CHECK(p.load() == 17);
                 CHECK(p.life() == 10);
@@ -462,16 +506,16 @@ TEST_CASE("the real response window accepts a chained shield and permits a letha
     CHECK(p.mana() == 4);
     p.until([&] {
         auto d = p.engine.viewFor(0).decision;
-        return d && d->kind == DecisionKind::Response && p.script.snapshot().at("step") == "respond";
+        return d && d->kind == DecisionKind::Response && p.snapshot().at("step") == "respond";
     });
-    CHECK(p.script.snapshot().at("hintSurface") == "response");
+    CHECK(p.snapshot().at("hintSurface") == "response");
     const auto shieldId = p.card(Zone::Analysis, shield);
     REQUIRE(p.engine.state().cards.at(shieldId).faceDown);
     REQUIRE(p.engine.state().cards.at(shieldId).host == p.card(Zone::Analysis, compound));
     SECTION("decline the shield") {
         p.send(0, PassResponse{p.engine.state().decision->id});
         p.finish(false);
-        CHECK(p.script.snapshot().at("hintKey") == "tutorial.l07.s07");
+        CHECK(p.snapshot().at("hintKey") == "tutorial.l07.s07");
         p.expectText({1, 2, 3, 7, 9});
     }
     SECTION("chain shield then counter with Bolt") {
@@ -496,7 +540,7 @@ TEST_CASE("the real response window accepts a chained shield and permits a letha
         p.activate(bolt);
         p.finish(true);
         CHECK(p.mana() == 6);
-        CHECK(p.script.snapshot().at("hintKey") == "tutorial.l07.s08");
+        CHECK(p.snapshot().at("hintKey") == "tutorial.l07.s08");
         p.expectText({1, 2, 3, 4, 5, 6, 8, 9});
     }
 }

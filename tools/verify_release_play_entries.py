@@ -30,7 +30,7 @@ def main():
         with zipfile.ZipFile(args.archive) as archive:
             archive.extractall(work)
         executable, = work.rglob("WizardCard.exe")
-        for route in ("ai", "tutorial", "replay"):
+        for route in ("ai", "tutorial", "tutorial-end", "replay"):
             data = work / ("player-" + route)
             data.mkdir()
             # These routes begin at the main menu after the first-run prompt has been answered.

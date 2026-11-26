@@ -64,6 +64,14 @@ func _run() -> void:
 		"tutorial":
 			if not await _tutorial():
 				return
+		"tutorial-end":
+			get_window().mode = Window.MODE_WINDOWED
+			get_window().size = Vector2i(2560, 1440)
+			await _settle()
+			if await _tutorial() and await _finish_first_lesson():
+				print("PLAY_ENTRY_PASS ", _route)
+				get_tree().quit(0)
+			return
 		"replay":
 			if not await _replay():
 				return
@@ -181,6 +189,90 @@ func _tutorial() -> bool:
 	_app.service.poll_session()
 	await _settle()
 	return not page.canvas.field.hand.is_empty()
+
+func _first_lesson_action(snapshot: Dictionary, operation: int, definition: String) -> Dictionary:
+	var intent := {"source": "0", "selections": [{"field": KernelContract.ActionField.Operation, "value": str(operation)}]}
+	for card: Dictionary in snapshot.cards:
+		if card.owner == 0 and card.get("definition", {}).get("id") == definition:
+			intent.source = str(card.id)
+			break
+	for field_index: int in range(12):
+		var response := _app.service.match_request(&"query_actions", [0, intent, snapshot.generation, snapshot.revision])
+		var options: Dictionary = response.get("data", {})
+		if options.get("complete") is Dictionary:
+			return options.complete
+		if options.get("options", []).is_empty():
+			return {}
+		var choice: Dictionary = options.options[0]
+		if options.field == KernelContract.ActionField.Target:
+			for target: Dictionary in options.options:
+				if target.get("player") == 1:
+					choice = target
+					break
+		intent.selections.append({"field": options.field, "value": choice.value})
+	return {}
+
+func _finish_first_lesson() -> bool:
+	const K = KernelContract.CommandKind
+	const OPERATIONS := {
+		"initial-formation": [K.SelectInitialFormation, "v260-formation-0009"],
+		"upgrade": [K.SetFormation, "v260-formation-0010"],
+		"place": [K.StartAnalysis, "v260-analytic-0006"],
+		"prepare": [K.PrepareCast, "v260-analytic-0006"],
+		"cast": [K.ActivateSpell, "v260-analytic-0006"],
+	}
+	var page := _app.page as MatchPage
+	for tick: int in range(400):
+		var snapshot := _app.service.snapshot()
+		var lesson: Dictionary = snapshot.tutorial
+		if lesson.complete and snapshot.result == 0:
+			break
+		var command: Dictionary = {}
+		var method: StringName = &"submit_command"
+		var args: Array = [snapshot.generation, snapshot.revision]
+		if lesson.canContinue:
+			method = &"continue_tutorial"
+		elif snapshot.aiTurn:
+			method = &"step_ai"
+		else:
+			if OPERATIONS.has(lesson.step):
+				var action: Array = OPERATIONS[lesson.step]
+				command = _first_lesson_action(snapshot, action[0], action[1])
+			if command.is_empty() and snapshot.actionSummary.get("safeAdvance") is Dictionary:
+				command = snapshot.actionSummary.safeAdvance
+			elif command.is_empty() and snapshot.decision is Dictionary:
+				command = _first_lesson_action(snapshot, K.Choose, "")
+			if command.is_empty():
+				return _fail("no legal move in first lesson at " + str(lesson.step))
+			args = [0, command, snapshot.generation, snapshot.revision]
+		var response := _app.service.match_request(method, args)
+		if not response.get("ok", false):
+			return _fail(str(lesson.step) + ": " + str(response.get("error")))
+	_app.service.poll_session()
+	if not _app.service.match_snapshot.tutorial.complete or _app.service.match_snapshot.result != 0:
+		return _fail("first lesson did not end in victory at " + str(_app.service.match_snapshot.tutorial.step))
+	page._refresh()
+	await _settle()
+	var terminal := page._lesson_end
+	var panel := terminal.get_node("%Panel") as PanelContainer
+	var viewport := page.get_viewport_rect()
+	var bounds := panel.get_global_rect()
+	print("Lesson end viewport=", viewport, " backdrop=", terminal.get_global_rect(), " panel=", bounds)
+	if not _visible(terminal) or not terminal.get_global_rect().is_equal_approx(viewport):
+		return _fail("first lesson victory backdrop does not fill the viewport")
+	if not viewport.encloses(bounds) or bounds.get_center().distance_to(viewport.get_center()) > 2:
+		return _fail("first lesson victory panel is clipped or off-center")
+	for control: String in ["%Next", "%Retry", "%Menu"]:
+		var button := terminal.get_node(control) as Button
+		if not _visible(button) or not bounds.encloses(button.get_global_rect()):
+			return _fail("first lesson victory action is clipped: " + control)
+	if get_viewport().get_texture().get_image().save_png(_app.service.user_directory.path_join(_route + ".png")) != OK:
+		return _fail("cannot capture first lesson victory")
+	if not await _press(terminal.get_node("%Next"), "next lesson"):
+		return false
+	if _app.service.match_snapshot.get("tutorial", {}).get("lessonId") != "lesson-02-set-ambush":
+		return _fail("next lesson did not open")
+	return true
 
 func _replay() -> bool:
 	if not await _press(_app.page.get_node_or_null("%Replay"), "replay"):

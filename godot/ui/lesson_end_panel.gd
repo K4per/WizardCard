@@ -8,6 +8,8 @@ const TextCatalog = preload("res://app/text.gd")
 var _primary: StringName = &"next"
 
 func _ready() -> void:
+	# Packed parent scenes can override the inherited anchors with position layout.
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	%Retry.text = _text.t("ui.lesson.retry")
 	%Menu.text = _text.t("tutorial.general.g03.menu")
 	%Next.pressed.connect(func() -> void: action_requested.emit(_primary))

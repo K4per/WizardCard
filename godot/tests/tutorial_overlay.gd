@@ -21,6 +21,9 @@ func _run() -> void:
 	for card: Dictionary in definitions.cards:
 		GameText.shared().card_names[card.id] = card.name
 	var page: MatchPage = load("res://pages/match_page.tscn").instantiate() as MatchPage
+	# Godot's binary scene conversion used to add position layout to the match instance.
+	# Exercise that serialized override before the shared panel enters the tree.
+	page.get_node("%LessonEndPanel").set(&"layout_mode", 0)
 	root.add_child(page)
 	page.lesson_completed.connect(func(id: String, _order: int) -> void: completions.append(id))
 	page.lesson_navigation_requested.connect(func(action: StringName, _id: String, _order: int) -> void: actions.append(action))
@@ -160,6 +163,7 @@ func _check_end_geometry(end: Control) -> void:
 			for frame: int in range(2):
 				var bounds: Rect2 = panel.get_global_rect()
 				var viewport: Rect2 = root.get_visible_rect()
+				check(end.get_global_rect().is_equal_approx(viewport), "terminal shade covers the viewport at %s" % dimensions)
 				check(bounds.get_center().distance_to(viewport.get_center()) < 2, "terminal panel is centered on frame %s at %s" % [frame, dimensions])
 				check(viewport.encloses(bounds) and bounds.size.x >= dimensions.x * 0.4 and bounds.size.y >= dimensions.y * 0.30, "terminal content is large and in view at %s" % dimensions)
 				await process_frame

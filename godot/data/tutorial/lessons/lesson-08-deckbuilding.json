@@ -1,0 +1,99 @@
+{
+  "id": "lesson-08-deckbuilding",
+  "order": 8,
+  "kind": "editor",
+  "cardRevision": 13,
+  "titleKey": "tutorial.l08.title",
+  "cards": {
+    "v260-analytic-0001": 2,
+    "v260-analytic-0002": 2,
+    "v260-analytic-0003": 3,
+    "v260-analytic-0004": 3,
+    "v260-analytic-0005": 3,
+    "v260-analytic-0006": 2,
+    "v260-analytic-0007": 3,
+    "v260-analytic-0008": 3,
+    "v260-analytic-0009": 3,
+    "v260-analytic-0010": 3,
+    "v260-analytic-0011": 3,
+    "v260-analytic-0012": 3,
+    "v260-analytic-0013": 3,
+    "v260-analytic-0014": 1
+  },
+  "sideCards": {
+    "v260-formation-0001": 1,
+    "v260-formation-0002": 1,
+    "v260-formation-0003": 1,
+    "v260-formation-0004": 1,
+    "v260-formation-0005": 1,
+    "v260-formation-0006": 1,
+    "v260-formation-0007": 1,
+    "v260-formation-0008": 1,
+    "v260-formation-0009": 1,
+    "v260-formation-0010": 1
+  },
+  "candidates": [
+    "v260-word-0001",
+    "v260-analytic-0006",
+    "v260-analytic-0002",
+    "v260-analytic-0001",
+    "v260-talisman-0003",
+    "v260-analytic-0021"
+  ],
+  "steps": {
+    "open": {
+      "hintKey": "tutorial.l08.s01",
+      "highlights": [
+        "ui:main"
+      ]
+    },
+    "draft": {
+      "hintKey": "tutorial.l08.s02",
+      "highlights": [
+        "ui:pool"
+      ]
+    },
+    "rules": {
+      "hintKey": "tutorial.l08.s03",
+      "highlights": [
+        "ui:pool"
+      ]
+    },
+    "limit": {
+      "hintKey": "tutorial.l08.s04",
+      "highlights": [
+        "ui:pool"
+      ]
+    },
+    "side": {
+      "hintKey": "tutorial.l08.s05",
+      "highlights": [
+        "ui:side"
+      ]
+    },
+    "sideEmpty": {
+      "hintKey": "tutorial.l08.s06",
+      "highlights": [
+        "ui:side"
+      ]
+    },
+    "added": {
+      "hintKey": "tutorial.l08.s03",
+      "highlights": [
+        "ui:save"
+      ]
+    },
+    "saved": {
+      "hintKey": "tutorial.l08.s07",
+      "highlights": [
+        "ui:save"
+      ]
+    },
+    "complete": {
+      "hintKey": "tutorial.l08.s08",
+      "highlights": [
+        "ui:side"
+      ]
+    }
+  }
+}

@@ -1,4 +1,6 @@
 #include "wizard/lesson_script.hpp"
+#include "wizard/decks.hpp"
+#include <set>
 #include "wizard/command_codec.hpp"
 #include <iostream>
 #include <limits>
@@ -19,7 +21,7 @@ struct Context {
 struct Transition {
     std::optional<CommandPattern> command;
     std::string event;
-    std::optional<int> gameOver;
+    std::optional<int> gameOver, learnerLoad;
     bool onContinue{};
     PlayerId actor{-1};
     Context context;
@@ -32,13 +34,15 @@ struct Step {
     std::vector<Transition> until;
 };
 struct OpponentAction {
-    std::size_t step;
+    std::optional<std::size_t> step;
     CommandPattern command;
     Context context;
     bool once;
 };
 struct LessonProgram {
     std::vector<Step> steps;
+    std::vector<CommandPattern> allow;
+    std::vector<Transition> branches;
     std::vector<OpponentAction> opponent;
     std::optional<Transition> completion;
     bool learnerWinsOpening{};
@@ -105,6 +109,49 @@ void requireText(const TextCatalog &text, const CardCatalog &cards, const std::s
         if (error.empty()) error = message;
     });
     if (!error.empty()) reject(error);
+}
+
+void validateEditorLesson(const Json &document, const CardCatalog &cards, const TextCatalog &text) {
+    fields(document, {"id", "kind", "order", "titleKey", "cardRevision", "cards", "sideCards", "candidates", "steps"});
+    if (document.at("cardRevision") != cards.mechanicsRevision) reject("editor card revision mismatch");
+    requireText(text, cards, document.at("titleKey"));
+    DeckDraft draft;
+    draft.name = "tutorial";
+    draft.format = 3;
+    for (auto key : {"cards", "sideCards"}) {
+        const auto &entries = document.at(key);
+        if (!entries.is_object()) reject("expected editor deck counts");
+        for (const auto &entry : entries.items()) {
+            requireCard(cards, entry.key());
+            auto &section = std::string_view(key) == "cards" ? draft.cards : draft.sideCards;
+            section[entry.key()] = static_cast<int>(integer(entry.value(), 1, 3, "copies"));
+        }
+    }
+    const auto candidates = document.at("candidates").get<std::vector<std::string>>();
+    const int missing = 40 - draft.size();
+    if (missing < 1 || candidates.size() < static_cast<unsigned>(missing)) reject("editor candidates cannot fill deck");
+    std::set<std::string> names;
+    for (const auto &id : candidates) {
+        requireCard(cards, id);
+        const auto &definition = cards.at(id);
+        int copies = 0;
+        for (const auto &entry : draft.cards) if (cards.at(entry.first).name == definition.name) copies += entry.second;
+        if (definition.type == CardType::Formation || copies >= 3 || !names.insert(definition.name).second)
+            reject("invalid editor candidate " + id);
+    }
+    for (int i = 0; i < missing; ++i) ++draft.cards[candidates.at(i)];
+    if (!deckProblems(cards, draft).empty()) reject("editor preset cannot form a legal deck");
+    const auto &steps = document.at("steps");
+    fields(steps, {"open", "draft", "rules", "limit", "side", "sideEmpty", "added", "saved", "complete"});
+    for (const auto key : {"open", "draft", "rules", "limit", "side", "sideEmpty", "added", "saved", "complete"}) {
+        const auto &step = steps.at(key);
+        fields(step, {"hintKey", "highlights"});
+        requireText(text, cards, step.at("hintKey"));
+        for (const auto &id : list(step, "highlights")) {
+            if (id != "ui:save" && id != "ui:main" && id != "ui:side" && id != "ui:pool")
+                reject("unknown editor highlight");
+        }
+    }
 }
 
 constexpr std::array zones{"deck", "hand", "action", "analysis", "words", "casting", "ash",
@@ -208,7 +255,7 @@ CommandPattern commandPattern(const Json &input, const CardCatalog &cards) {
                 if (key == "targets") requireTarget(cards, item);
                 else requireCard(cards, item.get<std::string>());
             }
-        } else {
+        } else if (key != "replace" || value != "none") {
             requireCard(cards, value.get<std::string>());
         }
         pattern.fields[key] = value;
@@ -231,7 +278,7 @@ Context context(const Json &input) {
 }
 
 Transition transition(const Json &input, const CardCatalog &cards) {
-    fields(input, {"command", "event", "gameOver", "continue", "actor", "active", "turn", "phase", "next"});
+    fields(input, {"command", "event", "gameOver", "learnerLoad", "continue", "actor", "active", "turn", "phase", "next"});
     Transition result;
     if (input.contains("command")) result.command = commandPattern(input.at("command"), cards);
     if (input.contains("event")) {
@@ -239,6 +286,8 @@ Transition transition(const Json &input, const CardCatalog &cards) {
         if (result.event == "ChainResolved") result.event = "chain_closed";
         else if (result.event != "ResponseOpened" && !name(result.event, "_")) reject("invalid event identifier");
     }
+    if (input.contains("learnerLoad"))
+        result.learnerLoad = static_cast<int>(integer(input.at("learnerLoad"), 0, 1000000, "learnerLoad"));
     if (input.contains("gameOver")) {
         const auto &value = input.at("gameOver");
         if (value == true) result.gameOver = -1;
@@ -323,9 +372,18 @@ std::shared_ptr<const LessonProgram> parseProgram(const Json &document, const Ca
         if (step.until.empty()) reject("step " + step.id + " needs a transition");
     }
 
+    for (const auto &allowed : list(document, "allow"))
+        program->allow.push_back(commandPattern(allowed, cards));
+    for (const auto &branch : list(document, "branches")) {
+        auto rule = transition(branch, cards);
+        if (rule.onContinue) reject("course-wide branch requires a game action or result");
+        rule.next = stepIndex(*program, branch.at("next").get<std::string>());
+        program->branches.push_back(std::move(rule));
+    }
     for (const auto &input : list(document, "opponent")) {
         fields(input, {"step", "do", "turn", "active", "phase", "once"});
-        const auto index = stepIndex(*program, input.at("step").get<std::string>());
+        std::optional<std::size_t> index;
+        if (input.contains("step")) index = stepIndex(*program, input.at("step").get<std::string>());
         const auto command = commandPattern(input.at("do"), cards);
         if (command.kind == CommandKind::Surrender) reject("opponent cannot surrender");
         program->opponent.push_back({index, command, context(input), input.value("once", true)});
@@ -389,12 +447,25 @@ bool matches(const CommandPattern &pattern, const GameView &view, PlayerId actor
             } else if (key == "skipCast") {
                 if (expected != std::get<AdvancePhase>(command).skipCast) return false;
             } else if (!encoded.contains(key) || expected != encoded.at(key)) return false;
+        } else if (key == "replace" && expected == "none") {
+            if (std::get<SetFormation>(command).replace) return false;
         } else if (key == "targets" || key == "materials") {
             const auto values = encoded.value(key, std::vector<CardId>{});
             if (values.size() != expected.size()) return false;
-            for (std::size_t i = 0; i < values.size(); ++i) {
-                if (key == "targets" ? !targetIs(view, actor, values[i], expected.at(i)) :
-                    !definitionIs(view, values[i], expected.at(i))) return false;
+            if (key == "materials") {
+                // Recipes consume a multiset. The query enumerates by instance
+                // id, while a human can select the exact same cards in any order.
+                auto remaining = expected.get<std::vector<std::string>>();
+                for (CardId id : values) {
+                    const auto it = std::find_if(remaining.begin(), remaining.end(), [&](const auto &key) {
+                        return definitionIs(view, id, key);
+                    });
+                    if (it == remaining.end()) return false;
+                    remaining.erase(it);
+                }
+            } else {
+                for (std::size_t i = 0; i < values.size(); ++i)
+                    if (!targetIs(view, actor, values[i], expected.at(i))) return false;
             }
         } else {
             const auto id = encoded.value(key, CardId{});
@@ -416,6 +487,7 @@ bool matches(const Transition &rule, PlayerId actor, const Command &command, con
     if (rule.onContinue || (rule.actor != -1 && actor != rule.actor) ||
         !matches(rule.context, rule.command ? before : after) ||
         (rule.command && !matches(*rule.command, before, actor, command))) return false;
+    if (rule.learnerLoad && after.players[0].load != *rule.learnerLoad) return false;
     if (rule.gameOver && (before.result != -1 || after.result == -1 ||
         (*rule.gameOver != -1 && after.result != *rule.gameOver))) return false;
     if (rule.event.empty()) return true;
@@ -471,9 +543,23 @@ LessonCatalog LessonCatalog::load(const std::filesystem::path &directory, const 
     std::map<int, std::size_t> orders;
     for (const auto &path : paths) {
         try {
+            // Editor lessons run in the deck library and have no match scenario.
+            const auto resolved = std::filesystem::canonical(path);
+            if (resolved.parent_path() != std::filesystem::canonical(directory) ||
+                !std::filesystem::is_regular_file(resolved)) reject("lesson escaped trusted directory");
+            auto metadata = readJson(resolved);
+            if (metadata.value("kind", std::string{}) == "editor") {
+                const auto id = path.stem().u8string();
+                if (!name(id, "-") || id.size() > 96 || metadata.at("id") != id) reject("invalid editor lesson ID");
+                const auto order = static_cast<int>(integer(metadata.at("order"), 1, std::numeric_limits<int>::max(), "order"));
+                validateEditorLesson(metadata, cards, text);
+                catalog.editors_.push_back(std::move(metadata));
+                ++orders[order];
+                continue;
+            }
             auto scenario = TutorialScenario::load(directory, path.stem().u8string(), cards);
             const auto &document = scenario.document();
-            fields(document, {"id", "order", "titleKey", "cardRevision", "scenario", "steps", "opponent", "complete", "openingOpponent"});
+            fields(document, {"id", "order", "titleKey", "cardRevision", "scenario", "steps", "opponent", "complete", "openingOpponent", "allow", "branches"});
             const auto order = static_cast<int>(integer(document.at("order"), 1, std::numeric_limits<int>::max(), "order"));
             auto title = document.at("titleKey").get<std::string>();
             requireText(text, cards, title);
@@ -484,6 +570,12 @@ LessonCatalog LessonCatalog::load(const std::filesystem::path &directory, const 
             log("tutorial lesson " + path.filename().u8string() + ": " + error.what());
         }
     }
+    auto &editors = catalog.editors_;
+    editors.erase(std::remove_if(editors.begin(), editors.end(), [&](const Json &editor) {
+        if (orders.at(editor.at("order").get<int>()) == 1) return false;
+        log("tutorial lesson " + editor.at("id").get<std::string>() + ": duplicate order");
+        return true;
+    }), editors.end());
     auto &lessons = catalog.lessons_;
     lessons.erase(std::remove_if(lessons.begin(), lessons.end(), [&](const LessonDefinition &lesson) {
         if (orders.at(lesson.order) == 1) return false;
@@ -509,10 +601,10 @@ LessonScript::LessonScript(const LessonDefinition &definition)
 bool LessonScript::allows(const GameView &before, const Command &command) const {
     if (std::holds_alternative<Surrender>(command) || defaultAdvanced(command) || forced(before, command)) return true;
     if (complete_ || terminal_) return false;
-    const auto &allow = program_->steps.at(step_).allow;
-    return std::any_of(allow.begin(), allow.end(), [&](const CommandPattern &pattern) {
-        return matches(pattern, before, before.viewer, command);
-    });
+    const auto allowed = [&](const CommandPattern &pattern) { return matches(pattern, before, before.viewer, command); };
+    const auto &local = program_->steps.at(step_).allow;
+    return std::any_of(local.begin(), local.end(), allowed) ||
+           std::any_of(program_->allow.begin(), program_->allow.end(), allowed);
 }
 
 void LessonScript::advance(std::size_t next) {
@@ -531,7 +623,7 @@ void LessonScript::observe(PlayerId actor, const Command &command, const GameVie
     if (actor == 1) {
         for (std::size_t index = 0; index < program_->opponent.size(); ++index) {
             const auto &action = program_->opponent[index];
-            if (action.step == step_ && !opponentUsed_[index] && matches(action.context, before) &&
+            if ((!action.step || *action.step == step_) && !opponentUsed_[index] && matches(action.context, before) &&
                 matches(action.command, before, actor, command)) {
                 opponentUsed_[index] = action.once;
                 break;
@@ -539,11 +631,13 @@ void LessonScript::observe(PlayerId actor, const Command &command, const GameVie
         }
     }
     const auto hit = [&](const Transition &rule) { return matches(rule, actor, command, before, after, events); };
+    const auto branch = std::find_if(program_->branches.begin(), program_->branches.end(), hit);
+    if (branch != program_->branches.end()) advance(branch->next);
     if (program_->completion && hit(*program_->completion)) {
         complete_ = true;
         return;
     }
-    if (awaitingCompletion_) return;
+    if (awaitingCompletion_ || branch != program_->branches.end()) return;
     const auto &rules = program_->steps.at(step_).until;
     const auto rule = std::find_if(rules.begin(), rules.end(), hit);
     if (rule != rules.end()) advance(rule->next);
@@ -588,7 +682,7 @@ std::optional<ai::Selection> LessonScript::opponent(const GameView &view, const 
     std::vector<std::size_t> wanted;
     for (std::size_t index = 0; index < plan.size(); ++index) {
         const auto &action = plan[index];
-        if (action.step == step_ && !opponentUsed_[index] && matches(action.context, view)) wanted.push_back(index);
+        if ((!action.step || *action.step == step_) && !opponentUsed_[index] && matches(action.context, view)) wanted.push_back(index);
     }
     std::optional<ai::Selection> selection;
     std::size_t best = wanted.size() + 2;

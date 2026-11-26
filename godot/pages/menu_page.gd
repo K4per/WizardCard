@@ -61,14 +61,14 @@ func _reflow() -> void:
 
 func configure(service: FrontendService) -> void:
 	_service = service
+	_status.text = service.error if not service.error.is_empty() else service.storage_notice
 	if not service.tutorial_lessons.is_empty():
 		var progress: Dictionary = GuideProgress.read(service.user_directory)
 		var count := 0
 		for lesson: Dictionary in service.tutorial_lessons:
 			if progress.completed.has(lesson.id):
 				count += 1
-		_buttons[3].text += " · " + str(get_node("/root/Text").t("tutorial.general.g06", {"completed": count, "total": service.tutorial_lessons.size()}))
-	_status.text = service.error if not service.error.is_empty() else service.storage_notice
+		_status.text += ("　" if not _status.text.is_empty() else "") + str(get_node("/root/Text").t("tutorial.general.g06", {"completed": count, "total": service.tutorial_lessons.size()}))
 	_status.visible = not _status.text.is_empty()
 
 func _single_player() -> void:

@@ -38,6 +38,11 @@ Json LocalSession::initialize(const std::filesystem::path &assets,
         for (const auto &lesson : match_.application->lessons().lessons())
             lessons.push_back({{"id", lesson.scenario.id()}, {"order", lesson.order}, {"titleKey", lesson.titleKey},
                                {"title", decks_.content->renderText({lesson.titleKey, {}})}});
+        for (auto editor : match_.application->lessons().editors()) {
+            editor["title"] = decks_.content->renderText({editor.at("titleKey").get<std::string>(), {}});
+            lessons.push_back(std::move(editor));
+        }
+        std::sort(lessons.begin(), lessons.end(), [](const Json &a, const Json &b) { return a.at("order") < b.at("order"); });
         auto data = storageStatus().at("data");
         data["lessons"] = std::move(lessons);
         data.update({{"programVersion", programVersion}, {"rulesVersion", decks_.content->catalog.rulesVersion},

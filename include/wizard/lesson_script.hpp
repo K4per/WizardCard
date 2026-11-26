@@ -27,10 +27,12 @@ public:
     static LessonCatalog load(const std::filesystem::path &directory, const CardCatalog &, const TextCatalog &,
                               const TextCatalog::Diagnostic &diagnostic = {});
     const std::vector<LessonDefinition> &lessons() const { return lessons_; }
+    const std::vector<Json> &editors() const { return editors_; }
     const LessonDefinition *find(std::string_view id) const;
 
 private:
     std::vector<LessonDefinition> lessons_;
+    std::vector<Json> editors_;
 };
 
 class LessonScript {

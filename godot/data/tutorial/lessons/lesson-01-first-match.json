@@ -1,0 +1,356 @@
+{
+  "id": "lesson-01-first-match",
+  "order": 1,
+  "titleKey": "tutorial.l01.title",
+  "cardRevision": 13,
+  "scenario": {
+    "opening": true,
+    "players": [
+      {
+        "life": 5,
+        "deck": [
+          "v260-analytic-0006",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021"
+        ],
+        "sideDeck": [
+          "v260-formation-0009",
+          "v260-formation-0010",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007"
+        ]
+      },
+      {
+        "life": 5,
+        "deck": [
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0001",
+          "v260-word-0001",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021"
+        ],
+        "sideDeck": [
+          "v260-formation-0009",
+          "v260-formation-0010",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007",
+          "v260-formation-0007"
+        ]
+      }
+    ]
+  },
+  "allow": [
+    "PassResponse",
+    "SetFormation",
+    "StartAnalysis",
+    "SetAmbush",
+    "FlipAmbush",
+    "PrepareCast",
+    "ActivateSpell",
+    "PreloadWord",
+    "Abandon",
+    "RemoveFormation"
+  ],
+  "steps": [
+    {"id": "welcome", "hint": "tutorial.l01.welcome", "continue": true},
+    {
+      "id": "gesture",
+      "hint": "tutorial.l01.gesture",
+      "blockedHint": "tutorial.lesson.blocked",
+      "allow": ["SubmitOpeningGesture"],
+      "until": {"event": "opening_winner"}
+    },
+    {"id": "hand", "hint": "tutorial.l01.hand", "highlight": ["zone:learner.hand"], "continue": true},
+    {
+      "id": "rank",
+      "hint": "tutorial.l01.s01",
+      "highlight": ["card:hand.v260-analytic-0006"],
+      "continue": true
+    },
+    {
+      "id": "cost",
+      "hint": "tutorial.l01.s02",
+      "highlight": ["card:hand.v260-analytic-0006"],
+      "continue": true
+    },
+    {
+      "id": "type",
+      "hint": "tutorial.l01.s03",
+      "highlight": ["card:hand.v260-analytic-0006"],
+      "continue": true
+    },
+    {
+      "id": "effect",
+      "hint": "tutorial.l01.s04",
+      "highlight": ["card:hand.v260-analytic-0006"],
+      "continue": true
+    },
+    {
+      "id": "tour-hand",
+      "hint": "tutorial.l01.tour_hand",
+      "highlight": ["zone:learner.hand"],
+      "continue": true
+    },
+    {
+      "id": "tour-formation",
+      "hint": "tutorial.l01.tour_formation",
+      "highlight": ["zone:learner.formation"],
+      "continue": true
+    },
+    {
+      "id": "tour-analysis",
+      "hint": "tutorial.l01.tour_analysis",
+      "highlight": ["zone:learner.analysis"],
+      "continue": true
+    },
+    {
+      "id": "tour-casting",
+      "hint": "tutorial.l01.tour_casting",
+      "highlight": ["zone:learner.casting"],
+      "continue": true
+    },
+    {"id": "tour-ash", "hint": "tutorial.l01.tour_ash", "highlight": ["zone:learner.ash"], "continue": true},
+    {"id": "objective", "hint": "tutorial.l01.s05", "highlight": ["zone:opponent.status"], "continue": true},
+    {
+      "id": "initial-formation",
+      "hint": "tutorial.l01.s06",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:side_deck.v260-formation-0009"],
+      "allow": [{"command": "SelectInitialFormation", "card": "v260-formation-0009"}],
+      "until": {"command": {"command": "SelectInitialFormation", "card": "v260-formation-0009"}}
+    },
+    {
+      "id": "first-income",
+      "hint": "tutorial.l01.s07",
+      "highlight": ["zone:learner.status"],
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Main"}
+    },
+    {
+      "id": "end-turn",
+      "hint": "tutorial.l01.end_turn",
+      "highlight": ["ui:end_phase"],
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Draw"}
+    },
+    {
+      "id": "upgrade",
+      "hint": "tutorial.l01.s08",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:side_deck.v260-formation-0010"],
+      "allow": [
+        {
+          "command": "SetFormation",
+          "card": "v260-formation-0010",
+          "replace": "none",
+          "materials": ["v260-formation-0009"]
+        }
+      ],
+      "until": {
+        "command": {
+          "command": "SetFormation",
+          "card": "v260-formation-0010",
+          "replace": "none",
+          "materials": ["v260-formation-0009"]
+        }
+      }
+    },
+    {
+      "id": "opponent-spark",
+      "hint": "tutorial.l01.save_mana",
+      "highlight": ["ui:end_phase"],
+      "until": {
+        "command": {"command": "PreloadWord", "card": "v260-word-0001", "target": "learner", "release": true},
+        "actor": "opponent"
+      }
+    },
+    {
+      "id": "spark-hit",
+      "hint": "tutorial.l01.spark_hit",
+      "highlight": ["zone:learner.status"],
+      "until": {"event": "phase_enter", "active": "learner", "phase": "Draw"}
+    },
+    {
+      "id": "place",
+      "hint": "tutorial.l01.s09",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:hand.v260-analytic-0006"],
+      "allow": [
+        {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0010"},
+        {"command": "SetAmbush", "card": "v260-analytic-0006", "formation": "v260-formation-0010"}
+      ],
+      "until": [
+        {
+          "command": {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0010"},
+          "next": "wait-ready"
+        },
+        {
+          "command": {"command": "SetAmbush", "card": "v260-analytic-0006", "formation": "v260-formation-0010"},
+          "next": "concealed"
+        }
+      ]
+    },
+    {
+      "id": "wait-ready",
+      "hint": "tutorial.l01.s11",
+      "highlight": ["card:analysis.v260-analytic-0006"],
+      "until": {"event": "analysis_ready", "next": "ready"}
+    },
+    {
+      "id": "ready",
+      "hint": "tutorial.l01.s12",
+      "highlight": ["card:analysis.v260-analytic-0006"],
+      "continue": true
+    },
+    {
+      "id": "prepare",
+      "hint": "tutorial.l01.s13",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:analysis.v260-analytic-0006"],
+      "allow": [{"command": "PrepareCast", "card": "v260-analytic-0006"}],
+      "until": {"command": {"command": "PrepareCast", "card": "v260-analytic-0006"}, "next": "cast"}
+    },
+    {
+      "id": "cast",
+      "hint": "tutorial.l01.s14",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:casting.v260-analytic-0006", "ui:phase"],
+      "allow": [{"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"}],
+      "until": {
+        "command": {"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"},
+        "next": "resolving"
+      }
+    },
+    {
+      "id": "resolving",
+      "hint": "tutorial.l01.s14",
+      "highlight": ["ui:chain"],
+      "until": {"gameOver": "learner"}
+    },
+    {
+      "id": "concealed",
+      "hint": "tutorial.l01.s10",
+      "highlight": ["card:analysis.v260-analytic-0006"],
+      "until": {"event": "phase_enter", "next": "flip", "active": "learner", "phase": "Prepare"}
+    },
+    {
+      "id": "flip",
+      "hint": "tutorial.l01.flip",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:analysis.v260-analytic-0006"],
+      "allow": [{"command": "FlipAmbush", "card": "v260-analytic-0006"}],
+      "until": {"command": {"command": "FlipAmbush", "card": "v260-analytic-0006"}, "next": "wait-ready"}
+    },
+    {
+      "id": "abandoned",
+      "hint": "tutorial.l01.abandoned",
+      "highlight": ["zone:learner.ash"],
+      "until": {"gameOver": true}
+    },
+    {
+      "id": "no-formation",
+      "hint": "tutorial.l01.no_formation",
+      "highlight": ["zone:learner.formation"],
+      "until": {"gameOver": true}
+    },
+    {"id": "won", "hint": "tutorial.l01.won", "continue": true},
+    {"id": "lost", "hint": "tutorial.l01.lost", "continue": true}
+  ],
+  "openingOpponent": "learnerWins",
+  "opponent": [
+    {
+      "do": {"command": "PreloadWord", "card": "v260-word-0001", "target": "learner", "release": true},
+      "active": "opponent",
+      "phase": "Main",
+      "once": false
+    }
+  ],
+  "branches": [
+    {"gameOver": "opponent", "next": "lost"},
+    {"gameOver": "learner", "next": "won"},
+    {"command": {"command": "Abandon", "card": "v260-analytic-0006"}, "next": "abandoned"},
+    {"command": "RemoveFormation", "next": "no-formation"}
+  ],
+  "complete": {"gameOver": "learner"}
+}

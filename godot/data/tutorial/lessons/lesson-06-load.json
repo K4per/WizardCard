@@ -1,0 +1,177 @@
+{
+  "id": "lesson-06-load",
+  "order": 6,
+  "titleKey": "tutorial.l06.title",
+  "cardRevision": 13,
+  "scenario": {
+    "players": [
+      {
+        "life": 10,
+        "mana": 20,
+        "deck": ["v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021"],
+        "hand": [
+          "v260-analytic-0034",
+          "v260-analytic-0001",
+          "v260-analytic-0001",
+          "v260-analytic-0006",
+          "v260-analytic-0006"
+        ],
+        "formation": "v260-formation-0013"
+      },
+      {
+        "life": 29,
+        "mana": 0,
+        "deck": [
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021"
+        ],
+        "hand": [],
+        "formation": "v260-formation-0009"
+      }
+    ]
+  },
+  "allow": ["PassResponse"],
+  "steps": [
+    {"id": "intro", "hint": "tutorial.l06.s01", "highlight": ["zone:learner.status"], "continue": true},
+    {
+      "id": "capacity",
+      "hint": "tutorial.l06.s02",
+      "highlight": ["card:analysis.v260-formation-0013", "zone:learner.status"],
+      "continue": true
+    },
+    {
+      "id": "costs",
+      "hint": "tutorial.l06.s03",
+      "highlight": ["card:hand.v260-analytic-0034"],
+      "continue": true
+    },
+    {"id": "calculate", "hint": "tutorial.l06.s04", "highlight": ["zone:learner.hand"], "continue": true},
+    {"id": "two-costs", "hint": "tutorial.l06.s09", "highlight": ["zone:learner.status"], "continue": true},
+    {
+      "id": "choose",
+      "hint": "tutorial.l06.choose",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["zone:learner.hand", "ui:end_phase"],
+      "allow": [
+        {"command": "StartAnalysis", "card": "v260-analytic-0034", "formation": "v260-formation-0013"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0013"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0013"}
+      ],
+      "until": {"event": "phase_enter", "next": "wait-draw", "active": "learner", "phase": "End"}
+    },
+    {
+      "id": "wait-draw",
+      "hint": "tutorial.l06.wait_draw",
+      "highlight": ["zone:learner.analysis"],
+      "until": {"event": "phase_enter", "next": "draw", "active": "learner", "phase": "Draw"}
+    },
+    {
+      "id": "draw",
+      "hint": "tutorial.l06.draw",
+      "highlight": ["ui:phase"],
+      "until": {"event": "phase_enter", "next": "preparations", "active": "learner", "phase": "Prepare"}
+    },
+    {
+      "id": "preparations",
+      "hint": "tutorial.l06.prepare",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["zone:learner.analysis"],
+      "allow": [
+        {"command": "PrepareCast", "card": "v260-analytic-0034"},
+        {"command": "PrepareCast", "card": "v260-analytic-0001"},
+        {"command": "PrepareCast", "card": "v260-analytic-0006"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0034", "formation": "v260-formation-0013"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0013"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0013"}
+      ],
+      "until": {"event": "phase_enter", "next": "cast", "active": "learner", "phase": "Cast"}
+    },
+    {
+      "id": "cast",
+      "hint": "tutorial.l06.cast",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["zone:learner.casting"],
+      "allow": [
+        {"command": "ActivateSpell", "card": "v260-analytic-0034", "target": "opponent"},
+        {"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "opponent"},
+        {"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"}
+      ],
+      "until": [
+        {"event": "overload", "next": "overloaded"},
+        {"event": "phase_enter", "next": "retry", "active": "learner", "phase": "End"}
+      ]
+    },
+    {
+      "id": "overloaded",
+      "hint": "tutorial.l06.s07",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["zone:learner.status"],
+      "allow": [
+        {"command": "ActivateSpell", "card": "v260-analytic-0034", "target": "opponent"},
+        {"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "opponent"},
+        {"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"}
+      ],
+      "until": {"event": "phase_enter", "next": "retry", "active": "learner", "phase": "End"}
+    },
+    {
+      "id": "retry",
+      "hint": "tutorial.l06.retry",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["zone:learner.hand", "zone:learner.analysis"],
+      "allow": [
+        {"command": "StartAnalysis", "card": "v260-analytic-0034", "formation": "v260-formation-0013"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0013"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0013"},
+        {"command": "PrepareCast", "card": "v260-analytic-0034"},
+        {"command": "PrepareCast", "card": "v260-analytic-0001"},
+        {"command": "PrepareCast", "card": "v260-analytic-0006"}
+      ],
+      "until": {"event": "phase_enter", "next": "cast", "active": "learner", "phase": "Cast"}
+    },
+    {
+      "id": "safe-limit",
+      "hint": "tutorial.l06.s06",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["zone:learner.status"],
+      "allow": [
+        {"command": "ActivateSpell", "card": "v260-analytic-0034", "target": "opponent"},
+        {"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "opponent"},
+        {"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"}
+      ],
+      "until": [
+        {"event": "overload", "next": "overloaded"},
+        {"event": "phase_enter", "next": "retry", "active": "learner", "phase": "End"}
+      ]
+    },
+    {
+      "id": "all-five",
+      "hint": "tutorial.l06.s05",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["zone:learner.status", "ui:end_phase"],
+      "allow": [
+        {"command": "StartAnalysis", "card": "v260-analytic-0034", "formation": "v260-formation-0013"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0013"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0013"}
+      ],
+      "until": {"event": "phase_enter", "next": "wait-draw", "active": "learner", "phase": "End"}
+    },
+    {"id": "win-overload", "hint": "tutorial.l06.s10", "highlight": ["zone:learner.status"], "continue": true},
+    {"id": "won", "hint": "tutorial.l06.s08", "continue": true}
+  ],
+  "branches": [
+    {"gameOver": "learner", "learnerLoad": 20, "next": "win-overload"},
+    {"gameOver": "learner", "learnerLoad": 19, "next": "win-overload"},
+    {"gameOver": "learner", "next": "won"},
+    {"command": "StartAnalysis", "learnerLoad": 13, "next": "all-five"},
+    {"command": "ActivateSpell", "learnerLoad": 17, "next": "safe-limit"}
+  ],
+  "complete": {"gameOver": "learner"}
+}

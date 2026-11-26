@@ -1,0 +1,111 @@
+{
+  "id": "lesson-04-spells",
+  "order": 4,
+  "titleKey": "tutorial.l04.title",
+  "cardRevision": 13,
+  "scenario": {
+    "players": [
+      {
+        "life": 3,
+        "mana": 2,
+        "deck": ["v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021"],
+        "hand": ["v260-analytic-0006", "v260-word-0001", "v260-talisman-0003", "v260-word-0021", "v260-word-0021"],
+        "formation": "v260-formation-0010"
+      },
+      {
+        "life": 3,
+        "mana": 2,
+        "deck": [
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021"
+        ],
+        "hand": ["v260-word-0001"],
+        "formation": "v260-formation-0010"
+      }
+    ]
+  },
+  "allow": ["PassResponse"],
+  "steps": [
+    {"id": "intro", "hint": "tutorial.l04.s01", "continue": true},
+    {
+      "id": "danger",
+      "hint": "tutorial.l04.s02",
+      "highlight": ["zone:learner.status", "zone:opponent.status"],
+      "continue": true
+    },
+    {
+      "id": "analytic",
+      "hint": "tutorial.l04.s03",
+      "highlight": ["card:hand.v260-analytic-0006"],
+      "continue": true
+    },
+    {"id": "word", "hint": "tutorial.l04.s04", "highlight": ["card:hand.v260-word-0001"], "continue": true},
+    {
+      "id": "talisman",
+      "hint": "tutorial.l04.s05",
+      "highlight": ["card:hand.v260-talisman-0003"],
+      "continue": true
+    },
+    {
+      "id": "choose",
+      "hint": "tutorial.l04.choose",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:hand.v260-analytic-0006", "card:hand.v260-word-0001", "card:hand.v260-talisman-0003"],
+      "allow": [
+        {"command": "PreloadWord", "card": "v260-word-0001", "target": "opponent", "release": true},
+        {"command": "SetAmbush", "card": "v260-talisman-0003", "formation": "v260-formation-0010"},
+        {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0010"}
+      ],
+      "until": [
+        {
+          "command": {"command": "PreloadWord", "card": "v260-word-0001", "target": "opponent", "release": true},
+          "next": "resolve"
+        },
+        {
+          "command": {"command": "SetAmbush", "card": "v260-talisman-0003", "formation": "v260-formation-0010"},
+          "next": "shield-set"
+        },
+        {
+          "command": {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0010"},
+          "next": "too-slow"
+        }
+      ]
+    },
+    {
+      "id": "shield-set",
+      "hint": "tutorial.l04.shield_set",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:hand.v260-word-0001", "ui:end_phase"],
+      "allow": [{"command": "PreloadWord", "card": "v260-word-0001", "target": "opponent", "release": true}],
+      "until": {
+        "command": {"command": "PreloadWord", "card": "v260-word-0001", "target": "opponent", "release": true},
+        "next": "resolve"
+      }
+    },
+    {
+      "id": "too-slow",
+      "hint": "tutorial.l04.s03",
+      "highlight": ["card:analysis.v260-analytic-0006", "ui:end_phase"],
+      "until": {"gameOver": true}
+    },
+    {"id": "resolve", "hint": "tutorial.l04.s07", "highlight": ["ui:chain"], "until": {"gameOver": true}},
+    {"id": "won", "hint": "tutorial.l04.s06", "continue": true},
+    {"id": "lost", "hint": "tutorial.l04.lost", "continue": true}
+  ],
+  "opponent": [
+    {
+      "do": {"command": "PreloadWord", "card": "v260-word-0001", "target": "learner", "release": true},
+      "active": "opponent",
+      "phase": "Main"
+    }
+  ],
+  "complete": {"gameOver": "learner"},
+  "branches": [{"gameOver": "opponent", "next": "lost"}, {"gameOver": "learner", "next": "won"}]
+}

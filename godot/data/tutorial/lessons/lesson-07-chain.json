@@ -1,0 +1,134 @@
+{
+  "id": "lesson-07-chain",
+  "order": 7,
+  "titleKey": "tutorial.l07.title",
+  "cardRevision": 13,
+  "scenario": {
+    "players": [
+      {
+        "life": 5,
+        "mana": 4,
+        "deck": ["v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021"],
+        "hand": ["v260-analytic-0006", "v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021"],
+        "formation": "v260-formation-0012",
+        "faceDown": [{"card": "v260-talisman-0003"}]
+      },
+      {
+        "life": 5,
+        "mana": 0,
+        "deck": [
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021"
+        ],
+        "hand": [],
+        "formation": "v260-formation-0011",
+        "resolved": [{"card": "v260-analytic-0001", "load": 3}]
+      }
+    ]
+  },
+  "allow": ["PassResponse"],
+  "steps": [
+    {
+      "id": "intro",
+      "hint": "tutorial.l07.s01",
+      "highlight": ["card:analysis.v260-talisman-0003"],
+      "continue": true
+    },
+    {"id": "speed", "hint": "tutorial.l07.s09", "highlight": ["ui:chain"], "continue": true},
+    {
+      "id": "incoming",
+      "hint": "tutorial.l07.s02",
+      "highlight": ["card:analysis.v260-analytic-0001", "ui:end_phase"],
+      "until": {
+        "command": {"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "learner"},
+        "actor": "opponent"
+      }
+    },
+    {
+      "id": "respond",
+      "hint": "tutorial.l07.s03",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["zone:opponent.casting", "card:analysis.v260-talisman-0003"],
+      "allow": [{"command": "FlipAmbush", "card": "v260-talisman-0003"}, "PassResponse"],
+      "until": [
+        {"command": {"command": "FlipAmbush", "card": "v260-talisman-0003"}, "next": "shield-link"},
+        {"command": "PassResponse", "next": "passed"}
+      ]
+    },
+    {"id": "shield-link", "hint": "tutorial.l07.s04", "highlight": ["ui:chain"], "continue": true},
+    {
+      "id": "reverse-order",
+      "hint": "tutorial.l07.s05",
+      "highlight": ["ui:chain"],
+      "until": {"event": "phase_enter", "next": "counter", "active": "learner", "phase": "Draw"}
+    },
+    {
+      "id": "counter",
+      "hint": "tutorial.l07.s06",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:hand.v260-analytic-0006"],
+      "allow": [{"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0012"}],
+      "until": {
+        "command": {"command": "StartAnalysis", "card": "v260-analytic-0006", "formation": "v260-formation-0012"},
+        "next": "wait-ready"
+      }
+    },
+    {
+      "id": "wait-ready",
+      "hint": "tutorial.l07.wait",
+      "highlight": ["card:analysis.v260-analytic-0006"],
+      "until": {"event": "analysis_ready", "next": "prepare"}
+    },
+    {
+      "id": "prepare",
+      "hint": "tutorial.l07.prepare",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:analysis.v260-analytic-0006"],
+      "allow": [{"command": "PrepareCast", "card": "v260-analytic-0006"}],
+      "until": {"command": {"command": "PrepareCast", "card": "v260-analytic-0006"}, "next": "cast"}
+    },
+    {
+      "id": "cast",
+      "hint": "tutorial.l07.activate",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:casting.v260-analytic-0006", "ui:phase"],
+      "allow": [{"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"}],
+      "until": {
+        "command": {"command": "ActivateSpell", "card": "v260-analytic-0006", "target": "opponent"},
+        "next": "resolving"
+      }
+    },
+    {
+      "id": "resolving",
+      "hint": "tutorial.l07.settle",
+      "highlight": ["ui:chain"],
+      "until": {"gameOver": "learner"}
+    },
+    {
+      "id": "passed",
+      "hint": "tutorial.l07.s07",
+      "highlight": ["zone:opponent.casting"],
+      "until": {"gameOver": true}
+    },
+    {"id": "won", "hint": "tutorial.l07.s08", "continue": true},
+    {"id": "lost", "hint": "tutorial.l07.s07", "continue": true}
+  ],
+  "opponent": [
+    {"do": {"command": "PrepareCast", "card": "v260-analytic-0001"}, "active": "opponent", "phase": "Main"},
+    {
+      "do": {"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "learner"},
+      "active": "opponent",
+      "phase": "Cast"
+    }
+  ],
+  "complete": {"gameOver": "learner"},
+  "branches": [{"gameOver": "opponent", "next": "lost"}, {"gameOver": "learner", "next": "won"}]
+}

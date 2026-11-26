@@ -1,0 +1,97 @@
+{
+  "id": "lesson-05-runes",
+  "order": 5,
+  "titleKey": "tutorial.l05.title",
+  "cardRevision": 13,
+  "scenario": {
+    "players": [
+      {
+        "life": 10,
+        "mana": 5,
+        "deck": ["v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021", "v260-word-0021"],
+        "hand": ["v260-seal-0003", "v260-analytic-0001", "v260-word-0021", "v260-word-0021", "v260-word-0021"],
+        "formation": "v260-formation-0010"
+      },
+      {
+        "life": 7,
+        "mana": 0,
+        "deck": [
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021",
+          "v260-word-0021"
+        ],
+        "hand": [],
+        "formation": "v260-formation-0009"
+      }
+    ]
+  },
+  "allow": ["PassResponse"],
+  "steps": [
+    {
+      "id": "blocked",
+      "hint": "tutorial.l05.s01",
+      "highlight": ["card:hand.v260-analytic-0001", "card:analysis.v260-formation-0010"],
+      "continue": true
+    },
+    {"id": "rune", "hint": "tutorial.l05.s02", "highlight": ["card:hand.v260-seal-0003"], "continue": true},
+    {
+      "id": "attach",
+      "hint": "tutorial.l05.s03",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:hand.v260-seal-0003", "card:analysis.v260-formation-0010"],
+      "allow": [{"command": "AttachSeal", "card": "v260-seal-0003", "host": "v260-formation-0010"}],
+      "until": {"command": {"command": "AttachSeal", "card": "v260-seal-0003", "host": "v260-formation-0010"}}
+    },
+    {
+      "id": "place",
+      "hint": "tutorial.l05.s04",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:hand.v260-analytic-0001", "card:analysis.v260-formation-0010"],
+      "allow": [{"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0010"}],
+      "until": {
+        "command": {"command": "StartAnalysis", "card": "v260-analytic-0001", "formation": "v260-formation-0010"}
+      }
+    },
+    {
+      "id": "wait-ready",
+      "hint": "tutorial.l05.s05",
+      "highlight": ["card:analysis.v260-analytic-0001"],
+      "until": {"event": "analysis_ready", "next": "prepare"}
+    },
+    {
+      "id": "prepare",
+      "hint": "tutorial.l05.prepare",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:analysis.v260-analytic-0001"],
+      "allow": [{"command": "PrepareCast", "card": "v260-analytic-0001"}],
+      "until": {"command": {"command": "PrepareCast", "card": "v260-analytic-0001"}, "next": "cast"}
+    },
+    {
+      "id": "cast",
+      "hint": "tutorial.l05.activate",
+      "blockedHint": "tutorial.lesson.blocked",
+      "highlight": ["card:casting.v260-analytic-0001", "ui:phase"],
+      "allow": [{"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "opponent"}],
+      "until": {
+        "command": {"command": "ActivateSpell", "card": "v260-analytic-0001", "target": "opponent"},
+        "next": "resolving"
+      }
+    },
+    {
+      "id": "resolving",
+      "hint": "tutorial.l05.settle",
+      "highlight": ["ui:chain"],
+      "until": {"gameOver": "learner"}
+    },
+    {"id": "won", "hint": "tutorial.l05.s06", "continue": true}
+  ],
+  "complete": {"gameOver": "learner"},
+  "branches": [{"gameOver": "learner", "next": "won"}]
+}

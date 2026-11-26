@@ -3,6 +3,17 @@ extends Control
 
 signal navigation_requested(page: StringName)
 
+signal lesson_completed(id: String, order: int)
+signal lesson_navigation_requested(action: StringName, id: String, order: int)
+
+const EditorOverlay = preload("res://ui/tutorial_overlay.gd")
+const EditorEnd = preload("res://ui/lesson_end_panel.gd")
+var lesson: Dictionary = {}
+var _overlay: EditorOverlay
+var _end: EditorEnd
+var _step := ""
+var _skip: Button
+
 var service: FrontendService
 var _title: Label
 var _state: Label
@@ -143,6 +154,9 @@ func _build_interface() -> void:
 	_initial = _label("初始阵法在对局开始时从副卡组选择", 13)
 	_initial.add_theme_color_override(&"font_color", DeckTheme.MUTED)
 	built_column.add_child(_initial)
+	var rules := _label(get_node("/root/Text").t("tutorial.l08.s03"), 13)
+	rules.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	built_column.add_child(rules)
 	_pool_panel = Panel.new()
 	_pool_panel.custom_minimum_size.x = 320
 	body.add_child(_pool_panel)
@@ -210,6 +224,10 @@ func _build_interface() -> void:
 	_back = _button("返回卡组列表")
 	_back.custom_minimum_size.x = 160
 	footer.add_child(_back)
+	_skip = _button(get_node("/root/Text").t("ui.lesson.skip"))
+	_skip.hide()
+	_skip.pressed.connect(_lesson_action.bind(&"skip"))
+	footer.add_child(_skip)
 	var export_button: Button = _button("导出牌组")
 	footer.add_child(export_button)
 	_export_dialog = FileDialog.new()
@@ -245,6 +263,42 @@ func configure(value: FrontendService) -> void:
 	_refresh()
 	if not _pool_ids.is_empty():
 		_inspect(_pool_ids[0])
+	if not lesson.is_empty():
+		_overlay = preload("res://ui/tutorial_overlay.tscn").instantiate() as EditorOverlay
+		add_child(_overlay)
+		_overlay.continue_requested.connect(_editor_step.bind("rules"))
+		_end = preload("res://ui/lesson_end_panel.tscn").instantiate() as EditorEnd
+		add_child(_end)
+		_end.action_requested.connect(_lesson_action)
+		_skip.show()
+		_side.inspected.connect(func(_id: String) -> void: _editor_step("side"))
+		_initial.text = get_node("/root/Text").t("tutorial.editor.side_detail", {"side": get_node("/root/Text").t(lesson.steps.side.hintKey), "formation": get_node("/root/Text").t(lesson.steps.sideEmpty.hintKey)})
+		_initial.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_editor_step("open")
+
+func _lesson_action(action: StringName) -> void:
+	lesson_navigation_requested.emit(action, str(lesson.id), int(lesson.order))
+
+func _editor_rects(id: String) -> Array[Rect2]:
+	var control: Control = {"ui:save": _save, "ui:main": _main_count, "ui:side": _side_count, "ui:pool": _pool}.get(id)
+	if control == null or not control.is_visible_in_tree():
+		return []
+	return [control.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, control.size)]
+
+func _editor_step(event: String) -> void:
+	if lesson.is_empty() or _overlay == null or _step == "complete":
+		return
+	_step = event
+	var step: Dictionary = lesson.steps[event].duplicate(true)
+	step["canContinue"] = event in ["open", "draft", "side", "sideEmpty"]
+	_overlay.configure(step, _editor_rects, [_dialog._panel])
+	if event == "complete":
+		_overlay.hide()
+		_skip.hide()
+		var catalog := get_node("/root/Text")
+		_end.present(int(lesson.order), str(catalog.t(lesson.steps.saved.hintKey)) + "\n" + str(catalog.t(step.hintKey)))
+		lesson_completed.emit(str(lesson.id), int(lesson.order))
+
 
 func _build_filters() -> void:
 	_filter_values = [[null, 1, 2, 3, 4, 5], [null, "common", "uncommon", "rare", "epic", "legendary"], [null], [null], [null], [null], [null], [null], [null]]
@@ -300,6 +354,13 @@ func _query_changed(_text: String) -> void:
 			var selected_value: Variant = _filter_values[index][selected]
 			query[keys[index]] = [selected_value] if index in [5, 6, 7, 8] else selected_value
 	_pool_ids = service.query_cards(query)
+	if not lesson.is_empty():
+		var available: Array = lesson.candidates.duplicate()
+		# Removed formations stay available so an incomplete side deck can be repaired.
+		for id: String in lesson.sideCards:
+			if int(service.editing_draft.sideCards.get(id, 0)) < int(lesson.sideCards[id]):
+				available.append(id)
+		_pool_ids = _pool_ids.filter(func(id: String) -> bool: return available.has(id))
 	_pool_page = 0
 	_refresh_pool()
 
@@ -355,7 +416,7 @@ func _refresh_pool() -> void:
 	if _pool_ids.is_empty():
 		_pool_hint.text = service.error if not service.error.is_empty() else "无匹配卡牌，请调整筛选"
 	else:
-		_pool_hint.text = "阵法入副卡组 · 左键加入 · 右键移出"
+		_pool_hint.text = get_node("/root/Text").t("tutorial.editor.pick") if not lesson.is_empty() else "阵法入副卡组 · 左键加入 · 右键移出"
 
 func _reflow_pool() -> void:
 	var next_rows: int = clampi(floori(_pool.size.y / 115.0), 1, 3)
@@ -395,6 +456,8 @@ func _adjust(id: String, delta: int, source_section: String) -> void:
 	var cards: Dictionary = service.editing_draft.get(membership, {})
 	var count: int = int(cards.get(id, 0))
 	if delta > 0 and (service.named_copies(id, membership) >= 3 or DeckUi.total(cards) >= (10 if membership == "sideCards" else 40)):
+		if not lesson.is_empty() and service.named_copies(id, membership) >= 3:
+			_editor_step("limit")
 		_notice.text = "已达到卡组或同名份数上限"
 		UiFactory.flash(_notice, Color("f1aaa0"))
 		return
@@ -405,6 +468,10 @@ func _adjust(id: String, delta: int, source_section: String) -> void:
 	else:
 		cards[id] = count + delta
 	service.editing_draft[membership] = cards
+	if not lesson.is_empty():
+		_editor_step("side" if membership == "sideCards" else "added")
+		if membership == "sideCards":
+			_query_changed(_search.text)
 	_refresh()
 	_inspect(id)
 	_notice.text = "%s · %s · 现有 %d 张" % [service.card_by_id(id).title, "已加入" if delta > 0 else "已移出", maxi(0, count + delta)]
@@ -422,6 +489,15 @@ func _save_draft() -> bool:
 	_storage_button.hide()
 	_refresh()
 	_notice.text = "卡组已保存" if service.draft_problems().is_empty() else "草稿已保存，请补齐主／副卡组"
+	if not lesson.is_empty():
+		var stored := false
+		for draft: Dictionary in service.drafts:
+			if draft.id == service.editing_draft.id:
+				stored = bool(draft.get("matchCompatible", false))
+				break
+		var event := "saved" if stored else ("sideEmpty" if service.editing_draft.sideCards.is_empty() else "draft")
+		_notice.text = get_node("/root/Text").t("tutorial.editor.side_empty" if event == "sideEmpty" else lesson.steps[event].hintKey)
+		_editor_step("complete" if stored else event)
 	UiFactory.flash(_save)
 	return true
 
@@ -442,6 +518,12 @@ func request_leave(quit_game: bool = false) -> void:
 		_dialog.hide()
 		return
 	_leave_quits = quit_game
+	if not lesson.is_empty() and _step != "complete":
+		_dialog_kind = "lesson_leave"
+		var catalog := get_node("/root/Text")
+		_dialog.present(catalog.t("tutorial.general.g02"), catalog.t("tutorial.general.g04"),
+			[catalog.t("tutorial.general.g04.exit"), catalog.t("tutorial.general.g04.continue")])
+		return
 	if service.draft_dirty():
 		_dialog_kind = "leave"
 		_dialog.present("尚有未保存的修改", "保存草稿后离开，或放弃本次修改。", ["保存并离开", "放弃修改", "继续编辑"])
@@ -449,6 +531,10 @@ func request_leave(quit_game: bool = false) -> void:
 		_finish_leave()
 
 func _dialog_chosen(index: int) -> void:
+	if _dialog_kind == "lesson_leave":
+		if index == 0:
+			_finish_leave()
+		return
 	if _dialog_kind != "leave":
 		return
 	if index == 0 and _save_draft():

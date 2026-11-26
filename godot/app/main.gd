@@ -98,7 +98,7 @@ func _ready() -> void:
 
 func navigate(destination: StringName) -> void:
 	if destination != &"deck_editor":
-		editor_lesson.clear()
+		editor_lesson = {}
 	if not PAGES.has(destination):
 		return
 	if is_instance_valid(page):
@@ -119,6 +119,8 @@ func navigate(destination: StringName) -> void:
 		page.connect(&"lesson_completed", _mark_lesson)
 	if page.has_signal(&"lesson_navigation_requested"):
 		page.connect(&"lesson_navigation_requested", _lesson_navigation)
+	if page is DeckEditorPage:
+		(page as DeckEditorPage).lesson = editor_lesson
 	page.call(&"configure", service)
 	Typography.refresh()
 	page_changed.emit(destination)
@@ -164,15 +166,11 @@ func _start_lesson(id: String) -> void:
 		if lesson.id != id:
 			continue
 		if lesson.get("kind") == "editor":
-			if not service.create_draft(str(lesson.preset)):
+			if not service.create_draft():
 				return
-			for card: String in lesson.remove:
-				var main: Dictionary = service.editing_draft.cards
-				if not main.has(card) or int(main[card]) < 1:
-					return
-				main[card] -= 1
-				if main[card] == 0:
-					main.erase(card)
+			service.editing_draft.cards = lesson.cards.duplicate()
+			service.editing_draft.sideCards = lesson.sideCards.duplicate()
+			service.editing_draft.name = str(lesson.title)
 			editor_lesson = lesson
 			navigate(&"deck_editor")
 		elif service.start_match({"mode": "tutorial", "lessonId": id}):
@@ -190,7 +188,7 @@ func _lesson_navigation(action: StringName, id: String, order: int) -> void:
 		return
 	if service.match_active and not service.leave_match():
 		return
-	editor_lesson.clear()
+	editor_lesson = {}
 	if action == &"retry":
 		_start_lesson(id)
 	elif action == &"next":
